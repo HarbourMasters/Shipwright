@@ -1,0 +1,233 @@
+:config:
+  segments:
+    - [ 6, 0x00F7D290 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00F7D290 ]
+    - [ 9, 0x00F7D290 ]
+    - [ 10, 0x00F7D290 ]
+    - [ 11, 0x00F7D290 ]
+    - [ 12, 0x00F7D290 ]
+    - [ 13, 0x00F7D290 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gBeamosAnim:
+  type: OOT:ANIMATION
+  offset: 0x68
+  symbol: gBeamosAnim
+
+gBeamosBodyDL:
+  type: GFX
+  offset: 0x1E00
+  symbol: gBeamosBodyDL
+
+gBeamosBodyGradientTex:
+  type: TEXTURE
+  offset: 0x27C0
+  symbol: gBeamosBodyGradientTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBeamosBodyLimb:
+  type: OOT:LIMB
+  offset: 0x3F2C
+  symbol: gBeamosBodyLimb
+  limb_type: Standard
+
+gBeamosBodyTex:
+  type: TEXTURE
+  offset: 0x3440
+  symbol: gBeamosBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBeamosBoltAndMetalTex:
+  type: TEXTURE
+  offset: 0x2940
+  symbol: gBeamosBoltAndMetalTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gBeamosBottomEyelidDL:
+  type: GFX
+  offset: 0x2460
+  symbol: gBeamosBottomEyelidDL
+
+gBeamosBottomEyelidLimb:
+  type: OOT:LIMB
+  offset: 0x3F14
+  symbol: gBeamosBottomEyelidLimb
+  limb_type: Standard
+
+gBeamosEyeDL:
+  type: GFX
+  offset: 0x2610
+  symbol: gBeamosEyeDL
+
+gBeamosEyeLimb:
+  type: OOT:LIMB
+  offset: 0x3F20
+  symbol: gBeamosEyeLimb
+  limb_type: Standard
+
+gBeamosEyeOutlineTex:
+  type: TEXTURE
+  offset: 0x2E40
+  symbol: gBeamosEyeOutlineTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBeamosEyeTex:
+  type: TEXTURE
+  offset: 0x3040
+  symbol: gBeamosEyeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gBeamosGrayMetalTex:
+  type: TEXTURE
+  offset: 0x2840
+  symbol: gBeamosGrayMetalTex
+  format: I4
+  width: 16
+  height: 32
+
+gBeamosLaserDL:
+  type: GFX
+  offset: 0x2728
+  symbol: gBeamosLaserDL
+
+gBeamosLaserTex:
+  type: TEXTURE
+  offset: 0x3640
+  symbol: gBeamosLaserTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBeamosLimb_3ECC:
+  type: OOT:LIMB
+  offset: 0x3ECC
+  symbol: gBeamosLimb_3ECC
+  limb_type: Standard
+
+gBeamosLimb_3ED8:
+  type: OOT:LIMB
+  offset: 0x3ED8
+  symbol: gBeamosLimb_3ED8
+  limb_type: Standard
+
+gBeamosLimb_3EE4:
+  type: OOT:LIMB
+  offset: 0x3EE4
+  symbol: gBeamosLimb_3EE4
+  limb_type: Standard
+
+gBeamosLimb_3EFC:
+  type: OOT:LIMB
+  offset: 0x3EFC
+  symbol: gBeamosLimb_3EFC
+  limb_type: Standard
+
+gBeamosLimb_3F08:
+  type: OOT:LIMB
+  offset: 0x3F08
+  symbol: gBeamosLimb_3F08
+  limb_type: Standard
+
+gBeamosRootLimb:
+  type: OOT:LIMB
+  offset: 0x3EC0
+  symbol: gBeamosRootLimb
+  limb_type: Standard
+
+gBeamosSkel:
+  type: OOT:SKELETON
+  offset: 0x3F60
+  symbol: gBeamosSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBeamosTeethTex:
+  type: TEXTURE
+  offset: 0x36C0
+  symbol: gBeamosTeethTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeamosTex_2D40:
+  type: TEXTURE
+  offset: 0x2D40
+  symbol: gBeamosTex_2D40
+  format: RGBA16
+  width: 16
+  height: 8
+
+gBeamosTopEyelidDL:
+  type: GFX
+  offset: 0x22B0
+  symbol: gBeamosTopEyelidDL
+
+gBeamosTopEyelidLimb:
+  type: OOT:LIMB
+  offset: 0x3EF0
+  symbol: gBeamosTopEyelidLimb
+  limb_type: Standard
+
+
+object_vmVtx_000080:
+  type: OOT:ARRAY
+  offset: 0x000080
+  symbol: object_vmVtx_000080
+  count: 352
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_vmVtx_001680:
+  type: OOT:ARRAY
+  offset: 0x001680
+  symbol: object_vmVtx_001680
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_vmVtx_001940:
+  type: OOT:ARRAY
+  offset: 0x001940
+  symbol: object_vmVtx_001940
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_vmVtx_001C00:
+  type: OOT:ARRAY
+  offset: 0x001C00
+  symbol: object_vmVtx_001C00
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_vmVtx_001D80:
+  type: OOT:ARRAY
+  offset: 0x001D80
+  symbol: object_vmVtx_001D80
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeamosSkelLimbs:
+  type: BLOB
+  offset: 0x3F38
+  symbol: gBeamosSkelLimbs
+  size: 0

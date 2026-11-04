@@ -1,0 +1,406 @@
+:config:
+  segments:
+    - [ 6, 0x00DDB550 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x00DDB550 ]
+    - [ 9, 0x00DDB550 ]
+    - [ 10, 0x00DDB550 ]
+    - [ 11, 0x00DDB550 ]
+    - [ 12, 0x00DDB550 ]
+    - [ 13, 0x00DDB550 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+object_tite_Anim_0001D4:
+  type: OOT:ANIMATION
+  offset: 0x1D4
+  symbol: object_tite_Anim_0001D4
+
+object_tite_Anim_0004F8:
+  type: OOT:ANIMATION
+  offset: 0x4F8
+  symbol: object_tite_Anim_0004F8
+
+object_tite_Anim_00069C:
+  type: OOT:ANIMATION
+  offset: 0x69C
+  symbol: object_tite_Anim_00069C
+
+object_tite_Anim_00083C:
+  type: OOT:ANIMATION
+  offset: 0x83C
+  symbol: object_tite_Anim_00083C
+
+object_tite_Anim_000A14:
+  type: OOT:ANIMATION
+  offset: 0xA14
+  symbol: object_tite_Anim_000A14
+
+object_tite_Anim_000C70:
+  type: OOT:ANIMATION
+  offset: 0xC70
+  symbol: object_tite_Anim_000C70
+
+object_tite_Anim_000F50:
+  type: OOT:ANIMATION
+  offset: 0xF50
+  symbol: object_tite_Anim_000F50
+
+object_tite_Anim_0012E4:
+  type: OOT:ANIMATION
+  offset: 0x12E4
+  symbol: object_tite_Anim_0012E4
+
+object_tite_Blob_0012F4:
+  type: BLOB
+  offset: 0x12F4
+  size: 0xC
+  symbol: object_tite_Blob_0012F4
+
+object_tite_DL_002FF0:
+  type: GFX
+  offset: 0x2FF0
+  symbol: object_tite_DL_002FF0
+
+object_tite_DL_003160:
+  type: GFX
+  offset: 0x3160
+  symbol: object_tite_DL_003160
+
+object_tite_DL_003290:
+  type: GFX
+  offset: 0x3290
+  symbol: object_tite_DL_003290
+
+object_tite_DL_003330:
+  type: GFX
+  offset: 0x3330
+  symbol: object_tite_DL_003330
+
+object_tite_DL_003460:
+  type: GFX
+  offset: 0x3460
+  symbol: object_tite_DL_003460
+
+object_tite_DL_003500:
+  type: GFX
+  offset: 0x3500
+  symbol: object_tite_DL_003500
+
+object_tite_DL_003630:
+  type: GFX
+  offset: 0x3630
+  symbol: object_tite_DL_003630
+
+object_tite_DL_0036D0:
+  type: GFX
+  offset: 0x36D0
+  symbol: object_tite_DL_0036D0
+
+object_tite_DL_003800:
+  type: GFX
+  offset: 0x3800
+  symbol: object_tite_DL_003800
+
+object_tite_Limb_0038A0:
+  type: OOT:LIMB
+  offset: 0x38A0
+  symbol: object_tite_Limb_0038A0
+  limb_type: Standard
+
+object_tite_Limb_0038AC:
+  type: OOT:LIMB
+  offset: 0x38AC
+  symbol: object_tite_Limb_0038AC
+  limb_type: Standard
+
+object_tite_Limb_0038B8:
+  type: OOT:LIMB
+  offset: 0x38B8
+  symbol: object_tite_Limb_0038B8
+  limb_type: Standard
+
+object_tite_Limb_0038C4:
+  type: OOT:LIMB
+  offset: 0x38C4
+  symbol: object_tite_Limb_0038C4
+  limb_type: Standard
+
+object_tite_Limb_0038D0:
+  type: OOT:LIMB
+  offset: 0x38D0
+  symbol: object_tite_Limb_0038D0
+  limb_type: Standard
+
+object_tite_Limb_0038DC:
+  type: OOT:LIMB
+  offset: 0x38DC
+  symbol: object_tite_Limb_0038DC
+  limb_type: Standard
+
+object_tite_Limb_0038E8:
+  type: OOT:LIMB
+  offset: 0x38E8
+  symbol: object_tite_Limb_0038E8
+  limb_type: Standard
+
+object_tite_Limb_0038F4:
+  type: OOT:LIMB
+  offset: 0x38F4
+  symbol: object_tite_Limb_0038F4
+  limb_type: Standard
+
+object_tite_Limb_003900:
+  type: OOT:LIMB
+  offset: 0x3900
+  symbol: object_tite_Limb_003900
+  limb_type: Standard
+
+object_tite_Limb_00390C:
+  type: OOT:LIMB
+  offset: 0x390C
+  symbol: object_tite_Limb_00390C
+  limb_type: Standard
+
+object_tite_Limb_003918:
+  type: OOT:LIMB
+  offset: 0x3918
+  symbol: object_tite_Limb_003918
+  limb_type: Standard
+
+object_tite_Limb_003924:
+  type: OOT:LIMB
+  offset: 0x3924
+  symbol: object_tite_Limb_003924
+  limb_type: Standard
+
+object_tite_Limb_003930:
+  type: OOT:LIMB
+  offset: 0x3930
+  symbol: object_tite_Limb_003930
+  limb_type: Standard
+
+object_tite_Limb_00393C:
+  type: OOT:LIMB
+  offset: 0x393C
+  symbol: object_tite_Limb_00393C
+  limb_type: Standard
+
+object_tite_Limb_003948:
+  type: OOT:LIMB
+  offset: 0x3948
+  symbol: object_tite_Limb_003948
+  limb_type: Standard
+
+object_tite_Limb_003954:
+  type: OOT:LIMB
+  offset: 0x3954
+  symbol: object_tite_Limb_003954
+  limb_type: Standard
+
+object_tite_Limb_003960:
+  type: OOT:LIMB
+  offset: 0x3960
+  symbol: object_tite_Limb_003960
+  limb_type: Standard
+
+object_tite_Limb_00396C:
+  type: OOT:LIMB
+  offset: 0x396C
+  symbol: object_tite_Limb_00396C
+  limb_type: Standard
+
+object_tite_Limb_003978:
+  type: OOT:LIMB
+  offset: 0x3978
+  symbol: object_tite_Limb_003978
+  limb_type: Standard
+
+object_tite_Limb_003984:
+  type: OOT:LIMB
+  offset: 0x3984
+  symbol: object_tite_Limb_003984
+  limb_type: Standard
+
+object_tite_Limb_003990:
+  type: OOT:LIMB
+  offset: 0x3990
+  symbol: object_tite_Limb_003990
+  limb_type: Standard
+
+object_tite_Limb_00399C:
+  type: OOT:LIMB
+  offset: 0x399C
+  symbol: object_tite_Limb_00399C
+  limb_type: Standard
+
+object_tite_Limb_0039A8:
+  type: OOT:LIMB
+  offset: 0x39A8
+  symbol: object_tite_Limb_0039A8
+  limb_type: Standard
+
+object_tite_Limb_0039B4:
+  type: OOT:LIMB
+  offset: 0x39B4
+  symbol: object_tite_Limb_0039B4
+  limb_type: Standard
+
+object_tite_Skel_003A20:
+  type: OOT:SKELETON
+  offset: 0x3A20
+  symbol: object_tite_Skel_003A20
+  limb_type: Standard
+  skel_type: Normal
+
+object_tite_Tex_001300:
+  type: TEXTURE
+  offset: 0x1300
+  symbol: object_tite_Tex_001300
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_tite_Tex_001700:
+  type: TEXTURE
+  offset: 0x1700
+  symbol: object_tite_Tex_001700
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_tite_Tex_001900:
+  type: TEXTURE
+  offset: 0x1900
+  symbol: object_tite_Tex_001900
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_tite_Tex_001A00:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: object_tite_Tex_001A00
+  format: RGBA16
+  width: 4
+  height: 16
+
+object_tite_Tex_001A80:
+  type: TEXTURE
+  offset: 0x1A80
+  symbol: object_tite_Tex_001A80
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_tite_Tex_001B00:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: object_tite_Tex_001B00
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_tite_Tex_001F00:
+  type: TEXTURE
+  offset: 0x1F00
+  symbol: object_tite_Tex_001F00
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_tite_Tex_002100:
+  type: TEXTURE
+  offset: 0x2100
+  symbol: object_tite_Tex_002100
+  format: RGBA16
+  width: 8
+  height: 16
+
+
+object_titeVtx_002200:
+  type: OOT:ARRAY
+  offset: 0x002200
+  symbol: object_titeVtx_002200
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_titeVtx_002470:
+  type: OOT:ARRAY
+  offset: 0x002470
+  symbol: object_titeVtx_002470
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_titeVtx_002690:
+  type: OOT:ARRAY
+  offset: 0x002690
+  symbol: object_titeVtx_002690
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_titeVtx_002750:
+  type: OOT:ARRAY
+  offset: 0x002750
+  symbol: object_titeVtx_002750
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_titeVtx_002970:
+  type: OOT:ARRAY
+  offset: 0x002970
+  symbol: object_titeVtx_002970
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_titeVtx_002A30:
+  type: OOT:ARRAY
+  offset: 0x002A30
+  symbol: object_titeVtx_002A30
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_titeVtx_002C50:
+  type: OOT:ARRAY
+  offset: 0x002C50
+  symbol: object_titeVtx_002C50
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_titeVtx_002D10:
+  type: OOT:ARRAY
+  offset: 0x002D10
+  symbol: object_titeVtx_002D10
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_titeVtx_002F30:
+  type: OOT:ARRAY
+  offset: 0x002F30
+  symbol: object_titeVtx_002F30
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tite_Skel_003A20Limbs:
+  type: BLOB
+  offset: 0x39C0
+  symbol: object_tite_Skel_003A20Limbs
+  size: 0

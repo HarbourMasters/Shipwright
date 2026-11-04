@@ -1,0 +1,150 @@
+:config:
+  segments:
+    - [ 3, 0x027B0000 ]
+    - [ 2, 0x027AF000 ]
+  directory: scenes/shared/depth_test_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/depth_test_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+depth_test_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: depth_test_room_0
+
+
+depth_test_room_0DL_000060:
+  type: GFX
+  offset: 0x000060
+  symbol: depth_test_room_0DL_000060
+
+depth_test_room_0DL_0000D0:
+  type: GFX
+  offset: 0x0000D0
+  symbol: depth_test_room_0DL_0000D0
+
+depth_test_room_0DL_000140:
+  type: GFX
+  offset: 0x000140
+  symbol: depth_test_room_0DL_000140
+
+depth_test_room_0DL_0001B0:
+  type: GFX
+  offset: 0x0001B0
+  symbol: depth_test_room_0DL_0001B0
+
+depth_test_room_0DL_000220:
+  type: GFX
+  offset: 0x000220
+  symbol: depth_test_room_0DL_000220
+
+depth_test_room_0DL_000290:
+  type: GFX
+  offset: 0x000290
+  symbol: depth_test_room_0DL_000290
+
+depth_test_room_0DL_000300:
+  type: GFX
+  offset: 0x000300
+  symbol: depth_test_room_0DL_000300
+
+depth_test_room_0DL_000370:
+  type: GFX
+  offset: 0x000370
+  symbol: depth_test_room_0DL_000370
+
+depth_test_room_0DL_0003E0:
+  type: GFX
+  offset: 0x0003E0
+  symbol: depth_test_room_0DL_0003E0
+
+depth_test_room_0DL_000450:
+  type: GFX
+  offset: 0x000450
+  symbol: depth_test_room_0DL_000450
+
+depth_test_room_0DL_0004A0:
+  type: GFX
+  offset: 0x0004A0
+  symbol: depth_test_room_0DL_0004A0
+
+depth_test_room_0Vtx_0004B0:
+  type: OOT:ARRAY
+  offset: 0x0004B0
+  symbol: depth_test_room_0Vtx_0004B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+depth_test_room_0Vtx_0004F0:
+  type: OOT:ARRAY
+  offset: 0x0004F0
+  symbol: depth_test_room_0Vtx_0004F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+depth_test_room_0Vtx_000530:
+  type: OOT:ARRAY
+  offset: 0x000530
+  symbol: depth_test_room_0Vtx_000530
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+depth_test_room_0Vtx_000570:
+  type: OOT:ARRAY
+  offset: 0x000570
+  symbol: depth_test_room_0Vtx_000570
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+depth_test_room_0Vtx_0005B0:
+  type: OOT:ARRAY
+  offset: 0x0005B0
+  symbol: depth_test_room_0Vtx_0005B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+depth_test_room_0Vtx_0005F0:
+  type: OOT:ARRAY
+  offset: 0x0005F0
+  symbol: depth_test_room_0Vtx_0005F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+depth_test_room_0Vtx_000630:
+  type: OOT:ARRAY
+  offset: 0x000630
+  symbol: depth_test_room_0Vtx_000630
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+depth_test_room_0Vtx_000670:
+  type: OOT:ARRAY
+  offset: 0x000670
+  symbol: depth_test_room_0Vtx_000670
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+depth_test_room_0Vtx_0006B0:
+  type: OOT:ARRAY
+  offset: 0x0006B0
+  symbol: depth_test_room_0Vtx_0006B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

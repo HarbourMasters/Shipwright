@@ -1,0 +1,72 @@
+:config:
+  segments:
+    - [ 3, 0x0198B750 ]
+    - [ 2, 0x01972C90 ]
+  directory: scenes/mq/HAKAdanCH_scene
+  external_files:
+    - pal_mq/scenes/mq/HAKAdanCH_scene.yml
+    - pal_mq/code/sys_matrix.yml
+
+HAKAdanCH_room_4:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdanCH_room_4
+
+HAKAdanCH_room_4Tex_001498:
+  type: TEXTURE
+  offset: 0x1498
+  symbol: HAKAdanCH_room_4Tex_001498
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdanCH_room_4Tex_001C98:
+  type: TEXTURE
+  offset: 0x1C98
+  symbol: HAKAdanCH_room_4Tex_001C98
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HAKAdanCH_room_4Vtx_000150:
+  type: OOT:ARRAY
+  offset: 0x000150
+  symbol: HAKAdanCH_room_4Vtx_000150
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_4DL_0002C0:
+  type: GFX
+  offset: 0x0002C0
+  symbol: HAKAdanCH_room_4DL_0002C0
+
+HAKAdanCH_room_4Vtx_0003F8:
+  type: OOT:ARRAY
+  offset: 0x0003F8
+  symbol: HAKAdanCH_room_4Vtx_0003F8
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_4DL_000898:
+  type: GFX
+  offset: 0x000898
+  symbol: HAKAdanCH_room_4DL_000898
+
+HAKAdanCH_room_4Vtx_000A30:
+  type: OOT:ARRAY
+  offset: 0x000A30
+  symbol: HAKAdanCH_room_4Vtx_000A30
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_4DL_001270:
+  type: GFX
+  offset: 0x001270
+  symbol: HAKAdanCH_room_4DL_001270

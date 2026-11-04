@@ -1,0 +1,171 @@
+:config:
+  segments:
+    - [ 3, 0x019C7730 ]
+    - [ 2, 0x0198DA70 ]
+  directory: scenes/nonmq/ice_doukutu_scene
+  external_files:
+    - pal_gc/scenes/nonmq/ice_doukutu_scene.yml
+    - pal_gc/code/sys_matrix.yml
+    - pal_gc/scenes/nonmq/ice_doukutu_room_9Set_000190.yml
+
+ice_doukutu_room_9:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ice_doukutu_room_9
+
+ice_doukutu_room_9Tex_0044A0:
+  type: TEXTURE
+  offset: 0x4460
+  symbol: ice_doukutu_room_9Tex_0044A0
+  format: RGBA16
+  width: 32
+  height: 64
+
+ice_doukutu_room_9Tex_0054A0:
+  type: TEXTURE
+  offset: 0x5460
+  symbol: ice_doukutu_room_9Tex_0054A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+ice_doukutu_room_9Tex_005CA0:
+  type: TEXTURE
+  offset: 0x5C60
+  symbol: ice_doukutu_room_9Tex_005CA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+ice_doukutu_room_9Tex_0064A0:
+  type: TEXTURE
+  offset: 0x6460
+  symbol: ice_doukutu_room_9Tex_0064A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+ice_doukutu_room_9Tex_006CA0:
+  type: TEXTURE
+  offset: 0x6C60
+  symbol: ice_doukutu_room_9Tex_006CA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+ice_doukutu_room_9Tex_007690:
+  type: TEXTURE
+  offset: 0x7650
+  symbol: ice_doukutu_room_9Tex_007690
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+ice_doukutu_room_9Vtx_000220:
+  type: OOT:ARRAY
+  offset: 0x000220
+  symbol: ice_doukutu_room_9Vtx_000220
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_9DL_000630:
+  type: GFX
+  offset: 0x000630
+  symbol: ice_doukutu_room_9DL_000630
+
+ice_doukutu_room_9Vtx_000790:
+  type: OOT:ARRAY
+  offset: 0x000790
+  symbol: ice_doukutu_room_9Vtx_000790
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_9DL_0008A0:
+  type: GFX
+  offset: 0x0008A0
+  symbol: ice_doukutu_room_9DL_0008A0
+
+ice_doukutu_room_9Vtx_000990:
+  type: OOT:ARRAY
+  offset: 0x000990
+  symbol: ice_doukutu_room_9Vtx_000990
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_9DL_000D30:
+  type: GFX
+  offset: 0x000D30
+  symbol: ice_doukutu_room_9DL_000D30
+
+ice_doukutu_room_9Vtx_000EC8:
+  type: OOT:ARRAY
+  offset: 0x000EC8
+  symbol: ice_doukutu_room_9Vtx_000EC8
+  count: 437
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_9DL_002A18:
+  type: GFX
+  offset: 0x002A18
+  symbol: ice_doukutu_room_9DL_002A18
+
+ice_doukutu_room_9Vtx_0037E0:
+  type: OOT:ARRAY
+  offset: 0x0037E0
+  symbol: ice_doukutu_room_9Vtx_0037E0
+  count: 137
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_9DL_004070:
+  type: GFX
+  offset: 0x004070
+  symbol: ice_doukutu_room_9DL_004070
+
+ice_doukutu_room_9Vtx_0042E8:
+  type: OOT:ARRAY
+  offset: 0x0042E8
+  symbol: ice_doukutu_room_9Vtx_0042E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_9DL_0043A8:
+  type: GFX
+  offset: 0x0043A8
+  symbol: ice_doukutu_room_9DL_0043A8
+
+ice_doukutu_room_9DL_004428:
+  type: GFX
+  offset: 0x004428
+  symbol: ice_doukutu_room_9DL_004428
+
+ice_doukutu_room_9Vtx_007460:
+  type: OOT:ARRAY
+  offset: 0x007460
+  symbol: ice_doukutu_room_9Vtx_007460
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_9DL_007570:
+  type: GFX
+  offset: 0x007570
+  symbol: ice_doukutu_room_9DL_007570
+
+ice_doukutu_room_9DL_007640:
+  type: GFX
+  offset: 0x007640
+  symbol: ice_doukutu_room_9DL_007640

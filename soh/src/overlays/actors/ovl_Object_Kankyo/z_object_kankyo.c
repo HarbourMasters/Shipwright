@@ -10,6 +10,7 @@
 #include "objects/object_spot02_objects/object_spot02_objects.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/savestate_serialize.h"
 #include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
@@ -60,8 +61,14 @@ const ActorInit Object_Kankyo_InitVars = {
     (ActorResetFunc)ObjectKankyo_Reset,
 };
 
-u8 sKankyoIsSpawned = false;
-s16 sTrailingFairies = 0;
+static u8 sIsSpawned = false;
+static s16 sTrailingFairies = 0;
+
+#define OBJECT_KANKYO_SHIP_SAVESTATE_FIELDS(F) \
+    F(sIsSpawned)                              \
+    F(sTrailingFairies)
+
+SHIP_SAVESTATE_DEFINE(ObjectKankyo, OBJECT_KANKYO_SHIP_SAVESTATE_FIELDS)
 
 void ObjectKankyo_SetupAction(ObjectKankyo* this, ObjectKankyoActionFunc action) {
     this->actionFunc = action;
@@ -79,18 +86,18 @@ void ObjectKankyo_Init(Actor* thisx, PlayState* play) {
     this->actor.room = -1;
     switch (this->actor.params) {
         case 0:
-            if (!sKankyoIsSpawned) {
+            if (!sIsSpawned) {
                 ObjectKankyo_SetupAction(this, ObjectKankyo_Fairies);
-                sKankyoIsSpawned = true;
+                sIsSpawned = true;
             } else {
                 Actor_Kill(&this->actor);
             }
             break;
 
         case 3:
-            if (!sKankyoIsSpawned) {
+            if (!sIsSpawned) {
                 ObjectKankyo_SetupAction(this, ObjectKankyo_Snow);
-                sKankyoIsSpawned = true;
+                sIsSpawned = true;
             } else {
                 Actor_Kill(&this->actor);
             }
@@ -193,7 +200,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
 
     player = GET_PLAYER(play);
 
-    if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneSetupIndex == 7) {
+    if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneLayer == 7) {
         dist = Math3D_Vec3f_DistXYZ(&this->prevEyePos, &play->view.eye);
 
         this->prevEyePos.x = play->view.eye.x;
@@ -226,7 +233,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
     }
 
     if (play->envCtx.unk_EE[3] < 64 && (gSaveContext.entranceIndex != ENTR_KOKIRI_FOREST_0 ||
-                                        gSaveContext.sceneSetupIndex != 4 || play->envCtx.unk_EE[3])) {
+                                        gSaveContext.sceneLayer != 4 || play->envCtx.unk_EE[3])) {
         play->envCtx.unk_EE[3] += 16;
     }
 
@@ -947,6 +954,6 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, PlayState* play2) {
 }
 
 void ObjectKankyo_Reset(void) {
-    sKankyoIsSpawned = false;
+    sIsSpawned = false;
     sTrailingFairies = 0;
 }

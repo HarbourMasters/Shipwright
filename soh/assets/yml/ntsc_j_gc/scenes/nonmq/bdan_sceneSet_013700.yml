@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x0172B790 ]
+  directory: scenes/nonmq/bdan_scene
+  external_files:
+    - ntsc_j_gc/scenes/nonmq/bdan_scene.yml
+
+bdan_sceneSet_013700:
+  type: OOT:SCENE
+  offset: 0x13700
+  symbol: bdan_sceneSet_013700
+  base_name: bdan_scene

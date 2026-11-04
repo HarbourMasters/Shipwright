@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01D03A80 ]
+  directory: scenes/shared/spot20_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/spot20_scene.yml
+
+spot20_sceneSet_005450:
+  type: OOT:SCENE
+  offset: 0x5450
+  symbol: spot20_sceneSet_005450
+  base_name: spot20_scene

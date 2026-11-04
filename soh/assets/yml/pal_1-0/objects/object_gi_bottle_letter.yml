@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x0115D050 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x0115D050 ]
+    - [ 9, 0x0115D050 ]
+    - [ 10, 0x0115D050 ]
+    - [ 11, 0x0115D050 ]
+    - [ 12, 0x0115D050 ]
+    - [ 13, 0x0115D050 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gGiLetterBottleContentsDL:
+  type: GFX
+  offset: 0x08E0
+  symbol: gGiLetterBottleContentsDL
+
+gGiLetterBottleDL:
+  type: GFX
+  offset: 0x0AE0
+  symbol: gGiLetterBottleDL
+
+
+object_gi_bottle_letterVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bottle_letterVtx_000000
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_bottle_letterVtx_000410:
+  type: OOT:ARRAY
+  offset: 0x000410
+  symbol: object_gi_bottle_letterVtx_000410
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

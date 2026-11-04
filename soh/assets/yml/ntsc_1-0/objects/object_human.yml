@@ -1,0 +1,1100 @@
+:config:
+  segments:
+    - [ 6, 0x00DB48B0 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x00DB48B0 ]
+    - [ 9, 0x00DB48B0 ]
+    - [ 10, 0x00DB48B0 ]
+    - [ 11, 0x00DB48B0 ]
+    - [ 12, 0x00DB48B0 ]
+    - [ 13, 0x00DB48B0 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gHumanArmLeftDL:
+  type: GFX
+  offset: 0xAF40
+  symbol: gHumanArmLeftDL
+
+gHumanArmLeftLimb:
+  type: OOT:LIMB
+  offset: 0x11BA8
+  symbol: gHumanArmLeftLimb
+  limb_type: Legacy
+
+gHumanArmLeftWrapperDL:
+  type: GFX
+  offset: 0xB040
+  symbol: gHumanArmLeftWrapperDL
+
+gHumanArmLeftWrapperWrapperDL:
+  type: GFX
+  offset: 0xB050
+  symbol: gHumanArmLeftWrapperWrapperDL
+
+gHumanArmRightDL:
+  type: GFX
+  offset: 0xBAF8
+  symbol: gHumanArmRightDL
+
+gHumanArmRightLimb:
+  type: OOT:LIMB
+  offset: 0x11B48
+  symbol: gHumanArmRightLimb
+  limb_type: Legacy
+
+gHumanArmRightWrapperDL:
+  type: GFX
+  offset: 0xBBF8
+  symbol: gHumanArmRightWrapperDL
+
+gHumanArmRightWrapperWrapperDL:
+  type: GFX
+  offset: 0xBC08
+  symbol: gHumanArmRightWrapperWrapperDL
+
+gHumanBeltTex:
+  type: TEXTURE
+  offset: 0xF1A8
+  symbol: gHumanBeltTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gHumanDressLowerDL:
+  type: GFX
+  offset: 0xE3A0
+  symbol: gHumanDressLowerDL
+
+gHumanDressLowerLimb:
+  type: OOT:LIMB
+  offset: 0x11AA8
+  symbol: gHumanDressLowerLimb
+  limb_type: Legacy
+
+gHumanDressLowerWrapperDL:
+  type: GFX
+  offset: 0xE480
+  symbol: gHumanDressLowerWrapperDL
+
+gHumanDressLowerWrapperWrapperDL:
+  type: GFX
+  offset: 0xE490
+  symbol: gHumanDressLowerWrapperWrapperDL
+
+gHumanDressOrnamentsTex:
+  type: TEXTURE
+  offset: 0xE9A8
+  symbol: gHumanDressOrnamentsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHumanEarTex:
+  type: TEXTURE
+  offset: 0xE5A8
+  symbol: gHumanEarTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gHumanEyeLookDownOpen2Tex:
+  type: TEXTURE
+  offset: 0x4A00
+  symbol: gHumanEyeLookDownOpen2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookDownOpenTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gHumanEyeLookDownOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookForwardClosed2Tex:
+  type: TEXTURE
+  offset: 0x3200
+  symbol: gHumanEyeLookForwardClosed2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookForwardClosedTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gHumanEyeLookForwardClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookForwardHalf2Tex:
+  type: TEXTURE
+  offset: 0x2E00
+  symbol: gHumanEyeLookForwardHalf2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookForwardHalfTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gHumanEyeLookForwardHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookForwardOpen2Tex:
+  type: TEXTURE
+  offset: 0x2A00
+  symbol: gHumanEyeLookForwardOpen2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookForwardOpenTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHumanEyeLookForwardOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookLeftHalf2Tex:
+  type: TEXTURE
+  offset: 0x3A00
+  symbol: gHumanEyeLookLeftHalf2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookLeftHalfTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gHumanEyeLookLeftHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookLeftOpen2Tex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gHumanEyeLookLeftOpen2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookLeftOpenTex:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: gHumanEyeLookLeftOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookRightHalf2Tex:
+  type: TEXTURE
+  offset: 0x4200
+  symbol: gHumanEyeLookRightHalf2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookRightHalfTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gHumanEyeLookRightHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookRightOpen2Tex:
+  type: TEXTURE
+  offset: 0x3E00
+  symbol: gHumanEyeLookRightOpen2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookRightOpenTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gHumanEyeLookRightOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookUpOpen2Tex:
+  type: TEXTURE
+  offset: 0x4600
+  symbol: gHumanEyeLookUpOpen2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyeLookUpOpenTex:
+  type: TEXTURE
+  offset: 0x1C00
+  symbol: gHumanEyeLookUpOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanEyebrowNormal2Tex:
+  type: TEXTURE
+  offset: 0x4E00
+  symbol: gHumanEyebrowNormal2Tex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x7A00
+
+gHumanEyebrowNormalTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gHumanEyebrowNormalTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x7A00
+
+gHumanEyebrowSad2Tex:
+  type: TEXTURE
+  offset: 0x5200
+  symbol: gHumanEyebrowSad2Tex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x7A00
+
+gHumanEyebrowSadTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gHumanEyebrowSadTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x7A00
+
+gHumanEyebrowSurprised2Tex:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: gHumanEyebrowSurprised2Tex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x7A00
+
+gHumanEyebrowSurprisedTex:
+  type: TEXTURE
+  offset: 0x2600
+  symbol: gHumanEyebrowSurprisedTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x7A00
+
+gHumanFingersTex:
+  type: TEXTURE
+  offset: 0xF228
+  symbol: gHumanFingersTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gHumanFootLeftDL:
+  type: GFX
+  offset: 0xB3B0
+  symbol: gHumanFootLeftDL
+
+gHumanFootLeftLimb:
+  type: OOT:LIMB
+  offset: 0x11BC8
+  symbol: gHumanFootLeftLimb
+  limb_type: Legacy
+
+gHumanFootLeftWrapperDL:
+  type: GFX
+  offset: 0xB488
+  symbol: gHumanFootLeftWrapperDL
+
+gHumanFootLeftWrapperWrapperDL:
+  type: GFX
+  offset: 0xB498
+  symbol: gHumanFootLeftWrapperWrapperDL
+
+gHumanFootRightDL:
+  type: GFX
+  offset: 0xBF38
+  symbol: gHumanFootRightDL
+
+gHumanFootRightLimb:
+  type: OOT:LIMB
+  offset: 0x11C08
+  symbol: gHumanFootRightLimb
+  limb_type: Legacy
+
+gHumanFootRightWrapperDL:
+  type: GFX
+  offset: 0xC010
+  symbol: gHumanFootRightWrapperDL
+
+gHumanFootRightWrapperWrapperDL:
+  type: GFX
+  offset: 0xC020
+  symbol: gHumanFootRightWrapperWrapperDL
+
+gHumanForearmLeftDL:
+  type: GFX
+  offset: 0xB1A8
+  symbol: gHumanForearmLeftDL
+
+gHumanForearmLeftLimb:
+  type: OOT:LIMB
+  offset: 0x11B88
+  symbol: gHumanForearmLeftLimb
+  limb_type: Legacy
+
+gHumanForearmLeftWrapperDL:
+  type: GFX
+  offset: 0xB288
+  symbol: gHumanForearmLeftWrapperDL
+
+gHumanForearmLeftWrapperWrapperDL:
+  type: GFX
+  offset: 0xB298
+  symbol: gHumanForearmLeftWrapperWrapperDL
+
+gHumanForearmRightDL:
+  type: GFX
+  offset: 0xBD40
+  symbol: gHumanForearmRightDL
+
+gHumanForearmRightLimb:
+  type: OOT:LIMB
+  offset: 0x11B28
+  symbol: gHumanForearmRightLimb
+  limb_type: Legacy
+
+gHumanForearmRightWrapperDL:
+  type: GFX
+  offset: 0xBE20
+  symbol: gHumanForearmRightWrapperDL
+
+gHumanForearmRightWrapperWrapperDL:
+  type: GFX
+  offset: 0xBE30
+  symbol: gHumanForearmRightWrapperWrapperDL
+
+gHumanHairDL:
+  type: GFX
+  offset: 0xCCF8
+  symbol: gHumanHairDL
+
+gHumanHairLimb:
+  type: OOT:LIMB
+  offset: 0x11AE8
+  symbol: gHumanHairLimb
+  limb_type: Legacy
+
+gHumanHairSideTex:
+  type: TEXTURE
+  offset: 0xF428
+  symbol: gHumanHairSideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHumanHairTex:
+  type: TEXTURE
+  offset: 0xFC28
+  symbol: gHumanHairTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gHumanHairWrapperDL:
+  type: GFX
+  offset: 0xCDC8
+  symbol: gHumanHairWrapperDL
+
+gHumanHairWrapperWrapperDL:
+  type: GFX
+  offset: 0xCDD8
+  symbol: gHumanHairWrapperWrapperDL
+
+gHumanHandLeftDL:
+  type: GFX
+  offset: 0xB610
+  symbol: gHumanHandLeftDL
+
+gHumanHandLeftLimb:
+  type: OOT:LIMB
+  offset: 0x11B68
+  symbol: gHumanHandLeftLimb
+  limb_type: Legacy
+
+gHumanHandLeftWrapperDL:
+  type: GFX
+  offset: 0xB750
+  symbol: gHumanHandLeftWrapperDL
+
+gHumanHandLeftWrapperWrapperDL:
+  type: GFX
+  offset: 0xB760
+  symbol: gHumanHandLeftWrapperWrapperDL
+
+gHumanHandRightDL:
+  type: GFX
+  offset: 0xC178
+  symbol: gHumanHandRightDL
+
+gHumanHandRightLimb:
+  type: OOT:LIMB
+  offset: 0x11B08
+  symbol: gHumanHandRightLimb
+  limb_type: Legacy
+
+gHumanHandRightWrapperDL:
+  type: GFX
+  offset: 0xC2B8
+  symbol: gHumanHandRightWrapperDL
+
+gHumanHandRightWrapperWrapperDL:
+  type: GFX
+  offset: 0xC2C8
+  symbol: gHumanHandRightWrapperWrapperDL
+
+gHumanHeadDL:
+  type: GFX
+  offset: 0xCED0
+  symbol: gHumanHeadDL
+
+gHumanHeadLimb:
+  type: OOT:LIMB
+  offset: 0x11DE8
+  symbol: gHumanHeadLimb
+  limb_type: Legacy
+
+gHumanHeadWrapperDL:
+  type: GFX
+  offset: 0xD500
+  symbol: gHumanHeadWrapperDL
+
+gHumanHeadWrapperWrapperDL:
+  type: GFX
+  offset: 0xD510
+  symbol: gHumanHeadWrapperWrapperDL
+
+gHumanIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x11A9C
+  symbol: gHumanIdleAnim
+  anim_type: legacy
+
+gHumanLegLeftDL:
+  type: GFX
+  offset: 0xB918
+  symbol: gHumanLegLeftDL
+
+gHumanLegLeftLimb:
+  type: OOT:LIMB
+  offset: 0x11BE8
+  symbol: gHumanLegLeftLimb
+  limb_type: Legacy
+
+gHumanLegLeftWrapperDL:
+  type: GFX
+  offset: 0xB9E0
+  symbol: gHumanLegLeftWrapperDL
+
+gHumanLegLeftWrapperWrapperDL:
+  type: GFX
+  offset: 0xB9F0
+  symbol: gHumanLegLeftWrapperWrapperDL
+
+gHumanLegRightDL:
+  type: GFX
+  offset: 0xC450
+  symbol: gHumanLegRightDL
+
+gHumanLegRightLimb:
+  type: OOT:LIMB
+  offset: 0x11C28
+  symbol: gHumanLegRightLimb
+  limb_type: Legacy
+
+gHumanLegRightWrapperDL:
+  type: GFX
+  offset: 0xC518
+  symbol: gHumanLegRightWrapperDL
+
+gHumanLegRightWrapperWrapperDL:
+  type: GFX
+  offset: 0xC528
+  symbol: gHumanLegRightWrapperWrapperDL
+
+gHumanLimbTable:
+  type: BLOB
+  offset: 0x11FC8
+  size: 0
+  symbol: gHumanLimbTable
+
+gHumanLookingAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x990C
+  symbol: gHumanLookingAroundAnim
+  anim_type: legacy
+
+gHumanLookingBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x8354
+  symbol: gHumanLookingBackAnim
+  anim_type: legacy
+
+gHumanLookingBackEndsAnim:
+  type: OOT:ANIMATION
+  offset: 0x9C2C
+  symbol: gHumanLookingBackEndsAnim
+  anim_type: legacy
+
+gHumanLookingBackStartsAnim:
+  type: OOT:ANIMATION
+  offset: 0x8784
+  symbol: gHumanLookingBackStartsAnim
+  anim_type: legacy
+
+gHumanMouthClosed1Tex:
+  type: TEXTURE
+  offset: 0x5600
+  symbol: gHumanMouthClosed1Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanMouthClosed2Tex:
+  type: TEXTURE
+  offset: 0x6200
+  symbol: gHumanMouthClosed2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanMouthClosed3Tex:
+  type: TEXTURE
+  offset: 0x6E00
+  symbol: gHumanMouthClosed3Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanMouthOpen1Tex:
+  type: TEXTURE
+  offset: 0x5A00
+  symbol: gHumanMouthOpen1Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanMouthOpen2Tex:
+  type: TEXTURE
+  offset: 0x5E00
+  symbol: gHumanMouthOpen2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanMouthOpen3Tex:
+  type: TEXTURE
+  offset: 0x6600
+  symbol: gHumanMouthOpen3Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanMouthOpen4Tex:
+  type: TEXTURE
+  offset: 0x6A00
+  symbol: gHumanMouthOpen4Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanMouthOpen5Tex:
+  type: TEXTURE
+  offset: 0x7200
+  symbol: gHumanMouthOpen5Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanMouthOpen6Tex:
+  type: TEXTURE
+  offset: 0x7600
+  symbol: gHumanMouthOpen6Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x7A00
+
+gHumanNeckTex:
+  type: TEXTURE
+  offset: 0xF328
+  symbol: gHumanNeckTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gHumanRootLimb:
+  type: OOT:LIMB
+  offset: 0x11FA8
+  symbol: gHumanRootLimb
+  limb_type: Legacy
+
+gHumanShoeTex:
+  type: TEXTURE
+  offset: 0x11028
+  symbol: gHumanShoeTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gHumanSkinTex:
+  type: TEXTURE
+  offset: 0x10E28
+  symbol: gHumanSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHumanTLUT:
+  type: TEXTURE
+  offset: 0x7A00
+  symbol: gHumanTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHumanThinkingAnim:
+  type: OOT:ANIMATION
+  offset: 0xAF30
+  symbol: gHumanThinkingAnim
+  anim_type: legacy
+
+gHumanThinkingEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xA044
+  symbol: gHumanThinkingEndAnim
+  anim_type: legacy
+
+gHumanThinkingStartsAnim:
+  type: OOT:ANIMATION
+  offset: 0xA8B4
+  symbol: gHumanThinkingStartsAnim
+  anim_type: legacy
+
+gHumanTiltHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x8CE0
+  symbol: gHumanTiltHeadAnim
+  anim_type: legacy
+
+gHumanTorsoDL:
+  type: GFX
+  offset: 0xC620
+  symbol: gHumanTorsoDL
+
+gHumanTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x11F08
+  symbol: gHumanTorsoLimb
+  limb_type: Legacy
+
+gHumanTorsoWrapperDL:
+  type: GFX
+  offset: 0xC8B0
+  symbol: gHumanTorsoWrapperDL
+
+gHumanTorsoWrapperWrapperDL:
+  type: GFX
+  offset: 0xC8C0
+  symbol: gHumanTorsoWrapperWrapperDL
+
+gHumanWaistDL:
+  type: GFX
+  offset: 0xE0B8
+  symbol: gHumanWaistDL
+
+gHumanWaistLimb:
+  type: OOT:LIMB
+  offset: 0x11AC8
+  symbol: gHumanWaistLimb
+  limb_type: Legacy
+
+gHumanWaistWrapperDL:
+  type: GFX
+  offset: 0xE218
+  symbol: gHumanWaistWrapperDL
+
+gHumanWaistWrapperWrapperDL:
+  type: GFX
+  offset: 0xE228
+  symbol: gHumanWaistWrapperWrapperDL
+
+gHumanWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x1291C
+  symbol: gHumanWalkingAnim
+  anim_type: legacy
+
+gHumanWalkingEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x12D18
+  symbol: gHumanWalkingEndAnim
+  anim_type: legacy
+
+gHumanWalkingStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x1316C
+  symbol: gHumanWalkingStartAnim
+  anim_type: legacy
+
+object_human_Limb_011C48:
+  type: OOT:LIMB
+  offset: 0x11C48
+  symbol: object_human_Limb_011C48
+  limb_type: Legacy
+
+object_human_Limb_011C68:
+  type: OOT:LIMB
+  offset: 0x11C68
+  symbol: object_human_Limb_011C68
+  limb_type: Legacy
+
+object_human_Limb_011C88:
+  type: OOT:LIMB
+  offset: 0x11C88
+  symbol: object_human_Limb_011C88
+  limb_type: Legacy
+
+object_human_Limb_011CA8:
+  type: OOT:LIMB
+  offset: 0x11CA8
+  symbol: object_human_Limb_011CA8
+  limb_type: Legacy
+
+object_human_Limb_011CC8:
+  type: OOT:LIMB
+  offset: 0x11CC8
+  symbol: object_human_Limb_011CC8
+  limb_type: Legacy
+
+object_human_Limb_011CE8:
+  type: OOT:LIMB
+  offset: 0x11CE8
+  symbol: object_human_Limb_011CE8
+  limb_type: Legacy
+
+object_human_Limb_011D08:
+  type: OOT:LIMB
+  offset: 0x11D08
+  symbol: object_human_Limb_011D08
+  limb_type: Legacy
+
+object_human_Limb_011D28:
+  type: OOT:LIMB
+  offset: 0x11D28
+  symbol: object_human_Limb_011D28
+  limb_type: Legacy
+
+object_human_Limb_011D48:
+  type: OOT:LIMB
+  offset: 0x11D48
+  symbol: object_human_Limb_011D48
+  limb_type: Legacy
+
+object_human_Limb_011D68:
+  type: OOT:LIMB
+  offset: 0x11D68
+  symbol: object_human_Limb_011D68
+  limb_type: Legacy
+
+object_human_Limb_011D88:
+  type: OOT:LIMB
+  offset: 0x11D88
+  symbol: object_human_Limb_011D88
+  limb_type: Legacy
+
+object_human_Limb_011DA8:
+  type: OOT:LIMB
+  offset: 0x11DA8
+  symbol: object_human_Limb_011DA8
+  limb_type: Legacy
+
+object_human_Limb_011DC8:
+  type: OOT:LIMB
+  offset: 0x11DC8
+  symbol: object_human_Limb_011DC8
+  limb_type: Legacy
+
+object_human_Limb_011E08:
+  type: OOT:LIMB
+  offset: 0x11E08
+  symbol: object_human_Limb_011E08
+  limb_type: Legacy
+
+object_human_Limb_011E28:
+  type: OOT:LIMB
+  offset: 0x11E28
+  symbol: object_human_Limb_011E28
+  limb_type: Legacy
+
+object_human_Limb_011E48:
+  type: OOT:LIMB
+  offset: 0x11E48
+  symbol: object_human_Limb_011E48
+  limb_type: Legacy
+
+object_human_Limb_011E68:
+  type: OOT:LIMB
+  offset: 0x11E68
+  symbol: object_human_Limb_011E68
+  limb_type: Legacy
+
+object_human_Limb_011E88:
+  type: OOT:LIMB
+  offset: 0x11E88
+  symbol: object_human_Limb_011E88
+  limb_type: Legacy
+
+object_human_Limb_011EA8:
+  type: OOT:LIMB
+  offset: 0x11EA8
+  symbol: object_human_Limb_011EA8
+  limb_type: Legacy
+
+object_human_Limb_011EC8:
+  type: OOT:LIMB
+  offset: 0x11EC8
+  symbol: object_human_Limb_011EC8
+  limb_type: Legacy
+
+object_human_Limb_011EE8:
+  type: OOT:LIMB
+  offset: 0x11EE8
+  symbol: object_human_Limb_011EE8
+  limb_type: Legacy
+
+object_human_Limb_011F28:
+  type: OOT:LIMB
+  offset: 0x11F28
+  symbol: object_human_Limb_011F28
+  limb_type: Legacy
+
+object_human_Limb_011F48:
+  type: OOT:LIMB
+  offset: 0x11F48
+  symbol: object_human_Limb_011F48
+  limb_type: Legacy
+
+object_human_Limb_011F68:
+  type: OOT:LIMB
+  offset: 0x11F68
+  symbol: object_human_Limb_011F68
+  limb_type: Legacy
+
+object_human_Limb_011F88:
+  type: OOT:LIMB
+  offset: 0x11F88
+  symbol: object_human_Limb_011F88
+  limb_type: Legacy
+
+object_human_Tex_005400:
+  type: TEXTURE
+  offset: 0x5400
+  symbol: object_human_Tex_005400
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7A00
+
+object_human_Tex_005500:
+  type: TEXTURE
+  offset: 0x5500
+  symbol: object_human_Tex_005500
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7A00
+
+object_human_Tex_010C28:
+  type: TEXTURE
+  offset: 0x10C28
+  symbol: object_human_Tex_010C28
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_humanVtx_00B068:
+  type: OOT:ARRAY
+  offset: 0x00B068
+  symbol: object_humanVtx_00B068
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00B2B0:
+  type: OOT:ARRAY
+  offset: 0x00B2B0
+  symbol: object_humanVtx_00B2B0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00B4B0:
+  type: OOT:ARRAY
+  offset: 0x00B4B0
+  symbol: object_humanVtx_00B4B0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00B778:
+  type: OOT:ARRAY
+  offset: 0x00B778
+  symbol: object_humanVtx_00B778
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00BA08:
+  type: OOT:ARRAY
+  offset: 0x00BA08
+  symbol: object_humanVtx_00BA08
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00BC20:
+  type: OOT:ARRAY
+  offset: 0x00BC20
+  symbol: object_humanVtx_00BC20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00BE48:
+  type: OOT:ARRAY
+  offset: 0x00BE48
+  symbol: object_humanVtx_00BE48
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00C038:
+  type: OOT:ARRAY
+  offset: 0x00C038
+  symbol: object_humanVtx_00C038
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00C2E0:
+  type: OOT:ARRAY
+  offset: 0x00C2E0
+  symbol: object_humanVtx_00C2E0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00C540:
+  type: OOT:ARRAY
+  offset: 0x00C540
+  symbol: object_humanVtx_00C540
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00C8D8:
+  type: OOT:ARRAY
+  offset: 0x00C8D8
+  symbol: object_humanVtx_00C8D8
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00CDF0:
+  type: OOT:ARRAY
+  offset: 0x00CDF0
+  symbol: object_humanVtx_00CDF0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00D528:
+  type: OOT:ARRAY
+  offset: 0x00D528
+  symbol: object_humanVtx_00D528
+  count: 185
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00E240:
+  type: OOT:ARRAY
+  offset: 0x00E240
+  symbol: object_humanVtx_00E240
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_humanVtx_00E4A8:
+  type: OOT:ARRAY
+  offset: 0x00E4A8
+  symbol: object_humanVtx_00E4A8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

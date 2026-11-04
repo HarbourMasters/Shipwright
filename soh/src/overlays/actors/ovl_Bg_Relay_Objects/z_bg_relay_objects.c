@@ -7,6 +7,7 @@
 #include "z_bg_relay_objects.h"
 #include "objects/object_relay_objects/object_relay_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -46,7 +47,12 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-u32 D_808A9508 = 0;
+static u32 D_808A9508 = 0;
+
+#define BG_RELAY_OBJECTS_SHIP_SAVESTATE_FIELDS(F) F(D_808A9508)
+
+SHIP_SAVESTATE_DEFINE(BgRelayObjects, BG_RELAY_OBJECTS_SHIP_SAVESTATE_FIELDS)
+
 void BgRelayObjects_Init(Actor* thisx, PlayState* play) {
     BgRelayObjects* this = (BgRelayObjects*)thisx;
     s32 pad;
@@ -63,7 +69,7 @@ void BgRelayObjects_Init(Actor* thisx, PlayState* play) {
         } else {
             thisx->world.rot.y = 0x80;
         }
-        func_800F5718();
+        Audio_PlayWindmillBgm();
         thisx->room = -1;
         thisx->flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
         if (D_808A9508 & 2) {
@@ -137,7 +143,7 @@ void func_808A91AC(BgRelayObjects* this, PlayState* play) {
         if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, this->timer != 0, this, &this->timer)) {
             this->timer--;
         }
-        func_8002F994(&this->dyna.actor, this->timer);
+        Actor_PlaySfx_FlaggedTimer(&this->dyna.actor, this->timer);
     }
     if ((this->timer == 0) || (this->unk_169 == play->roomCtx.curRoom.num)) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_SLIDE_DOOR_CLOSE);
@@ -148,7 +154,7 @@ void func_808A91AC(BgRelayObjects* this, PlayState* play) {
 void func_808A9234(BgRelayObjects* this, PlayState* play) {
     this->dyna.actor.velocity.y += this->dyna.actor.gravity;
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, this->dyna.actor.velocity.y)) {
-        func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 180, 20, 100);
+        Rumble_Request(this->dyna.actor.xyzDistToPlayerSq, 180, 20, 100);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONE_BOUND);
         if (this->unk_169 != play->roomCtx.curRoom.num) {
             Sfx_PlaySfxCentered2(NA_SE_EN_PO_LAUGH);

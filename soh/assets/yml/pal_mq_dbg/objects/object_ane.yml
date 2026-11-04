@@ -1,0 +1,438 @@
+:config:
+  segments:
+    - [ 6, 0x01727000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01727000 ]
+    - [ 9, 0x01727000 ]
+    - [ 10, 0x01727000 ]
+    - [ 11, 0x01727000 ]
+    - [ 12, 0x01727000 ]
+    - [ 13, 0x01727000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gCuccoLadyBackOfHandTex:
+  type: TEXTURE
+  offset: 0x20C8
+  symbol: gCuccoLadyBackOfHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0108
+
+gCuccoLadyDL_59D0:
+  type: GFX
+  offset: 0x59D0
+  symbol: gCuccoLadyDL_59D0
+
+gCuccoLadyDL_5BC0:
+  type: GFX
+  offset: 0x5BC0
+  symbol: gCuccoLadyDL_5BC0
+
+gCuccoLadyDL_5CF0:
+  type: GFX
+  offset: 0x5CF0
+  symbol: gCuccoLadyDL_5CF0
+
+gCuccoLadyDL_5E28:
+  type: GFX
+  offset: 0x5E28
+  symbol: gCuccoLadyDL_5E28
+
+gCuccoLadyDL_6018:
+  type: GFX
+  offset: 0x6018
+  symbol: gCuccoLadyDL_6018
+
+gCuccoLadyDL_6148:
+  type: GFX
+  offset: 0x6148
+  symbol: gCuccoLadyDL_6148
+
+gCuccoLadyDL_67F8:
+  type: GFX
+  offset: 0x67F8
+  symbol: gCuccoLadyDL_67F8
+
+gCuccoLadyDL_68E0:
+  type: GFX
+  offset: 0x68E0
+  symbol: gCuccoLadyDL_68E0
+
+gCuccoLadyDL_6C38:
+  type: GFX
+  offset: 0x6C38
+  symbol: gCuccoLadyDL_6C38
+
+gCuccoLadyDL_6D20:
+  type: GFX
+  offset: 0x6D20
+  symbol: gCuccoLadyDL_6D20
+
+gCuccoLadyDressDL:
+  type: GFX
+  offset: 0x6DF0
+  symbol: gCuccoLadyDressDL
+
+gCuccoLadyEarTex:
+  type: TEXTURE
+  offset: 0x03C8
+  symbol: gCuccoLadyEarTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0108
+
+gCuccoLadyEyeClosedTex:
+  type: TEXTURE
+  offset: 0x18C8
+  symbol: gCuccoLadyEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCuccoLadyEyeHalfTex:
+  type: TEXTURE
+  offset: 0x10C8
+  symbol: gCuccoLadyEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCuccoLadyEyeOpenTex:
+  type: TEXTURE
+  offset: 0x8C8
+  symbol: gCuccoLadyEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCuccoLadyHairTex:
+  type: TEXTURE
+  offset: 0x0308
+  symbol: gCuccoLadyHairTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0108
+
+gCuccoLadyHeadDL:
+  type: GFX
+  offset: 0x54D8
+  symbol: gCuccoLadyHeadDL
+
+gCuccoLadyHeadLimb:
+  type: OOT:LIMB
+  offset: 0x0A8
+  symbol: gCuccoLadyHeadLimb
+  limb_type: Standard
+
+gCuccoLadyLimb_00C:
+  type: OOT:LIMB
+  offset: 0x00C
+  symbol: gCuccoLadyLimb_00C
+  limb_type: Standard
+
+gCuccoLadyLimb_018:
+  type: OOT:LIMB
+  offset: 0x018
+  symbol: gCuccoLadyLimb_018
+  limb_type: Standard
+
+gCuccoLadyLimb_024:
+  type: OOT:LIMB
+  offset: 0x024
+  symbol: gCuccoLadyLimb_024
+  limb_type: Standard
+
+gCuccoLadyLimb_030:
+  type: OOT:LIMB
+  offset: 0x030
+  symbol: gCuccoLadyLimb_030
+  limb_type: Standard
+
+gCuccoLadyLimb_03C:
+  type: OOT:LIMB
+  offset: 0x03C
+  symbol: gCuccoLadyLimb_03C
+  limb_type: Standard
+
+gCuccoLadyLimb_048:
+  type: OOT:LIMB
+  offset: 0x048
+  symbol: gCuccoLadyLimb_048
+  limb_type: Standard
+
+gCuccoLadyLimb_060:
+  type: OOT:LIMB
+  offset: 0x060
+  symbol: gCuccoLadyLimb_060
+  limb_type: Standard
+
+gCuccoLadyLimb_06C:
+  type: OOT:LIMB
+  offset: 0x06C
+  symbol: gCuccoLadyLimb_06C
+  limb_type: Standard
+
+gCuccoLadyLimb_078:
+  type: OOT:LIMB
+  offset: 0x078
+  symbol: gCuccoLadyLimb_078
+  limb_type: Standard
+
+gCuccoLadyLimb_084:
+  type: OOT:LIMB
+  offset: 0x084
+  symbol: gCuccoLadyLimb_084
+  limb_type: Standard
+
+gCuccoLadyLimb_090:
+  type: OOT:LIMB
+  offset: 0x090
+  symbol: gCuccoLadyLimb_090
+  limb_type: Standard
+
+gCuccoLadyLimb_09C:
+  type: OOT:LIMB
+  offset: 0x09C
+  symbol: gCuccoLadyLimb_09C
+  limb_type: Standard
+
+gCuccoLadyMouthTex:
+  type: TEXTURE
+  offset: 0x04C8
+  symbol: gCuccoLadyMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gCuccoLadyRootLimb:
+  type: OOT:LIMB
+  offset: 0x000
+  symbol: gCuccoLadyRootLimb
+  limb_type: Standard
+
+gCuccoLadyShirtButtonTex:
+  type: TEXTURE
+  offset: 0x2248
+  symbol: gCuccoLadyShirtButtonTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0108
+
+gCuccoLadyShoe1DL:
+  type: GFX
+  offset: 0x69B0
+  symbol: gCuccoLadyShoe1DL
+
+gCuccoLadyShoe2DL:
+  type: GFX
+  offset: 0x6570
+  symbol: gCuccoLadyShoe2DL
+
+gCuccoLadySkel:
+  type: OOT:SKELETON
+  offset: 0xF0
+  symbol: gCuccoLadySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gCuccoLadySkirtTex:
+  type: TEXTURE
+  offset: 0x2388
+  symbol: gCuccoLadySkirtTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0108
+
+gCuccoLadySleeveTex:
+  type: TEXTURE
+  offset: 0x21C8
+  symbol: gCuccoLadySleeveTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0108
+
+gCuccoLadyTLUT:
+  type: TEXTURE
+  offset: 0x0108
+  symbol: gCuccoLadyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCuccoLadyTex_0388:
+  type: TEXTURE
+  offset: 0x0388
+  symbol: gCuccoLadyTex_0388
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0108
+
+gCuccoLadyTorsoDL:
+  type: GFX
+  offset: 0x6280
+  symbol: gCuccoLadyTorsoDL
+
+gCuccoLadyTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x054
+  symbol: gCuccoLadyTorsoLimb
+  limb_type: Standard
+
+gCuccoLadyWaistTex:
+  type: TEXTURE
+  offset: 0x2288
+  symbol: gCuccoLadyWaistTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0108
+
+
+gCuccoLadySkelLimbs:
+  type: BLOB
+  offset: 0xB4
+  symbol: gCuccoLadySkelLimbs
+  size: 0
+
+object_aneVtx_002788:
+  type: OOT:ARRAY
+  offset: 0x002788
+  symbol: object_aneVtx_002788
+  count: 234
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_003628:
+  type: OOT:ARRAY
+  offset: 0x003628
+  symbol: object_aneVtx_003628
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_0038B8:
+  type: OOT:ARRAY
+  offset: 0x0038B8
+  symbol: object_aneVtx_0038B8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_003A38:
+  type: OOT:ARRAY
+  offset: 0x003A38
+  symbol: object_aneVtx_003A38
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_003C08:
+  type: OOT:ARRAY
+  offset: 0x003C08
+  symbol: object_aneVtx_003C08
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_003E98:
+  type: OOT:ARRAY
+  offset: 0x003E98
+  symbol: object_aneVtx_003E98
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_004018:
+  type: OOT:ARRAY
+  offset: 0x004018
+  symbol: object_aneVtx_004018
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_0041E8:
+  type: OOT:ARRAY
+  offset: 0x0041E8
+  symbol: object_aneVtx_0041E8
+  count: 107
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_004898:
+  type: OOT:ARRAY
+  offset: 0x004898
+  symbol: object_aneVtx_004898
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_004BE8:
+  type: OOT:ARRAY
+  offset: 0x004BE8
+  symbol: object_aneVtx_004BE8
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_004C68:
+  type: OOT:ARRAY
+  offset: 0x004C68
+  symbol: object_aneVtx_004C68
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_004C98:
+  type: OOT:ARRAY
+  offset: 0x004C98
+  symbol: object_aneVtx_004C98
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_004FE8:
+  type: OOT:ARRAY
+  offset: 0x004FE8
+  symbol: object_aneVtx_004FE8
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_005068:
+  type: OOT:ARRAY
+  offset: 0x005068
+  symbol: object_aneVtx_005068
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aneVtx_005098:
+  type: OOT:ARRAY
+  offset: 0x005098
+  symbol: object_aneVtx_005098
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 128, 0x015324E0 ]
+
+gStableBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gStableBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStableBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gStableBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStableBg4TLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gStableBg4TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStableBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gStableBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

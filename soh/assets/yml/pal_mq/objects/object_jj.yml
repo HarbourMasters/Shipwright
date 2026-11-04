@@ -1,0 +1,478 @@
+:config:
+  segments:
+    - [ 6, 0x00EAAA60 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x00EAAA60 ]
+    - [ 9, 0x00EAAA60 ]
+    - [ 10, 0x00EAAA60 ]
+    - [ 11, 0x00EAAA60 ]
+    - [ 12, 0x00EAAA60 ]
+    - [ 13, 0x00EAAA60 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gJabuJabuAnim:
+  type: OOT:ANIMATION
+  offset: 0x1F4C
+  symbol: gJabuJabuAnim
+
+gJabuJabuBodyCol:
+  type: OOT:COLLISION
+  offset: 0x1830
+  symbol: gJabuJabuBodyCol
+
+gJabuJabuBodyDL:
+  type: GFX
+  offset: 0x5690
+  symbol: gJabuJabuBodyDL
+
+gJabuJabuBodyLimb:
+  type: OOT:LIMB
+  offset: 0xB87C
+  symbol: gJabuJabuBodyLimb
+  limb_type: Standard
+
+gJabuJabuCapInnerTex:
+  type: TEXTURE
+  offset: 0x92D8
+  symbol: gJabuJabuCapInnerTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gJabuJabuCapOuterTex:
+  type: TEXTURE
+  offset: 0x9298
+  symbol: gJabuJabuCapOuterTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gJabuJabuDiademCenterTex:
+  type: TEXTURE
+  offset: 0xA358
+  symbol: gJabuJabuDiademCenterTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gJabuJabuDiademSideTex:
+  type: TEXTURE
+  offset: 0x6D58
+  symbol: gJabuJabuDiademSideTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gJabuJabuDorsalTex:
+  type: TEXTURE
+  offset: 0x8298
+  symbol: gJabuJabuDorsalTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gJabuJabuEyeClosedTex:
+  type: TEXTURE
+  offset: 0x7E98
+  symbol: gJabuJabuEyeClosedTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gJabuJabuEyeHalfTex:
+  type: TEXTURE
+  offset: 0x7A98
+  symbol: gJabuJabuEyeHalfTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gJabuJabuEyeOpenTex:
+  type: TEXTURE
+  offset: 0x7698
+  symbol: gJabuJabuEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gJabuJabuEyeOrbitTex:
+  type: TEXTURE
+  offset: 0x7658
+  symbol: gJabuJabuEyeOrbitTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gJabuJabuFinTex:
+  type: TEXTURE
+  offset: 0xA758
+  symbol: gJabuJabuFinTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gJabuJabuFlukeDL:
+  type: GFX
+  offset: 0x44A0
+  symbol: gJabuJabuFlukeDL
+
+gJabuJabuFlukeLimb:
+  type: OOT:LIMB
+  offset: 0xB948
+  symbol: gJabuJabuFlukeLimb
+  limb_type: Standard
+
+gJabuJabuFrillTex:
+  type: TEXTURE
+  offset: 0x5B58
+  symbol: gJabuJabuFrillTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gJabuJabuHeadCol:
+  type: OOT:COLLISION
+  offset: 0x0A1C
+  symbol: gJabuJabuHeadCol
+
+gJabuJabuHeadDL:
+  type: GFX
+  offset: 0x4920
+  symbol: gJabuJabuHeadDL
+
+gJabuJabuHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB8C4
+  symbol: gJabuJabuHeadLimb
+  limb_type: Standard
+
+gJabuJabuLateralTex:
+  type: TEXTURE
+  offset: 0x6E58
+  symbol: gJabuJabuLateralTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gJabuJabuLeftFrillDL:
+  type: GFX
+  offset: 0x4880
+  symbol: gJabuJabuLeftFrillDL
+
+gJabuJabuLeftFrillLimb:
+  type: OOT:LIMB
+  offset: 0xB8DC
+  symbol: gJabuJabuLeftFrillLimb
+  limb_type: Standard
+
+gJabuJabuLeftLowerFlipperDL:
+  type: GFX
+  offset: 0x5400
+  symbol: gJabuJabuLeftLowerFlipperDL
+
+gJabuJabuLeftLowerFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xB8B8
+  symbol: gJabuJabuLeftLowerFlipperLimb
+  limb_type: Standard
+
+gJabuJabuLeftMidFlipperDL:
+  type: GFX
+  offset: 0x54D0
+  symbol: gJabuJabuLeftMidFlipperDL
+
+gJabuJabuLeftMidFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xB8AC
+  symbol: gJabuJabuLeftMidFlipperLimb
+  limb_type: Standard
+
+gJabuJabuLeftUpperFlipperDL:
+  type: GFX
+  offset: 0x55B0
+  symbol: gJabuJabuLeftUpperFlipperDL
+
+gJabuJabuLeftUpperFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xB894
+  symbol: gJabuJabuLeftUpperFlipperLimb
+  limb_type: Standard
+
+gJabuJabuLipMouthCornerTex:
+  type: TEXTURE
+  offset: 0x6B58
+  symbol: gJabuJabuLipMouthCornerTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gJabuJabuLipTex:
+  type: TEXTURE
+  offset: 0x6A58
+  symbol: gJabuJabuLipTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gJabuJabuMouthFloorTex:
+  type: TEXTURE
+  offset: 0xA858
+  symbol: gJabuJabuMouthFloorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gJabuJabuMouthRoofTex:
+  type: TEXTURE
+  offset: 0x9358
+  symbol: gJabuJabuMouthRoofTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gJabuJabuNoseDecorationTex:
+  type: TEXTURE
+  offset: 0x6758
+  symbol: gJabuJabuNoseDecorationTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gJabuJabuNostrilTex:
+  type: TEXTURE
+  offset: 0x6358
+  symbol: gJabuJabuNostrilTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gJabuJabuRightFrillDL:
+  type: GFX
+  offset: 0x47E0
+  symbol: gJabuJabuRightFrillDL
+
+gJabuJabuRightFrillLimb:
+  type: OOT:LIMB
+  offset: 0xB8F4
+  symbol: gJabuJabuRightFrillLimb
+  limb_type: Standard
+
+gJabuJabuRightLowerFlipperDL:
+  type: GFX
+  offset: 0x4578
+  symbol: gJabuJabuRightLowerFlipperDL
+
+gJabuJabuRightLowerFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xB930
+  symbol: gJabuJabuRightLowerFlipperLimb
+  limb_type: Standard
+
+gJabuJabuRightMidFlipperDL:
+  type: GFX
+  offset: 0x4648
+  symbol: gJabuJabuRightMidFlipperDL
+
+gJabuJabuRightMidFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xB924
+  symbol: gJabuJabuRightMidFlipperLimb
+  limb_type: Standard
+
+gJabuJabuRightUpperFlipperDL:
+  type: GFX
+  offset: 0x4700
+  symbol: gJabuJabuRightUpperFlipperDL
+
+gJabuJabuRightUpperFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xB90C
+  symbol: gJabuJabuRightUpperFlipperLimb
+  limb_type: Standard
+
+gJabuJabuSkel:
+  type: OOT:SKELETON
+  offset: 0xB9A8
+  symbol: gJabuJabuSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gJabuJabuToothTex:
+  type: TEXTURE
+  offset: 0x6958
+  symbol: gJabuJabuToothTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gJabuJabuUnusedCol:
+  type: OOT:COLLISION
+  offset: 0xBA8C
+  symbol: gJabuJabuUnusedCol
+
+
+object_jjVtx_001F60:
+  type: OOT:ARRAY
+  offset: 0x001F60
+  symbol: object_jjVtx_001F60
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_001FA0:
+  type: OOT:ARRAY
+  offset: 0x001FA0
+  symbol: object_jjVtx_001FA0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_001FE0:
+  type: OOT:ARRAY
+  offset: 0x001FE0
+  symbol: object_jjVtx_001FE0
+  count: 365
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_0036B0:
+  type: OOT:ARRAY
+  offset: 0x0036B0
+  symbol: object_jjVtx_0036B0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_003730:
+  type: OOT:ARRAY
+  offset: 0x003730
+  symbol: object_jjVtx_003730
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_003830:
+  type: OOT:ARRAY
+  offset: 0x003830
+  symbol: object_jjVtx_003830
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_003930:
+  type: OOT:ARRAY
+  offset: 0x003930
+  symbol: object_jjVtx_003930
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_0039B0:
+  type: OOT:ARRAY
+  offset: 0x0039B0
+  symbol: object_jjVtx_0039B0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_003A70:
+  type: OOT:ARRAY
+  offset: 0x003A70
+  symbol: object_jjVtx_003A70
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_003B70:
+  type: OOT:ARRAY
+  offset: 0x003B70
+  symbol: object_jjVtx_003B70
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jjVtx_003C50:
+  type: OOT:ARRAY
+  offset: 0x003C50
+  symbol: object_jjVtx_003C50
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gJabuJabuSkelLimbsLimb_00B858:
+  type: OOT:LIMB
+  offset: 0x00B858
+  symbol: gJabuJabuSkelLimbsLimb_00B858
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B864:
+  type: OOT:LIMB
+  offset: 0x00B864
+  symbol: gJabuJabuSkelLimbsLimb_00B864
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B870:
+  type: OOT:LIMB
+  offset: 0x00B870
+  symbol: gJabuJabuSkelLimbsLimb_00B870
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B888:
+  type: OOT:LIMB
+  offset: 0x00B888
+  symbol: gJabuJabuSkelLimbsLimb_00B888
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B8A0:
+  type: OOT:LIMB
+  offset: 0x00B8A0
+  symbol: gJabuJabuSkelLimbsLimb_00B8A0
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B8D0:
+  type: OOT:LIMB
+  offset: 0x00B8D0
+  symbol: gJabuJabuSkelLimbsLimb_00B8D0
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B8E8:
+  type: OOT:LIMB
+  offset: 0x00B8E8
+  symbol: gJabuJabuSkelLimbsLimb_00B8E8
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B900:
+  type: OOT:LIMB
+  offset: 0x00B900
+  symbol: gJabuJabuSkelLimbsLimb_00B900
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B918:
+  type: OOT:LIMB
+  offset: 0x00B918
+  symbol: gJabuJabuSkelLimbsLimb_00B918
+  limb_type: Standard
+
+gJabuJabuSkelLimbsLimb_00B93C:
+  type: OOT:LIMB
+  offset: 0x00B93C
+  symbol: gJabuJabuSkelLimbsLimb_00B93C
+  limb_type: Standard
+
+gJabuJabuSkelLimbs:
+  type: BLOB
+  offset: 0xB954
+  symbol: gJabuJabuSkelLimbs
+  size: 0

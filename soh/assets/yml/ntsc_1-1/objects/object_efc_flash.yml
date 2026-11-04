@@ -1,0 +1,10 @@
+:config:
+  segments:
+    - [ 6, 0x00F9F990 ]
+
+gEfcFlashBlob_000000:
+  type: BLOB
+  offset: 0x0
+  size: 0x10
+  symbol: gEfcFlashBlob_000000
+

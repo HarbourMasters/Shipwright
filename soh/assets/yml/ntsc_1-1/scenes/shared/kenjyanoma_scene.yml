@@ -1,0 +1,18 @@
+:config:
+  segments:
+    - [ 2, 0x019CA3F0 ]
+
+  external_files:
+    - ntsc_1-1/scenes/shared/kenjyanoma_sceneSet_0035D0.yml
+    - ntsc_1-1/scenes/shared/kenjyanoma_sceneSet_0036D0.yml
+    - ntsc_1-1/scenes/shared/kenjyanoma_sceneSet_0037D0.yml
+kenjyanoma_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: kenjyanoma_scene
+
+
+kenjyanoma_sceneCollisionHeader_00359C:
+  type: OOT:COLLISION
+  offset: 0x00359C
+  symbol: kenjyanoma_sceneCollisionHeader_00359C

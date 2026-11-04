@@ -54,7 +54,7 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
     EnBomChu* chu;
     Vec3f chuPosDiff;
 
-    if (play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_CHU_BOWLING) {
+    if (play->cameraPtrs[CAM_ID_MAIN]->setting == CAM_SET_CHU_BOWLING) {
         chu = (EnBomChu*)play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
 
         while (chu != NULL) {
@@ -73,7 +73,7 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
                 chu->timer = 1;
 
                 this->camId = Play_CreateSubCamera(play);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
 
                 this->subCamAtMaxVelFrac.x = this->subCamAtMaxVelFrac.y = this->subCamAtMaxVelFrac.z = 0.1f;
@@ -170,7 +170,7 @@ void EnBomBowlPit_SetupGivePrize(EnBomBowlPit* this, PlayState* play) {
         }
 
         Play_ClearCamera(play, this->camId);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = EnBomBowlPit_GivePrize;
     }

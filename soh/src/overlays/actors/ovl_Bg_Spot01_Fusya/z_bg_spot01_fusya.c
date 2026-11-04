@@ -47,7 +47,7 @@ void BgSpot01Fusya_Init(Actor* thisx, PlayState* play) {
     this->unk_154 = 100.0f;
     this->unk_158 = 100.0f;
     this->unk_15C = 0.5f;
-    if (gSaveContext.sceneSetupIndex < 4) {
+    if (gSaveContext.sceneLayer < 4) {
         gSaveContext.eventChkInf[6] &= 0xFFDF;
     }
     BgSpot01Fusya_SetupAction(this, func_808AAA50);

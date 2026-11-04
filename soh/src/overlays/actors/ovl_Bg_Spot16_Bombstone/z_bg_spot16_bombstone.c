@@ -407,7 +407,7 @@ void func_808B57E0(BgSpot16Bombstone* this, PlayState* play) {
             currentBomb = sPlayerBomb;
             if (currentBomb->timer > 0) {
                 sTimer = currentBomb->timer + 20;
-                OnePointCutscene_Init(play, 4180, sTimer, NULL, MAIN_CAM);
+                OnePointCutscene_Init(play, 4180, sTimer, NULL, CAM_ID_MAIN);
             }
         }
     } else if (player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
@@ -437,7 +437,7 @@ void func_808B5950(BgSpot16Bombstone* this, PlayState* play) {
 
         func_808B561C(this, play);
 
-        OnePointCutscene_Init(play, 4180, 50, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 4180, 50, NULL, CAM_ID_MAIN);
 
         Flags_SetSwitch(play, this->switchFlag);
         Flags_SetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE);

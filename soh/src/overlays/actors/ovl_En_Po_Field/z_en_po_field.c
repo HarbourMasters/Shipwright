@@ -8,7 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_po_field/object_po_field.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #include <string.h>
 
@@ -130,7 +130,7 @@ static DamageTable sDamageTable = {
     /* Unknown 2     */ DMG_ENTRY(0, 0x0),
 };
 
-s32 sEnPoFieldNumSpawned = 0;
+static s32 sNumSpawned = 0;
 
 static Vec3f sFieldMiddle = { -1000.0f, 0.0f, 6500.0f };
 
@@ -149,22 +149,29 @@ static EnPoFieldInfo sPoFieldInfo[2] = {
 
 static Vec3f D_80AD714C = { 0.0f, 1400.0f, 0.0f };
 
-Vec3s sEnPoFieldSpawnPositions[10];
-u8 sEnPoFieldSpawnSwitchFlags[10];
+static Vec3s sSpawnPositions[10];
+static u8 sSpawnSwitchFlags[10];
 static MtxF sLimb7Mtx;
+
+#define EN_PO_FIELD_SHIP_SAVESTATE_FIELDS(F) \
+    F(sNumSpawned)                           \
+    F(sSpawnPositions)                       \
+    F(sSpawnSwitchFlags)
+
+SHIP_SAVESTATE_DEFINE(EnPoField, EN_PO_FIELD_SHIP_SAVESTATE_FIELDS)
 
 void EnPoField_Init(Actor* thisx, PlayState* play) {
     EnPoField* this = (EnPoField*)thisx;
     s32 pad;
 
-    if (sEnPoFieldNumSpawned != 10) {
-        sEnPoFieldSpawnPositions[sEnPoFieldNumSpawned].x = this->actor.world.pos.x;
-        sEnPoFieldSpawnPositions[sEnPoFieldNumSpawned].y = this->actor.world.pos.y;
-        sEnPoFieldSpawnPositions[sEnPoFieldNumSpawned].z = this->actor.world.pos.z;
-        sEnPoFieldSpawnSwitchFlags[sEnPoFieldNumSpawned] = this->actor.params & 0xFF;
-        sEnPoFieldNumSpawned++;
+    if (sNumSpawned != 10) {
+        sSpawnPositions[sNumSpawned].x = this->actor.world.pos.x;
+        sSpawnPositions[sNumSpawned].y = this->actor.world.pos.y;
+        sSpawnPositions[sNumSpawned].z = this->actor.world.pos.z;
+        sSpawnSwitchFlags[sNumSpawned] = this->actor.params & 0xFF;
+        sNumSpawned++;
     }
-    if (sEnPoFieldNumSpawned >= 2) {
+    if (sNumSpawned >= 2) {
         this->actor.params = 0xFF;
         Actor_Kill(&this->actor);
         return;
@@ -191,8 +198,6 @@ void EnPoField_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->flameCollider);
         Collider_DestroyCylinder(play, &this->collider);
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPoField_SetupWaitForSpawn(EnPoField* this, PlayState* play) {
@@ -414,10 +419,10 @@ void EnPoField_WaitForSpawn(EnPoField* this, PlayState* play) {
         this->actionTimer--;
     }
     if (this->actionTimer == 0) {
-        for (i = 0; i < sEnPoFieldNumSpawned; i++) {
-            if (fabsf(sEnPoFieldSpawnPositions[i].x - player->actor.world.pos.x) < 150.0f &&
-                fabsf(sEnPoFieldSpawnPositions[i].z - player->actor.world.pos.z) < 150.0f) {
-                if (Flags_GetSwitch(play, sEnPoFieldSpawnSwitchFlags[i])) {
+        for (i = 0; i < sNumSpawned; i++) {
+            if (fabsf(sSpawnPositions[i].x - player->actor.world.pos.x) < 150.0f &&
+                fabsf(sSpawnPositions[i].z - player->actor.world.pos.z) < 150.0f) {
+                if (Flags_GetSwitch(play, sSpawnSwitchFlags[i])) {
                     if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) { // Player riding Epona
                         return;
                     } else {
@@ -505,7 +510,7 @@ void EnPoField_CirclePlayer(EnPoField* this, PlayState* play) {
         EnPoField_SpawnFlame(this);
     }
     EnPoField_CorrectYPos(this, play);
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoField_Flee(EnPoField* this, PlayState* play) {
@@ -533,7 +538,7 @@ void EnPoField_Flee(EnPoField* this, PlayState* play) {
     } else {
         EnPoField_CorrectYPos(this, play);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
 }
 
 void EnPoField_Damage(EnPoField* this, PlayState* play) {
@@ -613,7 +618,7 @@ void EnPoField_SoulIdle(EnPoField* this, PlayState* play) {
     if (this->actionTimer != 0) {
         this->actionTimer--;
     }
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 6.0f, 0, 1, 1, 15, OBJECT_PO_FIELD, 10,
                                  gPoeFieldLanternDL);
         func_80AD42B0(this);
@@ -670,7 +675,7 @@ void func_80AD58D4(EnPoField* this, PlayState* play) {
     }
     if (this->collider.base.ocFlags1 & OC1_HIT) {
         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     } else {
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
@@ -701,7 +706,7 @@ void EnPoField_SoulInteract(EnPoField* this, PlayState* play) {
     if (this->actor.textId != 0x5005) {
         EnPoField_SoulUpdateProperties(this, -13);
     } else {
-        func_8002F974(&this->actor, NA_SE_EN_PO_BIG_CRY - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_BIG_CRY - SFX_FLAG);
     }
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) {
         if (Message_ShouldAdvance(play)) {
@@ -715,7 +720,7 @@ void EnPoField_SoulInteract(EnPoField* this, PlayState* play) {
                     } else if (GameInteractor_Should(VB_BOTTLE_BIG_POE, true, this)) {
                         this->actor.textId = 0x508F;
                         Item_Give(play, ITEM_BIG_POE);
-                        Flags_SetSwitch(play, sEnPoFieldSpawnSwitchFlags[this->spawnFlagIndex]);
+                        Flags_SetSwitch(play, sSpawnSwitchFlags[this->spawnFlagIndex]);
                     }
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
@@ -1006,8 +1011,8 @@ void EnPoField_DrawSoul(Actor* thisx, PlayState* play) {
 }
 
 void EnPoField_Reset(void) {
-    sEnPoFieldNumSpawned = 0;
+    sNumSpawned = 0;
 
-    memset(sEnPoFieldSpawnPositions, 0, sizeof(sEnPoFieldSpawnPositions));
-    memset(sEnPoFieldSpawnSwitchFlags, 0, sizeof(sEnPoFieldSpawnSwitchFlags));
+    memset(sSpawnPositions, 0, sizeof(sSpawnPositions));
+    memset(sSpawnSwitchFlags, 0, sizeof(sSpawnSwitchFlags));
 }

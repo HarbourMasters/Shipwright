@@ -1,0 +1,864 @@
+:config:
+  segments:
+    - [ 6, 0x00DBB4F0 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00DBB4F0 ]
+    - [ 9, 0x00DBB4F0 ]
+    - [ 10, 0x00DBB4F0 ]
+    - [ 11, 0x00DBB4F0 ]
+    - [ 12, 0x00DBB4F0 ]
+    - [ 13, 0x00DBB4F0 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gGreatFairyAfterSpellAnim:
+  type: OOT:ANIMATION
+  offset: 0x4344
+  symbol: gGreatFairyAfterSpellAnim
+
+gGreatFairyAfterUpgradeAnim:
+  type: OOT:ANIMATION
+  offset: 0x7CA8
+  symbol: gGreatFairyAfterUpgradeAnim
+
+gGreatFairyAnim_000108:
+  type: OOT:ANIMATION
+  offset: 0x108
+  symbol: gGreatFairyAnim_000108
+
+gGreatFairyAnim_005810:
+  type: OOT:ANIMATION
+  offset: 0x5810
+  symbol: gGreatFairyAnim_005810
+
+gGreatFairyBackOfHandTex:
+  type: TEXTURE
+  offset: 0x1B1B0
+  symbol: gGreatFairyBackOfHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x165F0
+
+gGreatFairyBetaClothesTex:
+  type: TEXTURE
+  offset: 0x96B0
+  symbol: gGreatFairyBetaClothesTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGreatFairyBetaDL:
+  type: GFX
+  offset: 0xD1B0
+  symbol: gGreatFairyBetaDL
+
+gGreatFairyBetaGradient1Tex:
+  type: TEXTURE
+  offset: 0x86B0
+  symbol: gGreatFairyBetaGradient1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatFairyBetaGradient2Tex:
+  type: TEXTURE
+  offset: 0x8EB0
+  symbol: gGreatFairyBetaGradient2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatFairyBootPatternTex:
+  type: TEXTURE
+  offset: 0x167F0
+  symbol: gGreatFairyBootPatternTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x165F0
+
+gGreatFairyEar1Tex:
+  type: TEXTURE
+  offset: 0x1B130
+  symbol: gGreatFairyEar1Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x165F0
+
+gGreatFairyEar2Tex:
+  type: TEXTURE
+  offset: 0x1B170
+  symbol: gGreatFairyEar2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x165F0
+
+gGreatFairyEyeClosedTex:
+  type: TEXTURE
+  offset: 0x18930
+  symbol: gGreatFairyEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatFairyEyeHalfTex:
+  type: TEXTURE
+  offset: 0x18130
+  symbol: gGreatFairyEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatFairyEyeOpenTex:
+  type: TEXTURE
+  offset: 0x17930
+  symbol: gGreatFairyEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatFairyFlowerDL:
+  type: GFX
+  offset: 0xDC68
+  symbol: gGreatFairyFlowerDL
+
+gGreatFairyFlowerTex:
+  type: TEXTURE
+  offset: 0x98B0
+  symbol: gGreatFairyFlowerTex
+  format: IA16
+  width: 32
+  height: 32
+
+gGreatFairyGivingUpgradeAnim:
+  type: OOT:ANIMATION
+  offset: 0x69E8
+  symbol: gGreatFairyGivingUpgradeAnim
+
+gGreatFairyHairTex:
+  type: TEXTURE
+  offset: 0x17830
+  symbol: gGreatFairyHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x165F0
+
+gGreatFairyHeadDL:
+  type: GFX
+  offset: 0x13BE8
+  symbol: gGreatFairyHeadDL
+
+gGreatFairyHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1C348
+  symbol: gGreatFairyHeadLimb
+  limb_type: Standard
+
+gGreatFairyJewelFountainSpinShrinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x5E60
+  symbol: gGreatFairyJewelFountainSpinShrinkAnim
+
+gGreatFairyLayingDownTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x31C0
+  symbol: gGreatFairyLayingDownTransitionAnim
+
+gGreatFairyLayingSidewaysAnim:
+  type: OOT:ANIMATION
+  offset: 0x1DF0
+  symbol: gGreatFairyLayingSidewaysAnim
+
+gGreatFairyLeavesPattern1Tex:
+  type: TEXTURE
+  offset: 0x16FF0
+  symbol: gGreatFairyLeavesPattern1Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x165F0
+
+gGreatFairyLeavesPattern2Tex:
+  type: TEXTURE
+  offset: 0x17430
+  symbol: gGreatFairyLeavesPattern2Tex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gGreatFairyLeavesPattern3Tex:
+  type: TEXTURE
+  offset: 0x1B2B0
+  symbol: gGreatFairyLeavesPattern3Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x165F0
+
+gGreatFairyLeftFootDL:
+  type: GFX
+  offset: 0x164C8
+  symbol: gGreatFairyLeftFootDL
+
+gGreatFairyLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x1C2C4
+  symbol: gGreatFairyLeftFootLimb
+  limb_type: Standard
+
+gGreatFairyLeftForearmDL:
+  type: GFX
+  offset: 0x15628
+  symbol: gGreatFairyLeftForearmDL
+
+gGreatFairyLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x1C30C
+  symbol: gGreatFairyLeftForearmLimb
+  limb_type: Standard
+
+gGreatFairyLeftHairLowerPartDL:
+  type: GFX
+  offset: 0x14680
+  symbol: gGreatFairyLeftHairLowerPartDL
+
+gGreatFairyLeftHairLowerPartLimb:
+  type: OOT:LIMB
+  offset: 0x1C384
+  symbol: gGreatFairyLeftHairLowerPartLimb
+  limb_type: Standard
+
+gGreatFairyLeftHairMiddlePartDL:
+  type: GFX
+  offset: 0x14810
+  symbol: gGreatFairyLeftHairMiddlePartDL
+
+gGreatFairyLeftHairMiddlePartLimb:
+  type: OOT:LIMB
+  offset: 0x1C390
+  symbol: gGreatFairyLeftHairMiddlePartLimb
+  limb_type: Standard
+
+gGreatFairyLeftHairTipDL:
+  type: GFX
+  offset: 0x14A88
+  symbol: gGreatFairyLeftHairTipDL
+
+gGreatFairyLeftHairTipLimb:
+  type: OOT:LIMB
+  offset: 0x1C3A8
+  symbol: gGreatFairyLeftHairTipLimb
+  limb_type: Standard
+
+gGreatFairyLeftHairUpperPartDL:
+  type: GFX
+  offset: 0x14910
+  symbol: gGreatFairyLeftHairUpperPartDL
+
+gGreatFairyLeftHairUpperPartLimb:
+  type: OOT:LIMB
+  offset: 0x1C39C
+  symbol: gGreatFairyLeftHairUpperPartLimb
+  limb_type: Standard
+
+gGreatFairyLeftHandDL:
+  type: GFX
+  offset: 0x15860
+  symbol: gGreatFairyLeftHandDL
+
+gGreatFairyLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x1C318
+  symbol: gGreatFairyLeftHandLimb
+  limb_type: Standard
+
+gGreatFairyLeftLegDL:
+  type: GFX
+  offset: 0x16358
+  symbol: gGreatFairyLeftLegDL
+
+gGreatFairyLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x1C2B8
+  symbol: gGreatFairyLeftLegLimb
+  limb_type: Standard
+
+gGreatFairyLeftThighDL:
+  type: GFX
+  offset: 0x160D8
+  symbol: gGreatFairyLeftThighDL
+
+gGreatFairyLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1C2AC
+  symbol: gGreatFairyLeftThighLimb
+  limb_type: Standard
+
+gGreatFairyLeftUpperArmDL:
+  type: GFX
+  offset: 0x154F0
+  symbol: gGreatFairyLeftUpperArmDL
+
+gGreatFairyLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x1C300
+  symbol: gGreatFairyLeftUpperArmLimb
+  limb_type: Standard
+
+gGreatFairyMiddleHairLowerPartDL:
+  type: GFX
+  offset: 0x14B80
+  symbol: gGreatFairyMiddleHairLowerPartDL
+
+gGreatFairyMiddleHairLowerPartLimb:
+  type: OOT:LIMB
+  offset: 0x1C354
+  symbol: gGreatFairyMiddleHairLowerPartLimb
+  limb_type: Standard
+
+gGreatFairyMiddleHairMiddlePartDL:
+  type: GFX
+  offset: 0x14D10
+  symbol: gGreatFairyMiddleHairMiddlePartDL
+
+gGreatFairyMiddleHairMiddlePartLimb:
+  type: OOT:LIMB
+  offset: 0x1C360
+  symbol: gGreatFairyMiddleHairMiddlePartLimb
+  limb_type: Standard
+
+gGreatFairyMiddleHairTipDL:
+  type: GFX
+  offset: 0x14F20
+  symbol: gGreatFairyMiddleHairTipDL
+
+gGreatFairyMiddleHairTipLimb:
+  type: OOT:LIMB
+  offset: 0x1C378
+  symbol: gGreatFairyMiddleHairTipLimb
+  limb_type: Standard
+
+gGreatFairyMiddleHairUpperPartDL:
+  type: GFX
+  offset: 0x14E18
+  symbol: gGreatFairyMiddleHairUpperPartDL
+
+gGreatFairyMiddleHairUpperPartLimb:
+  type: OOT:LIMB
+  offset: 0x1C36C
+  symbol: gGreatFairyMiddleHairUpperPartLimb
+  limb_type: Standard
+
+gGreatFairyMouthClosedTex:
+  type: TEXTURE
+  offset: 0x19130
+  symbol: gGreatFairyMouthClosedTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gGreatFairyMouthOpenTex:
+  type: TEXTURE
+  offset: 0x1A130
+  symbol: gGreatFairyMouthOpenTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gGreatFairyParticleMaterialDL:
+  type: GFX
+  offset: 0x5860
+  symbol: gGreatFairyParticleMaterialDL
+
+gGreatFairyParticleModelDL:
+  type: GFX
+  offset: 0x58D8
+  symbol: gGreatFairyParticleModelDL
+
+gGreatFairyParticleTex:
+  type: TEXTURE
+  offset: 0x58F0
+  symbol: gGreatFairyParticleTex
+  format: I4
+  width: 32
+  height: 32
+
+gGreatFairyRightFootDL:
+  type: GFX
+  offset: 0x15FB0
+  symbol: gGreatFairyRightFootDL
+
+gGreatFairyRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x1C2E8
+  symbol: gGreatFairyRightFootLimb
+  limb_type: Standard
+
+gGreatFairyRightForearmDL:
+  type: GFX
+  offset: 0x15150
+  symbol: gGreatFairyRightForearmDL
+
+gGreatFairyRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x1C330
+  symbol: gGreatFairyRightForearmLimb
+  limb_type: Standard
+
+gGreatFairyRightHairLowerPartDL:
+  type: GFX
+  offset: 0x14200
+  symbol: gGreatFairyRightHairLowerPartDL
+
+gGreatFairyRightHairLowerPartLimb:
+  type: OOT:LIMB
+  offset: 0x1C3B4
+  symbol: gGreatFairyRightHairLowerPartLimb
+  limb_type: Standard
+
+gGreatFairyRightHairMiddlePartDL:
+  type: GFX
+  offset: 0x14310
+  symbol: gGreatFairyRightHairMiddlePartDL
+
+gGreatFairyRightHairMiddlePartLimb:
+  type: OOT:LIMB
+  offset: 0x1C3C0
+  symbol: gGreatFairyRightHairMiddlePartLimb
+  limb_type: Standard
+
+gGreatFairyRightHairTipDL:
+  type: GFX
+  offset: 0x14588
+  symbol: gGreatFairyRightHairTipDL
+
+gGreatFairyRightHairTipLimb:
+  type: OOT:LIMB
+  offset: 0x1C3D8
+  symbol: gGreatFairyRightHairTipLimb
+  limb_type: Standard
+
+gGreatFairyRightHairUpperPartDL:
+  type: GFX
+  offset: 0x14488
+  symbol: gGreatFairyRightHairUpperPartDL
+
+gGreatFairyRightHairUpperPartLimb:
+  type: OOT:LIMB
+  offset: 0x1C3CC
+  symbol: gGreatFairyRightHairUpperPartLimb
+  limb_type: Standard
+
+gGreatFairyRightHandDL:
+  type: GFX
+  offset: 0x152F8
+  symbol: gGreatFairyRightHandDL
+
+gGreatFairyRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x1C33C
+  symbol: gGreatFairyRightHandLimb
+  limb_type: Standard
+
+gGreatFairyRightLegDL:
+  type: GFX
+  offset: 0x15E40
+  symbol: gGreatFairyRightLegDL
+
+gGreatFairyRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x1C2DC
+  symbol: gGreatFairyRightLegLimb
+  limb_type: Standard
+
+gGreatFairyRightThighDL:
+  type: GFX
+  offset: 0x15A58
+  symbol: gGreatFairyRightThighDL
+
+gGreatFairyRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x1C2D0
+  symbol: gGreatFairyRightThighLimb
+  limb_type: Standard
+
+gGreatFairyRightUpperArmDL:
+  type: GFX
+  offset: 0x15018
+  symbol: gGreatFairyRightUpperArmDL
+
+gGreatFairyRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x1C324
+  symbol: gGreatFairyRightUpperArmLimb
+  limb_type: Standard
+
+gGreatFairyRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C2A0
+  symbol: gGreatFairyRootLimb
+  limb_type: Standard
+
+gGreatFairySittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D514
+  symbol: gGreatFairySittingAnim
+
+gGreatFairySittingTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x8698
+  symbol: gGreatFairySittingTransitionAnim
+
+gGreatFairySkel:
+  type: OOT:SKELETON
+  offset: 0x1C450
+  symbol: gGreatFairySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGreatFairySkinGradient:
+  type: TEXTURE
+  offset: 0x173F0
+  symbol: gGreatFairySkinGradient
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x165F0
+
+gGreatFairySpellFountainSpinShrinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x92C
+  symbol: gGreatFairySpellFountainSpinShrinkAnim
+
+gGreatFairySpiralBeamDL:
+  type: GFX
+  offset: 0x1C160
+  symbol: gGreatFairySpiralBeamDL
+
+gGreatFairySpiralBeamGradientTex:
+  type: TEXTURE
+  offset: 0x1B7B0
+  symbol: gGreatFairySpiralBeamGradientTex
+  format: I8
+  width: 32
+  height: 64
+
+gGreatFairySpiralBeamPatternTex:
+  type: TEXTURE
+  offset: 0x1B6B0
+  symbol: gGreatFairySpiralBeamPatternTex
+  format: I8
+  width: 16
+  height: 16
+
+gGreatFairySpiralBeamVtx:
+  type: OOT:ARRAY
+  offset: 0x1BFB0
+  symbol: gGreatFairySpiralBeamVtx
+  count: 27
+  array_type: VTX
+
+gGreatFairyTLUT:
+  type: TEXTURE
+  offset: 0x165F0
+  symbol: gGreatFairyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGreatFairyTorsoDL:
+  type: GFX
+  offset: 0x137F8
+  symbol: gGreatFairyTorsoDL
+
+gGreatFairyTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x1C2F4
+  symbol: gGreatFairyTorsoLimb
+  limb_type: Standard
+
+gGreatFairyWaistDL:
+  type: GFX
+  offset: 0x136D0
+  symbol: gGreatFairyWaistDL
+
+
+object_dy_objVtx_005820:
+  type: OOT:ARRAY
+  offset: 0x005820
+  symbol: object_dy_objVtx_005820
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00A0B0:
+  type: OOT:ARRAY
+  offset: 0x00A0B0
+  symbol: object_dy_objVtx_00A0B0
+  count: 778
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00D150:
+  type: OOT:ARRAY
+  offset: 0x00D150
+  symbol: object_dy_objVtx_00D150
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00DD00:
+  type: OOT:ARRAY
+  offset: 0x00DD00
+  symbol: object_dy_objVtx_00DD00
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00DEC0:
+  type: OOT:ARRAY
+  offset: 0x00DEC0
+  symbol: object_dy_objVtx_00DEC0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00E0D0:
+  type: OOT:ARRAY
+  offset: 0x00E0D0
+  symbol: object_dy_objVtx_00E0D0
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00E580:
+  type: OOT:ARRAY
+  offset: 0x00E580
+  symbol: object_dy_objVtx_00E580
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00E5F0:
+  type: OOT:ARRAY
+  offset: 0x00E5F0
+  symbol: object_dy_objVtx_00E5F0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00E7E0:
+  type: OOT:ARRAY
+  offset: 0x00E7E0
+  symbol: object_dy_objVtx_00E7E0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00E8B0:
+  type: OOT:ARRAY
+  offset: 0x00E8B0
+  symbol: object_dy_objVtx_00E8B0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00EB60:
+  type: OOT:ARRAY
+  offset: 0x00EB60
+  symbol: object_dy_objVtx_00EB60
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00EBD0:
+  type: OOT:ARRAY
+  offset: 0x00EBD0
+  symbol: object_dy_objVtx_00EBD0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00ECA0:
+  type: OOT:ARRAY
+  offset: 0x00ECA0
+  symbol: object_dy_objVtx_00ECA0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00EE50:
+  type: OOT:ARRAY
+  offset: 0x00EE50
+  symbol: object_dy_objVtx_00EE50
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00EF80:
+  type: OOT:ARRAY
+  offset: 0x00EF80
+  symbol: object_dy_objVtx_00EF80
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00F010:
+  type: OOT:ARRAY
+  offset: 0x00F010
+  symbol: object_dy_objVtx_00F010
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00F120:
+  type: OOT:ARRAY
+  offset: 0x00F120
+  symbol: object_dy_objVtx_00F120
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00F230:
+  type: OOT:ARRAY
+  offset: 0x00F230
+  symbol: object_dy_objVtx_00F230
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_00F4C0:
+  type: OOT:ARRAY
+  offset: 0x00F4C0
+  symbol: object_dy_objVtx_00F4C0
+  count: 221
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_010290:
+  type: OOT:ARRAY
+  offset: 0x010290
+  symbol: object_dy_objVtx_010290
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_010A10:
+  type: OOT:ARRAY
+  offset: 0x010A10
+  symbol: object_dy_objVtx_010A10
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_010D00:
+  type: OOT:ARRAY
+  offset: 0x010D00
+  symbol: object_dy_objVtx_010D00
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_010E90:
+  type: OOT:ARRAY
+  offset: 0x010E90
+  symbol: object_dy_objVtx_010E90
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_011610:
+  type: OOT:ARRAY
+  offset: 0x011610
+  symbol: object_dy_objVtx_011610
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_011900:
+  type: OOT:ARRAY
+  offset: 0x011900
+  symbol: object_dy_objVtx_011900
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_011A90:
+  type: OOT:ARRAY
+  offset: 0x011A90
+  symbol: object_dy_objVtx_011A90
+  count: 275
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_012BC0:
+  type: OOT:ARRAY
+  offset: 0x012BC0
+  symbol: object_dy_objVtx_012BC0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_012D80:
+  type: OOT:ARRAY
+  offset: 0x012D80
+  symbol: object_dy_objVtx_012D80
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_012F90:
+  type: OOT:ARRAY
+  offset: 0x012F90
+  symbol: object_dy_objVtx_012F90
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dy_objVtx_013350:
+  type: OOT:ARRAY
+  offset: 0x013350
+  symbol: object_dy_objVtx_013350
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGreatFairySkelLimbs:
+  type: BLOB
+  offset: 0x1C3E4
+  symbol: gGreatFairySkelLimbs
+  size: 0

@@ -1,5 +1,4 @@
 #include "Cutscene.h"
-#include <libultraship/libultra/gbi.h>
 
 namespace SOH {
 uint32_t* Cutscene::GetPointer() {

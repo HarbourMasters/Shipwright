@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x02CF7000 ]
+    - [ 2, 0x02CF4000 ]
+  directory: scenes/shared/sasatest_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/sasatest_room_0.yml
+    - pal_gc_dbg/scenes/shared/sasatest_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+sasatest_room_0Set_000270:
+  type: OOT:ROOM
+  offset: 0x270
+  symbol: sasatest_room_0Set_000270
+  base_name: sasatest_room_0

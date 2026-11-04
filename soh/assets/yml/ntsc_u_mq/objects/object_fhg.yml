@@ -1,0 +1,870 @@
+:config:
+  segments:
+    - [ 6, 0x00EF6750 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x00EF6750 ]
+    - [ 9, 0x00EF6750 ]
+    - [ 10, 0x00EF6750 ]
+    - [ 11, 0x00EF6750 ]
+    - [ 12, 0x00EF6750 ]
+    - [ 13, 0x00EF6750 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gPhantomEnergyBallDL:
+  type: GFX
+  offset: 0x10D60
+  symbol: gPhantomEnergyBallDL
+
+gPhantomGanonTitleCardTex:
+  type: TEXTURE
+  offset: 0x59A0
+  symbol: gPhantomGanonTitleCardTex
+  format: IA8
+  width: 128
+  height: 80
+
+gPhantomHorseAirAnim:
+  type: OOT:ANIMATION
+  offset: 0xA5D0
+  symbol: gPhantomHorseAirAnim
+
+gPhantomHorseFenceJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0xAD80
+  symbol: gPhantomHorseFenceJumpAnim
+
+gPhantomHorseIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xD4A0
+  symbol: gPhantomHorseIdleAnim
+
+gPhantomHorseLandAnim:
+  type: OOT:ANIMATION
+  offset: 0xB71C
+  symbol: gPhantomHorseLandAnim
+
+gPhantomHorseLeapAnim:
+  type: OOT:ANIMATION
+  offset: 0xB25C
+  symbol: gPhantomHorseLeapAnim
+
+gPhantomHorseRearingAnim:
+  type: OOT:ANIMATION
+  offset: 0xC9B8
+  symbol: gPhantomHorseRearingAnim
+
+gPhantomHorseRunningAnim:
+  type: OOT:ANIMATION
+  offset: 0xA0C8
+  symbol: gPhantomHorseRunningAnim
+
+gPhantomHorseSkel:
+  type: OOT:SKELETON
+  offset: 0x9C98
+  symbol: gPhantomHorseSkel
+  limb_type: Skin
+  skel_type: Normal
+
+gPhantomHorseStillAnim:
+  type: OOT:ANIMATION
+  offset: 0x5990
+  symbol: gPhantomHorseStillAnim
+
+gPhantomHorseUnusedRearingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5804
+  symbol: gPhantomHorseUnusedRearingAnim
+
+gPhantomLightningBlastDL:
+  type: GFX
+  offset: 0xE8F8
+  symbol: gPhantomLightningBlastDL
+
+gPhantomLightningDL:
+  type: GFX
+  offset: 0xF1E0
+  symbol: gPhantomLightningDL
+
+gPhantomUnkDL_10CA0:
+  type: GFX
+  offset: 0xF8A0
+  symbol: gPhantomUnkDL_10CA0
+
+gPhantomUnkDL_FCA0:
+  type: GFX
+  offset: 0xE8A0
+  symbol: gPhantomUnkDL_FCA0
+
+gPhantomWarpDL:
+  type: GFX
+  offset: 0xE6A0
+  symbol: gPhantomWarpDL
+
+object_fhgTex_003320:
+  type: TEXTURE
+  offset: 0x3320
+  symbol: object_fhgTex_003320
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fhgTex_003520:
+  type: TEXTURE
+  offset: 0x3520
+  symbol: object_fhgTex_003520
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fhgTex_003720:
+  type: TEXTURE
+  offset: 0x3720
+  symbol: object_fhgTex_003720
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fhgTex_003920:
+  type: TEXTURE
+  offset: 0x3920
+  symbol: object_fhgTex_003920
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fhgTex_003B20:
+  type: TEXTURE
+  offset: 0x3B20
+  symbol: object_fhgTex_003B20
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_fhgTex_003BA0:
+  type: TEXTURE
+  offset: 0x3BA0
+  symbol: object_fhgTex_003BA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fhgTex_003DA0:
+  type: TEXTURE
+  offset: 0x3DA0
+  symbol: object_fhgTex_003DA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fhgTex_003FA0:
+  type: TEXTURE
+  offset: 0x3FA0
+  symbol: object_fhgTex_003FA0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_fhgTex_0043A0:
+  type: TEXTURE
+  offset: 0x43A0
+  symbol: object_fhgTex_0043A0
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_fhgTex_0044A0:
+  type: TEXTURE
+  offset: 0x44A0
+  symbol: object_fhgTex_0044A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fhgTex_004CA0:
+  type: TEXTURE
+  offset: 0x4CA0
+  symbol: object_fhgTex_004CA0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_fhgTex_004DA0:
+  type: TEXTURE
+  offset: 0x4DA0
+  symbol: object_fhgTex_004DA0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_fhgTex_00D040:
+  type: TEXTURE
+  offset: 0xBC40
+  symbol: object_fhgTex_00D040
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_fhgTex_00D060:
+  type: TEXTURE
+  offset: 0xBC60
+  symbol: object_fhgTex_00D060
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fhgTex_00E8B0:
+  type: TEXTURE
+  offset: 0xD4B0
+  symbol: object_fhgTex_00E8B0
+  format: I4
+  width: 64
+  height: 64
+
+object_fhgTex_00F0B0:
+  type: TEXTURE
+  offset: 0xDCB0
+  symbol: object_fhgTex_00F0B0
+  format: I4
+  width: 64
+  height: 64
+
+object_fhgTex_00FD98:
+  type: TEXTURE
+  offset: 0xE998
+  symbol: object_fhgTex_00FD98
+  format: I8
+  width: 64
+  height: 32
+
+object_fhgTex_010660:
+  type: TEXTURE
+  offset: 0xF260
+  symbol: object_fhgTex_010660
+  format: I4
+  width: 32
+  height: 96
+
+object_fhgTex_010D20:
+  type: TEXTURE
+  offset: 0xF920
+  symbol: object_fhgTex_010D20
+  format: I8
+  width: 32
+  height: 32
+
+object_fhgTex_011120:
+  type: TEXTURE
+  offset: 0xFD20
+  symbol: object_fhgTex_011120
+  format: I8
+  width: 64
+  height: 64
+
+
+object_fhgVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_fhgVtx_000000
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_000290:
+  type: OOT:ARRAY
+  offset: 0x000290
+  symbol: object_fhgVtx_000290
+  count: 100
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_0008D0:
+  type: OOT:ARRAY
+  offset: 0x0008D0
+  symbol: object_fhgVtx_0008D0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_000AB0:
+  type: OOT:ARRAY
+  offset: 0x000AB0
+  symbol: object_fhgVtx_000AB0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_000C40:
+  type: OOT:ARRAY
+  offset: 0x000C40
+  symbol: object_fhgVtx_000C40
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_000D20:
+  type: OOT:ARRAY
+  offset: 0x000D20
+  symbol: object_fhgVtx_000D20
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_000E00:
+  type: OOT:ARRAY
+  offset: 0x000E00
+  symbol: object_fhgVtx_000E00
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_000F20:
+  type: OOT:ARRAY
+  offset: 0x000F20
+  symbol: object_fhgVtx_000F20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_001040:
+  type: OOT:ARRAY
+  offset: 0x001040
+  symbol: object_fhgVtx_001040
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_001560:
+  type: OOT:ARRAY
+  offset: 0x001560
+  symbol: object_fhgVtx_001560
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_0017E0:
+  type: OOT:ARRAY
+  offset: 0x0017E0
+  symbol: object_fhgVtx_0017E0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_001970:
+  type: OOT:ARRAY
+  offset: 0x001970
+  symbol: object_fhgVtx_001970
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_001A90:
+  type: OOT:ARRAY
+  offset: 0x001A90
+  symbol: object_fhgVtx_001A90
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_001B70:
+  type: OOT:ARRAY
+  offset: 0x001B70
+  symbol: object_fhgVtx_001B70
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_001D50:
+  type: OOT:ARRAY
+  offset: 0x001D50
+  symbol: object_fhgVtx_001D50
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_001E70:
+  type: OOT:ARRAY
+  offset: 0x001E70
+  symbol: object_fhgVtx_001E70
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPhantomHorseSkelLimbsLimb_009954DL_001F50:
+  type: GFX
+  offset: 0x001F50
+  symbol: gPhantomHorseSkelLimbsLimb_009954DL_001F50
+
+gPhantomHorseSkelLimbsLimb_009944DL_002098:
+  type: GFX
+  offset: 0x002098
+  symbol: gPhantomHorseSkelLimbsLimb_009944DL_002098
+
+gPhantomHorseSkelLimbsLimb_0099E4DL_002438:
+  type: GFX
+  offset: 0x002438
+  symbol: gPhantomHorseSkelLimbsLimb_0099E4DL_002438
+
+gPhantomHorseSkelLimbsLimb_0099F4DL_002510:
+  type: GFX
+  offset: 0x002510
+  symbol: gPhantomHorseSkelLimbsLimb_0099F4DL_002510
+
+gPhantomHorseSkelLimbsLimb_009B24DL_002610:
+  type: GFX
+  offset: 0x002610
+  symbol: gPhantomHorseSkelLimbsLimb_009B24DL_002610
+
+gPhantomHorseSkelLimbsLimb_0099C4DL_002710:
+  type: GFX
+  offset: 0x002710
+  symbol: gPhantomHorseSkelLimbsLimb_0099C4DL_002710
+
+gPhantomHorseSkelLimbsLimb_009B34DL_002810:
+  type: GFX
+  offset: 0x002810
+  symbol: gPhantomHorseSkelLimbsLimb_009B34DL_002810
+
+gPhantomHorseSkelLimbsLimb_0099D4DL_0028C0:
+  type: GFX
+  offset: 0x0028C0
+  symbol: gPhantomHorseSkelLimbsLimb_0099D4DL_0028C0
+
+gPhantomHorseSkelLimbsLimb_009AA4DL_002970:
+  type: GFX
+  offset: 0x002970
+  symbol: gPhantomHorseSkelLimbsLimb_009AA4DL_002970
+
+gPhantomHorseSkelLimbsLimb_009AB4DL_002C48:
+  type: GFX
+  offset: 0x002C48
+  symbol: gPhantomHorseSkelLimbsLimb_009AB4DL_002C48
+
+gPhantomHorseSkelLimbsLimb_009A94DL_002DE8:
+  type: GFX
+  offset: 0x002DE8
+  symbol: gPhantomHorseSkelLimbsLimb_009A94DL_002DE8
+
+gPhantomHorseSkelLimbsLimb_009A74DL_002EE8:
+  type: GFX
+  offset: 0x002EE8
+  symbol: gPhantomHorseSkelLimbsLimb_009A74DL_002EE8
+
+gPhantomHorseSkelLimbsLimb_009A64DL_002F98:
+  type: GFX
+  offset: 0x002F98
+  symbol: gPhantomHorseSkelLimbsLimb_009A64DL_002F98
+
+gPhantomHorseSkelLimbsLimb_009A84DL_003098:
+  type: GFX
+  offset: 0x003098
+  symbol: gPhantomHorseSkelLimbsLimb_009A84DL_003098
+
+gPhantomHorseSkelLimbsLimb_009BB4DL_003170:
+  type: GFX
+  offset: 0x003170
+  symbol: gPhantomHorseSkelLimbsLimb_009BB4DL_003170
+
+gPhantomHorseSkelLimbsLimb_009BA4DL_003220:
+  type: GFX
+  offset: 0x003220
+  symbol: gPhantomHorseSkelLimbsLimb_009BA4DL_003220
+
+gPhantomHorseSkelLimbsLimb_009874:
+  type: OOT:LIMB
+  offset: 0x009874
+  symbol: gPhantomHorseSkelLimbsLimb_009874
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009884:
+  type: OOT:LIMB
+  offset: 0x009884
+  symbol: gPhantomHorseSkelLimbsLimb_009884
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009894:
+  type: OOT:LIMB
+  offset: 0x009894
+  symbol: gPhantomHorseSkelLimbsLimb_009894
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0098A4:
+  type: OOT:LIMB
+  offset: 0x0098A4
+  symbol: gPhantomHorseSkelLimbsLimb_0098A4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0098B4:
+  type: OOT:LIMB
+  offset: 0x0098B4
+  symbol: gPhantomHorseSkelLimbsLimb_0098B4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0098C4:
+  type: OOT:LIMB
+  offset: 0x0098C4
+  symbol: gPhantomHorseSkelLimbsLimb_0098C4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0098D4:
+  type: OOT:LIMB
+  offset: 0x0098D4
+  symbol: gPhantomHorseSkelLimbsLimb_0098D4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0098E4:
+  type: OOT:LIMB
+  offset: 0x0098E4
+  symbol: gPhantomHorseSkelLimbsLimb_0098E4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0098F4:
+  type: OOT:LIMB
+  offset: 0x0098F4
+  symbol: gPhantomHorseSkelLimbsLimb_0098F4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009904:
+  type: OOT:LIMB
+  offset: 0x009904
+  symbol: gPhantomHorseSkelLimbsLimb_009904
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009914:
+  type: OOT:LIMB
+  offset: 0x009914
+  symbol: gPhantomHorseSkelLimbsLimb_009914
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009924:
+  type: OOT:LIMB
+  offset: 0x009924
+  symbol: gPhantomHorseSkelLimbsLimb_009924
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009934:
+  type: OOT:LIMB
+  offset: 0x009934
+  symbol: gPhantomHorseSkelLimbsLimb_009934
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009944:
+  type: OOT:LIMB
+  offset: 0x009944
+  symbol: gPhantomHorseSkelLimbsLimb_009944
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009954:
+  type: OOT:LIMB
+  offset: 0x009954
+  symbol: gPhantomHorseSkelLimbsLimb_009954
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009964:
+  type: OOT:LIMB
+  offset: 0x009964
+  symbol: gPhantomHorseSkelLimbsLimb_009964
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009974:
+  type: OOT:LIMB
+  offset: 0x009974
+  symbol: gPhantomHorseSkelLimbsLimb_009974
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009984:
+  type: OOT:LIMB
+  offset: 0x009984
+  symbol: gPhantomHorseSkelLimbsLimb_009984
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009994:
+  type: OOT:LIMB
+  offset: 0x009994
+  symbol: gPhantomHorseSkelLimbsLimb_009994
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0099A4:
+  type: OOT:LIMB
+  offset: 0x0099A4
+  symbol: gPhantomHorseSkelLimbsLimb_0099A4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0099B4:
+  type: OOT:LIMB
+  offset: 0x0099B4
+  symbol: gPhantomHorseSkelLimbsLimb_0099B4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0099C4:
+  type: OOT:LIMB
+  offset: 0x0099C4
+  symbol: gPhantomHorseSkelLimbsLimb_0099C4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0099D4:
+  type: OOT:LIMB
+  offset: 0x0099D4
+  symbol: gPhantomHorseSkelLimbsLimb_0099D4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0099E4:
+  type: OOT:LIMB
+  offset: 0x0099E4
+  symbol: gPhantomHorseSkelLimbsLimb_0099E4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_0099F4:
+  type: OOT:LIMB
+  offset: 0x0099F4
+  symbol: gPhantomHorseSkelLimbsLimb_0099F4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A04:
+  type: OOT:LIMB
+  offset: 0x009A04
+  symbol: gPhantomHorseSkelLimbsLimb_009A04
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A14:
+  type: OOT:LIMB
+  offset: 0x009A14
+  symbol: gPhantomHorseSkelLimbsLimb_009A14
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A24:
+  type: OOT:LIMB
+  offset: 0x009A24
+  symbol: gPhantomHorseSkelLimbsLimb_009A24
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A34:
+  type: OOT:LIMB
+  offset: 0x009A34
+  symbol: gPhantomHorseSkelLimbsLimb_009A34
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A44:
+  type: OOT:LIMB
+  offset: 0x009A44
+  symbol: gPhantomHorseSkelLimbsLimb_009A44
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A54:
+  type: OOT:LIMB
+  offset: 0x009A54
+  symbol: gPhantomHorseSkelLimbsLimb_009A54
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A64:
+  type: OOT:LIMB
+  offset: 0x009A64
+  symbol: gPhantomHorseSkelLimbsLimb_009A64
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A74:
+  type: OOT:LIMB
+  offset: 0x009A74
+  symbol: gPhantomHorseSkelLimbsLimb_009A74
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A84:
+  type: OOT:LIMB
+  offset: 0x009A84
+  symbol: gPhantomHorseSkelLimbsLimb_009A84
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009A94:
+  type: OOT:LIMB
+  offset: 0x009A94
+  symbol: gPhantomHorseSkelLimbsLimb_009A94
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009AA4:
+  type: OOT:LIMB
+  offset: 0x009AA4
+  symbol: gPhantomHorseSkelLimbsLimb_009AA4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009AB4:
+  type: OOT:LIMB
+  offset: 0x009AB4
+  symbol: gPhantomHorseSkelLimbsLimb_009AB4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009AC4:
+  type: OOT:LIMB
+  offset: 0x009AC4
+  symbol: gPhantomHorseSkelLimbsLimb_009AC4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009AD4:
+  type: OOT:LIMB
+  offset: 0x009AD4
+  symbol: gPhantomHorseSkelLimbsLimb_009AD4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009AE4:
+  type: OOT:LIMB
+  offset: 0x009AE4
+  symbol: gPhantomHorseSkelLimbsLimb_009AE4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009AF4:
+  type: OOT:LIMB
+  offset: 0x009AF4
+  symbol: gPhantomHorseSkelLimbsLimb_009AF4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B04:
+  type: OOT:LIMB
+  offset: 0x009B04
+  symbol: gPhantomHorseSkelLimbsLimb_009B04
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B14:
+  type: OOT:LIMB
+  offset: 0x009B14
+  symbol: gPhantomHorseSkelLimbsLimb_009B14
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B24:
+  type: OOT:LIMB
+  offset: 0x009B24
+  symbol: gPhantomHorseSkelLimbsLimb_009B24
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B34:
+  type: OOT:LIMB
+  offset: 0x009B34
+  symbol: gPhantomHorseSkelLimbsLimb_009B34
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B44:
+  type: OOT:LIMB
+  offset: 0x009B44
+  symbol: gPhantomHorseSkelLimbsLimb_009B44
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B54:
+  type: OOT:LIMB
+  offset: 0x009B54
+  symbol: gPhantomHorseSkelLimbsLimb_009B54
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B64:
+  type: OOT:LIMB
+  offset: 0x009B64
+  symbol: gPhantomHorseSkelLimbsLimb_009B64
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B74:
+  type: OOT:LIMB
+  offset: 0x009B74
+  symbol: gPhantomHorseSkelLimbsLimb_009B74
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B84:
+  type: OOT:LIMB
+  offset: 0x009B84
+  symbol: gPhantomHorseSkelLimbsLimb_009B84
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009B94:
+  type: OOT:LIMB
+  offset: 0x009B94
+  symbol: gPhantomHorseSkelLimbsLimb_009B94
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009BA4:
+  type: OOT:LIMB
+  offset: 0x009BA4
+  symbol: gPhantomHorseSkelLimbsLimb_009BA4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbsLimb_009BB4:
+  type: OOT:LIMB
+  offset: 0x009BB4
+  symbol: gPhantomHorseSkelLimbsLimb_009BB4
+  limb_type: Skin
+
+gPhantomHorseSkelLimbs:
+  type: BLOB
+  offset: 0x9BC4
+  symbol: gPhantomHorseSkelLimbs
+  size: 0
+
+gPhantomHorseSkelLimbsLimb_0098C4SkinLimbDL_00B730:
+  type: GFX
+  offset: 0x00B730
+  symbol: gPhantomHorseSkelLimbsLimb_0098C4SkinLimbDL_00B730
+
+object_fhgVtx_00E4B0:
+  type: OOT:ARRAY
+  offset: 0x00E4B0
+  symbol: object_fhgVtx_00E4B0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_00E7C0:
+  type: OOT:ARRAY
+  offset: 0x00E7C0
+  symbol: object_fhgVtx_00E7C0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_00E810:
+  type: OOT:ARRAY
+  offset: 0x00E810
+  symbol: object_fhgVtx_00E810
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_00F1A0:
+  type: OOT:ARRAY
+  offset: 0x00F1A0
+  symbol: object_fhgVtx_00F1A0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_00F860:
+  type: OOT:ARRAY
+  offset: 0x00F860
+  symbol: object_fhgVtx_00F860
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fhgVtx_010D20:
+  type: OOT:ARRAY
+  offset: 0x010D20
+  symbol: object_fhgVtx_010D20
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

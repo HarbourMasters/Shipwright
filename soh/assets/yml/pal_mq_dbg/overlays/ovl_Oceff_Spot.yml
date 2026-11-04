@@ -1,0 +1,39 @@
+:config:
+  segments:
+    - [ 128, 0x00F54C80 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x00F54C80 ]
+    - [ 9, 0x00F54C80 ]
+    - [ 10, 0x00F54C80 ]
+    - [ 11, 0x00F54C80 ]
+    - [ 12, 0x00F54C80 ]
+    - [ 13, 0x00F54C80 ]
+  virtual: [ 0x80BA6070, 0x00F54C80 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+sCylinderMaterialDL:
+  type: GFX
+  offset: 0xDA0
+  symbol: sCylinderMaterialDL
+
+sCylinderModelDL:
+  type: GFX
+  offset: 0xE38
+  symbol: sCylinderModelDL
+
+sCylinderVtx:
+  type: OOT:ARRAY
+  offset: 0xBF0
+  symbol: sCylinderVtx
+  count: 27
+  array_type: VTX
+
+sTex:
+  type: TEXTURE
+  offset: 0x7F0
+  symbol: sTex
+  format: I8
+  width: 32
+  height: 32
+

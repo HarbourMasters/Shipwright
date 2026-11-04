@@ -86,9 +86,9 @@ void BgHakaWater_ChangeWaterLevel(BgHakaWater* this, PlayState* play) {
     }
 
     if (this->actor.home.pos.y < this->actor.world.pos.y) {
-        func_8002F948(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     } else {
-        func_8002F948(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     }
 
     if (Math_StepToF(&this->actor.world.pos.y, this->actor.home.pos.y, 0.5f) != 0) {

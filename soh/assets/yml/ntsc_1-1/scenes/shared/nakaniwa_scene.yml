@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [ 2, 0x01D26960 ]
+
+  external_files:
+    - ntsc_1-1/scenes/shared/nakaniwa_sceneSet_003720.yml
+    - ntsc_1-1/scenes/shared/nakaniwa_sceneSet_0037D0.yml
+    - ntsc_1-1/scenes/shared/nakaniwa_sceneSet_0038B0.yml
+nakaniwa_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: nakaniwa_scene
+
+gZeldasCourtyardGanonCs:
+  type: OOT:CUTSCENE
+  offset: 0x104
+  symbol: gZeldasCourtyardGanonCs
+
+gZeldasCourtyardLullabyCs:
+  type: OOT:CUTSCENE
+  offset: 0x2524
+  symbol: gZeldasCourtyardLullabyCs
+
+gZeldasCourtyardMeetCs:
+  type: OOT:CUTSCENE
+  offset: 0x3994
+  symbol: gZeldasCourtyardMeetCs
+
+gZeldasCourtyardWindowCs:
+  type: OOT:CUTSCENE
+  offset: 0x444
+  symbol: gZeldasCourtyardWindowCs
+
+
+nakaniwa_sceneCollisionHeader_001BC8:
+  type: OOT:COLLISION
+  offset: 0x001BC8
+  symbol: nakaniwa_sceneCollisionHeader_001BC8

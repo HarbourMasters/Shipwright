@@ -1,0 +1,257 @@
+:config:
+  segments:
+    - [ 3, 0x01C32B90 ]
+    - [ 2, 0x01C31660 ]
+  directory: scenes/shared/market_day_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/market_day_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+
+market_day_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: market_day_room_0
+
+
+market_day_room_0Vtx_0002F0:
+  type: OOT:ARRAY
+  offset: 0x0002F0
+  symbol: market_day_room_0Vtx_0002F0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_0003B0:
+  type: GFX
+  offset: 0x0003B0
+  symbol: market_day_room_0DL_0003B0
+
+market_day_room_0Vtx_000430:
+  type: OOT:ARRAY
+  offset: 0x000430
+  symbol: market_day_room_0Vtx_000430
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_0005B0:
+  type: GFX
+  offset: 0x0005B0
+  symbol: market_day_room_0DL_0005B0
+
+market_day_room_0Vtx_000648:
+  type: OOT:ARRAY
+  offset: 0x000648
+  symbol: market_day_room_0Vtx_000648
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_0007C8:
+  type: GFX
+  offset: 0x0007C8
+  symbol: market_day_room_0DL_0007C8
+
+market_day_room_0Vtx_000860:
+  type: OOT:ARRAY
+  offset: 0x000860
+  symbol: market_day_room_0Vtx_000860
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_0009E0:
+  type: GFX
+  offset: 0x0009E0
+  symbol: market_day_room_0DL_0009E0
+
+market_day_room_0Vtx_000A78:
+  type: OOT:ARRAY
+  offset: 0x000A78
+  symbol: market_day_room_0Vtx_000A78
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_000C78:
+  type: GFX
+  offset: 0x000C78
+  symbol: market_day_room_0DL_000C78
+
+market_day_room_0Vtx_000D60:
+  type: OOT:ARRAY
+  offset: 0x000D60
+  symbol: market_day_room_0Vtx_000D60
+  count: 200
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_0019E0:
+  type: GFX
+  offset: 0x0019E0
+  symbol: market_day_room_0DL_0019E0
+
+market_day_room_0Vtx_001C00:
+  type: OOT:ARRAY
+  offset: 0x001C00
+  symbol: market_day_room_0Vtx_001C00
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_0020B0:
+  type: GFX
+  offset: 0x0020B0
+  symbol: market_day_room_0DL_0020B0
+
+market_day_room_0Vtx_0021E0:
+  type: OOT:ARRAY
+  offset: 0x0021E0
+  symbol: market_day_room_0Vtx_0021E0
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_002690:
+  type: GFX
+  offset: 0x002690
+  symbol: market_day_room_0DL_002690
+
+market_day_room_0Vtx_0027C0:
+  type: OOT:ARRAY
+  offset: 0x0027C0
+  symbol: market_day_room_0Vtx_0027C0
+  count: 152
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_003140:
+  type: GFX
+  offset: 0x003140
+  symbol: market_day_room_0DL_003140
+
+market_day_room_0Vtx_0032F8:
+  type: OOT:ARRAY
+  offset: 0x0032F8
+  symbol: market_day_room_0Vtx_0032F8
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_0033D8:
+  type: GFX
+  offset: 0x0033D8
+  symbol: market_day_room_0DL_0033D8
+
+market_day_room_0Vtx_003460:
+  type: OOT:ARRAY
+  offset: 0x003460
+  symbol: market_day_room_0Vtx_003460
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_003620:
+  type: GFX
+  offset: 0x003620
+  symbol: market_day_room_0DL_003620
+
+market_day_room_0Vtx_0036C0:
+  type: OOT:ARRAY
+  offset: 0x0036C0
+  symbol: market_day_room_0Vtx_0036C0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_003B00:
+  type: GFX
+  offset: 0x003B00
+  symbol: market_day_room_0DL_003B00
+
+market_day_room_0Vtx_003BF8:
+  type: OOT:ARRAY
+  offset: 0x003BF8
+  symbol: market_day_room_0Vtx_003BF8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_003D98:
+  type: GFX
+  offset: 0x003D98
+  symbol: market_day_room_0DL_003D98
+
+market_day_room_0Vtx_003E48:
+  type: OOT:ARRAY
+  offset: 0x003E48
+  symbol: market_day_room_0Vtx_003E48
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_004048:
+  type: GFX
+  offset: 0x004048
+  symbol: market_day_room_0DL_004048
+
+market_day_room_0Vtx_004100:
+  type: OOT:ARRAY
+  offset: 0x004100
+  symbol: market_day_room_0Vtx_004100
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_004200:
+  type: GFX
+  offset: 0x004200
+  symbol: market_day_room_0DL_004200
+
+market_day_room_0Vtx_004288:
+  type: OOT:ARRAY
+  offset: 0x004288
+  symbol: market_day_room_0Vtx_004288
+  count: 272
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_005388:
+  type: GFX
+  offset: 0x005388
+  symbol: market_day_room_0DL_005388
+
+market_day_room_0Vtx_005650:
+  type: OOT:ARRAY
+  offset: 0x005650
+  symbol: market_day_room_0Vtx_005650
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_day_room_0DL_005750:
+  type: GFX
+  offset: 0x005750
+  symbol: market_day_room_0DL_005750
+
+market_day_room_0DL_0057D8:
+  type: GFX
+  offset: 0x0057D8
+  symbol: market_day_room_0DL_0057D8

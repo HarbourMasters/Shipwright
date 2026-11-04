@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x012F20F0 ]
+
+gGERudoTrainingGroundTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGERudoTrainingGroundTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGERudoTrainingGroundTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gGERudoTrainingGroundTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gGERudoTrainingGroundTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGERudoTrainingGroundTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

@@ -1,0 +1,94 @@
+:config:
+  segments:
+    - [ 3, 0x01EB38E0 ]
+    - [ 2, 0x01EAA120 ]
+  directory: scenes/shared/hakaana2_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/hakaana2_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+hakaana2_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: hakaana2_room_0
+
+
+hakaana2_room_0Vtx_0000D0:
+  type: OOT:ARRAY
+  offset: 0x0000D0
+  symbol: hakaana2_room_0Vtx_0000D0
+  count: 675
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana2_room_0DL_002B00:
+  type: GFX
+  offset: 0x002B00
+  symbol: hakaana2_room_0DL_002B00
+
+hakaana2_room_0Vtx_003508:
+  type: OOT:ARRAY
+  offset: 0x003508
+  symbol: hakaana2_room_0Vtx_003508
+  count: 116
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana2_room_0DL_003C48:
+  type: GFX
+  offset: 0x003C48
+  symbol: hakaana2_room_0DL_003C48
+
+hakaana2_room_0Vtx_004168:
+  type: OOT:ARRAY
+  offset: 0x004168
+  symbol: hakaana2_room_0Vtx_004168
+  count: 287
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana2_room_0DL_005358:
+  type: GFX
+  offset: 0x005358
+  symbol: hakaana2_room_0DL_005358
+
+hakaana2_room_0DL_005DD8:
+  type: GFX
+  offset: 0x005DD8
+  symbol: hakaana2_room_0DL_005DD8
+
+hakaana2_room_0Vtx_005E00:
+  type: OOT:ARRAY
+  offset: 0x005E00
+  symbol: hakaana2_room_0Vtx_005E00
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana2_room_0DL_006310:
+  type: GFX
+  offset: 0x006310
+  symbol: hakaana2_room_0DL_006310
+
+hakaana2_room_0Vtx_006598:
+  type: OOT:ARRAY
+  offset: 0x006598
+  symbol: hakaana2_room_0Vtx_006598
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana2_room_0DL_006718:
+  type: GFX
+  offset: 0x006718
+  symbol: hakaana2_room_0DL_006718
+
+hakaana2_room_0DL_0067F8:
+  type: GFX
+  offset: 0x0067F8
+  symbol: hakaana2_room_0DL_0067F8

@@ -41,7 +41,7 @@ public class ShipOfHarkinian : SimpleTCPPack<SimpleTCPServerConnector>
         new("Take Half Damage", "take_half_damage") { Category = "Link Modifiers", Duration = 30, Price = 20, Description = "Halves the damage Link takes. Won't save the streamer if they're bad at the game though." },
         new("Take Double Damage", "take_double_damage") { Category = "Link Modifiers", Duration = 30, Price = 30, Description = "Doubles the damage Link takes. Turns OoT into Dark Souls.. kinda." },
         new("One-Hit KO", "one_hit_ko") { Category = "Link Modifiers", Duration = 30, Price = 150, Description = "Everything that takes health away kills Link. EVERYTHING." },
-        new("Invincibility", "invincibility") { Category = "Link Modifiers", Duration = 15, Price = 25, Description = "Turn Link into a super hero, but his only superpower is not dieing." },
+        new("Invincibility", "invincibility") { Category = "Link Modifiers", Duration = 15, Price = 25, Description = "Turn Link into a super hero, but his only superpower is not dying." },
         new("Increase Speed", "increase_speed") { Category = "Link Modifiers", Duration = 30, Price = 20, Description = "Give Link the zoomies!" },
         new("Decrease Speed", "decrease_speed") { Category = "Link Modifiers", Duration = 30, Price = 25, Description = "Instead of a slow clap, how about a slow walk?" },
         new("Low Gravity", "low_gravity") { Category = "Link Modifiers", Duration = 30, Price = 25, Description = "I beliiiiieve I can flyyyyy." },

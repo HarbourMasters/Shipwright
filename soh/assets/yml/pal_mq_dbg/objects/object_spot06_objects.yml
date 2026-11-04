@@ -1,0 +1,125 @@
+:config:
+  segments:
+    - [ 6, 0x012F9000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x012F9000 ]
+    - [ 9, 0x012F9000 ]
+    - [ 10, 0x012F9000 ]
+    - [ 11, 0x012F9000 ]
+    - [ 12, 0x012F9000 ]
+    - [ 13, 0x012F9000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gLakeHyliaHighWaterDL:
+  type: GFX
+  offset: 0x0470
+  symbol: gLakeHyliaHighWaterDL
+
+gLakeHyliaLowWaterDL:
+  type: GFX
+  offset: 0x0120
+  symbol: gLakeHyliaLowWaterDL
+
+gLakeHyliaWaterTempleGateCol:
+  type: OOT:COLLISION
+  offset: 0x0EE8
+  symbol: gLakeHyliaWaterTempleGateCol
+
+gLakeHyliaWaterTempleGateDL:
+  type: GFX
+  offset: 0x0E10
+  symbol: gLakeHyliaWaterTempleGateDL
+
+gLakeHyliaWaterTempleGateTex:
+  type: TEXTURE
+  offset: 0x05D0
+  symbol: gLakeHyliaWaterTempleGateTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gLakeHyliaWaterTempleKeyDL:
+  type: GFX
+  offset: 0x2490
+  symbol: gLakeHyliaWaterTempleKeyDL
+
+gLakeHyliaWaterTempleKeyTex:
+  type: TEXTURE
+  offset: 0x1270
+  symbol: gLakeHyliaWaterTempleKeyTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gLakeHyliaWaterTex:
+  type: TEXTURE
+  offset: 0x25A0
+  symbol: gLakeHyliaWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLakeHyliaZoraShortcutIceblockCol:
+  type: OOT:COLLISION
+  offset: 0x1238
+  symbol: gLakeHyliaZoraShortcutIceblockCol
+
+gLakeHyliaZoraShortcutIceblockDL:
+  type: GFX
+  offset: 0x1160
+  symbol: gLakeHyliaZoraShortcutIceblockDL
+
+gLakeHyliaZoraShortcutIceblockTex:
+  type: TEXTURE
+  offset: 0x0F20
+  symbol: gLakeHyliaZoraShortcutIceblockTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_spot06_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_spot06_objectsVtx_000000
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot06_objectsVtx_000230:
+  type: OOT:ARRAY
+  offset: 0x000230
+  symbol: object_spot06_objectsVtx_000230
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot06_objectsVtx_000DD0:
+  type: OOT:ARRAY
+  offset: 0x000DD0
+  symbol: object_spot06_objectsVtx_000DD0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot06_objectsVtx_001120:
+  type: OOT:ARRAY
+  offset: 0x001120
+  symbol: object_spot06_objectsVtx_001120
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot06_objectsVtx_002270:
+  type: OOT:ARRAY
+  offset: 0x002270
+  symbol: object_spot06_objectsVtx_002270
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

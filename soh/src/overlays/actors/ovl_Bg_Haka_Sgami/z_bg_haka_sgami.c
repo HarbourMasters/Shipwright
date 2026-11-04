@@ -283,7 +283,7 @@ void BgHakaSgami_Spin(BgHakaSgami* this, PlayState* play) {
 
     CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderScythe.base);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderScytheCenter.base);
-    func_8002F974(&this->actor, NA_SE_EV_ROLLCUTTER_MOTOR - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_ROLLCUTTER_MOTOR - SFX_FLAG);
 }
 
 void BgHakaSgami_Update(Actor* thisx, PlayState* play) {

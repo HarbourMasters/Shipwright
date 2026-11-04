@@ -1,0 +1,387 @@
+:config:
+  segments:
+    - [ 3, 0x01D934A0 ]
+    - [ 2, 0x01D92C70 ]
+  directory: scenes/shared/labo_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/labo_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+
+labo_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: labo_room_0
+
+
+labo_room_0Vtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: labo_room_0Vtx_000100
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_000280:
+  type: OOT:ARRAY
+  offset: 0x000280
+  symbol: labo_room_0Vtx_000280
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_000470:
+  type: OOT:ARRAY
+  offset: 0x000470
+  symbol: labo_room_0Vtx_000470
+  count: 185
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: labo_room_0Vtx_001000
+  count: 183
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_001B70:
+  type: OOT:ARRAY
+  offset: 0x001B70
+  symbol: labo_room_0Vtx_001B70
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_001D50:
+  type: OOT:ARRAY
+  offset: 0x001D50
+  symbol: labo_room_0Vtx_001D50
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0022F0:
+  type: OOT:ARRAY
+  offset: 0x0022F0
+  symbol: labo_room_0Vtx_0022F0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0023B0:
+  type: OOT:ARRAY
+  offset: 0x0023B0
+  symbol: labo_room_0Vtx_0023B0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_002790:
+  type: OOT:ARRAY
+  offset: 0x002790
+  symbol: labo_room_0Vtx_002790
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_002B60:
+  type: OOT:ARRAY
+  offset: 0x002B60
+  symbol: labo_room_0Vtx_002B60
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_002C60:
+  type: OOT:ARRAY
+  offset: 0x002C60
+  symbol: labo_room_0Vtx_002C60
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0030D0:
+  type: OOT:ARRAY
+  offset: 0x0030D0
+  symbol: labo_room_0Vtx_0030D0
+  count: 206
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_003DB0:
+  type: OOT:ARRAY
+  offset: 0x003DB0
+  symbol: labo_room_0Vtx_003DB0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_003FA0:
+  type: OOT:ARRAY
+  offset: 0x003FA0
+  symbol: labo_room_0Vtx_003FA0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0041D0:
+  type: OOT:ARRAY
+  offset: 0x0041D0
+  symbol: labo_room_0Vtx_0041D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_004290:
+  type: OOT:ARRAY
+  offset: 0x004290
+  symbol: labo_room_0Vtx_004290
+  count: 236
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_005150:
+  type: OOT:ARRAY
+  offset: 0x005150
+  symbol: labo_room_0Vtx_005150
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0051D0:
+  type: OOT:ARRAY
+  offset: 0x0051D0
+  symbol: labo_room_0Vtx_0051D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_005250:
+  type: OOT:ARRAY
+  offset: 0x005250
+  symbol: labo_room_0Vtx_005250
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0052D0:
+  type: OOT:ARRAY
+  offset: 0x0052D0
+  symbol: labo_room_0Vtx_0052D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_005350:
+  type: OOT:ARRAY
+  offset: 0x005350
+  symbol: labo_room_0Vtx_005350
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0053D0:
+  type: OOT:ARRAY
+  offset: 0x0053D0
+  symbol: labo_room_0Vtx_0053D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_005450:
+  type: OOT:ARRAY
+  offset: 0x005450
+  symbol: labo_room_0Vtx_005450
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0054D0:
+  type: OOT:ARRAY
+  offset: 0x0054D0
+  symbol: labo_room_0Vtx_0054D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_005550:
+  type: OOT:ARRAY
+  offset: 0x005550
+  symbol: labo_room_0Vtx_005550
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0055D0:
+  type: OOT:ARRAY
+  offset: 0x0055D0
+  symbol: labo_room_0Vtx_0055D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_005650:
+  type: OOT:ARRAY
+  offset: 0x005650
+  symbol: labo_room_0Vtx_005650
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0056D0:
+  type: OOT:ARRAY
+  offset: 0x0056D0
+  symbol: labo_room_0Vtx_0056D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_005750:
+  type: OOT:ARRAY
+  offset: 0x005750
+  symbol: labo_room_0Vtx_005750
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0057D0:
+  type: OOT:ARRAY
+  offset: 0x0057D0
+  symbol: labo_room_0Vtx_0057D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_005850:
+  type: OOT:ARRAY
+  offset: 0x005850
+  symbol: labo_room_0Vtx_005850
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0Vtx_0058D0:
+  type: OOT:ARRAY
+  offset: 0x0058D0
+  symbol: labo_room_0Vtx_0058D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+labo_room_0DL_005950:
+  type: GFX
+  offset: 0x005950
+  symbol: labo_room_0DL_005950
+
+labo_room_0DL_005A00:
+  type: GFX
+  offset: 0x005A00
+  symbol: labo_room_0DL_005A00
+
+labo_room_0DL_005AD8:
+  type: GFX
+  offset: 0x005AD8
+  symbol: labo_room_0DL_005AD8
+
+labo_room_0DL_005D68:
+  type: GFX
+  offset: 0x005D68
+  symbol: labo_room_0DL_005D68
+
+labo_room_0DL_005FF8:
+  type: GFX
+  offset: 0x005FF8
+  symbol: labo_room_0DL_005FF8
+
+labo_room_0DL_0060D0:
+  type: GFX
+  offset: 0x0060D0
+  symbol: labo_room_0DL_0060D0
+
+labo_room_0DL_006228:
+  type: GFX
+  offset: 0x006228
+  symbol: labo_room_0DL_006228
+
+labo_room_0DL_0062B8:
+  type: GFX
+  offset: 0x0062B8
+  symbol: labo_room_0DL_0062B8
+
+labo_room_0DL_0063F8:
+  type: GFX
+  offset: 0x0063F8
+  symbol: labo_room_0DL_0063F8
+
+labo_room_0DL_006520:
+  type: GFX
+  offset: 0x006520
+  symbol: labo_room_0DL_006520
+
+labo_room_0DL_0065B8:
+  type: GFX
+  offset: 0x0065B8
+  symbol: labo_room_0DL_0065B8
+
+labo_room_0DL_0066D0:
+  type: GFX
+  offset: 0x0066D0
+  symbol: labo_room_0DL_0066D0
+
+labo_room_0DL_006968:
+  type: GFX
+  offset: 0x006968
+  symbol: labo_room_0DL_006968
+
+labo_room_0DL_006A38:
+  type: GFX
+  offset: 0x006A38
+  symbol: labo_room_0DL_006A38
+
+labo_room_0DL_006B10:
+  type: GFX
+  offset: 0x006B10
+  symbol: labo_room_0DL_006B10
+
+labo_room_0DL_006BA0:
+  type: GFX
+  offset: 0x006BA0
+  symbol: labo_room_0DL_006BA0
+
+labo_room_0DL_006E50:
+  type: GFX
+  offset: 0x006E50
+  symbol: labo_room_0DL_006E50

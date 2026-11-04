@@ -1,0 +1,413 @@
+:config:
+  segments:
+    - [ 6, 0x012656A0 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x012656A0 ]
+    - [ 9, 0x012656A0 ]
+    - [ 10, 0x012656A0 ]
+    - [ 11, 0x012656A0 ]
+    - [ 12, 0x012656A0 ]
+    - [ 13, 0x012656A0 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gDntJijiBurrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x560
+  symbol: gDntJijiBurrowAnim
+
+gDntJijiCowerAnim:
+  type: OOT:ANIMATION
+  offset: 0x944
+  symbol: gDntJijiCowerAnim
+
+gDntJijiDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x82C
+  symbol: gDntJijiDanceAnim
+
+gDntJijiEyeHalfTex:
+  type: TEXTURE
+  offset: 0x2EA0
+  symbol: gDntJijiEyeHalfTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDntJijiEyeOpenTex:
+  type: TEXTURE
+  offset: 0x30A0
+  symbol: gDntJijiEyeOpenTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDntJijiEyeShutTex:
+  type: TEXTURE
+  offset: 0x3020
+  symbol: gDntJijiEyeShutTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDntJijiFlowerDL:
+  type: GFX
+  offset: 0x2310
+  symbol: gDntJijiFlowerDL
+
+gDntJijiHideAnim:
+  type: OOT:ANIMATION
+  offset: 0xA70
+  symbol: gDntJijiHideAnim
+
+gDntJijiNutDL:
+  type: GFX
+  offset: 0x2410
+  symbol: gDntJijiNutDL
+
+gDntJijiSkel:
+  type: OOT:SKELETON
+  offset: 0x33E0
+  symbol: gDntJijiSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gDntJijiSpitAnim:
+  type: OOT:ANIMATION
+  offset: 0x400
+  symbol: gDntJijiSpitAnim
+
+gDntJijiTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xBD0
+  symbol: gDntJijiTalkAnim
+
+gDntJijiUnburrowAnim:
+  type: OOT:ANIMATION
+  offset: 0xDF8
+  symbol: gDntJijiUnburrowAnim
+
+gDntJijiUnkAnim:
+  type: OOT:ANIMATION
+  offset: 0xF98
+  symbol: gDntJijiUnkAnim
+
+gDntJijiUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x12B0
+  symbol: gDntJijiUpAnim
+
+gDntJijiWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x364C
+  symbol: gDntJijiWaitAnim
+
+gDntJijiWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x37C0
+  symbol: gDntJijiWalkAnim
+
+object_dnsTex_0024A0:
+  type: TEXTURE
+  offset: 0x24A0
+  symbol: object_dnsTex_0024A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dnsTex_002CA0:
+  type: TEXTURE
+  offset: 0x2CA0
+  symbol: object_dnsTex_002CA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dnsTex_002F20:
+  type: TEXTURE
+  offset: 0x2F20
+  symbol: object_dnsTex_002F20
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_dnsTex_002FA0:
+  type: TEXTURE
+  offset: 0x2FA0
+  symbol: object_dnsTex_002FA0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_dnsTex_003120:
+  type: TEXTURE
+  offset: 0x3120
+  symbol: object_dnsTex_003120
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_dnsVtx_0012C0:
+  type: OOT:ARRAY
+  offset: 0x0012C0
+  symbol: object_dnsVtx_0012C0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001320:
+  type: OOT:ARRAY
+  offset: 0x001320
+  symbol: object_dnsVtx_001320
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001390:
+  type: OOT:ARRAY
+  offset: 0x001390
+  symbol: object_dnsVtx_001390
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001400:
+  type: OOT:ARRAY
+  offset: 0x001400
+  symbol: object_dnsVtx_001400
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0014A0:
+  type: OOT:ARRAY
+  offset: 0x0014A0
+  symbol: object_dnsVtx_0014A0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001590:
+  type: OOT:ARRAY
+  offset: 0x001590
+  symbol: object_dnsVtx_001590
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001760:
+  type: OOT:ARRAY
+  offset: 0x001760
+  symbol: object_dnsVtx_001760
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0017A0:
+  type: OOT:ARRAY
+  offset: 0x0017A0
+  symbol: object_dnsVtx_0017A0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0017E0:
+  type: OOT:ARRAY
+  offset: 0x0017E0
+  symbol: object_dnsVtx_0017E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001820:
+  type: OOT:ARRAY
+  offset: 0x001820
+  symbol: object_dnsVtx_001820
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001860:
+  type: OOT:ARRAY
+  offset: 0x001860
+  symbol: object_dnsVtx_001860
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0018C0:
+  type: OOT:ARRAY
+  offset: 0x0018C0
+  symbol: object_dnsVtx_0018C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDntJijiSkelLimbsLimb_00338CDL_001900:
+  type: GFX
+  offset: 0x001900
+  symbol: gDntJijiSkelLimbsLimb_00338CDL_001900
+
+gDntJijiSkelLimbsLimb_0033A4DL_001990:
+  type: GFX
+  offset: 0x001990
+  symbol: gDntJijiSkelLimbsLimb_0033A4DL_001990
+
+gDntJijiSkelLimbsLimb_003398DL_001A40:
+  type: GFX
+  offset: 0x001A40
+  symbol: gDntJijiSkelLimbsLimb_003398DL_001A40
+
+gDntJijiSkelLimbsLimb_003320DL_001AF0:
+  type: GFX
+  offset: 0x001AF0
+  symbol: gDntJijiSkelLimbsLimb_003320DL_001AF0
+
+gDntJijiSkelLimbsLimb_003368DL_001BA8:
+  type: GFX
+  offset: 0x001BA8
+  symbol: gDntJijiSkelLimbsLimb_003368DL_001BA8
+
+gDntJijiSkelLimbsLimb_00332CDL_001CC0:
+  type: GFX
+  offset: 0x001CC0
+  symbol: gDntJijiSkelLimbsLimb_00332CDL_001CC0
+
+gDntJijiSkelLimbsLimb_003338DL_001DC0:
+  type: GFX
+  offset: 0x001DC0
+  symbol: gDntJijiSkelLimbsLimb_003338DL_001DC0
+
+gDntJijiSkelLimbsLimb_003380DL_001E58:
+  type: GFX
+  offset: 0x001E58
+  symbol: gDntJijiSkelLimbsLimb_003380DL_001E58
+
+gDntJijiSkelLimbsLimb_003374DL_001EE8:
+  type: GFX
+  offset: 0x001EE8
+  symbol: gDntJijiSkelLimbsLimb_003374DL_001EE8
+
+gDntJijiSkelLimbsLimb_003344DL_001F78:
+  type: GFX
+  offset: 0x001F78
+  symbol: gDntJijiSkelLimbsLimb_003344DL_001F78
+
+gDntJijiSkelLimbsLimb_00335CDL_002008:
+  type: GFX
+  offset: 0x002008
+  symbol: gDntJijiSkelLimbsLimb_00335CDL_002008
+
+gDntJijiSkelLimbsLimb_003350DL_0020A0:
+  type: GFX
+  offset: 0x0020A0
+  symbol: gDntJijiSkelLimbsLimb_003350DL_0020A0
+
+object_dnsVtx_002130:
+  type: OOT:ARRAY
+  offset: 0x002130
+  symbol: object_dnsVtx_002130
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0023E0:
+  type: OOT:ARRAY
+  offset: 0x0023E0
+  symbol: object_dnsVtx_0023E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDntJijiSkelLimbsLimb_003320:
+  type: OOT:LIMB
+  offset: 0x003320
+  symbol: gDntJijiSkelLimbsLimb_003320
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_00332C:
+  type: OOT:LIMB
+  offset: 0x00332C
+  symbol: gDntJijiSkelLimbsLimb_00332C
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_003338:
+  type: OOT:LIMB
+  offset: 0x003338
+  symbol: gDntJijiSkelLimbsLimb_003338
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_003344:
+  type: OOT:LIMB
+  offset: 0x003344
+  symbol: gDntJijiSkelLimbsLimb_003344
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_003350:
+  type: OOT:LIMB
+  offset: 0x003350
+  symbol: gDntJijiSkelLimbsLimb_003350
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_00335C:
+  type: OOT:LIMB
+  offset: 0x00335C
+  symbol: gDntJijiSkelLimbsLimb_00335C
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_003368:
+  type: OOT:LIMB
+  offset: 0x003368
+  symbol: gDntJijiSkelLimbsLimb_003368
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_003374:
+  type: OOT:LIMB
+  offset: 0x003374
+  symbol: gDntJijiSkelLimbsLimb_003374
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_003380:
+  type: OOT:LIMB
+  offset: 0x003380
+  symbol: gDntJijiSkelLimbsLimb_003380
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_00338C:
+  type: OOT:LIMB
+  offset: 0x00338C
+  symbol: gDntJijiSkelLimbsLimb_00338C
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_003398:
+  type: OOT:LIMB
+  offset: 0x003398
+  symbol: gDntJijiSkelLimbsLimb_003398
+  limb_type: Standard
+
+gDntJijiSkelLimbsLimb_0033A4:
+  type: OOT:LIMB
+  offset: 0x0033A4
+  symbol: gDntJijiSkelLimbsLimb_0033A4
+  limb_type: Standard
+
+gDntJijiSkelLimbs:
+  type: BLOB
+  offset: 0x33B0
+  symbol: gDntJijiSkelLimbs
+  size: 0

@@ -1,0 +1,866 @@
+:config:
+  segments:
+    - [ 6, 0x0110E0F0 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x0110E0F0 ]
+    - [ 9, 0x0110E0F0 ]
+    - [ 10, 0x0110E0F0 ]
+    - [ 11, 0x0110E0F0 ]
+    - [ 12, 0x0110E0F0 ]
+    - [ 13, 0x0110E0F0 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+GMegamiCol:
+  type: OOT:COLLISION
+  offset: 0x5C4C
+  symbol: GMegamiCol
+
+g1f1fiftTopTex:
+  type: TEXTURE
+  offset: 0x1B940
+  symbol: g1f1fiftTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+g1fLiftBottomTex:
+  type: TEXTURE
+  offset: 0x17540
+  symbol: g1fLiftBottomTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+g1fliftCol:
+  type: OOT:COLLISION
+  offset: 0x4A8
+  symbol: g1fliftCol
+
+g1fliftDL:
+  type: GFX
+  offset: 0x1F0
+  symbol: g1fliftDL
+
+gAmishutterCol:
+  type: OOT:COLLISION
+  offset: 0xC4C8
+  symbol: gAmishutterCol
+
+gAmishutterDL:
+  type: GFX
+  offset: 0xC0A0
+  symbol: gAmishutterDL
+
+gBigMirror1DL:
+  type: GFX
+  offset: 0xBC70
+  symbol: gBigMirror1DL
+
+gBigMirror2DL:
+  type: GFX
+  offset: 0xBD80
+  symbol: gBigMirror2DL
+
+gBigMirror3DL:
+  type: GFX
+  offset: 0xE1B0
+  symbol: gBigMirror3DL
+
+gBigMirror4DL:
+  type: GFX
+  offset: 0xE2D0
+  symbol: gBigMirror4DL
+
+gBigMirrorGradientTex:
+  type: TEXTURE
+  offset: 0x1AB40
+  symbol: gBigMirrorGradientTex
+  format: IA16
+  width: 8
+  height: 128
+
+gBombchuiwa2DL:
+  type: GFX
+  offset: 0x119B0
+  symbol: gBombchuiwa2DL
+
+gBombchuiwaDL:
+  type: GFX
+  offset: 0xE8D0
+  symbol: gBombchuiwaDL
+
+gBombchuiwaLight1DL:
+  type: GFX
+  offset: 0xDC40
+  symbol: gBombchuiwaLight1DL
+
+gBombchuiwaLight2DL:
+  type: GFX
+  offset: 0xDB60
+  symbol: gBombchuiwaLight2DL
+
+gBombiwaCol:
+  type: OOT:COLLISION
+  offset: 0xE710
+  symbol: gBombiwaCol
+
+gBombiwaDL:
+  type: GFX
+  offset: 0xE490
+  symbol: gBombiwaDL
+
+gBombiwaEffectDL:
+  type: GFX
+  offset: 0xEDC0
+  symbol: gBombiwaEffectDL
+
+gBombiwaLight1Tex:
+  type: TEXTURE
+  offset: 0x19B40
+  symbol: gBombiwaLight1Tex
+  format: IA16
+  width: 32
+  height: 64
+
+gBombiwaRockTex:
+  type: TEXTURE
+  offset: 0x18B40
+  symbol: gBombiwaRockTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gCobra1DL:
+  type: GFX
+  offset: 0x10790
+  symbol: gCobra1DL
+
+gCobra2DL:
+  type: GFX
+  offset: 0x10C20
+  symbol: gCobra2DL
+
+gCobra3DL:
+  type: GFX
+  offset: 0x117D0
+  symbol: gCobra3DL
+
+gCobraCol:
+  type: OOT:COLLISION
+  offset: 0x1167C
+  symbol: gCobraCol
+
+gCobraMirrorBorderTex:
+  type: TEXTURE
+  offset: 0x15D40
+  symbol: gCobraMirrorBorderTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCobraMirrorEyeTex:
+  type: TEXTURE
+  offset: 0x15540
+  symbol: gCobraMirrorEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCobraMirrorHandleTex:
+  type: TEXTURE
+  offset: 0x15F40
+  symbol: gCobraMirrorHandleTex
+  format: RGBA16
+  width: 32
+  height: 8
+
+gCobraMirrorMirrorTex:
+  type: TEXTURE
+  offset: 0x14540
+  symbol: gCobraMirrorMirrorTex
+  format: IA16
+  width: 32
+  height: 32
+
+gCobraMirrorStoneTex:
+  type: TEXTURE
+  offset: 0x13D40
+  symbol: gCobraMirrorStoneTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCobraMirrorToothTex:
+  type: TEXTURE
+  offset: 0x14D40
+  symbol: gCobraMirrorToothTex
+  format: IA16
+  width: 32
+  height: 32
+
+gKanaamiCol:
+  type: OOT:COLLISION
+  offset: 0xF208
+  symbol: gKanaamiCol
+
+gKanaamiDL:
+  type: GFX
+  offset: 0xF000
+  symbol: gKanaamiDL
+
+gKanaamiMiddleTex:
+  type: TEXTURE
+  offset: 0x13540
+  symbol: gKanaamiMiddleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKanaamiTopTex:
+  type: TEXTURE
+  offset: 0x12540
+  symbol: gKanaamiTopTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gLiftChainTex:
+  type: TEXTURE
+  offset: 0x17D40
+  symbol: gLiftChainTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLiftCol:
+  type: OOT:COLLISION
+  offset: 0xD7E8
+  symbol: gLiftCol
+
+gLiftDL:
+  type: GFX
+  offset: 0xCCE0
+  symbol: gLiftDL
+
+gLiftTopTex:
+  type: TEXTURE
+  offset: 0x18140
+  symbol: gLiftTopTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gLiftUpperChainTex:
+  type: TEXTURE
+  offset: 0x18940
+  symbol: gLiftUpperChainTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gMegami1DL:
+  type: GFX
+  offset: 0x5780
+  symbol: gMegami1DL
+
+gMegami1TLUT:
+  type: TEXTURE
+  offset: 0x5C80
+  symbol: gMegami1TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMegami1Tex:
+  type: TEXTURE
+  offset: 0x5CE8
+  symbol: gMegami1Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x5C80
+
+gMegami2DL:
+  type: GFX
+  offset: 0xB9F8
+  symbol: gMegami2DL
+
+gMegami2TLUT:
+  type: TEXTURE
+  offset: 0xAC50
+  symbol: gMegami2TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMegami2Tex:
+  type: TEXTURE
+  offset: 0xACB8
+  symbol: gMegami2Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0xAC50
+
+gMegami3TLUT:
+  type: TEXTURE
+  offset: 0x6CE8
+  symbol: gMegami3TLUT
+  format: RGBA16
+  width: 4
+  height: 64
+
+gMegami3Tex:
+  type: TEXTURE
+  offset: 0x64E8
+  symbol: gMegami3Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x5C80
+
+gMegami4TLUT:
+  type: TEXTURE
+  offset: 0x5CA0
+  symbol: gMegami4TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMegami5TLUT:
+  type: TEXTURE
+  offset: 0xAC70
+  symbol: gMegami5TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMegamiCrumbleTLUT:
+  type: TEXTURE
+  offset: 0x4E0
+  symbol: gMegamiCrumbleTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMegamiLeftCrumble1Tex:
+  type: TEXTURE
+  offset: 0x1500
+  symbol: gMegamiLeftCrumble1Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiLeftCrumble2Tex:
+  type: TEXTURE
+  offset: 0x3500
+  symbol: gMegamiLeftCrumble2Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiLeftCrumble3Tex:
+  type: TEXTURE
+  offset: 0x3D00
+  symbol: gMegamiLeftCrumble3Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiLeftCrumble4Tex:
+  type: TEXTURE
+  offset: 0x4500
+  symbol: gMegamiLeftCrumble4Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiLeftCrumble5Tex:
+  type: TEXTURE
+  offset: 0x0500
+  symbol: gMegamiLeftCrumble5Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiPiece10DL:
+  type: GFX
+  offset: 0xA6A0
+  symbol: gMegamiPiece10DL
+
+gMegamiPiece11DL:
+  type: GFX
+  offset: 0xA7E0
+  symbol: gMegamiPiece11DL
+
+gMegamiPiece12DL:
+  type: GFX
+  offset: 0xA978
+  symbol: gMegamiPiece12DL
+
+gMegamiPiece13DL:
+  type: GFX
+  offset: 0xAAC8
+  symbol: gMegamiPiece13DL
+
+gMegamiPiece1DL:
+  type: GFX
+  offset: 0x9928
+  symbol: gMegamiPiece1DL
+
+gMegamiPiece2DL:
+  type: GFX
+  offset: 0x9AC0
+  symbol: gMegamiPiece2DL
+
+gMegamiPiece3DL:
+  type: GFX
+  offset: 0x9C80
+  symbol: gMegamiPiece3DL
+
+gMegamiPiece4DL:
+  type: GFX
+  offset: 0x9DE8
+  symbol: gMegamiPiece4DL
+
+gMegamiPiece5DL:
+  type: GFX
+  offset: 0x9F60
+  symbol: gMegamiPiece5DL
+
+gMegamiPiece6DL:
+  type: GFX
+  offset: 0xA0A8
+  symbol: gMegamiPiece6DL
+
+gMegamiPiece7DL:
+  type: GFX
+  offset: 0xA278
+  symbol: gMegamiPiece7DL
+
+gMegamiPiece8DL:
+  type: GFX
+  offset: 0xA418
+  symbol: gMegamiPiece8DL
+
+gMegamiPiece9DL:
+  type: GFX
+  offset: 0xA568
+  symbol: gMegamiPiece9DL
+
+gMegamiRightCrumble1Tex:
+  type: TEXTURE
+  offset: 0xD00
+  symbol: gMegamiRightCrumble1Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiRightCrumble2Tex:
+  type: TEXTURE
+  offset: 0x1D00
+  symbol: gMegamiRightCrumble2Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiRightCrumble3Tex:
+  type: TEXTURE
+  offset: 0x2500
+  symbol: gMegamiRightCrumble3Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiRightCrumble4Tex:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: gMegamiRightCrumble4Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gMegamiRightCrumble5Tex:
+  type: TEXTURE
+  offset: 0x4D00
+  symbol: gMegamiRightCrumble5Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x4E0
+
+gZurerukabeCol:
+  type: OOT:COLLISION
+  offset: 0x12508
+  symbol: gZurerukabeCol
+
+gZurerukabeDL:
+  type: GFX
+  offset: 0x12340
+  symbol: gZurerukabeDL
+
+object_jya_objTLUT_011A60:
+  type: TEXTURE
+  offset: 0x11A60
+  symbol: object_jya_objTLUT_011A60
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_jya_objTex_00B4B8:
+  type: TEXTURE
+  offset: 0xB4B8
+  symbol: object_jya_objTex_00B4B8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xAC70
+
+object_jya_objTex_011A80:
+  type: TEXTURE
+  offset: 0x11A80
+  symbol: object_jya_objTex_011A80
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x11A60
+
+object_jya_objTex_016140:
+  type: TEXTURE
+  offset: 0x16140
+  symbol: object_jya_objTex_016140
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_jya_objTex_017140:
+  type: TEXTURE
+  offset: 0x17140
+  symbol: object_jya_objTex_017140
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_jya_objTex_01B340:
+  type: TEXTURE
+  offset: 0x1B340
+  symbol: object_jya_objTex_01B340
+  format: IA8
+  width: 32
+  height: 32
+
+object_jya_objTex_01B740:
+  type: TEXTURE
+  offset: 0x1B740
+  symbol: object_jya_objTex_01B740
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_jya_objVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_jya_objVtx_000000
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_005500:
+  type: OOT:ARRAY
+  offset: 0x005500
+  symbol: object_jya_objVtx_005500
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_0070E8:
+  type: OOT:ARRAY
+  offset: 0x0070E8
+  symbol: object_jya_objVtx_0070E8
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_007408:
+  type: OOT:ARRAY
+  offset: 0x007408
+  symbol: object_jya_objVtx_007408
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_007818:
+  type: OOT:ARRAY
+  offset: 0x007818
+  symbol: object_jya_objVtx_007818
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_007BD8:
+  type: OOT:ARRAY
+  offset: 0x007BD8
+  symbol: object_jya_objVtx_007BD8
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_007FF8:
+  type: OOT:ARRAY
+  offset: 0x007FF8
+  symbol: object_jya_objVtx_007FF8
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_0082B8:
+  type: OOT:ARRAY
+  offset: 0x0082B8
+  symbol: object_jya_objVtx_0082B8
+  count: 73
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_008748:
+  type: OOT:ARRAY
+  offset: 0x008748
+  symbol: object_jya_objVtx_008748
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_008A48:
+  type: OOT:ARRAY
+  offset: 0x008A48
+  symbol: object_jya_objVtx_008A48
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_008D38:
+  type: OOT:ARRAY
+  offset: 0x008D38
+  symbol: object_jya_objVtx_008D38
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_008F18:
+  type: OOT:ARRAY
+  offset: 0x008F18
+  symbol: object_jya_objVtx_008F18
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_009138:
+  type: OOT:ARRAY
+  offset: 0x009138
+  symbol: object_jya_objVtx_009138
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_009438:
+  type: OOT:ARRAY
+  offset: 0x009438
+  symbol: object_jya_objVtx_009438
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_0096F8:
+  type: OOT:ARRAY
+  offset: 0x0096F8
+  symbol: object_jya_objVtx_0096F8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00B8B8:
+  type: OOT:ARRAY
+  offset: 0x00B8B8
+  symbol: object_jya_objVtx_00B8B8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00BB50:
+  type: OOT:ARRAY
+  offset: 0x00BB50
+  symbol: object_jya_objVtx_00BB50
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00BD40:
+  type: OOT:ARRAY
+  offset: 0x00BD40
+  symbol: object_jya_objVtx_00BD40
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00BE10:
+  type: OOT:ARRAY
+  offset: 0x00BE10
+  symbol: object_jya_objVtx_00BE10
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00C500:
+  type: OOT:ARRAY
+  offset: 0x00C500
+  symbol: object_jya_objVtx_00C500
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00D820:
+  type: OOT:ARRAY
+  offset: 0x00D820
+  symbol: object_jya_objVtx_00D820
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00D930:
+  type: OOT:ARRAY
+  offset: 0x00D930
+  symbol: object_jya_objVtx_00D930
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00DD20:
+  type: OOT:ARRAY
+  offset: 0x00DD20
+  symbol: object_jya_objVtx_00DD20
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00E070:
+  type: OOT:ARRAY
+  offset: 0x00E070
+  symbol: object_jya_objVtx_00E070
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00E390:
+  type: OOT:ARRAY
+  offset: 0x00E390
+  symbol: object_jya_objVtx_00E390
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00E740:
+  type: OOT:ARRAY
+  offset: 0x00E740
+  symbol: object_jya_objVtx_00E740
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00E9F0:
+  type: OOT:ARRAY
+  offset: 0x00E9F0
+  symbol: object_jya_objVtx_00E9F0
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00EEB0:
+  type: OOT:ARRAY
+  offset: 0x00EEB0
+  symbol: object_jya_objVtx_00EEB0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_00F240:
+  type: OOT:ARRAY
+  offset: 0x00F240
+  symbol: object_jya_objVtx_00F240
+  count: 327
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_0106B0:
+  type: OOT:ARRAY
+  offset: 0x0106B0
+  symbol: object_jya_objVtx_0106B0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_0116B0:
+  type: OOT:ARRAY
+  offset: 0x0116B0
+  symbol: object_jya_objVtx_0116B0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_011890:
+  type: OOT:ARRAY
+  offset: 0x011890
+  symbol: object_jya_objVtx_011890
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_objVtx_012280:
+  type: OOT:ARRAY
+  offset: 0x012280
+  symbol: object_jya_objVtx_012280
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

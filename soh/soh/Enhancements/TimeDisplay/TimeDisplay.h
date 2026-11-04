@@ -1,4 +1,7 @@
-#include <libultraship/libultraship.h>
+#pragma once
+
+#include <vector>
+#include <ship/window/gui/GuiWindow.h>
 
 class TimeDisplayWindow final : public Ship::GuiWindow {
   public:

@@ -1,0 +1,51 @@
+:config:
+  segments:
+    - [ 6, 0x0117FF60 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x0117FF60 ]
+    - [ 9, 0x0117FF60 ]
+    - [ 10, 0x0117FF60 ]
+    - [ 11, 0x0117FF60 ]
+    - [ 12, 0x0117FF60 ]
+    - [ 13, 0x0117FF60 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+object_yabusame_point_DL_000DC0:
+  type: GFX
+  offset: 0xDC0
+  symbol: object_yabusame_point_DL_000DC0
+
+object_yabusame_point_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_yabusame_point_Tex_000000
+  format: IA8
+  width: 48
+  height: 24
+
+object_yabusame_point_Tex_000480:
+  type: TEXTURE
+  offset: 0x480
+  symbol: object_yabusame_point_Tex_000480
+  format: IA8
+  width: 48
+  height: 24
+
+object_yabusame_point_Tex_000900:
+  type: TEXTURE
+  offset: 0x900
+  symbol: object_yabusame_point_Tex_000900
+  format: IA8
+  width: 48
+  height: 24
+
+
+object_yabusame_pointVtx_000D80:
+  type: OOT:ARRAY
+  offset: 0x000D80
+  symbol: object_yabusame_pointVtx_000D80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

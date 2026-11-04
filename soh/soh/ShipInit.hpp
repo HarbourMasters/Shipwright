@@ -1,5 +1,4 @@
-#ifndef SHIP_INIT_HPP
-#define SHIP_INIT_HPP
+#pragma once
 
 #ifdef __cplusplus
 
@@ -71,5 +70,3 @@ struct RegisterShipInitFunc {
 };
 
 #endif // __cplusplus
-
-#endif // SHIP_INIT_HPP

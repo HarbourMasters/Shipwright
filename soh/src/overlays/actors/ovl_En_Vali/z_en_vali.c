@@ -8,7 +8,6 @@
 #include "objects/object_vali/object_vali.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <stdlib.h>
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_IGNORE_QUAKE)
@@ -175,8 +174,6 @@ void EnVali_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyQuad(play, &this->leftArmCollider);
     Collider_DestroyQuad(play, &this->rightArmCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnVali_SetupLurk(EnVali* this) {
@@ -311,7 +308,7 @@ void EnVali_DischargeLightning(EnVali* this, PlayState* play) {
         }
     }
 
-    func_8002F974(&this->actor, NA_SE_EN_BIRI_SPARK - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_BIRI_SPARK - SFX_FLAG);
 }
 
 void EnVali_Lurk(EnVali* this, PlayState* play) {

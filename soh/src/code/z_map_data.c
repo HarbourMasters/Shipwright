@@ -292,15 +292,15 @@ static u8 sSwitchToRoom[10][51] = {
 
 static u8 sFloorID[10][8] = {
     /* clang-format off */
-    {    0,    0,    0, F_3F, F_2F, F_1F, F_B1, F_B2 }, 
+    {    0,    0,    0, F_3F, F_2F, F_1F, F_B1, F_B2 },
     {    0,    0,    0,    0,    0,    0, F_2F, F_1F },
-    {    0,    0,    0,    0,    0,    0, F_1F, F_B1 },          
+    {    0,    0,    0,    0,    0,    0, F_1F, F_B1 },
     {    0,    0,    0,    0, F_2F, F_1F, F_B1, F_B2 },
-    {    0,    0,    0, F_5F, F_4F, F_3F, F_2F, F_1F }, 
+    {    0,    0,    0, F_5F, F_4F, F_3F, F_2F, F_1F },
     {    0,    0,    0,    0, F_3F, F_2F, F_1F, F_B1 },
-    {    0,    0,    0,    0, F_4F, F_3F, F_2F, F_1F },    
+    {    0,    0,    0,    0, F_4F, F_3F, F_2F, F_1F },
     {    0,    0,    0,    0, F_B1, F_B2, F_B3, F_B4 },
-    {    0,    0,    0,    0,    0, F_B1, F_B2, F_B3 },       
+    {    0,    0,    0,    0,    0, F_B1, F_B2, F_B3 },
     {    0,    0,    0,    0,    0,    0,    0, F_1F },
 }; /* clang-format on */
 

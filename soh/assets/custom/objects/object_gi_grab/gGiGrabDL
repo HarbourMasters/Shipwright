@@ -1,0 +1,12 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_gi_grab/mat_gGiGrabDL_power_bracelet_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_grab/gGiGrabDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_gi_grab/mat_gGiGrabDL_power_bracelet_accent_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_grab/gGiGrabDL_layer_Opaque_tri_1"/>
+	<CallDisplayList Path="objects/object_gi_grab/mat_gGiGrabDL_power_bracelet_gem_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_grab/gGiGrabDL_layer_Opaque_tri_2"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

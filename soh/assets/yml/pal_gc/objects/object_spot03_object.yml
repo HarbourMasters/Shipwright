@@ -1,0 +1,72 @@
+:config:
+  segments:
+    - [ 6, 0x0115EF70 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x0115EF70 ]
+    - [ 9, 0x0115EF70 ]
+    - [ 10, 0x0115EF70 ]
+    - [ 11, 0x0115EF70 ]
+    - [ 12, 0x0115EF70 ]
+    - [ 13, 0x0115EF70 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+object_spot03_object_Col_000C98:
+  type: OOT:COLLISION
+  offset: 0xC98
+  symbol: object_spot03_object_Col_000C98
+
+object_spot03_object_DL_000B20:
+  type: GFX
+  offset: 0xB20
+  symbol: object_spot03_object_DL_000B20
+
+object_spot03_object_DL_000BC0:
+  type: GFX
+  offset: 0xBC0
+  symbol: object_spot03_object_DL_000BC0
+
+object_spot03_object_DL_001580:
+  type: GFX
+  offset: 0x1580
+  symbol: object_spot03_object_DL_001580
+
+object_spot03_object_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_spot03_object_Tex_000000
+  format: I4
+  width: 64
+  height: 64
+
+object_spot03_object_Tex_000CD0:
+  type: TEXTURE
+  offset: 0xCD0
+  symbol: object_spot03_object_Tex_000CD0
+  format: I4
+  width: 64
+  height: 64
+
+object_spot03_object_Vtx_000800:
+  type: OOT:ARRAY
+  offset: 0x800
+  symbol: object_spot03_object_Vtx_000800
+  count: 25
+  array_type: VTX
+
+object_spot03_object_Vtx_000990:
+  type: OOT:ARRAY
+  offset: 0x990
+  symbol: object_spot03_object_Vtx_000990
+  count: 25
+  array_type: VTX
+
+
+object_spot03_objectVtx_0014D0:
+  type: OOT:ARRAY
+  offset: 0x0014D0
+  symbol: object_spot03_objectVtx_0014D0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

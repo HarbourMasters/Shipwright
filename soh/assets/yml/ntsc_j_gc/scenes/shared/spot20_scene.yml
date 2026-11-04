@@ -1,0 +1,238 @@
+:config:
+  segments:
+    - [ 2, 0x01D00800 ]
+
+  external_files:
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_0049F0.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_004C70.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_004EF0.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_005170.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_005290.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_005450.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_005570.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_005670.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_005800.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_005900.yml
+    - ntsc_j_gc/scenes/shared/spot20_sceneSet_005A80.yml
+spot20_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot20_scene
+
+gLonLonPath_05844:
+  type: OOT:PATH
+  offset: 0x57E4
+  symbol: gLonLonPath_05844
+  num_paths: 3
+
+gLonLonRanchDayWindowTex:
+  type: TEXTURE
+  offset: 0x8180
+  symbol: gLonLonRanchDayWindowTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gLonLonRanchIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x5B70
+  symbol: gLonLonRanchIntroCs
+
+gLonLonRangeNightWindowsTex:
+  type: TEXTURE
+  offset: 0xFB80
+  symbol: gLonLonRangeNightWindowsTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot20_sceneTLUT_005DB0:
+  type: TEXTURE
+  offset: 0x5D50
+  symbol: spot20_sceneTLUT_005DB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot20_sceneTLUT_005FB8:
+  type: TEXTURE
+  offset: 0x5F58
+  symbol: spot20_sceneTLUT_005FB8
+  format: RGBA16
+  width: 4
+  height: 4
+
+spot20_sceneTex_005FE0:
+  type: TEXTURE
+  offset: 0x5F80
+  symbol: spot20_sceneTex_005FE0
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x5D50
+
+spot20_sceneTex_0067E0:
+  type: TEXTURE
+  offset: 0x6780
+  symbol: spot20_sceneTex_0067E0
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x5D50
+
+spot20_sceneTex_0069E0:
+  type: TEXTURE
+  offset: 0x6980
+  symbol: spot20_sceneTex_0069E0
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5D50
+
+spot20_sceneTex_0071E0:
+  type: TEXTURE
+  offset: 0x7180
+  symbol: spot20_sceneTex_0071E0
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot20_sceneTex_0091E0:
+  type: TEXTURE
+  offset: 0x9180
+  symbol: spot20_sceneTex_0091E0
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x5D50
+
+spot20_sceneTex_0093E0:
+  type: TEXTURE
+  offset: 0x9380
+  symbol: spot20_sceneTex_0093E0
+  format: RGBA16
+  width: 16
+  height: 64
+
+spot20_sceneTex_009BE0:
+  type: TEXTURE
+  offset: 0x9B80
+  symbol: spot20_sceneTex_009BE0
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot20_sceneTex_00ABE0:
+  type: TEXTURE
+  offset: 0xAB80
+  symbol: spot20_sceneTex_00ABE0
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot20_sceneTex_00BBE0:
+  type: TEXTURE
+  offset: 0xBB80
+  symbol: spot20_sceneTex_00BBE0
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x5D50
+
+spot20_sceneTex_00BDE0:
+  type: TEXTURE
+  offset: 0xBD80
+  symbol: spot20_sceneTex_00BDE0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5D50
+
+spot20_sceneTex_00C1E0:
+  type: TEXTURE
+  offset: 0xC180
+  symbol: spot20_sceneTex_00C1E0
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x5F58
+
+spot20_sceneTex_00C9E0:
+  type: TEXTURE
+  offset: 0xC980
+  symbol: spot20_sceneTex_00C9E0
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x5D50
+
+spot20_sceneTex_00D1E0:
+  type: TEXTURE
+  offset: 0xD180
+  symbol: spot20_sceneTex_00D1E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot20_sceneTex_00D9E0:
+  type: TEXTURE
+  offset: 0xD980
+  symbol: spot20_sceneTex_00D9E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot20_sceneTex_00E1E0:
+  type: TEXTURE
+  offset: 0xE180
+  symbol: spot20_sceneTex_00E1E0
+  format: I4
+  width: 64
+  height: 64
+
+spot20_sceneTex_00E9E0:
+  type: TEXTURE
+  offset: 0xE980
+  symbol: spot20_sceneTex_00E9E0
+  format: I4
+  width: 64
+  height: 64
+
+spot20_sceneTex_00F1E0:
+  type: TEXTURE
+  offset: 0xF180
+  symbol: spot20_sceneTex_00F1E0
+  format: I4
+  width: 64
+  height: 64
+
+spot20_sceneTex_00F9E0:
+  type: TEXTURE
+  offset: 0xF980
+  symbol: spot20_sceneTex_00F9E0
+  format: CI8
+  width: 8
+  height: 64
+  tlut: 0x5D50
+
+spot20_sceneTex_010BE0:
+  type: TEXTURE
+  offset: 0x10B80
+  symbol: spot20_sceneTex_010BE0
+  format: I4
+  width: 64
+  height: 18
+
+spot20_sceneTex_010E20:
+  type: TEXTURE
+  offset: 0x10DC0
+  symbol: spot20_sceneTex_010E20
+  format: IA8
+  width: 64
+  height: 64
+
+
+spot20_sceneCollisionHeader_002948:
+  type: OOT:COLLISION
+  offset: 0x002948
+  symbol: spot20_sceneCollisionHeader_002948

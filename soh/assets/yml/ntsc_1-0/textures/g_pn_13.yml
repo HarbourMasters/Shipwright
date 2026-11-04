@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F8800 ]
+
+gGreatFairysFountainTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGreatFairysFountainTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGreatFairysFountainTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGreatFairysFountainTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

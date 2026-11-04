@@ -1,0 +1,106 @@
+:config:
+  segments:
+    - [ 6, 0x00EE7190 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00EE7190 ]
+    - [ 9, 0x00EE7190 ]
+    - [ 10, 0x00EE7190 ]
+    - [ 11, 0x00EE7190 ]
+    - [ 12, 0x00EE7190 ]
+    - [ 13, 0x00EE7190 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+object_oE12_Blob_001C00:
+  type: BLOB
+  offset: 0x1C00
+  size: 0x800
+  symbol: object_oE12_Blob_001C00
+
+object_oE12_DL_001020:
+  type: GFX
+  offset: 0x1020
+  symbol: object_oE12_DL_001020
+
+object_oE12_TLUT_001600:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: object_oE12_TLUT_001600
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oE12_Tex_001800:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: object_oE12_Tex_001800
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1600
+
+object_oE12_Tex_002400:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: object_oE12_Tex_002400
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_oE12_Tex_002480:
+  type: TEXTURE
+  offset: 0x2480
+  symbol: object_oE12_Tex_002480
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_oE12_Tex_002880:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: object_oE12_Tex_002880
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_oE12_Tex_002980:
+  type: TEXTURE
+  offset: 0x2980
+  symbol: object_oE12_Tex_002980
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oE12_Tex_002B80:
+  type: TEXTURE
+  offset: 0x2B80
+  symbol: object_oE12_Tex_002B80
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_oE12_Tex_003380:
+  type: TEXTURE
+  offset: 0x3380
+  symbol: object_oE12_Tex_003380
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_oE12_Tex_003780:
+  type: TEXTURE
+  offset: 0x3780
+  symbol: object_oE12_Tex_003780
+  format: I4
+  width: 16
+  height: 8
+
+
+object_oE12Vtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_oE12Vtx_000000
+  count: 258
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

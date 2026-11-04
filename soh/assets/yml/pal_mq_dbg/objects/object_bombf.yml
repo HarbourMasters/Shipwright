@@ -1,0 +1,96 @@
+:config:
+  segments:
+    - [ 6, 0x011BF000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x011BF000 ]
+    - [ 9, 0x011BF000 ]
+    - [ 10, 0x011BF000 ]
+    - [ 11, 0x011BF000 ]
+    - [ 12, 0x011BF000 ]
+    - [ 13, 0x011BF000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gBombFlowerBaseLeavesDL:
+  type: GFX
+  offset: 0x530
+  symbol: gBombFlowerBaseLeavesDL
+
+gBombFlowerBombAndSparkDL:
+  type: GFX
+  offset: 0x408
+  symbol: gBombFlowerBombAndSparkDL
+
+gBombFlowerBombTex:
+  type: TEXTURE
+  offset: 0x011D8
+  symbol: gBombFlowerBombTex
+  format: IA16
+  width: 32
+  height: 32
+
+gBombFlowerFuseTex:
+  type: TEXTURE
+  offset: 0x019D8
+  symbol: gBombFlowerFuseTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBombFlowerLeafOutwardsTex:
+  type: TEXTURE
+  offset: 0x05D8
+  symbol: gBombFlowerLeafOutwardsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombFlowerLeafUpwardsTex:
+  type: TEXTURE
+  offset: 0x0DD8
+  symbol: gBombFlowerLeafUpwardsTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gBombFlowerLeavesDL:
+  type: GFX
+  offset: 0x340
+  symbol: gBombFlowerLeavesDL
+
+
+object_bombfVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_bombfVtx_000000
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombfVtx_000110:
+  type: OOT:ARRAY
+  offset: 0x000110
+  symbol: object_bombfVtx_000110
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombfVtx_000230:
+  type: OOT:ARRAY
+  offset: 0x000230
+  symbol: object_bombfVtx_000230
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombfVtx_000300:
+  type: OOT:ARRAY
+  offset: 0x000300
+  symbol: object_bombfVtx_000300
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

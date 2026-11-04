@@ -1,0 +1,55 @@
+:config:
+  segments:
+    - [ 3, 0x02F7A000 ]
+    - [ 2, 0x02F6D000 ]
+  directory: scenes/shared/yousei_izumi_yoko_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/yousei_izumi_yoko_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+    - pal_mq_dbg/scenes/shared/yousei_izumi_yoko_room_0Set_0000D0.yml
+    - pal_mq_dbg/scenes/shared/yousei_izumi_yoko_room_0Set_000170.yml
+    - pal_mq_dbg/scenes/shared/yousei_izumi_yoko_room_0Set_000210.yml
+
+yousei_izumi_yoko_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: yousei_izumi_yoko_room_0
+
+
+yousei_izumi_yoko_room_0Vtx_0002B0:
+  type: OOT:ARRAY
+  offset: 0x0002B0
+  symbol: yousei_izumi_yoko_room_0Vtx_0002B0
+  count: 506
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+yousei_izumi_yoko_room_0DL_002250:
+  type: GFX
+  offset: 0x002250
+  symbol: yousei_izumi_yoko_room_0DL_002250
+
+yousei_izumi_yoko_room_0DL_002B88:
+  type: GFX
+  offset: 0x002B88
+  symbol: yousei_izumi_yoko_room_0DL_002B88
+
+yousei_izumi_yoko_room_0Vtx_002BA0:
+  type: OOT:ARRAY
+  offset: 0x002BA0
+  symbol: yousei_izumi_yoko_room_0Vtx_002BA0
+  count: 243
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+yousei_izumi_yoko_room_0DL_003AD0:
+  type: GFX
+  offset: 0x003AD0
+  symbol: yousei_izumi_yoko_room_0DL_003AD0
+
+yousei_izumi_yoko_room_0DL_003FF8:
+  type: GFX
+  offset: 0x003FF8
+  symbol: yousei_izumi_yoko_room_0DL_003FF8

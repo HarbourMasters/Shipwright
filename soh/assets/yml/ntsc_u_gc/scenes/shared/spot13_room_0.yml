@@ -1,0 +1,47 @@
+:config:
+  segments:
+    - [ 3, 0x01BADEC0 ]
+    - [ 2, 0x01BA9E90 ]
+  directory: scenes/shared/spot13_scene
+  external_files:
+    - ntsc_u_gc/scenes/shared/spot13_scene.yml
+    - ntsc_u_gc/code/sys_matrix.yml
+
+spot13_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: spot13_room_0
+
+
+spot13_room_0Vtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: spot13_room_0Vtx_000100
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot13_room_0DL_000560:
+  type: GFX
+  offset: 0x000560
+  symbol: spot13_room_0DL_000560
+
+spot13_room_0Vtx_000768:
+  type: OOT:ARRAY
+  offset: 0x000768
+  symbol: spot13_room_0Vtx_000768
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot13_room_0DL_000838:
+  type: GFX
+  offset: 0x000838
+  symbol: spot13_room_0DL_000838
+
+spot13_room_0DL_0008F8:
+  type: GFX
+  offset: 0x0008F8
+  symbol: spot13_room_0DL_0008F8

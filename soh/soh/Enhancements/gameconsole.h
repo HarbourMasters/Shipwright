@@ -1,9 +1,9 @@
-#ifndef _GAMECONSOLE_H_
-#define _GAMECONSOLE_H_
+#pragma once
 
+#include <stdbool.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 #include <libultraship/libultra.h>
 #include <z64.h>
-#include <libultraship/bridge.h>
 
 #define MAX_CVARS 2048
 
@@ -34,6 +34,4 @@ s32 GameConsole_Split(char* str, char** argv);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

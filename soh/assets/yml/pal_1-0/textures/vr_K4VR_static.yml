@@ -1,0 +1,34 @@
+:config:
+  segments:
+    - [ 128, 0x014A8120 ]
+
+gMidosHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gMidosHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_K4VR_pal_static
+  external_tlut_offset: 0x200
+
+gMidosHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gMidosHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_K4VR_pal_static
+  external_tlut_offset: 0x400
+
+gMidosHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMidosHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_K4VR_pal_static
+  external_tlut_offset: 0x0
+

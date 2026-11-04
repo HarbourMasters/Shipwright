@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 6, 0x010C3FE0 ]
+
+gTwinrovaTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x2f570
+  symbol: gTwinrovaTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gTwinrovaTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x2e170
+  symbol: gTwinrovaTitleCardJPNTex
+  format: IA8
+  width: 128
+  height: 40
+

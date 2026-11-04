@@ -1,12 +1,20 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/TimeSavers/SkipCutscene/CutsceneTime.h"
 #include "soh/ShipInit.hpp"
 #include <cassert>
 
 extern "C" {
+#include "z64.h"
 #include "z64save.h"
+#include "z64scene.h"
+#include "scenes/overworld/spot06/spot06_scene.h"
+#include "scenes/overworld/spot16/spot16_scene.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
+extern u16 gTimeSpeed;
 
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
@@ -38,6 +46,11 @@ static s16 GetEntranceIndex(s32 owlType) {
 }
 
 static void SkipOwlTravel(s32 owlType) {
+    // Time keeps running during the flight
+    const char* cutscene = owlType == 7 ? gLakeHyliaOwlCs : gDMTOwlCs;
+    gSaveContext.dayTime = gSaveContext.skyboxTime =
+        CutsceneTime_SimulateScript(cutscene, gSaveContext.dayTime, gTimeSpeed);
+
     gPlayState->nextEntranceIndex = GetEntranceIndex(owlType);
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;

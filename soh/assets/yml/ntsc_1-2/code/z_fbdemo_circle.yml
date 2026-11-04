@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 128, 0x00A62D40 ]
+
+sTransCircleNormalTex:
+  type: TEXTURE
+  offset: 0xEC0B8
+  symbol: sTransCircleNormalTex
+  format: I8
+  width: 16
+  height: 64
+
+sTransCircleRippleTex:
+  type: TEXTURE
+  offset: 0xEC8B8
+  symbol: sTransCircleRippleTex
+  format: I8
+  width: 16
+  height: 64
+
+sTransCircleStarburstTex:
+  type: TEXTURE
+  offset: 0xECCB8
+  symbol: sTransCircleStarburstTex
+  format: I8
+  width: 16
+  height: 64
+
+sTransCircleVtx:
+  type: OOT:ARRAY
+  offset: 0xED0B8
+  symbol: sTransCircleVtx
+  count: 34
+  array_type: VTX
+
+sTransCircleWaveTex:
+  type: TEXTURE
+  offset: 0xEC4B8
+  symbol: sTransCircleWaveTex
+  format: I8
+  width: 16
+  height: 64
+

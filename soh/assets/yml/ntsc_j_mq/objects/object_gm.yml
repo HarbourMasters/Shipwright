@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 6, 0x011942E0 ]
+
+object_gm_Anim_0002B8:
+  type: OOT:ANIMATION
+  offset: 0x2B8
+  symbol: object_gm_Anim_0002B8
+

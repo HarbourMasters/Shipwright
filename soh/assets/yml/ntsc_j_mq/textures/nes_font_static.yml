@@ -1,0 +1,1116 @@
+:config:
+  segments:
+    - [ 10, 0x008CC9F0 ]
+
+gMsgChar20SpaceTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMsgChar20SpaceTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar21ExclamationMarkTex:
+  type: TEXTURE
+  offset: 0x80
+  symbol: gMsgChar21ExclamationMarkTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar22QuotationMarkTex:
+  type: TEXTURE
+  offset: 0x100
+  symbol: gMsgChar22QuotationMarkTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar23NumberSignTex:
+  type: TEXTURE
+  offset: 0x180
+  symbol: gMsgChar23NumberSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar24DollarSignTex:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gMsgChar24DollarSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar25PercentSignTex:
+  type: TEXTURE
+  offset: 0x280
+  symbol: gMsgChar25PercentSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar26AmpersandTex:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gMsgChar26AmpersandTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar27ApostropheTex:
+  type: TEXTURE
+  offset: 0x380
+  symbol: gMsgChar27ApostropheTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar28LeftParenthesesTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gMsgChar28LeftParenthesesTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar29RightParenthesesTex:
+  type: TEXTURE
+  offset: 0x480
+  symbol: gMsgChar29RightParenthesesTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar2AAsteriskTex:
+  type: TEXTURE
+  offset: 0x500
+  symbol: gMsgChar2AAsteriskTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar2BPlusSignTex:
+  type: TEXTURE
+  offset: 0x580
+  symbol: gMsgChar2BPlusSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar2CCommaTex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gMsgChar2CCommaTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar2DHyphenMinusTex:
+  type: TEXTURE
+  offset: 0x680
+  symbol: gMsgChar2DHyphenMinusTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar2EFullStopTex:
+  type: TEXTURE
+  offset: 0x700
+  symbol: gMsgChar2EFullStopTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar2FSolidusTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: gMsgChar2FSolidusTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar30Digit0Tex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gMsgChar30Digit0Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar31Digit1Tex:
+  type: TEXTURE
+  offset: 0x880
+  symbol: gMsgChar31Digit1Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar32Digit2Tex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gMsgChar32Digit2Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar33Digit3Tex:
+  type: TEXTURE
+  offset: 0x980
+  symbol: gMsgChar33Digit3Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar34Digit4Tex:
+  type: TEXTURE
+  offset: 0xA00
+  symbol: gMsgChar34Digit4Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar35Digit5Tex:
+  type: TEXTURE
+  offset: 0xA80
+  symbol: gMsgChar35Digit5Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar36Digit6Tex:
+  type: TEXTURE
+  offset: 0xB00
+  symbol: gMsgChar36Digit6Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar37Digit7Tex:
+  type: TEXTURE
+  offset: 0xB80
+  symbol: gMsgChar37Digit7Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar38Digit8Tex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gMsgChar38Digit8Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar39Digit9Tex:
+  type: TEXTURE
+  offset: 0xC80
+  symbol: gMsgChar39Digit9Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar3AColonTex:
+  type: TEXTURE
+  offset: 0xD00
+  symbol: gMsgChar3AColonTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar3BSemicolonTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gMsgChar3BSemicolonTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar3CLessThanSignTex:
+  type: TEXTURE
+  offset: 0xE00
+  symbol: gMsgChar3CLessThanSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar3DEqualsSignTex:
+  type: TEXTURE
+  offset: 0xE80
+  symbol: gMsgChar3DEqualsSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar3EGreaterThanSignTex:
+  type: TEXTURE
+  offset: 0xF00
+  symbol: gMsgChar3EGreaterThanSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar3FQuestionMarkTex:
+  type: TEXTURE
+  offset: 0xF80
+  symbol: gMsgChar3FQuestionMarkTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar40CommercialAtTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gMsgChar40CommercialAtTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar41LatinCapitalLetterATex:
+  type: TEXTURE
+  offset: 0x1080
+  symbol: gMsgChar41LatinCapitalLetterATex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar42LatinCapitalLetterBTex:
+  type: TEXTURE
+  offset: 0x1100
+  symbol: gMsgChar42LatinCapitalLetterBTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar43LatinCapitalLetterCTex:
+  type: TEXTURE
+  offset: 0x1180
+  symbol: gMsgChar43LatinCapitalLetterCTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar44LatinCapitalLetterDTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gMsgChar44LatinCapitalLetterDTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar45LatinCapitalLetterETex:
+  type: TEXTURE
+  offset: 0x1280
+  symbol: gMsgChar45LatinCapitalLetterETex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar46LatinCapitalLetterFTex:
+  type: TEXTURE
+  offset: 0x1300
+  symbol: gMsgChar46LatinCapitalLetterFTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar47LatinCapitalLetterGTex:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gMsgChar47LatinCapitalLetterGTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar48LatinCapitalLetterHTex:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: gMsgChar48LatinCapitalLetterHTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar49LatinCapitalLetterITex:
+  type: TEXTURE
+  offset: 0x1480
+  symbol: gMsgChar49LatinCapitalLetterITex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar4ALatinCapitalLetterJTex:
+  type: TEXTURE
+  offset: 0x1500
+  symbol: gMsgChar4ALatinCapitalLetterJTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar4BLatinCapitalLetterKTex:
+  type: TEXTURE
+  offset: 0x1580
+  symbol: gMsgChar4BLatinCapitalLetterKTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar4CLatinCapitalLetterLTex:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: gMsgChar4CLatinCapitalLetterLTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar4DLatinCapitalLetterMTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gMsgChar4DLatinCapitalLetterMTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar4ELatinCapitalLetterNTex:
+  type: TEXTURE
+  offset: 0x1700
+  symbol: gMsgChar4ELatinCapitalLetterNTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar4FLatinCapitalLetterOTex:
+  type: TEXTURE
+  offset: 0x1780
+  symbol: gMsgChar4FLatinCapitalLetterOTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar50LatinCapitalLetterPTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gMsgChar50LatinCapitalLetterPTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar51LatinCapitalLetterQTex:
+  type: TEXTURE
+  offset: 0x1880
+  symbol: gMsgChar51LatinCapitalLetterQTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar52LatinCapitalLetterRTex:
+  type: TEXTURE
+  offset: 0x1900
+  symbol: gMsgChar52LatinCapitalLetterRTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar53LatinCapitalLetterSTex:
+  type: TEXTURE
+  offset: 0x1980
+  symbol: gMsgChar53LatinCapitalLetterSTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar54LatinCapitalLetterTTex:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: gMsgChar54LatinCapitalLetterTTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar55LatinCapitalLetterUTex:
+  type: TEXTURE
+  offset: 0x1A80
+  symbol: gMsgChar55LatinCapitalLetterUTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar56LatinCapitalLetterVTex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gMsgChar56LatinCapitalLetterVTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar57LatinCapitalLetterWTex:
+  type: TEXTURE
+  offset: 0x1B80
+  symbol: gMsgChar57LatinCapitalLetterWTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar58LatinCapitalLetterXTex:
+  type: TEXTURE
+  offset: 0x1C00
+  symbol: gMsgChar58LatinCapitalLetterXTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar59LatinCapitalLetterYTex:
+  type: TEXTURE
+  offset: 0x1C80
+  symbol: gMsgChar59LatinCapitalLetterYTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar5ALatinCapitalLetterZTex:
+  type: TEXTURE
+  offset: 0x1D00
+  symbol: gMsgChar5ALatinCapitalLetterZTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar5BLeftSquareBracketTex:
+  type: TEXTURE
+  offset: 0x1D80
+  symbol: gMsgChar5BLeftSquareBracketTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar5CYenSignTex:
+  type: TEXTURE
+  offset: 0x1E00
+  symbol: gMsgChar5CYenSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar5DRightSquareBracketTex:
+  type: TEXTURE
+  offset: 0x1E80
+  symbol: gMsgChar5DRightSquareBracketTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar5ECircumflexAccentTex:
+  type: TEXTURE
+  offset: 0x1F00
+  symbol: gMsgChar5ECircumflexAccentTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar5FLowLineTex:
+  type: TEXTURE
+  offset: 0x1F80
+  symbol: gMsgChar5FLowLineTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar60GraveAccentTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gMsgChar60GraveAccentTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar61LatinSmallLetterATex:
+  type: TEXTURE
+  offset: 0x2080
+  symbol: gMsgChar61LatinSmallLetterATex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar62LatinSmallLetterBTex:
+  type: TEXTURE
+  offset: 0x2100
+  symbol: gMsgChar62LatinSmallLetterBTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar63LatinSmallLetterCTex:
+  type: TEXTURE
+  offset: 0x2180
+  symbol: gMsgChar63LatinSmallLetterCTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar64LatinSmallLetterDTex:
+  type: TEXTURE
+  offset: 0x2200
+  symbol: gMsgChar64LatinSmallLetterDTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar65LatinSmallLetterETex:
+  type: TEXTURE
+  offset: 0x2280
+  symbol: gMsgChar65LatinSmallLetterETex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar66LatinSmallLetterFTex:
+  type: TEXTURE
+  offset: 0x2300
+  symbol: gMsgChar66LatinSmallLetterFTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar67LatinSmallLetterGTex:
+  type: TEXTURE
+  offset: 0x2380
+  symbol: gMsgChar67LatinSmallLetterGTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar68LatinSmallLetterHTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gMsgChar68LatinSmallLetterHTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar69LatinSmallLetterITex:
+  type: TEXTURE
+  offset: 0x2480
+  symbol: gMsgChar69LatinSmallLetterITex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar6ALatinSmallLetterJTex:
+  type: TEXTURE
+  offset: 0x2500
+  symbol: gMsgChar6ALatinSmallLetterJTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar6BLatinSmallLetterKTex:
+  type: TEXTURE
+  offset: 0x2580
+  symbol: gMsgChar6BLatinSmallLetterKTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar6CLatinSmallLetterLTex:
+  type: TEXTURE
+  offset: 0x2600
+  symbol: gMsgChar6CLatinSmallLetterLTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar6DLatinSmallLetterMTex:
+  type: TEXTURE
+  offset: 0x2680
+  symbol: gMsgChar6DLatinSmallLetterMTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar6ELatinSmallLetterNTex:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: gMsgChar6ELatinSmallLetterNTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar6FLatinSmallLetterOTex:
+  type: TEXTURE
+  offset: 0x2780
+  symbol: gMsgChar6FLatinSmallLetterOTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar70LatinSmallLetterPTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gMsgChar70LatinSmallLetterPTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar71LatinSmallLetterQTex:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: gMsgChar71LatinSmallLetterQTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar72LatinSmallLetterRTex:
+  type: TEXTURE
+  offset: 0x2900
+  symbol: gMsgChar72LatinSmallLetterRTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar73LatinSmallLetterSTex:
+  type: TEXTURE
+  offset: 0x2980
+  symbol: gMsgChar73LatinSmallLetterSTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar74LatinSmallLetterTTex:
+  type: TEXTURE
+  offset: 0x2A00
+  symbol: gMsgChar74LatinSmallLetterTTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar75LatinSmallLetterUTex:
+  type: TEXTURE
+  offset: 0x2A80
+  symbol: gMsgChar75LatinSmallLetterUTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar76LatinSmallLetterVTex:
+  type: TEXTURE
+  offset: 0x2B00
+  symbol: gMsgChar76LatinSmallLetterVTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar77LatinSmallLetterWTex:
+  type: TEXTURE
+  offset: 0x2B80
+  symbol: gMsgChar77LatinSmallLetterWTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar78LatinSmallLetterXTex:
+  type: TEXTURE
+  offset: 0x2C00
+  symbol: gMsgChar78LatinSmallLetterXTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar79LatinSmallLetterYTex:
+  type: TEXTURE
+  offset: 0x2C80
+  symbol: gMsgChar79LatinSmallLetterYTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar7ALatinSmallLetterZTex:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: gMsgChar7ALatinSmallLetterZTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar7BLeftCurlyBracketTex:
+  type: TEXTURE
+  offset: 0x2D80
+  symbol: gMsgChar7BLeftCurlyBracketTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar7CVerticalLineTex:
+  type: TEXTURE
+  offset: 0x2E00
+  symbol: gMsgChar7CVerticalLineTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar7DRightCurlyBracketTex:
+  type: TEXTURE
+  offset: 0x2E80
+  symbol: gMsgChar7DRightCurlyBracketTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar7ETildeTex:
+  type: TEXTURE
+  offset: 0x2F00
+  symbol: gMsgChar7ETildeTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar7FBlankTex:
+  type: TEXTURE
+  offset: 0x2F80
+  symbol: gMsgChar7FBlankTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar80LatinCapitalLetterAWithGraveTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gMsgChar80LatinCapitalLetterAWithGraveTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar81LatinCapitalLetterIWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3080
+  symbol: gMsgChar81LatinCapitalLetterIWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar82LatinCapitalLetterAWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3100
+  symbol: gMsgChar82LatinCapitalLetterAWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar83LatinCapitalLetterAWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3180
+  symbol: gMsgChar83LatinCapitalLetterAWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar84LatinCapitalLetterCWithCedillaTex:
+  type: TEXTURE
+  offset: 0x3200
+  symbol: gMsgChar84LatinCapitalLetterCWithCedillaTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar85LatinCapitalLetterEWithGraveTex:
+  type: TEXTURE
+  offset: 0x3280
+  symbol: gMsgChar85LatinCapitalLetterEWithGraveTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar86LatinCapitalLetterEWithAcuteTex:
+  type: TEXTURE
+  offset: 0x3300
+  symbol: gMsgChar86LatinCapitalLetterEWithAcuteTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar87LatinCapitalLetterEWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3380
+  symbol: gMsgChar87LatinCapitalLetterEWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar88LatinCapitalLetterEWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3400
+  symbol: gMsgChar88LatinCapitalLetterEWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar89LatinCapitalLetterIWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3480
+  symbol: gMsgChar89LatinCapitalLetterIWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar8ALatinCapitalLetterOWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3500
+  symbol: gMsgChar8ALatinCapitalLetterOWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar8BLatinCapitalLetterOWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3580
+  symbol: gMsgChar8BLatinCapitalLetterOWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar8CLatinCapitalLetterUWithGraveTex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gMsgChar8CLatinCapitalLetterUWithGraveTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar8DLatinCapitalLetterUWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3680
+  symbol: gMsgChar8DLatinCapitalLetterUWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar8ELatinCapitalLetterUWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3700
+  symbol: gMsgChar8ELatinCapitalLetterUWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar8FLatinSmallLetterSharpSTex:
+  type: TEXTURE
+  offset: 0x3780
+  symbol: gMsgChar8FLatinSmallLetterSharpSTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar90LatinSmallLetterAWithGraveTex:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: gMsgChar90LatinSmallLetterAWithGraveTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar91LatinSmallLetterAWithAcuteTex:
+  type: TEXTURE
+  offset: 0x3880
+  symbol: gMsgChar91LatinSmallLetterAWithAcuteTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar92LatinSmallLetterAWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3900
+  symbol: gMsgChar92LatinSmallLetterAWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar93LatinSmallLetterAWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3980
+  symbol: gMsgChar93LatinSmallLetterAWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar94LatinSmallLetterCWithCedillaTex:
+  type: TEXTURE
+  offset: 0x3A00
+  symbol: gMsgChar94LatinSmallLetterCWithCedillaTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar95LatinSmallLetterEWithGraveTex:
+  type: TEXTURE
+  offset: 0x3A80
+  symbol: gMsgChar95LatinSmallLetterEWithGraveTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar96LatinSmallLetterEWithAcuteTex:
+  type: TEXTURE
+  offset: 0x3B00
+  symbol: gMsgChar96LatinSmallLetterEWithAcuteTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar97LatinSmallLetterEWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3B80
+  symbol: gMsgChar97LatinSmallLetterEWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar98LatinSmallLetterEWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: gMsgChar98LatinSmallLetterEWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar99LatinSmallLetterIWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3C80
+  symbol: gMsgChar99LatinSmallLetterIWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar9ALatinSmallLetterOWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3D00
+  symbol: gMsgChar9ALatinSmallLetterOWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar9BLatinSmallLetterOWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3D80
+  symbol: gMsgChar9BLatinSmallLetterOWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar9CLatinSmallLetterUWithGraveTex:
+  type: TEXTURE
+  offset: 0x3E00
+  symbol: gMsgChar9CLatinSmallLetterUWithGraveTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar9DLatinSmallLetterUWithCircumflexTex:
+  type: TEXTURE
+  offset: 0x3E80
+  symbol: gMsgChar9DLatinSmallLetterUWithCircumflexTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar9ELatinSmallLetterUWithDiaeresisTex:
+  type: TEXTURE
+  offset: 0x3F00
+  symbol: gMsgChar9ELatinSmallLetterUWithDiaeresisTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgChar9FButtonATex:
+  type: TEXTURE
+  offset: 0x3F80
+  symbol: gMsgChar9FButtonATex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA0ButtonBTex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gMsgCharA0ButtonBTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA1ButtonCTex:
+  type: TEXTURE
+  offset: 0x4080
+  symbol: gMsgCharA1ButtonCTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA2ButtonLTex:
+  type: TEXTURE
+  offset: 0x4100
+  symbol: gMsgCharA2ButtonLTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA3ButtonRTex:
+  type: TEXTURE
+  offset: 0x4180
+  symbol: gMsgCharA3ButtonRTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA4ButtonZTex:
+  type: TEXTURE
+  offset: 0x4200
+  symbol: gMsgCharA4ButtonZTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA5ButtonCUpTex:
+  type: TEXTURE
+  offset: 0x4280
+  symbol: gMsgCharA5ButtonCUpTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA6ButtonCDownTex:
+  type: TEXTURE
+  offset: 0x4300
+  symbol: gMsgCharA6ButtonCDownTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA7ButtonCLeftTex:
+  type: TEXTURE
+  offset: 0x4380
+  symbol: gMsgCharA7ButtonCLeftTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA8ButtonCRightTex:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: gMsgCharA8ButtonCRightTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharA9ZTargetSignTex:
+  type: TEXTURE
+  offset: 0x4480
+  symbol: gMsgCharA9ZTargetSignTex
+  format: I4
+  width: 16
+  height: 16
+
+gMsgCharAAControlStickTex:
+  type: TEXTURE
+  offset: 0x4500
+  symbol: gMsgCharAAControlStickTex
+  format: I4
+  width: 16
+  height: 16
+

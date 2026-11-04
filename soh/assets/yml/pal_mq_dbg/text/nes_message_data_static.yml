@@ -1,0 +1,11 @@
+:config:
+  segments:
+    - [ 128, 0x008C6000 ]
+
+nes_message_data_static:
+  type: OOT:TEXT
+  offset: 0x0
+  symbol: nes_message_data_static
+  code_offset: 0x12E4C0
+  code_phys_start: 0x00A94000
+

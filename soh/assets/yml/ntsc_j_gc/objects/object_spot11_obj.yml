@@ -1,0 +1,62 @@
+:config:
+  segments:
+    - [ 6, 0x01261D50 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x01261D50 ]
+    - [ 9, 0x01261D50 ]
+    - [ 10, 0x01261D50 ]
+    - [ 11, 0x01261D50 ]
+    - [ 12, 0x01261D50 ]
+    - [ 13, 0x01261D50 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gDesertColossusBombableWallCol:
+  type: OOT:COLLISION
+  offset: 0x1A58
+  symbol: gDesertColossusBombableWallCol
+
+gDesertColossusBombableWallDL:
+  type: GFX
+  offset: 0x1980
+  symbol: gDesertColossusBombableWallDL
+
+gDesertColossusBombableWallTex:
+  type: TEXTURE
+  offset: 0x940
+  symbol: gDesertColossusBombableWallTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gDesertColossusOasisDL:
+  type: GFX
+  offset: 0x870
+  symbol: gDesertColossusOasisDL
+
+gDesertColossusOasisWaterTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDesertColossusOasisWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_spot11_objVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_spot11_objVtx_000800
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot11_objVtx_001940:
+  type: OOT:ARRAY
+  offset: 0x001940
+  symbol: object_spot11_objVtx_001940
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

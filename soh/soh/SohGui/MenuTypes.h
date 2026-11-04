@@ -1,8 +1,8 @@
-#ifndef MENUTYPES_H
-#define MENUTYPES_H
+#pragma once
 
-#include <libultraship/libultraship.h>
-#include "UIWidgets.hpp"
+#include <variant>
+
+#include "UIWidgetOptions.hpp"
 
 typedef enum {
     DISABLE_FOR_NO_VSYNC,
@@ -236,7 +236,7 @@ struct WidgetPath {
 // is run once per frame to update its status (this is done to prevent dozens of redundant CVarGets in each frame loop)
 // `evaluation` returns a bool which can be determined by whatever code you want that changes its status
 // `reason` is the text displayed in the disabledTooltip when a widget is disabled by a particular DisableReason
-// `active` is what's referenced when determining disabled status for a widget that uses this This can also be used to
+// `active` is what's referenced when determining disabled status for a widget that uses this. This can also be used to
 // hold reasons to hide widgets so that their evaluations are also only run once per frame
 struct disabledInfo {
     DisableInfoFunc evaluation;
@@ -262,19 +262,6 @@ struct MainMenuEntry {
     const char* sidebarCvar;
     std::unordered_map<std::string, SidebarEntry> sidebars = {};
     std::vector<std::string> sidebarOrder = {};
-};
-
-static const std::map<Ship::AudioBackend, const char*> audioBackendsMap = {
-    { Ship::AudioBackend::WASAPI, "Windows Audio Session API" },
-    { Ship::AudioBackend::SDL, "SDL" },
-    { Ship::AudioBackend::COREAUDIO, "Core Audio" },
-    { Ship::AudioBackend::NUL, "Null" },
-};
-
-static const std::map<Ship::WindowBackend, const char*> windowBackendsMap = {
-    { Ship::WindowBackend::FAST3D_DXGI_DX11, "DirectX" },
-    { Ship::WindowBackend::FAST3D_SDL_OPENGL, "OpenGL" },
-    { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" },
 };
 
 struct MenuInit {
@@ -331,5 +318,3 @@ struct RegisterMenuUpdateFunc {
         menuUpdateFuncs[sectionName][sidebarName].push_back(updateFunc);
     }
 };
-
-#endif // MENUTYPES_H

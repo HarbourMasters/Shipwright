@@ -1,4 +1,6 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
+
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -30,7 +32,8 @@ static void RegisterHurtContainer() {
         UpdateHurtContainerModeState();
     }
 
-    COND_HOOK(OnLoadGame, hurtEnabled != CVAR_HURT_CONTAINER_VALUE, [](int32_t) { UpdateHurtContainerModeState(); });
+    COND_HOOK(OnLoadGame, static_cast<int32_t>(hurtEnabled) != CVAR_HURT_CONTAINER_VALUE,
+              [](int32_t) { UpdateHurtContainerModeState(); });
 
     COND_VB_SHOULD(VB_HEARTS_INCREASE_WITH_CONTAINERS, CVAR_HURT_CONTAINER_VALUE, {
         *should = false;

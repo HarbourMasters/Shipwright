@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F0AD0 ]
+
+gShootingGalleryTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gShootingGalleryTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gShootingGalleryTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gShootingGalleryTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

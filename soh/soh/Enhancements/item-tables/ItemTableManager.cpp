@@ -17,7 +17,7 @@ bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, GetIte
     try {
         ItemTable* itemTable = RetrieveItemTable(tableID);
         return itemTable->emplace(getItemID, getItemEntry).second;
-    } catch (const std::out_of_range& oor) { return false; }
+    } catch ([[maybe_unused]] const std::out_of_range& oor) { return false; }
 }
 
 GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t getItemID) {
@@ -27,7 +27,7 @@ GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t getI
         getItemEntry.drawItemId = getItemEntry.itemId;
         getItemEntry.drawModIndex = getItemEntry.modIndex;
         return getItemEntry;
-    } catch (std::out_of_range& oor) { return GET_ITEM_NONE; }
+    } catch ([[maybe_unused]] std::out_of_range& oor) { return GET_ITEM_NONE; }
 }
 
 bool ItemTableManager::ClearItemTable(uint16_t tableID) {
@@ -35,7 +35,7 @@ bool ItemTableManager::ClearItemTable(uint16_t tableID) {
         ItemTable* itemTable = RetrieveItemTable(tableID);
         itemTable->clear();
         return true;
-    } catch (const std::out_of_range& oor) { return false; }
+    } catch ([[maybe_unused]] const std::out_of_range& oor) { return false; }
 }
 
 ItemTable* ItemTableManager::RetrieveItemTable(uint16_t tableID) {

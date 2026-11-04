@@ -1,0 +1,1 @@
+git cmake ninja SDL2-devel SDL2_net-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel libogg-devel libvorbis-devel libopus-devel opusfile-devel glew-devel libglvnd-devel Mesa-libGLESv2-devel

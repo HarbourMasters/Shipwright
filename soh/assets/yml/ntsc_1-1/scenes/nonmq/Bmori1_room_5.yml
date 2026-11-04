@@ -1,0 +1,102 @@
+:config:
+  segments:
+    - [ 3, 0x0193E1B0 ]
+    - [ 2, 0x0191B580 ]
+  directory: scenes/nonmq/Bmori1_scene
+  external_files:
+    - ntsc_1-1/scenes/nonmq/Bmori1_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+
+Bmori1_room_5:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: Bmori1_room_5
+
+Bmori1_room_5Tex_0023D0:
+  type: TEXTURE
+  offset: 0x23E0
+  symbol: Bmori1_room_5Tex_0023D0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+Bmori1_room_5Tex_0027D0:
+  type: TEXTURE
+  offset: 0x27E0
+  symbol: Bmori1_room_5Tex_0027D0
+  format: CI8
+  width: 16
+  height: 128
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+Bmori1_room_5Tex_002FD0:
+  type: TEXTURE
+  offset: 0x2FE0
+  symbol: Bmori1_room_5Tex_002FD0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14080
+
+Bmori1_room_5Tex_0033D0:
+  type: TEXTURE
+  offset: 0x33E0
+  symbol: Bmori1_room_5Tex_0033D0
+  format: RGBA16
+  width: 8
+  height: 16
+
+Bmori1_room_5Tex_0034D0:
+  type: TEXTURE
+  offset: 0x34E0
+  symbol: Bmori1_room_5Tex_0034D0
+  format: RGBA16
+  width: 16
+  height: 8
+
+
+Bmori1_room_5Vtx_0000E0:
+  type: OOT:ARRAY
+  offset: 0x0000E0
+  symbol: Bmori1_room_5Vtx_0000E0
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_5DL_000920:
+  type: GFX
+  offset: 0x000920
+  symbol: Bmori1_room_5DL_000920
+
+Bmori1_room_5Vtx_001098:
+  type: OOT:ARRAY
+  offset: 0x001098
+  symbol: Bmori1_room_5Vtx_001098
+  count: 180
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_5DL_001BD8:
+  type: GFX
+  offset: 0x001BD8
+  symbol: Bmori1_room_5DL_001BD8
+
+Bmori1_room_5Vtx_001E40:
+  type: OOT:ARRAY
+  offset: 0x001E40
+  symbol: Bmori1_room_5Vtx_001E40
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_5DL_002180:
+  type: GFX
+  offset: 0x002180
+  symbol: Bmori1_room_5DL_002180

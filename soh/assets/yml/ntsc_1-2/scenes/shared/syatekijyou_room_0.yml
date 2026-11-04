@@ -1,0 +1,321 @@
+:config:
+  segments:
+    - [ 3, 0x01B46990 ]
+    - [ 2, 0x01B3F480 ]
+  directory: scenes/shared/syatekijyou_scene
+  external_files:
+    - ntsc_1-2/scenes/shared/syatekijyou_scene.yml
+    - ntsc_1-2/code/sys_matrix.yml
+    - ntsc_1-2/scenes/shared/syatekijyou_room_0Set_0000C0.yml
+    - ntsc_1-2/scenes/shared/syatekijyou_room_0Set_0000F0.yml
+    - ntsc_1-2/scenes/shared/syatekijyou_room_0Set_0001A0.yml
+
+syatekijyou_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: syatekijyou_room_0
+
+
+syatekijyou_room_0Vtx_000200:
+  type: OOT:ARRAY
+  offset: 0x000200
+  symbol: syatekijyou_room_0Vtx_000200
+  count: 92
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_0007C0:
+  type: GFX
+  offset: 0x0007C0
+  symbol: syatekijyou_room_0DL_0007C0
+
+syatekijyou_room_0Vtx_000A88:
+  type: OOT:ARRAY
+  offset: 0x000A88
+  symbol: syatekijyou_room_0Vtx_000A88
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_000D08:
+  type: GFX
+  offset: 0x000D08
+  symbol: syatekijyou_room_0DL_000D08
+
+syatekijyou_room_0Vtx_000E18:
+  type: OOT:ARRAY
+  offset: 0x000E18
+  symbol: syatekijyou_room_0Vtx_000E18
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_001098:
+  type: GFX
+  offset: 0x001098
+  symbol: syatekijyou_room_0DL_001098
+
+syatekijyou_room_0Vtx_0011F0:
+  type: OOT:ARRAY
+  offset: 0x0011F0
+  symbol: syatekijyou_room_0Vtx_0011F0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_0013B0:
+  type: GFX
+  offset: 0x0013B0
+  symbol: syatekijyou_room_0DL_0013B0
+
+syatekijyou_room_0Vtx_001560:
+  type: OOT:ARRAY
+  offset: 0x001560
+  symbol: syatekijyou_room_0Vtx_001560
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_0016D0:
+  type: GFX
+  offset: 0x0016D0
+  symbol: syatekijyou_room_0DL_0016D0
+
+syatekijyou_room_0Vtx_0017E8:
+  type: OOT:ARRAY
+  offset: 0x0017E8
+  symbol: syatekijyou_room_0Vtx_0017E8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_001A68:
+  type: GFX
+  offset: 0x001A68
+  symbol: syatekijyou_room_0DL_001A68
+
+syatekijyou_room_0Vtx_001C30:
+  type: OOT:ARRAY
+  offset: 0x001C30
+  symbol: syatekijyou_room_0Vtx_001C30
+  count: 210
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_002950:
+  type: GFX
+  offset: 0x002950
+  symbol: syatekijyou_room_0DL_002950
+
+syatekijyou_room_0Vtx_002BE8:
+  type: OOT:ARRAY
+  offset: 0x002BE8
+  symbol: syatekijyou_room_0Vtx_002BE8
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_0030E8:
+  type: GFX
+  offset: 0x0030E8
+  symbol: syatekijyou_room_0DL_0030E8
+
+syatekijyou_room_0Vtx_003480:
+  type: OOT:ARRAY
+  offset: 0x003480
+  symbol: syatekijyou_room_0Vtx_003480
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_003580:
+  type: GFX
+  offset: 0x003580
+  symbol: syatekijyou_room_0DL_003580
+
+syatekijyou_room_0Vtx_003688:
+  type: OOT:ARRAY
+  offset: 0x003688
+  symbol: syatekijyou_room_0Vtx_003688
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_003A08:
+  type: GFX
+  offset: 0x003A08
+  symbol: syatekijyou_room_0DL_003A08
+
+syatekijyou_room_0Vtx_003B20:
+  type: OOT:ARRAY
+  offset: 0x003B20
+  symbol: syatekijyou_room_0Vtx_003B20
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_003FC0:
+  type: GFX
+  offset: 0x003FC0
+  symbol: syatekijyou_room_0DL_003FC0
+
+syatekijyou_room_0Vtx_004350:
+  type: OOT:ARRAY
+  offset: 0x004350
+  symbol: syatekijyou_room_0Vtx_004350
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_0045F0:
+  type: GFX
+  offset: 0x0045F0
+  symbol: syatekijyou_room_0DL_0045F0
+
+syatekijyou_room_0Vtx_004870:
+  type: OOT:ARRAY
+  offset: 0x004870
+  symbol: syatekijyou_room_0Vtx_004870
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_004BB0:
+  type: GFX
+  offset: 0x004BB0
+  symbol: syatekijyou_room_0DL_004BB0
+
+syatekijyou_room_0Vtx_004E30:
+  type: OOT:ARRAY
+  offset: 0x004E30
+  symbol: syatekijyou_room_0Vtx_004E30
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_0050B0:
+  type: GFX
+  offset: 0x0050B0
+  symbol: syatekijyou_room_0DL_0050B0
+
+syatekijyou_room_0Vtx_005398:
+  type: OOT:ARRAY
+  offset: 0x005398
+  symbol: syatekijyou_room_0Vtx_005398
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_005498:
+  type: GFX
+  offset: 0x005498
+  symbol: syatekijyou_room_0DL_005498
+
+syatekijyou_room_0Vtx_005560:
+  type: OOT:ARRAY
+  offset: 0x005560
+  symbol: syatekijyou_room_0Vtx_005560
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_005660:
+  type: GFX
+  offset: 0x005660
+  symbol: syatekijyou_room_0DL_005660
+
+syatekijyou_room_0Vtx_005728:
+  type: OOT:ARRAY
+  offset: 0x005728
+  symbol: syatekijyou_room_0Vtx_005728
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_005A78:
+  type: GFX
+  offset: 0x005A78
+  symbol: syatekijyou_room_0DL_005A78
+
+syatekijyou_room_0Vtx_005BC0:
+  type: OOT:ARRAY
+  offset: 0x005BC0
+  symbol: syatekijyou_room_0Vtx_005BC0
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_006170:
+  type: GFX
+  offset: 0x006170
+  symbol: syatekijyou_room_0DL_006170
+
+syatekijyou_room_0Vtx_0063D0:
+  type: OOT:ARRAY
+  offset: 0x0063D0
+  symbol: syatekijyou_room_0Vtx_0063D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_006490:
+  type: GFX
+  offset: 0x006490
+  symbol: syatekijyou_room_0DL_006490
+
+syatekijyou_room_0DL_006548:
+  type: GFX
+  offset: 0x006548
+  symbol: syatekijyou_room_0DL_006548
+
+syatekijyou_room_0Vtx_0065F0:
+  type: OOT:ARRAY
+  offset: 0x0065F0
+  symbol: syatekijyou_room_0Vtx_0065F0
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_006AF0:
+  type: GFX
+  offset: 0x006AF0
+  symbol: syatekijyou_room_0DL_006AF0
+
+syatekijyou_room_0Vtx_006F10:
+  type: OOT:ARRAY
+  offset: 0x006F10
+  symbol: syatekijyou_room_0Vtx_006F10
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syatekijyou_room_0DL_007390:
+  type: GFX
+  offset: 0x007390
+  symbol: syatekijyou_room_0DL_007390
+
+syatekijyou_room_0DL_0076D8:
+  type: GFX
+  offset: 0x0076D8
+  symbol: syatekijyou_room_0DL_0076D8

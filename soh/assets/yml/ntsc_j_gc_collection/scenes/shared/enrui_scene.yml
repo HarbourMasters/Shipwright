@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01D146B0 ]
+
+enrui_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: enrui_scene
+
+
+enrui_sceneCollisionHeader_0003B4:
+  type: OOT:COLLISION
+  offset: 0x0003B4
+  symbol: enrui_sceneCollisionHeader_0003B4

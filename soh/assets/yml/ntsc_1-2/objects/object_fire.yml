@@ -1,0 +1,91 @@
+:config:
+  segments:
+    - [ 6, 0x00DE2840 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x00DE2840 ]
+    - [ 9, 0x00DE2840 ]
+    - [ 10, 0x00DE2840 ]
+    - [ 11, 0x00DE2840 ]
+    - [ 12, 0x00DE2840 ]
+    - [ 13, 0x00DE2840 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gFire0Tex:
+  type: TEXTURE
+  offset: 0x00A0
+  symbol: gFire0Tex
+  format: IA8
+  width: 32
+  height: 64
+
+gFire1Tex:
+  type: TEXTURE
+  offset: 0x08A0
+  symbol: gFire1Tex
+  format: IA8
+  width: 32
+  height: 64
+
+gFire2Tex:
+  type: TEXTURE
+  offset: 0x10A0
+  symbol: gFire2Tex
+  format: IA8
+  width: 32
+  height: 64
+
+gFire3Tex:
+  type: TEXTURE
+  offset: 0x18A0
+  symbol: gFire3Tex
+  format: IA8
+  width: 32
+  height: 64
+
+gFire4Tex:
+  type: TEXTURE
+  offset: 0x20A0
+  symbol: gFire4Tex
+  format: IA8
+  width: 32
+  height: 64
+
+gFire5Tex:
+  type: TEXTURE
+  offset: 0x28A0
+  symbol: gFire5Tex
+  format: IA8
+  width: 32
+  height: 64
+
+gFire6Tex:
+  type: TEXTURE
+  offset: 0x30A0
+  symbol: gFire6Tex
+  format: IA8
+  width: 32
+  height: 64
+
+gFire7Tex:
+  type: TEXTURE
+  offset: 0x38A0
+  symbol: gFire7Tex
+  format: IA8
+  width: 32
+  height: 64
+
+gFireDL:
+  type: GFX
+  offset: 0x40
+  symbol: gFireDL
+
+
+object_fireVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_fireVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

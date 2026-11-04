@@ -1,0 +1,106 @@
+:config:
+  segments:
+    - [ 3, 0x019B6D10 ]
+    - [ 2, 0x01984170 ]
+  directory: scenes/nonmq/ice_doukutu_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/nonmq/ice_doukutu_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+    - ntsc_j_gc_collection/scenes/nonmq/ice_doukutu_room_6Set_0001C0.yml
+
+ice_doukutu_room_6:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ice_doukutu_room_6
+
+ice_doukutu_room_6Tex_0029B0:
+  type: TEXTURE
+  offset: 0x2A60
+  symbol: ice_doukutu_room_6Tex_0029B0
+  format: I8
+  width: 64
+  height: 64
+
+ice_doukutu_room_6Tex_0039B0:
+  type: TEXTURE
+  offset: 0x3A60
+  symbol: ice_doukutu_room_6Tex_0039B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+ice_doukutu_room_6Vtx_000200:
+  type: OOT:ARRAY
+  offset: 0x000200
+  symbol: ice_doukutu_room_6Vtx_000200
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_6DL_000550:
+  type: GFX
+  offset: 0x000550
+  symbol: ice_doukutu_room_6DL_000550
+
+ice_doukutu_room_6Vtx_0006E0:
+  type: OOT:ARRAY
+  offset: 0x0006E0
+  symbol: ice_doukutu_room_6Vtx_0006E0
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_6DL_000C10:
+  type: GFX
+  offset: 0x000C10
+  symbol: ice_doukutu_room_6DL_000C10
+
+ice_doukutu_room_6Vtx_000DE8:
+  type: OOT:ARRAY
+  offset: 0x000DE8
+  symbol: ice_doukutu_room_6Vtx_000DE8
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_6DL_001148:
+  type: GFX
+  offset: 0x001148
+  symbol: ice_doukutu_room_6DL_001148
+
+ice_doukutu_room_6Vtx_0012D0:
+  type: OOT:ARRAY
+  offset: 0x0012D0
+  symbol: ice_doukutu_room_6Vtx_0012D0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_6DL_001460:
+  type: GFX
+  offset: 0x001460
+  symbol: ice_doukutu_room_6DL_001460
+
+ice_doukutu_room_6Vtx_001568:
+  type: OOT:ARRAY
+  offset: 0x001568
+  symbol: ice_doukutu_room_6Vtx_001568
+  count: 278
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_6DL_0026C8:
+  type: GFX
+  offset: 0x0026C8
+  symbol: ice_doukutu_room_6DL_0026C8
+
+ice_doukutu_room_6DL_002A30:
+  type: GFX
+  offset: 0x002A30
+  symbol: ice_doukutu_room_6DL_002A30

@@ -1,0 +1,184 @@
+:config:
+  segments:
+    - [ 6, 0x011E4870 ]
+
+gZelda2Anime2Anim_0001D8:
+  type: OOT:ANIMATION
+  offset: 0x1D8
+  symbol: gZelda2Anime2Anim_0001D8
+
+gZelda2Anime2Anim_0004F4:
+  type: OOT:ANIMATION
+  offset: 0x4F4
+  symbol: gZelda2Anime2Anim_0004F4
+
+gZelda2Anime2Anim_001110:
+  type: OOT:ANIMATION
+  offset: 0x1110
+  symbol: gZelda2Anime2Anim_001110
+
+gZelda2Anime2Anim_0014DC:
+  type: OOT:ANIMATION
+  offset: 0x14DC
+  symbol: gZelda2Anime2Anim_0014DC
+
+gZelda2Anime2Anim_001D8C:
+  type: OOT:ANIMATION
+  offset: 0x1D8C
+  symbol: gZelda2Anime2Anim_001D8C
+
+gZelda2Anime2Anim_00210C:
+  type: OOT:ANIMATION
+  offset: 0x210C
+  symbol: gZelda2Anime2Anim_00210C
+
+gZelda2Anime2Anim_002348:
+  type: OOT:ANIMATION
+  offset: 0x2348
+  symbol: gZelda2Anime2Anim_002348
+
+gZelda2Anime2Anim_002710:
+  type: OOT:ANIMATION
+  offset: 0x2710
+  symbol: gZelda2Anime2Anim_002710
+
+gZelda2Anime2Anim_002E54:
+  type: OOT:ANIMATION
+  offset: 0x2E54
+  symbol: gZelda2Anime2Anim_002E54
+
+gZelda2Anime2Anim_00322C:
+  type: OOT:ANIMATION
+  offset: 0x322C
+  symbol: gZelda2Anime2Anim_00322C
+
+gZelda2Anime2Anim_0038C0:
+  type: OOT:ANIMATION
+  offset: 0x38C0
+  symbol: gZelda2Anime2Anim_0038C0
+
+gZelda2Anime2Anim_003D20:
+  type: OOT:ANIMATION
+  offset: 0x3D20
+  symbol: gZelda2Anime2Anim_003D20
+
+gZelda2Anime2Anim_003FF8:
+  type: OOT:ANIMATION
+  offset: 0x3FF8
+  symbol: gZelda2Anime2Anim_003FF8
+
+gZelda2Anime2Anim_004408:
+  type: OOT:ANIMATION
+  offset: 0x4408
+  symbol: gZelda2Anime2Anim_004408
+
+gZelda2Anime2Anim_00499C:
+  type: OOT:ANIMATION
+  offset: 0x499C
+  symbol: gZelda2Anime2Anim_00499C
+
+gZelda2Anime2Anim_005248:
+  type: OOT:ANIMATION
+  offset: 0x5248
+  symbol: gZelda2Anime2Anim_005248
+
+gZelda2Anime2Anim_0054E0:
+  type: OOT:ANIMATION
+  offset: 0x54E0
+  symbol: gZelda2Anime2Anim_0054E0
+
+gZelda2Anime2Anim_005A0C:
+  type: OOT:ANIMATION
+  offset: 0x5A0C
+  symbol: gZelda2Anime2Anim_005A0C
+
+gZelda2Anime2Anim_0061C4:
+  type: OOT:ANIMATION
+  offset: 0x61C4
+  symbol: gZelda2Anime2Anim_0061C4
+
+gZelda2Anime2Anim_006508:
+  type: OOT:ANIMATION
+  offset: 0x6508
+  symbol: gZelda2Anime2Anim_006508
+
+gZelda2Anime2Anim_006AB0:
+  type: OOT:ANIMATION
+  offset: 0x6AB0
+  symbol: gZelda2Anime2Anim_006AB0
+
+gZelda2Anime2Anim_006F04:
+  type: OOT:ANIMATION
+  offset: 0x6F04
+  symbol: gZelda2Anime2Anim_006F04
+
+gZelda2Anime2Anim_007664:
+  type: OOT:ANIMATION
+  offset: 0x7664
+  symbol: gZelda2Anime2Anim_007664
+
+gZelda2Anime2Anim_007A78:
+  type: OOT:ANIMATION
+  offset: 0x7A78
+  symbol: gZelda2Anime2Anim_007A78
+
+gZelda2Anime2Anim_007C84:
+  type: OOT:ANIMATION
+  offset: 0x7C84
+  symbol: gZelda2Anime2Anim_007C84
+
+gZelda2Anime2Anim_008050:
+  type: OOT:ANIMATION
+  offset: 0x8050
+  symbol: gZelda2Anime2Anim_008050
+
+gZelda2Anime2Anim_0082F8:
+  type: OOT:ANIMATION
+  offset: 0x82F8
+  symbol: gZelda2Anime2Anim_0082F8
+
+gZelda2Anime2Anim_008684:
+  type: OOT:ANIMATION
+  offset: 0x8684
+  symbol: gZelda2Anime2Anim_008684
+
+gZelda2Anime2Anim_008AD0:
+  type: OOT:ANIMATION
+  offset: 0x8AD0
+  symbol: gZelda2Anime2Anim_008AD0
+
+gZelda2Anime2Anim_0091D8:
+  type: OOT:ANIMATION
+  offset: 0x91D8
+  symbol: gZelda2Anime2Anim_0091D8
+
+gZelda2Anime2Anim_0099A0:
+  type: OOT:ANIMATION
+  offset: 0x99A0
+  symbol: gZelda2Anime2Anim_0099A0
+
+gZelda2Anime2Anim_009BE4:
+  type: OOT:ANIMATION
+  offset: 0x9BE4
+  symbol: gZelda2Anime2Anim_009BE4
+
+gZelda2Anime2Anim_009FBC:
+  type: OOT:ANIMATION
+  offset: 0x9FBC
+  symbol: gZelda2Anime2Anim_009FBC
+
+gZelda2Anime2Anim_00A334:
+  type: OOT:ANIMATION
+  offset: 0xA334
+  symbol: gZelda2Anime2Anim_00A334
+
+gZelda2Anime2Anim_00A598:
+  type: OOT:ANIMATION
+  offset: 0xA598
+  symbol: gZelda2Anime2Anim_00A598
+
+gZelda2Anime2Anim_00AACC:
+  type: OOT:ANIMATION
+  offset: 0xAACC
+  symbol: gZelda2Anime2Anim_00AACC
+

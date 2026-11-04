@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 128, 0x00A580D0 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x00A580D0 ]
+    - [ 9, 0x00A580D0 ]
+    - [ 10, 0x00A580D0 ]
+    - [ 11, 0x00A580D0 ]
+    - [ 12, 0x00A580D0 ]
+    - [ 13, 0x00A580D0 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+sCircleDList:
+  type: GFX
+  offset: 0xEA2C8
+  symbol: sCircleDList
+
+sTransCircleNormalTex:
+  type: TEXTURE
+  offset: 0xE90C8
+  symbol: sTransCircleNormalTex
+  format: I8
+  width: 16
+  height: 64
+
+sTransCircleRippleTex:
+  type: TEXTURE
+  offset: 0xE98C8
+  symbol: sTransCircleRippleTex
+  format: I8
+  width: 16
+  height: 64
+
+sTransCircleStarburstTex:
+  type: TEXTURE
+  offset: 0xE9CC8
+  symbol: sTransCircleStarburstTex
+  format: I8
+  width: 16
+  height: 64
+
+sTransCircleVtx:
+  type: OOT:ARRAY
+  offset: 0xEA0C8
+  symbol: sTransCircleVtx
+  count: 34
+  array_type: VTX
+
+sTransCircleWaveTex:
+  type: TEXTURE
+  offset: 0xE94C8
+  symbol: sTransCircleWaveTex
+  format: I8
+  width: 16
+  height: 64
+

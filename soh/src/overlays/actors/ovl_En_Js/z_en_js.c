@@ -7,7 +7,6 @@
 #include "z_en_js.h"
 #include "objects/object_js/object_js.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -79,8 +78,6 @@ void EnJs_Destroy(Actor* thisx, PlayState* play) {
     EnJs* this = (EnJs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 u8 func_80A88F64(EnJs* this, PlayState* play, u16 textId) {
@@ -94,7 +91,7 @@ u8 func_80A88F64(EnJs* this, PlayState* play, u16 textId) {
 
         if (ABS(yawDiff) <= 0x1800 && this->actor.xzDistToPlayer < 100.0f) {
             this->unk_284 |= 1;
-            func_8002F2CC(&this->actor, play, 100.0f);
+            Actor_OfferTalk(&this->actor, play, 100.0f);
         }
         return 0;
     }
@@ -117,7 +114,7 @@ void func_80A890C0(EnJs* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         En_Js_SetupAction(this, func_80A89078);
     } else {
-        func_8002F2CC(&this->actor, play, 1000.0f);
+        Actor_OfferTalk(&this->actor, play, 1000.0f);
     }
 }
 
@@ -190,7 +187,7 @@ void EnJs_Update(Actor* thisx, PlayState* play) {
     Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         if (SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId) == 1) {
             Math_ApproachF(&this->actor.shape.yOffset, sREG(80) + -2000.0f, 1.0f, (sREG(81) / 10.0f) + 50.0f);
         }
@@ -202,7 +199,7 @@ void EnJs_Update(Actor* thisx, PlayState* play) {
     }
     this->actionFunc(this, play);
     if (this->unk_284 & 1) {
-        func_80038290(play, &this->actor, &this->unk_278, &this->unk_27E, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_278, &this->unk_27E, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->unk_278.x, 0, 6, 0x1838, 0x64);
         Math_SmoothStepToS(&this->unk_278.y, 0, 6, 0x1838, 0x64);

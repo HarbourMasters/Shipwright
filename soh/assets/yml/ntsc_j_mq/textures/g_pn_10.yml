@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012ED4D0 ]
+
+gIceCavernTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gIceCavernTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gIceCavernTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gIceCavernTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

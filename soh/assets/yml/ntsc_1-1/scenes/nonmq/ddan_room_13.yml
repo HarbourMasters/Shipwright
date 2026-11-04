@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 3, 0x016DDAE0 ]
+    - [ 2, 0x0168E580 ]
+  directory: scenes/nonmq/ddan_scene
+  external_files:
+    - ntsc_1-1/scenes/nonmq/ddan_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+
+ddan_room_13:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ddan_room_13
+
+ddan_room_13Tex_000CC8:
+  type: TEXTURE
+  offset: 0xC78
+  symbol: ddan_room_13Tex_000CC8
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_13Tex_0014C8:
+  type: TEXTURE
+  offset: 0x1478
+  symbol: ddan_room_13Tex_0014C8
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_13Tex_001CC8:
+  type: TEXTURE
+  offset: 0x1C78
+  symbol: ddan_room_13Tex_001CC8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_13Tex_0020C8:
+  type: TEXTURE
+  offset: 0x2078
+  symbol: ddan_room_13Tex_0020C8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+
+ddan_room_13Vtx_000080:
+  type: OOT:ARRAY
+  offset: 0x000080
+  symbol: ddan_room_13Vtx_000080
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_room_13DL_000690:
+  type: GFX
+  offset: 0x000690
+  symbol: ddan_room_13DL_000690

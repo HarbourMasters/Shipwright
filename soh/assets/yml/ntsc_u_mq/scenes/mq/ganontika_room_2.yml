@@ -1,0 +1,206 @@
+:config:
+  segments:
+    - [ 3, 0x01A30F80 ]
+    - [ 2, 0x01A0C580 ]
+  directory: scenes/mq/ganontika_scene
+  external_files:
+    - ntsc_u_mq/scenes/mq/ganontika_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+ganontika_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganontika_room_2
+
+ganontika_room_2Tex_002FD8:
+  type: TEXTURE
+  offset: 0x2FD8
+  symbol: ganontika_room_2Tex_002FD8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganontika_room_2Tex_0037D8:
+  type: TEXTURE
+  offset: 0x37D8
+  symbol: ganontika_room_2Tex_0037D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganontika_room_2Tex_003FD8:
+  type: TEXTURE
+  offset: 0x3FD8
+  symbol: ganontika_room_2Tex_003FD8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganontika_room_2Tex_0047D8:
+  type: TEXTURE
+  offset: 0x47D8
+  symbol: ganontika_room_2Tex_0047D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganontika_room_2Tex_004FD8:
+  type: TEXTURE
+  offset: 0x4FD8
+  symbol: ganontika_room_2Tex_004FD8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganontika_room_2Tex_0057D8:
+  type: TEXTURE
+  offset: 0x57D8
+  symbol: ganontika_room_2Tex_0057D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganontika_room_2Tex_005FD8:
+  type: TEXTURE
+  offset: 0x5FD8
+  symbol: ganontika_room_2Tex_005FD8
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ganontika_scene
+  external_tlut_offset: 0x1F380
+
+ganontika_room_2Tex_0067D8:
+  type: TEXTURE
+  offset: 0x67D8
+  symbol: ganontika_room_2Tex_0067D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+ganontika_room_2Vtx_0002E0:
+  type: OOT:ARRAY
+  offset: 0x0002E0
+  symbol: ganontika_room_2Vtx_0002E0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_0006D0:
+  type: GFX
+  offset: 0x0006D0
+  symbol: ganontika_room_2DL_0006D0
+
+ganontika_room_2Vtx_000B30:
+  type: OOT:ARRAY
+  offset: 0x000B30
+  symbol: ganontika_room_2Vtx_000B30
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_000D10:
+  type: GFX
+  offset: 0x000D10
+  symbol: ganontika_room_2DL_000D10
+
+ganontika_room_2Vtx_000DF0:
+  type: OOT:ARRAY
+  offset: 0x000DF0
+  symbol: ganontika_room_2Vtx_000DF0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_000F00:
+  type: GFX
+  offset: 0x000F00
+  symbol: ganontika_room_2DL_000F00
+
+ganontika_room_2Vtx_001008:
+  type: OOT:ARRAY
+  offset: 0x001008
+  symbol: ganontika_room_2Vtx_001008
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_0014A8:
+  type: GFX
+  offset: 0x0014A8
+  symbol: ganontika_room_2DL_0014A8
+
+ganontika_room_2Vtx_001648:
+  type: OOT:ARRAY
+  offset: 0x001648
+  symbol: ganontika_room_2Vtx_001648
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_001B68:
+  type: GFX
+  offset: 0x001B68
+  symbol: ganontika_room_2DL_001B68
+
+ganontika_room_2Vtx_001DB0:
+  type: OOT:ARRAY
+  offset: 0x001DB0
+  symbol: ganontika_room_2Vtx_001DB0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_001F20:
+  type: GFX
+  offset: 0x001F20
+  symbol: ganontika_room_2DL_001F20
+
+ganontika_room_2Vtx_002048:
+  type: OOT:ARRAY
+  offset: 0x002048
+  symbol: ganontika_room_2Vtx_002048
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_002498:
+  type: GFX
+  offset: 0x002498
+  symbol: ganontika_room_2DL_002498
+
+ganontika_room_2Vtx_002770:
+  type: OOT:ARRAY
+  offset: 0x002770
+  symbol: ganontika_room_2Vtx_002770
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_002AE0:
+  type: GFX
+  offset: 0x002AE0
+  symbol: ganontika_room_2DL_002AE0
+
+ganontika_room_2Vtx_002C90:
+  type: OOT:ARRAY
+  offset: 0x002C90
+  symbol: ganontika_room_2Vtx_002C90
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_2DL_002E70:
+  type: GFX
+  offset: 0x002E70
+  symbol: ganontika_room_2DL_002E70

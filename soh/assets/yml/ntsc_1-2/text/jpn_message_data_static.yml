@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 128, 0x008D1770 ]
+
+jpn_message_data_static:
+  type: OOT:TEXT
+  offset: 0x0
+  symbol: jpn_message_data_static
+  code_offset: 0xF991C
+  language: Japanese
+  code_phys_start: 0x00A62D40
+

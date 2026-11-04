@@ -72,7 +72,7 @@ void EnWallTubo_DetectChu(EnWallTubo* this, PlayState* play) {
     s16 quakeIndex;
 
     if (this->chuGirl->minigamePlayStatus != 0) {
-        if (play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_CHU_BOWLING) {
+        if (play->cameraPtrs[CAM_ID_MAIN]->setting == CAM_SET_CHU_BOWLING) {
             chu = (EnBomChu*)play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
 
             while (chu != NULL) {

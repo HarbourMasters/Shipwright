@@ -1,0 +1,25 @@
+:config:
+  segments:
+    - [ 128, 0x00A62D40 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x00A62D40 ]
+    - [ 9, 0x00A62D40 ]
+    - [ 10, 0x00A62D40 ]
+    - [ 11, 0x00A62D40 ]
+    - [ 12, 0x00A62D40 ]
+    - [ 13, 0x00A62D40 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+sTransTriforceDL:
+  type: GFX
+  offset: 0xEB540
+  symbol: sTransTriforceDL
+
+sTransTriforceVtx:
+  type: OOT:ARRAY
+  offset: 0xEB570
+  symbol: sTransTriforceVtx
+  count: 10
+  array_type: VTX
+

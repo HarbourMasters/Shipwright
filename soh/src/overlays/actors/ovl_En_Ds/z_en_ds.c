@@ -7,7 +7,6 @@
 #include "z_en_ds.h"
 #include "objects/object_ds/object_ds.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -52,9 +51,6 @@ void EnDs_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnDs_Destroy(Actor* thisx, PlayState* play) {
-    EnDs* this = (EnDs*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDs_Talk(EnDs* this, PlayState* play) {
@@ -78,7 +74,7 @@ void EnDs_TalkAfterGiveOddPotion(EnDs* this, PlayState* play) {
         this->actionFunc = EnDs_Talk;
     } else {
         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-        func_8002F2CC(&this->actor, play, 1000.0f);
+        Actor_OfferTalk(&this->actor, play, 1000.0f);
     }
 }
 
@@ -225,9 +221,9 @@ void EnDs_Wait(EnDs* this, PlayState* play) {
     s16 yawDiff;
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        if (func_8002F368(play) == EXCH_ITEM_ODD_MUSHROOM) {
-            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        if (Actor_GetPlayerExchangeItemId(play) == EXCH_ITEM_ODD_MUSHROOM) {
+            Audio_PlaySfxGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             player->actor.textId = 0x504A;
             this->actionFunc = EnDs_OfferOddPotion;
         } else if (GameInteractor_Should(VB_OFFER_BLUE_POTION, Flags_GetItemGetInf(ITEMGETINF_30),
@@ -247,7 +243,7 @@ void EnDs_Wait(EnDs* this, PlayState* play) {
         this->actor.textId = 0x5048;
 
         if ((ABS(yawDiff) < 0x2151) && (this->actor.xzDistToPlayer < 200.0f)) {
-            func_8002F298(&this->actor, play, 100.0f, EXCH_ITEM_ODD_MUSHROOM);
+            Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, EXCH_ITEM_ODD_MUSHROOM);
             this->unk_1E8 |= 1;
         }
     }
@@ -263,7 +259,7 @@ void EnDs_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->unk_1E8 & 1) {
-        func_80038290(play, &this->actor, &this->unk_1D8, &this->unk_1DE, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_1D8, &this->unk_1DE, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->unk_1D8.x, 0, 6, 0x1838, 100);
         Math_SmoothStepToS(&this->unk_1D8.y, 0, 6, 0x1838, 100);

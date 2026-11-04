@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x011D7E60 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x011D7E60 ]
+    - [ 9, 0x011D7E60 ]
+    - [ 10, 0x011D7E60 ]
+    - [ 11, 0x011D7E60 ]
+    - [ 12, 0x011D7E60 ]
+    - [ 13, 0x011D7E60 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gGerudoCellDoorCol:
+  type: OOT:COLLISION
+  offset: 0x170
+  symbol: gGerudoCellDoorCol
+
+gGerudoCellDoorDL:
+  type: GFX
+  offset: 0x40
+  symbol: gGerudoCellDoorDL
+
+gGerudoCellDoorTex:
+  type: TEXTURE
+  offset: 0x1A0
+  symbol: gGerudoCellDoorTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+object_door_gerudoVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_door_gerudoVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

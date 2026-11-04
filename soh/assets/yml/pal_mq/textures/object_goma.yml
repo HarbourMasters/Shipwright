@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 6, 0x00E09EA0 ]
+
+gGohmaTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x19ba8
+  symbol: gGohmaTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gGohmaTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1c3a8
+  symbol: gGohmaTitleCardFRATex
+  format: IA8
+  width: 128
+  height: 40
+
+gGohmaTitleCardGERTex:
+  type: TEXTURE
+  offset: 0x1afa8
+  symbol: gGohmaTitleCardGERTex
+  format: IA8
+  width: 128
+  height: 40
+

@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01D976E0 ]
+    - [ 2, 0x01D8CDD0 ]
+  directory: scenes/shared/jyasinboss_scene
+  external_files:
+    - ntsc_1-0/scenes/shared/jyasinboss_room_3.yml
+    - ntsc_1-0/scenes/shared/jyasinboss_scene.yml
+    - ntsc_1-0/code/sys_matrix.yml
+
+jyasinboss_room_3Set_000100:
+  type: OOT:ROOM
+  offset: 0x100
+  symbol: jyasinboss_room_3Set_000100
+  base_name: jyasinboss_room_3

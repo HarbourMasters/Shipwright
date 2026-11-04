@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 6, 0x00EF68A0 ]
+
+gPhantomGanonTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x6da0
+  symbol: gPhantomGanonTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gPhantomGanonTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x59a0
+  symbol: gPhantomGanonTitleCardJPNTex
+  format: IA8
+  width: 128
+  height: 40
+

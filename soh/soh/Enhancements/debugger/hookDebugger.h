@@ -1,7 +1,6 @@
-#ifndef hookDebugger_h
-#define hookDebugger_h
+#pragma once
 
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 class HookDebuggerWindow final : public Ship::GuiWindow {
   public:
@@ -11,5 +10,3 @@ class HookDebuggerWindow final : public Ship::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override{};
 };
-
-#endif // hookDebugger_h

@@ -12,6 +12,7 @@
 #include "objects/object_mori_hineri2/object_mori_hineri2.h"
 #include "objects/object_mori_hineri2a/object_mori_hineri2a.h"
 #include "objects/object_mori_tex/object_mori_tex.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -30,7 +31,11 @@ void func_808A3D58(BgMoriHineri* this, PlayState* play);
 
 s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 
-s16 sBgMoriHineriNextCamIdx = SUBCAM_NONE;
+static s16 sSubCamId = SUBCAM_NONE;
+
+#define BG_MORI_HINERI_SHIP_SAVESTATE_FIELDS(F) F(sSubCamId)
+
+SHIP_SAVESTATE_DEFINE(BgMoriHineri, BG_MORI_HINERI_SHIP_SAVESTATE_FIELDS)
 
 const ActorInit Bg_Mori_Hineri_InitVars = {
     ACTOR_BG_MORI_HINERI,
@@ -183,7 +188,7 @@ void func_808A3C8C(BgMoriHineri* this, PlayState* play) {
 
     f0 = 1100.0f - (player->actor.world.pos.z - this->dyna.actor.world.pos.z);
     this->dyna.actor.shape.rot.z = CLAMP(f0, 0.0f, 1000.0f) * 16.384f;
-    Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON1);
+    Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON1);
     if (this->dyna.actor.params != 0) {
         this->dyna.actor.shape.rot.z = -this->dyna.actor.shape.rot.z;
     }
@@ -197,36 +202,35 @@ void func_808A3D58(BgMoriHineri* this, PlayState* play) {
         this->dyna.actor.draw = BgMoriHineri_DrawHallAndRoom;
         this->actionFunc = func_808A3E54;
 
-        mainCamChildIdx = play->cameraPtrs[MAIN_CAM]->childCamIdx;
+        mainCamChildIdx = play->cameraPtrs[CAM_ID_MAIN]->childCamIdx;
         if ((mainCamChildIdx != SUBCAM_FREE) &&
             (play->cameraPtrs[mainCamChildIdx]->setting == CAM_SET_CS_TWISTED_HALLWAY)) {
             OnePointCutscene_EndCutscene(play, mainCamChildIdx);
         }
-        OnePointCutscene_Init(play, 3260, 40, &this->dyna.actor, MAIN_CAM);
-        sBgMoriHineriNextCamIdx = OnePointCutscene_Init(play, 3261, 40, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3260, 40, &this->dyna.actor, CAM_ID_MAIN);
+        sSubCamId = OnePointCutscene_Init(play, 3261, 40, &this->dyna.actor, CAM_ID_MAIN);
     }
 }
 
 void func_808A3E54(BgMoriHineri* this, PlayState* play) {
     s8 objBankIndex;
 
-    if (play->activeCamera == sBgMoriHineriNextCamIdx) {
-        if (sBgMoriHineriNextCamIdx != MAIN_CAM) {
+    if (play->activeCamera == sSubCamId) {
+        if (sSubCamId != CAM_ID_MAIN) {
             objBankIndex = this->dyna.actor.objBankIndex;
             this->dyna.actor.objBankIndex = this->moriHineriObjIdx;
             this->moriHineriObjIdx = objBankIndex;
             this->dyna.actor.params ^= 1;
-            sBgMoriHineriNextCamIdx = MAIN_CAM;
+            sSubCamId = CAM_ID_MAIN;
             Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         } else {
             this->dyna.actor.draw = NULL;
             this->actionFunc = func_808A3D58;
-            sBgMoriHineriNextCamIdx = SUBCAM_NONE;
+            sSubCamId = SUBCAM_NONE;
         }
     }
-    if ((sBgMoriHineriNextCamIdx >= SUBCAM_FIRST) &&
-        ((GET_ACTIVE_CAM(play)->eye.z - this->dyna.actor.world.pos.z) < 1100.0f)) {
-        func_8002F948(&this->dyna.actor, NA_SE_EV_FLOOR_ROLLING - SFX_FLAG);
+    if ((sSubCamId >= CAM_ID_SUB_FIRST) && ((GET_ACTIVE_CAM(play)->eye.z - this->dyna.actor.world.pos.z) < 1100.0f)) {
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_FLOOR_ROLLING - SFX_FLAG);
     }
 }
 
@@ -267,5 +271,5 @@ void BgMoriHineri_DrawHallAndRoom(Actor* thisx, PlayState* play) {
 }
 
 void BgMoriHineri_Reset() {
-    sBgMoriHineriNextCamIdx = SUBCAM_NONE;
+    sSubCamId = SUBCAM_NONE;
 }

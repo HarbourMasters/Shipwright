@@ -1,0 +1,192 @@
+:config:
+  segments:
+    - [ 2, 0x01B30600 ]
+
+  external_files:
+    - pal_gc/scenes/shared/spot07_sceneSet_003A40.yml
+    - pal_gc/scenes/shared/spot07_sceneSet_003C60.yml
+spot07_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot07_scene
+
+gZorasDomainDayEntranceTex:
+  type: TEXTURE
+  offset: 0x8F98
+  symbol: gZorasDomainDayEntranceTex
+  format: IA8
+  width: 8
+  height: 8
+
+gZorasDomainIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x3D70
+  symbol: gZorasDomainIntroCs
+
+gZorasDomainNightEntranceTex:
+  type: TEXTURE
+  offset: 0x8FD8
+  symbol: gZorasDomainNightEntranceTex
+  format: IA8
+  width: 8
+  height: 8
+
+gZorasDomainPath_0234:
+  type: OOT:PATH
+  offset: 0x234
+  symbol: gZorasDomainPath_0234
+  num_paths: 3
+
+spot07_sceneTLUT_003F70:
+  type: TEXTURE
+  offset: 0x3F70
+  symbol: spot07_sceneTLUT_003F70
+  format: RGBA16
+  width: 4
+  height: 4
+
+spot07_sceneTex_003F98:
+  type: TEXTURE
+  offset: 0x3F98
+  symbol: spot07_sceneTex_003F98
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot07_sceneTex_004F98:
+  type: TEXTURE
+  offset: 0x4F98
+  symbol: spot07_sceneTex_004F98
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_005398:
+  type: TEXTURE
+  offset: 0x5398
+  symbol: spot07_sceneTex_005398
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_005798:
+  type: TEXTURE
+  offset: 0x5798
+  symbol: spot07_sceneTex_005798
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_005B98:
+  type: TEXTURE
+  offset: 0x5B98
+  symbol: spot07_sceneTex_005B98
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_005F98:
+  type: TEXTURE
+  offset: 0x5F98
+  symbol: spot07_sceneTex_005F98
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_006398:
+  type: TEXTURE
+  offset: 0x6398
+  symbol: spot07_sceneTex_006398
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_006798:
+  type: TEXTURE
+  offset: 0x6798
+  symbol: spot07_sceneTex_006798
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_006B98:
+  type: TEXTURE
+  offset: 0x6B98
+  symbol: spot07_sceneTex_006B98
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_006F98:
+  type: TEXTURE
+  offset: 0x6F98
+  symbol: spot07_sceneTex_006F98
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot07_sceneTex_007798:
+  type: TEXTURE
+  offset: 0x7798
+  symbol: spot07_sceneTex_007798
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_007B98:
+  type: TEXTURE
+  offset: 0x7B98
+  symbol: spot07_sceneTex_007B98
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_007F98:
+  type: TEXTURE
+  offset: 0x7F98
+  symbol: spot07_sceneTex_007F98
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot07_sceneTex_008798:
+  type: TEXTURE
+  offset: 0x8798
+  symbol: spot07_sceneTex_008798
+  format: IA4
+  width: 64
+  height: 64
+
+spot07_sceneTex_009018:
+  type: TEXTURE
+  offset: 0x9018
+  symbol: spot07_sceneTex_009018
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+spot07_sceneTex_009418:
+  type: TEXTURE
+  offset: 0x9418
+  symbol: spot07_sceneTex_009418
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x3F70
+
+
+spot07_sceneCollisionHeader_003824:
+  type: OOT:COLLISION
+  offset: 0x003824
+  symbol: spot07_sceneCollisionHeader_003824

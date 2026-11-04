@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x012EF130 ]
+
+gGoronShopTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGoronShopTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGoronShopTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gGoronShopTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gGoronShopTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGoronShopTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

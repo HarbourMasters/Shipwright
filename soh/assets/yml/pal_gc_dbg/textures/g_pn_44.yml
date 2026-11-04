@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A6F000 ]
+
+gRoyalFamilysTombTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gRoyalFamilysTombTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gRoyalFamilysTombTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gRoyalFamilysTombTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gRoyalFamilysTombTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gRoyalFamilysTombTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

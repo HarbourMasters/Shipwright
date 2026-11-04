@@ -64,7 +64,7 @@ bool Rando::Location::IsOverworld() const {
 }
 
 bool Rando::Location::IsShop() const {
-    return scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP;
+    return (scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP) || scene == SCENE_TEST01;
 }
 
 bool Rando::Location::IsVanillaCompletion() const {
@@ -693,6 +693,14 @@ Rando::Location Rando::Location::RedIce(RandomizerCheck rc, RandomizerCheckQuest
                                         SceneID scene_, int32_t actorParams_, std::string&& shortName_,
                                         RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
     return { rc,     quest_,         RCTYPE_RED_ICE,        area_,   ACTOR_BG_ICE_SHELTER,
+             scene_, actorParams_,   std::move(shortName_), hintKey, RG_NONE,
+             false,  collectionCheck };
+}
+
+Rando::Location Rando::Location::FireGoron(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                           SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                           RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_FIRE_GORON,     area_,   ACTOR_EN_GO2,
              scene_, actorParams_,   std::move(shortName_), hintKey, RG_NONE,
              false,  collectionCheck };
 }

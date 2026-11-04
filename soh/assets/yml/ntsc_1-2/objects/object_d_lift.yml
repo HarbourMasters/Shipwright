@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x011851B0 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x011851B0 ]
+    - [ 9, 0x011851B0 ]
+    - [ 10, 0x011851B0 ]
+    - [ 11, 0x011851B0 ]
+    - [ 12, 0x011851B0 ]
+    - [ 13, 0x011851B0 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gCollapsingPlatformCol:
+  type: OOT:COLLISION
+  offset: 0x3D0
+  symbol: gCollapsingPlatformCol
+
+gCollapsingPlatformDL:
+  type: GFX
+  offset: 0x140
+  symbol: gCollapsingPlatformDL
+
+gCollapsingPlatformSideTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gCollapsingPlatformSideTex
+  format: I8
+  width: 64
+  height: 16
+
+gCollapsingPlatformTopTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gCollapsingPlatformTopTex
+  format: I8
+  width: 64
+  height: 64
+
+
+object_d_liftVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_d_liftVtx_000000
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

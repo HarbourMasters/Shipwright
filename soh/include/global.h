@@ -9,9 +9,14 @@
 #include "variables.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
+#ifdef __cplusplus
+extern "C++" {
+#endif
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/Enhancements/gameplaystats.h"
-#include <libultraship/bridge.h>
+#ifdef __cplusplus
+}
+#endif
 
 #define _AudioseqSegmentRomStart "Audioseq"
 #define _AudiobankSegmentRomStart "Audiobank"

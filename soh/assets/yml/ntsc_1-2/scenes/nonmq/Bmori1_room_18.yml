@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [ 3, 0x019792C0 ]
+    - [ 2, 0x0191BF40 ]
+  directory: scenes/nonmq/Bmori1_scene
+  external_files:
+    - ntsc_1-2/scenes/nonmq/Bmori1_scene.yml
+    - ntsc_1-2/code/sys_matrix.yml
+
+Bmori1_room_18:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: Bmori1_room_18
+
+Bmori1_room_18Tex_000B30:
+  type: TEXTURE
+  offset: 0xB40
+  symbol: Bmori1_room_18Tex_000B30
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+
+Bmori1_room_18Vtx_0000A0:
+  type: OOT:ARRAY
+  offset: 0x0000A0
+  symbol: Bmori1_room_18Vtx_0000A0
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_18DL_0005A0:
+  type: GFX
+  offset: 0x0005A0
+  symbol: Bmori1_room_18DL_0005A0

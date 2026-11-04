@@ -1,0 +1,616 @@
+:config:
+  segments:
+    - [ 6, 0x01120720 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x01120720 ]
+    - [ 9, 0x01120720 ]
+    - [ 10, 0x01120720 ]
+    - [ 11, 0x01120720 ]
+    - [ 12, 0x01120720 ]
+    - [ 13, 0x01120720 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gMido1TLUT:
+  type: TEXTURE
+  offset: 0x02E0
+  symbol: gMido1TLUT
+  format: RGBA16
+  width: 256
+  height: 1
+
+gMido2TLUT:
+  type: TEXTURE
+  offset: 0x4C48
+  symbol: gMido2TLUT
+  format: RGBA16
+  width: 188
+  height: 1
+
+gMido3TLUT:
+  type: TEXTURE
+  offset: 0x4DC0
+  symbol: gMido3TLUT
+  format: RGBA16
+  width: 248
+  height: 1
+
+gMidoAngryHeadTurnAnim:
+  type: OOT:ANIMATION
+  offset: 0x8738
+  symbol: gMidoAngryHeadTurnAnim
+
+gMidoAnim_92B0:
+  type: OOT:ANIMATION
+  offset: 0x92B0
+  symbol: gMidoAnim_92B0
+
+gMidoAnkleTex:
+  type: TEXTURE
+  offset: 0x13A0
+  symbol: gMidoAnkleTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x02E0
+
+gMidoAnnoyedPointedHeadIdle1Anim:
+  type: OOT:ANIMATION
+  offset: 0x8E84
+  symbol: gMidoAnnoyedPointedHeadIdle1Anim
+
+gMidoAnnoyedPointedHeadIdle2Anim:
+  type: OOT:ANIMATION
+  offset: 0x97F0
+  symbol: gMidoAnnoyedPointedHeadIdle2Anim
+
+gMidoBackOfHandTex:
+  type: TEXTURE
+  offset: 0x12A0
+  symbol: gMidoBackOfHandTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x02E0
+
+gMidoClothesTex:
+  type: TEXTURE
+  offset: 0x12E0
+  symbol: gMidoClothesTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x02E0
+
+gMidoEyeAngryTex:
+  type: TEXTURE
+  offset: 0x6130
+  symbol: gMidoEyeAngryTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4DC0
+
+gMidoEyeClosedTex:
+  type: TEXTURE
+  offset: 0x5D30
+  symbol: gMidoEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4DC0
+
+gMidoEyeHalfTex:
+  type: TEXTURE
+  offset: 0x5930
+  symbol: gMidoEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4DC0
+
+gMidoEyeLookingUpTex:
+  type: TEXTURE
+  offset: 0x520
+  symbol: gMidoEyeLookingUpTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMidoEyeOpenTex:
+  type: TEXTURE
+  offset: 0x4FF0
+  symbol: gMidoEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4DC0
+
+gMidoGradientTex:
+  type: TEXTURE
+  offset: 0x4E0
+  symbol: gMidoGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMidoHairCurl1Tex:
+  type: TEXTURE
+  offset: 0xE20
+  symbol: gMidoHairCurl1Tex
+  format: CI8
+  width: 32
+  height: 32
+
+gMidoHairCurl2Tex:
+  type: TEXTURE
+  offset: 0x5470
+  symbol: gMidoHairCurl2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4C48
+
+gMidoHaltAnim:
+  type: OOT:ANIMATION
+  offset: 0x9E68
+  symbol: gMidoHaltAnim
+
+gMidoHandsOnHipsIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x02C8
+  symbol: gMidoHandsOnHipsIdleAnim
+
+gMidoHandsOnHipsTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x8FC0
+  symbol: gMidoHandsOnHipsTransitionAnim
+
+gMidoHeadDL:
+  type: GFX
+  offset: 0x7380
+  symbol: gMidoHeadDL
+
+gMidoHeadLimb:
+  type: OOT:LIMB
+  offset: 0x7F6C
+  symbol: gMidoHeadLimb
+  limb_type: Standard
+
+gMidoLeftFootDL:
+  type: GFX
+  offset: 0x4B10
+  symbol: gMidoLeftFootDL
+
+gMidoLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x7EE8
+  symbol: gMidoLeftFootLimb
+  limb_type: Standard
+
+gMidoLeftForearmDL:
+  type: GFX
+  offset: 0x3DE0
+  symbol: gMidoLeftForearmDL
+
+gMidoLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x7F30
+  symbol: gMidoLeftForearmLimb
+  limb_type: Standard
+
+gMidoLeftHandDL:
+  type: GFX
+  offset: 0x3F18
+  symbol: gMidoLeftHandDL
+
+gMidoLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x7F3C
+  symbol: gMidoLeftHandLimb
+  limb_type: Standard
+
+gMidoLeftLegDL:
+  type: GFX
+  offset: 0x4978
+  symbol: gMidoLeftLegDL
+
+gMidoLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7EDC
+  symbol: gMidoLeftLegLimb
+  limb_type: Standard
+
+gMidoLeftThighDL:
+  type: GFX
+  offset: 0x47D0
+  symbol: gMidoLeftThighDL
+
+gMidoLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x7ED0
+  symbol: gMidoLeftThighLimb
+  limb_type: Standard
+
+gMidoLeftUpperArmDL:
+  type: GFX
+  offset: 0x3CA8
+  symbol: gMidoLeftUpperArmDL
+
+gMidoLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x7F24
+  symbol: gMidoLeftUpperArmLimb
+  limb_type: Standard
+
+gMidoPantsTex:
+  type: TEXTURE
+  offset: 0x13E0
+  symbol: gMidoPantsTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMidoPutHandDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x9B1C
+  symbol: gMidoPutHandDownAnim
+
+gMidoRaiseHand1Anim:
+  type: OOT:ANIMATION
+  offset: 0x917C
+  symbol: gMidoRaiseHand1Anim
+
+gMidoRaiseHand2Anim:
+  type: OOT:ANIMATION
+  offset: 0x95BC
+  symbol: gMidoRaiseHand2Anim
+
+gMidoRightFootDL:
+  type: GFX
+  offset: 0x4698
+  symbol: gMidoRightFootDL
+
+gMidoRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x7F0C
+  symbol: gMidoRightFootLimb
+  limb_type: Standard
+
+gMidoRightForearmDL:
+  type: GFX
+  offset: 0x3878
+  symbol: gMidoRightForearmDL
+
+gMidoRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x7F54
+  symbol: gMidoRightForearmLimb
+  limb_type: Standard
+
+gMidoRightHandDL:
+  type: GFX
+  offset: 0x39B0
+  symbol: gMidoRightHandDL
+
+gMidoRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x7F60
+  symbol: gMidoRightHandLimb
+  limb_type: Standard
+
+gMidoRightLegDL:
+  type: GFX
+  offset: 0x44F8
+  symbol: gMidoRightLegDL
+
+gMidoRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x7F00
+  symbol: gMidoRightLegLimb
+  limb_type: Standard
+
+gMidoRightThighDL:
+  type: GFX
+  offset: 0x4350
+  symbol: gMidoRightThighDL
+
+gMidoRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x7EF4
+  symbol: gMidoRightThighLimb
+  limb_type: Standard
+
+gMidoRightUpperArmDL:
+  type: GFX
+  offset: 0x3740
+  symbol: gMidoRightUpperArmDL
+
+gMidoRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x7F48
+  symbol: gMidoRightUpperArmLimb
+  limb_type: Standard
+
+gMidoRootLimb:
+  type: OOT:LIMB
+  offset: 0x7EB8
+  symbol: gMidoRootLimb
+  limb_type: Standard
+
+gMidoShoeTex:
+  type: TEXTURE
+  offset: 0x1360
+  symbol: gMidoShoeTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x02E0
+
+gMidoSkel:
+  type: OOT:SKELETON
+  offset: 0x7FB8
+  symbol: gMidoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gMidoSlamAnim:
+  type: OOT:ANIMATION
+  offset: 0x8510
+  symbol: gMidoSlamAnim
+
+gMidoTex_1220:
+  type: TEXTURE
+  offset: 0x1220
+  symbol: gMidoTex_1220
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x02E0
+
+gMidoTex_1260:
+  type: TEXTURE
+  offset: 0x1260
+  symbol: gMidoTex_1260
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x02E0
+
+gMidoTex_4FB0:
+  type: TEXTURE
+  offset: 0x4FB0
+  symbol: gMidoTex_4FB0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4C48
+
+gMidoTex_53F0:
+  type: TEXTURE
+  offset: 0x53F0
+  symbol: gMidoTex_53F0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4C48
+
+gMidoTex_5430:
+  type: TEXTURE
+  offset: 0x5430
+  symbol: gMidoTex_5430
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4C48
+
+gMidoTex_5870:
+  type: TEXTURE
+  offset: 0x5870
+  symbol: gMidoTex_5870
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x4C48
+
+gMidoTex_58F0:
+  type: TEXTURE
+  offset: 0x58F0
+  symbol: gMidoTex_58F0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4C48
+
+gMidoTex_D20:
+  type: TEXTURE
+  offset: 0xD20
+  symbol: gMidoTex_D20
+  format: RGBA16
+  width: 8
+  height: 8
+
+gMidoTex_DA0:
+  type: TEXTURE
+  offset: 0xDA0
+  symbol: gMidoTex_DA0
+  format: CI8
+  width: 8
+  height: 16
+
+gMidoTorsoDL:
+  type: GFX
+  offset: 0x32D0
+  symbol: gMidoTorsoDL
+
+gMidoTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x7F18
+  symbol: gMidoTorsoLimb
+  limb_type: Standard
+
+gMidoUndershirtTex:
+  type: TEXTURE
+  offset: 0x1320
+  symbol: gMidoUndershirtTex
+  format: I8
+  width: 8
+  height: 8
+
+gMidoWaistDL:
+  type: GFX
+  offset: 0x4218
+  symbol: gMidoWaistDL
+
+gMidoWaistLimb:
+  type: OOT:LIMB
+  offset: 0x7EC4
+  symbol: gMidoWaistLimb
+  limb_type: Standard
+
+gMidoWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0xA138
+  symbol: gMidoWalkingAnim
+
+
+object_mdVtx_0015E0:
+  type: OOT:ARRAY
+  offset: 0x0015E0
+  symbol: object_mdVtx_0015E0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_0018E0:
+  type: OOT:ARRAY
+  offset: 0x0018E0
+  symbol: object_mdVtx_0018E0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_001A60:
+  type: OOT:ARRAY
+  offset: 0x001A60
+  symbol: object_mdVtx_001A60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_001BE0:
+  type: OOT:ARRAY
+  offset: 0x001BE0
+  symbol: object_mdVtx_001BE0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_001EE0:
+  type: OOT:ARRAY
+  offset: 0x001EE0
+  symbol: object_mdVtx_001EE0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_002060:
+  type: OOT:ARRAY
+  offset: 0x002060
+  symbol: object_mdVtx_002060
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_0021E0:
+  type: OOT:ARRAY
+  offset: 0x0021E0
+  symbol: object_mdVtx_0021E0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_002640:
+  type: OOT:ARRAY
+  offset: 0x002640
+  symbol: object_mdVtx_002640
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_002820:
+  type: OOT:ARRAY
+  offset: 0x002820
+  symbol: object_mdVtx_002820
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_002980:
+  type: OOT:ARRAY
+  offset: 0x002980
+  symbol: object_mdVtx_002980
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_002B90:
+  type: OOT:ARRAY
+  offset: 0x002B90
+  symbol: object_mdVtx_002B90
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_002D70:
+  type: OOT:ARRAY
+  offset: 0x002D70
+  symbol: object_mdVtx_002D70
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_002ED0:
+  type: OOT:ARRAY
+  offset: 0x002ED0
+  symbol: object_mdVtx_002ED0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_0030E0:
+  type: OOT:ARRAY
+  offset: 0x0030E0
+  symbol: object_mdVtx_0030E0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mdVtx_006530:
+  type: OOT:ARRAY
+  offset: 0x006530
+  symbol: object_mdVtx_006530
+  count: 229
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMidoSkelLimbs:
+  type: BLOB
+  offset: 0x7F78
+  symbol: gMidoSkelLimbs
+  size: 0

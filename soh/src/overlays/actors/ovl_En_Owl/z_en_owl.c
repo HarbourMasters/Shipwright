@@ -10,7 +10,6 @@
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
 #include <assert.h>
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -242,9 +241,6 @@ void EnOwl_Destroy(Actor* thisx, PlayState* play) {
     EnOwl* this = (EnOwl*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime2);
 }
 
 /**
@@ -279,14 +275,14 @@ s32 EnOwl_CheckInitTalk(EnOwl* this, PlayState* play, u16 textId, f32 targetDist
                 this->actionFlags &= ~0x40;
             }
         }
-        this->cameraIdx = OnePointCutscene_Init(play, 8700, timer, &this->actor, MAIN_CAM);
+        this->cameraIdx = OnePointCutscene_Init(play, 8700, timer, &this->actor, CAM_ID_MAIN);
         return true;
     } else {
         this->actor.textId = textId;
         distCheck = (flags & 2) ? 200.0f : 1000.0f;
         if (GameInteractor_Should(VB_OWL_INTERACTION, this->actor.xzDistToPlayer < targetDist, this)) {
             this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-            func_8002F1C4(&this->actor, play, targetDist, distCheck, 0);
+            Actor_OfferTalkExchange(&this->actor, play, targetDist, distCheck, 0);
         }
         return false;
     }
@@ -298,7 +294,7 @@ s32 func_80ACA558(EnOwl* this, PlayState* play, u16 textId) {
     } else {
         this->actor.textId = textId;
         if (this->actor.xzDistToPlayer < 120.0f) {
-            func_8002F1C4(&this->actor, play, 350.0f, 1000.0f, 0);
+            Actor_OfferTalkExchange(&this->actor, play, 350.0f, 1000.0f, 0);
         }
         return false;
     }
@@ -966,7 +962,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
             this->actionFunc = EnOwl_WaitDefault;
             this->unk_40A = 0;
             this->actionFlags |= 0x80;
-            gTimeIncrement = 0;
+            gTimeSpeed = 0;
         }
     }
 

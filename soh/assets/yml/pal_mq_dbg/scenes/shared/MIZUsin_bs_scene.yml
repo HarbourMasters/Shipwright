@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x0311D000 ]
+
+MIZUsin_bs_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: MIZUsin_bs_scene
+
+
+MIZUsin_bs_sceneCollisionHeader_001A34:
+  type: OOT:COLLISION
+  offset: 0x001A34
+  symbol: MIZUsin_bs_sceneCollisionHeader_001A34

@@ -1,0 +1,236 @@
+:config:
+  segments:
+    - [ 6, 0x011919E0 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x011919E0 ]
+    - [ 9, 0x011919E0 ]
+    - [ 10, 0x011919E0 ]
+    - [ 11, 0x011919E0 ]
+    - [ 12, 0x011919E0 ]
+    - [ 13, 0x011919E0 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gIllusionRoomCol:
+  type: OOT:COLLISION
+  offset: 0x7564
+  symbol: gIllusionRoomCol
+
+gIllusionRoomIllusionDL:
+  type: GFX
+  offset: 0x53D0
+  symbol: gIllusionRoomIllusionDL
+
+gIllusionRoomNormalDL:
+  type: GFX
+  offset: 0x14E0
+  symbol: gIllusionRoomNormalDL
+
+gIllusionRoomTreeDL:
+  type: GFX
+  offset: 0x7EB0
+  symbol: gIllusionRoomTreeDL
+
+object_blkobjTex_008090:
+  type: TEXTURE
+  offset: 0x8090
+  symbol: object_blkobjTex_008090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_008890:
+  type: TEXTURE
+  offset: 0x8890
+  symbol: object_blkobjTex_008890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_009090:
+  type: TEXTURE
+  offset: 0x9090
+  symbol: object_blkobjTex_009090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_009890:
+  type: TEXTURE
+  offset: 0x9890
+  symbol: object_blkobjTex_009890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00A090:
+  type: TEXTURE
+  offset: 0xA090
+  symbol: object_blkobjTex_00A090
+  format: IA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00A890:
+  type: TEXTURE
+  offset: 0xA890
+  symbol: object_blkobjTex_00A890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00B090:
+  type: TEXTURE
+  offset: 0xB090
+  symbol: object_blkobjTex_00B090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00B890:
+  type: TEXTURE
+  offset: 0xB890
+  symbol: object_blkobjTex_00B890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00C090:
+  type: TEXTURE
+  offset: 0xC090
+  symbol: object_blkobjTex_00C090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00C890:
+  type: TEXTURE
+  offset: 0xC890
+  symbol: object_blkobjTex_00C890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00D090:
+  type: TEXTURE
+  offset: 0xD090
+  symbol: object_blkobjTex_00D090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00D890:
+  type: TEXTURE
+  offset: 0xD890
+  symbol: object_blkobjTex_00D890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00E090:
+  type: TEXTURE
+  offset: 0xE090
+  symbol: object_blkobjTex_00E090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_00E890:
+  type: TEXTURE
+  offset: 0xE890
+  symbol: object_blkobjTex_00E890
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_blkobjTex_00F890:
+  type: TEXTURE
+  offset: 0xF890
+  symbol: object_blkobjTex_00F890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_010090:
+  type: TEXTURE
+  offset: 0x10090
+  symbol: object_blkobjTex_010090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_010890:
+  type: TEXTURE
+  offset: 0x10890
+  symbol: object_blkobjTex_010890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_011090:
+  type: TEXTURE
+  offset: 0x11090
+  symbol: object_blkobjTex_011090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_011890:
+  type: TEXTURE
+  offset: 0x11890
+  symbol: object_blkobjTex_011890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_012090:
+  type: TEXTURE
+  offset: 0x12090
+  symbol: object_blkobjTex_012090
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_012890:
+  type: TEXTURE
+  offset: 0x12890
+  symbol: object_blkobjTex_012890
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_blkobjTex_013090:
+  type: TEXTURE
+  offset: 0x13090
+  symbol: object_blkobjTex_013090
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_blkobjVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_blkobjVtx_000000
+  count: 334
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_blkobjVtx_001F30:
+  type: OOT:ARRAY
+  offset: 0x001F30
+  symbol: object_blkobjVtx_001F30
+  count: 842
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_blkobjVtx_007590:
+  type: OOT:ARRAY
+  offset: 0x007590
+  symbol: object_blkobjVtx_007590
+  count: 146
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

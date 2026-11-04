@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 6, 0x0104E510 ]
+
+gMorphaTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x2410
+  symbol: gMorphaTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gMorphaTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x1010
+  symbol: gMorphaTitleCardJPNTex
+  format: IA8
+  width: 128
+  height: 40
+

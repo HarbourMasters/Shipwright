@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x01306A60 ]
+
+gBottomOfTheWellTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gBottomOfTheWellTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gBottomOfTheWellTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBottomOfTheWellTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

@@ -11,7 +11,6 @@
 #include "scenes/indoors/yousei_izumi_yoko/yousei_izumi_yoko_scene.h"
 #include "scenes/indoors/daiyousei_izumi/daiyousei_izumi_scene.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
@@ -99,8 +98,6 @@ void BgDyYoseizo_Init(Actor* thisx, PlayState* play2) {
 }
 
 void BgDyYoseizo_Destroy(Actor* thisx, PlayState* play) {
-    BgDyYoseizo* this = (BgDyYoseizo*)thisx;
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 static Color_RGB8 sParticlePrimColors[] = {
@@ -265,7 +262,7 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, PlayState* play) {
     }
 
     if (givingReward) {
-        if (gSaveContext.sceneSetupIndex < 4) {
+        if (gSaveContext.sceneLayer < 4) {
             if (play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) {
                 switch (this->fountainType) {
                     case FAIRY_SPELL_FARORES_WIND:
@@ -305,9 +302,9 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, PlayState* play) {
     play->envCtx.unk_BF = 2;
 
     if (play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) {
-        OnePointCutscene_Init(play, 8603, -99, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 8603, -99, NULL, CAM_ID_MAIN);
     } else {
-        OnePointCutscene_Init(play, 8604, -99, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 8604, -99, NULL, CAM_ID_MAIN);
     };
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_GREAT_FAIRY_APPEAR);
@@ -404,7 +401,7 @@ void BgDyYoseizo_GreetPlayer_NoReward(BgDyYoseizo* this, PlayState* play) {
 
     if ((this->dialogState == Message_GetState(&play->msgCtx)) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        Interface_ChangeAlpha(5);
+        Interface_ChangeHudVisibilityMode(5);
         this->actionFunc = BgDyYoseizo_SetupHealPlayer_NoReward;
     }
 
@@ -724,7 +721,7 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, PlayState* play) {
             case FAIRY_UPGRADE_MAGIC:
                 gSaveContext.isMagicAcquired = true;
                 gSaveContext.magicFillTarget = MAGIC_NORMAL_METER;
-                Interface_ChangeAlpha(9);
+                Interface_ChangeHudVisibilityMode(9);
                 break;
             case FAIRY_UPGRADE_DOUBLE_MAGIC:
                 if (!gSaveContext.isMagicAcquired) {
@@ -733,11 +730,11 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, PlayState* play) {
                 gSaveContext.isDoubleMagicAcquired = true;
                 gSaveContext.magicFillTarget = MAGIC_DOUBLE_METER;
                 gSaveContext.magicLevel = 0;
-                Interface_ChangeAlpha(9);
+                Interface_ChangeHudVisibilityMode(9);
                 break;
             case FAIRY_UPGRADE_HALF_DAMAGE:
                 gSaveContext.isDoubleDefenseAcquired = true;
-                Interface_ChangeAlpha(9);
+                Interface_ChangeHudVisibilityMode(9);
                 break;
         }
 
@@ -771,7 +768,7 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, PlayState* play) {
 
                 this->itemSpawned = true;
                 gSaveContext.healthAccumulator = MAX_HEALTH;
-                Interface_ChangeAlpha(9);
+                Interface_ChangeHudVisibilityMode(9);
                 gSaveContext.itemGetInf[1] |= sItemGetFlags[actionIndex];
                 Item_Give(play, sItemIds[actionIndex]);
             }
@@ -870,7 +867,7 @@ void BgDyYoseizo_Update(Actor* thisx, PlayState* play2) {
     this->heightOffset = this->scale * 7500.0f;
     Actor_SetFocus(&this->actor, this->heightOffset);
     this->actor.focus.pos.y = this->heightOffset;
-    func_80038290(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
+    Actor_TrackPlayer(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
     BgDyYoseizo_ParticleUpdate(this, play);
     Actor_SetScale(&this->actor, this->scale);
 }

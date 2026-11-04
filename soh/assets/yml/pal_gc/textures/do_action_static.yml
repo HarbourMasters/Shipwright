@@ -1,0 +1,700 @@
+:config:
+  segments:
+    - [ 7, 0x0087C730 ]
+
+gAttackDoActionENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gAttackDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gAttackDoActionFRATex:
+  type: TEXTURE
+  offset: 0x5700
+  symbol: gAttackDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gAttackDoActionGERTex:
+  type: TEXTURE
+  offset: 0x2B80
+  symbol: gAttackDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gCheckDoActionENGTex:
+  type: TEXTURE
+  offset: 0x180
+  symbol: gCheckDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gCheckDoActionFRATex:
+  type: TEXTURE
+  offset: 0x5880
+  symbol: gCheckDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gCheckDoActionGERTex:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: gCheckDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gClimbDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1080
+  symbol: gClimbDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gClimbDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6780
+  symbol: gClimbDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gClimbDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: gClimbDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDecideDoActionENGTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gDecideDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDecideDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gDecideDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gDecideDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3480
+  symbol: gDecideDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDiveDoActionENGTex:
+  type: TEXTURE
+  offset: 0xA80
+  symbol: gDiveDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDiveDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6180
+  symbol: gDiveDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gDiveDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gDiveDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDownDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gDownDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDownDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6A80
+  symbol: gDownDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gDownDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3F00
+  symbol: gDownDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDropDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gDropDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDropDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6900
+  symbol: gDropDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gDropDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3D80
+  symbol: gDropDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gEnterDoActionENGTex:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gEnterDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gEnterDoActionFRATex:
+  type: TEXTURE
+  offset: 0x5A00
+  symbol: gEnterDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gEnterDoActionGERTex:
+  type: TEXTURE
+  offset: 0x2E80
+  symbol: gEnterDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFasterDoActionENGTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gFasterDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFasterDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6300
+  symbol: gFasterDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gFasterDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3780
+  symbol: gFasterDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gGrabDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1980
+  symbol: gGrabDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gGrabDoActionFRATex:
+  type: TEXTURE
+  offset: 0x7080
+  symbol: gGrabDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gGrabDoActionGERTex:
+  type: TEXTURE
+  offset: 0x4500
+  symbol: gGrabDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gJumpDoActionENGTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: gJumpDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gJumpDoActionFRATex:
+  type: TEXTURE
+  offset: 0x5E80
+  symbol: gJumpDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gJumpDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3300
+  symbol: gJumpDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNextDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gNextDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNextDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6F00
+  symbol: gNextDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNextDoActionGERTex:
+  type: TEXTURE
+  offset: 0x4380
+  symbol: gNextDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum1DoActionENGTex:
+  type: TEXTURE
+  offset: 0x1F80
+  symbol: gNum1DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum1DoActionFRATex:
+  type: TEXTURE
+  offset: 0x7680
+  symbol: gNum1DoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum1DoActionGERTex:
+  type: TEXTURE
+  offset: 0x4B00
+  symbol: gNum1DoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum2DoActionENGTex:
+  type: TEXTURE
+  offset: 0x2100
+  symbol: gNum2DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum2DoActionFRATex:
+  type: TEXTURE
+  offset: 0x7800
+  symbol: gNum2DoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum2DoActionGERTex:
+  type: TEXTURE
+  offset: 0x4C80
+  symbol: gNum2DoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum3DoActionENGTex:
+  type: TEXTURE
+  offset: 0x2280
+  symbol: gNum3DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum3DoActionFRATex:
+  type: TEXTURE
+  offset: 0x7980
+  symbol: gNum3DoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum3DoActionGERTex:
+  type: TEXTURE
+  offset: 0x4E00
+  symbol: gNum3DoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum4DoActionENGTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gNum4DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum4DoActionFRATex:
+  type: TEXTURE
+  offset: 0x7B00
+  symbol: gNum4DoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum4DoActionGERTex:
+  type: TEXTURE
+  offset: 0x4F80
+  symbol: gNum4DoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum5DoActionENGTex:
+  type: TEXTURE
+  offset: 0x2580
+  symbol: gNum5DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum5DoActionFRATex:
+  type: TEXTURE
+  offset: 0x7C80
+  symbol: gNum5DoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum5DoActionGERTex:
+  type: TEXTURE
+  offset: 0x5100
+  symbol: gNum5DoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum6DoActionENGTex:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: gNum6DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum6DoActionFRATex:
+  type: TEXTURE
+  offset: 0x7E00
+  symbol: gNum6DoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum6DoActionGERTex:
+  type: TEXTURE
+  offset: 0x5280
+  symbol: gNum6DoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum7DoActionENGTex:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: gNum7DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum7DoActionFRATex:
+  type: TEXTURE
+  offset: 0x7F80
+  symbol: gNum7DoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum7DoActionGERTex:
+  type: TEXTURE
+  offset: 0x5400
+  symbol: gNum7DoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum8DoActionENGTex:
+  type: TEXTURE
+  offset: 0x2A00
+  symbol: gNum8DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum8DoActionFRATex:
+  type: TEXTURE
+  offset: 0x8100
+  symbol: gNum8DoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum8DoActionGERTex:
+  type: TEXTURE
+  offset: 0x5580
+  symbol: gNum8DoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gOpenDoActionENGTex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gOpenDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gOpenDoActionFRATex:
+  type: TEXTURE
+  offset: 0x5D00
+  symbol: gOpenDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gOpenDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3180
+  symbol: gOpenDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gPutAwayDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1C80
+  symbol: gPutAwayDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gPutAwayDoActionFRATex:
+  type: TEXTURE
+  offset: 0x7380
+  symbol: gPutAwayDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gPutAwayDoActionGERTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gPutAwayDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gReelDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1E00
+  symbol: gReelDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gReelDoActionFRATex:
+  type: TEXTURE
+  offset: 0x7500
+  symbol: gReelDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gReelDoActionGERTex:
+  type: TEXTURE
+  offset: 0x4980
+  symbol: gReelDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gReturnDoActionENGTex:
+  type: TEXTURE
+  offset: 0x480
+  symbol: gReturnDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gReturnDoActionFRATex:
+  type: TEXTURE
+  offset: 0x5B80
+  symbol: gReturnDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gReturnDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gReturnDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gSaveDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1500
+  symbol: gSaveDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gSaveDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6C00
+  symbol: gSaveDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gSaveDoActionGERTex:
+  type: TEXTURE
+  offset: 0x4080
+  symbol: gSaveDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gSpeakDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gSpeakDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gSpeakDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6D80
+  symbol: gSpeakDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gSpeakDoActionGERTex:
+  type: TEXTURE
+  offset: 0x4200
+  symbol: gSpeakDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gStopDoActionENGTex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gStopDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gStopDoActionFRATex:
+  type: TEXTURE
+  offset: 0x7200
+  symbol: gStopDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gStopDoActionGERTex:
+  type: TEXTURE
+  offset: 0x4680
+  symbol: gStopDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gThrowDoActionENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gThrowDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gThrowDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6480
+  symbol: gThrowDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gThrowDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3900
+  symbol: gThrowDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+
+gUnusedNaviDoActionENGTex:
+  type: TEXTURE
+  offset: 0xF00
+  symbol: gUnusedNaviDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gUnusedNaviDoActionFRATex:
+  type: TEXTURE
+  offset: 0x6600
+  symbol: gUnusedNaviDoActionFRATex
+  format: IA4
+  width: 48
+  height: 16
+
+gUnusedNaviDoActionGERTex:
+  type: TEXTURE
+  offset: 0x3A80
+  symbol: gUnusedNaviDoActionGERTex
+  format: IA4
+  width: 48
+  height: 16
+

@@ -1,19 +1,15 @@
-#ifndef NETWORK_H
-#define NETWORK_H
+#pragma once
+
 #ifdef __cplusplus
 
 #include <thread>
-#ifdef ENABLE_REMOTE_CONTROL
 #include <SDL2/SDL_net.h>
-#endif
 #include <nlohmann/json.hpp>
 
 class Network {
   private:
-#ifdef ENABLE_REMOTE_CONTROL
     IPaddress networkAddress;
     TCPsocket networkSocket;
-#endif
     std::thread receiveThread;
     std::string receivedData;
 
@@ -50,4 +46,3 @@ class Network {
 };
 
 #endif // __cplusplus
-#endif // NETWORK_H

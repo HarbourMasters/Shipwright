@@ -1,0 +1,365 @@
+:config:
+  segments:
+    - [ 6, 0x017E3000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x017E3000 ]
+    - [ 9, 0x017E3000 ]
+    - [ 10, 0x017E3000 ]
+    - [ 11, 0x017E3000 ]
+    - [ 12, 0x017E3000 ]
+    - [ 13, 0x017E3000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gCarpetMerchantBlanketAndLowerBodyDL:
+  type: GFX
+  offset: 0x3440
+  symbol: gCarpetMerchantBlanketAndLowerBodyDL
+
+gCarpetMerchantBraceletTex:
+  type: TEXTURE
+  offset: 0x56E0
+  symbol: gCarpetMerchantBraceletTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x4C20
+
+gCarpetMerchantChestTex:
+  type: TEXTURE
+  offset: 0x5AE0
+  symbol: gCarpetMerchantChestTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x4C20
+
+gCarpetMerchantCol:
+  type: OOT:COLLISION
+  offset: 0x5EF8
+  symbol: gCarpetMerchantCol
+
+gCarpetMerchantFootSoleTex:
+  type: TEXTURE
+  offset: 0x51E0
+  symbol: gCarpetMerchantFootSoleTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4C20
+
+gCarpetMerchantFootTex:
+  type: TEXTURE
+  offset: 0x4FA0
+  symbol: gCarpetMerchantFootTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x4C20
+
+gCarpetMerchantForearmLeftDL:
+  type: GFX
+  offset: 0x4918
+  symbol: gCarpetMerchantForearmLeftDL
+
+gCarpetMerchantForearmLeftLimb:
+  type: OOT:LIMB
+  offset: 0x5E28
+  symbol: gCarpetMerchantForearmLeftLimb
+  limb_type: Standard
+
+gCarpetMerchantForearmRightDL:
+  type: GFX
+  offset: 0x44E0
+  symbol: gCarpetMerchantForearmRightDL
+
+gCarpetMerchantForearmRightLimb:
+  type: OOT:LIMB
+  offset: 0x5E4C
+  symbol: gCarpetMerchantForearmRightLimb
+  limb_type: Standard
+
+gCarpetMerchantHairTex:
+  type: TEXTURE
+  offset: 0x4EA0
+  symbol: gCarpetMerchantHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4C20
+
+gCarpetMerchantHandTex:
+  type: TEXTURE
+  offset: 0x55E0
+  symbol: gCarpetMerchantHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4C20
+
+gCarpetMerchantHatTex:
+  type: TEXTURE
+  offset: 0x5CE0
+  symbol: gCarpetMerchantHatTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4C20
+
+gCarpetMerchantHeadDL:
+  type: GFX
+  offset: 0x4070
+  symbol: gCarpetMerchantHeadDL
+
+gCarpetMerchantHeadLimb:
+  type: OOT:LIMB
+  offset: 0x5E64
+  symbol: gCarpetMerchantHeadLimb
+  limb_type: Standard
+
+gCarpetMerchantIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x18C
+  symbol: gCarpetMerchantIdleAnim
+
+gCarpetMerchantLeftHandDL:
+  type: GFX
+  offset: 0x4AC0
+  symbol: gCarpetMerchantLeftHandDL
+
+gCarpetMerchantLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x5E34
+  symbol: gCarpetMerchantLeftHandLimb
+  limb_type: Standard
+
+gCarpetMerchantLowerHairDL:
+  type: GFX
+  offset: 0x3B98
+  symbol: gCarpetMerchantLowerHairDL
+
+gCarpetMerchantLowerHairLimb:
+  type: OOT:LIMB
+  offset: 0x5DF8
+  symbol: gCarpetMerchantLowerHairLimb
+  limb_type: Standard
+
+gCarpetMerchantPantsTex:
+  type: TEXTURE
+  offset: 0x4E20
+  symbol: gCarpetMerchantPantsTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x4C20
+
+gCarpetMerchantRightHandDL:
+  type: GFX
+  offset: 0x4688
+  symbol: gCarpetMerchantRightHandDL
+
+gCarpetMerchantRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x5E58
+  symbol: gCarpetMerchantRightHandLimb
+  limb_type: Standard
+
+gCarpetMerchantRootLimb:
+  type: OOT:LIMB
+  offset: 0x5DE0
+  symbol: gCarpetMerchantRootLimb
+  limb_type: Standard
+
+gCarpetMerchantShirtTex:
+  type: TEXTURE
+  offset: 0x58E0
+  symbol: gCarpetMerchantShirtTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x4C20
+
+gCarpetMerchantSkel:
+  type: OOT:SKELETON
+  offset: 0x5EA0
+  symbol: gCarpetMerchantSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gCarpetMerchantSkinGradientTex:
+  type: TEXTURE
+  offset: 0x51A0
+  symbol: gCarpetMerchantSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4C20
+
+gCarpetMerchantSlappingKneeAnim:
+  type: OOT:ANIMATION
+  offset: 0x45C
+  symbol: gCarpetMerchantSlappingKneeAnim
+
+gCarpetMerchantTLUT:
+  type: TEXTURE
+  offset: 0x4C20
+  symbol: gCarpetMerchantTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCarpetMerchantTopRootLimb:
+  type: OOT:LIMB
+  offset: 0x5DEC
+  symbol: gCarpetMerchantTopRootLimb
+  limb_type: Standard
+
+gCarpetMerchantTorsoDL:
+  type: GFX
+  offset: 0x3D78
+  symbol: gCarpetMerchantTorsoDL
+
+gCarpetMerchantTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x5E10
+  symbol: gCarpetMerchantTorsoLimb
+  limb_type: Standard
+
+gCarpetMerchantUpperArmLeftDL:
+  type: GFX
+  offset: 0x47E8
+  symbol: gCarpetMerchantUpperArmLeftDL
+
+gCarpetMerchantUpperArmLeftLimb:
+  type: OOT:LIMB
+  offset: 0x5E1C
+  symbol: gCarpetMerchantUpperArmLeftLimb
+  limb_type: Standard
+
+gCarpetMerchantUpperArmRightDL:
+  type: GFX
+  offset: 0x43B0
+  symbol: gCarpetMerchantUpperArmRightDL
+
+gCarpetMerchantUpperArmRightLimb:
+  type: OOT:LIMB
+  offset: 0x5E40
+  symbol: gCarpetMerchantUpperArmRightLimb
+  limb_type: Standard
+
+gCarpetMerchantUpperHairDL:
+  type: GFX
+  offset: 0x3A20
+  symbol: gCarpetMerchantUpperHairDL
+
+gCarpetMerchantUpperHairLimb:
+  type: OOT:LIMB
+  offset: 0x5E04
+  symbol: gCarpetMerchantUpperHairLimb
+  limb_type: Standard
+
+
+object_jsVtx_000470:
+  type: OOT:ARRAY
+  offset: 0x000470
+  symbol: object_jsVtx_000470
+  count: 318
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_001850:
+  type: OOT:ARRAY
+  offset: 0x001850
+  symbol: object_jsVtx_001850
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_001EA0:
+  type: OOT:ARRAY
+  offset: 0x001EA0
+  symbol: object_jsVtx_001EA0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_0020C0:
+  type: OOT:ARRAY
+  offset: 0x0020C0
+  symbol: object_jsVtx_0020C0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_002240:
+  type: OOT:ARRAY
+  offset: 0x002240
+  symbol: object_jsVtx_002240
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_0023C0:
+  type: OOT:ARRAY
+  offset: 0x0023C0
+  symbol: object_jsVtx_0023C0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_0025E0:
+  type: OOT:ARRAY
+  offset: 0x0025E0
+  symbol: object_jsVtx_0025E0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_002760:
+  type: OOT:ARRAY
+  offset: 0x002760
+  symbol: object_jsVtx_002760
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_0028E0:
+  type: OOT:ARRAY
+  offset: 0x0028E0
+  symbol: object_jsVtx_0028E0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_002C60:
+  type: OOT:ARRAY
+  offset: 0x002C60
+  symbol: object_jsVtx_002C60
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_003130:
+  type: OOT:ARRAY
+  offset: 0x003130
+  symbol: object_jsVtx_003130
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gCarpetMerchantSkelLimbs:
+  type: BLOB
+  offset: 0x5E70
+  symbol: gCarpetMerchantSkelLimbs
+  size: 0

@@ -1,0 +1,576 @@
+:config:
+  segments:
+    - [ 6, 0x0120EE30 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x0120EE30 ]
+    - [ 9, 0x0120EE30 ]
+    - [ 10, 0x0120EE30 ]
+    - [ 11, 0x0120EE30 ]
+    - [ 12, 0x0120EE30 ]
+    - [ 13, 0x0120EE30 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+object_ka_Anim_000214:
+  type: OOT:ANIMATION
+  offset: 0x214
+  symbol: object_ka_Anim_000214
+
+object_ka_Anim_0067AC:
+  type: OOT:ANIMATION
+  offset: 0x67AC
+  symbol: object_ka_Anim_0067AC
+
+object_ka_DL_001550:
+  type: GFX
+  offset: 0x1550
+  symbol: object_ka_DL_001550
+
+object_ka_DL_001600:
+  type: GFX
+  offset: 0x1600
+  symbol: object_ka_DL_001600
+
+object_ka_DL_0017D8:
+  type: GFX
+  offset: 0x17D8
+  symbol: object_ka_DL_0017D8
+
+object_ka_DL_001878:
+  type: GFX
+  offset: 0x1878
+  symbol: object_ka_DL_001878
+
+object_ka_DL_001918:
+  type: GFX
+  offset: 0x1918
+  symbol: object_ka_DL_001918
+
+object_ka_DL_0019B8:
+  type: GFX
+  offset: 0x19B8
+  symbol: object_ka_DL_0019B8
+
+object_ka_DL_001CD8:
+  type: GFX
+  offset: 0x1CD8
+  symbol: object_ka_DL_001CD8
+
+object_ka_DL_001F68:
+  type: GFX
+  offset: 0x1F68
+  symbol: object_ka_DL_001F68
+
+object_ka_DL_002020:
+  type: GFX
+  offset: 0x2020
+  symbol: object_ka_DL_002020
+
+object_ka_DL_0020C0:
+  type: GFX
+  offset: 0x20C0
+  symbol: object_ka_DL_0020C0
+
+object_ka_DL_002160:
+  type: GFX
+  offset: 0x2160
+  symbol: object_ka_DL_002160
+
+object_ka_DL_002200:
+  type: GFX
+  offset: 0x2200
+  symbol: object_ka_DL_002200
+
+object_ka_DL_0022A0:
+  type: GFX
+  offset: 0x22A0
+  symbol: object_ka_DL_0022A0
+
+object_ka_DL_002340:
+  type: GFX
+  offset: 0x2340
+  symbol: object_ka_DL_002340
+
+object_ka_DL_002430:
+  type: GFX
+  offset: 0x2430
+  symbol: object_ka_DL_002430
+
+object_ka_DL_0024D0:
+  type: GFX
+  offset: 0x24D0
+  symbol: object_ka_DL_0024D0
+
+object_ka_DL_002570:
+  type: GFX
+  offset: 0x2570
+  symbol: object_ka_DL_002570
+
+object_ka_DL_002610:
+  type: GFX
+  offset: 0x2610
+  symbol: object_ka_DL_002610
+
+object_ka_DL_0027A0:
+  type: GFX
+  offset: 0x27A0
+  symbol: object_ka_DL_0027A0
+
+object_ka_DL_002890:
+  type: GFX
+  offset: 0x2890
+  symbol: object_ka_DL_002890
+
+object_ka_DL_002930:
+  type: GFX
+  offset: 0x2930
+  symbol: object_ka_DL_002930
+
+object_ka_DL_0029D0:
+  type: GFX
+  offset: 0x29D0
+  symbol: object_ka_DL_0029D0
+
+object_ka_DL_002A70:
+  type: GFX
+  offset: 0x2A70
+  symbol: object_ka_DL_002A70
+
+object_ka_Limb_006400:
+  type: OOT:LIMB
+  offset: 0x6400
+  symbol: object_ka_Limb_006400
+  limb_type: Standard
+
+object_ka_Limb_00640C:
+  type: OOT:LIMB
+  offset: 0x640C
+  symbol: object_ka_Limb_00640C
+  limb_type: Standard
+
+object_ka_Limb_006418:
+  type: OOT:LIMB
+  offset: 0x6418
+  symbol: object_ka_Limb_006418
+  limb_type: Standard
+
+object_ka_Limb_006424:
+  type: OOT:LIMB
+  offset: 0x6424
+  symbol: object_ka_Limb_006424
+  limb_type: Standard
+
+object_ka_Limb_006430:
+  type: OOT:LIMB
+  offset: 0x6430
+  symbol: object_ka_Limb_006430
+  limb_type: Standard
+
+object_ka_Limb_00643C:
+  type: OOT:LIMB
+  offset: 0x643C
+  symbol: object_ka_Limb_00643C
+  limb_type: Standard
+
+object_ka_Limb_006448:
+  type: OOT:LIMB
+  offset: 0x6448
+  symbol: object_ka_Limb_006448
+  limb_type: Standard
+
+object_ka_Limb_006454:
+  type: OOT:LIMB
+  offset: 0x6454
+  symbol: object_ka_Limb_006454
+  limb_type: Standard
+
+object_ka_Limb_006460:
+  type: OOT:LIMB
+  offset: 0x6460
+  symbol: object_ka_Limb_006460
+  limb_type: Standard
+
+object_ka_Limb_00646C:
+  type: OOT:LIMB
+  offset: 0x646C
+  symbol: object_ka_Limb_00646C
+  limb_type: Standard
+
+object_ka_Limb_006478:
+  type: OOT:LIMB
+  offset: 0x6478
+  symbol: object_ka_Limb_006478
+  limb_type: Standard
+
+object_ka_Limb_006484:
+  type: OOT:LIMB
+  offset: 0x6484
+  symbol: object_ka_Limb_006484
+  limb_type: Standard
+
+object_ka_Limb_006490:
+  type: OOT:LIMB
+  offset: 0x6490
+  symbol: object_ka_Limb_006490
+  limb_type: Standard
+
+object_ka_Limb_00649C:
+  type: OOT:LIMB
+  offset: 0x649C
+  symbol: object_ka_Limb_00649C
+  limb_type: Standard
+
+object_ka_Limb_0064A8:
+  type: OOT:LIMB
+  offset: 0x64A8
+  symbol: object_ka_Limb_0064A8
+  limb_type: Standard
+
+object_ka_Limb_0064B4:
+  type: OOT:LIMB
+  offset: 0x64B4
+  symbol: object_ka_Limb_0064B4
+  limb_type: Standard
+
+object_ka_Limb_0064C0:
+  type: OOT:LIMB
+  offset: 0x64C0
+  symbol: object_ka_Limb_0064C0
+  limb_type: Standard
+
+object_ka_Limb_0064CC:
+  type: OOT:LIMB
+  offset: 0x64CC
+  symbol: object_ka_Limb_0064CC
+  limb_type: Standard
+
+object_ka_Limb_0064D8:
+  type: OOT:LIMB
+  offset: 0x64D8
+  symbol: object_ka_Limb_0064D8
+  limb_type: Standard
+
+object_ka_Limb_0064E4:
+  type: OOT:LIMB
+  offset: 0x64E4
+  symbol: object_ka_Limb_0064E4
+  limb_type: Standard
+
+object_ka_Limb_0064F0:
+  type: OOT:LIMB
+  offset: 0x64F0
+  symbol: object_ka_Limb_0064F0
+  limb_type: Standard
+
+object_ka_Limb_0064FC:
+  type: OOT:LIMB
+  offset: 0x64FC
+  symbol: object_ka_Limb_0064FC
+  limb_type: Standard
+
+object_ka_Limb_006508:
+  type: OOT:LIMB
+  offset: 0x6508
+  symbol: object_ka_Limb_006508
+  limb_type: Standard
+
+object_ka_Limb_006514:
+  type: OOT:LIMB
+  offset: 0x6514
+  symbol: object_ka_Limb_006514
+  limb_type: Standard
+
+object_ka_Limb_006520:
+  type: OOT:LIMB
+  offset: 0x6520
+  symbol: object_ka_Limb_006520
+  limb_type: Standard
+
+object_ka_Limb_00652C:
+  type: OOT:LIMB
+  offset: 0x652C
+  symbol: object_ka_Limb_00652C
+  limb_type: Standard
+
+object_ka_Limb_006538:
+  type: OOT:LIMB
+  offset: 0x6538
+  symbol: object_ka_Limb_006538
+  limb_type: Standard
+
+object_ka_Skel_0065B0:
+  type: OOT:SKELETON
+  offset: 0x65B0
+  symbol: object_ka_Skel_0065B0
+  limb_type: Standard
+  skel_type: Flex
+
+object_ka_Tex_002C00:
+  type: TEXTURE
+  offset: 0x2C00
+  symbol: object_ka_Tex_002C00
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ka_Tex_003400:
+  type: TEXTURE
+  offset: 0x3400
+  symbol: object_ka_Tex_003400
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ka_Tex_003C00:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: object_ka_Tex_003C00
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ka_Tex_004400:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: object_ka_Tex_004400
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ka_Tex_004C00:
+  type: TEXTURE
+  offset: 0x4C00
+  symbol: object_ka_Tex_004C00
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ka_Tex_005400:
+  type: TEXTURE
+  offset: 0x5400
+  symbol: object_ka_Tex_005400
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ka_Tex_005C00:
+  type: TEXTURE
+  offset: 0x5C00
+  symbol: object_ka_Tex_005C00
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_kaVtx_000230:
+  type: OOT:ARRAY
+  offset: 0x000230
+  symbol: object_kaVtx_000230
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000270:
+  type: OOT:ARRAY
+  offset: 0x000270
+  symbol: object_kaVtx_000270
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_0002B0:
+  type: OOT:ARRAY
+  offset: 0x0002B0
+  symbol: object_kaVtx_0002B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_0002F0:
+  type: OOT:ARRAY
+  offset: 0x0002F0
+  symbol: object_kaVtx_0002F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000330:
+  type: OOT:ARRAY
+  offset: 0x000330
+  symbol: object_kaVtx_000330
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000370:
+  type: OOT:ARRAY
+  offset: 0x000370
+  symbol: object_kaVtx_000370
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000420:
+  type: OOT:ARRAY
+  offset: 0x000420
+  symbol: object_kaVtx_000420
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_0007B0:
+  type: OOT:ARRAY
+  offset: 0x0007B0
+  symbol: object_kaVtx_0007B0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000920:
+  type: OOT:ARRAY
+  offset: 0x000920
+  symbol: object_kaVtx_000920
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000960:
+  type: OOT:ARRAY
+  offset: 0x000960
+  symbol: object_kaVtx_000960
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_0009A0:
+  type: OOT:ARRAY
+  offset: 0x0009A0
+  symbol: object_kaVtx_0009A0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_0009E0:
+  type: OOT:ARRAY
+  offset: 0x0009E0
+  symbol: object_kaVtx_0009E0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000B10:
+  type: OOT:ARRAY
+  offset: 0x000B10
+  symbol: object_kaVtx_000B10
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000C80:
+  type: OOT:ARRAY
+  offset: 0x000C80
+  symbol: object_kaVtx_000C80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000CC0:
+  type: OOT:ARRAY
+  offset: 0x000CC0
+  symbol: object_kaVtx_000CC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000D00:
+  type: OOT:ARRAY
+  offset: 0x000D00
+  symbol: object_kaVtx_000D00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000D40:
+  type: OOT:ARRAY
+  offset: 0x000D40
+  symbol: object_kaVtx_000D40
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_000E70:
+  type: OOT:ARRAY
+  offset: 0x000E70
+  symbol: object_kaVtx_000E70
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_0011F0:
+  type: OOT:ARRAY
+  offset: 0x0011F0
+  symbol: object_kaVtx_0011F0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_0013F0:
+  type: OOT:ARRAY
+  offset: 0x0013F0
+  symbol: object_kaVtx_0013F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_001430:
+  type: OOT:ARRAY
+  offset: 0x001430
+  symbol: object_kaVtx_001430
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_001470:
+  type: OOT:ARRAY
+  offset: 0x001470
+  symbol: object_kaVtx_001470
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaVtx_0014B0:
+  type: OOT:ARRAY
+  offset: 0x0014B0
+  symbol: object_kaVtx_0014B0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ka_Skel_0065B0Limbs:
+  type: BLOB
+  offset: 0x6544
+  symbol: object_ka_Skel_0065B0Limbs
+  size: 0

@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01C36AA0 ]
+  directory: scenes/shared/kenjyanoma_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/shared/kenjyanoma_scene.yml
+
+kenjyanoma_sceneSet_0035D0:
+  type: OOT:SCENE
+  offset: 0x35D0
+  symbol: kenjyanoma_sceneSet_0035D0
+  base_name: kenjyanoma_scene

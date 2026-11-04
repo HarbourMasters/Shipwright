@@ -1,0 +1,58 @@
+:config:
+  segments:
+    - [ 3, 0x01D9E770 ]
+    - [ 2, 0x01D99FE0 ]
+  directory: scenes/shared/jyasinboss_scene
+  external_files:
+    - pal_1-0/scenes/shared/jyasinboss_scene.yml
+    - pal_1-0/code/sys_matrix.yml
+    - pal_1-0/scenes/shared/jyasinboss_room_0Set_000080.yml
+    - pal_1-0/scenes/shared/jyasinboss_room_0Set_0000C0.yml
+    - pal_1-0/scenes/shared/jyasinboss_room_0Set_000100.yml
+
+jyasinboss_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: jyasinboss_room_0
+
+jyasinboss_room_0Tex_0007C8:
+  type: TEXTURE
+  offset: 0x7C8
+  symbol: jyasinboss_room_0Tex_0007C8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+jyasinboss_room_0Vtx_000140:
+  type: OOT:ARRAY
+  offset: 0x000140
+  symbol: jyasinboss_room_0Vtx_000140
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinboss_room_0DL_000380:
+  type: GFX
+  offset: 0x000380
+  symbol: jyasinboss_room_0DL_000380
+
+jyasinboss_room_0Vtx_0004B0:
+  type: OOT:ARRAY
+  offset: 0x0004B0
+  symbol: jyasinboss_room_0Vtx_0004B0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinboss_room_0DL_0006A0:
+  type: GFX
+  offset: 0x0006A0
+  symbol: jyasinboss_room_0DL_0006A0
+
+jyasinboss_room_0DL_0007B0:
+  type: GFX
+  offset: 0x0007B0
+  symbol: jyasinboss_room_0DL_0007B0

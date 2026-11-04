@@ -1,0 +1,340 @@
+:config:
+  segments:
+    - [ 2, 0x01850D00 ]
+
+  external_files:
+    - pal_1-1/scenes/shared/spot16_sceneSet_0075D0.yml
+    - pal_1-1/scenes/shared/spot16_sceneSet_0079F0.yml
+    - pal_1-1/scenes/shared/spot16_sceneSet_007AD0.yml
+    - pal_1-1/scenes/shared/spot16_sceneSet_007BF0.yml
+    - pal_1-1/scenes/shared/spot16_sceneSet_007D10.yml
+    - pal_1-1/scenes/shared/spot16_sceneSet_007DB0.yml
+spot16_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot16_scene
+
+gDMTIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x7ED0
+  symbol: gDMTIntroCs
+
+gDMTOwlCs:
+  type: OOT:CUTSCENE
+  offset: 0x1E6D0
+  symbol: gDMTOwlCs
+
+gDMTPath_00254:
+  type: OOT:PATH
+  offset: 0x254
+  symbol: gDMTPath_00254
+  num_paths: 3
+
+gDMTPath_07884:
+  type: OOT:PATH
+  offset: 0x78B4
+  symbol: gDMTPath_07884
+  num_paths: 3
+
+spot16_sceneTLUT_008170:
+  type: TEXTURE
+  offset: 0x81A0
+  symbol: spot16_sceneTLUT_008170
+  format: RGBA16
+  width: 4
+  height: 4
+
+spot16_sceneTex_008198:
+  type: TEXTURE
+  offset: 0x81C8
+  symbol: spot16_sceneTex_008198
+  format: I8
+  width: 64
+  height: 64
+
+spot16_sceneTex_009198:
+  type: TEXTURE
+  offset: 0x91C8
+  symbol: spot16_sceneTex_009198
+  format: I8
+  width: 64
+  height: 32
+
+spot16_sceneTex_009998:
+  type: TEXTURE
+  offset: 0x99C8
+  symbol: spot16_sceneTex_009998
+  format: I8
+  width: 64
+  height: 16
+
+spot16_sceneTex_009D98:
+  type: TEXTURE
+  offset: 0x9DC8
+  symbol: spot16_sceneTex_009D98
+  format: I8
+  width: 64
+  height: 64
+
+spot16_sceneTex_00AD98:
+  type: TEXTURE
+  offset: 0xADC8
+  symbol: spot16_sceneTex_00AD98
+  format: I8
+  width: 64
+  height: 64
+
+spot16_sceneTex_00BD98:
+  type: TEXTURE
+  offset: 0xBDC8
+  symbol: spot16_sceneTex_00BD98
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot16_sceneTex_00CD98:
+  type: TEXTURE
+  offset: 0xCDC8
+  symbol: spot16_sceneTex_00CD98
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot16_sceneTex_00CF98:
+  type: TEXTURE
+  offset: 0xCFC8
+  symbol: spot16_sceneTex_00CF98
+  format: RGBA16
+  width: 32
+  height: 16
+
+spot16_sceneTex_00D398:
+  type: TEXTURE
+  offset: 0xD3C8
+  symbol: spot16_sceneTex_00D398
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot16_sceneTex_00D798:
+  type: TEXTURE
+  offset: 0xD7C8
+  symbol: spot16_sceneTex_00D798
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x81A0
+
+spot16_sceneTex_00DF98:
+  type: TEXTURE
+  offset: 0xDFC8
+  symbol: spot16_sceneTex_00DF98
+  format: I4
+  width: 64
+  height: 16
+
+spot16_sceneTex_00E198:
+  type: TEXTURE
+  offset: 0xE1C8
+  symbol: spot16_sceneTex_00E198
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot16_sceneTex_00F198:
+  type: TEXTURE
+  offset: 0xF1C8
+  symbol: spot16_sceneTex_00F198
+  format: RGBA16
+  width: 16
+  height: 128
+
+spot16_sceneTex_010198:
+  type: TEXTURE
+  offset: 0x101C8
+  symbol: spot16_sceneTex_010198
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot16_sceneTex_011198:
+  type: TEXTURE
+  offset: 0x111C8
+  symbol: spot16_sceneTex_011198
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot16_sceneTex_011598:
+  type: TEXTURE
+  offset: 0x115C8
+  symbol: spot16_sceneTex_011598
+  format: I4
+  width: 64
+  height: 16
+
+spot16_sceneTex_011798:
+  type: TEXTURE
+  offset: 0x117C8
+  symbol: spot16_sceneTex_011798
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot16_sceneTex_012798:
+  type: TEXTURE
+  offset: 0x127C8
+  symbol: spot16_sceneTex_012798
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot16_sceneTex_013798:
+  type: TEXTURE
+  offset: 0x137C8
+  symbol: spot16_sceneTex_013798
+  format: I4
+  width: 64
+  height: 16
+
+spot16_sceneTex_013998:
+  type: TEXTURE
+  offset: 0x139C8
+  symbol: spot16_sceneTex_013998
+  format: RGBA16
+  width: 32
+  height: 16
+
+spot16_sceneTex_013D98:
+  type: TEXTURE
+  offset: 0x13DC8
+  symbol: spot16_sceneTex_013D98
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot16_sceneTex_014D98:
+  type: TEXTURE
+  offset: 0x14DC8
+  symbol: spot16_sceneTex_014D98
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot16_sceneTex_015598:
+  type: TEXTURE
+  offset: 0x155C8
+  symbol: spot16_sceneTex_015598
+  format: I4
+  width: 64
+  height: 64
+
+spot16_sceneTex_015D98:
+  type: TEXTURE
+  offset: 0x15DC8
+  symbol: spot16_sceneTex_015D98
+  format: IA8
+  width: 16
+  height: 16
+
+spot16_sceneTex_015E98:
+  type: TEXTURE
+  offset: 0x15EC8
+  symbol: spot16_sceneTex_015E98
+  format: IA8
+  width: 128
+  height: 32
+
+spot16_sceneTex_016E98:
+  type: TEXTURE
+  offset: 0x16EC8
+  symbol: spot16_sceneTex_016E98
+  format: I4
+  width: 128
+  height: 64
+
+spot16_sceneTex_017E98:
+  type: TEXTURE
+  offset: 0x17EC8
+  symbol: spot16_sceneTex_017E98
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot16_sceneTex_018698:
+  type: TEXTURE
+  offset: 0x186C8
+  symbol: spot16_sceneTex_018698
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot16_sceneTex_018E98:
+  type: TEXTURE
+  offset: 0x18EC8
+  symbol: spot16_sceneTex_018E98
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot16_sceneTex_019698:
+  type: TEXTURE
+  offset: 0x196C8
+  symbol: spot16_sceneTex_019698
+  format: RGBA16
+  width: 64
+  height: 16
+
+spot16_sceneTex_019E98:
+  type: TEXTURE
+  offset: 0x19EC8
+  symbol: spot16_sceneTex_019E98
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot16_sceneTex_01B698:
+  type: TEXTURE
+  offset: 0x1B6C8
+  symbol: spot16_sceneTex_01B698
+  format: IA8
+  width: 64
+  height: 64
+
+spot16_sceneTex_01C698:
+  type: TEXTURE
+  offset: 0x1C6C8
+  symbol: spot16_sceneTex_01C698
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot16_sceneTex_01D698:
+  type: TEXTURE
+  offset: 0x1D6C8
+  symbol: spot16_sceneTex_01D698
+  format: I8
+  width: 64
+  height: 32
+
+spot16_sceneTex_01DE98:
+  type: TEXTURE
+  offset: 0x1DEC8
+  symbol: spot16_sceneTex_01DE98
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot16_scene_Tex_01AE98:
+  type: TEXTURE
+  offset: 0x1AEC8
+  symbol: spot16_scene_Tex_01AE98
+  format: I4
+  width: 64
+  height: 64
+
+
+spot16_sceneCollisionHeader_003D10:
+  type: OOT:COLLISION
+  offset: 0x003D10
+  symbol: spot16_sceneCollisionHeader_003D10

@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 128, 0x01CB9000 ]
+
+gKnowItAllBrosHouseBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gKnowItAllBrosHouseBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKnowItAllBrosHouseBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gKnowItAllBrosHouseBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKnowItAllBrosHouseBg4TLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gKnowItAllBrosHouseBg4TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKnowItAllBrosHouseBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKnowItAllBrosHouseBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

@@ -1,0 +1,302 @@
+:config:
+  segments:
+    - [ 6, 0x00DDA4F0 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x00DDA4F0 ]
+    - [ 9, 0x00DDA4F0 ]
+    - [ 10, 0x00DDA4F0 ]
+    - [ 11, 0x00DDA4F0 ]
+    - [ 12, 0x00DDA4F0 ]
+    - [ 13, 0x00DDA4F0 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gCuccoAnim:
+  type: OOT:ANIMATION
+  offset: 0xE8
+  symbol: gCuccoAnim
+
+gCuccoBaseFeathersTex:
+  type: TEXTURE
+  offset: 0x1580
+  symbol: gCuccoBaseFeathersTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gCuccoBeakTex:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: gCuccoBeakTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gCuccoClawTex:
+  type: TEXTURE
+  offset: 0x2080
+  symbol: gCuccoClawTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gCuccoCombTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gCuccoCombTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCuccoEffectFeatherMaterialDL:
+  type: GFX
+  offset: 0x23B0
+  symbol: gCuccoEffectFeatherMaterialDL
+
+gCuccoEffectFeatherModelDL:
+  type: GFX
+  offset: 0x2428
+  symbol: gCuccoEffectFeatherModelDL
+
+gCuccoEyeTex:
+  type: TEXTURE
+  offset: 0x1280
+  symbol: gCuccoEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCuccoHeadDL:
+  type: GFX
+  offset: 0x0A98
+  symbol: gCuccoHeadDL
+
+gCuccoHeadFeathersTex:
+  type: TEXTURE
+  offset: 0x1480
+  symbol: gCuccoHeadFeathersTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gCuccoHeadLimb:
+  type: OOT:LIMB
+  offset: 0x24E8
+  symbol: gCuccoHeadLimb
+  limb_type: Standard
+
+gCuccoLeftFootDL:
+  type: GFX
+  offset: 0x11E0
+  symbol: gCuccoLeftFootDL
+
+gCuccoLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x247C
+  symbol: gCuccoLeftFootLimb
+  limb_type: Standard
+
+gCuccoLeftFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x2470
+  symbol: gCuccoLeftFootRootLimb
+  limb_type: Standard
+
+gCuccoLeftWingDL:
+  type: GFX
+  offset: 0x1128
+  symbol: gCuccoLeftWingDL
+
+gCuccoLeftWingLimb:
+  type: OOT:LIMB
+  offset: 0x2494
+  symbol: gCuccoLeftWingLimb
+  limb_type: Standard
+
+gCuccoLeftWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x2488
+  symbol: gCuccoLeftWingRootLimb
+  limb_type: Standard
+
+gCuccoLimb_244C:
+  type: OOT:LIMB
+  offset: 0x244C
+  symbol: gCuccoLimb_244C
+  limb_type: Standard
+
+gCuccoLimb_2458:
+  type: OOT:LIMB
+  offset: 0x2458
+  symbol: gCuccoLimb_2458
+  limb_type: Standard
+
+gCuccoNeckDL:
+  type: GFX
+  offset: 0x09C0
+  symbol: gCuccoNeckDL
+
+gCuccoNeckLimb:
+  type: OOT:LIMB
+  offset: 0x24DC
+  symbol: gCuccoNeckLimb
+  limb_type: Standard
+
+gCuccoRightFootDL:
+  type: GFX
+  offset: 0x1088
+  symbol: gCuccoRightFootDL
+
+gCuccoRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x24AC
+  symbol: gCuccoRightFootLimb
+  limb_type: Standard
+
+gCuccoRightFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x24A0
+  symbol: gCuccoRightFootRootLimb
+  limb_type: Standard
+
+gCuccoRightWingDL:
+  type: GFX
+  offset: 0x0FD0
+  symbol: gCuccoRightWingDL
+
+gCuccoRightWingLimb:
+  type: OOT:LIMB
+  offset: 0x24C4
+  symbol: gCuccoRightWingLimb
+  limb_type: Standard
+
+gCuccoRightWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x24B8
+  symbol: gCuccoRightWingRootLimb
+  limb_type: Standard
+
+gCuccoRootLimb:
+  type: OOT:LIMB
+  offset: 0x2440
+  symbol: gCuccoRootLimb
+  limb_type: Standard
+
+gCuccoSkel:
+  type: OOT:SKELETON
+  offset: 0x2530
+  symbol: gCuccoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gCuccoTailAndUndersideDL:
+  type: GFX
+  offset: 0x0DF0
+  symbol: gCuccoTailAndUndersideDL
+
+gCuccoTailAndUndersideLimb:
+  type: OOT:LIMB
+  offset: 0x2464
+  symbol: gCuccoTailAndUndersideLimb
+  limb_type: Standard
+
+gCuccoTailFeathersTex:
+  type: TEXTURE
+  offset: 0x1880
+  symbol: gCuccoTailFeathersTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCuccoTex_2180:
+  type: TEXTURE
+  offset: 0x2180
+  symbol: gCuccoTex_2180
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCuccoUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x24D0
+  symbol: gCuccoUpperBodyRootLimb
+  limb_type: Standard
+
+
+object_niwVtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: object_niwVtx_000100
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_0004E0:
+  type: OOT:ARRAY
+  offset: 0x0004E0
+  symbol: object_niwVtx_0004E0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_0005D0:
+  type: OOT:ARRAY
+  offset: 0x0005D0
+  symbol: object_niwVtx_0005D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_000650:
+  type: OOT:ARRAY
+  offset: 0x000650
+  symbol: object_niwVtx_000650
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_0006D0:
+  type: OOT:ARRAY
+  offset: 0x0006D0
+  symbol: object_niwVtx_0006D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_000700:
+  type: OOT:ARRAY
+  offset: 0x000700
+  symbol: object_niwVtx_000700
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_000730:
+  type: OOT:ARRAY
+  offset: 0x000730
+  symbol: object_niwVtx_000730
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_002380:
+  type: OOT:ARRAY
+  offset: 0x002380
+  symbol: object_niwVtx_002380
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gCuccoSkelLimbs:
+  type: BLOB
+  offset: 0x24F4
+  symbol: gCuccoSkelLimbs
+  size: 0

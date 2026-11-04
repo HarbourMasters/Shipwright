@@ -7,7 +7,7 @@
 #   OPUSFILE_LIBRARIES   - Full list of libraries to link (opusfile, opus, ogg)
 
 # Use pkg-config to find opusfile if available
-find_package(PkgConf)
+find_package(PkgConfig)
 if(PKG_CONFIG_FOUND)
     pkg_check_modules(PC_OPUSFILE QUIET opusfile)
 endif()

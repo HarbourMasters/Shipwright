@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 6, 0x00FC8390 ]
+
+gVolvagiaBossTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xeb00
+  symbol: gVolvagiaBossTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gVolvagiaBossTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0xd700
+  symbol: gVolvagiaBossTitleCardJPNTex
+  format: IA8
+  width: 128
+  height: 40
+

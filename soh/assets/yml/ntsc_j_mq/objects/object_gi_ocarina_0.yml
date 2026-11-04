@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x01160450 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x01160450 ]
+    - [ 9, 0x01160450 ]
+    - [ 10, 0x01160450 ]
+    - [ 11, 0x01160450 ]
+    - [ 12, 0x01160450 ]
+    - [ 13, 0x01160450 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGiOcarinaFairyDL:
+  type: GFX
+  offset: 0x08E0
+  symbol: gGiOcarinaFairyDL
+
+gGiOcarinaFairyHolesDL:
+  type: GFX
+  offset: 0x0B58
+  symbol: gGiOcarinaFairyHolesDL
+
+object_gi_ocarina_0Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_ocarina_0Tex_000000
+  format: I8
+  width: 16
+  height: 16
+
+
+object_gi_ocarina_0Vtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: object_gi_ocarina_0Vtx_000100
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_ocarina_0Vtx_000790:
+  type: OOT:ARRAY
+  offset: 0x000790
+  symbol: object_gi_ocarina_0Vtx_000790
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

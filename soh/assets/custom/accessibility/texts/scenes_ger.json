@@ -9,12 +9,12 @@
     "7": "Schattentempel",
     "8": "Grund des Brunnens",
     "9": "Eishöhle",
-    "10": "", // Treppe zu Ganondorfs Verlies (Keine Title-Card)
+    "10": "",
     "11": "Gerudo-Arena",
     "12": "Diebesversteck",
     "13": "Ganons Schloß",
-    "14": "", // Flucht aus Ganons Schloß (Keine Title-Card)
-    "15": "", // Flucht aus Ganons Schloß 5 (Keine Title-Card)
+    "14": "",
+    "15": "",
     "16": "Truhenlotterie",
     "17": "Gepanzerter Spinnenparasit - Gohma",
     "18": "Infernosaurus - King Dodongo",
@@ -26,7 +26,7 @@
     "24": "Bestialische Schattenmonstrosität - Bongo Bongo",
     "25": "Großmeister des Bösen - Ganondorf",
     "26": "",
-    "27": "", // Eingang zum Marktplatz (Keine Title-Card)
+    "27": "",
     "28": "",
     "29": "",
     "30": "Seitenstraße",
@@ -34,50 +34,50 @@
     "32": "Marktplatz",
     "33": "Marktplatz",
     "34": "Marktplatz",
-    "35": "", // Vor der Zitadelle der Zeit (Keine Title-Card)
+    "35": "",
     "36": "SCENE_SHRINE_N",
     "37": "SCENE_SHRINE_R",
-    "38": "", // Haus der Allwissenden Brüder (Keine Title-Card)
-    "39": "", // Haus der Zwillinge (Keine Title-Card)
-    "40": "", // Midos Haus (Keine Title-Card)
-    "41": "", // Salias Haus (Keine Title-Card)
-    "42": "", // Kakariko Haus 1 (Keine Title-Card)
-    "43": "", // Steinstraßen Haus 1 (Keine Title-Card)
+    "38": "",
+    "39": "",
+    "40": "",
+    "41": "",
+    "42": "",
+    "43": "",
     "44": "Basar",
     "45": "Kokiri-Laden",
     "46": "Goronen-Laden",
     "47": "Zora-Laden",
-    "48": "", // Geschlossener Laden (Keine Title-Card)
+    "48": "",
     "49": "Magie-Laden",
-    "50": "", // Krabbelminen-Laden (Keine Title-Card)
+    "50": "",
     "51": "Maskenhändler",
-    "52": "", // Links Haus (Keine Title-Card)
-    "53": "", // Haus der Hunde-Dame (Keine Title-Card)
+    "52": "",
+    "53": "",
     "54": "Stall",
-    "55": "", // Impas Haus (Keine Title-Card)
+    "55": "",
     "56": "Hylia-See Laboratorium",
-    "57": "", // Zelt des Rennläufers (Keine Title-Card)
+    "57": "",
     "58": "Hütte des Totengräbers",
     "59": "Feen-Quelle",
     "60": "Feen-Brunnen",
     "61": "Feen-Quelle",
-    "62": "", // Grotten (Keine Title-Card)
-    "63": "", // Grab 1 (Keine Title-Card)
-    "64": "", // Grab 2 (Keine Title-Card)
+    "62": "",
+    "63": "",
+    "64": "",
     "65": "Königsgrab",
     "66": "Schießbude",
     "67": "Zitadelle der Zeit",
     "68": "Halle der Weisen",
     "69": "Burghof",
     "70": "Burghof",
-    "71": "", // Göttinnen Cutscene (Keine Title-Card)
+    "71": "",
     "72": "Unbekannter Ort",
     "73": "Fischweiher",
     "74": "Burghof",
     "75": "Minenbowlingbahn",
-    "76": "", // Lon Lon-Farm Haus/Silo (Keine Title-Card)
-    "77": "", // Wachposten (Keine Title-Card)
-    "78": "", // Magie-Laden (Keine Title-Card)
+    "76": "",
+    "77": "",
+    "78": "",
     "79": "Ganon",
     "80": "Skulltulas Haus",
     "81": "Hylianische Steppe",
@@ -100,13 +100,13 @@
     "98": "Goronia",
     "99": "Lon Lon-Farm",
     "100": "",
-    "101": "", // Debug: Test Karte (Keine Title-Card)
-    "102": "", // Debug: Test Raum (Keine Title-Card)
-    "103": "", // Debug: Tiefen Test (Keine Title-Card)
-    "104": "", // Debug: Stalfos-Ritter Miniboss Raum (Keine Title-Card)
-    "105": "", // Debug: Stalfos-Ritter Boss Raum (Keine Title-Card)
-    "106": "", // Debug: Schwarzer Link Raum (Keine Title-Card)
+    "101": "",
+    "102": "",
+    "103": "",
+    "104": "",
+    "105": "",
+    "106": "",
     "107": "",
-    "108": "", // Debug: SRD Raum (Keine Title-Card)
-    "109": "" // Debug: Schatzkisten Teleport (Keine Title-Card)
+    "108": "",
+    "109": ""
 }

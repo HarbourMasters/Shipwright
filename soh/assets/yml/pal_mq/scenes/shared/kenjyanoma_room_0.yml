@@ -1,0 +1,207 @@
+:config:
+  segments:
+    - [ 3, 0x01C44AB0 ]
+    - [ 2, 0x01C433B0 ]
+  directory: scenes/shared/kenjyanoma_scene
+  external_files:
+    - pal_mq/scenes/shared/kenjyanoma_scene.yml
+    - pal_mq/code/sys_matrix.yml
+    - pal_mq/scenes/shared/kenjyanoma_room_0Set_000110.yml
+    - pal_mq/scenes/shared/kenjyanoma_room_0Set_000180.yml
+    - pal_mq/scenes/shared/kenjyanoma_room_0Set_000230.yml
+
+kenjyanoma_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: kenjyanoma_room_0
+
+kenjyanoma_room_0Tex_001618:
+  type: TEXTURE
+  offset: 0x1618
+  symbol: kenjyanoma_room_0Tex_001618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_002618:
+  type: TEXTURE
+  offset: 0x2618
+  symbol: kenjyanoma_room_0Tex_002618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_003618:
+  type: TEXTURE
+  offset: 0x3618
+  symbol: kenjyanoma_room_0Tex_003618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_004618:
+  type: TEXTURE
+  offset: 0x4618
+  symbol: kenjyanoma_room_0Tex_004618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_005618:
+  type: TEXTURE
+  offset: 0x5618
+  symbol: kenjyanoma_room_0Tex_005618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_006618:
+  type: TEXTURE
+  offset: 0x6618
+  symbol: kenjyanoma_room_0Tex_006618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_007618:
+  type: TEXTURE
+  offset: 0x7618
+  symbol: kenjyanoma_room_0Tex_007618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_008618:
+  type: TEXTURE
+  offset: 0x8618
+  symbol: kenjyanoma_room_0Tex_008618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_009618:
+  type: TEXTURE
+  offset: 0x9618
+  symbol: kenjyanoma_room_0Tex_009618
+  format: RGBA16
+  width: 32
+  height: 64
+
+kenjyanoma_room_0Tex_00A618:
+  type: TEXTURE
+  offset: 0xA618
+  symbol: kenjyanoma_room_0Tex_00A618
+  format: RGBA16
+  width: 32
+  height: 64
+
+kenjyanoma_room_0Tex_00B618:
+  type: TEXTURE
+  offset: 0xB618
+  symbol: kenjyanoma_room_0Tex_00B618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_00C618:
+  type: TEXTURE
+  offset: 0xC618
+  symbol: kenjyanoma_room_0Tex_00C618
+  format: RGBA16
+  width: 64
+  height: 32
+
+kenjyanoma_room_0Tex_00D618:
+  type: TEXTURE
+  offset: 0xD618
+  symbol: kenjyanoma_room_0Tex_00D618
+  format: RGBA16
+  width: 32
+  height: 32
+
+kenjyanoma_room_0Tex_010CE8:
+  type: TEXTURE
+  offset: 0x10CE8
+  symbol: kenjyanoma_room_0Tex_010CE8
+  format: IA16
+  width: 32
+  height: 32
+
+kenjyanoma_room_0Tex_0114E8:
+  type: TEXTURE
+  offset: 0x114E8
+  symbol: kenjyanoma_room_0Tex_0114E8
+  format: I8
+  width: 32
+  height: 64
+
+kenjyanoma_room_0Tex_011CE8:
+  type: TEXTURE
+  offset: 0x11CE8
+  symbol: kenjyanoma_room_0Tex_011CE8
+  format: RGBA16
+  width: 4
+  height: 4
+
+kenjyanoma_room_0Tex_011D08:
+  type: TEXTURE
+  offset: 0x11D08
+  symbol: kenjyanoma_room_0Tex_011D08
+  format: RGBA16
+  width: 32
+  height: 32
+
+kenjyanoma_room_0Tex_012508:
+  type: TEXTURE
+  offset: 0x12508
+  symbol: kenjyanoma_room_0Tex_012508
+  format: I8
+  width: 32
+  height: 64
+
+kenjyanoma_room_0Tex_012D08:
+  type: TEXTURE
+  offset: 0x12D08
+  symbol: kenjyanoma_room_0Tex_012D08
+  format: I8
+  width: 32
+  height: 32
+
+
+kenjyanoma_room_0Vtx_000310:
+  type: OOT:ARRAY
+  offset: 0x000310
+  symbol: kenjyanoma_room_0Vtx_000310
+  count: 209
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kenjyanoma_room_0DL_001020:
+  type: GFX
+  offset: 0x001020
+  symbol: kenjyanoma_room_0DL_001020
+
+kenjyanoma_room_0DL_001608:
+  type: GFX
+  offset: 0x001608
+  symbol: kenjyanoma_room_0DL_001608
+
+kenjyanoma_room_0Vtx_00DE20:
+  type: OOT:ARRAY
+  offset: 0x00DE20
+  symbol: kenjyanoma_room_0Vtx_00DE20
+  count: 604
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kenjyanoma_room_0DL_0103E0:
+  type: GFX
+  offset: 0x0103E0
+  symbol: kenjyanoma_room_0DL_0103E0
+
+kenjyanoma_room_0DL_010CD8:
+  type: GFX
+  offset: 0x010CD8
+  symbol: kenjyanoma_room_0DL_010CD8

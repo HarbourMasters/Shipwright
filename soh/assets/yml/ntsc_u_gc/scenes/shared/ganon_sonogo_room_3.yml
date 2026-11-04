@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 3, 0x01F3D9A0 ]
+    - [ 2, 0x01F2DCB0 ]
+  directory: scenes/shared/ganon_sonogo_scene
+  external_files:
+    - ntsc_u_gc/scenes/shared/ganon_sonogo_scene.yml
+    - ntsc_u_gc/code/sys_matrix.yml
+
+ganon_sonogo_room_3:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganon_sonogo_room_3
+
+ganon_sonogo_room_3Tex_003A38:
+  type: TEXTURE
+  offset: 0x3A38
+  symbol: ganon_sonogo_room_3Tex_003A38
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ganon_sonogo_scene
+  external_tlut_offset: 0x6300
+
+ganon_sonogo_room_3Tex_003E38:
+  type: TEXTURE
+  offset: 0x3E38
+  symbol: ganon_sonogo_room_3Tex_003E38
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ganon_sonogo_scene
+  external_tlut_offset: 0x6300
+
+ganon_sonogo_room_3Tex_004638:
+  type: TEXTURE
+  offset: 0x4638
+  symbol: ganon_sonogo_room_3Tex_004638
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ganon_sonogo_scene
+  external_tlut_offset: 0x6300
+
+ganon_sonogo_room_3Tex_004E38:
+  type: TEXTURE
+  offset: 0x4E38
+  symbol: ganon_sonogo_room_3Tex_004E38
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ganon_sonogo_scene
+  external_tlut_offset: 0x6300
+
+
+ganon_sonogo_room_3Vtx_000140:
+  type: OOT:ARRAY
+  offset: 0x000140
+  symbol: ganon_sonogo_room_3Vtx_000140
+  count: 495
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_sonogo_room_3DL_002030:
+  type: GFX
+  offset: 0x002030
+  symbol: ganon_sonogo_room_3DL_002030
+
+ganon_sonogo_room_3DL_003A28:
+  type: GFX
+  offset: 0x003A28
+  symbol: ganon_sonogo_room_3DL_003A28

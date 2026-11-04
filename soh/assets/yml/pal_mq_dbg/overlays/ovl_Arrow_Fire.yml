@@ -1,0 +1,47 @@
+:config:
+  segments:
+    - [ 128, 0x00C34AE0 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x00C34AE0 ]
+    - [ 9, 0x00C34AE0 ]
+    - [ 10, 0x00C34AE0 ]
+    - [ 11, 0x00C34AE0 ]
+    - [ 12, 0x00C34AE0 ]
+    - [ 13, 0x00C34AE0 ]
+  virtual: [ 0x80865d10, 0x00C34AE0 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+s1Tex:
+  type: TEXTURE
+  offset: 0x9D0
+  symbol: s1Tex
+  format: I8
+  width: 32
+  height: 64
+
+s2Tex:
+  type: TEXTURE
+  offset: 0x11D0
+  symbol: s2Tex
+  format: I8
+  width: 32
+  height: 64
+
+sMaterialDL:
+  type: GFX
+  offset: 0x1C80
+  symbol: sMaterialDL
+
+sModelDL:
+  type: GFX
+  offset: 0x1D30
+  symbol: sModelDL
+
+sVtx:
+  type: OOT:ARRAY
+  offset: 0x19D0
+  symbol: sVtx
+  count: 43
+  array_type: VTX
+

@@ -1,0 +1,3442 @@
+:config:
+  segments:
+    - [ 7, 0x004DA490 ]
+
+gPlayerAnimData_000000:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x0
+  symbol: gPlayerAnimData_000000
+  frame_count: 20
+
+gPlayerAnimData_000A80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA80
+  symbol: gPlayerAnimData_000A80
+  frame_count: 20
+
+gPlayerAnimData_001500:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1500
+  symbol: gPlayerAnimData_001500
+  frame_count: 15
+
+gPlayerAnimData_001CE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1CE0
+  symbol: gPlayerAnimData_001CE0
+  frame_count: 24
+
+gPlayerAnimData_002970:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2970
+  symbol: gPlayerAnimData_002970
+  frame_count: 15
+
+gPlayerAnimData_003150:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3150
+  symbol: gPlayerAnimData_003150
+  frame_count: 26
+
+gPlayerAnimData_003EF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3EF0
+  symbol: gPlayerAnimData_003EF0
+  frame_count: 20
+
+gPlayerAnimData_004970:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4970
+  symbol: gPlayerAnimData_004970
+  frame_count: 20
+
+gPlayerAnimData_0053F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x53F0
+  symbol: gPlayerAnimData_0053F0
+  frame_count: 10
+
+gPlayerAnimData_005930:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5930
+  symbol: gPlayerAnimData_005930
+  frame_count: 30
+
+gPlayerAnimData_0068F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x68F0
+  symbol: gPlayerAnimData_0068F0
+  frame_count: 30
+
+gPlayerAnimData_0078B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x78B0
+  symbol: gPlayerAnimData_0078B0
+  frame_count: 35
+
+gPlayerAnimData_008B10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x8B10
+  symbol: gPlayerAnimData_008B10
+  frame_count: 40
+
+gPlayerAnimData_00A000:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA000
+  symbol: gPlayerAnimData_00A000
+  frame_count: 20
+
+gPlayerAnimData_00AA80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAA80
+  symbol: gPlayerAnimData_00AA80
+  frame_count: 25
+
+gPlayerAnimData_00B7A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB7A0
+  symbol: gPlayerAnimData_00B7A0
+  frame_count: 20
+
+gPlayerAnimData_00C220:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC220
+  symbol: gPlayerAnimData_00C220
+  frame_count: 40
+
+gPlayerAnimData_00D710:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD710
+  symbol: gPlayerAnimData_00D710
+  frame_count: 51
+
+gPlayerAnimData_00F1D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF1D0
+  symbol: gPlayerAnimData_00F1D0
+  frame_count: 133
+
+gPlayerAnimData_013770:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13770
+  symbol: gPlayerAnimData_013770
+  frame_count: 33
+
+gPlayerAnimData_0148C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x148C0
+  symbol: gPlayerAnimData_0148C0
+  frame_count: 55
+
+gPlayerAnimData_016590:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16590
+  symbol: gPlayerAnimData_016590
+  frame_count: 100
+
+gPlayerAnimData_0199F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x199F0
+  symbol: gPlayerAnimData_0199F0
+  frame_count: 100
+
+gPlayerAnimData_01CE50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1CE50
+  symbol: gPlayerAnimData_01CE50
+  frame_count: 40
+
+gPlayerAnimData_01E340:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1E340
+  symbol: gPlayerAnimData_01E340
+  frame_count: 40
+
+gPlayerAnimData_01F830:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F830
+  symbol: gPlayerAnimData_01F830
+  frame_count: 20
+
+gPlayerAnimData_0202B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x202B0
+  symbol: gPlayerAnimData_0202B0
+  frame_count: 20
+
+gPlayerAnimData_020D30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20D30
+  symbol: gPlayerAnimData_020D30
+  frame_count: 110
+
+gPlayerAnimData_0246D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x246D0
+  symbol: gPlayerAnimData_0246D0
+  frame_count: 35
+
+gPlayerAnimData_025930:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25930
+  symbol: gPlayerAnimData_025930
+  frame_count: 25
+
+gPlayerAnimData_026650:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x26650
+  symbol: gPlayerAnimData_026650
+  frame_count: 20
+
+gPlayerAnimData_0270D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x270D0
+  symbol: gPlayerAnimData_0270D0
+  frame_count: 15
+
+gPlayerAnimData_0278B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x278B0
+  symbol: gPlayerAnimData_0278B0
+  frame_count: 55
+
+gPlayerAnimData_029580:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29580
+  symbol: gPlayerAnimData_029580
+  frame_count: 30
+
+gPlayerAnimData_02A540:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2A540
+  symbol: gPlayerAnimData_02A540
+  frame_count: 30
+
+gPlayerAnimData_02B500:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B500
+  symbol: gPlayerAnimData_02B500
+  frame_count: 30
+
+gPlayerAnimData_02C4C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2C4C0
+  symbol: gPlayerAnimData_02C4C0
+  frame_count: 51
+
+gPlayerAnimData_02DF80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2DF80
+  symbol: gPlayerAnimData_02DF80
+  frame_count: 78
+
+gPlayerAnimData_030860:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x30860
+  symbol: gPlayerAnimData_030860
+  frame_count: 30
+
+gPlayerAnimData_031820:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x31820
+  symbol: gPlayerAnimData_031820
+  frame_count: 35
+
+gPlayerAnimData_032A80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x32A80
+  symbol: gPlayerAnimData_032A80
+  frame_count: 36
+
+gPlayerAnimData_033D60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x33D60
+  symbol: gPlayerAnimData_033D60
+  frame_count: 35
+
+gPlayerAnimData_034FC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x34FC0
+  symbol: gPlayerAnimData_034FC0
+  frame_count: 36
+
+gPlayerAnimData_0362A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x362A0
+  symbol: gPlayerAnimData_0362A0
+  frame_count: 30
+
+gPlayerAnimData_037260:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x37260
+  symbol: gPlayerAnimData_037260
+  frame_count: 50
+
+gPlayerAnimData_038C90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x38C90
+  symbol: gPlayerAnimData_038C90
+  frame_count: 21
+
+gPlayerAnimData_039790:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x39790
+  symbol: gPlayerAnimData_039790
+  frame_count: 21
+
+gPlayerAnimData_03A290:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3A290
+  symbol: gPlayerAnimData_03A290
+  frame_count: 5
+
+gPlayerAnimData_03A530:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3A530
+  symbol: gPlayerAnimData_03A530
+  frame_count: 55
+
+gPlayerAnimData_03C200:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3C200
+  symbol: gPlayerAnimData_03C200
+  frame_count: 365
+
+gPlayerAnimData_048110:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x48110
+  symbol: gPlayerAnimData_048110
+  frame_count: 110
+
+gPlayerAnimData_04BAB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4BAB0
+  symbol: gPlayerAnimData_04BAB0
+  frame_count: 80
+
+gPlayerAnimData_04E490:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4E490
+  symbol: gPlayerAnimData_04E490
+  frame_count: 30
+
+gPlayerAnimData_04F450:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4F450
+  symbol: gPlayerAnimData_04F450
+  frame_count: 30
+
+gPlayerAnimData_050410:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x50410
+  symbol: gPlayerAnimData_050410
+  frame_count: 20
+
+gPlayerAnimData_050E90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x50E90
+  symbol: gPlayerAnimData_050E90
+  frame_count: 60
+
+gPlayerAnimData_052E00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x52E00
+  symbol: gPlayerAnimData_052E00
+  frame_count: 45
+
+gPlayerAnimData_054590:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x54590
+  symbol: gPlayerAnimData_054590
+  frame_count: 45
+
+gPlayerAnimData_055D20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x55D20
+  symbol: gPlayerAnimData_055D20
+  frame_count: 90
+
+gPlayerAnimData_058C40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x58C40
+  symbol: gPlayerAnimData_058C40
+  frame_count: 90
+
+gPlayerAnimData_05BB60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5BB60
+  symbol: gPlayerAnimData_05BB60
+  frame_count: 45
+
+gPlayerAnimData_05D2F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5D2F0
+  symbol: gPlayerAnimData_05D2F0
+  frame_count: 60
+
+gPlayerAnimData_05F260:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5F260
+  symbol: gPlayerAnimData_05F260
+  frame_count: 11
+
+gPlayerAnimData_05F830:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5F830
+  symbol: gPlayerAnimData_05F830
+  frame_count: 16
+
+gPlayerAnimData_060090:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x60090
+  symbol: gPlayerAnimData_060090
+  frame_count: 11
+
+gPlayerAnimData_060660:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x60660
+  symbol: gPlayerAnimData_060660
+  frame_count: 18
+
+gPlayerAnimData_060FD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x60FD0
+  symbol: gPlayerAnimData_060FD0
+  frame_count: 10
+
+gPlayerAnimData_061510:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x61510
+  symbol: gPlayerAnimData_061510
+  frame_count: 11
+
+gPlayerAnimData_061AE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x61AE0
+  symbol: gPlayerAnimData_061AE0
+  frame_count: 9
+
+gPlayerAnimData_061FA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x61FA0
+  symbol: gPlayerAnimData_061FA0
+  frame_count: 13
+
+gPlayerAnimData_062670:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x62670
+  symbol: gPlayerAnimData_062670
+  frame_count: 12
+
+gPlayerAnimData_062CC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x62CC0
+  symbol: gPlayerAnimData_062CC0
+  frame_count: 8
+
+gPlayerAnimData_0630F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x630F0
+  symbol: gPlayerAnimData_0630F0
+  frame_count: 15
+
+gPlayerAnimData_0638D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x638D0
+  symbol: gPlayerAnimData_0638D0
+  frame_count: 18
+
+gPlayerAnimData_064240:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x64240
+  symbol: gPlayerAnimData_064240
+  frame_count: 19
+
+gPlayerAnimData_064C40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x64C40
+  symbol: gPlayerAnimData_064C40
+  frame_count: 34
+
+gPlayerAnimData_065E10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x65E10
+  symbol: gPlayerAnimData_065E10
+  frame_count: 18
+
+gPlayerAnimData_066780:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x66780
+  symbol: gPlayerAnimData_066780
+  frame_count: 16
+
+gPlayerAnimData_066FE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x66FE0
+  symbol: gPlayerAnimData_066FE0
+  frame_count: 16
+
+gPlayerAnimData_067840:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x67840
+  symbol: gPlayerAnimData_067840
+  frame_count: 16
+
+gPlayerAnimData_0680A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x680A0
+  symbol: gPlayerAnimData_0680A0
+  frame_count: 16
+
+gPlayerAnimData_068900:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x68900
+  symbol: gPlayerAnimData_068900
+  frame_count: 8
+
+gPlayerAnimData_068D30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x68D30
+  symbol: gPlayerAnimData_068D30
+  frame_count: 8
+
+gPlayerAnimData_069160:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x69160
+  symbol: gPlayerAnimData_069160
+  frame_count: 7
+
+gPlayerAnimData_069510:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x69510
+  symbol: gPlayerAnimData_069510
+  frame_count: 16
+
+gPlayerAnimData_069D70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x69D70
+  symbol: gPlayerAnimData_069D70
+  frame_count: 13
+
+gPlayerAnimData_06A440:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6A440
+  symbol: gPlayerAnimData_06A440
+  frame_count: 21
+
+gPlayerAnimData_06AF40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6AF40
+  symbol: gPlayerAnimData_06AF40
+  frame_count: 19
+
+gPlayerAnimData_06B940:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6B940
+  symbol: gPlayerAnimData_06B940
+  frame_count: 9
+
+gPlayerAnimData_06BE00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6BE00
+  symbol: gPlayerAnimData_06BE00
+  frame_count: 32
+
+gPlayerAnimData_06CEC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6CEC0
+  symbol: gPlayerAnimData_06CEC0
+  frame_count: 15
+
+gPlayerAnimData_06D6A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6D6A0
+  symbol: gPlayerAnimData_06D6A0
+  frame_count: 14
+
+gPlayerAnimData_06DE00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6DE00
+  symbol: gPlayerAnimData_06DE00
+  frame_count: 16
+
+gPlayerAnimData_06E660:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6E660
+  symbol: gPlayerAnimData_06E660
+  frame_count: 16
+
+gPlayerAnimData_06EEC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6EEC0
+  symbol: gPlayerAnimData_06EEC0
+  frame_count: 29
+
+gPlayerAnimData_06FDF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6FDF0
+  symbol: gPlayerAnimData_06FDF0
+  frame_count: 3
+
+gPlayerAnimData_06FF90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6FF90
+  symbol: gPlayerAnimData_06FF90
+  frame_count: 3
+
+gPlayerAnimData_070130:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x70130
+  symbol: gPlayerAnimData_070130
+  frame_count: 3
+
+gPlayerAnimData_0702D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x702D0
+  symbol: gPlayerAnimData_0702D0
+  frame_count: 5
+
+gPlayerAnimData_070570:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x70570
+  symbol: gPlayerAnimData_070570
+  frame_count: 31
+
+gPlayerAnimData_0715B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x715B0
+  symbol: gPlayerAnimData_0715B0
+  frame_count: 16
+
+gPlayerAnimData_071E10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x71E10
+  symbol: gPlayerAnimData_071E10
+  frame_count: 9
+
+gPlayerAnimData_0722D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x722D0
+  symbol: gPlayerAnimData_0722D0
+  frame_count: 29
+
+gPlayerAnimData_073200:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x73200
+  symbol: gPlayerAnimData_073200
+  frame_count: 3
+
+gPlayerAnimData_0733A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x733A0
+  symbol: gPlayerAnimData_0733A0
+  frame_count: 3
+
+gPlayerAnimData_073540:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x73540
+  symbol: gPlayerAnimData_073540
+  frame_count: 3
+
+gPlayerAnimData_0736E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x736E0
+  symbol: gPlayerAnimData_0736E0
+  frame_count: 5
+
+gPlayerAnimData_073980:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x73980
+  symbol: gPlayerAnimData_073980
+  frame_count: 31
+
+gPlayerAnimData_0749C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x749C0
+  symbol: gPlayerAnimData_0749C0
+  frame_count: 16
+
+gPlayerAnimData_075220:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x75220
+  symbol: gPlayerAnimData_075220
+  frame_count: 9
+
+gPlayerAnimData_0756E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x756E0
+  symbol: gPlayerAnimData_0756E0
+  frame_count: 20
+
+gPlayerAnimData_076160:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x76160
+  symbol: gPlayerAnimData_076160
+  frame_count: 18
+
+gPlayerAnimData_076AD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x76AD0
+  symbol: gPlayerAnimData_076AD0
+  frame_count: 20
+
+gPlayerAnimData_077550:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x77550
+  symbol: gPlayerAnimData_077550
+  frame_count: 20
+
+gPlayerAnimData_077FD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x77FD0
+  symbol: gPlayerAnimData_077FD0
+  frame_count: 16
+
+gPlayerAnimData_078830:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x78830
+  symbol: gPlayerAnimData_078830
+  frame_count: 16
+
+gPlayerAnimData_079090:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x79090
+  symbol: gPlayerAnimData_079090
+  frame_count: 6
+
+gPlayerAnimData_0793C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x793C0
+  symbol: gPlayerAnimData_0793C0
+  frame_count: 29
+
+gPlayerAnimData_07A2F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7A2F0
+  symbol: gPlayerAnimData_07A2F0
+  frame_count: 29
+
+gPlayerAnimData_07B220:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7B220
+  symbol: gPlayerAnimData_07B220
+  frame_count: 44
+
+gPlayerAnimData_07C930:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7C930
+  symbol: gPlayerAnimData_07C930
+  frame_count: 13
+
+gPlayerAnimData_07D000:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7D000
+  symbol: gPlayerAnimData_07D000
+  frame_count: 131
+
+gPlayerAnimData_0814A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x814A0
+  symbol: gPlayerAnimData_0814A0
+  frame_count: 126
+
+gPlayerAnimData_0856A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x856A0
+  symbol: gPlayerAnimData_0856A0
+  frame_count: 50
+
+gPlayerAnimData_0870D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x870D0
+  symbol: gPlayerAnimData_0870D0
+  frame_count: 47
+
+gPlayerAnimData_088970:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x88970
+  symbol: gPlayerAnimData_088970
+  frame_count: 9
+
+gPlayerAnimData_088E30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x88E30
+  symbol: gPlayerAnimData_088E30
+  frame_count: 44
+
+gPlayerAnimData_08A540:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x8A540
+  symbol: gPlayerAnimData_08A540
+  frame_count: 21
+
+gPlayerAnimData_08B040:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x8B040
+  symbol: gPlayerAnimData_08B040
+  frame_count: 120
+
+gPlayerAnimData_08EF10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x8EF10
+  symbol: gPlayerAnimData_08EF10
+  frame_count: 100
+
+gPlayerAnimData_092370:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x92370
+  symbol: gPlayerAnimData_092370
+  frame_count: 20
+
+gPlayerAnimData_092DF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x92DF0
+  symbol: gPlayerAnimData_092DF0
+  frame_count: 9
+
+gPlayerAnimData_0932B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x932B0
+  symbol: gPlayerAnimData_0932B0
+  frame_count: 3
+
+gPlayerAnimData_093450:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x93450
+  symbol: gPlayerAnimData_093450
+  frame_count: 16
+
+gPlayerAnimData_093CB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x93CB0
+  symbol: gPlayerAnimData_093CB0
+  frame_count: 8
+
+gPlayerAnimData_0940E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x940E0
+  symbol: gPlayerAnimData_0940E0
+  frame_count: 66
+
+gPlayerAnimData_096370:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x96370
+  symbol: gPlayerAnimData_096370
+  frame_count: 5
+
+gPlayerAnimData_096610:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x96610
+  symbol: gPlayerAnimData_096610
+  frame_count: 31
+
+gPlayerAnimData_097650:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x97650
+  symbol: gPlayerAnimData_097650
+  frame_count: 18
+
+gPlayerAnimData_097FC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x97FC0
+  symbol: gPlayerAnimData_097FC0
+  frame_count: 19
+
+gPlayerAnimData_0989C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x989C0
+  symbol: gPlayerAnimData_0989C0
+  frame_count: 24
+
+gPlayerAnimData_099650:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x99650
+  symbol: gPlayerAnimData_099650
+  frame_count: 9
+
+gPlayerAnimData_099B10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x99B10
+  symbol: gPlayerAnimData_099B10
+  frame_count: 100
+
+gPlayerAnimData_09CF70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x9CF70
+  symbol: gPlayerAnimData_09CF70
+  frame_count: 71
+
+gPlayerAnimData_09F4A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x9F4A0
+  symbol: gPlayerAnimData_09F4A0
+  frame_count: 80
+
+gPlayerAnimData_0A1E80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA1E80
+  symbol: gPlayerAnimData_0A1E80
+  frame_count: 51
+
+gPlayerAnimData_0A3940:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA3940
+  symbol: gPlayerAnimData_0A3940
+  frame_count: 133
+
+gPlayerAnimData_0A7EE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA7EE0
+  symbol: gPlayerAnimData_0A7EE0
+  frame_count: 90
+
+gPlayerAnimData_0AAE00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAAE00
+  symbol: gPlayerAnimData_0AAE00
+  frame_count: 35
+
+gPlayerAnimData_0AC060:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAC060
+  symbol: gPlayerAnimData_0AC060
+  frame_count: 40
+
+gPlayerAnimData_0AD550:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAD550
+  symbol: gPlayerAnimData_0AD550
+  frame_count: 25
+
+gPlayerAnimData_0AE270:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAE270
+  symbol: gPlayerAnimData_0AE270
+  frame_count: 20
+
+gPlayerAnimData_0AECF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAECF0
+  symbol: gPlayerAnimData_0AECF0
+  frame_count: 100
+
+gPlayerAnimData_0B2150:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB2150
+  symbol: gPlayerAnimData_0B2150
+  frame_count: 100
+
+gPlayerAnimData_0B55B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB55B0
+  symbol: gPlayerAnimData_0B55B0
+  frame_count: 100
+
+gPlayerAnimData_0B8A10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB8A10
+  symbol: gPlayerAnimData_0B8A10
+  frame_count: 100
+
+gPlayerAnimData_0BBE70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBBE70
+  symbol: gPlayerAnimData_0BBE70
+  frame_count: 80
+
+gPlayerAnimData_0BE850:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBE850
+  symbol: gPlayerAnimData_0BE850
+  frame_count: 45
+
+gPlayerAnimData_0BFFE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBFFE0
+  symbol: gPlayerAnimData_0BFFE0
+  frame_count: 30
+
+gPlayerAnimData_0C0FA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC0FA0
+  symbol: gPlayerAnimData_0C0FA0
+  frame_count: 22
+
+gPlayerAnimData_0C1B30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC1B30
+  symbol: gPlayerAnimData_0C1B30
+  frame_count: 22
+
+gPlayerAnimData_0C26C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC26C0
+  symbol: gPlayerAnimData_0C26C0
+  frame_count: 46
+
+gPlayerAnimData_0C3EE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC3EE0
+  symbol: gPlayerAnimData_0C3EE0
+  frame_count: 20
+
+gPlayerAnimData_0C4960:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC4960
+  symbol: gPlayerAnimData_0C4960
+  frame_count: 10
+
+gPlayerAnimData_0C4EA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC4EA0
+  symbol: gPlayerAnimData_0C4EA0
+  frame_count: 100
+
+gPlayerAnimData_0C8300:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC8300
+  symbol: gPlayerAnimData_0C8300
+  frame_count: 20
+
+gPlayerAnimData_0C8D80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC8D80
+  symbol: gPlayerAnimData_0C8D80
+  frame_count: 85
+
+gPlayerAnimData_0CBA00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCBA00
+  symbol: gPlayerAnimData_0CBA00
+  frame_count: 25
+
+gPlayerAnimData_0CC720:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCC720
+  symbol: gPlayerAnimData_0CC720
+  frame_count: 20
+
+gPlayerAnimData_0CD1A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCD1A0
+  symbol: gPlayerAnimData_0CD1A0
+  frame_count: 20
+
+gPlayerAnimData_0CDC20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCDC20
+  symbol: gPlayerAnimData_0CDC20
+  frame_count: 15
+
+gPlayerAnimData_0CE400:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCE400
+  symbol: gPlayerAnimData_0CE400
+  frame_count: 20
+
+gPlayerAnimData_0CEE80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCEE80
+  symbol: gPlayerAnimData_0CEE80
+  frame_count: 10
+
+gPlayerAnimData_0CF3C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCF3C0
+  symbol: gPlayerAnimData_0CF3C0
+  frame_count: 20
+
+gPlayerAnimData_0CFE40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCFE40
+  symbol: gPlayerAnimData_0CFE40
+  frame_count: 35
+
+gPlayerAnimData_0D10A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD10A0
+  symbol: gPlayerAnimData_0D10A0
+  frame_count: 15
+
+gPlayerAnimData_0D1880:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD1880
+  symbol: gPlayerAnimData_0D1880
+  frame_count: 20
+
+gPlayerAnimData_0D2300:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD2300
+  symbol: gPlayerAnimData_0D2300
+  frame_count: 28
+
+gPlayerAnimData_0D31B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD31B0
+  symbol: gPlayerAnimData_0D31B0
+  frame_count: 35
+
+gPlayerAnimData_0D4410:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD4410
+  symbol: gPlayerAnimData_0D4410
+  frame_count: 20
+
+gPlayerAnimData_0D4E90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD4E90
+  symbol: gPlayerAnimData_0D4E90
+  frame_count: 70
+
+gPlayerAnimData_0D7340:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD7340
+  symbol: gPlayerAnimData_0D7340
+  frame_count: 35
+
+gPlayerAnimData_0D85A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD85A0
+  symbol: gPlayerAnimData_0D85A0
+  frame_count: 80
+
+gPlayerAnimData_0DAF80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDAF80
+  symbol: gPlayerAnimData_0DAF80
+  frame_count: 11
+
+gPlayerAnimData_0DB550:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDB550
+  symbol: gPlayerAnimData_0DB550
+  frame_count: 30
+
+gPlayerAnimData_0DC510:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDC510
+  symbol: gPlayerAnimData_0DC510
+  frame_count: 10
+
+gPlayerAnimData_0DCA50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDCA50
+  symbol: gPlayerAnimData_0DCA50
+  frame_count: 30
+
+gPlayerAnimData_0DDA10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDDA10
+  symbol: gPlayerAnimData_0DDA10
+  frame_count: 70
+
+gPlayerAnimData_0DFEC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDFEC0
+  symbol: gPlayerAnimData_0DFEC0
+  frame_count: 15
+
+gPlayerAnimData_0E06A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE06A0
+  symbol: gPlayerAnimData_0E06A0
+  frame_count: 25
+
+gPlayerAnimData_0E13C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE13C0
+  symbol: gPlayerAnimData_0E13C0
+  frame_count: 230
+
+gPlayerAnimData_0E8C30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE8C30
+  symbol: gPlayerAnimData_0E8C30
+  frame_count: 6
+
+gPlayerAnimData_0E8F60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE8F60
+  symbol: gPlayerAnimData_0E8F60
+  frame_count: 13
+
+gPlayerAnimData_0E9630:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE9630
+  symbol: gPlayerAnimData_0E9630
+  frame_count: 9
+
+gPlayerAnimData_0E9AF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE9AF0
+  symbol: gPlayerAnimData_0E9AF0
+  frame_count: 16
+
+gPlayerAnimData_0EA350:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEA350
+  symbol: gPlayerAnimData_0EA350
+  frame_count: 6
+
+gPlayerAnimData_0EA680:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEA680
+  symbol: gPlayerAnimData_0EA680
+  frame_count: 11
+
+gPlayerAnimData_0EAC50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEAC50
+  symbol: gPlayerAnimData_0EAC50
+  frame_count: 6
+
+gPlayerAnimData_0EAF80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEAF80
+  symbol: gPlayerAnimData_0EAF80
+  frame_count: 17
+
+gPlayerAnimData_0EB870:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEB870
+  symbol: gPlayerAnimData_0EB870
+  frame_count: 5
+
+gPlayerAnimData_0EBB10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEBB10
+  symbol: gPlayerAnimData_0EBB10
+  frame_count: 9
+
+gPlayerAnimData_0EBFD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEBFD0
+  symbol: gPlayerAnimData_0EBFD0
+  frame_count: 8
+
+gPlayerAnimData_0EC400:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEC400
+  symbol: gPlayerAnimData_0EC400
+  frame_count: 11
+
+gPlayerAnimData_0EC9D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEC9D0
+  symbol: gPlayerAnimData_0EC9D0
+  frame_count: 3
+
+gPlayerAnimData_0ECB70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xECB70
+  symbol: gPlayerAnimData_0ECB70
+  frame_count: 10
+
+gPlayerAnimData_0ED0B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xED0B0
+  symbol: gPlayerAnimData_0ED0B0
+  frame_count: 9
+
+gPlayerAnimData_0ED570:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xED570
+  symbol: gPlayerAnimData_0ED570
+  frame_count: 13
+
+gPlayerAnimData_0EDC40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEDC40
+  symbol: gPlayerAnimData_0EDC40
+  frame_count: 10
+
+gPlayerAnimData_0EE180:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEE180
+  symbol: gPlayerAnimData_0EE180
+  frame_count: 19
+
+gPlayerAnimData_0EEB80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEEB80
+  symbol: gPlayerAnimData_0EEB80
+  frame_count: 9
+
+gPlayerAnimData_0EF040:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEF040
+  symbol: gPlayerAnimData_0EF040
+  frame_count: 21
+
+gPlayerAnimData_0EFB40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEFB40
+  symbol: gPlayerAnimData_0EFB40
+  frame_count: 16
+
+gPlayerAnimData_0F03A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF03A0
+  symbol: gPlayerAnimData_0F03A0
+  frame_count: 35
+
+gPlayerAnimData_0F1600:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF1600
+  symbol: gPlayerAnimData_0F1600
+  frame_count: 15
+
+gPlayerAnimData_0F1DE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF1DE0
+  symbol: gPlayerAnimData_0F1DE0
+  frame_count: 21
+
+gPlayerAnimData_0F28E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF28E0
+  symbol: gPlayerAnimData_0F28E0
+  frame_count: 16
+
+gPlayerAnimData_0F3140:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF3140
+  symbol: gPlayerAnimData_0F3140
+  frame_count: 12
+
+gPlayerAnimData_0F3790:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF3790
+  symbol: gPlayerAnimData_0F3790
+  frame_count: 7
+
+gPlayerAnimData_0F3B40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF3B40
+  symbol: gPlayerAnimData_0F3B40
+  frame_count: 8
+
+gPlayerAnimData_0F3F70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF3F70
+  symbol: gPlayerAnimData_0F3F70
+  frame_count: 8
+
+gPlayerAnimData_0F43A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF43A0
+  symbol: gPlayerAnimData_0F43A0
+  frame_count: 5
+
+gPlayerAnimData_0F4640:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF4640
+  symbol: gPlayerAnimData_0F4640
+  frame_count: 9
+
+gPlayerAnimData_0F4B00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF4B00
+  symbol: gPlayerAnimData_0F4B00
+  frame_count: 9
+
+gPlayerAnimData_0F4FC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF4FC0
+  symbol: gPlayerAnimData_0F4FC0
+  frame_count: 15
+
+gPlayerAnimData_0F57A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF57A0
+  symbol: gPlayerAnimData_0F57A0
+  frame_count: 7
+
+gPlayerAnimData_0F5B50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF5B50
+  symbol: gPlayerAnimData_0F5B50
+  frame_count: 8
+
+gPlayerAnimData_0F5F80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF5F80
+  symbol: gPlayerAnimData_0F5F80
+  frame_count: 8
+
+gPlayerAnimData_0F63B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF63B0
+  symbol: gPlayerAnimData_0F63B0
+  frame_count: 5
+
+gPlayerAnimData_0F6650:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF6650
+  symbol: gPlayerAnimData_0F6650
+  frame_count: 12
+
+gPlayerAnimData_0F6CA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF6CA0
+  symbol: gPlayerAnimData_0F6CA0
+  frame_count: 7
+
+gPlayerAnimData_0F7050:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF7050
+  symbol: gPlayerAnimData_0F7050
+  frame_count: 18
+
+gPlayerAnimData_0F79C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF79C0
+  symbol: gPlayerAnimData_0F79C0
+  frame_count: 17
+
+gPlayerAnimData_0F82B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF82B0
+  symbol: gPlayerAnimData_0F82B0
+  frame_count: 12
+
+gPlayerAnimData_0F8900:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF8900
+  symbol: gPlayerAnimData_0F8900
+  frame_count: 15
+
+gPlayerAnimData_0F90E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF90E0
+  symbol: gPlayerAnimData_0F90E0
+  frame_count: 7
+
+gPlayerAnimData_0F9490:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF9490
+  symbol: gPlayerAnimData_0F9490
+  frame_count: 12
+
+gPlayerAnimData_0F9AE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF9AE0
+  symbol: gPlayerAnimData_0F9AE0
+  frame_count: 20
+
+gPlayerAnimData_0FA560:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFA560
+  symbol: gPlayerAnimData_0FA560
+  frame_count: 20
+
+gPlayerAnimData_0FAFE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFAFE0
+  symbol: gPlayerAnimData_0FAFE0
+  frame_count: 3
+
+gPlayerAnimData_0FB180:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFB180
+  symbol: gPlayerAnimData_0FB180
+  frame_count: 5
+
+gPlayerAnimData_0FB420:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFB420
+  symbol: gPlayerAnimData_0FB420
+  frame_count: 9
+
+gPlayerAnimData_0FB8E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFB8E0
+  symbol: gPlayerAnimData_0FB8E0
+  frame_count: 31
+
+gPlayerAnimData_0FC920:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFC920
+  symbol: gPlayerAnimData_0FC920
+  frame_count: 31
+
+gPlayerAnimData_0FD960:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFD960
+  symbol: gPlayerAnimData_0FD960
+  frame_count: 20
+
+gPlayerAnimData_0FE3E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFE3E0
+  symbol: gPlayerAnimData_0FE3E0
+  frame_count: 10
+
+gPlayerAnimData_0FE920:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFE920
+  symbol: gPlayerAnimData_0FE920
+  frame_count: 21
+
+gPlayerAnimData_0FF420:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFF420
+  symbol: gPlayerAnimData_0FF420
+  frame_count: 21
+
+gPlayerAnimData_0FFF20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFFF20
+  symbol: gPlayerAnimData_0FFF20
+  frame_count: 20
+
+gPlayerAnimData_1009A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1009A0
+  symbol: gPlayerAnimData_1009A0
+  frame_count: 10
+
+gPlayerAnimData_100EE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x100EE0
+  symbol: gPlayerAnimData_100EE0
+  frame_count: 10
+
+gPlayerAnimData_101420:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x101420
+  symbol: gPlayerAnimData_101420
+  frame_count: 12
+
+gPlayerAnimData_101A70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x101A70
+  symbol: gPlayerAnimData_101A70
+  frame_count: 11
+
+gPlayerAnimData_102040:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x102040
+  symbol: gPlayerAnimData_102040
+  frame_count: 32
+
+gPlayerAnimData_103100:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x103100
+  symbol: gPlayerAnimData_103100
+  frame_count: 20
+
+gPlayerAnimData_103B80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x103B80
+  symbol: gPlayerAnimData_103B80
+  frame_count: 20
+
+gPlayerAnimData_104600:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x104600
+  symbol: gPlayerAnimData_104600
+  frame_count: 5
+
+gPlayerAnimData_1048A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1048A0
+  symbol: gPlayerAnimData_1048A0
+  frame_count: 8
+
+gPlayerAnimData_104CD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x104CD0
+  symbol: gPlayerAnimData_104CD0
+  frame_count: 9
+
+gPlayerAnimData_105190:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x105190
+  symbol: gPlayerAnimData_105190
+  frame_count: 6
+
+gPlayerAnimData_1054C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1054C0
+  symbol: gPlayerAnimData_1054C0
+  frame_count: 19
+
+gPlayerAnimData_105EC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x105EC0
+  symbol: gPlayerAnimData_105EC0
+  frame_count: 4
+
+gPlayerAnimData_1060E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1060E0
+  symbol: gPlayerAnimData_1060E0
+  frame_count: 9
+
+gPlayerAnimData_1065A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1065A0
+  symbol: gPlayerAnimData_1065A0
+  frame_count: 10
+
+gPlayerAnimData_106AE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x106AE0
+  symbol: gPlayerAnimData_106AE0
+  frame_count: 19
+
+gPlayerAnimData_1074E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1074E0
+  symbol: gPlayerAnimData_1074E0
+  frame_count: 20
+
+gPlayerAnimData_107F60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x107F60
+  symbol: gPlayerAnimData_107F60
+  frame_count: 39
+
+gPlayerAnimData_1093D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1093D0
+  symbol: gPlayerAnimData_1093D0
+  frame_count: 21
+
+gPlayerAnimData_109ED0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x109ED0
+  symbol: gPlayerAnimData_109ED0
+  frame_count: 11
+
+gPlayerAnimData_10A4A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10A4A0
+  symbol: gPlayerAnimData_10A4A0
+  frame_count: 11
+
+gPlayerAnimData_10AA70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10AA70
+  symbol: gPlayerAnimData_10AA70
+  frame_count: 34
+
+gPlayerAnimData_10BC40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10BC40
+  symbol: gPlayerAnimData_10BC40
+  frame_count: 15
+
+gPlayerAnimData_10C420:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10C420
+  symbol: gPlayerAnimData_10C420
+  frame_count: 21
+
+gPlayerAnimData_10CF20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10CF20
+  symbol: gPlayerAnimData_10CF20
+  frame_count: 11
+
+gPlayerAnimData_10D4F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10D4F0
+  symbol: gPlayerAnimData_10D4F0
+  frame_count: 11
+
+gPlayerAnimData_10DAC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10DAC0
+  symbol: gPlayerAnimData_10DAC0
+  frame_count: 13
+
+gPlayerAnimData_10E190:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10E190
+  symbol: gPlayerAnimData_10E190
+  frame_count: 13
+
+gPlayerAnimData_10E860:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10E860
+  symbol: gPlayerAnimData_10E860
+  frame_count: 13
+
+gPlayerAnimData_10EF30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10EF30
+  symbol: gPlayerAnimData_10EF30
+  frame_count: 16
+
+gPlayerAnimData_10F790:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10F790
+  symbol: gPlayerAnimData_10F790
+  frame_count: 20
+
+gPlayerAnimData_110210:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x110210
+  symbol: gPlayerAnimData_110210
+  frame_count: 20
+
+gPlayerAnimData_110C90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x110C90
+  symbol: gPlayerAnimData_110C90
+  frame_count: 20
+
+gPlayerAnimData_111710:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x111710
+  symbol: gPlayerAnimData_111710
+  frame_count: 20
+
+gPlayerAnimData_112190:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x112190
+  symbol: gPlayerAnimData_112190
+  frame_count: 16
+
+gPlayerAnimData_1129F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1129F0
+  symbol: gPlayerAnimData_1129F0
+  frame_count: 16
+
+gPlayerAnimData_113250:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x113250
+  symbol: gPlayerAnimData_113250
+  frame_count: 29
+
+gPlayerAnimData_114180:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x114180
+  symbol: gPlayerAnimData_114180
+  frame_count: 5
+
+gPlayerAnimData_114420:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x114420
+  symbol: gPlayerAnimData_114420
+  frame_count: 16
+
+gPlayerAnimData_114C80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x114C80
+  symbol: gPlayerAnimData_114C80
+  frame_count: 6
+
+gPlayerAnimData_114FB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x114FB0
+  symbol: gPlayerAnimData_114FB0
+  frame_count: 16
+
+gPlayerAnimData_115810:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x115810
+  symbol: gPlayerAnimData_115810
+  frame_count: 22
+
+gPlayerAnimData_1163A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1163A0
+  symbol: gPlayerAnimData_1163A0
+  frame_count: 5
+
+gPlayerAnimData_116640:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x116640
+  symbol: gPlayerAnimData_116640
+  frame_count: 14
+
+gPlayerAnimData_116DA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x116DA0
+  symbol: gPlayerAnimData_116DA0
+  frame_count: 6
+
+gPlayerAnimData_1170D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1170D0
+  symbol: gPlayerAnimData_1170D0
+  frame_count: 6
+
+gPlayerAnimData_117400:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x117400
+  symbol: gPlayerAnimData_117400
+  frame_count: 13
+
+gPlayerAnimData_117AD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x117AD0
+  symbol: gPlayerAnimData_117AD0
+  frame_count: 29
+
+gPlayerAnimData_118A00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x118A00
+  symbol: gPlayerAnimData_118A00
+  frame_count: 13
+
+gPlayerAnimData_1190D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1190D0
+  symbol: gPlayerAnimData_1190D0
+  frame_count: 29
+
+gPlayerAnimData_11A000:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x11A000
+  symbol: gPlayerAnimData_11A000
+  frame_count: 22
+
+gPlayerAnimData_11AB90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x11AB90
+  symbol: gPlayerAnimData_11AB90
+  frame_count: 89
+
+gPlayerAnimData_11DA30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x11DA30
+  symbol: gPlayerAnimData_11DA30
+  frame_count: 11
+
+gPlayerAnimData_11E000:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x11E000
+  symbol: gPlayerAnimData_11E000
+  frame_count: 11
+
+gPlayerAnimData_11E5D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x11E5D0
+  symbol: gPlayerAnimData_11E5D0
+  frame_count: 29
+
+gPlayerAnimData_11F500:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x11F500
+  symbol: gPlayerAnimData_11F500
+  frame_count: 51
+
+gPlayerAnimData_120FC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x120FC0
+  symbol: gPlayerAnimData_120FC0
+  frame_count: 10
+
+gPlayerAnimData_121500:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x121500
+  symbol: gPlayerAnimData_121500
+  frame_count: 6
+
+gPlayerAnimData_121830:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x121830
+  symbol: gPlayerAnimData_121830
+  frame_count: 6
+
+gPlayerAnimData_121B60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x121B60
+  symbol: gPlayerAnimData_121B60
+  frame_count: 6
+
+gPlayerAnimData_121E90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x121E90
+  symbol: gPlayerAnimData_121E90
+  frame_count: 6
+
+gPlayerAnimData_1221C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1221C0
+  symbol: gPlayerAnimData_1221C0
+  frame_count: 50
+
+gPlayerAnimData_123BF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x123BF0
+  symbol: gPlayerAnimData_123BF0
+  frame_count: 41
+
+gPlayerAnimData_125170:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x125170
+  symbol: gPlayerAnimData_125170
+  frame_count: 11
+
+gPlayerAnimData_125740:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x125740
+  symbol: gPlayerAnimData_125740
+  frame_count: 23
+
+gPlayerAnimData_126350:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x126350
+  symbol: gPlayerAnimData_126350
+  frame_count: 23
+
+gPlayerAnimData_126F60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x126F60
+  symbol: gPlayerAnimData_126F60
+  frame_count: 20
+
+gPlayerAnimData_1279E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1279E0
+  symbol: gPlayerAnimData_1279E0
+  frame_count: 20
+
+gPlayerAnimData_128460:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x128460
+  symbol: gPlayerAnimData_128460
+  frame_count: 20
+
+gPlayerAnimData_128EE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x128EE0
+  symbol: gPlayerAnimData_128EE0
+  frame_count: 12
+
+gPlayerAnimData_129530:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x129530
+  symbol: gPlayerAnimData_129530
+  frame_count: 23
+
+gPlayerAnimData_12A140:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12A140
+  symbol: gPlayerAnimData_12A140
+  frame_count: 23
+
+gPlayerAnimData_12AD50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12AD50
+  symbol: gPlayerAnimData_12AD50
+  frame_count: 72
+
+gPlayerAnimData_12D300:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12D300
+  symbol: gPlayerAnimData_12D300
+  frame_count: 9
+
+gPlayerAnimData_12D7C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12D7C0
+  symbol: gPlayerAnimData_12D7C0
+  frame_count: 21
+
+gPlayerAnimData_12E2C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12E2C0
+  symbol: gPlayerAnimData_12E2C0
+  frame_count: 9
+
+gPlayerAnimData_12E780:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12E780
+  symbol: gPlayerAnimData_12E780
+  frame_count: 18
+
+gPlayerAnimData_12F0F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12F0F0
+  symbol: gPlayerAnimData_12F0F0
+  frame_count: 18
+
+gPlayerAnimData_12FA60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12FA60
+  symbol: gPlayerAnimData_12FA60
+  frame_count: 24
+
+gPlayerAnimData_1306F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1306F0
+  symbol: gPlayerAnimData_1306F0
+  frame_count: 69
+
+gPlayerAnimData_132B10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x132B10
+  symbol: gPlayerAnimData_132B10
+  frame_count: 9
+
+gPlayerAnimData_132FD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x132FD0
+  symbol: gPlayerAnimData_132FD0
+  frame_count: 82
+
+gPlayerAnimData_135AC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x135AC0
+  symbol: gPlayerAnimData_135AC0
+  frame_count: 28
+
+gPlayerAnimData_136970:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x136970
+  symbol: gPlayerAnimData_136970
+  frame_count: 60
+
+gPlayerAnimData_1388E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1388E0
+  symbol: gPlayerAnimData_1388E0
+  frame_count: 25
+
+gPlayerAnimData_139600:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x139600
+  symbol: gPlayerAnimData_139600
+  frame_count: 60
+
+gPlayerAnimData_13B570:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13B570
+  symbol: gPlayerAnimData_13B570
+  frame_count: 56
+
+gPlayerAnimData_13D2C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13D2C0
+  symbol: gPlayerAnimData_13D2C0
+  frame_count: 9
+
+gPlayerAnimData_13D780:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13D780
+  symbol: gPlayerAnimData_13D780
+  frame_count: 32
+
+gPlayerAnimData_13E840:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13E840
+  symbol: gPlayerAnimData_13E840
+  frame_count: 52
+
+gPlayerAnimData_140380:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x140380
+  symbol: gPlayerAnimData_140380
+  frame_count: 29
+
+gPlayerAnimData_1412B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1412B0
+  symbol: gPlayerAnimData_1412B0
+  frame_count: 49
+
+gPlayerAnimData_142C60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x142C60
+  symbol: gPlayerAnimData_142C60
+  frame_count: 43
+
+gPlayerAnimData_1442F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1442F0
+  symbol: gPlayerAnimData_1442F0
+  frame_count: 44
+
+gPlayerAnimData_145A00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x145A00
+  symbol: gPlayerAnimData_145A00
+  frame_count: 28
+
+gPlayerAnimData_1468B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1468B0
+  symbol: gPlayerAnimData_1468B0
+  frame_count: 45
+
+gPlayerAnimData_148040:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x148040
+  symbol: gPlayerAnimData_148040
+  frame_count: 10
+
+gPlayerAnimData_148580:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x148580
+  symbol: gPlayerAnimData_148580
+  frame_count: 50
+
+gPlayerAnimData_149FB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x149FB0
+  symbol: gPlayerAnimData_149FB0
+  frame_count: 10
+
+gPlayerAnimData_14A4F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14A4F0
+  symbol: gPlayerAnimData_14A4F0
+  frame_count: 10
+
+gPlayerAnimData_14AA30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14AA30
+  symbol: gPlayerAnimData_14AA30
+  frame_count: 30
+
+gPlayerAnimData_14B9F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14B9F0
+  symbol: gPlayerAnimData_14B9F0
+  frame_count: 21
+
+gPlayerAnimData_14C4F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14C4F0
+  symbol: gPlayerAnimData_14C4F0
+  frame_count: 21
+
+gPlayerAnimData_14CFF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14CFF0
+  symbol: gPlayerAnimData_14CFF0
+  frame_count: 30
+
+gPlayerAnimData_14DFB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14DFB0
+  symbol: gPlayerAnimData_14DFB0
+  frame_count: 15
+
+gPlayerAnimData_14E790:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14E790
+  symbol: gPlayerAnimData_14E790
+  frame_count: 21
+
+gPlayerAnimData_14F290:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14F290
+  symbol: gPlayerAnimData_14F290
+  frame_count: 21
+
+gPlayerAnimData_14FD90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14FD90
+  symbol: gPlayerAnimData_14FD90
+  frame_count: 12
+
+gPlayerAnimData_1503E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1503E0
+  symbol: gPlayerAnimData_1503E0
+  frame_count: 12
+
+gPlayerAnimData_150A30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x150A30
+  symbol: gPlayerAnimData_150A30
+  frame_count: 6
+
+gPlayerAnimData_150D60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x150D60
+  symbol: gPlayerAnimData_150D60
+  frame_count: 14
+
+gPlayerAnimData_1514C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1514C0
+  symbol: gPlayerAnimData_1514C0
+  frame_count: 36
+
+gPlayerAnimData_1527A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1527A0
+  symbol: gPlayerAnimData_1527A0
+  frame_count: 16
+
+gPlayerAnimData_153000:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x153000
+  symbol: gPlayerAnimData_153000
+  frame_count: 16
+
+gPlayerAnimData_153860:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x153860
+  symbol: gPlayerAnimData_153860
+  frame_count: 8
+
+gPlayerAnimData_153C90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x153C90
+  symbol: gPlayerAnimData_153C90
+  frame_count: 8
+
+gPlayerAnimData_1540C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1540C0
+  symbol: gPlayerAnimData_1540C0
+  frame_count: 29
+
+gPlayerAnimData_154FF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x154FF0
+  symbol: gPlayerAnimData_154FF0
+  frame_count: 13
+
+gPlayerAnimData_1556C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1556C0
+  symbol: gPlayerAnimData_1556C0
+  frame_count: 50
+
+gPlayerAnimData_1570F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1570F0
+  symbol: gPlayerAnimData_1570F0
+  frame_count: 36
+
+gPlayerAnimData_1583D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1583D0
+  symbol: gPlayerAnimData_1583D0
+  frame_count: 17
+
+gPlayerAnimData_158CC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x158CC0
+  symbol: gPlayerAnimData_158CC0
+  frame_count: 55
+
+gPlayerAnimData_15A990:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15A990
+  symbol: gPlayerAnimData_15A990
+  frame_count: 20
+
+gPlayerAnimData_15B410:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15B410
+  symbol: gPlayerAnimData_15B410
+  frame_count: 10
+
+gPlayerAnimData_15B950:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15B950
+  symbol: gPlayerAnimData_15B950
+  frame_count: 10
+
+gPlayerAnimData_15BE90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15BE90
+  symbol: gPlayerAnimData_15BE90
+  frame_count: 20
+
+gPlayerAnimData_15C910:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15C910
+  symbol: gPlayerAnimData_15C910
+  frame_count: 54
+
+gPlayerAnimData_15E560:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15E560
+  symbol: gPlayerAnimData_15E560
+  frame_count: 54
+
+gPlayerAnimData_1601B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1601B0
+  symbol: gPlayerAnimData_1601B0
+  frame_count: 29
+
+gPlayerAnimData_1610E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1610E0
+  symbol: gPlayerAnimData_1610E0
+  frame_count: 27
+
+gPlayerAnimData_161F10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x161F10
+  symbol: gPlayerAnimData_161F10
+  frame_count: 28
+
+gPlayerAnimData_162DC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x162DC0
+  symbol: gPlayerAnimData_162DC0
+  frame_count: 56
+
+gPlayerAnimData_164B10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x164B10
+  symbol: gPlayerAnimData_164B10
+  frame_count: 56
+
+gPlayerAnimData_166860:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x166860
+  symbol: gPlayerAnimData_166860
+  frame_count: 30
+
+gPlayerAnimData_167820:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x167820
+  symbol: gPlayerAnimData_167820
+  frame_count: 56
+
+gPlayerAnimData_169570:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x169570
+  symbol: gPlayerAnimData_169570
+  frame_count: 29
+
+gPlayerAnimData_16A4A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16A4A0
+  symbol: gPlayerAnimData_16A4A0
+  frame_count: 21
+
+gPlayerAnimData_16AFA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16AFA0
+  symbol: gPlayerAnimData_16AFA0
+  frame_count: 21
+
+gPlayerAnimData_16BAA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16BAA0
+  symbol: gPlayerAnimData_16BAA0
+  frame_count: 20
+
+gPlayerAnimData_16C520:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16C520
+  symbol: gPlayerAnimData_16C520
+  frame_count: 2
+
+gPlayerAnimData_16C630:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16C630
+  symbol: gPlayerAnimData_16C630
+  frame_count: 5
+
+gPlayerAnimData_16C8D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16C8D0
+  symbol: gPlayerAnimData_16C8D0
+  frame_count: 5
+
+gPlayerAnimData_16CB70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16CB70
+  symbol: gPlayerAnimData_16CB70
+  frame_count: 5
+
+gPlayerAnimData_16CE10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16CE10
+  symbol: gPlayerAnimData_16CE10
+  frame_count: 9
+
+gPlayerAnimData_16D2D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16D2D0
+  symbol: gPlayerAnimData_16D2D0
+  frame_count: 5
+
+gPlayerAnimData_16D570:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16D570
+  symbol: gPlayerAnimData_16D570
+  frame_count: 20
+
+gPlayerAnimData_16DFF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16DFF0
+  symbol: gPlayerAnimData_16DFF0
+  frame_count: 20
+
+gPlayerAnimData_16EA70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16EA70
+  symbol: gPlayerAnimData_16EA70
+  frame_count: 10
+
+gPlayerAnimData_16EFB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16EFB0
+  symbol: gPlayerAnimData_16EFB0
+  frame_count: 19
+
+gPlayerAnimData_16F9B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16F9B0
+  symbol: gPlayerAnimData_16F9B0
+  frame_count: 19
+
+gPlayerAnimData_1703B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1703B0
+  symbol: gPlayerAnimData_1703B0
+  frame_count: 19
+
+gPlayerAnimData_170DB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x170DB0
+  symbol: gPlayerAnimData_170DB0
+  frame_count: 26
+
+gPlayerAnimData_171B50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x171B50
+  symbol: gPlayerAnimData_171B50
+  frame_count: 113
+
+gPlayerAnimData_175680:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x175680
+  symbol: gPlayerAnimData_175680
+  frame_count: 37
+
+gPlayerAnimData_1769E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1769E0
+  symbol: gPlayerAnimData_1769E0
+  frame_count: 86
+
+gPlayerAnimData_1796F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1796F0
+  symbol: gPlayerAnimData_1796F0
+  frame_count: 61
+
+gPlayerAnimData_17B6E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17B6E0
+  symbol: gPlayerAnimData_17B6E0
+  frame_count: 61
+
+gPlayerAnimData_17D6D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17D6D0
+  symbol: gPlayerAnimData_17D6D0
+  frame_count: 20
+
+gPlayerAnimData_17E150:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17E150
+  symbol: gPlayerAnimData_17E150
+  frame_count: 20
+
+gPlayerAnimData_17EBD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17EBD0
+  symbol: gPlayerAnimData_17EBD0
+  frame_count: 20
+
+gPlayerAnimData_17F650:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17F650
+  symbol: gPlayerAnimData_17F650
+  frame_count: 20
+
+gPlayerAnimData_1800D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1800D0
+  symbol: gPlayerAnimData_1800D0
+  frame_count: 20
+
+gPlayerAnimData_180B50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x180B50
+  symbol: gPlayerAnimData_180B50
+  frame_count: 5
+
+gPlayerAnimData_180DF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x180DF0
+  symbol: gPlayerAnimData_180DF0
+  frame_count: 12
+
+gPlayerAnimData_181440:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x181440
+  symbol: gPlayerAnimData_181440
+  frame_count: 39
+
+gPlayerAnimData_1828B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1828B0
+  symbol: gPlayerAnimData_1828B0
+  frame_count: 16
+
+gPlayerAnimData_183110:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x183110
+  symbol: gPlayerAnimData_183110
+  frame_count: 8
+
+gPlayerAnimData_183540:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x183540
+  symbol: gPlayerAnimData_183540
+  frame_count: 8
+
+gPlayerAnimData_183970:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x183970
+  symbol: gPlayerAnimData_183970
+  frame_count: 47
+
+gPlayerAnimData_185210:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x185210
+  symbol: gPlayerAnimData_185210
+  frame_count: 11
+
+gPlayerAnimData_1857E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1857E0
+  symbol: gPlayerAnimData_1857E0
+  frame_count: 252
+
+gPlayerAnimData_18DBD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18DBD0
+  symbol: gPlayerAnimData_18DBD0
+  frame_count: 19
+
+gPlayerAnimData_18E5D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18E5D0
+  symbol: gPlayerAnimData_18E5D0
+  frame_count: 20
+
+gPlayerAnimData_18F050:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18F050
+  symbol: gPlayerAnimData_18F050
+  frame_count: 20
+
+gPlayerAnimData_18FAD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18FAD0
+  symbol: gPlayerAnimData_18FAD0
+  frame_count: 28
+
+gPlayerAnimData_190980:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x190980
+  symbol: gPlayerAnimData_190980
+  frame_count: 28
+
+gPlayerAnimData_191830:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x191830
+  symbol: gPlayerAnimData_191830
+  frame_count: 28
+
+gPlayerAnimData_1926E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1926E0
+  symbol: gPlayerAnimData_1926E0
+  frame_count: 16
+
+gPlayerAnimData_192F40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x192F40
+  symbol: gPlayerAnimData_192F40
+  frame_count: 9
+
+gPlayerAnimData_193400:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x193400
+  symbol: gPlayerAnimData_193400
+  frame_count: 12
+
+gPlayerAnimData_193A50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x193A50
+  symbol: gPlayerAnimData_193A50
+  frame_count: 18
+
+gPlayerAnimData_1943C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1943C0
+  symbol: gPlayerAnimData_1943C0
+  frame_count: 18
+
+gPlayerAnimData_194D30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x194D30
+  symbol: gPlayerAnimData_194D30
+  frame_count: 38
+
+gPlayerAnimData_196120:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x196120
+  symbol: gPlayerAnimData_196120
+  frame_count: 38
+
+gPlayerAnimData_197510:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x197510
+  symbol: gPlayerAnimData_197510
+  frame_count: 73
+
+gPlayerAnimData_199B50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x199B50
+  symbol: gPlayerAnimData_199B50
+  frame_count: 72
+
+gPlayerAnimData_19C100:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19C100
+  symbol: gPlayerAnimData_19C100
+  frame_count: 36
+
+gPlayerAnimData_19D3E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19D3E0
+  symbol: gPlayerAnimData_19D3E0
+  frame_count: 21
+
+gPlayerAnimData_19DEE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19DEE0
+  symbol: gPlayerAnimData_19DEE0
+  frame_count: 21
+
+gPlayerAnimData_19E9E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19E9E0
+  symbol: gPlayerAnimData_19E9E0
+  frame_count: 32
+
+gPlayerAnimData_19FAA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19FAA0
+  symbol: gPlayerAnimData_19FAA0
+  frame_count: 32
+
+gPlayerAnimData_1A0B60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A0B60
+  symbol: gPlayerAnimData_1A0B60
+  frame_count: 20
+
+gPlayerAnimData_1A15E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A15E0
+  symbol: gPlayerAnimData_1A15E0
+  frame_count: 12
+
+gPlayerAnimData_1A1C30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A1C30
+  symbol: gPlayerAnimData_1A1C30
+  frame_count: 19
+
+gPlayerAnimData_1A2630:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A2630
+  symbol: gPlayerAnimData_1A2630
+  frame_count: 20
+
+gPlayerAnimData_1A30B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A30B0
+  symbol: gPlayerAnimData_1A30B0
+  frame_count: 9
+
+gPlayerAnimData_1A3570:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A3570
+  symbol: gPlayerAnimData_1A3570
+  frame_count: 7
+
+gPlayerAnimData_1A3920:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A3920
+  symbol: gPlayerAnimData_1A3920
+  frame_count: 5
+
+gPlayerAnimData_1A3BC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A3BC0
+  symbol: gPlayerAnimData_1A3BC0
+  frame_count: 20
+
+gPlayerAnimData_1A4640:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A4640
+  symbol: gPlayerAnimData_1A4640
+  frame_count: 20
+
+gPlayerAnimData_1A50C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A50C0
+  symbol: gPlayerAnimData_1A50C0
+  frame_count: 20
+
+gPlayerAnimData_1A5B40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A5B40
+  symbol: gPlayerAnimData_1A5B40
+  frame_count: 20
+
+gPlayerAnimData_1A65C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A65C0
+  symbol: gPlayerAnimData_1A65C0
+  frame_count: 12
+
+gPlayerAnimData_1A6C10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A6C10
+  symbol: gPlayerAnimData_1A6C10
+  frame_count: 12
+
+gPlayerAnimData_1A7260:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A7260
+  symbol: gPlayerAnimData_1A7260
+  frame_count: 68
+
+gPlayerAnimData_1A9600:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A9600
+  symbol: gPlayerAnimData_1A9600
+  frame_count: 16
+
+gPlayerAnimData_1A9E60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A9E60
+  symbol: gPlayerAnimData_1A9E60
+  frame_count: 16
+
+gPlayerAnimData_1AA6C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AA6C0
+  symbol: gPlayerAnimData_1AA6C0
+  frame_count: 16
+
+gPlayerAnimData_1AAF20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AAF20
+  symbol: gPlayerAnimData_1AAF20
+  frame_count: 16
+
+gPlayerAnimData_1AB780:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AB780
+  symbol: gPlayerAnimData_1AB780
+  frame_count: 31
+
+gPlayerAnimData_1AC7C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AC7C0
+  symbol: gPlayerAnimData_1AC7C0
+  frame_count: 31
+
+gPlayerAnimData_1AD800:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AD800
+  symbol: gPlayerAnimData_1AD800
+  frame_count: 16
+
+gPlayerAnimData_1AE060:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AE060
+  symbol: gPlayerAnimData_1AE060
+  frame_count: 19
+
+gPlayerAnimData_1AEA60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AEA60
+  symbol: gPlayerAnimData_1AEA60
+  frame_count: 16
+
+gPlayerAnimData_1AF2C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AF2C0
+  symbol: gPlayerAnimData_1AF2C0
+  frame_count: 10
+
+gPlayerAnimData_1AF800:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AF800
+  symbol: gPlayerAnimData_1AF800
+  frame_count: 11
+
+gPlayerAnimData_1AFDD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AFDD0
+  symbol: gPlayerAnimData_1AFDD0
+  frame_count: 31
+
+gPlayerAnimData_1B0E10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B0E10
+  symbol: gPlayerAnimData_1B0E10
+  frame_count: 21
+
+gPlayerAnimData_1B1910:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B1910
+  symbol: gPlayerAnimData_1B1910
+  frame_count: 15
+
+gPlayerAnimData_1B20F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B20F0
+  symbol: gPlayerAnimData_1B20F0
+  frame_count: 9
+
+gPlayerAnimData_1B25B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B25B0
+  symbol: gPlayerAnimData_1B25B0
+  frame_count: 11
+
+gPlayerAnimData_1B2B80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B2B80
+  symbol: gPlayerAnimData_1B2B80
+  frame_count: 20
+
+gPlayerAnimData_1B3600:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B3600
+  symbol: gPlayerAnimData_1B3600
+  frame_count: 20
+
+gPlayerAnimData_1B4080:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B4080
+  symbol: gPlayerAnimData_1B4080
+  frame_count: 20
+
+gPlayerAnimData_1B4B00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B4B00
+  symbol: gPlayerAnimData_1B4B00
+  frame_count: 13
+
+gPlayerAnimData_1B51D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B51D0
+  symbol: gPlayerAnimData_1B51D0
+  frame_count: 19
+
+gPlayerAnimData_1B5BD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B5BD0
+  symbol: gPlayerAnimData_1B5BD0
+  frame_count: 31
+
+gPlayerAnimData_1B6C10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B6C10
+  symbol: gPlayerAnimData_1B6C10
+  frame_count: 13
+
+gPlayerAnimData_1B72E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B72E0
+  symbol: gPlayerAnimData_1B72E0
+  frame_count: 16
+
+gPlayerAnimData_1B7B40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B7B40
+  symbol: gPlayerAnimData_1B7B40
+  frame_count: 16
+
+gPlayerAnimData_1B83A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B83A0
+  symbol: gPlayerAnimData_1B83A0
+  frame_count: 29
+
+gPlayerAnimData_1B92D0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B92D0
+  symbol: gPlayerAnimData_1B92D0
+  frame_count: 16
+
+gPlayerAnimData_1B9B30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B9B30
+  symbol: gPlayerAnimData_1B9B30
+  frame_count: 16
+
+gPlayerAnimData_1BA390:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BA390
+  symbol: gPlayerAnimData_1BA390
+  frame_count: 29
+
+gPlayerAnimData_1BB2C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BB2C0
+  symbol: gPlayerAnimData_1BB2C0
+  frame_count: 38
+
+gPlayerAnimData_1BC6B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BC6B0
+  symbol: gPlayerAnimData_1BC6B0
+  frame_count: 7
+
+gPlayerAnimData_1BCA60:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BCA60
+  symbol: gPlayerAnimData_1BCA60
+  frame_count: 34
+
+gPlayerAnimData_1BDC30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BDC30
+  symbol: gPlayerAnimData_1BDC30
+  frame_count: 15
+
+gPlayerAnimData_1BE410:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BE410
+  symbol: gPlayerAnimData_1BE410
+  frame_count: 36
+
+gPlayerAnimData_1BF6F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BF6F0
+  symbol: gPlayerAnimData_1BF6F0
+  frame_count: 21
+
+gPlayerAnimData_1C01F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C01F0
+  symbol: gPlayerAnimData_1C01F0
+  frame_count: 21
+
+gPlayerAnimData_1C0CF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C0CF0
+  symbol: gPlayerAnimData_1C0CF0
+  frame_count: 10
+
+gPlayerAnimData_1C1230:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C1230
+  symbol: gPlayerAnimData_1C1230
+  frame_count: 19
+
+gPlayerAnimData_1C1C30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C1C30
+  symbol: gPlayerAnimData_1C1C30
+  frame_count: 19
+
+gPlayerAnimData_1C2630:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C2630
+  symbol: gPlayerAnimData_1C2630
+  frame_count: 19
+
+gPlayerAnimData_1C3030:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C3030
+  symbol: gPlayerAnimData_1C3030
+  frame_count: 89
+
+gPlayerAnimData_1C5ED0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C5ED0
+  symbol: gPlayerAnimData_1C5ED0
+  frame_count: 6
+
+gPlayerAnimData_1C6200:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C6200
+  symbol: gPlayerAnimData_1C6200
+  frame_count: 6
+
+gPlayerAnimData_1C6530:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C6530
+  symbol: gPlayerAnimData_1C6530
+  frame_count: 184
+
+gPlayerAnimData_1CC580:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1CC580
+  symbol: gPlayerAnimData_1CC580
+  frame_count: 187
+
+gPlayerAnimData_1D2770:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D2770
+  symbol: gPlayerAnimData_1D2770
+  frame_count: 200
+
+gPlayerAnimData_1D9020:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D9020
+  symbol: gPlayerAnimData_1D9020
+  frame_count: 13
+
+gPlayerAnimData_1D96F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D96F0
+  symbol: gPlayerAnimData_1D96F0
+  frame_count: 29
+
+gPlayerAnimData_1DA620:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DA620
+  symbol: gPlayerAnimData_1DA620
+  frame_count: 13
+
+gPlayerAnimData_1DACF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DACF0
+  symbol: gPlayerAnimData_1DACF0
+  frame_count: 29
+
+gPlayerAnimData_1DBC20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DBC20
+  symbol: gPlayerAnimData_1DBC20
+  frame_count: 89
+
+gPlayerAnimData_1DEAC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DEAC0
+  symbol: gPlayerAnimData_1DEAC0
+  frame_count: 184
+
+gPlayerAnimData_1E4B10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1E4B10
+  symbol: gPlayerAnimData_1E4B10
+  frame_count: 187
+
+gPlayerAnimData_1EAD00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1EAD00
+  symbol: gPlayerAnimData_1EAD00
+  frame_count: 200
+
+gPlayerAnimData_1F15B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F15B0
+  symbol: gPlayerAnimData_1F15B0
+  frame_count: 112
+
+gPlayerAnimData_1F5050:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F5050
+  symbol: gPlayerAnimData_1F5050
+  frame_count: 29
+
+gPlayerAnimData_1F5F80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F5F80
+  symbol: gPlayerAnimData_1F5F80
+  frame_count: 11
+
+gPlayerAnimData_1F6550:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F6550
+  symbol: gPlayerAnimData_1F6550
+  frame_count: 11
+
+gPlayerAnimData_1F6B20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F6B20
+  symbol: gPlayerAnimData_1F6B20
+  frame_count: 11
+
+gPlayerAnimData_1F70F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F70F0
+  symbol: gPlayerAnimData_1F70F0
+  frame_count: 11
+
+gPlayerAnimData_1F76C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F76C0
+  symbol: gPlayerAnimData_1F76C0
+  frame_count: 29
+
+gPlayerAnimData_1F85F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F85F0
+  symbol: gPlayerAnimData_1F85F0
+  frame_count: 45
+
+gPlayerAnimData_1F9D80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F9D80
+  symbol: gPlayerAnimData_1F9D80
+  frame_count: 80
+
+gPlayerAnimData_1FC760:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1FC760
+  symbol: gPlayerAnimData_1FC760
+  frame_count: 13
+
+gPlayerAnimData_1FCE30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1FCE30
+  symbol: gPlayerAnimData_1FCE30
+  frame_count: 80
+
+gPlayerAnimData_1FF810:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1FF810
+  symbol: gPlayerAnimData_1FF810
+  frame_count: 31
+
+gPlayerAnimData_200850:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x200850
+  symbol: gPlayerAnimData_200850
+  frame_count: 71
+
+gPlayerAnimData_202D80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x202D80
+  symbol: gPlayerAnimData_202D80
+  frame_count: 34
+
+gPlayerAnimData_203F50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x203F50
+  symbol: gPlayerAnimData_203F50
+  frame_count: 34
+
+gPlayerAnimData_205120:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x205120
+  symbol: gPlayerAnimData_205120
+  frame_count: 39
+
+gPlayerAnimData_206590:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x206590
+  symbol: gPlayerAnimData_206590
+  frame_count: 27
+
+gPlayerAnimData_2073C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2073C0
+  symbol: gPlayerAnimData_2073C0
+  frame_count: 29
+
+gPlayerAnimData_2082F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2082F0
+  symbol: gPlayerAnimData_2082F0
+  frame_count: 66
+
+gPlayerAnimData_20A580:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20A580
+  symbol: gPlayerAnimData_20A580
+  frame_count: 20
+
+gPlayerAnimData_20B000:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20B000
+  symbol: gPlayerAnimData_20B000
+  frame_count: 32
+
+gPlayerAnimData_20C0C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20C0C0
+  symbol: gPlayerAnimData_20C0C0
+  frame_count: 50
+
+gPlayerAnimData_20DAF0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20DAF0
+  symbol: gPlayerAnimData_20DAF0
+  frame_count: 178
+
+gPlayerAnimData_213820:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x213820
+  symbol: gPlayerAnimData_213820
+  frame_count: 12
+
+gPlayerAnimData_213E70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x213E70
+  symbol: gPlayerAnimData_213E70
+  frame_count: 10
+
+gPlayerAnimData_2143B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2143B0
+  symbol: gPlayerAnimData_2143B0
+  frame_count: 46
+
+gPlayerAnimData_215BD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x215BD0
+  symbol: gPlayerAnimData_215BD0
+  frame_count: 10
+
+gPlayerAnimData_216110:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x216110
+  symbol: gPlayerAnimData_216110
+  frame_count: 24
+
+gPlayerAnimData_216DA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x216DA0
+  symbol: gPlayerAnimData_216DA0
+  frame_count: 24
+
+gPlayerAnimData_217A30:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x217A30
+  symbol: gPlayerAnimData_217A30
+  frame_count: 23
+
+gPlayerAnimData_218640:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x218640
+  symbol: gPlayerAnimData_218640
+  frame_count: 30
+
+gPlayerAnimData_219600:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x219600
+  symbol: gPlayerAnimData_219600
+  frame_count: 29
+
+gPlayerAnimData_21A530:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21A530
+  symbol: gPlayerAnimData_21A530
+  frame_count: 29
+
+gPlayerAnimData_21B460:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21B460
+  symbol: gPlayerAnimData_21B460
+  frame_count: 33
+
+gPlayerAnimData_21C5B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21C5B0
+  symbol: gPlayerAnimData_21C5B0
+  frame_count: 65
+
+gPlayerAnimData_21E7C0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21E7C0
+  symbol: gPlayerAnimData_21E7C0
+  frame_count: 35
+
+gPlayerAnimData_21FA20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21FA20
+  symbol: gPlayerAnimData_21FA20
+  frame_count: 35
+
+gPlayerAnimData_220C80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x220C80
+  symbol: gPlayerAnimData_220C80
+  frame_count: 35
+
+gPlayerAnimData_221EE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x221EE0
+  symbol: gPlayerAnimData_221EE0
+  frame_count: 65
+
+gPlayerAnimData_2240F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2240F0
+  symbol: gPlayerAnimData_2240F0
+  frame_count: 70
+
+gPlayerAnimData_2265A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2265A0
+  symbol: gPlayerAnimData_2265A0
+  frame_count: 48
+
+gPlayerAnimData_227EC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x227EC0
+  symbol: gPlayerAnimData_227EC0
+  frame_count: 74
+
+gPlayerAnimData_22A580:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x22A580
+  symbol: gPlayerAnimData_22A580
+  frame_count: 75
+
+gPlayerAnimData_22CCD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x22CCD0
+  symbol: gPlayerAnimData_22CCD0
+  frame_count: 208
+
+gPlayerAnimData_2339B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2339B0
+  symbol: gPlayerAnimData_2339B0
+  frame_count: 195
+
+gPlayerAnimData_239FD0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x239FD0
+  symbol: gPlayerAnimData_239FD0
+  frame_count: 30
+
+gPlayerAnimData_23AF90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x23AF90
+  symbol: gPlayerAnimData_23AF90
+  frame_count: 36
+
+gPlayerAnimData_23C270:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x23C270
+  symbol: gPlayerAnimData_23C270
+  frame_count: 24
+
+gPlayerAnimData_23CF00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x23CF00
+  symbol: gPlayerAnimData_23CF00
+  frame_count: 90
+
+gPlayerAnimData_23FE20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x23FE20
+  symbol: gPlayerAnimData_23FE20
+  frame_count: 100
+
+gPlayerAnimData_243280:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x243280
+  symbol: gPlayerAnimData_243280
+  frame_count: 138
+
+gPlayerAnimData_247AC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x247AC0
+  symbol: gPlayerAnimData_247AC0
+  frame_count: 35
+
+gPlayerAnimData_248D20:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x248D20
+  symbol: gPlayerAnimData_248D20
+  frame_count: 25
+
+gPlayerAnimData_249A40:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x249A40
+  symbol: gPlayerAnimData_249A40
+  frame_count: 90
+
+gPlayerAnimData_24C960:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x24C960
+  symbol: gPlayerAnimData_24C960
+  frame_count: 100
+
+gPlayerAnimData_24FDC0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x24FDC0
+  symbol: gPlayerAnimData_24FDC0
+  frame_count: 93
+
+gPlayerAnimData_252E70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x252E70
+  symbol: gPlayerAnimData_252E70
+  frame_count: 70
+
+gPlayerAnimData_255320:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x255320
+  symbol: gPlayerAnimData_255320
+  frame_count: 108
+
+gPlayerAnimData_258BB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x258BB0
+  symbol: gPlayerAnimData_258BB0
+  frame_count: 138
+
+gPlayerAnimData_25D3F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25D3F0
+  symbol: gPlayerAnimData_25D3F0
+  frame_count: 45
+
+gPlayerAnimData_25EB80:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25EB80
+  symbol: gPlayerAnimData_25EB80
+  frame_count: 20
+
+gPlayerAnimData_25F600:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25F600
+  symbol: gPlayerAnimData_25F600
+  frame_count: 20
+
+gPlayerAnimData_260080:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x260080
+  symbol: gPlayerAnimData_260080
+  frame_count: 50
+
+gPlayerAnimData_261AB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x261AB0
+  symbol: gPlayerAnimData_261AB0
+  frame_count: 30
+
+gPlayerAnimData_262A70:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x262A70
+  symbol: gPlayerAnimData_262A70
+  frame_count: 50
+
+gPlayerAnimData_2644A0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2644A0
+  symbol: gPlayerAnimData_2644A0
+  frame_count: 45
+

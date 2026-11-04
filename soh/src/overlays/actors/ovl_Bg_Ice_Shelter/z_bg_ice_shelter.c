@@ -1,6 +1,7 @@
 #include "z_bg_ice_shelter.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #define FLAGS 0
 

@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x01968000 ]
+
+gGanonRoarAnim:
+  type: OOT:ANIMATION
+  offset: 0x147E0
+  symbol: gGanonRoarAnim
+
+gGanonUncurlAndFlailAnim:
+  type: OOT:ANIMATION
+  offset: 0x10380
+  symbol: gGanonUncurlAndFlailAnim
+
+gGanondorfBurstOutAnim:
+  type: OOT:ANIMATION
+  offset: 0x2168
+  symbol: gGanondorfBurstOutAnim
+
+gGanondorfFloatingHeavyBreathingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2E6C
+  symbol: gGanondorfFloatingHeavyBreathingAnim
+
+gGanondorfShowTriforceLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x3F38
+  symbol: gGanondorfShowTriforceLoopAnim
+
+gGanondorfShowTriforceStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xBFC
+  symbol: gGanondorfShowTriforceStartAnim
+
+gGanondorfTransformEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x28A8
+  symbol: gGanondorfTransformEndAnim
+
+gGanondorfTransformLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x3884
+  symbol: gGanondorfTransformLoopAnim
+
+gGanondorfTransformStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x3754
+  symbol: gGanondorfTransformStartAnim
+

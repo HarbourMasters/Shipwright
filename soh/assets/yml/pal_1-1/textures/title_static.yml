@@ -1,0 +1,1284 @@
+:config:
+  segments:
+    - [ 1, 0x0131AEB0 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x0131AEB0 ]
+    - [ 9, 0x0131AEB0 ]
+    - [ 10, 0x0131AEB0 ]
+    - [ 11, 0x0131AEB0 ]
+    - [ 12, 0x0131AEB0 ]
+    - [ 13, 0x0131AEB0 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gFileSelAreYouSure2ENGTex:
+  type: TEXTURE
+  offset: 0x2A580
+  symbol: gFileSelAreYouSure2ENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelAreYouSure2FRATex:
+  type: TEXTURE
+  offset: 0x42E80
+  symbol: gFileSelAreYouSure2FRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelAreYouSure2GERTex:
+  type: TEXTURE
+  offset: 0x37200
+  symbol: gFileSelAreYouSure2GERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelAreYouSureENGTex:
+  type: TEXTURE
+  offset: 0x27D80
+  symbol: gFileSelAreYouSureENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelAreYouSureFRATex:
+  type: TEXTURE
+  offset: 0x40680
+  symbol: gFileSelAreYouSureFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelAreYouSureGERTex:
+  type: TEXTURE
+  offset: 0x34A00
+  symbol: gFileSelAreYouSureGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelBackspaceButtonTex:
+  type: TEXTURE
+  offset: 0x1C380
+  symbol: gFileSelBackspaceButtonTex
+  format: IA16
+  width: 28
+  height: 16
+
+gFileSelBigButtonHighlightTex:
+  type: TEXTURE
+  offset: 0x22780
+  symbol: gFileSelBigButtonHighlightTex
+  format: I8
+  width: 72
+  height: 24
+
+gFileSelBrightnessCheckTex:
+  type: TEXTURE
+  offset: 0x22480
+  symbol: gFileSelBrightnessCheckTex
+  format: IA4
+  width: 96
+  height: 16
+
+gFileSelCharHighlightTex:
+  type: TEXTURE
+  offset: 0x22E40
+  symbol: gFileSelCharHighlightTex
+  format: I8
+  width: 24
+  height: 24
+
+gFileSelCheckBrightnessENGTex:
+  type: TEXTURE
+  offset: 0x4B80
+  symbol: gFileSelCheckBrightnessENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelCheckBrightnessFRATex:
+  type: TEXTURE
+  offset: 0x5B80
+  symbol: gFileSelCheckBrightnessFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelCheckBrightnessGERTex:
+  type: TEXTURE
+  offset: 0x5380
+  symbol: gFileSelCheckBrightnessGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelConnectorTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gFileSelConnectorTex
+  format: IA8
+  width: 24
+  height: 16
+
+gFileSelControlsENGTex:
+  type: TEXTURE
+  offset: 0x2C100
+  symbol: gFileSelControlsENGTex
+  format: IA8
+  width: 144
+  height: 16
+
+gFileSelControlsFRATex:
+  type: TEXTURE
+  offset: 0x44200
+  symbol: gFileSelControlsFRATex
+  format: IA8
+  width: 144
+  height: 16
+
+gFileSelControlsGERTex:
+  type: TEXTURE
+  offset: 0x38D80
+  symbol: gFileSelControlsGERTex
+  format: IA8
+  width: 144
+  height: 16
+
+gFileSelCopyButtonENGTex:
+  type: TEXTURE
+  offset: 0x2CA00
+  symbol: gFileSelCopyButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelCopyButtonFRATex:
+  type: TEXTURE
+  offset: 0x44B00
+  symbol: gFileSelCopyButtonFRATex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelCopyButtonGERTex:
+  type: TEXTURE
+  offset: 0x39680
+  symbol: gFileSelCopyButtonGERTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelCopyToWhichFileENGTex:
+  type: TEXTURE
+  offset: 0x27580
+  symbol: gFileSelCopyToWhichFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelCopyToWhichFileFRATex:
+  type: TEXTURE
+  offset: 0x3FE80
+  symbol: gFileSelCopyToWhichFileFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelCopyToWhichFileGERTex:
+  type: TEXTURE
+  offset: 0x34200
+  symbol: gFileSelCopyToWhichFileGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelCopyWhichFileENGTex:
+  type: TEXTURE
+  offset: 0x26D80
+  symbol: gFileSelCopyWhichFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelCopyWhichFileFRATex:
+  type: TEXTURE
+  offset: 0x3F680
+  symbol: gFileSelCopyWhichFileFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelDISKButtonTex:
+  type: TEXTURE
+  offset: 0x21E00
+  symbol: gFileSelDISKButtonTex
+  format: IA16
+  width: 44
+  height: 16
+
+gFileSelENDButtonENGTex:
+  type: TEXTURE
+  offset: 0x1B300
+  symbol: gFileSelENDButtonENGTex
+  format: IA16
+  width: 44
+  height: 16
+
+gFileSelENDButtonFRATex:
+  type: TEXTURE
+  offset: 0x1BE00
+  symbol: gFileSelENDButtonFRATex
+  format: IA16
+  width: 44
+  height: 16
+
+gFileSelENDButtonGERTex:
+  type: TEXTURE
+  offset: 0x1B880
+  symbol: gFileSelENDButtonGERTex
+  format: IA16
+  width: 44
+  height: 16
+
+gFileSelEraseButtonENGTex:
+  type: TEXTURE
+  offset: 0x2F200
+  symbol: gFileSelEraseButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelEraseButtonFRATex:
+  type: TEXTURE
+  offset: 0x47300
+  symbol: gFileSelEraseButtonFRATex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelEraseButtonGERTex:
+  type: TEXTURE
+  offset: 0x3BE80
+  symbol: gFileSelEraseButtonGERTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelEraseWhichFileENGTex:
+  type: TEXTURE
+  offset: 0x29D80
+  symbol: gFileSelEraseWhichFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelEraseWhichFileFRATex:
+  type: TEXTURE
+  offset: 0x42680
+  symbol: gFileSelEraseWhichFileFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFile1ButtonENGTex:
+  type: TEXTURE
+  offset: 0x2D200
+  symbol: gFileSelFile1ButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile1ButtonFRATex:
+  type: TEXTURE
+  offset: 0x45300
+  symbol: gFileSelFile1ButtonFRATex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile1ButtonGERTex:
+  type: TEXTURE
+  offset: 0x39E80
+  symbol: gFileSelFile1ButtonGERTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile2ButtonENGTex:
+  type: TEXTURE
+  offset: 0x2DA00
+  symbol: gFileSelFile2ButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile2ButtonFRATex:
+  type: TEXTURE
+  offset: 0x45B00
+  symbol: gFileSelFile2ButtonFRATex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile2ButtonGERTex:
+  type: TEXTURE
+  offset: 0x3A680
+  symbol: gFileSelFile2ButtonGERTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile3ButtonENGTex:
+  type: TEXTURE
+  offset: 0x2E200
+  symbol: gFileSelFile3ButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile3ButtonFRATex:
+  type: TEXTURE
+  offset: 0x46300
+  symbol: gFileSelFile3ButtonFRATex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile3ButtonGERTex:
+  type: TEXTURE
+  offset: 0x3AE80
+  symbol: gFileSelFile3ButtonGERTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFileCopiedENGTex:
+  type: TEXTURE
+  offset: 0x28580
+  symbol: gFileSelFileCopiedENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileCopiedFRATex:
+  type: TEXTURE
+  offset: 0x40E80
+  symbol: gFileSelFileCopiedFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileCopiedGERTex:
+  type: TEXTURE
+  offset: 0x35200
+  symbol: gFileSelFileCopiedGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileEmptyENGTex:
+  type: TEXTURE
+  offset: 0x25D80
+  symbol: gFileSelFileEmptyENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileEmptyFRATex:
+  type: TEXTURE
+  offset: 0x3E680
+  symbol: gFileSelFileEmptyFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileEmptyGERTex:
+  type: TEXTURE
+  offset: 0x32A00
+  symbol: gFileSelFileEmptyGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileErasedENGTex:
+  type: TEXTURE
+  offset: 0x2AD80
+  symbol: gFileSelFileErasedENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileErasedFRATex:
+  type: TEXTURE
+  offset: 0x43680
+  symbol: gFileSelFileErasedFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileErasedGERTex:
+  type: TEXTURE
+  offset: 0x37A00
+  symbol: gFileSelFileErasedGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileInUseENGTex:
+  type: TEXTURE
+  offset: 0x26580
+  symbol: gFileSelFileInUseENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileInUseFRATex:
+  type: TEXTURE
+  offset: 0x3EE80
+  symbol: gFileSelFileInUseFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileInUseGERTex:
+  type: TEXTURE
+  offset: 0x33200
+  symbol: gFileSelFileInUseGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileInfoBox1Tex:
+  type: TEXTURE
+  offset: 0x1D480
+  symbol: gFileSelFileInfoBox1Tex
+  format: IA16
+  width: 36
+  height: 56
+
+gFileSelFileInfoBox2Tex:
+  type: TEXTURE
+  offset: 0x1E440
+  symbol: gFileSelFileInfoBox2Tex
+  format: IA16
+  width: 36
+  height: 56
+
+gFileSelFileInfoBox3Tex:
+  type: TEXTURE
+  offset: 0x1F400
+  symbol: gFileSelFileInfoBox3Tex
+  format: IA16
+  width: 36
+  height: 56
+
+gFileSelFileInfoBox4Tex:
+  type: TEXTURE
+  offset: 0x203C0
+  symbol: gFileSelFileInfoBox4Tex
+  format: IA16
+  width: 36
+  height: 56
+
+gFileSelFileInfoBox5Tex:
+  type: TEXTURE
+  offset: 0x21380
+  symbol: gFileSelFileInfoBox5Tex
+  format: IA16
+  width: 24
+  height: 56
+
+gFileSelFireMedallionTex:
+  type: TEXTURE
+  offset: 0x280
+  symbol: gFileSelFireMedallionTex
+  format: IA8
+  width: 16
+  height: 16
+
+gFileSelForestMedallionTex:
+  type: TEXTURE
+  offset: 0x180
+  symbol: gFileSelForestMedallionTex
+  format: IA8
+  width: 16
+  height: 16
+
+gFileSelGoronRubyTex:
+  type: TEXTURE
+  offset: 0x23D80
+  symbol: gFileSelGoronRubyTex
+  format: RGBA32
+  width: 16
+  height: 16
+
+gFileSelHeadsetENGTex:
+  type: TEXTURE
+  offset: 0xA80
+  symbol: gFileSelHeadsetENGTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelHeadsetFRATex:
+  type: TEXTURE
+  offset: 0x1080
+  symbol: gFileSelHeadsetFRATex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelHeadsetGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gFileSelHeadsetGERTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelHiraganaButtonTex:
+  type: TEXTURE
+  offset: 0x1A800
+  symbol: gFileSelHiraganaButtonTex
+  format: IA16
+  width: 44
+  height: 16
+
+gFileSelHoldENGTex:
+  type: TEXTURE
+  offset: 0x4080
+  symbol: gFileSelHoldENGTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelHoldFRATex:
+  type: TEXTURE
+  offset: 0x4880
+  symbol: gFileSelHoldFRATex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelHoldGERTex:
+  type: TEXTURE
+  offset: 0x4380
+  symbol: gFileSelHoldGERTex
+  format: IA8
+  width: 80
+  height: 16
+
+gFileSelKanjiButtonTex:
+  type: TEXTURE
+  offset: 0x1A480
+  symbol: gFileSelKanjiButtonTex
+  format: IA16
+  width: 28
+  height: 16
+
+gFileSelKatakanaButtonTex:
+  type: TEXTURE
+  offset: 0x1AD80
+  symbol: gFileSelKatakanaButtonTex
+  format: IA16
+  width: 44
+  height: 16
+
+gFileSelKokiriEmeraldTex:
+  type: TEXTURE
+  offset: 0x23980
+  symbol: gFileSelKokiriEmeraldTex
+  format: RGBA32
+  width: 16
+  height: 16
+
+gFileSelLTargetingENGTex:
+  type: TEXTURE
+  offset: 0x2480
+  symbol: gFileSelLTargetingENGTex
+  format: IA8
+  width: 64
+  height: 16
+
+gFileSelLTargetingFRATex:
+  type: TEXTURE
+  offset: 0x3180
+  symbol: gFileSelLTargetingFRATex
+  format: IA8
+  width: 64
+  height: 16
+
+gFileSelLTargetingGERTex:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: gFileSelLTargetingGERTex
+  format: IA8
+  width: 144
+  height: 16
+
+gFileSelLangDeutschGERTex:
+  type: TEXTURE
+  offset: 0x6680
+  symbol: gFileSelLangDeutschGERTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelLangDeutschLargeGERTex:
+  type: TEXTURE
+  offset: 0x48D00
+  symbol: gFileSelLangDeutschLargeGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gFileSelLangEnglishENGTex:
+  type: TEXTURE
+  offset: 0x6380
+  symbol: gFileSelLangEnglishENGTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelLangEnglishLargeENGTex:
+  type: TEXTURE
+  offset: 0x48300
+  symbol: gFileSelLangEnglishLargeENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gFileSelLangFrancaisFRATex:
+  type: TEXTURE
+  offset: 0x6980
+  symbol: gFileSelLangFrancaisFRATex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelLangFrancaisLargeFRATex:
+  type: TEXTURE
+  offset: 0x49700
+  symbol: gFileSelLangFrancaisLargeFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gFileSelLanguageENGTex:
+  type: TEXTURE
+  offset: 0x6C80
+  symbol: gFileSelLanguageENGTex
+  format: IA8
+  width: 64
+  height: 16
+
+gFileSelLanguageFRATex:
+  type: TEXTURE
+  offset: 0x7480
+  symbol: gFileSelLanguageFRATex
+  format: IA8
+  width: 64
+  height: 16
+
+gFileSelLanguageGERTex:
+  type: TEXTURE
+  offset: 0x7080
+  symbol: gFileSelLanguageGERTex
+  format: IA8
+  width: 64
+  height: 16
+
+gFileSelLightMedallionTex:
+  type: TEXTURE
+  offset: 0x680
+  symbol: gFileSelLightMedallionTex
+  format: IA8
+  width: 16
+  height: 16
+
+gFileSelMediumButtonHighlightTex:
+  type: TEXTURE
+  offset: 0x23080
+  symbol: gFileSelMediumButtonHighlightTex
+  format: I8
+  width: 56
+  height: 24
+
+gFileSelMonoENGTex:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gFileSelMonoENGTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelNameBoxTex:
+  type: TEXTURE
+  offset: 0x1C700
+  symbol: gFileSelNameBoxTex
+  format: IA16
+  width: 108
+  height: 16
+
+gFileSelNameENGTex:
+  type: TEXTURE
+  offset: 0x2BD80
+  symbol: gFileSelNameENGTex
+  format: IA8
+  width: 56
+  height: 16
+
+gFileSelNameFRATex:
+  type: TEXTURE
+  offset: 0x43E80
+  symbol: gFileSelNameFRATex
+  format: IA8
+  width: 56
+  height: 16
+
+gFileSelNameGERTex:
+  type: TEXTURE
+  offset: 0x38A00
+  symbol: gFileSelNameGERTex
+  format: IA8
+  width: 56
+  height: 16
+
+gFileSelNoEmptyFileENGTex:
+  type: TEXTURE
+  offset: 0x25580
+  symbol: gFileSelNoEmptyFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelNoEmptyFileFRATex:
+  type: TEXTURE
+  offset: 0x3DE80
+  symbol: gFileSelNoEmptyFileFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelNoEmptyFileGERTex:
+  type: TEXTURE
+  offset: 0x32200
+  symbol: gFileSelNoEmptyFileGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelNoFileToCopyENGTex:
+  type: TEXTURE
+  offset: 0x24580
+  symbol: gFileSelNoFileToCopyENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelNoFileToCopyFRATex:
+  type: TEXTURE
+  offset: 0x3CE80
+  symbol: gFileSelNoFileToCopyFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelNoFileToCopyGERTex:
+  type: TEXTURE
+  offset: 0x31200
+  symbol: gFileSelNoFileToCopyGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelNoFileToEraseENGTex:
+  type: TEXTURE
+  offset: 0x24D80
+  symbol: gFileSelNoFileToEraseENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelNoFileToEraseFRATex:
+  type: TEXTURE
+  offset: 0x3D680
+  symbol: gFileSelNoFileToEraseFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelNoFileToEraseGERTex:
+  type: TEXTURE
+  offset: 0x31A00
+  symbol: gFileSelNoFileToEraseGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelOpenThisFileENGTex:
+  type: TEXTURE
+  offset: 0x29580
+  symbol: gFileSelOpenThisFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelOpenThisFileFRATex:
+  type: TEXTURE
+  offset: 0x41E80
+  symbol: gFileSelOpenThisFileFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelOpenThisFileGERTex:
+  type: TEXTURE
+  offset: 0x36200
+  symbol: gFileSelOpenThisFileGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelOptionsButtonENGTex:
+  type: TEXTURE
+  offset: 0x2FA00
+  symbol: gFileSelOptionsButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelOptionsButtonGERTex:
+  type: TEXTURE
+  offset: 0x30200
+  symbol: gFileSelOptionsButtonGERTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelOptionsDividerTex:
+  type: TEXTURE
+  offset: 0x22380
+  symbol: gFileSelOptionsDividerTex
+  format: IA4
+  width: 256
+  height: 2
+
+gFileSelOptionsENGTex:
+  type: TEXTURE
+  offset: 0x2B580
+  symbol: gFileSelOptionsENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelOptionsGERTex:
+  type: TEXTURE
+  offset: 0x38200
+  symbol: gFileSelOptionsGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelPleaseSelectAFileENGTex:
+  type: TEXTURE
+  offset: 0x28D80
+  symbol: gFileSelPleaseSelectAFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelPleaseSelectAFileFRATex:
+  type: TEXTURE
+  offset: 0x41680
+  symbol: gFileSelPleaseSelectAFileFRATex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelPleaseSelectAFileGERTex:
+  type: TEXTURE
+  offset: 0x35A00
+  symbol: gFileSelPleaseSelectAFileGERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelQuitButtonENGTex:
+  type: TEXTURE
+  offset: 0x30A00
+  symbol: gFileSelQuitButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelQuitButtonFRATex:
+  type: TEXTURE
+  offset: 0x47B00
+  symbol: gFileSelQuitButtonFRATex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelQuitButtonGERTex:
+  type: TEXTURE
+  offset: 0x3C680
+  symbol: gFileSelQuitButtonGERTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelSOUNDENGTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gFileSelSOUNDENGTex
+  format: IA8
+  width: 64
+  height: 16
+
+gFileSelSOUNDFRATex:
+  type: TEXTURE
+  offset: 0x1A80
+  symbol: gFileSelSOUNDFRATex
+  format: IA8
+  width: 64
+  height: 16
+
+gFileSelSelectYourLanguageENGTex:
+  type: TEXTURE
+  offset: 0x4A1A0
+  symbol: gFileSelSelectYourLanguageENGTex
+  format: IA8
+  width: 160
+  height: 20
+
+gFileSelSelectYourLanguageFRATex:
+  type: TEXTURE
+  offset: 0x4BAA0
+  symbol: gFileSelSelectYourLanguageFRATex
+  format: IA8
+  width: 160
+  height: 20
+
+gFileSelSelectYourLanguageGERTex:
+  type: TEXTURE
+  offset: 0x4AE20
+  symbol: gFileSelSelectYourLanguageGERTex
+  format: IA8
+  width: 160
+  height: 20
+
+gFileSelShadowMedallionTex:
+  type: TEXTURE
+  offset: 0x580
+  symbol: gFileSelShadowMedallionTex
+  format: IA8
+  width: 16
+  height: 16
+
+gFileSelSmallButtonHighlightTex:
+  type: TEXTURE
+  offset: 0x235C0
+  symbol: gFileSelSmallButtonHighlightTex
+  format: I8
+  width: 40
+  height: 24
+
+gFileSelSpiritMedallionTex:
+  type: TEXTURE
+  offset: 0x480
+  symbol: gFileSelSpiritMedallionTex
+  format: IA8
+  width: 16
+  height: 16
+
+gFileSelStereoENGTex:
+  type: TEXTURE
+  offset: 0x1E80
+  symbol: gFileSelStereoENGTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelStereoFRATex:
+  type: TEXTURE
+  offset: 0x2180
+  symbol: gFileSelStereoFRATex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelSurroundENGTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: gFileSelSurroundENGTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelSwitchENGTex:
+  type: TEXTURE
+  offset: 0x3580
+  symbol: gFileSelSwitchENGTex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelSwitchFRATex:
+  type: TEXTURE
+  offset: 0x3D80
+  symbol: gFileSelSwitchFRATex
+  format: IA8
+  width: 48
+  height: 16
+
+gFileSelSwitchGERTex:
+  type: TEXTURE
+  offset: 0x3880
+  symbol: gFileSelSwitchGERTex
+  format: IA8
+  width: 80
+  height: 16
+
+gFileSelUnkOvalTex:
+  type: TEXTURE
+  offset: 0x4C720
+  symbol: gFileSelUnkOvalTex
+  format: IA8
+  width: 24
+  height: 68
+
+gFileSelWaterMedallionTex:
+  type: TEXTURE
+  offset: 0x380
+  symbol: gFileSelWaterMedallionTex
+  format: IA8
+  width: 16
+  height: 16
+
+gFileSelWhichFile1GERTex:
+  type: TEXTURE
+  offset: 0x33A00
+  symbol: gFileSelWhichFile1GERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelWhichFile2GERTex:
+  type: TEXTURE
+  offset: 0x36A00
+  symbol: gFileSelWhichFile2GERTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelWindow10Tex:
+  type: TEXTURE
+  offset: 0x10080
+  symbol: gFileSelWindow10Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow11Tex:
+  type: TEXTURE
+  offset: 0x11080
+  symbol: gFileSelWindow11Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow12Tex:
+  type: TEXTURE
+  offset: 0x12080
+  symbol: gFileSelWindow12Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow13Tex:
+  type: TEXTURE
+  offset: 0x12C80
+  symbol: gFileSelWindow13Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow14Tex:
+  type: TEXTURE
+  offset: 0x13C80
+  symbol: gFileSelWindow14Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow15Tex:
+  type: TEXTURE
+  offset: 0x14C80
+  symbol: gFileSelWindow15Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow16Tex:
+  type: TEXTURE
+  offset: 0x15C80
+  symbol: gFileSelWindow16Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow17Tex:
+  type: TEXTURE
+  offset: 0x16880
+  symbol: gFileSelWindow17Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow18Tex:
+  type: TEXTURE
+  offset: 0x17880
+  symbol: gFileSelWindow18Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow19Tex:
+  type: TEXTURE
+  offset: 0x18880
+  symbol: gFileSelWindow19Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow1DL:
+  type: GFX
+  offset: 0x4CD80
+  symbol: gFileSelWindow1DL
+
+gFileSelWindow1Tex:
+  type: TEXTURE
+  offset: 0x7880
+  symbol: gFileSelWindow1Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow20Tex:
+  type: TEXTURE
+  offset: 0x19880
+  symbol: gFileSelWindow20Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow2DL:
+  type: GFX
+  offset: 0x4CF98
+  symbol: gFileSelWindow2DL
+
+gFileSelWindow2Tex:
+  type: TEXTURE
+  offset: 0x8880
+  symbol: gFileSelWindow2Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow3DL:
+  type: GFX
+  offset: 0x4D1A8
+  symbol: gFileSelWindow3DL
+
+gFileSelWindow3Tex:
+  type: TEXTURE
+  offset: 0x9880
+  symbol: gFileSelWindow3Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow4Tex:
+  type: TEXTURE
+  offset: 0xA880
+  symbol: gFileSelWindow4Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow5Tex:
+  type: TEXTURE
+  offset: 0xB480
+  symbol: gFileSelWindow5Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow6Tex:
+  type: TEXTURE
+  offset: 0xC480
+  symbol: gFileSelWindow6Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow7Tex:
+  type: TEXTURE
+  offset: 0xD480
+  symbol: gFileSelWindow7Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow8Tex:
+  type: TEXTURE
+  offset: 0xE480
+  symbol: gFileSelWindow8Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow9Tex:
+  type: TEXTURE
+  offset: 0xF080
+  symbol: gFileSelWindow9Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelYesButtonENGTex:
+  type: TEXTURE
+  offset: 0x2EA00
+  symbol: gFileSelYesButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelYesButtonFRATex:
+  type: TEXTURE
+  offset: 0x46B00
+  symbol: gFileSelYesButtonFRATex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelYesButtonGERTex:
+  type: TEXTURE
+  offset: 0x3B680
+  symbol: gFileSelYesButtonGERTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelZoraSapphireTex:
+  type: TEXTURE
+  offset: 0x24180
+  symbol: gFileSelZoraSapphireTex
+  format: RGBA32
+  width: 16
+  height: 16
+

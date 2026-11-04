@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x012D3910 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x012D3910 ]
+    - [ 9, 0x012D3910 ]
+    - [ 10, 0x012D3910 ]
+    - [ 11, 0x012D3910 ]
+    - [ 12, 0x012D3910 ]
+    - [ 13, 0x012D3910 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gSongOfTimeBlockCol:
+  type: OOT:COLLISION
+  offset: 0xB30
+  symbol: gSongOfTimeBlockCol
+
+gSongOfTimeBlockDL:
+  type: GFX
+  offset: 0x980
+  symbol: gSongOfTimeBlockDL
+
+gSongOfTimeBlockTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSongOfTimeBlockTex
+  format: I4
+  width: 64
+  height: 64
+
+
+object_timeblockVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_timeblockVtx_000800
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

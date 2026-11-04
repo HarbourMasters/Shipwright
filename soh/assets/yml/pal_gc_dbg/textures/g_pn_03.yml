@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x019F4000 ]
+
+gFireTempleTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gFireTempleTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gFireTempleTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gFireTempleTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gFireTempleTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gFireTempleTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

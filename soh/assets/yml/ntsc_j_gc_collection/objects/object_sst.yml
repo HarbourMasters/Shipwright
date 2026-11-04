@@ -1,0 +1,1796 @@
+:config:
+  segments:
+    - [ 6, 0x010F4280 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x010F4280 ]
+    - [ 9, 0x010F4280 ]
+    - [ 10, 0x010F4280 ]
+    - [ 11, 0x010F4280 ]
+    - [ 12, 0x010F4280 ]
+    - [ 13, 0x010F4280 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gBongoDrumCol:
+  type: OOT:COLLISION
+  offset: 0x180F8
+  symbol: gBongoDrumCol
+
+gBongoDrumDL:
+  type: GFX
+  offset: 0x17E10
+  symbol: gBongoDrumDL
+
+gBongoHeadChargeAnim:
+  type: OOT:ANIMATION
+  offset: 0x0B0D8
+  symbol: gBongoHeadChargeAnim
+
+gBongoHeadDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x0CC6C
+  symbol: gBongoHeadDamageAnim
+
+gBongoHeadDamagedHandAnim:
+  type: OOT:ANIMATION
+  offset: 0x0C5B0
+  symbol: gBongoHeadDamagedHandAnim
+
+gBongoHeadEyeCloseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0C288
+  symbol: gBongoHeadEyeCloseAnim
+
+gBongoHeadEyeCloseIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x0DC2C
+  symbol: gBongoHeadEyeCloseIdleAnim
+
+gBongoHeadEyeOpenAnim:
+  type: OOT:ANIMATION
+  offset: 0x0C9BC
+  symbol: gBongoHeadEyeOpenAnim
+
+gBongoHeadEyeOpenIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x0E7B8
+  symbol: gBongoHeadEyeOpenIdleAnim
+
+gBongoHeadKnockoutAnim:
+  type: OOT:ANIMATION
+  offset: 0x0B6FC
+  symbol: gBongoHeadKnockoutAnim
+
+gBongoHeadRecoverAnim:
+  type: OOT:ANIMATION
+  offset: 0x0D458
+  symbol: gBongoHeadRecoverAnim
+
+gBongoHeadSkel:
+  type: OOT:SKELETON
+  offset: 0x16840
+  symbol: gBongoHeadSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBongoHeadStunnedAnim:
+  type: OOT:ANIMATION
+  offset: 0x0ACD4
+  symbol: gBongoHeadStunnedAnim
+
+gBongoIceCrystalDL:
+  type: GFX
+  offset: 0x16AE0
+  symbol: gBongoIceCrystalDL
+
+gBongoIceShardDL:
+  type: GFX
+  offset: 0x16B80
+  symbol: gBongoIceShardDL
+
+gBongoLeftHandClenchAnim:
+  type: OOT:ANIMATION
+  offset: 0x0529C
+  symbol: gBongoLeftHandClenchAnim
+
+gBongoLeftHandDamagePoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0539C
+  symbol: gBongoLeftHandDamagePoseAnim
+
+gBongoLeftHandFistPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x050A8
+  symbol: gBongoLeftHandFistPoseAnim
+
+gBongoLeftHandFlatPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x04EC4
+  symbol: gBongoLeftHandFlatPoseAnim
+
+gBongoLeftHandHangPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x05588
+  symbol: gBongoLeftHandHangPoseAnim
+
+gBongoLeftHandIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x002E8
+  symbol: gBongoLeftHandIdleAnim
+
+gBongoLeftHandOpenPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x04FB4
+  symbol: gBongoLeftHandOpenPoseAnim
+
+gBongoLeftHandPushoffPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0549C
+  symbol: gBongoLeftHandPushoffPoseAnim
+
+gBongoLeftHandSkel:
+  type: OOT:SKELETON
+  offset: 0x04DE0
+  symbol: gBongoLeftHandSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBongoRightHandClenchAnim:
+  type: OOT:ANIMATION
+  offset: 0x0A848
+  symbol: gBongoRightHandClenchAnim
+
+gBongoRightHandDamagePoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0A948
+  symbol: gBongoRightHandDamagePoseAnim
+
+gBongoRightHandFistPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0A618
+  symbol: gBongoRightHandFistPoseAnim
+
+gBongoRightHandFlatPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0A434
+  symbol: gBongoRightHandFlatPoseAnim
+
+gBongoRightHandHangPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0AB38
+  symbol: gBongoRightHandHangPoseAnim
+
+gBongoRightHandIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x05860
+  symbol: gBongoRightHandIdleAnim
+
+gBongoRightHandOpenPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0A524
+  symbol: gBongoRightHandOpenPoseAnim
+
+gBongoRightHandPushoffPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x0AA4C
+  symbol: gBongoRightHandPushoffPoseAnim
+
+gBongoRightHandSkel:
+  type: OOT:SKELETON
+  offset: 0x0A350
+  symbol: gBongoRightHandSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBongoTitleCardTex:
+  type: TEXTURE
+  offset: 0x13D80
+  symbol: gBongoTitleCardTex
+  format: IA8
+  width: 128
+  height: 80
+
+gBongoUnused1Tex:
+  type: TEXTURE
+  offset: 0x192B0
+  symbol: gBongoUnused1Tex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBongoUnused2Tex:
+  type: TEXTURE
+  offset: 0x195B0
+  symbol: gBongoUnused2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_sstTex_017FE0:
+  type: TEXTURE
+  offset: 0x16BE0
+  symbol: object_sstTex_017FE0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_sstTex_019530:
+  type: TEXTURE
+  offset: 0x18130
+  symbol: object_sstTex_019530
+  format: RGBA16
+  width: 4
+  height: 8
+
+object_sstTex_019570:
+  type: TEXTURE
+  offset: 0x18170
+  symbol: object_sstTex_019570
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_sstTex_019670:
+  type: TEXTURE
+  offset: 0x18270
+  symbol: object_sstTex_019670
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_sstTex_019770:
+  type: TEXTURE
+  offset: 0x18370
+  symbol: object_sstTex_019770
+  format: RGBA16
+  width: 4
+  height: 8
+
+object_sstTex_0197B0:
+  type: TEXTURE
+  offset: 0x184B0
+  symbol: object_sstTex_0197B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_sstTex_0199B0:
+  type: TEXTURE
+  offset: 0x185B0
+  symbol: object_sstTex_0199B0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_sstTex_019AB0:
+  type: TEXTURE
+  offset: 0x186B0
+  symbol: object_sstTex_019AB0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_sstTex_019BB0:
+  type: TEXTURE
+  offset: 0x187B0
+  symbol: object_sstTex_019BB0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_sstTex_019FB0:
+  type: TEXTURE
+  offset: 0x18BB0
+  symbol: object_sstTex_019FB0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_sstTex_01A0B0:
+  type: TEXTURE
+  offset: 0x18CB0
+  symbol: object_sstTex_01A0B0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_sstTex_01A1B0:
+  type: TEXTURE
+  offset: 0x18DB0
+  symbol: object_sstTex_01A1B0
+  format: RGBA16
+  width: 8
+  height: 32
+
+object_sstTex_01A3B0:
+  type: TEXTURE
+  offset: 0x18FB0
+  symbol: object_sstTex_01A3B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_sstTex_01A5B0:
+  type: TEXTURE
+  offset: 0x191B0
+  symbol: object_sstTex_01A5B0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_sstTex_01A730:
+  type: TEXTURE
+  offset: 0x19330
+  symbol: object_sstTex_01A730
+  format: RGBA16
+  width: 4
+  height: 16
+
+object_sstTex_01A7B0:
+  type: TEXTURE
+  offset: 0x193B0
+  symbol: object_sstTex_01A7B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_sstVtx_000300:
+  type: OOT:ARRAY
+  offset: 0x000300
+  symbol: object_sstVtx_000300
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0005B0:
+  type: OOT:ARRAY
+  offset: 0x0005B0
+  symbol: object_sstVtx_0005B0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0007C0:
+  type: OOT:ARRAY
+  offset: 0x0007C0
+  symbol: object_sstVtx_0007C0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0009D0:
+  type: OOT:ARRAY
+  offset: 0x0009D0
+  symbol: object_sstVtx_0009D0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_000C80:
+  type: OOT:ARRAY
+  offset: 0x000C80
+  symbol: object_sstVtx_000C80
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_000E90:
+  type: OOT:ARRAY
+  offset: 0x000E90
+  symbol: object_sstVtx_000E90
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0010A0:
+  type: OOT:ARRAY
+  offset: 0x0010A0
+  symbol: object_sstVtx_0010A0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_001350:
+  type: OOT:ARRAY
+  offset: 0x001350
+  symbol: object_sstVtx_001350
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_001560:
+  type: OOT:ARRAY
+  offset: 0x001560
+  symbol: object_sstVtx_001560
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_001770:
+  type: OOT:ARRAY
+  offset: 0x001770
+  symbol: object_sstVtx_001770
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_001A20:
+  type: OOT:ARRAY
+  offset: 0x001A20
+  symbol: object_sstVtx_001A20
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_001C90:
+  type: OOT:ARRAY
+  offset: 0x001C90
+  symbol: object_sstVtx_001C90
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_001ED0:
+  type: OOT:ARRAY
+  offset: 0x001ED0
+  symbol: object_sstVtx_001ED0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_002180:
+  type: OOT:ARRAY
+  offset: 0x002180
+  symbol: object_sstVtx_002180
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_002390:
+  type: OOT:ARRAY
+  offset: 0x002390
+  symbol: object_sstVtx_002390
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBongoLeftHandSkelLimbsLimb_004D6CDL_002850:
+  type: GFX
+  offset: 0x002850
+  symbol: gBongoLeftHandSkelLimbsLimb_004D6CDL_002850
+
+gBongoLeftHandSkelLimbsLimb_004D60DL_002AB0:
+  type: GFX
+  offset: 0x002AB0
+  symbol: gBongoLeftHandSkelLimbsLimb_004D60DL_002AB0
+
+gBongoLeftHandSkelLimbsLimb_004D48DL_002D08:
+  type: GFX
+  offset: 0x002D08
+  symbol: gBongoLeftHandSkelLimbsLimb_004D48DL_002D08
+
+gBongoLeftHandSkelLimbsLimb_004D30DL_002FF8:
+  type: GFX
+  offset: 0x002FF8
+  symbol: gBongoLeftHandSkelLimbsLimb_004D30DL_002FF8
+
+gBongoLeftHandSkelLimbsLimb_004D24DL_003258:
+  type: GFX
+  offset: 0x003258
+  symbol: gBongoLeftHandSkelLimbsLimb_004D24DL_003258
+
+gBongoLeftHandSkelLimbsLimb_004D0CDL_0034A0:
+  type: GFX
+  offset: 0x0034A0
+  symbol: gBongoLeftHandSkelLimbsLimb_004D0CDL_0034A0
+
+gBongoLeftHandSkelLimbsLimb_004CF4DL_0036E8:
+  type: GFX
+  offset: 0x0036E8
+  symbol: gBongoLeftHandSkelLimbsLimb_004CF4DL_0036E8
+
+gBongoLeftHandSkelLimbsLimb_004CE8DL_003948:
+  type: GFX
+  offset: 0x003948
+  symbol: gBongoLeftHandSkelLimbsLimb_004CE8DL_003948
+
+gBongoLeftHandSkelLimbsLimb_004CD0DL_003B90:
+  type: GFX
+  offset: 0x003B90
+  symbol: gBongoLeftHandSkelLimbsLimb_004CD0DL_003B90
+
+gBongoLeftHandSkelLimbsLimb_004CB8DL_003DD8:
+  type: GFX
+  offset: 0x003DD8
+  symbol: gBongoLeftHandSkelLimbsLimb_004CB8DL_003DD8
+
+gBongoLeftHandSkelLimbsLimb_004CACDL_004038:
+  type: GFX
+  offset: 0x004038
+  symbol: gBongoLeftHandSkelLimbsLimb_004CACDL_004038
+
+gBongoLeftHandSkelLimbsLimb_004C94DL_004280:
+  type: GFX
+  offset: 0x004280
+  symbol: gBongoLeftHandSkelLimbsLimb_004C94DL_004280
+
+gBongoLeftHandSkelLimbsLimb_004C4CDL_0044C8:
+  type: GFX
+  offset: 0x0044C8
+  symbol: gBongoLeftHandSkelLimbsLimb_004C4CDL_0044C8
+
+gBongoLeftHandSkelLimbsLimb_004C7CDL_004798:
+  type: GFX
+  offset: 0x004798
+  symbol: gBongoLeftHandSkelLimbsLimb_004C7CDL_004798
+
+gBongoLeftHandSkelLimbsLimb_004C70DL_0049F8:
+  type: GFX
+  offset: 0x0049F8
+  symbol: gBongoLeftHandSkelLimbsLimb_004C70DL_0049F8
+
+gBongoLeftHandSkelLimbsLimb_004C40:
+  type: OOT:LIMB
+  offset: 0x004C40
+  symbol: gBongoLeftHandSkelLimbsLimb_004C40
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004C4C:
+  type: OOT:LIMB
+  offset: 0x004C4C
+  symbol: gBongoLeftHandSkelLimbsLimb_004C4C
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004C58:
+  type: OOT:LIMB
+  offset: 0x004C58
+  symbol: gBongoLeftHandSkelLimbsLimb_004C58
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004C64:
+  type: OOT:LIMB
+  offset: 0x004C64
+  symbol: gBongoLeftHandSkelLimbsLimb_004C64
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004C70:
+  type: OOT:LIMB
+  offset: 0x004C70
+  symbol: gBongoLeftHandSkelLimbsLimb_004C70
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004C7C:
+  type: OOT:LIMB
+  offset: 0x004C7C
+  symbol: gBongoLeftHandSkelLimbsLimb_004C7C
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004C88:
+  type: OOT:LIMB
+  offset: 0x004C88
+  symbol: gBongoLeftHandSkelLimbsLimb_004C88
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004C94:
+  type: OOT:LIMB
+  offset: 0x004C94
+  symbol: gBongoLeftHandSkelLimbsLimb_004C94
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004CA0:
+  type: OOT:LIMB
+  offset: 0x004CA0
+  symbol: gBongoLeftHandSkelLimbsLimb_004CA0
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004CAC:
+  type: OOT:LIMB
+  offset: 0x004CAC
+  symbol: gBongoLeftHandSkelLimbsLimb_004CAC
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004CB8:
+  type: OOT:LIMB
+  offset: 0x004CB8
+  symbol: gBongoLeftHandSkelLimbsLimb_004CB8
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004CC4:
+  type: OOT:LIMB
+  offset: 0x004CC4
+  symbol: gBongoLeftHandSkelLimbsLimb_004CC4
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004CD0:
+  type: OOT:LIMB
+  offset: 0x004CD0
+  symbol: gBongoLeftHandSkelLimbsLimb_004CD0
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004CDC:
+  type: OOT:LIMB
+  offset: 0x004CDC
+  symbol: gBongoLeftHandSkelLimbsLimb_004CDC
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004CE8:
+  type: OOT:LIMB
+  offset: 0x004CE8
+  symbol: gBongoLeftHandSkelLimbsLimb_004CE8
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004CF4:
+  type: OOT:LIMB
+  offset: 0x004CF4
+  symbol: gBongoLeftHandSkelLimbsLimb_004CF4
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D00:
+  type: OOT:LIMB
+  offset: 0x004D00
+  symbol: gBongoLeftHandSkelLimbsLimb_004D00
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D0C:
+  type: OOT:LIMB
+  offset: 0x004D0C
+  symbol: gBongoLeftHandSkelLimbsLimb_004D0C
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D18:
+  type: OOT:LIMB
+  offset: 0x004D18
+  symbol: gBongoLeftHandSkelLimbsLimb_004D18
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D24:
+  type: OOT:LIMB
+  offset: 0x004D24
+  symbol: gBongoLeftHandSkelLimbsLimb_004D24
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D30:
+  type: OOT:LIMB
+  offset: 0x004D30
+  symbol: gBongoLeftHandSkelLimbsLimb_004D30
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D3C:
+  type: OOT:LIMB
+  offset: 0x004D3C
+  symbol: gBongoLeftHandSkelLimbsLimb_004D3C
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D48:
+  type: OOT:LIMB
+  offset: 0x004D48
+  symbol: gBongoLeftHandSkelLimbsLimb_004D48
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D54:
+  type: OOT:LIMB
+  offset: 0x004D54
+  symbol: gBongoLeftHandSkelLimbsLimb_004D54
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D60:
+  type: OOT:LIMB
+  offset: 0x004D60
+  symbol: gBongoLeftHandSkelLimbsLimb_004D60
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbsLimb_004D6C:
+  type: OOT:LIMB
+  offset: 0x004D6C
+  symbol: gBongoLeftHandSkelLimbsLimb_004D6C
+  limb_type: Standard
+
+gBongoLeftHandSkelLimbs:
+  type: BLOB
+  offset: 0x4D78
+  symbol: gBongoLeftHandSkelLimbs
+  size: 0
+
+object_sstVtx_005870:
+  type: OOT:ARRAY
+  offset: 0x005870
+  symbol: object_sstVtx_005870
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_005B20:
+  type: OOT:ARRAY
+  offset: 0x005B20
+  symbol: object_sstVtx_005B20
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_005D30:
+  type: OOT:ARRAY
+  offset: 0x005D30
+  symbol: object_sstVtx_005D30
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_005F40:
+  type: OOT:ARRAY
+  offset: 0x005F40
+  symbol: object_sstVtx_005F40
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0061F0:
+  type: OOT:ARRAY
+  offset: 0x0061F0
+  symbol: object_sstVtx_0061F0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_006400:
+  type: OOT:ARRAY
+  offset: 0x006400
+  symbol: object_sstVtx_006400
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_006610:
+  type: OOT:ARRAY
+  offset: 0x006610
+  symbol: object_sstVtx_006610
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0068C0:
+  type: OOT:ARRAY
+  offset: 0x0068C0
+  symbol: object_sstVtx_0068C0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_006AD0:
+  type: OOT:ARRAY
+  offset: 0x006AD0
+  symbol: object_sstVtx_006AD0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_006CE0:
+  type: OOT:ARRAY
+  offset: 0x006CE0
+  symbol: object_sstVtx_006CE0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_006F90:
+  type: OOT:ARRAY
+  offset: 0x006F90
+  symbol: object_sstVtx_006F90
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_007200:
+  type: OOT:ARRAY
+  offset: 0x007200
+  symbol: object_sstVtx_007200
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_007440:
+  type: OOT:ARRAY
+  offset: 0x007440
+  symbol: object_sstVtx_007440
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0076F0:
+  type: OOT:ARRAY
+  offset: 0x0076F0
+  symbol: object_sstVtx_0076F0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_007900:
+  type: OOT:ARRAY
+  offset: 0x007900
+  symbol: object_sstVtx_007900
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBongoRightHandSkelLimbsLimb_00A2DCDL_007DC0:
+  type: GFX
+  offset: 0x007DC0
+  symbol: gBongoRightHandSkelLimbsLimb_00A2DCDL_007DC0
+
+gBongoRightHandSkelLimbsLimb_00A2D0DL_008020:
+  type: GFX
+  offset: 0x008020
+  symbol: gBongoRightHandSkelLimbsLimb_00A2D0DL_008020
+
+gBongoRightHandSkelLimbsLimb_00A2B8DL_008278:
+  type: GFX
+  offset: 0x008278
+  symbol: gBongoRightHandSkelLimbsLimb_00A2B8DL_008278
+
+gBongoRightHandSkelLimbsLimb_00A2A0DL_008568:
+  type: GFX
+  offset: 0x008568
+  symbol: gBongoRightHandSkelLimbsLimb_00A2A0DL_008568
+
+gBongoRightHandSkelLimbsLimb_00A294DL_0087C8:
+  type: GFX
+  offset: 0x0087C8
+  symbol: gBongoRightHandSkelLimbsLimb_00A294DL_0087C8
+
+gBongoRightHandSkelLimbsLimb_00A27CDL_008A10:
+  type: GFX
+  offset: 0x008A10
+  symbol: gBongoRightHandSkelLimbsLimb_00A27CDL_008A10
+
+gBongoRightHandSkelLimbsLimb_00A264DL_008C58:
+  type: GFX
+  offset: 0x008C58
+  symbol: gBongoRightHandSkelLimbsLimb_00A264DL_008C58
+
+gBongoRightHandSkelLimbsLimb_00A258DL_008EB8:
+  type: GFX
+  offset: 0x008EB8
+  symbol: gBongoRightHandSkelLimbsLimb_00A258DL_008EB8
+
+gBongoRightHandSkelLimbsLimb_00A240DL_009100:
+  type: GFX
+  offset: 0x009100
+  symbol: gBongoRightHandSkelLimbsLimb_00A240DL_009100
+
+gBongoRightHandSkelLimbsLimb_00A228DL_009348:
+  type: GFX
+  offset: 0x009348
+  symbol: gBongoRightHandSkelLimbsLimb_00A228DL_009348
+
+gBongoRightHandSkelLimbsLimb_00A21CDL_0095A8:
+  type: GFX
+  offset: 0x0095A8
+  symbol: gBongoRightHandSkelLimbsLimb_00A21CDL_0095A8
+
+gBongoRightHandSkelLimbsLimb_00A204DL_0097F0:
+  type: GFX
+  offset: 0x0097F0
+  symbol: gBongoRightHandSkelLimbsLimb_00A204DL_0097F0
+
+gBongoRightHandSkelLimbsLimb_00A1BCDL_009A38:
+  type: GFX
+  offset: 0x009A38
+  symbol: gBongoRightHandSkelLimbsLimb_00A1BCDL_009A38
+
+gBongoRightHandSkelLimbsLimb_00A1ECDL_009D08:
+  type: GFX
+  offset: 0x009D08
+  symbol: gBongoRightHandSkelLimbsLimb_00A1ECDL_009D08
+
+gBongoRightHandSkelLimbsLimb_00A1E0DL_009F68:
+  type: GFX
+  offset: 0x009F68
+  symbol: gBongoRightHandSkelLimbsLimb_00A1E0DL_009F68
+
+gBongoRightHandSkelLimbsLimb_00A1B0:
+  type: OOT:LIMB
+  offset: 0x00A1B0
+  symbol: gBongoRightHandSkelLimbsLimb_00A1B0
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A1BC:
+  type: OOT:LIMB
+  offset: 0x00A1BC
+  symbol: gBongoRightHandSkelLimbsLimb_00A1BC
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A1C8:
+  type: OOT:LIMB
+  offset: 0x00A1C8
+  symbol: gBongoRightHandSkelLimbsLimb_00A1C8
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A1D4:
+  type: OOT:LIMB
+  offset: 0x00A1D4
+  symbol: gBongoRightHandSkelLimbsLimb_00A1D4
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A1E0:
+  type: OOT:LIMB
+  offset: 0x00A1E0
+  symbol: gBongoRightHandSkelLimbsLimb_00A1E0
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A1EC:
+  type: OOT:LIMB
+  offset: 0x00A1EC
+  symbol: gBongoRightHandSkelLimbsLimb_00A1EC
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A1F8:
+  type: OOT:LIMB
+  offset: 0x00A1F8
+  symbol: gBongoRightHandSkelLimbsLimb_00A1F8
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A204:
+  type: OOT:LIMB
+  offset: 0x00A204
+  symbol: gBongoRightHandSkelLimbsLimb_00A204
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A210:
+  type: OOT:LIMB
+  offset: 0x00A210
+  symbol: gBongoRightHandSkelLimbsLimb_00A210
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A21C:
+  type: OOT:LIMB
+  offset: 0x00A21C
+  symbol: gBongoRightHandSkelLimbsLimb_00A21C
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A228:
+  type: OOT:LIMB
+  offset: 0x00A228
+  symbol: gBongoRightHandSkelLimbsLimb_00A228
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A234:
+  type: OOT:LIMB
+  offset: 0x00A234
+  symbol: gBongoRightHandSkelLimbsLimb_00A234
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A240:
+  type: OOT:LIMB
+  offset: 0x00A240
+  symbol: gBongoRightHandSkelLimbsLimb_00A240
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A24C:
+  type: OOT:LIMB
+  offset: 0x00A24C
+  symbol: gBongoRightHandSkelLimbsLimb_00A24C
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A258:
+  type: OOT:LIMB
+  offset: 0x00A258
+  symbol: gBongoRightHandSkelLimbsLimb_00A258
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A264:
+  type: OOT:LIMB
+  offset: 0x00A264
+  symbol: gBongoRightHandSkelLimbsLimb_00A264
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A270:
+  type: OOT:LIMB
+  offset: 0x00A270
+  symbol: gBongoRightHandSkelLimbsLimb_00A270
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A27C:
+  type: OOT:LIMB
+  offset: 0x00A27C
+  symbol: gBongoRightHandSkelLimbsLimb_00A27C
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A288:
+  type: OOT:LIMB
+  offset: 0x00A288
+  symbol: gBongoRightHandSkelLimbsLimb_00A288
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A294:
+  type: OOT:LIMB
+  offset: 0x00A294
+  symbol: gBongoRightHandSkelLimbsLimb_00A294
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A2A0:
+  type: OOT:LIMB
+  offset: 0x00A2A0
+  symbol: gBongoRightHandSkelLimbsLimb_00A2A0
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A2AC:
+  type: OOT:LIMB
+  offset: 0x00A2AC
+  symbol: gBongoRightHandSkelLimbsLimb_00A2AC
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A2B8:
+  type: OOT:LIMB
+  offset: 0x00A2B8
+  symbol: gBongoRightHandSkelLimbsLimb_00A2B8
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A2C4:
+  type: OOT:LIMB
+  offset: 0x00A2C4
+  symbol: gBongoRightHandSkelLimbsLimb_00A2C4
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A2D0:
+  type: OOT:LIMB
+  offset: 0x00A2D0
+  symbol: gBongoRightHandSkelLimbsLimb_00A2D0
+  limb_type: Standard
+
+gBongoRightHandSkelLimbsLimb_00A2DC:
+  type: OOT:LIMB
+  offset: 0x00A2DC
+  symbol: gBongoRightHandSkelLimbsLimb_00A2DC
+  limb_type: Standard
+
+gBongoRightHandSkelLimbs:
+  type: BLOB
+  offset: 0xA2E8
+  symbol: gBongoRightHandSkelLimbs
+  size: 0
+
+object_sstVtx_00E7D0:
+  type: OOT:ARRAY
+  offset: 0x00E7D0
+  symbol: object_sstVtx_00E7D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00E890:
+  type: OOT:ARRAY
+  offset: 0x00E890
+  symbol: object_sstVtx_00E890
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00EA10:
+  type: OOT:ARRAY
+  offset: 0x00EA10
+  symbol: object_sstVtx_00EA10
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00EAD0:
+  type: OOT:ARRAY
+  offset: 0x00EAD0
+  symbol: object_sstVtx_00EAD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00EC50:
+  type: OOT:ARRAY
+  offset: 0x00EC50
+  symbol: object_sstVtx_00EC50
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00ED10:
+  type: OOT:ARRAY
+  offset: 0x00ED10
+  symbol: object_sstVtx_00ED10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00EE90:
+  type: OOT:ARRAY
+  offset: 0x00EE90
+  symbol: object_sstVtx_00EE90
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00EF50:
+  type: OOT:ARRAY
+  offset: 0x00EF50
+  symbol: object_sstVtx_00EF50
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F0D0:
+  type: OOT:ARRAY
+  offset: 0x00F0D0
+  symbol: object_sstVtx_00F0D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F190:
+  type: OOT:ARRAY
+  offset: 0x00F190
+  symbol: object_sstVtx_00F190
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F310:
+  type: OOT:ARRAY
+  offset: 0x00F310
+  symbol: object_sstVtx_00F310
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F3D0:
+  type: OOT:ARRAY
+  offset: 0x00F3D0
+  symbol: object_sstVtx_00F3D0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F550:
+  type: OOT:ARRAY
+  offset: 0x00F550
+  symbol: object_sstVtx_00F550
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F610:
+  type: OOT:ARRAY
+  offset: 0x00F610
+  symbol: object_sstVtx_00F610
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F6D0:
+  type: OOT:ARRAY
+  offset: 0x00F6D0
+  symbol: object_sstVtx_00F6D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F790:
+  type: OOT:ARRAY
+  offset: 0x00F790
+  symbol: object_sstVtx_00F790
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F850:
+  type: OOT:ARRAY
+  offset: 0x00F850
+  symbol: object_sstVtx_00F850
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F910:
+  type: OOT:ARRAY
+  offset: 0x00F910
+  symbol: object_sstVtx_00F910
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00F9D0:
+  type: OOT:ARRAY
+  offset: 0x00F9D0
+  symbol: object_sstVtx_00F9D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00FA90:
+  type: OOT:ARRAY
+  offset: 0x00FA90
+  symbol: object_sstVtx_00FA90
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_00FB50:
+  type: OOT:ARRAY
+  offset: 0x00FB50
+  symbol: object_sstVtx_00FB50
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_010020:
+  type: OOT:ARRAY
+  offset: 0x010020
+  symbol: object_sstVtx_010020
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_010190:
+  type: OOT:ARRAY
+  offset: 0x010190
+  symbol: object_sstVtx_010190
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_010300:
+  type: OOT:ARRAY
+  offset: 0x010300
+  symbol: object_sstVtx_010300
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0104B0:
+  type: OOT:ARRAY
+  offset: 0x0104B0
+  symbol: object_sstVtx_0104B0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_010890:
+  type: OOT:ARRAY
+  offset: 0x010890
+  symbol: object_sstVtx_010890
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_010A40:
+  type: OOT:ARRAY
+  offset: 0x010A40
+  symbol: object_sstVtx_010A40
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_010E20:
+  type: OOT:ARRAY
+  offset: 0x010E20
+  symbol: object_sstVtx_010E20
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_011140:
+  type: OOT:ARRAY
+  offset: 0x011140
+  symbol: object_sstVtx_011140
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_0112B0:
+  type: OOT:ARRAY
+  offset: 0x0112B0
+  symbol: object_sstVtx_0112B0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBongoHeadSkelLimbsLimb_01658CDL_011370:
+  type: GFX
+  offset: 0x011370
+  symbol: gBongoHeadSkelLimbsLimb_01658CDL_011370
+
+gBongoHeadSkelLimbsLimb_016598DL_011430:
+  type: GFX
+  offset: 0x011430
+  symbol: gBongoHeadSkelLimbsLimb_016598DL_011430
+
+gBongoHeadSkelLimbsLimb_0165A4DL_011518:
+  type: GFX
+  offset: 0x011518
+  symbol: gBongoHeadSkelLimbsLimb_0165A4DL_011518
+
+gBongoHeadSkelLimbsLimb_016778DL_011658:
+  type: GFX
+  offset: 0x011658
+  symbol: gBongoHeadSkelLimbsLimb_016778DL_011658
+
+gBongoHeadSkelLimbsLimb_016784DL_0119B0:
+  type: GFX
+  offset: 0x0119B0
+  symbol: gBongoHeadSkelLimbsLimb_016784DL_0119B0
+
+gBongoHeadSkelLimbsLimb_016754DL_011AF8:
+  type: GFX
+  offset: 0x011AF8
+  symbol: gBongoHeadSkelLimbsLimb_016754DL_011AF8
+
+gBongoHeadSkelLimbsLimb_016760DL_011E50:
+  type: GFX
+  offset: 0x011E50
+  symbol: gBongoHeadSkelLimbsLimb_016760DL_011E50
+
+gBongoHeadSkelLimbsLimb_0165B0DL_011F98:
+  type: GFX
+  offset: 0x011F98
+  symbol: gBongoHeadSkelLimbsLimb_0165B0DL_011F98
+
+gBongoHeadSkelLimbsLimb_0165BCDL_012080:
+  type: GFX
+  offset: 0x012080
+  symbol: gBongoHeadSkelLimbsLimb_0165BCDL_012080
+
+gBongoHeadSkelLimbsLimb_0165C8DL_012168:
+  type: GFX
+  offset: 0x012168
+  symbol: gBongoHeadSkelLimbsLimb_0165C8DL_012168
+
+gBongoHeadSkelLimbsLimb_016730DL_012380:
+  type: GFX
+  offset: 0x012380
+  symbol: gBongoHeadSkelLimbsLimb_016730DL_012380
+
+gBongoHeadSkelLimbsLimb_01673CDL_012438:
+  type: GFX
+  offset: 0x012438
+  symbol: gBongoHeadSkelLimbsLimb_01673CDL_012438
+
+gBongoHeadSkelLimbsLimb_01670CDL_0124F0:
+  type: GFX
+  offset: 0x0124F0
+  symbol: gBongoHeadSkelLimbsLimb_01670CDL_0124F0
+
+gBongoHeadSkelLimbsLimb_016718DL_0125A8:
+  type: GFX
+  offset: 0x0125A8
+  symbol: gBongoHeadSkelLimbsLimb_016718DL_0125A8
+
+gBongoHeadSkelLimbsLimb_0166E8DL_012660:
+  type: GFX
+  offset: 0x012660
+  symbol: gBongoHeadSkelLimbsLimb_0166E8DL_012660
+
+gBongoHeadSkelLimbsLimb_0166F4DL_012718:
+  type: GFX
+  offset: 0x012718
+  symbol: gBongoHeadSkelLimbsLimb_0166F4DL_012718
+
+gBongoHeadSkelLimbsLimb_0166C4DL_0127D0:
+  type: GFX
+  offset: 0x0127D0
+  symbol: gBongoHeadSkelLimbsLimb_0166C4DL_0127D0
+
+gBongoHeadSkelLimbsLimb_0166D0DL_012888:
+  type: GFX
+  offset: 0x012888
+  symbol: gBongoHeadSkelLimbsLimb_0166D0DL_012888
+
+gBongoHeadSkelLimbsLimb_0166A0DL_012940:
+  type: GFX
+  offset: 0x012940
+  symbol: gBongoHeadSkelLimbsLimb_0166A0DL_012940
+
+gBongoHeadSkelLimbsLimb_0166ACDL_012B28:
+  type: GFX
+  offset: 0x012B28
+  symbol: gBongoHeadSkelLimbsLimb_0166ACDL_012B28
+
+gBongoHeadSkelLimbsLimb_01667CDL_012CA0:
+  type: GFX
+  offset: 0x012CA0
+  symbol: gBongoHeadSkelLimbsLimb_01667CDL_012CA0
+
+gBongoHeadSkelLimbsLimb_016688DL_012E88:
+  type: GFX
+  offset: 0x012E88
+  symbol: gBongoHeadSkelLimbsLimb_016688DL_012E88
+
+gBongoHeadSkelLimbsLimb_016658DL_013000:
+  type: GFX
+  offset: 0x013000
+  symbol: gBongoHeadSkelLimbsLimb_016658DL_013000
+
+gBongoHeadSkelLimbsLimb_016664DL_0131E8:
+  type: GFX
+  offset: 0x0131E8
+  symbol: gBongoHeadSkelLimbsLimb_016664DL_0131E8
+
+gBongoHeadSkelLimbsLimb_016634DL_013360:
+  type: GFX
+  offset: 0x013360
+  symbol: gBongoHeadSkelLimbsLimb_016634DL_013360
+
+gBongoHeadSkelLimbsLimb_016640DL_013548:
+  type: GFX
+  offset: 0x013548
+  symbol: gBongoHeadSkelLimbsLimb_016640DL_013548
+
+gBongoHeadSkelLimbsLimb_016610DL_0136C0:
+  type: GFX
+  offset: 0x0136C0
+  symbol: gBongoHeadSkelLimbsLimb_016610DL_0136C0
+
+gBongoHeadSkelLimbsLimb_01661CDL_0138A8:
+  type: GFX
+  offset: 0x0138A8
+  symbol: gBongoHeadSkelLimbsLimb_01661CDL_0138A8
+
+gBongoHeadSkelLimbsLimb_0165ECDL_013A20:
+  type: GFX
+  offset: 0x013A20
+  symbol: gBongoHeadSkelLimbsLimb_0165ECDL_013A20
+
+gBongoHeadSkelLimbsLimb_0165F8DL_013C08:
+  type: GFX
+  offset: 0x013C08
+  symbol: gBongoHeadSkelLimbsLimb_0165F8DL_013C08
+
+gBongoHeadSkelLimbsLimb_016580:
+  type: OOT:LIMB
+  offset: 0x016580
+  symbol: gBongoHeadSkelLimbsLimb_016580
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_01658C:
+  type: OOT:LIMB
+  offset: 0x01658C
+  symbol: gBongoHeadSkelLimbsLimb_01658C
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016598:
+  type: OOT:LIMB
+  offset: 0x016598
+  symbol: gBongoHeadSkelLimbsLimb_016598
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0165A4:
+  type: OOT:LIMB
+  offset: 0x0165A4
+  symbol: gBongoHeadSkelLimbsLimb_0165A4
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0165B0:
+  type: OOT:LIMB
+  offset: 0x0165B0
+  symbol: gBongoHeadSkelLimbsLimb_0165B0
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0165BC:
+  type: OOT:LIMB
+  offset: 0x0165BC
+  symbol: gBongoHeadSkelLimbsLimb_0165BC
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0165C8:
+  type: OOT:LIMB
+  offset: 0x0165C8
+  symbol: gBongoHeadSkelLimbsLimb_0165C8
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0165D4:
+  type: OOT:LIMB
+  offset: 0x0165D4
+  symbol: gBongoHeadSkelLimbsLimb_0165D4
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0165E0:
+  type: OOT:LIMB
+  offset: 0x0165E0
+  symbol: gBongoHeadSkelLimbsLimb_0165E0
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0165EC:
+  type: OOT:LIMB
+  offset: 0x0165EC
+  symbol: gBongoHeadSkelLimbsLimb_0165EC
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0165F8:
+  type: OOT:LIMB
+  offset: 0x0165F8
+  symbol: gBongoHeadSkelLimbsLimb_0165F8
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016604:
+  type: OOT:LIMB
+  offset: 0x016604
+  symbol: gBongoHeadSkelLimbsLimb_016604
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016610:
+  type: OOT:LIMB
+  offset: 0x016610
+  symbol: gBongoHeadSkelLimbsLimb_016610
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_01661C:
+  type: OOT:LIMB
+  offset: 0x01661C
+  symbol: gBongoHeadSkelLimbsLimb_01661C
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016628:
+  type: OOT:LIMB
+  offset: 0x016628
+  symbol: gBongoHeadSkelLimbsLimb_016628
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016634:
+  type: OOT:LIMB
+  offset: 0x016634
+  symbol: gBongoHeadSkelLimbsLimb_016634
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016640:
+  type: OOT:LIMB
+  offset: 0x016640
+  symbol: gBongoHeadSkelLimbsLimb_016640
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_01664C:
+  type: OOT:LIMB
+  offset: 0x01664C
+  symbol: gBongoHeadSkelLimbsLimb_01664C
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016658:
+  type: OOT:LIMB
+  offset: 0x016658
+  symbol: gBongoHeadSkelLimbsLimb_016658
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016664:
+  type: OOT:LIMB
+  offset: 0x016664
+  symbol: gBongoHeadSkelLimbsLimb_016664
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016670:
+  type: OOT:LIMB
+  offset: 0x016670
+  symbol: gBongoHeadSkelLimbsLimb_016670
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_01667C:
+  type: OOT:LIMB
+  offset: 0x01667C
+  symbol: gBongoHeadSkelLimbsLimb_01667C
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016688:
+  type: OOT:LIMB
+  offset: 0x016688
+  symbol: gBongoHeadSkelLimbsLimb_016688
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016694:
+  type: OOT:LIMB
+  offset: 0x016694
+  symbol: gBongoHeadSkelLimbsLimb_016694
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0166A0:
+  type: OOT:LIMB
+  offset: 0x0166A0
+  symbol: gBongoHeadSkelLimbsLimb_0166A0
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0166AC:
+  type: OOT:LIMB
+  offset: 0x0166AC
+  symbol: gBongoHeadSkelLimbsLimb_0166AC
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0166B8:
+  type: OOT:LIMB
+  offset: 0x0166B8
+  symbol: gBongoHeadSkelLimbsLimb_0166B8
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0166C4:
+  type: OOT:LIMB
+  offset: 0x0166C4
+  symbol: gBongoHeadSkelLimbsLimb_0166C4
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0166D0:
+  type: OOT:LIMB
+  offset: 0x0166D0
+  symbol: gBongoHeadSkelLimbsLimb_0166D0
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0166DC:
+  type: OOT:LIMB
+  offset: 0x0166DC
+  symbol: gBongoHeadSkelLimbsLimb_0166DC
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0166E8:
+  type: OOT:LIMB
+  offset: 0x0166E8
+  symbol: gBongoHeadSkelLimbsLimb_0166E8
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_0166F4:
+  type: OOT:LIMB
+  offset: 0x0166F4
+  symbol: gBongoHeadSkelLimbsLimb_0166F4
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016700:
+  type: OOT:LIMB
+  offset: 0x016700
+  symbol: gBongoHeadSkelLimbsLimb_016700
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_01670C:
+  type: OOT:LIMB
+  offset: 0x01670C
+  symbol: gBongoHeadSkelLimbsLimb_01670C
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016718:
+  type: OOT:LIMB
+  offset: 0x016718
+  symbol: gBongoHeadSkelLimbsLimb_016718
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016724:
+  type: OOT:LIMB
+  offset: 0x016724
+  symbol: gBongoHeadSkelLimbsLimb_016724
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016730:
+  type: OOT:LIMB
+  offset: 0x016730
+  symbol: gBongoHeadSkelLimbsLimb_016730
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_01673C:
+  type: OOT:LIMB
+  offset: 0x01673C
+  symbol: gBongoHeadSkelLimbsLimb_01673C
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016748:
+  type: OOT:LIMB
+  offset: 0x016748
+  symbol: gBongoHeadSkelLimbsLimb_016748
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016754:
+  type: OOT:LIMB
+  offset: 0x016754
+  symbol: gBongoHeadSkelLimbsLimb_016754
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016760:
+  type: OOT:LIMB
+  offset: 0x016760
+  symbol: gBongoHeadSkelLimbsLimb_016760
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_01676C:
+  type: OOT:LIMB
+  offset: 0x01676C
+  symbol: gBongoHeadSkelLimbsLimb_01676C
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016778:
+  type: OOT:LIMB
+  offset: 0x016778
+  symbol: gBongoHeadSkelLimbsLimb_016778
+  limb_type: Standard
+
+gBongoHeadSkelLimbsLimb_016784:
+  type: OOT:LIMB
+  offset: 0x016784
+  symbol: gBongoHeadSkelLimbsLimb_016784
+  limb_type: Standard
+
+gBongoHeadSkelLimbs:
+  type: BLOB
+  offset: 0x16790
+  symbol: gBongoHeadSkelLimbs
+  size: 0
+
+object_sstVtx_016850:
+  type: OOT:ARRAY
+  offset: 0x016850
+  symbol: object_sstVtx_016850
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstVtx_017BE0:
+  type: OOT:ARRAY
+  offset: 0x017BE0
+  symbol: object_sstVtx_017BE0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sstTex_0183B0:
+  type: TEXTURE
+  offset: 0x0183B0
+  symbol: object_sstTex_0183B0
+  format: RGBA16
+  width: 16
+  height: 16

@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012E91D0 ]
+
+gForestTempleTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gForestTempleTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gForestTempleTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gForestTempleTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

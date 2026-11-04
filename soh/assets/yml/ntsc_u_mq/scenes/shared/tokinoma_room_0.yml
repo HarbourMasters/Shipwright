@@ -1,0 +1,468 @@
+:config:
+  segments:
+    - [ 3, 0x01C4CDE0 ]
+    - [ 2, 0x01C44E80 ]
+  directory: scenes/shared/tokinoma_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/tokinoma_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_000120.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_0001E0.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_000270.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_0002F0.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_0003B0.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_000430.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_0004B0.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_000530.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_0005B0.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_000610.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_room_0Set_000690.yml
+
+tokinoma_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: tokinoma_room_0
+
+tokinoma_room_0Tex_0081D8:
+  type: TEXTURE
+  offset: 0x81D8
+  symbol: tokinoma_room_0Tex_0081D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_0091D8:
+  type: TEXTURE
+  offset: 0x91D8
+  symbol: tokinoma_room_0Tex_0091D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_00A1D8:
+  type: TEXTURE
+  offset: 0xA1D8
+  symbol: tokinoma_room_0Tex_00A1D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_00B1D8:
+  type: TEXTURE
+  offset: 0xB1D8
+  symbol: tokinoma_room_0Tex_00B1D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_00C1D8:
+  type: TEXTURE
+  offset: 0xC1D8
+  symbol: tokinoma_room_0Tex_00C1D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_00D1D8:
+  type: TEXTURE
+  offset: 0xD1D8
+  symbol: tokinoma_room_0Tex_00D1D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_00E1D8:
+  type: TEXTURE
+  offset: 0xE1D8
+  symbol: tokinoma_room_0Tex_00E1D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_00F1D8:
+  type: TEXTURE
+  offset: 0xF1D8
+  symbol: tokinoma_room_0Tex_00F1D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_0101D8:
+  type: TEXTURE
+  offset: 0x101D8
+  symbol: tokinoma_room_0Tex_0101D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_0111D8:
+  type: TEXTURE
+  offset: 0x111D8
+  symbol: tokinoma_room_0Tex_0111D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_0121D8:
+  type: TEXTURE
+  offset: 0x121D8
+  symbol: tokinoma_room_0Tex_0121D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_0131D8:
+  type: TEXTURE
+  offset: 0x131D8
+  symbol: tokinoma_room_0Tex_0131D8
+  format: RGBA16
+  width: 64
+  height: 32
+
+tokinoma_room_0Tex_0141D8:
+  type: TEXTURE
+  offset: 0x141D8
+  symbol: tokinoma_room_0Tex_0141D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_room_0Tex_0149D8:
+  type: TEXTURE
+  offset: 0x149D8
+  symbol: tokinoma_room_0Tex_0149D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_room_0Tex_0151D8:
+  type: TEXTURE
+  offset: 0x151D8
+  symbol: tokinoma_room_0Tex_0151D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_room_0Tex_0159D8:
+  type: TEXTURE
+  offset: 0x159D8
+  symbol: tokinoma_room_0Tex_0159D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_room_0Tex_0161D8:
+  type: TEXTURE
+  offset: 0x161D8
+  symbol: tokinoma_room_0Tex_0161D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_room_0Tex_0169D8:
+  type: TEXTURE
+  offset: 0x169D8
+  symbol: tokinoma_room_0Tex_0169D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+tokinoma_room_0Vtx_000710:
+  type: OOT:ARRAY
+  offset: 0x000710
+  symbol: tokinoma_room_0Vtx_000710
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_000910:
+  type: GFX
+  offset: 0x000910
+  symbol: tokinoma_room_0DL_000910
+
+tokinoma_room_0Vtx_0009E0:
+  type: OOT:ARRAY
+  offset: 0x0009E0
+  symbol: tokinoma_room_0Vtx_0009E0
+  count: 113
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_0010F0:
+  type: GFX
+  offset: 0x0010F0
+  symbol: tokinoma_room_0DL_0010F0
+
+tokinoma_room_0Vtx_001318:
+  type: OOT:ARRAY
+  offset: 0x001318
+  symbol: tokinoma_room_0Vtx_001318
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_001818:
+  type: GFX
+  offset: 0x001818
+  symbol: tokinoma_room_0DL_001818
+
+tokinoma_room_0Vtx_001968:
+  type: OOT:ARRAY
+  offset: 0x001968
+  symbol: tokinoma_room_0Vtx_001968
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_001E68:
+  type: GFX
+  offset: 0x001E68
+  symbol: tokinoma_room_0DL_001E68
+
+tokinoma_room_0Vtx_001FB8:
+  type: OOT:ARRAY
+  offset: 0x001FB8
+  symbol: tokinoma_room_0Vtx_001FB8
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_0024B8:
+  type: GFX
+  offset: 0x0024B8
+  symbol: tokinoma_room_0DL_0024B8
+
+tokinoma_room_0Vtx_002608:
+  type: OOT:ARRAY
+  offset: 0x002608
+  symbol: tokinoma_room_0Vtx_002608
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_002AF8:
+  type: GFX
+  offset: 0x002AF8
+  symbol: tokinoma_room_0DL_002AF8
+
+tokinoma_room_0Vtx_002C48:
+  type: OOT:ARRAY
+  offset: 0x002C48
+  symbol: tokinoma_room_0Vtx_002C48
+  count: 162
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_003668:
+  type: GFX
+  offset: 0x003668
+  symbol: tokinoma_room_0DL_003668
+
+tokinoma_room_0Vtx_0038B8:
+  type: OOT:ARRAY
+  offset: 0x0038B8
+  symbol: tokinoma_room_0Vtx_0038B8
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_003988:
+  type: GFX
+  offset: 0x003988
+  symbol: tokinoma_room_0DL_003988
+
+tokinoma_room_0Vtx_003A48:
+  type: OOT:ARRAY
+  offset: 0x003A48
+  symbol: tokinoma_room_0Vtx_003A48
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_004228:
+  type: GFX
+  offset: 0x004228
+  symbol: tokinoma_room_0DL_004228
+
+tokinoma_room_0Vtx_0045F8:
+  type: OOT:ARRAY
+  offset: 0x0045F8
+  symbol: tokinoma_room_0Vtx_0045F8
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_004848:
+  type: GFX
+  offset: 0x004848
+  symbol: tokinoma_room_0DL_004848
+
+tokinoma_room_0Vtx_004968:
+  type: OOT:ARRAY
+  offset: 0x004968
+  symbol: tokinoma_room_0Vtx_004968
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_004B58:
+  type: GFX
+  offset: 0x004B58
+  symbol: tokinoma_room_0DL_004B58
+
+tokinoma_room_0Vtx_004C68:
+  type: OOT:ARRAY
+  offset: 0x004C68
+  symbol: tokinoma_room_0Vtx_004C68
+  count: 272
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_005D68:
+  type: GFX
+  offset: 0x005D68
+  symbol: tokinoma_room_0DL_005D68
+
+tokinoma_room_0Vtx_0060B8:
+  type: OOT:ARRAY
+  offset: 0x0060B8
+  symbol: tokinoma_room_0Vtx_0060B8
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_006748:
+  type: GFX
+  offset: 0x006748
+  symbol: tokinoma_room_0DL_006748
+
+tokinoma_room_0Vtx_006908:
+  type: OOT:ARRAY
+  offset: 0x006908
+  symbol: tokinoma_room_0Vtx_006908
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_006AF8:
+  type: GFX
+  offset: 0x006AF8
+  symbol: tokinoma_room_0DL_006AF8
+
+tokinoma_room_0Vtx_006C10:
+  type: OOT:ARRAY
+  offset: 0x006C10
+  symbol: tokinoma_room_0Vtx_006C10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_006D50:
+  type: GFX
+  offset: 0x006D50
+  symbol: tokinoma_room_0DL_006D50
+
+tokinoma_room_0Vtx_006E50:
+  type: OOT:ARRAY
+  offset: 0x006E50
+  symbol: tokinoma_room_0Vtx_006E50
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_006F80:
+  type: GFX
+  offset: 0x006F80
+  symbol: tokinoma_room_0DL_006F80
+
+tokinoma_room_0Vtx_007080:
+  type: OOT:ARRAY
+  offset: 0x007080
+  symbol: tokinoma_room_0Vtx_007080
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_007160:
+  type: GFX
+  offset: 0x007160
+  symbol: tokinoma_room_0DL_007160
+
+tokinoma_room_0Vtx_007250:
+  type: OOT:ARRAY
+  offset: 0x007250
+  symbol: tokinoma_room_0Vtx_007250
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_007310:
+  type: GFX
+  offset: 0x007310
+  symbol: tokinoma_room_0DL_007310
+
+tokinoma_room_0Vtx_007400:
+  type: OOT:ARRAY
+  offset: 0x007400
+  symbol: tokinoma_room_0Vtx_007400
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_0075B0:
+  type: GFX
+  offset: 0x0075B0
+  symbol: tokinoma_room_0DL_0075B0
+
+tokinoma_room_0Vtx_0076E0:
+  type: OOT:ARRAY
+  offset: 0x0076E0
+  symbol: tokinoma_room_0Vtx_0076E0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_007A70:
+  type: GFX
+  offset: 0x007A70
+  symbol: tokinoma_room_0DL_007A70
+
+tokinoma_room_0Vtx_007EA0:
+  type: OOT:ARRAY
+  offset: 0x007EA0
+  symbol: tokinoma_room_0Vtx_007EA0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tokinoma_room_0DL_007FD0:
+  type: GFX
+  offset: 0x007FD0
+  symbol: tokinoma_room_0DL_007FD0
+
+tokinoma_room_0DL_008128:
+  type: GFX
+  offset: 0x008128
+  symbol: tokinoma_room_0DL_008128

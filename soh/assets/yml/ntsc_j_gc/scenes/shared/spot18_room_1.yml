@@ -1,0 +1,171 @@
+:config:
+  segments:
+    - [ 3, 0x01C13540 ]
+    - [ 2, 0x01C023B0 ]
+  directory: scenes/shared/spot18_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/spot18_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+    - ntsc_j_gc/scenes/shared/spot18_room_1Set_000170.yml
+    - ntsc_j_gc/scenes/shared/spot18_room_1Set_000230.yml
+    - ntsc_j_gc/scenes/shared/spot18_room_1Set_000300.yml
+
+spot18_room_1:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: spot18_room_1
+
+spot18_room_1Tex_002868:
+  type: TEXTURE
+  offset: 0x2868
+  symbol: spot18_room_1Tex_002868
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_room_1Tex_003068:
+  type: TEXTURE
+  offset: 0x3068
+  symbol: spot18_room_1Tex_003068
+  format: I4
+  width: 128
+  height: 64
+
+spot18_room_1Tex_004068:
+  type: TEXTURE
+  offset: 0x4068
+  symbol: spot18_room_1Tex_004068
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x8540
+
+spot18_room_1Tex_004868:
+  type: TEXTURE
+  offset: 0x4868
+  symbol: spot18_room_1Tex_004868
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot18_room_1Tex_005E00:
+  type: TEXTURE
+  offset: 0x5E00
+  symbol: spot18_room_1Tex_005E00
+  format: IA4
+  width: 32
+  height: 64
+
+
+spot18_room_1Vtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: spot18_room_1Vtx_000400
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_1DL_0007D0:
+  type: GFX
+  offset: 0x0007D0
+  symbol: spot18_room_1DL_0007D0
+
+spot18_room_1Vtx_000A98:
+  type: OOT:ARRAY
+  offset: 0x000A98
+  symbol: spot18_room_1Vtx_000A98
+  count: 144
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_1DL_001398:
+  type: GFX
+  offset: 0x001398
+  symbol: spot18_room_1DL_001398
+
+spot18_room_1Vtx_001650:
+  type: OOT:ARRAY
+  offset: 0x001650
+  symbol: spot18_room_1Vtx_001650
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_1DL_001770:
+  type: GFX
+  offset: 0x001770
+  symbol: spot18_room_1DL_001770
+
+spot18_room_1Vtx_001838:
+  type: OOT:ARRAY
+  offset: 0x001838
+  symbol: spot18_room_1Vtx_001838
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_1DL_001A38:
+  type: GFX
+  offset: 0x001A38
+  symbol: spot18_room_1DL_001A38
+
+spot18_room_1Vtx_001B60:
+  type: OOT:ARRAY
+  offset: 0x001B60
+  symbol: spot18_room_1Vtx_001B60
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_1DL_001E60:
+  type: GFX
+  offset: 0x001E60
+  symbol: spot18_room_1DL_001E60
+
+spot18_room_1Vtx_001FE0:
+  type: OOT:ARRAY
+  offset: 0x001FE0
+  symbol: spot18_room_1Vtx_001FE0
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_1DL_002660:
+  type: GFX
+  offset: 0x002660
+  symbol: spot18_room_1DL_002660
+
+spot18_room_1Vtx_005870:
+  type: OOT:ARRAY
+  offset: 0x005870
+  symbol: spot18_room_1Vtx_005870
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_1DL_0059F0:
+  type: GFX
+  offset: 0x0059F0
+  symbol: spot18_room_1DL_0059F0
+
+spot18_room_1Vtx_005AC0:
+  type: OOT:ARRAY
+  offset: 0x005AC0
+  symbol: spot18_room_1Vtx_005AC0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_1DL_005CC0:
+  type: GFX
+  offset: 0x005CC0
+  symbol: spot18_room_1DL_005CC0

@@ -1,0 +1,151 @@
+:config:
+  segments:
+    - [ 6, 0x00F9CD60 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x00F9CD60 ]
+    - [ 9, 0x00F9CD60 ]
+    - [ 10, 0x00F9CD60 ]
+    - [ 11, 0x00F9CD60 ]
+    - [ 12, 0x00F9CD60 ]
+    - [ 13, 0x00F9CD60 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+object_medal_Blob_001D40:
+  type: BLOB
+  offset: 0x1D40
+  size: 0x400
+  symbol: object_medal_Blob_001D40
+
+object_medal_DL_000360:
+  type: GFX
+  offset: 0x360
+  symbol: object_medal_DL_000360
+
+object_medal_DL_000840:
+  type: GFX
+  offset: 0x840
+  symbol: object_medal_DL_000840
+
+object_medal_DL_000D20:
+  type: GFX
+  offset: 0xD20
+  symbol: object_medal_DL_000D20
+
+object_medal_DL_001200:
+  type: GFX
+  offset: 0x1200
+  symbol: object_medal_DL_001200
+
+object_medal_DL_0016E0:
+  type: GFX
+  offset: 0x16E0
+  symbol: object_medal_DL_0016E0
+
+object_medal_DL_001BC0:
+  type: GFX
+  offset: 0x1BC0
+  symbol: object_medal_DL_001BC0
+
+object_medal_Tex_002140:
+  type: TEXTURE
+  offset: 0x2140
+  symbol: object_medal_Tex_002140
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_medal_Tex_002940:
+  type: TEXTURE
+  offset: 0x2940
+  symbol: object_medal_Tex_002940
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_medal_Tex_003140:
+  type: TEXTURE
+  offset: 0x3140
+  symbol: object_medal_Tex_003140
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_medal_Tex_003940:
+  type: TEXTURE
+  offset: 0x3940
+  symbol: object_medal_Tex_003940
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_medal_Tex_004140:
+  type: TEXTURE
+  offset: 0x4140
+  symbol: object_medal_Tex_004140
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_medal_Tex_004940:
+  type: TEXTURE
+  offset: 0x4940
+  symbol: object_medal_Tex_004940
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_medalVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_medalVtx_000000
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_medalVtx_0004E0:
+  type: OOT:ARRAY
+  offset: 0x0004E0
+  symbol: object_medalVtx_0004E0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_medalVtx_0009C0:
+  type: OOT:ARRAY
+  offset: 0x0009C0
+  symbol: object_medalVtx_0009C0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_medalVtx_000EA0:
+  type: OOT:ARRAY
+  offset: 0x000EA0
+  symbol: object_medalVtx_000EA0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_medalVtx_001380:
+  type: OOT:ARRAY
+  offset: 0x001380
+  symbol: object_medalVtx_001380
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_medalVtx_001860:
+  type: OOT:ARRAY
+  offset: 0x001860
+  symbol: object_medalVtx_001860
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

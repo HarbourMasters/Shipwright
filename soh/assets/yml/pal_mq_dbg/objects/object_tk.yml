@@ -1,0 +1,625 @@
+:config:
+  segments:
+    - [ 6, 0x0136D000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0136D000 ]
+    - [ 9, 0x0136D000 ]
+    - [ 10, 0x0136D000 ]
+    - [ 11, 0x0136D000 ]
+    - [ 12, 0x0136D000 ]
+    - [ 13, 0x0136D000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gDampeDigAnim:
+  type: OOT:ANIMATION
+  offset: 0x1144
+  symbol: gDampeDigAnim
+
+gDampeEff1DL:
+  type: GFX
+  offset: 0xBC90
+  symbol: gDampeEff1DL
+
+gDampeEff2DL:
+  type: GFX
+  offset: 0xBCA0
+  symbol: gDampeEff2DL
+
+gDampeEyeClosedTex:
+  type: TEXTURE
+  offset: 0x4B40
+  symbol: gDampeEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDampeEyeHalfTex:
+  type: TEXTURE
+  offset: 0x4340
+  symbol: gDampeEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDampeEyeOpenTex:
+  type: TEXTURE
+  offset: 0x3B40
+  symbol: gDampeEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDampeFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x3768
+  symbol: gDampeFloatAnim
+
+gDampeHaloDL:
+  type: GFX
+  offset: 0xBBA0
+  symbol: gDampeHaloDL
+
+gDampeLanternDL:
+  type: GFX
+  offset: 0xB838
+  symbol: gDampeLanternDL
+
+gDampeRestAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F84
+  symbol: gDampeRestAnim
+
+gDampeShovelDL:
+  type: GFX
+  offset: 0xACE0
+  symbol: gDampeShovelDL
+
+gDampeSkel:
+  type: OOT:SKELETON
+  offset: 0xBE40
+  symbol: gDampeSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDampeUnkTex:
+  type: TEXTURE
+  offset: 0x5540
+  symbol: gDampeUnkTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3780
+
+gDampeWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x1FA8
+  symbol: gDampeWalkAnim
+
+object_tkTLUT_003780:
+  type: TEXTURE
+  offset: 0x3780
+  symbol: object_tkTLUT_003780
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_tkTLUT_009AB0:
+  type: TEXTURE
+  offset: 0x9AB0
+  symbol: object_tkTLUT_009AB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_tkTex_003980:
+  type: TEXTURE
+  offset: 0x3980
+  symbol: object_tkTex_003980
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3780
+
+object_tkTex_0039C0:
+  type: TEXTURE
+  offset: 0x39C0
+  symbol: object_tkTex_0039C0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3780
+
+object_tkTex_003A00:
+  type: TEXTURE
+  offset: 0x3A00
+  symbol: object_tkTex_003A00
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3780
+
+object_tkTex_003A40:
+  type: TEXTURE
+  offset: 0x3A40
+  symbol: object_tkTex_003A40
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3780
+
+object_tkTex_005340:
+  type: TEXTURE
+  offset: 0x5340
+  symbol: object_tkTex_005340
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3780
+
+object_tkTex_005440:
+  type: TEXTURE
+  offset: 0x5440
+  symbol: object_tkTex_005440
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3780
+
+object_tkTex_0056C0:
+  type: TEXTURE
+  offset: 0x56C0
+  symbol: object_tkTex_0056C0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3780
+
+object_tkTex_009B00:
+  type: TEXTURE
+  offset: 0x9B00
+  symbol: object_tkTex_009B00
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9AB0
+
+object_tkTex_009C00:
+  type: TEXTURE
+  offset: 0x9C00
+  symbol: object_tkTex_009C00
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x9AB0
+
+object_tkTex_009C80:
+  type: TEXTURE
+  offset: 0x9C80
+  symbol: object_tkTex_009C80
+  format: I8
+  width: 8
+  height: 8
+
+object_tkTex_009CC0:
+  type: TEXTURE
+  offset: 0x9CC0
+  symbol: object_tkTex_009CC0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_tkTex_009D40:
+  type: TEXTURE
+  offset: 0x9D40
+  symbol: object_tkTex_009D40
+  format: I4
+  width: 16
+  height: 32
+
+object_tkTex_00B088:
+  type: TEXTURE
+  offset: 0xB088
+  symbol: object_tkTex_00B088
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_tkTex_00B288:
+  type: TEXTURE
+  offset: 0xB288
+  symbol: object_tkTex_00B288
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_tkTex_00B488:
+  type: TEXTURE
+  offset: 0xB488
+  symbol: object_tkTex_00B488
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_tkVtx_0057C0:
+  type: OOT:ARRAY
+  offset: 0x0057C0
+  symbol: object_tkVtx_0057C0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_005A20:
+  type: OOT:ARRAY
+  offset: 0x005A20
+  symbol: object_tkVtx_005A20
+  count: 129
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006230:
+  type: OOT:ARRAY
+  offset: 0x006230
+  symbol: object_tkVtx_006230
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_0063F0:
+  type: OOT:ARRAY
+  offset: 0x0063F0
+  symbol: object_tkVtx_0063F0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006780:
+  type: OOT:ARRAY
+  offset: 0x006780
+  symbol: object_tkVtx_006780
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006900:
+  type: OOT:ARRAY
+  offset: 0x006900
+  symbol: object_tkVtx_006900
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006AB0:
+  type: OOT:ARRAY
+  offset: 0x006AB0
+  symbol: object_tkVtx_006AB0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006E40:
+  type: OOT:ARRAY
+  offset: 0x006E40
+  symbol: object_tkVtx_006E40
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006FC0:
+  type: OOT:ARRAY
+  offset: 0x006FC0
+  symbol: object_tkVtx_006FC0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007170:
+  type: OOT:ARRAY
+  offset: 0x007170
+  symbol: object_tkVtx_007170
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_0076E0:
+  type: OOT:ARRAY
+  offset: 0x0076E0
+  symbol: object_tkVtx_0076E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007740:
+  type: OOT:ARRAY
+  offset: 0x007740
+  symbol: object_tkVtx_007740
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007950:
+  type: OOT:ARRAY
+  offset: 0x007950
+  symbol: object_tkVtx_007950
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_0079B0:
+  type: OOT:ARRAY
+  offset: 0x0079B0
+  symbol: object_tkVtx_0079B0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007BC0:
+  type: OOT:ARRAY
+  offset: 0x007BC0
+  symbol: object_tkVtx_007BC0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDampeSkelLimbsLimb_00BD30DL_008020:
+  type: GFX
+  offset: 0x008020
+  symbol: gDampeSkelLimbsLimb_00BD30DL_008020
+
+gDampeSkelLimbsLimb_00BD84DL_008160:
+  type: GFX
+  offset: 0x008160
+  symbol: gDampeSkelLimbsLimb_00BD84DL_008160
+
+gDampeSkelLimbsLimb_00BDD8DL_0082F0:
+  type: GFX
+  offset: 0x0082F0
+  symbol: gDampeSkelLimbsLimb_00BDD8DL_0082F0
+
+gDampeSkelLimbsLimb_00BDE4DL_008410:
+  type: GFX
+  offset: 0x008410
+  symbol: gDampeSkelLimbsLimb_00BDE4DL_008410
+
+gDampeSkelLimbsLimb_00BDF0DL_008958:
+  type: GFX
+  offset: 0x008958
+  symbol: gDampeSkelLimbsLimb_00BDF0DL_008958
+
+gDampeSkelLimbsLimb_00BDB4DL_008CA0:
+  type: GFX
+  offset: 0x008CA0
+  symbol: gDampeSkelLimbsLimb_00BDB4DL_008CA0
+
+gDampeSkelLimbsLimb_00BDC0DL_008DD0:
+  type: GFX
+  offset: 0x008DD0
+  symbol: gDampeSkelLimbsLimb_00BDC0DL_008DD0
+
+gDampeSkelLimbsLimb_00BDCCDL_008F00:
+  type: GFX
+  offset: 0x008F00
+  symbol: gDampeSkelLimbsLimb_00BDCCDL_008F00
+
+gDampeSkelLimbsLimb_00BD90DL_009110:
+  type: GFX
+  offset: 0x009110
+  symbol: gDampeSkelLimbsLimb_00BD90DL_009110
+
+gDampeSkelLimbsLimb_00BD9CDL_009240:
+  type: GFX
+  offset: 0x009240
+  symbol: gDampeSkelLimbsLimb_00BD9CDL_009240
+
+gDampeSkelLimbsLimb_00BDA8DL_009370:
+  type: GFX
+  offset: 0x009370
+  symbol: gDampeSkelLimbsLimb_00BDA8DL_009370
+
+gDampeSkelLimbsLimb_00BD60DL_009580:
+  type: GFX
+  offset: 0x009580
+  symbol: gDampeSkelLimbsLimb_00BD60DL_009580
+
+gDampeSkelLimbsLimb_00BD6CDL_009738:
+  type: GFX
+  offset: 0x009738
+  symbol: gDampeSkelLimbsLimb_00BD6CDL_009738
+
+gDampeSkelLimbsLimb_00BD3CDL_009818:
+  type: GFX
+  offset: 0x009818
+  symbol: gDampeSkelLimbsLimb_00BD3CDL_009818
+
+gDampeSkelLimbsLimb_00BD48DL_0099D0:
+  type: GFX
+  offset: 0x0099D0
+  symbol: gDampeSkelLimbsLimb_00BD48DL_0099D0
+
+object_tkVtx_009E40:
+  type: OOT:ARRAY
+  offset: 0x009E40
+  symbol: object_tkVtx_009E40
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_00A0F0:
+  type: OOT:ARRAY
+  offset: 0x00A0F0
+  symbol: object_tkVtx_00A0F0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_00A3A0:
+  type: OOT:ARRAY
+  offset: 0x00A3A0
+  symbol: object_tkVtx_00A3A0
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDampeSkelLimbsLimb_00BD54DL_00AA10:
+  type: GFX
+  offset: 0x00AA10
+  symbol: gDampeSkelLimbsLimb_00BD54DL_00AA10
+
+gDampeSkelLimbsLimb_00BD78DL_00AB78:
+  type: GFX
+  offset: 0x00AB78
+  symbol: gDampeSkelLimbsLimb_00BD78DL_00AB78
+
+object_tkVtx_00B688:
+  type: OOT:ARRAY
+  offset: 0x00B688
+  symbol: object_tkVtx_00B688
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_00B9C0:
+  type: OOT:ARRAY
+  offset: 0x00B9C0
+  symbol: object_tkVtx_00B9C0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_00BCF0:
+  type: OOT:ARRAY
+  offset: 0x00BCF0
+  symbol: object_tkVtx_00BCF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDampeSkelLimbsLimb_00BD30:
+  type: OOT:LIMB
+  offset: 0x00BD30
+  symbol: gDampeSkelLimbsLimb_00BD30
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD3C:
+  type: OOT:LIMB
+  offset: 0x00BD3C
+  symbol: gDampeSkelLimbsLimb_00BD3C
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD48:
+  type: OOT:LIMB
+  offset: 0x00BD48
+  symbol: gDampeSkelLimbsLimb_00BD48
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD54:
+  type: OOT:LIMB
+  offset: 0x00BD54
+  symbol: gDampeSkelLimbsLimb_00BD54
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD60:
+  type: OOT:LIMB
+  offset: 0x00BD60
+  symbol: gDampeSkelLimbsLimb_00BD60
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD6C:
+  type: OOT:LIMB
+  offset: 0x00BD6C
+  symbol: gDampeSkelLimbsLimb_00BD6C
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD78:
+  type: OOT:LIMB
+  offset: 0x00BD78
+  symbol: gDampeSkelLimbsLimb_00BD78
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD84:
+  type: OOT:LIMB
+  offset: 0x00BD84
+  symbol: gDampeSkelLimbsLimb_00BD84
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD90:
+  type: OOT:LIMB
+  offset: 0x00BD90
+  symbol: gDampeSkelLimbsLimb_00BD90
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BD9C:
+  type: OOT:LIMB
+  offset: 0x00BD9C
+  symbol: gDampeSkelLimbsLimb_00BD9C
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BDA8:
+  type: OOT:LIMB
+  offset: 0x00BDA8
+  symbol: gDampeSkelLimbsLimb_00BDA8
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BDB4:
+  type: OOT:LIMB
+  offset: 0x00BDB4
+  symbol: gDampeSkelLimbsLimb_00BDB4
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BDC0:
+  type: OOT:LIMB
+  offset: 0x00BDC0
+  symbol: gDampeSkelLimbsLimb_00BDC0
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BDCC:
+  type: OOT:LIMB
+  offset: 0x00BDCC
+  symbol: gDampeSkelLimbsLimb_00BDCC
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BDD8:
+  type: OOT:LIMB
+  offset: 0x00BDD8
+  symbol: gDampeSkelLimbsLimb_00BDD8
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BDE4:
+  type: OOT:LIMB
+  offset: 0x00BDE4
+  symbol: gDampeSkelLimbsLimb_00BDE4
+  limb_type: Standard
+
+gDampeSkelLimbsLimb_00BDF0:
+  type: OOT:LIMB
+  offset: 0x00BDF0
+  symbol: gDampeSkelLimbsLimb_00BDF0
+  limb_type: Standard
+
+gDampeSkelLimbs:
+  type: BLOB
+  offset: 0xBDFC
+  symbol: gDampeSkelLimbs
+  size: 0

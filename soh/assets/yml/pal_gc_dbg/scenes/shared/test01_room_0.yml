@@ -1,0 +1,218 @@
+:config:
+  segments:
+    - [ 3, 0x035AB000 ]
+    - [ 2, 0x035A7000 ]
+  directory: scenes/shared/test01_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/test01_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+test01_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: test01_room_0
+
+test01_room_0Tex_006490:
+  type: TEXTURE
+  offset: 0x6490
+  symbol: test01_room_0Tex_006490
+  format: RGBA16
+  width: 32
+  height: 32
+
+test01_room_0Tex_006C90:
+  type: TEXTURE
+  offset: 0x6C90
+  symbol: test01_room_0Tex_006C90
+  format: RGBA16
+  width: 32
+  height: 32
+
+test01_room_0Tex_007490:
+  type: TEXTURE
+  offset: 0x7490
+  symbol: test01_room_0Tex_007490
+  format: RGBA16
+  width: 64
+  height: 32
+
+test01_room_0Tex_008490:
+  type: TEXTURE
+  offset: 0x8490
+  symbol: test01_room_0Tex_008490
+  format: RGBA16
+  width: 32
+  height: 32
+
+test01_room_0Tex_0090E8:
+  type: TEXTURE
+  offset: 0x90E8
+  symbol: test01_room_0Tex_0090E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+test01_room_0Vtx_000050:
+  type: OOT:ARRAY
+  offset: 0x000050
+  symbol: test01_room_0Vtx_000050
+  count: 541
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_002220:
+  type: GFX
+  offset: 0x002220
+  symbol: test01_room_0DL_002220
+
+test01_room_0Vtx_0028C8:
+  type: OOT:ARRAY
+  offset: 0x0028C8
+  symbol: test01_room_0Vtx_0028C8
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_003198:
+  type: GFX
+  offset: 0x003198
+  symbol: test01_room_0DL_003198
+
+test01_room_0Vtx_003438:
+  type: OOT:ARRAY
+  offset: 0x003438
+  symbol: test01_room_0Vtx_003438
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_003628:
+  type: GFX
+  offset: 0x003628
+  symbol: test01_room_0DL_003628
+
+test01_room_0Vtx_003738:
+  type: OOT:ARRAY
+  offset: 0x003738
+  symbol: test01_room_0Vtx_003738
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_0038B8:
+  type: GFX
+  offset: 0x0038B8
+  symbol: test01_room_0DL_0038B8
+
+test01_room_0Vtx_003988:
+  type: OOT:ARRAY
+  offset: 0x003988
+  symbol: test01_room_0Vtx_003988
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_003D08:
+  type: GFX
+  offset: 0x003D08
+  symbol: test01_room_0DL_003D08
+
+test01_room_0Vtx_003EF0:
+  type: OOT:ARRAY
+  offset: 0x003EF0
+  symbol: test01_room_0Vtx_003EF0
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_0043D0:
+  type: GFX
+  offset: 0x0043D0
+  symbol: test01_room_0DL_0043D0
+
+test01_room_0Vtx_004538:
+  type: OOT:ARRAY
+  offset: 0x004538
+  symbol: test01_room_0Vtx_004538
+  count: 167
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_004FA8:
+  type: GFX
+  offset: 0x004FA8
+  symbol: test01_room_0DL_004FA8
+
+test01_room_0Vtx_005220:
+  type: OOT:ARRAY
+  offset: 0x005220
+  symbol: test01_room_0Vtx_005220
+  count: 137
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_005AB0:
+  type: GFX
+  offset: 0x005AB0
+  symbol: test01_room_0DL_005AB0
+
+test01_room_0Vtx_005CB0:
+  type: OOT:ARRAY
+  offset: 0x005CB0
+  symbol: test01_room_0Vtx_005CB0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_005FB0:
+  type: GFX
+  offset: 0x005FB0
+  symbol: test01_room_0DL_005FB0
+
+test01_room_0Vtx_0060B8:
+  type: OOT:ARRAY
+  offset: 0x0060B8
+  symbol: test01_room_0Vtx_0060B8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_006338:
+  type: GFX
+  offset: 0x006338
+  symbol: test01_room_0DL_006338
+
+test01_room_0DL_006438:
+  type: GFX
+  offset: 0x006438
+  symbol: test01_room_0DL_006438
+
+test01_room_0Vtx_008C90:
+  type: OOT:ARRAY
+  offset: 0x008C90
+  symbol: test01_room_0Vtx_008C90
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+test01_room_0DL_008F90:
+  type: GFX
+  offset: 0x008F90
+  symbol: test01_room_0DL_008F90
+
+test01_room_0DL_0090D8:
+  type: GFX
+  offset: 0x0090D8
+  symbol: test01_room_0DL_0090D8

@@ -1,0 +1,67 @@
+:config:
+  segments:
+    - [ 6, 0x01155F50 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x01155F50 ]
+    - [ 9, 0x01155F50 ]
+    - [ 10, 0x01155F50 ]
+    - [ 11, 0x01155F50 ]
+    - [ 12, 0x01155F50 ]
+    - [ 13, 0x01155F50 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gGiChickenColorDL:
+  type: GFX
+  offset: 0x15F0
+  symbol: gGiChickenColorDL
+
+gGiChickenDL:
+  type: GFX
+  offset: 0x1630
+  symbol: gGiChickenDL
+
+gGiChickenEyesDL:
+  type: GFX
+  offset: 0x1948
+  symbol: gGiChickenEyesDL
+
+gGiCojiroColorDL:
+  type: GFX
+  offset: 0x1610
+  symbol: gGiCojiroColorDL
+
+object_gi_niwatoriTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_niwatoriTex_000000
+  format: I8
+  width: 32
+  height: 64
+
+object_gi_niwatoriTex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_gi_niwatoriTex_000800
+  format: IA8
+  width: 32
+  height: 32
+
+
+object_gi_niwatoriVtx_000C00:
+  type: OOT:ARRAY
+  offset: 0x000C00
+  symbol: object_gi_niwatoriVtx_000C00
+  count: 153
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_niwatoriVtx_001590:
+  type: OOT:ARRAY
+  offset: 0x001590
+  symbol: object_gi_niwatoriVtx_001590
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

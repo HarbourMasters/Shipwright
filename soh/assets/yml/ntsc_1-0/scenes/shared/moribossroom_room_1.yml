@@ -1,0 +1,298 @@
+:config:
+  segments:
+    - [ 3, 0x01B37760 ]
+    - [ 2, 0x01B328C0 ]
+  directory: scenes/shared/moribossroom_scene
+  external_files:
+    - ntsc_1-0/scenes/shared/moribossroom_scene.yml
+    - ntsc_1-0/code/sys_matrix.yml
+
+moribossroom_room_1:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: moribossroom_room_1
+
+moribossroom_room_1TLUT_006828:
+  type: TEXTURE
+  offset: 0x6828
+  symbol: moribossroom_room_1TLUT_006828
+  format: RGBA16
+  width: 16
+  height: 16
+
+moribossroom_room_1Tex_006A20:
+  type: TEXTURE
+  offset: 0x6A20
+  symbol: moribossroom_room_1Tex_006A20
+  format: RGBA16
+  width: 32
+  height: 64
+
+moribossroom_room_1Tex_007A20:
+  type: TEXTURE
+  offset: 0x7A20
+  symbol: moribossroom_room_1Tex_007A20
+  format: RGBA16
+  width: 64
+  height: 32
+
+moribossroom_room_1Tex_008A20:
+  type: TEXTURE
+  offset: 0x8A20
+  symbol: moribossroom_room_1Tex_008A20
+  format: RGBA16
+  width: 64
+  height: 32
+
+moribossroom_room_1Tex_009A20:
+  type: TEXTURE
+  offset: 0x9A20
+  symbol: moribossroom_room_1Tex_009A20
+  format: RGBA16
+  width: 8
+  height: 16
+
+moribossroom_room_1Tex_009B20:
+  type: TEXTURE
+  offset: 0x9B20
+  symbol: moribossroom_room_1Tex_009B20
+  format: RGBA16
+  width: 16
+  height: 16
+
+moribossroom_room_1Tex_009D20:
+  type: TEXTURE
+  offset: 0x9D20
+  symbol: moribossroom_room_1Tex_009D20
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x6828
+
+moribossroom_room_1Tex_00A520:
+  type: TEXTURE
+  offset: 0xA520
+  symbol: moribossroom_room_1Tex_00A520
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x6828
+
+moribossroom_room_1Tex_00AD20:
+  type: TEXTURE
+  offset: 0xAD20
+  symbol: moribossroom_room_1Tex_00AD20
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x6828
+
+moribossroom_room_1Tex_00B520:
+  type: TEXTURE
+  offset: 0xB520
+  symbol: moribossroom_room_1Tex_00B520
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: moribossroom_scene
+  external_tlut_offset: 0xB50
+
+moribossroom_room_1Tex_00BD20:
+  type: TEXTURE
+  offset: 0xBD20
+  symbol: moribossroom_room_1Tex_00BD20
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x6828
+
+moribossroom_room_1Tex_00C520:
+  type: TEXTURE
+  offset: 0xC520
+  symbol: moribossroom_room_1Tex_00C520
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x6828
+
+moribossroom_room_1Tex_00CD20:
+  type: TEXTURE
+  offset: 0xCD20
+  symbol: moribossroom_room_1Tex_00CD20
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x6828
+
+moribossroom_room_1Tex_00D6A8:
+  type: TEXTURE
+  offset: 0xD6A8
+  symbol: moribossroom_room_1Tex_00D6A8
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+moribossroom_room_1Vtx_000080:
+  type: OOT:ARRAY
+  offset: 0x000080
+  symbol: moribossroom_room_1Vtx_000080
+  count: 180
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_000BC0:
+  type: GFX
+  offset: 0x000BC0
+  symbol: moribossroom_room_1DL_000BC0
+
+moribossroom_room_1Vtx_000F00:
+  type: OOT:ARRAY
+  offset: 0x000F00
+  symbol: moribossroom_room_1Vtx_000F00
+  count: 178
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_001A20:
+  type: GFX
+  offset: 0x001A20
+  symbol: moribossroom_room_1DL_001A20
+
+moribossroom_room_1Vtx_001CB0:
+  type: OOT:ARRAY
+  offset: 0x001CB0
+  symbol: moribossroom_room_1Vtx_001CB0
+  count: 92
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_002270:
+  type: GFX
+  offset: 0x002270
+  symbol: moribossroom_room_1DL_002270
+
+moribossroom_room_1Vtx_002730:
+  type: OOT:ARRAY
+  offset: 0x002730
+  symbol: moribossroom_room_1Vtx_002730
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_002CD0:
+  type: GFX
+  offset: 0x002CD0
+  symbol: moribossroom_room_1DL_002CD0
+
+moribossroom_room_1Vtx_003180:
+  type: OOT:ARRAY
+  offset: 0x003180
+  symbol: moribossroom_room_1Vtx_003180
+  count: 92
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_003740:
+  type: GFX
+  offset: 0x003740
+  symbol: moribossroom_room_1DL_003740
+
+moribossroom_room_1Vtx_003C00:
+  type: OOT:ARRAY
+  offset: 0x003C00
+  symbol: moribossroom_room_1Vtx_003C00
+  count: 92
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_0041C0:
+  type: GFX
+  offset: 0x0041C0
+  symbol: moribossroom_room_1DL_0041C0
+
+moribossroom_room_1Vtx_004680:
+  type: OOT:ARRAY
+  offset: 0x004680
+  symbol: moribossroom_room_1Vtx_004680
+  count: 94
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_004C60:
+  type: GFX
+  offset: 0x004C60
+  symbol: moribossroom_room_1DL_004C60
+
+moribossroom_room_1Vtx_005120:
+  type: OOT:ARRAY
+  offset: 0x005120
+  symbol: moribossroom_room_1Vtx_005120
+  count: 127
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_005910:
+  type: GFX
+  offset: 0x005910
+  symbol: moribossroom_room_1DL_005910
+
+moribossroom_room_1Vtx_005EC8:
+  type: OOT:ARRAY
+  offset: 0x005EC8
+  symbol: moribossroom_room_1Vtx_005EC8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_006148:
+  type: GFX
+  offset: 0x006148
+  symbol: moribossroom_room_1DL_006148
+
+moribossroom_room_1Vtx_006270:
+  type: OOT:ARRAY
+  offset: 0x006270
+  symbol: moribossroom_room_1Vtx_006270
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_006610:
+  type: GFX
+  offset: 0x006610
+  symbol: moribossroom_room_1DL_006610
+
+moribossroom_room_1DL_0067D0:
+  type: GFX
+  offset: 0x0067D0
+  symbol: moribossroom_room_1DL_0067D0
+
+moribossroom_room_1Vtx_00D520:
+  type: OOT:ARRAY
+  offset: 0x00D520
+  symbol: moribossroom_room_1Vtx_00D520
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_1DL_00D5E0:
+  type: GFX
+  offset: 0x00D5E0
+  symbol: moribossroom_room_1DL_00D5E0
+
+moribossroom_room_1DL_00D698:
+  type: GFX
+  offset: 0x00D698
+  symbol: moribossroom_room_1DL_00D698

@@ -1,0 +1,370 @@
+:config:
+  segments:
+    - [ 3, 0x01FF1000 ]
+    - [ 2, 0x01FC2000 ]
+  directory: scenes/mq/ydan_scene
+  external_files:
+    - pal_mq_dbg/scenes/mq/ydan_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+ydan_room_3:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ydan_room_3
+
+ydan_room_3Tex_0074C0:
+  type: TEXTURE
+  offset: 0x74C0
+  symbol: ydan_room_3Tex_0074C0
+  format: RGBA16
+  width: 32
+  height: 64
+
+ydan_room_3Tex_0084C0:
+  type: TEXTURE
+  offset: 0x84C0
+  symbol: ydan_room_3Tex_0084C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_008CC0:
+  type: TEXTURE
+  offset: 0x8CC0
+  symbol: ydan_room_3Tex_008CC0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_0094C0:
+  type: TEXTURE
+  offset: 0x94C0
+  symbol: ydan_room_3Tex_0094C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_009CC0:
+  type: TEXTURE
+  offset: 0x9CC0
+  symbol: ydan_room_3Tex_009CC0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00A0C0:
+  type: TEXTURE
+  offset: 0xA0C0
+  symbol: ydan_room_3Tex_00A0C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00A8C0:
+  type: TEXTURE
+  offset: 0xA8C0
+  symbol: ydan_room_3Tex_00A8C0
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00B0C0:
+  type: TEXTURE
+  offset: 0xB0C0
+  symbol: ydan_room_3Tex_00B0C0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00B4C0:
+  type: TEXTURE
+  offset: 0xB4C0
+  symbol: ydan_room_3Tex_00B4C0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00B8C0:
+  type: TEXTURE
+  offset: 0xB8C0
+  symbol: ydan_room_3Tex_00B8C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00C0C0:
+  type: TEXTURE
+  offset: 0xC0C0
+  symbol: ydan_room_3Tex_00C0C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00C8C0:
+  type: TEXTURE
+  offset: 0xC8C0
+  symbol: ydan_room_3Tex_00C8C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00D0C0:
+  type: TEXTURE
+  offset: 0xD0C0
+  symbol: ydan_room_3Tex_00D0C0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00D4C0:
+  type: TEXTURE
+  offset: 0xD4C0
+  symbol: ydan_room_3Tex_00D4C0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00D8C0:
+  type: TEXTURE
+  offset: 0xD8C0
+  symbol: ydan_room_3Tex_00D8C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00E0C0:
+  type: TEXTURE
+  offset: 0xE0C0
+  symbol: ydan_room_3Tex_00E0C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_00E8C0:
+  type: TEXTURE
+  offset: 0xE8C0
+  symbol: ydan_room_3Tex_00E8C0
+  format: RGBA16
+  width: 64
+  height: 32
+
+ydan_room_3Tex_00F8C0:
+  type: TEXTURE
+  offset: 0xF8C0
+  symbol: ydan_room_3Tex_00F8C0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_011DB0:
+  type: TEXTURE
+  offset: 0x11DB0
+  symbol: ydan_room_3Tex_011DB0
+  format: RGBA16
+  width: 32
+  height: 64
+
+ydan_room_3Tex_012DB0:
+  type: TEXTURE
+  offset: 0x12DB0
+  symbol: ydan_room_3Tex_012DB0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_3Tex_0131B0:
+  type: TEXTURE
+  offset: 0x131B0
+  symbol: ydan_room_3Tex_0131B0
+  format: IA16
+  width: 32
+  height: 64
+
+
+ydan_room_3Vtx_000270:
+  type: OOT:ARRAY
+  offset: 0x000270
+  symbol: ydan_room_3Vtx_000270
+  count: 201
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_000F00:
+  type: GFX
+  offset: 0x000F00
+  symbol: ydan_room_3DL_000F00
+
+ydan_room_3Vtx_0011E8:
+  type: OOT:ARRAY
+  offset: 0x0011E8
+  symbol: ydan_room_3Vtx_0011E8
+  count: 546
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_003408:
+  type: GFX
+  offset: 0x003408
+  symbol: ydan_room_3DL_003408
+
+ydan_room_3Vtx_004890:
+  type: OOT:ARRAY
+  offset: 0x004890
+  symbol: ydan_room_3Vtx_004890
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_005160:
+  type: GFX
+  offset: 0x005160
+  symbol: ydan_room_3DL_005160
+
+ydan_room_3Vtx_005430:
+  type: OOT:ARRAY
+  offset: 0x005430
+  symbol: ydan_room_3Vtx_005430
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_005EC0:
+  type: GFX
+  offset: 0x005EC0
+  symbol: ydan_room_3DL_005EC0
+
+ydan_room_3Vtx_006368:
+  type: OOT:ARRAY
+  offset: 0x006368
+  symbol: ydan_room_3Vtx_006368
+  count: 123
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_006B18:
+  type: GFX
+  offset: 0x006B18
+  symbol: ydan_room_3DL_006B18
+
+ydan_room_3Vtx_006E98:
+  type: OOT:ARRAY
+  offset: 0x006E98
+  symbol: ydan_room_3Vtx_006E98
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_007208:
+  type: GFX
+  offset: 0x007208
+  symbol: ydan_room_3DL_007208
+
+ydan_room_3Vtx_0100C0:
+  type: OOT:ARRAY
+  offset: 0x0100C0
+  symbol: ydan_room_3Vtx_0100C0
+  count: 98
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_0106E0:
+  type: GFX
+  offset: 0x0106E0
+  symbol: ydan_room_3DL_0106E0
+
+ydan_room_3Vtx_010A48:
+  type: OOT:ARRAY
+  offset: 0x010A48
+  symbol: ydan_room_3Vtx_010A48
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_010B48:
+  type: GFX
+  offset: 0x010B48
+  symbol: ydan_room_3DL_010B48
+
+ydan_room_3Vtx_010C68:
+  type: OOT:ARRAY
+  offset: 0x010C68
+  symbol: ydan_room_3Vtx_010C68
+  count: 166
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_0116C8:
+  type: GFX
+  offset: 0x0116C8
+  symbol: ydan_room_3DL_0116C8
+
+ydan_room_3Vtx_0119C0:
+  type: OOT:ARRAY
+  offset: 0x0119C0
+  symbol: ydan_room_3Vtx_0119C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_011AC0:
+  type: GFX
+  offset: 0x011AC0
+  symbol: ydan_room_3DL_011AC0
+
+ydan_room_3Vtx_011B88:
+  type: OOT:ARRAY
+  offset: 0x011B88
+  symbol: ydan_room_3Vtx_011B88
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_3DL_011C68:
+  type: GFX
+  offset: 0x011C68
+  symbol: ydan_room_3DL_011C68

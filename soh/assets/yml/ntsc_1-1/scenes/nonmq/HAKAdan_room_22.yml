@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 3, 0x01B313A0 ]
+    - [ 2, 0x01AE7450 ]
+  directory: scenes/nonmq/HAKAdan_scene
+  external_files:
+    - ntsc_1-1/scenes/nonmq/HAKAdan_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+
+HAKAdan_room_22:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdan_room_22
+
+HAKAdan_room_22Tex_000FA8:
+  type: TEXTURE
+  offset: 0xF98
+  symbol: HAKAdan_room_22Tex_000FA8
+  format: RGBA16
+  width: 32
+  height: 8
+
+HAKAdan_room_22Tex_0011A8:
+  type: TEXTURE
+  offset: 0x1198
+  symbol: HAKAdan_room_22Tex_0011A8
+  format: RGBA16
+  width: 32
+  height: 64
+
+HAKAdan_room_22Tex_0021A8:
+  type: TEXTURE
+  offset: 0x2198
+  symbol: HAKAdan_room_22Tex_0021A8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HAKAdan_room_22Vtx_000060:
+  type: OOT:ARRAY
+  offset: 0x000060
+  symbol: HAKAdan_room_22Vtx_000060
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_22DL_000AF0:
+  type: GFX
+  offset: 0x000AF0
+  symbol: HAKAdan_room_22DL_000AF0
+
+HAKAdan_room_22DL_000F88:
+  type: GFX
+  offset: 0x000F88
+  symbol: HAKAdan_room_22DL_000F88

@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A1E000 ]
+
+gMarketTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMarketTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gMarketTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gMarketTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gMarketTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gMarketTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

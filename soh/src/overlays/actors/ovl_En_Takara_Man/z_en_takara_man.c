@@ -8,7 +8,8 @@
 #include "vt.h"
 #include "objects/object_ts/object_ts.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -40,7 +41,11 @@ const ActorInit En_Takara_Man_InitVars = {
     (ActorResetFunc)EnTakaraMan_Reset,
 };
 
-u8 sTakaraIsInitialized = false;
+static u8 sTakaraIsInitialized = false;
+
+#define EN_TAKARA_MAN_SHIP_SAVESTATE_FIELDS(F) F(sTakaraIsInitialized)
+
+SHIP_SAVESTATE_DEFINE(EnTakaraMan, EN_TAKARA_MAN_SHIP_SAVESTATE_FIELDS)
 
 void EnTakaraMan_Reset(Actor* thisx, PlayState* play) {
     sTakaraIsInitialized = false;
@@ -59,8 +64,10 @@ void EnTakaraMan_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("\n\n");
     // "Bun! %x" (needs a better translation)
     osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ ばぅん！ ☆☆☆☆☆ %x\n" VT_RST, play->actorCtx.flags.chest);
-    play->actorCtx.flags.chest = 0;
-    gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = -1;
+    if (GameInteractor_Should(VB_TAKARA_MAN_RESET_CHESTS_AND_KEYS, true, this)) {
+        play->actorCtx.flags.chest = 0;
+        gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = -1;
+    }
     SkelAnime_InitFlex(play, &this->skelAnime, &object_ts_Skel_004FE0, &object_ts_Anim_000498, this->jointTable,
                        this->morphTable, 10);
     thisx->focus.pos = thisx->world.pos;
@@ -78,9 +85,6 @@ void EnTakaraMan_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnTakaraMan_Destroy(Actor* thisx, PlayState* play) {
-    EnTakaraMan* this = (EnTakaraMan*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B176E0(EnTakaraMan* this, PlayState* play) {
@@ -136,7 +140,7 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
                     this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                     this->unk_218 = 1;
                 }
-                func_8002F2CC(&this->actor, play, 100.0f);
+                Actor_OfferTalk(&this->actor, play, 100.0f);
             }
         }
     }
@@ -151,7 +155,9 @@ void func_80B17934(EnTakaraMan* this, PlayState* play) {
                     Rupees_ChangeBy(-10);
                     this->unk_214 = 1;
                     this->actor.parent = NULL;
-                    Actor_OfferGetItem(&this->actor, play, GI_DOOR_KEY, 2000.0f, 1000.0f);
+                    if (GameInteractor_Should(VB_TAKARA_MAN_OFFER_GET_ITEM, true, this)) {
+                        Actor_OfferGetItem(&this->actor, play, GI_DOOR_KEY, 2000.0f, 1000.0f);
+                    }
                     this->actionFunc = func_80B17A6C;
                 } else {
                     Message_CloseTextbox(play);
@@ -175,7 +181,7 @@ void func_80B17934(EnTakaraMan* this, PlayState* play) {
 void func_80B17A6C(EnTakaraMan* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_80B17AC4;
-    } else {
+    } else if (GameInteractor_Should(VB_TAKARA_MAN_OFFER_GET_ITEM, true, this)) {
         Actor_OfferGetItem(&this->actor, play, GI_DOOR_KEY, 2000.0f, 1000.0f);
     }
 }
@@ -201,7 +207,7 @@ void EnTakaraMan_Update(Actor* thisx, PlayState* play) {
     }
 
     Actor_SetFocus(&this->actor, this->height);
-    func_80038290(play, &this->actor, &this->unk_22C, &this->unk_232, this->actor.focus.pos);
+    Actor_TrackPlayer(play, &this->actor, &this->unk_22C, &this->unk_232, this->actor.focus.pos);
     if (this->eyeTimer == 0) {
         this->eyeTextureIdx++;
         if (this->eyeTextureIdx >= 2) {

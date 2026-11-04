@@ -298,11 +298,11 @@ void EnMa3_Update(Actor* thisx, PlayState* play) {
                       EnMa3_GetTextId, EnMa3_UpdateTalkState);
     if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
         if (this->isNotSinging != 0) {
-            func_800F6584(0);
+            Audio_ToggleMalonSinging(0);
             this->isNotSinging = 0;
         }
     } else if (this->isNotSinging == 0) {
-        func_800F6584(1);
+        Audio_ToggleMalonSinging(1);
         this->isNotSinging = 1;
     }
 }
@@ -363,7 +363,7 @@ void EnMa3_Draw(Actor* thisx, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     someFloat = Math_Vec3f_DistXZ(&this->actor.world.pos, &camera->eye);
-    func_800F6268(someFloat, NA_BGM_LONLON);
+    Audio_UpdateMalonSinging(someFloat, NA_BGM_LONLON);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[this->mouthIndex]));

@@ -1,0 +1,222 @@
+:config:
+  segments:
+    - [ 6, 0x00F2A860 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00F2A860 ]
+    - [ 9, 0x00F2A860 ]
+    - [ 10, 0x00F2A860 ]
+    - [ 11, 0x00F2A860 ]
+    - [ 12, 0x00F2A860 ]
+    - [ 13, 0x00F2A860 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gRedIceBlockDL:
+  type: GFX
+  offset: 0x6F0
+  symbol: gRedIceBlockDL
+
+gRedIceBlockTex:
+  type: TEXTURE
+  offset: 0x5150
+  symbol: gRedIceBlockTex
+  format: I8
+  width: 32
+  height: 32
+
+gRedIcePlatformCol:
+  type: OOT:COLLISION
+  offset: 0x1C1C
+  symbol: gRedIcePlatformCol
+
+gRedIcePlatformDL:
+  type: GFX
+  offset: 0x12A0
+  symbol: gRedIcePlatformDL
+
+gRedIcePlatformTex:
+  type: TEXTURE
+  offset: 0x5550
+  symbol: gRedIcePlatformTex
+  format: I4
+  width: 64
+  height: 64
+
+gRedIceWallCol:
+  type: OOT:COLLISION
+  offset: 0x2920
+  symbol: gRedIceWallCol
+
+gRedIceWallDL:
+  type: GFX
+  offset: 0x2640
+  symbol: gRedIceWallDL
+
+gRedIceWallTex:
+  type: TEXTURE
+  offset: 0x3150
+  symbol: gRedIceWallTex
+  format: I8
+  width: 32
+  height: 128
+
+object_ice_objects_Col_0003F0:
+  type: OOT:COLLISION
+  offset: 0x3F0
+  symbol: object_ice_objects_Col_0003F0
+
+object_ice_objects_Col_002594:
+  type: OOT:COLLISION
+  offset: 0x2594
+  symbol: object_ice_objects_Col_002594
+
+object_ice_objects_Col_002854:
+  type: OOT:COLLISION
+  offset: 0x2854
+  symbol: object_ice_objects_Col_002854
+
+object_ice_objects_DL_000190:
+  type: GFX
+  offset: 0x190
+  symbol: object_ice_objects_DL_000190
+
+object_ice_objects_DL_001D10:
+  type: GFX
+  offset: 0x1D10
+  symbol: object_ice_objects_DL_001D10
+
+object_ice_objects_DL_0021F0:
+  type: GFX
+  offset: 0x21F0
+  symbol: object_ice_objects_DL_0021F0
+
+object_ice_objects_DL_0023D0:
+  type: GFX
+  offset: 0x23D0
+  symbol: object_ice_objects_DL_0023D0
+
+object_ice_objects_DL_002740:
+  type: GFX
+  offset: 0x2740
+  symbol: object_ice_objects_DL_002740
+
+object_ice_objects_Tex_002950:
+  type: TEXTURE
+  offset: 0x2950
+  symbol: object_ice_objects_Tex_002950
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ice_objects_Tex_004150:
+  type: TEXTURE
+  offset: 0x4150
+  symbol: object_ice_objects_Tex_004150
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ice_objects_Tex_004950:
+  type: TEXTURE
+  offset: 0x4950
+  symbol: object_ice_objects_Tex_004950
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ice_objects_Tex_005D50:
+  type: TEXTURE
+  offset: 0x5D50
+  symbol: object_ice_objects_Tex_005D50
+  format: I8
+  width: 64
+  height: 64
+
+object_ice_objects_Tex_006D50:
+  type: TEXTURE
+  offset: 0x6D50
+  symbol: object_ice_objects_Tex_006D50
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_ice_objects_Tex_007D50:
+  type: TEXTURE
+  offset: 0x7D50
+  symbol: object_ice_objects_Tex_007D50
+  format: IA8
+  width: 64
+  height: 64
+
+
+object_ice_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_ice_objectsVtx_000000
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ice_objectsVtx_000420:
+  type: OOT:ARRAY
+  offset: 0x000420
+  symbol: object_ice_objectsVtx_000420
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ice_objectsVtx_0007E0:
+  type: OOT:ARRAY
+  offset: 0x0007E0
+  symbol: object_ice_objectsVtx_0007E0
+  count: 172
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ice_objectsVtx_001C50:
+  type: OOT:ARRAY
+  offset: 0x001C50
+  symbol: object_ice_objectsVtx_001C50
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ice_objectsVtx_001DC0:
+  type: OOT:ARRAY
+  offset: 0x001DC0
+  symbol: object_ice_objectsVtx_001DC0
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ice_objectsVtx_002300:
+  type: OOT:ARRAY
+  offset: 0x002300
+  symbol: object_ice_objectsVtx_002300
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ice_objectsVtx_0025C0:
+  type: OOT:ARRAY
+  offset: 0x0025C0
+  symbol: object_ice_objectsVtx_0025C0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ice_objectsVtx_0026E0:
+  type: OOT:ARRAY
+  offset: 0x0026E0
+  symbol: object_ice_objectsVtx_0026E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

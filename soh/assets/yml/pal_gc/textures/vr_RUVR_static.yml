@@ -1,0 +1,44 @@
+:config:
+  segments:
+    - [ 128, 0x013C2B80 ]
+
+gMarketRuins2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gMarketRuins2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_RUVR_pal_static
+  external_tlut_offset: 0x200
+
+gMarketRuins3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gMarketRuins3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_RUVR_pal_static
+  external_tlut_offset: 0x400
+
+gMarketRuins4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gMarketRuins4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_RUVR_pal_static
+  external_tlut_offset: 0x600
+
+gMarketRuinsBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMarketRuinsBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_RUVR_pal_static
+  external_tlut_offset: 0x000
+

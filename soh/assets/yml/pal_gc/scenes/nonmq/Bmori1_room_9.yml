@@ -1,0 +1,216 @@
+:config:
+  segments:
+    - [ 3, 0x017A4B40 ]
+    - [ 2, 0x017678C0 ]
+  directory: scenes/nonmq/Bmori1_scene
+  external_files:
+    - pal_gc/scenes/nonmq/Bmori1_scene.yml
+    - pal_gc/code/sys_matrix.yml
+
+Bmori1_room_9:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: Bmori1_room_9
+
+Bmori1_room_9Tex_0048B8:
+  type: TEXTURE
+  offset: 0x4888
+  symbol: Bmori1_room_9Tex_0048B8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Bmori1_room_9Tex_0050B8:
+  type: TEXTURE
+  offset: 0x5088
+  symbol: Bmori1_room_9Tex_0050B8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14080
+
+Bmori1_room_9Tex_0054B8:
+  type: TEXTURE
+  offset: 0x5488
+  symbol: Bmori1_room_9Tex_0054B8
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+Bmori1_room_9Tex_005CB8:
+  type: TEXTURE
+  offset: 0x5C88
+  symbol: Bmori1_room_9Tex_005CB8
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14080
+
+Bmori1_room_9Tex_0064B8:
+  type: TEXTURE
+  offset: 0x6488
+  symbol: Bmori1_room_9Tex_0064B8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Bmori1_room_9Tex_006CB8:
+  type: TEXTURE
+  offset: 0x6C88
+  symbol: Bmori1_room_9Tex_006CB8
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14080
+
+Bmori1_room_9Tex_0074B8:
+  type: TEXTURE
+  offset: 0x7488
+  symbol: Bmori1_room_9Tex_0074B8
+  format: RGBA16
+  width: 32
+  height: 64
+
+Bmori1_room_9Tex_008958:
+  type: TEXTURE
+  offset: 0x8928
+  symbol: Bmori1_room_9Tex_008958
+  format: IA16
+  width: 32
+  height: 32
+
+Bmori1_room_9Tex_009158:
+  type: TEXTURE
+  offset: 0x9128
+  symbol: Bmori1_room_9Tex_009158
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+Bmori1_room_9Vtx_0000C0:
+  type: OOT:ARRAY
+  offset: 0x0000C0
+  symbol: Bmori1_room_9Vtx_0000C0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_9DL_000190:
+  type: GFX
+  offset: 0x000190
+  symbol: Bmori1_room_9DL_000190
+
+Bmori1_room_9Vtx_000250:
+  type: OOT:ARRAY
+  offset: 0x000250
+  symbol: Bmori1_room_9Vtx_000250
+  count: 200
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_9DL_000ED0:
+  type: GFX
+  offset: 0x000ED0
+  symbol: Bmori1_room_9DL_000ED0
+
+Bmori1_room_9Vtx_001588:
+  type: OOT:ARRAY
+  offset: 0x001588
+  symbol: Bmori1_room_9Vtx_001588
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_9DL_001868:
+  type: GFX
+  offset: 0x001868
+  symbol: Bmori1_room_9DL_001868
+
+Bmori1_room_9Vtx_001AF0:
+  type: OOT:ARRAY
+  offset: 0x001AF0
+  symbol: Bmori1_room_9Vtx_001AF0
+  count: 468
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_9DL_003830:
+  type: GFX
+  offset: 0x003830
+  symbol: Bmori1_room_9DL_003830
+
+Bmori1_room_9Vtx_003E10:
+  type: OOT:ARRAY
+  offset: 0x003E10
+  symbol: Bmori1_room_9Vtx_003E10
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_9DL_003FD0:
+  type: GFX
+  offset: 0x003FD0
+  symbol: Bmori1_room_9DL_003FD0
+
+Bmori1_room_9Vtx_0040D8:
+  type: OOT:ARRAY
+  offset: 0x0040D8
+  symbol: Bmori1_room_9Vtx_0040D8
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_9DL_0044B8:
+  type: GFX
+  offset: 0x0044B8
+  symbol: Bmori1_room_9DL_0044B8
+
+Bmori1_room_9DL_004850:
+  type: GFX
+  offset: 0x004850
+  symbol: Bmori1_room_9DL_004850
+
+Bmori1_room_9Vtx_008490:
+  type: OOT:ARRAY
+  offset: 0x008490
+  symbol: Bmori1_room_9Vtx_008490
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_9DL_008650:
+  type: GFX
+  offset: 0x008650
+  symbol: Bmori1_room_9DL_008650
+
+Bmori1_room_9Vtx_008730:
+  type: OOT:ARRAY
+  offset: 0x008730
+  symbol: Bmori1_room_9Vtx_008730
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_9DL_008840:
+  type: GFX
+  offset: 0x008840
+  symbol: Bmori1_room_9DL_008840
+
+Bmori1_room_9DL_008910:
+  type: GFX
+  offset: 0x008910
+  symbol: Bmori1_room_9DL_008910

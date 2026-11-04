@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01F4D720 ]
+
+face_shop_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: face_shop_scene
+
+
+face_shop_sceneCollisionHeader_000338:
+  type: OOT:COLLISION
+  offset: 0x000338
+  symbol: face_shop_sceneCollisionHeader_000338

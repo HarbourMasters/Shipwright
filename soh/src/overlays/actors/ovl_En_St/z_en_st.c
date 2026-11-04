@@ -7,7 +7,6 @@
 #include "z_en_st.h"
 #include "objects/object_st/object_st.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -403,7 +402,7 @@ s32 EnSt_CheckHitLink(EnSt* this, PlayState* play) {
     this->gaveDamageSpinTimer = 30;
     play->damagePlayer(play, -8);
     Audio_PlayActorSound2(&player->actor, NA_SE_PL_BODY_HIT);
-    func_8002F71C(play, &this->actor, 4.0f, this->actor.yawTowardsPlayer, 6.0f);
+    Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 4.0f, this->actor.yawTowardsPlayer, 6.0f);
     return true;
 }
 
@@ -660,7 +659,7 @@ s32 EnSt_IsDoneBouncing(EnSt* this, PlayState* play) {
         return false;
     }
 
-    if (!(this->actor.bgCheckFlags & 1)) {
+    if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         // the Skulltula is not on the ground.
         return false;
     }
@@ -815,8 +814,6 @@ void EnSt_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->colCylinder[i]);
     }
     Collider_DestroyJntSph(play, &this->colSph);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSt_WaitOnCeiling(EnSt* this, PlayState* play) {

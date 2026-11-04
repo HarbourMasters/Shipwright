@@ -1,0 +1,114 @@
+:config:
+  segments:
+    - [ 6, 0x01216570 ]
+
+gDemoEcAnim_006220:
+  type: OOT:ANIMATION
+  offset: 0x6220
+  symbol: gDemoEcAnim_006220
+
+gDemoEcAnim_006930:
+  type: OOT:ANIMATION
+  offset: 0x6930
+  symbol: gDemoEcAnim_006930
+
+gDemoEcAnim_008D1C:
+  type: OOT:ANIMATION
+  offset: 0x8D1C
+  symbol: gDemoEcAnim_008D1C
+
+gDemoEcAnim_009234:
+  type: OOT:ANIMATION
+  offset: 0x9234
+  symbol: gDemoEcAnim_009234
+
+gDemoEcCarpenterAnim:
+  type: OOT:ANIMATION
+  offset: 0x164C
+  symbol: gDemoEcCarpenterAnim
+
+gDemoEcCuccoLadyAnim:
+  type: OOT:ANIMATION
+  offset: 0xCD8
+  symbol: gDemoEcCuccoLadyAnim
+
+gDemoEcDancingKokiriAnim:
+  type: OOT:ANIMATION
+  offset: 0x513C
+  symbol: gDemoEcDancingKokiriAnim
+
+gDemoEcDancingZoraAnim:
+  type: OOT:ANIMATION
+  offset: 0xC918
+  symbol: gDemoEcDancingZoraAnim
+
+gDemoEcGerudoAnim:
+  type: OOT:ANIMATION
+  offset: 0x2254
+  symbol: gDemoEcGerudoAnim
+
+gDemoEcGoron2Anim:
+  type: OOT:ANIMATION
+  offset: 0x3A98
+  symbol: gDemoEcGoron2Anim
+
+gDemoEcGoronAnim:
+  type: OOT:ANIMATION
+  offset: 0x2FA0
+  symbol: gDemoEcGoronAnim
+
+gDemoEcIngoAnim:
+  type: OOT:ANIMATION
+  offset: 0x48F4
+  symbol: gDemoEcIngoAnim
+
+gDemoEcJumpingCucco2Anim:
+  type: OOT:ANIMATION
+  offset: 0xA07C
+  symbol: gDemoEcJumpingCucco2Anim
+
+gDemoEcJumpingCuccoAnim:
+  type: OOT:ANIMATION
+  offset: 0x9BB4
+  symbol: gDemoEcJumpingCuccoAnim
+
+gDemoEcKingZoraAnim:
+  type: OOT:ANIMATION
+  offset: 0x6C40
+  symbol: gDemoEcKingZoraAnim
+
+gDemoEcKokiriAnim:
+  type: OOT:ANIMATION
+  offset: 0x5670
+  symbol: gDemoEcKokiriAnim
+
+gDemoEcMidoAnim:
+  type: OOT:ANIMATION
+  offset: 0x95DC
+  symbol: gDemoEcMidoAnim
+
+gDemoEcOldManAnim:
+  type: OOT:ANIMATION
+  offset: 0x5EA8
+  symbol: gDemoEcOldManAnim
+
+gDemoEcPotionShopOwnerAnim:
+  type: OOT:ANIMATION
+  offset: 0xAFE0
+  symbol: gDemoEcPotionShopOwnerAnim
+
+gDemoEcTalonAnim:
+  type: OOT:ANIMATION
+  offset: 0xBD38
+  symbol: gDemoEcTalonAnim
+
+gDemoEcWalkingCuccoAnim:
+  type: OOT:ANIMATION
+  offset: 0xA474
+  symbol: gDemoEcWalkingCuccoAnim
+
+gDemoEcWindmillManAnim:
+  type: OOT:ANIMATION
+  offset: 0x196C
+  symbol: gDemoEcWindmillManAnim
+

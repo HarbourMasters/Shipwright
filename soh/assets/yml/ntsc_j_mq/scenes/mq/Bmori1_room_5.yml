@@ -1,0 +1,107 @@
+:config:
+  segments:
+    - [ 3, 0x01781520 ]
+    - [ 2, 0x0175E9D0 ]
+  directory: scenes/mq/Bmori1_scene
+  external_files:
+    - ntsc_j_mq/scenes/mq/Bmori1_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+Bmori1_room_5:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: Bmori1_room_5
+
+Bmori1_room_5Tex_0023D0:
+  type: TEXTURE
+  offset: 0x23D0
+  symbol: Bmori1_room_5Tex_0023D0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+Bmori1_room_5Tex_0027D0:
+  type: TEXTURE
+  offset: 0x27D0
+  symbol: Bmori1_room_5Tex_0027D0
+  format: CI8
+  width: 16
+  height: 128
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+Bmori1_room_5Tex_002FD0:
+  type: TEXTURE
+  offset: 0x2FD0
+  symbol: Bmori1_room_5Tex_002FD0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14080
+
+Bmori1_room_5Tex_0033D0:
+  type: TEXTURE
+  offset: 0x33D0
+  symbol: Bmori1_room_5Tex_0033D0
+  format: RGBA16
+  width: 8
+  height: 16
+
+Bmori1_room_5Tex_0034D0:
+  type: TEXTURE
+  offset: 0x34D0
+  symbol: Bmori1_room_5Tex_0034D0
+  format: RGBA16
+  width: 16
+  height: 8
+
+
+Bmori1_room_5Vtx_0000D0:
+  type: OOT:ARRAY
+  offset: 0x0000D0
+  symbol: Bmori1_room_5Vtx_0000D0
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_5DL_000910:
+  type: GFX
+  offset: 0x000910
+  symbol: Bmori1_room_5DL_000910
+
+Bmori1_room_5Vtx_001088:
+  type: OOT:ARRAY
+  offset: 0x001088
+  symbol: Bmori1_room_5Vtx_001088
+  count: 180
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_5DL_001BC8:
+  type: GFX
+  offset: 0x001BC8
+  symbol: Bmori1_room_5DL_001BC8
+
+Bmori1_room_5Vtx_001E30:
+  type: OOT:ARRAY
+  offset: 0x001E30
+  symbol: Bmori1_room_5Vtx_001E30
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_5DL_002170:
+  type: GFX
+  offset: 0x002170
+  symbol: Bmori1_room_5DL_002170
+
+Bmori1_room_5DL_0023B0:
+  type: GFX
+  offset: 0x0023B0
+  symbol: Bmori1_room_5DL_0023B0

@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef GameInteractionEffect_h
-#define GameInteractionEffect_h
-
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -10,6 +7,7 @@ enum GameInteractionEffectQueryResult { Possible = 0x00, TemporarilyNotPossible 
 
 class GameInteractionEffectBase {
   public:
+    virtual ~GameInteractionEffectBase() = default;
     virtual GameInteractionEffectQueryResult CanBeApplied() = 0;
     GameInteractionEffectQueryResult Apply();
 
@@ -266,4 +264,3 @@ class SpawnActor : public GameInteractionEffectBase, public ParameterizedGameInt
 } // namespace GameInteractionEffect
 
 #endif /* __cplusplus */
-#endif /* GameInteractionEffect_h */

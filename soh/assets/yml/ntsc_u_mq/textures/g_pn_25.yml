@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F7210 ]
+
+gGravekeepersHutTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGravekeepersHutTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGravekeepersHutTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGravekeepersHutTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

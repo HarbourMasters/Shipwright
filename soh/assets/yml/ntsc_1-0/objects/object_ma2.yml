@@ -1,0 +1,606 @@
+:config:
+  segments:
+    - [ 6, 0x010B3EB0 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x010B3EB0 ]
+    - [ 9, 0x010B3EB0 ]
+    - [ 10, 0x010B3EB0 ]
+    - [ 11, 0x010B3EB0 ]
+    - [ 12, 0x010B3EB0 ]
+    - [ 13, 0x010B3EB0 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gMalonAdultBasketDL:
+  type: GFX
+  offset: 0x5420
+  symbol: gMalonAdultBasketDL
+
+gMalonAdultBasketInsideTex:
+  type: TEXTURE
+  offset: 0x3470
+  symbol: gMalonAdultBasketInsideTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gMalonAdultBasketTex:
+  type: TEXTURE
+  offset: 0x2B70
+  symbol: gMalonAdultBasketTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gMalonAdultBeltTex:
+  type: TEXTURE
+  offset: 0x1CB0
+  symbol: gMalonAdultBeltTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x7F0
+
+gMalonAdultBootTex:
+  type: TEXTURE
+  offset: 0x18B0
+  symbol: gMalonAdultBootTex
+  format: CI8
+  width: 64
+  height: 16
+  tlut: 0x7F0
+
+gMalonAdultChestAndNeckDL:
+  type: GFX
+  offset: 0x7568
+  symbol: gMalonAdultChestAndNeckDL
+
+gMalonAdultChestAndNeckLimb:
+  type: OOT:LIMB
+  offset: 0x8CE8
+  symbol: gMalonAdultChestAndNeckLimb
+  limb_type: Standard
+
+gMalonAdultClothesTLUT:
+  type: TEXTURE
+  offset: 0x7F0
+  symbol: gMalonAdultClothesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMalonAdultDressDL:
+  type: GFX
+  offset: 0x8300
+  symbol: gMalonAdultDressDL
+
+gMalonAdultDressLimb:
+  type: OOT:LIMB
+  offset: 0x8CDC
+  symbol: gMalonAdultDressLimb
+  limb_type: Standard
+
+gMalonAdultDressPatternTex:
+  type: TEXTURE
+  offset: 0x16B0
+  symbol: gMalonAdultDressPatternTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x7F0
+
+gMalonAdultEarTex:
+  type: TEXTURE
+  offset: 0x2270
+  symbol: gMalonAdultEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMalonAdultEyeClosedTex:
+  type: TEXTURE
+  offset: 0x3070
+  symbol: gMalonAdultEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1F70
+
+gMalonAdultEyeHalfTex:
+  type: TEXTURE
+  offset: 0x2C70
+  symbol: gMalonAdultEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1F70
+
+gMalonAdultEyeOpenTex:
+  type: TEXTURE
+  offset: 0x2570
+  symbol: gMalonAdultEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1F70
+
+gMalonAdultFaceTLUT:
+  type: TEXTURE
+  offset: 0x1F70
+  symbol: gMalonAdultFaceTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMalonAdultFingersTex:
+  type: TEXTURE
+  offset: 0x9F0
+  symbol: gMalonAdultFingersTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMalonAdultFrontDressTex:
+  type: TEXTURE
+  offset: 0x12B0
+  symbol: gMalonAdultFrontDressTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gMalonAdultGradientTex:
+  type: TEXTURE
+  offset: 0x2170
+  symbol: gMalonAdultGradientTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gMalonAdultHairTLUT:
+  type: TEXTURE
+  offset: 0x1EB0
+  symbol: gMalonAdultHairTLUT
+  format: RGBA16
+  width: 96
+  height: 1
+
+gMalonAdultHairTex:
+  type: TEXTURE
+  offset: 0x2470
+  symbol: gMalonAdultHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1EB0
+
+gMalonAdultHeadDL:
+  type: GFX
+  offset: 0x4BE0
+  symbol: gMalonAdultHeadDL
+
+gMalonAdultHeadLimb:
+  type: OOT:LIMB
+  offset: 0x8D3C
+  symbol: gMalonAdultHeadLimb
+  limb_type: Standard
+
+gMalonAdultIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x7D4
+  symbol: gMalonAdultIdleAnim
+
+gMalonAdultLeftArmDL:
+  type: GFX
+  offset: 0x8070
+  symbol: gMalonAdultLeftArmDL
+
+gMalonAdultLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x8D00
+  symbol: gMalonAdultLeftArmLimb
+  limb_type: Standard
+
+gMalonAdultLeftFootDL:
+  type: GFX
+  offset: 0x8B50
+  symbol: gMalonAdultLeftFootDL
+
+gMalonAdultLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x8CA0
+  symbol: gMalonAdultLeftFootLimb
+  limb_type: Standard
+
+gMalonAdultLeftHandDL:
+  type: GFX
+  offset: 0x8168
+  symbol: gMalonAdultLeftHandDL
+
+gMalonAdultLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x8D0C
+  symbol: gMalonAdultLeftHandLimb
+  limb_type: Standard
+
+gMalonAdultLeftLegDL:
+  type: GFX
+  offset: 0x8A60
+  symbol: gMalonAdultLeftLegDL
+
+gMalonAdultLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x8C94
+  symbol: gMalonAdultLeftLegLimb
+  limb_type: Standard
+
+gMalonAdultLeftShoulderDL:
+  type: GFX
+  offset: 0x7E40
+  symbol: gMalonAdultLeftShoulderDL
+
+gMalonAdultLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x8CF4
+  symbol: gMalonAdultLeftShoulderLimb
+  limb_type: Standard
+
+gMalonAdultLeftThighDL:
+  type: GFX
+  offset: 0x8A08
+  symbol: gMalonAdultLeftThighDL
+
+gMalonAdultLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x8C88
+  symbol: gMalonAdultLeftThighLimb
+  limb_type: Standard
+
+gMalonAdultLowerControlLimb:
+  type: OOT:LIMB
+  offset: 0x8C7C
+  symbol: gMalonAdultLowerControlLimb
+  limb_type: Standard
+
+gMalonAdultMiddleDressTex:
+  type: TEXTURE
+  offset: 0x11B0
+  symbol: gMalonAdultMiddleDressTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7F0
+
+gMalonAdultMouthHappyTex:
+  type: TEXTURE
+  offset: 0x3770
+  symbol: gMalonAdultMouthHappyTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1F70
+
+gMalonAdultMouthNeutralTex:
+  type: TEXTURE
+  offset: 0x2970
+  symbol: gMalonAdultMouthNeutralTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1F70
+
+gMalonAdultMouthSadTex:
+  type: TEXTURE
+  offset: 0x3570
+  symbol: gMalonAdultMouthSadTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1F70
+
+gMalonAdultNoseTex:
+  type: TEXTURE
+  offset: 0x21F0
+  symbol: gMalonAdultNoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gMalonAdultRightArmDL:
+  type: GFX
+  offset: 0x7BB0
+  symbol: gMalonAdultRightArmDL
+
+gMalonAdultRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x8D24
+  symbol: gMalonAdultRightArmLimb
+  limb_type: Standard
+
+gMalonAdultRightFootDL:
+  type: GFX
+  offset: 0x88E8
+  symbol: gMalonAdultRightFootDL
+
+gMalonAdultRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x8CC4
+  symbol: gMalonAdultRightFootLimb
+  limb_type: Standard
+
+gMalonAdultRightHandDL:
+  type: GFX
+  offset: 0x7CA8
+  symbol: gMalonAdultRightHandDL
+
+gMalonAdultRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x8D30
+  symbol: gMalonAdultRightHandLimb
+  limb_type: Standard
+
+gMalonAdultRightLegDL:
+  type: GFX
+  offset: 0x87F8
+  symbol: gMalonAdultRightLegDL
+
+gMalonAdultRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x8CB8
+  symbol: gMalonAdultRightLegLimb
+  limb_type: Standard
+
+gMalonAdultRightShoulderDL:
+  type: GFX
+  offset: 0x7980
+  symbol: gMalonAdultRightShoulderDL
+
+gMalonAdultRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x8D18
+  symbol: gMalonAdultRightShoulderLimb
+  limb_type: Standard
+
+gMalonAdultRightThighDL:
+  type: GFX
+  offset: 0x87A0
+  symbol: gMalonAdultRightThighDL
+
+gMalonAdultRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x8CAC
+  symbol: gMalonAdultRightThighLimb
+  limb_type: Standard
+
+gMalonAdultRootLimb:
+  type: OOT:LIMB
+  offset: 0x8C70
+  symbol: gMalonAdultRootLimb
+  limb_type: Standard
+
+gMalonAdultScarfTex:
+  type: TEXTURE
+  offset: 0xD70
+  symbol: gMalonAdultScarfTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x7F0
+
+gMalonAdultShirtCuffTex:
+  type: TEXTURE
+  offset: 0xCF0
+  symbol: gMalonAdultShirtCuffTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x7F0
+
+gMalonAdultShirtTex:
+  type: TEXTURE
+  offset: 0xBF0
+  symbol: gMalonAdultShirtTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7F0
+
+gMalonAdultSingAnim:
+  type: OOT:ANIMATION
+  offset: 0x9EE0
+  symbol: gMalonAdultSingAnim
+
+gMalonAdultSingToIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x92F0
+  symbol: gMalonAdultSingToIdleAnim
+
+gMalonAdultSkel:
+  type: OOT:SKELETON
+  offset: 0x8D90
+  symbol: gMalonAdultSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gMalonAdultStandStillAnim:
+  type: OOT:ANIMATION
+  offset: 0x93BC
+  symbol: gMalonAdultStandStillAnim
+
+gMalonAdultTorsoDL:
+  type: GFX
+  offset: 0x8530
+  symbol: gMalonAdultTorsoDL
+
+gMalonAdultTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x8CD0
+  symbol: gMalonAdultTorsoLimb
+  limb_type: Standard
+
+gMalonBowserTex:
+  type: TEXTURE
+  offset: 0xDB0
+  symbol: gMalonBowserTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_ma2Vtx_003970:
+  type: OOT:ARRAY
+  offset: 0x003970
+  symbol: object_ma2Vtx_003970
+  count: 234
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_004810:
+  type: OOT:ARRAY
+  offset: 0x004810
+  symbol: object_ma2Vtx_004810
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_0055F8:
+  type: OOT:ARRAY
+  offset: 0x0055F8
+  symbol: object_ma2Vtx_0055F8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_005878:
+  type: OOT:ARRAY
+  offset: 0x005878
+  symbol: object_ma2Vtx_005878
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_0059F8:
+  type: OOT:ARRAY
+  offset: 0x0059F8
+  symbol: object_ma2Vtx_0059F8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_005C78:
+  type: OOT:ARRAY
+  offset: 0x005C78
+  symbol: object_ma2Vtx_005C78
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_005EF8:
+  type: OOT:ARRAY
+  offset: 0x005EF8
+  symbol: object_ma2Vtx_005EF8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_006078:
+  type: OOT:ARRAY
+  offset: 0x006078
+  symbol: object_ma2Vtx_006078
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_0062F8:
+  type: OOT:ARRAY
+  offset: 0x0062F8
+  symbol: object_ma2Vtx_0062F8
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_0068A8:
+  type: OOT:ARRAY
+  offset: 0x0068A8
+  symbol: object_ma2Vtx_0068A8
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_006B68:
+  type: OOT:ARRAY
+  offset: 0x006B68
+  symbol: object_ma2Vtx_006B68
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_006D58:
+  type: OOT:ARRAY
+  offset: 0x006D58
+  symbol: object_ma2Vtx_006D58
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_006E88:
+  type: OOT:ARRAY
+  offset: 0x006E88
+  symbol: object_ma2Vtx_006E88
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_006EB8:
+  type: OOT:ARRAY
+  offset: 0x006EB8
+  symbol: object_ma2Vtx_006EB8
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_0070A8:
+  type: OOT:ARRAY
+  offset: 0x0070A8
+  symbol: object_ma2Vtx_0070A8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_0071D8:
+  type: OOT:ARRAY
+  offset: 0x0071D8
+  symbol: object_ma2Vtx_0071D8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_007208:
+  type: OOT:ARRAY
+  offset: 0x007208
+  symbol: object_ma2Vtx_007208
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMalonAdultSkelLimbs:
+  type: BLOB
+  offset: 0x8D48
+  symbol: gMalonAdultSkelLimbs
+  size: 0

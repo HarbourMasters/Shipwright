@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x011B7190 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x011B7190 ]
+    - [ 9, 0x011B7190 ]
+    - [ 10, 0x011B7190 ]
+    - [ 11, 0x011B7190 ]
+    - [ 12, 0x011B7190 ]
+    - [ 13, 0x011B7190 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gGiSpookyMaskDL:
+  type: GFX
+  offset: 0x07E0
+  symbol: gGiSpookyMaskDL
+
+
+object_gi_redead_maskVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_redead_maskVtx_000000
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

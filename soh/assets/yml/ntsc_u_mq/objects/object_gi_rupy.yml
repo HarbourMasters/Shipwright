@@ -1,0 +1,91 @@
+:config:
+  segments:
+    - [ 6, 0x012A5F10 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x012A5F10 ]
+    - [ 9, 0x012A5F10 ]
+    - [ 10, 0x012A5F10 ]
+    - [ 11, 0x012A5F10 ]
+    - [ 12, 0x012A5F10 ]
+    - [ 13, 0x012A5F10 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gGiBlueRupeeInnerColorDL:
+  type: GFX
+  offset: 0x04C0
+  symbol: gGiBlueRupeeInnerColorDL
+
+gGiBlueRupeeOuterColorDL:
+  type: GFX
+  offset: 0x0560
+  symbol: gGiBlueRupeeOuterColorDL
+
+gGiGoldRupeeInnerColorDL:
+  type: GFX
+  offset: 0x0520
+  symbol: gGiGoldRupeeInnerColorDL
+
+gGiGoldRupeeOuterColorDL:
+  type: GFX
+  offset: 0x05C0
+  symbol: gGiGoldRupeeOuterColorDL
+
+gGiGreenRupeeInnerColorDL:
+  type: GFX
+  offset: 0x04A0
+  symbol: gGiGreenRupeeInnerColorDL
+
+gGiGreenRupeeOuterColorDL:
+  type: GFX
+  offset: 0x0540
+  symbol: gGiGreenRupeeOuterColorDL
+
+gGiPurpleRupeeInnerColorDL:
+  type: GFX
+  offset: 0x0500
+  symbol: gGiPurpleRupeeInnerColorDL
+
+gGiPurpleRupeeOuterColorDL:
+  type: GFX
+  offset: 0x05A0
+  symbol: gGiPurpleRupeeOuterColorDL
+
+gGiRedRupeeInnerColorDL:
+  type: GFX
+  offset: 0x04E0
+  symbol: gGiRedRupeeInnerColorDL
+
+gGiRedRupeeOuterColorDL:
+  type: GFX
+  offset: 0x0580
+  symbol: gGiRedRupeeOuterColorDL
+
+gGiRupeeInnerDL:
+  type: GFX
+  offset: 0x05E0
+  symbol: gGiRupeeInnerDL
+
+gGiRupeeOuterDL:
+  type: GFX
+  offset: 0x06F0
+  symbol: gGiRupeeOuterDL
+
+
+object_gi_rupyVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_rupyVtx_000000
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_rupyVtx_0002C0:
+  type: OOT:ARRAY
+  offset: 0x0002C0
+  symbol: object_gi_rupyVtx_0002C0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,108 @@
+:config:
+  segments:
+    - [ 6, 0x00EE5860 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00EE5860 ]
+    - [ 9, 0x00EE5860 ]
+    - [ 10, 0x00EE5860 ]
+    - [ 11, 0x00EE5860 ]
+    - [ 12, 0x00EE5860 ]
+    - [ 13, 0x00EE5860 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+object_oE9_Blob_001290:
+  type: BLOB
+  offset: 0x1290
+  size: 0x800
+  symbol: object_oE9_Blob_001290
+
+object_oE9_DL_000800:
+  type: GFX
+  offset: 0x800
+  symbol: object_oE9_DL_000800
+
+object_oE9_TLUT_000C90:
+  type: TEXTURE
+  offset: 0xC90
+  symbol: object_oE9_TLUT_000C90
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oE9_TLUT_001A90:
+  type: TEXTURE
+  offset: 0x1A90
+  symbol: object_oE9_TLUT_001A90
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oE9_Tex_000E90:
+  type: TEXTURE
+  offset: 0xE90
+  symbol: object_oE9_Tex_000E90
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xC90
+
+object_oE9_Tex_001C90:
+  type: TEXTURE
+  offset: 0x1C90
+  symbol: object_oE9_Tex_001C90
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1A90
+
+object_oE9_Tex_001CD0:
+  type: TEXTURE
+  offset: 0x1CD0
+  symbol: object_oE9_Tex_001CD0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1A90
+
+object_oE9_Tex_001DD0:
+  type: TEXTURE
+  offset: 0x1DD0
+  symbol: object_oE9_Tex_001DD0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_oE9_Tex_001ED0:
+  type: TEXTURE
+  offset: 0x1ED0
+  symbol: object_oE9_Tex_001ED0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_oE9_Tex_0026D0:
+  type: TEXTURE
+  offset: 0x26D0
+  symbol: object_oE9_Tex_0026D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_oE9_Tex_002ED0:
+  type: TEXTURE
+  offset: 0x2ED0
+  symbol: object_oE9_Tex_002ED0
+  format: I4
+  width: 16
+  height: 8
+
+
+object_oE9Vtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_oE9Vtx_000000
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

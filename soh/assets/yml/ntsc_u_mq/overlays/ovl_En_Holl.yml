@@ -1,0 +1,26 @@
+:config:
+  segments:
+    - [ 128, 0x00C64870 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x00C64870 ]
+    - [ 9, 0x00C64870 ]
+    - [ 10, 0x00C64870 ]
+    - [ 11, 0x00C64870 ]
+    - [ 12, 0x00C64870 ]
+    - [ 13, 0x00C64870 ]
+  virtual: [ 0x80A3F5A0, 0x00C64870 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+sPlaneDL:
+  type: GFX
+  offset: 0xEA8
+  symbol: sPlaneDL
+
+sPlaneVtx:
+  type: OOT:ARRAY
+  offset: 0xE68
+  symbol: sPlaneVtx
+  count: 4
+  array_type: VTX
+

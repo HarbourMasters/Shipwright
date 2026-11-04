@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x0130B9A0 ]
+
+gLonLonRanchTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gLonLonRanchTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gLonLonRanchTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gLonLonRanchTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gLonLonRanchTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gLonLonRanchTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

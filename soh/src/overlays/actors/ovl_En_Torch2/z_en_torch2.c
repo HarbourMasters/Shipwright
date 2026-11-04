@@ -7,6 +7,7 @@
 #include "z_en_torch2.h"
 #include "objects/object_torch2/object_torch2.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -500,7 +501,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
 
             } else if (sJumpslashFlag && (sAlpha == 255) && (this->actor.velocity.y > 0)) {
                 input->cur.button |= BTN_B;
-            } else if (!sJumpslashFlag && (this->actor.bgCheckFlags & 1)) {
+            } else if (!sJumpslashFlag && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
                 this->actor.world.rot.y = this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
                 sStickAngle = this->actor.yawTowardsPlayer;
                 if (sAlpha != 255) {

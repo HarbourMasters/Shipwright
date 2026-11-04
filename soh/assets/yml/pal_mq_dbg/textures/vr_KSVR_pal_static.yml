@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x01E87000 ]
+
+gKokiriShopBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gKokiriShopBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKokiriShopBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKokiriShopBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

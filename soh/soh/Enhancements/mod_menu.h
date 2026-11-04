@@ -1,6 +1,6 @@
 #pragma once
 
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 #ifdef __cplusplus
 class ModMenuWindow : public Ship::GuiWindow {

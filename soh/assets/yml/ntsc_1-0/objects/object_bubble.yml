@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x00E45550 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x00E45550 ]
+    - [ 9, 0x00E45550 ]
+    - [ 10, 0x00E45550 ]
+    - [ 11, 0x00E45550 ]
+    - [ 12, 0x00E45550 ]
+    - [ 13, 0x00E45550 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gBubbleDL:
+  type: GFX
+  offset: 0x1000
+  symbol: gBubbleDL
+
+gBubbleTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBubbleTex
+  format: IA8
+  width: 64
+  height: 64
+
+
+object_bubbleVtx_001080:
+  type: OOT:ARRAY
+  offset: 0x001080
+  symbol: object_bubbleVtx_001080
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

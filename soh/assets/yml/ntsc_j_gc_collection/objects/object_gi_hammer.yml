@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x0111D720 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x0111D720 ]
+    - [ 9, 0x0111D720 ]
+    - [ 10, 0x0111D720 ]
+    - [ 11, 0x0111D720 ]
+    - [ 12, 0x0111D720 ]
+    - [ 13, 0x0111D720 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gGiHammerDL:
+  type: GFX
+  offset: 0x09D0
+  symbol: gGiHammerDL
+
+
+object_gi_hammerVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_hammerVtx_000000
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

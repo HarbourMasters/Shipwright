@@ -4,7 +4,6 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
 #include <string>
-#include <version>
 
 static std::map<const char*, std::map<HOOK_ID, HookInfo>*> hookData;
 
@@ -23,7 +22,7 @@ void DrawHookRegisteringInfos(const char* hookName) {
         return;
     }
 
-    ImGui::Text("Total Registered: %d", numHooks);
+    ImGui::Text("Total Registered: %zu", numHooks);
 
     if (ImGui::BeginTable(("Table##" + std::string(hookName)).c_str(), 4,
                           ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable |

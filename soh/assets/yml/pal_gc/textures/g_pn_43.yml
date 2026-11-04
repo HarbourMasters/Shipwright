@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x013019F0 ]
+
+gGanonsCastleTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGanonsCastleTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGanonsCastleTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gGanonsCastleTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gGanonsCastleTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGanonsCastleTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

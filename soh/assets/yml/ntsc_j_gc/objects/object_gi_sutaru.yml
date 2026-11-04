@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x012359E0 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x012359E0 ]
+    - [ 9, 0x012359E0 ]
+    - [ 10, 0x012359E0 ]
+    - [ 11, 0x012359E0 ]
+    - [ 12, 0x012359E0 ]
+    - [ 13, 0x012359E0 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gGiSkulltulaTokenDL:
+  type: GFX
+  offset: 0x0330
+  symbol: gGiSkulltulaTokenDL
+
+gGiSkulltulaTokenFlameDL:
+  type: GFX
+  offset: 0x0438
+  symbol: gGiSkulltulaTokenFlameDL
+
+
+object_gi_sutaruVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_sutaruVtx_000000
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_sutaruVtx_000190:
+  type: OOT:ARRAY
+  offset: 0x000190
+  symbol: object_gi_sutaruVtx_000190
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

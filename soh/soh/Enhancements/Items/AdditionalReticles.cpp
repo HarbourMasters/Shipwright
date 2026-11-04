@@ -1,11 +1,15 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-extern PlayState* gPlayState;
-extern SaveContext gSaveContext;
+#include "z64.h"
+#include "z64save.h"
 #include "macros.h"
 #include "functions.h"
+extern PlayState* gPlayState;
+extern SaveContext gSaveContext;
 }
 
 #define CVAR_BOW_RETICLE_NAME CVAR_ENHANCEMENT("BowReticle")
@@ -36,14 +40,13 @@ void RegisterAdditionalReticles() {
     bool shouldRegister = CVAR_BOW_RETICLE_VALUE || CVAR_BOOMERANG_RETICLE_VALUE;
 
     COND_VB_SHOULD(VB_DRAW_ADDITIONAL_RETICLES, shouldRegister, {
-        Player* player = GET_PLAYER(gPlayState);
+        Player* player = va_arg(args, Player*);
         Actor* heldActor = player->heldActor;
         if (CVAR_BOW_RETICLE_VALUE &&
             ((player->heldItemAction >= PLAYER_IA_BOW && player->heldItemAction <= PLAYER_IA_BOW_LIGHT) ||
              player->heldItemAction == PLAYER_IA_SLINGSHOT)) {
             if (heldActor != NULL) {
                 MtxF sp44;
-                s32 pad;
 
                 Matrix_RotateZYX(0, -15216, -17496, MTXMODE_APPLY);
                 Matrix_Get(&sp44);

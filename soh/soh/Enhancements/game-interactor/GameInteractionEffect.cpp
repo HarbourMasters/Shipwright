@@ -10,7 +10,6 @@ have functions to both enable and disable said effect.
 
 #include "GameInteractionEffect.h"
 #include "GameInteractor.h"
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 extern "C" {
@@ -271,7 +270,7 @@ GameInteractionEffectQueryResult KnockbackPlayer::CanBeApplied() {
     }
 }
 void KnockbackPlayer::_Apply() {
-    GameInteractor::RawAction::KnockbackPlayer(parameters[0]);
+    GameInteractor::RawAction::KnockbackPlayer(static_cast<f32>(parameters[0]));
 }
 
 // MARK: - ModifyLinkSize

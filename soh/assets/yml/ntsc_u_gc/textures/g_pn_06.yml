@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012EADC0 ]
+
+gDekuTreeTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gDekuTreeTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gDekuTreeTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDekuTreeTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

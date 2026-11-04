@@ -9,12 +9,12 @@
     "7": "Temple de l'Ombre",
     "8": "Puits",
     "9": "Caverne Polaire",
-    "10": "", // Escaliers vers le Repaire de Ganondorf (No title card)
+    "10": "",
     "11": "Gymnase Gerudo",
     "12": "Repaire des Voleurs",
     "13": "Tour de Ganon",
-    "14": "", // Fuite du Château de Ganon (No title card)
-    "15": "", // Fuite du Château de Ganon 5 (No title card)
+    "14": "",
+    "15": "",
     "16": "Chasse aux Trésors",
     "17": "Monstre Insectoide Géant - Gohma",
     "18": "Dinosaure Infernal - King Dodongo",
@@ -26,7 +26,7 @@
     "24": "Monstre de l'Ombre - Bongo Bongo",
     "25": "Seigneur du Malin - Ganondorf",
     "26": "",
-    "27": "", // Entrée vers le Marché (No title card)
+    "27": "",
     "28": "",
     "29": "",
     "30": "Ruelle",
@@ -34,50 +34,50 @@
     "32": "Place du Marché",
     "33": "Place du Marché",
     "34": "Place du Marché",
-    "35": "", // Extérieur du Temple du Temps (No title card)
+    "35": "",
     "36": "SCENE_SHRINE_N",
     "37": "SCENE_SHRINE_R",
-    "38": "", // Cabane des Frères Je-Sais-Tout (No title card)
-    "39": "", // Cabane des Jumelles (No title card)
-    "40": "", // Cabane du Grand Mido (No title card)
-    "41": "", // Cabane de Saria (No title card)
-    "42": "", // Maison du Village Cocorico 1 (No title card)
-    "43": "", // Maison de la Ruelle 1 (No title card)
+    "38": "",
+    "39": "",
+    "40": "",
+    "41": "",
+    "42": "",
+    "43": "",
     "44": "Bazar",
     "45": "Boutique Kokiri",
     "46": "Boutique Goron",
     "47": "Boutique Zora",
-    "48": "", // Magasin Fermé (No title card)
+    "48": "",
     "49": "Apothicaire",
-    "50": "", // Magasin de Missiles (No title card)
+    "50": "",
     "51": "Foire aux Masques",
-    "52": "", // Cabane de Link (No title card)
-    "53": "", // Dog Lady's House (No title card)
+    "52": "",
+    "53": "",
     "54": "Étable",
-    "55": "", // Maison d'Impa (No title card)
+    "55": "",
     "56": "Laboratoire du Lac",
-    "57": "", // Tente du Marathonien (No title card)
+    "57": "",
     "58": "Cabane du fossoyeur",
     "59": "Fontaine Royale des Fées",
     "60": "Fontaine des Fées",
     "61": "Fontaine Royale des Fées",
-    "62": "", // Grottes (No title card)
-    "63": "", // Tombe 1 (No title card)
-    "64": "", // Tombe 2 (No title card)
+    "62": "",
+    "63": "",
+    "64": "",
     "65": "Tombe Royale",
     "66": "Jeu d'adresse",
     "67": "Temple du Temps",
     "68": "Sanctuaire des Sages",
     "69": "Cour du Château",
     "70": "Cour du Château",
-    "71": "", // Goddesses Cutscene (No title card)
+    "71": "",
     "72": "Endroit Inconnu",
     "73": "Étang",
     "74": "Cour du Château",
     "75": "Bowling Teigneux",
-    "76": "", // Lon Lon Ranch House/Silo (No title card)
-    "77": "", // Guard House (No title card)
-    "78": "", // Potion Shop (No title card)
+    "76": "",
+    "77": "",
+    "78": "",
     "79": "Ganon",
     "80": "Maison des Araignées",
     "81": "Plaine d'Hyrule",
@@ -100,13 +100,13 @@
     "98": "Village Goron",
     "99": "Ranch Lon Lon",
     "100": "",
-    "101": "", // Debug: Test Map (No title card)
-    "102": "", // Debug: Test Room (No title card)
-    "103": "", // Debug: Depth Test (No title card)
-    "104": "", // Debug: Stalfos Miniboss Room (No title card)
-    "105": "", // Debug: Stalfos Boss Room (No title card)
-    "106": "", // Debug: Dark Link Room (No title card)
+    "101": "",
+    "102": "",
+    "103": "",
+    "104": "",
+    "105": "",
+    "106": "",
     "107": "",
-    "108": "", // Debug: SRD Room (No title card)
-    "109": "" // Debug: Treasure Chest Warp (No title card)
+    "108": "",
+    "109": ""
 }

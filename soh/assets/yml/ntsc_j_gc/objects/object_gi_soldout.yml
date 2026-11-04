@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x011C3370 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x011C3370 ]
+    - [ 9, 0x011C3370 ]
+    - [ 10, 0x011C3370 ]
+    - [ 11, 0x011C3370 ]
+    - [ 12, 0x011C3370 ]
+    - [ 13, 0x011C3370 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gGiSoldOutDL:
+  type: GFX
+  offset: 0x0440
+  symbol: gGiSoldOutDL
+
+object_gi_soldoutTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_soldoutTex_000000
+  format: IA8
+  width: 32
+  height: 32
+
+
+object_gi_soldoutVtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_soldoutVtx_000400
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x013038E0 ]
+
+gThievesHideoutTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gThievesHideoutTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gThievesHideoutTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gThievesHideoutTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

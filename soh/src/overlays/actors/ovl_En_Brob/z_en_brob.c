@@ -6,7 +6,6 @@
 
 #include "z_en_brob.h"
 #include "objects/object_brob/object_brob.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
@@ -103,8 +102,6 @@ void EnBrob_Destroy(Actor* thisx, PlayState* play) {
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
     Collider_DestroyCylinder(play, &this->colliders[0]);
     Collider_DestroyCylinder(play, &this->colliders[1]);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBrob_SetupIdle(EnBrob* this, PlayState* play) {
@@ -155,7 +152,8 @@ void EnBrob_Idle(EnBrob* this, PlayState* play) {
     }
     if (this->timer == 0) {
         if (DynaPolyActor_IsPlayerOnTop(&this->dyna) != 0) {
-            func_8002F71C(play, &this->dyna.actor, 5.0f, this->dyna.actor.yawTowardsPlayer, 1.0f);
+            Actor_SetPlayerKnockbackLargeNoDamage(play, &this->dyna.actor, 5.0f, this->dyna.actor.yawTowardsPlayer,
+                                                  1.0f);
             EnBrob_SetupMoveUp(this, play);
         } else if (this->dyna.actor.xzDistToPlayer < 300.0f) {
             EnBrob_SetupMoveUp(this, play);
@@ -281,7 +279,8 @@ void EnBrob_Update(Actor* thisx, PlayState* play2) {
 
         if (this->actionFunc == EnBrob_MoveUp && !(this->colliders[0].base.atFlags & AT_BOUNCED) &&
             !(this->colliders[1].base.atFlags & AT_BOUNCED)) {
-            func_8002F71C(play, &this->dyna.actor, 5.0f, this->dyna.actor.yawTowardsPlayer, 1.0f);
+            Actor_SetPlayerKnockbackLargeNoDamage(play, &this->dyna.actor, 5.0f, this->dyna.actor.yawTowardsPlayer,
+                                                  1.0f);
         } else if (this->actionFunc != EnBrob_MoveUp) {
             EnBrob_SetupShock(this);
         }

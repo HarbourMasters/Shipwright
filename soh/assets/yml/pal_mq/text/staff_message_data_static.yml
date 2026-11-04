@@ -1,0 +1,11 @@
+:config:
+  segments:
+    - [ 128, 0x00938F40 ]
+
+staff_message_data_static:
+  type: OOT:TEXT
+  offset: 0x0
+  symbol: staff_message_data_static
+  code_offset: 0xFED38
+  code_phys_start: 0x00A580D0
+

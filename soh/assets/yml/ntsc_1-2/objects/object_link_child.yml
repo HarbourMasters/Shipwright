@@ -1,0 +1,1876 @@
+:config:
+  segments:
+    - [ 6, 0x00D9C740 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x00D9C740 ]
+    - [ 9, 0x00D9C740 ]
+    - [ 10, 0x00D9C740 ]
+    - [ 11, 0x00D9C740 ]
+    - [ 12, 0x00D9C740 ]
+    - [ 13, 0x00D9C740 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gLinkChildBeltClaspTex:
+  type: TEXTURE
+  offset: 0x6880
+  symbol: gLinkChildBeltClaspTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x5300
+
+gLinkChildBeltTLUT:
+  type: TEXTURE
+  offset: 0x5300
+  symbol: gLinkChildBeltTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkChildBeltTex:
+  type: TEXTURE
+  offset: 0x6800
+  symbol: gLinkChildBeltTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x5300
+
+gLinkChildBootTex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gLinkChildBootTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5300
+
+gLinkChildBottle2DL:
+  type: GFX
+  offset: 0x18648
+  symbol: gLinkChildBottle2DL
+
+gLinkChildBottleDL:
+  type: GFX
+  offset: 0x18478
+  symbol: gLinkChildBottleDL
+
+gLinkChildBunnyHoodDL:
+  type: GFX
+  offset: 0x2CA38
+  symbol: gLinkChildBunnyHoodDL
+
+gLinkChildBunnyHoodEarTex:
+  type: TEXTURE
+  offset: 0x2C028
+  symbol: gLinkChildBunnyHoodEarTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLinkChildBunnyHoodEyeTex:
+  type: TEXTURE
+  offset: 0x2BA28
+  symbol: gLinkChildBunnyHoodEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkChildBunnyHoodTex:
+  type: TEXTURE
+  offset: 0x2BC28
+  symbol: gLinkChildBunnyHoodTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLinkChildCollarFarDL:
+  type: GFX
+  offset: 0x1BB78
+  symbol: gLinkChildCollarFarDL
+
+gLinkChildCollarLimb:
+  type: OOT:LIMB
+  offset: 0x2CE88
+  symbol: gLinkChildCollarLimb
+  limb_type: LOD
+
+gLinkChildCollarNearDL:
+  type: GFX
+  offset: 0x210C0
+  symbol: gLinkChildCollarNearDL
+
+gLinkChildDL_18580:
+  type: GFX
+  offset: 0x18580
+  symbol: gLinkChildDL_18580
+
+gLinkChildDekuShieldAndSheathFarDL:
+  type: GFX
+  offset: 0x17150
+  symbol: gLinkChildDekuShieldAndSheathFarDL
+
+gLinkChildDekuShieldAndSheathNearDL:
+  type: GFX
+  offset: 0x15010
+  symbol: gLinkChildDekuShieldAndSheathNearDL
+
+gLinkChildDekuShieldBackTex:
+  type: TEXTURE
+  offset: 0x7688
+  symbol: gLinkChildDekuShieldBackTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLinkChildDekuShieldDL:
+  type: GFX
+  offset: 0x224F8
+  symbol: gLinkChildDekuShieldDL
+
+gLinkChildDekuShieldFrontTex:
+  type: TEXTURE
+  offset: 0x7E88
+  symbol: gLinkChildDekuShieldFrontTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gLinkChildDekuShieldMtx:
+  type: OOT:MTX
+  offset: 0x22648
+  symbol: gLinkChildDekuShieldMtx
+
+gLinkChildDekuShieldSwordAndSheathFarDL:
+  type: GFX
+  offset: 0x16EE8
+  symbol: gLinkChildDekuShieldSwordAndSheathFarDL
+
+gLinkChildDekuShieldSwordAndSheathNearDL:
+  type: GFX
+  offset: 0x14D68
+  symbol: gLinkChildDekuShieldSwordAndSheathNearDL
+
+gLinkChildDekuShieldWithMatrixDL:
+  type: GFX
+  offset: 0x22688
+  symbol: gLinkChildDekuShieldWithMatrixDL
+
+gLinkChildEarTex:
+  type: TEXTURE
+  offset: 0x5200
+  symbol: gLinkChildEarTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5500
+
+gLinkChildEyesClosedfTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gLinkChildEyesClosedfTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5500
+
+gLinkChildEyesHalfTex:
+  type: TEXTURE
+  offset: 0x0800
+  symbol: gLinkChildEyesHalfTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5500
+
+gLinkChildEyesOpenTex:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gLinkChildEyesOpenTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5500
+
+gLinkChildEyesRollLeftTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gLinkChildEyesRollLeftTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5500
+
+gLinkChildEyesRollRightTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gLinkChildEyesRollRightTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5500
+
+gLinkChildEyesShockTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gLinkChildEyesShockTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5500
+
+gLinkChildEyesUnk1Tex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gLinkChildEyesUnk1Tex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5500
+
+gLinkChildEyesUnk2Tex:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: gLinkChildEyesUnk2Tex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5500
+
+gLinkChildFairyOcarinaTex:
+  type: TEXTURE
+  offset: 0x6E08
+  symbol: gLinkChildFairyOcarinaTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gLinkChildGerudoMaskDL:
+  type: GFX
+  offset: 0x2B788
+  symbol: gLinkChildGerudoMaskDL
+
+gLinkChildGerudoMaskEyeTex:
+  type: TEXTURE
+  offset: 0x285A0
+  symbol: gLinkChildGerudoMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLinkChildGerudoMaskHairTex:
+  type: TEXTURE
+  offset: 0x28FA0
+  symbol: gLinkChildGerudoMaskHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkChildGerudoMaskMouthTex:
+  type: TEXTURE
+  offset: 0x28DA0
+  symbol: gLinkChildGerudoMaskMouthTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkChildGerudoMaskNoseTex:
+  type: TEXTURE
+  offset: 0x291A0
+  symbol: gLinkChildGerudoMaskNoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gLinkChildGoronBraceletDL:
+  type: GFX
+  offset: 0x16118
+  symbol: gLinkChildGoronBraceletDL
+
+gLinkChildGoronBraceletTex:
+  type: TEXTURE
+  offset: 0x7208
+  symbol: gLinkChildGoronBraceletTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gLinkChildGoronMaskDL:
+  type: GFX
+  offset: 0x2B350
+  symbol: gLinkChildGoronMaskDL
+
+gLinkChildGoronMaskEarTex:
+  type: TEXTURE
+  offset: 0x26C20
+  symbol: gLinkChildGoronMaskEarTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gLinkChildGoronMaskEyeTex:
+  type: TEXTURE
+  offset: 0x26120
+  symbol: gLinkChildGoronMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLinkChildGoronMaskHairTex:
+  type: TEXTURE
+  offset: 0x269A0
+  symbol: gLinkChildGoronMaskHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkChildGoronMaskMouthTex:
+  type: TEXTURE
+  offset: 0x25120
+  symbol: gLinkChildGoronMaskMouthTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gLinkChildGoronMaskNoseTex:
+  type: TEXTURE
+  offset: 0x26920
+  symbol: gLinkChildGoronMaskNoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gLinkChildGoronSymbolTex:
+  type: TEXTURE
+  offset: 0x7288
+  symbol: gLinkChildGoronSymbolTex
+  format: IA16
+  width: 16
+  height: 32
+
+gLinkChildHandTLUT:
+  type: TEXTURE
+  offset: 0x9E88
+  symbol: gLinkChildHandTLUT
+  format: RGBA16
+  width: 17
+  height: 4
+
+gLinkChildHandTex:
+  type: TEXTURE
+  offset: 0xA1F0
+  symbol: gLinkChildHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9E88
+
+gLinkChildHatFarDL:
+  type: GFX
+  offset: 0x1C2A8
+  symbol: gLinkChildHatFarDL
+
+gLinkChildHatLimb:
+  type: OOT:LIMB
+  offset: 0x2CE78
+  symbol: gLinkChildHatLimb
+  limb_type: LOD
+
+gLinkChildHatNearDL:
+  type: GFX
+  offset: 0x219B0
+  symbol: gLinkChildHatNearDL
+
+gLinkChildHeadFarDL:
+  type: GFX
+  offset: 0x1BDA0
+  symbol: gLinkChildHeadFarDL
+
+gLinkChildHeadLimb:
+  type: OOT:LIMB
+  offset: 0x2CE68
+  symbol: gLinkChildHeadLimb
+  limb_type: LOD
+
+gLinkChildHeadNearDL:
+  type: GFX
+  offset: 0x21360
+  symbol: gLinkChildHeadNearDL
+
+gLinkChildHylianShieldAndSheathFarDL:
+  type: GFX
+  offset: 0x16CF8
+  symbol: gLinkChildHylianShieldAndSheathFarDL
+
+gLinkChildHylianShieldAndSheathNearDL:
+  type: GFX
+  offset: 0x14B40
+  symbol: gLinkChildHylianShieldAndSheathNearDL
+
+gLinkChildHylianShieldBackTex:
+  type: TEXTURE
+  offset: 0x8E88
+  symbol: gLinkChildHylianShieldBackTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLinkChildHylianShieldSwordAndSheathFarDL:
+  type: GFX
+  offset: 0x16A98
+  symbol: gLinkChildHylianShieldSwordAndSheathFarDL
+
+gLinkChildHylianShieldSwordAndSheathNearDL:
+  type: GFX
+  offset: 0x148A8
+  symbol: gLinkChildHylianShieldSwordAndSheathNearDL
+
+gLinkChildKeatonMaskDL:
+  type: GFX
+  offset: 0x2B060
+  symbol: gLinkChildKeatonMaskDL
+
+gLinkChildKeatonMaskEarTex:
+  type: TEXTURE
+  offset: 0x23AA0
+  symbol: gLinkChildKeatonMaskEarTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gLinkChildKeatonMaskEyeBrowTex:
+  type: TEXTURE
+  offset: 0x236A0
+  symbol: gLinkChildKeatonMaskEyeBrowTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gLinkChildKokiriSwordSheathTex:
+  type: TEXTURE
+  offset: 0xA2F0
+  symbol: gLinkChildKokiriSwordSheathTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9F10
+
+gLinkChildLeftFistAndBoomerangFarDL:
+  type: GFX
+  offset: 0x16908
+  symbol: gLinkChildLeftFistAndBoomerangFarDL
+
+gLinkChildLeftFistAndBoomerangNearDL:
+  type: GFX
+  offset: 0x14660
+  symbol: gLinkChildLeftFistAndBoomerangNearDL
+
+gLinkChildLeftFistAndKokiriSwordFarDL:
+  type: GFX
+  offset: 0x17630
+  symbol: gLinkChildLeftFistAndKokiriSwordFarDL
+
+gLinkChildLeftFistAndKokiriSwordNearDL:
+  type: GFX
+  offset: 0x13F38
+  symbol: gLinkChildLeftFistAndKokiriSwordNearDL
+
+gLinkChildLeftFistFarDL:
+  type: GFX
+  offset: 0x163C0
+  symbol: gLinkChildLeftFistFarDL
+
+gLinkChildLeftFistNearDL:
+  type: GFX
+  offset: 0x13E18
+  symbol: gLinkChildLeftFistNearDL
+
+gLinkChildLeftFootFarDL:
+  type: GFX
+  offset: 0x1BA50
+  symbol: gLinkChildLeftFootFarDL
+
+gLinkChildLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x2CE48
+  symbol: gLinkChildLeftFootLimb
+  limb_type: LOD
+
+gLinkChildLeftFootNearDL:
+  type: GFX
+  offset: 0x20F60
+  symbol: gLinkChildLeftFootNearDL
+
+gLinkChildLeftForearmFarDL:
+  type: GFX
+  offset: 0x1C848
+  symbol: gLinkChildLeftForearmFarDL
+
+gLinkChildLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x2CEA8
+  symbol: gLinkChildLeftForearmLimb
+  limb_type: LOD
+
+gLinkChildLeftForearmNearDL:
+  type: GFX
+  offset: 0x21FE8
+  symbol: gLinkChildLeftForearmNearDL
+
+gLinkChildLeftHandFarDL:
+  type: GFX
+  offset: 0x16280
+  symbol: gLinkChildLeftHandFarDL
+
+gLinkChildLeftHandHoldingMasterSwordDL:
+  type: GFX
+  offset: 0x15540
+  symbol: gLinkChildLeftHandHoldingMasterSwordDL
+
+gLinkChildLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x2CEB8
+  symbol: gLinkChildLeftHandLimb
+  limb_type: LOD
+
+gLinkChildLeftHandNearDL:
+  type: GFX
+  offset: 0x13CB0
+  symbol: gLinkChildLeftHandNearDL
+
+gLinkChildLeftHandUpFarDL:
+  type: GFX
+  offset: 0x17F00
+  symbol: gLinkChildLeftHandUpFarDL
+
+gLinkChildLeftHandUpNearDL:
+  type: GFX
+  offset: 0x15FD0
+  symbol: gLinkChildLeftHandUpNearDL
+
+gLinkChildLeftShinFarDL:
+  type: GFX
+  offset: 0x1B7F8
+  symbol: gLinkChildLeftShinFarDL
+
+gLinkChildLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x2CE38
+  symbol: gLinkChildLeftShinLimb
+  limb_type: LOD
+
+gLinkChildLeftShinNearDL:
+  type: GFX
+  offset: 0x20CD0
+  symbol: gLinkChildLeftShinNearDL
+
+gLinkChildLeftShoulderFarDL:
+  type: GFX
+  offset: 0x1C688
+  symbol: gLinkChildLeftShoulderFarDL
+
+gLinkChildLeftShoulderNearDL:
+  type: GFX
+  offset: 0x21E18
+  symbol: gLinkChildLeftShoulderNearDL
+
+gLinkChildLeftThighFarDL:
+  type: GFX
+  offset: 0x1B638
+  symbol: gLinkChildLeftThighFarDL
+
+gLinkChildLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x2CE28
+  symbol: gLinkChildLeftThighLimb
+  limb_type: LOD
+
+gLinkChildLeftThighNearDL:
+  type: GFX
+  offset: 0x20AD8
+  symbol: gLinkChildLeftThighNearDL
+
+gLinkChildLeftshoulderLimb:
+  type: OOT:LIMB
+  offset: 0x2CE98
+  symbol: gLinkChildLeftshoulderLimb
+  limb_type: LOD
+
+gLinkChildLinkDekuStickDL:
+  type: GFX
+  offset: 0x6CC0
+  symbol: gLinkChildLinkDekuStickDL
+
+gLinkChildLowerBootTex:
+  type: TEXTURE
+  offset: 0x5C00
+  symbol: gLinkChildLowerBootTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5300
+
+gLinkChildLowerControlLimb:
+  type: OOT:LIMB
+  offset: 0x2CDE8
+  symbol: gLinkChildLowerControlLimb
+  limb_type: LOD
+
+gLinkChildMaskOfTruthCurveTex:
+  type: TEXTURE
+  offset: 0x24D20
+  symbol: gLinkChildMaskOfTruthCurveTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLinkChildMaskOfTruthDL:
+  type: GFX
+  offset: 0x2B1F0
+  symbol: gLinkChildMaskOfTruthDL
+
+gLinkChildMaskOfTruthTex:
+  type: TEXTURE
+  offset: 0x23D20
+  symbol: gLinkChildMaskOfTruthTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gLinkChildMasterSwordEmblemTex:
+  type: TEXTURE
+  offset: 0xAAF0
+  symbol: gLinkChildMasterSwordEmblemTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9F10
+
+gLinkChildMasterSwordGuardTex:
+  type: TEXTURE
+  offset: 0xA6F0
+  symbol: gLinkChildMasterSwordGuardTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9F10
+
+gLinkChildMasterSwordPommelTex:
+  type: TEXTURE
+  offset: 0xA5F0
+  symbol: gLinkChildMasterSwordPommelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9F10
+
+gLinkChildMouth1Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gLinkChildMouth1Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5500
+
+gLinkChildMouth2Tex:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: gLinkChildMouth2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5500
+
+gLinkChildMouth3Tex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gLinkChildMouth3Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5500
+
+gLinkChildMouth4Tex:
+  type: TEXTURE
+  offset: 0x4C00
+  symbol: gLinkChildMouth4Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5500
+
+gLinkChildNoseTex:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: gLinkChildNoseTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5500
+
+gLinkChildRightArmStretchedSlingshotDL:
+  type: GFX
+  offset: 0x18048
+  symbol: gLinkChildRightArmStretchedSlingshotDL
+
+gLinkChildRightFistAndDekuShieldFarDL:
+  type: GFX
+  offset: 0x16740
+  symbol: gLinkChildRightFistAndDekuShieldFarDL
+
+gLinkChildRightFistAndDekuShieldNearDL:
+  type: GFX
+  offset: 0x14440
+  symbol: gLinkChildRightFistAndDekuShieldNearDL
+
+gLinkChildRightFootFarDL:
+  type: GFX
+  offset: 0x1B510
+  symbol: gLinkChildRightFootFarDL
+
+gLinkChildRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x2CE18
+  symbol: gLinkChildRightFootLimb
+  limb_type: LOD
+
+gLinkChildRightFootNearDL:
+  type: GFX
+  offset: 0x20978
+  symbol: gLinkChildRightFootNearDL
+
+gLinkChildRightForearmFarDL:
+  type: GFX
+  offset: 0x1C558
+  symbol: gLinkChildRightForearmFarDL
+
+gLinkChildRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x2CED8
+  symbol: gLinkChildRightForearmLimb
+  limb_type: LOD
+
+gLinkChildRightForearmNearDL:
+  type: GFX
+  offset: 0x21CB8
+  symbol: gLinkChildRightForearmNearDL
+
+gLinkChildRightHandAndOotNearDL:
+  type: GFX
+  offset: 0x15958
+  symbol: gLinkChildRightHandAndOotNearDL
+
+gLinkChildRightHandClosedFarDL:
+  type: GFX
+  offset: 0x16620
+  symbol: gLinkChildRightHandClosedFarDL
+
+gLinkChildRightHandClosedNearDL:
+  type: GFX
+  offset: 0x14320
+  symbol: gLinkChildRightHandClosedNearDL
+
+gLinkChildRightHandFarDL:
+  type: GFX
+  offset: 0x164E0
+  symbol: gLinkChildRightHandFarDL
+
+gLinkChildRightHandHoldingFairyOcarinaFarDL:
+  type: GFX
+  offset: 0x17AF0
+  symbol: gLinkChildRightHandHoldingFairyOcarinaFarDL
+
+gLinkChildRightHandHoldingFairyOcarinaNearDL:
+  type: GFX
+  offset: 0x15BA8
+  symbol: gLinkChildRightHandHoldingFairyOcarinaNearDL
+
+gLinkChildRightHandHoldingOOTFarDL:
+  type: GFX
+  offset: 0x178A0
+  symbol: gLinkChildRightHandHoldingOOTFarDL
+
+gLinkChildRightHandHoldingSlingshotFarDL:
+  type: GFX
+  offset: 0x17D38
+  symbol: gLinkChildRightHandHoldingSlingshotFarDL
+
+gLinkChildRightHandHoldingSlingshotNearDL:
+  type: GFX
+  offset: 0x15DF0
+  symbol: gLinkChildRightHandHoldingSlingshotNearDL
+
+gLinkChildRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x2CEE8
+  symbol: gLinkChildRightHandLimb
+  limb_type: LOD
+
+gLinkChildRightHandNearDL:
+  type: GFX
+  offset: 0x141C0
+  symbol: gLinkChildRightHandNearDL
+
+gLinkChildRightShinFarDL:
+  type: GFX
+  offset: 0x1B2B8
+  symbol: gLinkChildRightShinFarDL
+
+gLinkChildRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x2CE08
+  symbol: gLinkChildRightShinLimb
+  limb_type: LOD
+
+gLinkChildRightShinNearDL:
+  type: GFX
+  offset: 0x206E8
+  symbol: gLinkChildRightShinNearDL
+
+gLinkChildRightShoulderFarDL:
+  type: GFX
+  offset: 0x1C398
+  symbol: gLinkChildRightShoulderFarDL
+
+gLinkChildRightShoulderNearDL:
+  type: GFX
+  offset: 0x21AE8
+  symbol: gLinkChildRightShoulderNearDL
+
+gLinkChildRightThighFarDL:
+  type: GFX
+  offset: 0x1B0F8
+  symbol: gLinkChildRightThighFarDL
+
+gLinkChildRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x2CDF8
+  symbol: gLinkChildRightThighLimb
+  limb_type: LOD
+
+gLinkChildRightThighNearDL:
+  type: GFX
+  offset: 0x204F0
+  symbol: gLinkChildRightThighNearDL
+
+gLinkChildRightshoulderLimb:
+  type: OOT:LIMB
+  offset: 0x2CEC8
+  symbol: gLinkChildRightshoulderLimb
+  limb_type: LOD
+
+gLinkChildRootLimb:
+  type: OOT:LIMB
+  offset: 0x2CDC8
+  symbol: gLinkChildRootLimb
+  limb_type: LOD
+
+gLinkChildSheathFarDL:
+  type: GFX
+  offset: 0x17500
+  symbol: gLinkChildSheathFarDL
+
+gLinkChildSheathNearDL:
+  type: GFX
+  offset: 0x15408
+  symbol: gLinkChildSheathNearDL
+
+gLinkChildSkel:
+  type: OOT:SKELETON
+  offset: 0x2CF6C
+  symbol: gLinkChildSkel
+  limb_type: LOD
+  skel_type: Flex
+
+gLinkChildSkinTLUT:
+  type: TEXTURE
+  offset: 0x5500
+  symbol: gLinkChildSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkChildSkullMaskDL:
+  type: GFX
+  offset: 0x2AD40
+  symbol: gLinkChildSkullMaskDL
+
+gLinkChildSkullMaskEyeTex:
+  type: TEXTURE
+  offset: 0x23B20
+  symbol: gLinkChildSkullMaskEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkChildSkullMaskNoseTex:
+  type: TEXTURE
+  offset: 0x27520
+  symbol: gLinkChildSkullMaskNoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gLinkChildSkullMaskTeethTex:
+  type: TEXTURE
+  offset: 0x26BA0
+  symbol: gLinkChildSkullMaskTeethTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gLinkChildSlinghotStringDL:
+  type: GFX
+  offset: 0x221A8
+  symbol: gLinkChildSlinghotStringDL
+
+gLinkChildSlingshotSeedTex:
+  type: TEXTURE
+  offset: 0x9688
+  symbol: gLinkChildSlingshotSeedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLinkChildSlingshotTex:
+  type: TEXTURE
+  offset: 0x9288
+  symbol: gLinkChildSlingshotTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLinkChildSpookyMaskDL:
+  type: GFX
+  offset: 0x2AF70
+  symbol: gLinkChildSpookyMaskDL
+
+gLinkChildSpookyMaskTex:
+  type: TEXTURE
+  offset: 0x226A0
+  symbol: gLinkChildSpookyMaskTex
+  format: IA16
+  width: 32
+  height: 64
+
+gLinkChildSwordAndSheathFarDL:
+  type: GFX
+  offset: 0x17360
+  symbol: gLinkChildSwordAndSheathFarDL
+
+gLinkChildSwordAndSheathLimb:
+  type: OOT:LIMB
+  offset: 0x2CEF8
+  symbol: gLinkChildSwordAndSheathLimb
+  limb_type: LOD
+
+gLinkChildSwordAndSheathNearDL:
+  type: GFX
+  offset: 0x15248
+  symbol: gLinkChildSwordAndSheathNearDL
+
+gLinkChildSwordJewelTex:
+  type: TEXTURE
+  offset: 0xA3F0
+  symbol: gLinkChildSwordJewelTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xA118
+
+gLinkChildSwordTLUT:
+  type: TEXTURE
+  offset: 0xA118
+  symbol: gLinkChildSwordTLUT
+  format: RGBA16
+  width: 27
+  height: 4
+
+gLinkChildSwordsTLUT:
+  type: TEXTURE
+  offset: 0x9F10
+  symbol: gLinkChildSwordsTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkChildTorsoFarDL:
+  type: GFX
+  offset: 0x1BBD8
+  symbol: gLinkChildTorsoFarDL
+
+gLinkChildTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x2CF08
+  symbol: gLinkChildTorsoLimb
+  limb_type: LOD
+
+gLinkChildTorsoNearDL:
+  type: GFX
+  offset: 0x21130
+  symbol: gLinkChildTorsoNearDL
+
+gLinkChildUnusedHandTex:
+  type: TEXTURE
+  offset: 0x5100
+  symbol: gLinkChildUnusedHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5500
+
+gLinkChildUpperControlLimb:
+  type: OOT:LIMB
+  offset: 0x2CE58
+  symbol: gLinkChildUpperControlLimb
+  limb_type: LOD
+
+gLinkChildVtx_019E08:
+  type: OOT:ARRAY
+  offset: 0x19E08
+  symbol: gLinkChildVtx_019E08
+  count: 35
+  array_type: VTX
+
+gLinkChildVtx_01A428:
+  type: OOT:ARRAY
+  offset: 0x1A428
+  symbol: gLinkChildVtx_01A428
+  count: 39
+  array_type: VTX
+
+gLinkChildVtx_01AA98:
+  type: OOT:ARRAY
+  offset: 0x1AA98
+  symbol: gLinkChildVtx_01AA98
+  count: 40
+  array_type: VTX
+
+gLinkChildVtx_01EB38:
+  type: OOT:ARRAY
+  offset: 0x1EB38
+  symbol: gLinkChildVtx_01EB38
+  count: 39
+  array_type: VTX
+
+gLinkChildVtx_01F2B8:
+  type: OOT:ARRAY
+  offset: 0x1F2B8
+  symbol: gLinkChildVtx_01F2B8
+  count: 39
+  array_type: VTX
+
+gLinkChildVtx_01FA28:
+  type: OOT:ARRAY
+  offset: 0x1FA28
+  symbol: gLinkChildVtx_01FA28
+  count: 62
+  array_type: VTX
+
+gLinkChildWaistFarDL:
+  type: GFX
+  offset: 0x1AEC8
+  symbol: gLinkChildWaistFarDL
+
+gLinkChildWaistLimb:
+  type: OOT:LIMB
+  offset: 0x2CDD8
+  symbol: gLinkChildWaistLimb
+  limb_type: LOD
+
+gLinkChildWaistNearDL:
+  type: GFX
+  offset: 0x202A8
+  symbol: gLinkChildWaistNearDL
+
+gLinkChildWaistTex:
+  type: TEXTURE
+  offset: 0x6400
+  symbol: gLinkChildWaistTex
+  format: I8
+  width: 32
+  height: 32
+
+gLinkChildZoraMaskDL:
+  type: GFX
+  offset: 0x2B580
+  symbol: gLinkChildZoraMaskDL
+
+gLinkChildZoraMaskEarTex:
+  type: TEXTURE
+  offset: 0x26D20
+  symbol: gLinkChildZoraMaskEarTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLinkChildZoraMaskEyeBoarderTex:
+  type: TEXTURE
+  offset: 0x26CA0
+  symbol: gLinkChildZoraMaskEyeBoarderTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gLinkChildZoraMaskEyeTex:
+  type: TEXTURE
+  offset: 0x275A0
+  symbol: gLinkChildZoraMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLinkChildZoraMaskMouthTex:
+  type: TEXTURE
+  offset: 0x27DA0
+  symbol: gLinkChildZoraMaskMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_link_childVtx_006A80:
+  type: OOT:ARRAY
+  offset: 0x006A80
+  symbol: object_link_childVtx_006A80
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00ABF0:
+  type: OOT:ARRAY
+  offset: 0x00ABF0
+  symbol: object_link_childVtx_00ABF0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00AF50:
+  type: OOT:ARRAY
+  offset: 0x00AF50
+  symbol: object_link_childVtx_00AF50
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00B1B0:
+  type: OOT:ARRAY
+  offset: 0x00B1B0
+  symbol: object_link_childVtx_00B1B0
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00B6B0:
+  type: OOT:ARRAY
+  offset: 0x00B6B0
+  symbol: object_link_childVtx_00B6B0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00B8A0:
+  type: OOT:ARRAY
+  offset: 0x00B8A0
+  symbol: object_link_childVtx_00B8A0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00BB00:
+  type: OOT:ARRAY
+  offset: 0x00BB00
+  symbol: object_link_childVtx_00BB00
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00BFF0:
+  type: OOT:ARRAY
+  offset: 0x00BFF0
+  symbol: object_link_childVtx_00BFF0
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00C580:
+  type: OOT:ARRAY
+  offset: 0x00C580
+  symbol: object_link_childVtx_00C580
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00C8B0:
+  type: OOT:ARRAY
+  offset: 0x00C8B0
+  symbol: object_link_childVtx_00C8B0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00CAA0:
+  type: OOT:ARRAY
+  offset: 0x00CAA0
+  symbol: object_link_childVtx_00CAA0
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00CED0:
+  type: OOT:ARRAY
+  offset: 0x00CED0
+  symbol: object_link_childVtx_00CED0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00D1C0:
+  type: OOT:ARRAY
+  offset: 0x00D1C0
+  symbol: object_link_childVtx_00D1C0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00D3F0:
+  type: OOT:ARRAY
+  offset: 0x00D3F0
+  symbol: object_link_childVtx_00D3F0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00D4E0:
+  type: OOT:ARRAY
+  offset: 0x00D4E0
+  symbol: object_link_childVtx_00D4E0
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00DF10:
+  type: OOT:ARRAY
+  offset: 0x00DF10
+  symbol: object_link_childVtx_00DF10
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00E3D0:
+  type: OOT:ARRAY
+  offset: 0x00E3D0
+  symbol: object_link_childVtx_00E3D0
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00E960:
+  type: OOT:ARRAY
+  offset: 0x00E960
+  symbol: object_link_childVtx_00E960
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00EEA0:
+  type: OOT:ARRAY
+  offset: 0x00EEA0
+  symbol: object_link_childVtx_00EEA0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00F110:
+  type: OOT:ARRAY
+  offset: 0x00F110
+  symbol: object_link_childVtx_00F110
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00F220:
+  type: OOT:ARRAY
+  offset: 0x00F220
+  symbol: object_link_childVtx_00F220
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00F490:
+  type: OOT:ARRAY
+  offset: 0x00F490
+  symbol: object_link_childVtx_00F490
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00F6C0:
+  type: OOT:ARRAY
+  offset: 0x00F6C0
+  symbol: object_link_childVtx_00F6C0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00F9F0:
+  type: OOT:ARRAY
+  offset: 0x00F9F0
+  symbol: object_link_childVtx_00F9F0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00FC20:
+  type: OOT:ARRAY
+  offset: 0x00FC20
+  symbol: object_link_childVtx_00FC20
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_00FEF0:
+  type: OOT:ARRAY
+  offset: 0x00FEF0
+  symbol: object_link_childVtx_00FEF0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_010210:
+  type: OOT:ARRAY
+  offset: 0x010210
+  symbol: object_link_childVtx_010210
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_0104D0:
+  type: OOT:ARRAY
+  offset: 0x0104D0
+  symbol: object_link_childVtx_0104D0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_010690:
+  type: OOT:ARRAY
+  offset: 0x010690
+  symbol: object_link_childVtx_010690
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_010980:
+  type: OOT:ARRAY
+  offset: 0x010980
+  symbol: object_link_childVtx_010980
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_010B70:
+  type: OOT:ARRAY
+  offset: 0x010B70
+  symbol: object_link_childVtx_010B70
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_010D60:
+  type: OOT:ARRAY
+  offset: 0x010D60
+  symbol: object_link_childVtx_010D60
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_010E50:
+  type: OOT:ARRAY
+  offset: 0x010E50
+  symbol: object_link_childVtx_010E50
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_011360:
+  type: OOT:ARRAY
+  offset: 0x011360
+  symbol: object_link_childVtx_011360
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_011820:
+  type: OOT:ARRAY
+  offset: 0x011820
+  symbol: object_link_childVtx_011820
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_011DB0:
+  type: OOT:ARRAY
+  offset: 0x011DB0
+  symbol: object_link_childVtx_011DB0
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_012270:
+  type: OOT:ARRAY
+  offset: 0x012270
+  symbol: object_link_childVtx_012270
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_0124E0:
+  type: OOT:ARRAY
+  offset: 0x0124E0
+  symbol: object_link_childVtx_0124E0
+  count: 269
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_0135B0:
+  type: OOT:ARRAY
+  offset: 0x0135B0
+  symbol: object_link_childVtx_0135B0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_0137D0:
+  type: OOT:ARRAY
+  offset: 0x0137D0
+  symbol: object_link_childVtx_0137D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_013850:
+  type: OOT:ARRAY
+  offset: 0x013850
+  symbol: object_link_childVtx_013850
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_013A90:
+  type: OOT:ARRAY
+  offset: 0x013A90
+  symbol: object_link_childVtx_013A90
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_018758:
+  type: OOT:ARRAY
+  offset: 0x018758
+  symbol: object_link_childVtx_018758
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_0188F8:
+  type: OOT:ARRAY
+  offset: 0x0188F8
+  symbol: object_link_childVtx_0188F8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_018B18:
+  type: OOT:ARRAY
+  offset: 0x018B18
+  symbol: object_link_childVtx_018B18
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_018DA8:
+  type: OOT:ARRAY
+  offset: 0x018DA8
+  symbol: object_link_childVtx_018DA8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_018F48:
+  type: OOT:ARRAY
+  offset: 0x018F48
+  symbol: object_link_childVtx_018F48
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_019178:
+  type: OOT:ARRAY
+  offset: 0x019178
+  symbol: object_link_childVtx_019178
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_0193F8:
+  type: OOT:ARRAY
+  offset: 0x0193F8
+  symbol: object_link_childVtx_0193F8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_019618:
+  type: OOT:ARRAY
+  offset: 0x019618
+  symbol: object_link_childVtx_019618
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_019768:
+  type: OOT:ARRAY
+  offset: 0x019768
+  symbol: object_link_childVtx_019768
+  count: 98
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_019D88:
+  type: OOT:ARRAY
+  offset: 0x019D88
+  symbol: object_link_childVtx_019D88
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01A038:
+  type: OOT:ARRAY
+  offset: 0x01A038
+  symbol: object_link_childVtx_01A038
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01A1C8:
+  type: OOT:ARRAY
+  offset: 0x01A1C8
+  symbol: object_link_childVtx_01A1C8
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01A698:
+  type: OOT:ARRAY
+  offset: 0x01A698
+  symbol: object_link_childVtx_01A698
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01A838:
+  type: OOT:ARRAY
+  offset: 0x01A838
+  symbol: object_link_childVtx_01A838
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01AD18:
+  type: OOT:ARRAY
+  offset: 0x01AD18
+  symbol: object_link_childVtx_01AD18
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01C978:
+  type: OOT:ARRAY
+  offset: 0x01C978
+  symbol: object_link_childVtx_01C978
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01CBB8:
+  type: OOT:ARRAY
+  offset: 0x01CBB8
+  symbol: object_link_childVtx_01CBB8
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01CEB8:
+  type: OOT:ARRAY
+  offset: 0x01CEB8
+  symbol: object_link_childVtx_01CEB8
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01D1D8:
+  type: OOT:ARRAY
+  offset: 0x01D1D8
+  symbol: object_link_childVtx_01D1D8
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01D418:
+  type: OOT:ARRAY
+  offset: 0x01D418
+  symbol: object_link_childVtx_01D418
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01D718:
+  type: OOT:ARRAY
+  offset: 0x01D718
+  symbol: object_link_childVtx_01D718
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01DA28:
+  type: OOT:ARRAY
+  offset: 0x01DA28
+  symbol: object_link_childVtx_01DA28
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01DCC8:
+  type: OOT:ARRAY
+  offset: 0x01DCC8
+  symbol: object_link_childVtx_01DCC8
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01DF28:
+  type: OOT:ARRAY
+  offset: 0x01DF28
+  symbol: object_link_childVtx_01DF28
+  count: 183
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01EA98:
+  type: OOT:ARRAY
+  offset: 0x01EA98
+  symbol: object_link_childVtx_01EA98
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01EDA8:
+  type: OOT:ARRAY
+  offset: 0x01EDA8
+  symbol: object_link_childVtx_01EDA8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01EFC8:
+  type: OOT:ARRAY
+  offset: 0x01EFC8
+  symbol: object_link_childVtx_01EFC8
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01F528:
+  type: OOT:ARRAY
+  offset: 0x01F528
+  symbol: object_link_childVtx_01F528
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01F748:
+  type: OOT:ARRAY
+  offset: 0x01F748
+  symbol: object_link_childVtx_01F748
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_01FE08:
+  type: OOT:ARRAY
+  offset: 0x01FE08
+  symbol: object_link_childVtx_01FE08
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_022148:
+  type: OOT:ARRAY
+  offset: 0x022148
+  symbol: object_link_childVtx_022148
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_022208:
+  type: OOT:ARRAY
+  offset: 0x022208
+  symbol: object_link_childVtx_022208
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_029220:
+  type: OOT:ARRAY
+  offset: 0x029220
+  symbol: object_link_childVtx_029220
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_029670:
+  type: OOT:ARRAY
+  offset: 0x029670
+  symbol: object_link_childVtx_029670
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_029830:
+  type: OOT:ARRAY
+  offset: 0x029830
+  symbol: object_link_childVtx_029830
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_029BE0:
+  type: OOT:ARRAY
+  offset: 0x029BE0
+  symbol: object_link_childVtx_029BE0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_029E80:
+  type: OOT:ARRAY
+  offset: 0x029E80
+  symbol: object_link_childVtx_029E80
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_02A1E0:
+  type: OOT:ARRAY
+  offset: 0x02A1E0
+  symbol: object_link_childVtx_02A1E0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_02A500:
+  type: OOT:ARRAY
+  offset: 0x02A500
+  symbol: object_link_childVtx_02A500
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_childVtx_02C428:
+  type: OOT:ARRAY
+  offset: 0x02C428
+  symbol: object_link_childVtx_02C428
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gLinkChildSkelLimbs:
+  type: BLOB
+  offset: 0x2CF18
+  symbol: gLinkChildSkelLimbs
+  size: 0

@@ -1,0 +1,304 @@
+:config:
+  segments:
+    - [ 3, 0x01DD0880 ]
+    - [ 2, 0x01DC37E0 ]
+  directory: scenes/shared/ganon_final_scene
+  external_files:
+    - pal_1-0/scenes/shared/ganon_final_scene.yml
+    - pal_1-0/code/sys_matrix.yml
+
+ganon_final_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganon_final_room_0
+
+
+ganon_final_room_0Vtx_000110:
+  type: OOT:ARRAY
+  offset: 0x000110
+  symbol: ganon_final_room_0Vtx_000110
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_000500:
+  type: GFX
+  offset: 0x000500
+  symbol: ganon_final_room_0DL_000500
+
+ganon_final_room_0Vtx_000630:
+  type: OOT:ARRAY
+  offset: 0x000630
+  symbol: ganon_final_room_0Vtx_000630
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_0009B0:
+  type: GFX
+  offset: 0x0009B0
+  symbol: ganon_final_room_0DL_0009B0
+
+ganon_final_room_0Vtx_000AC0:
+  type: OOT:ARRAY
+  offset: 0x000AC0
+  symbol: ganon_final_room_0Vtx_000AC0
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_000F10:
+  type: GFX
+  offset: 0x000F10
+  symbol: ganon_final_room_0DL_000F10
+
+ganon_final_room_0Vtx_0010B0:
+  type: OOT:ARRAY
+  offset: 0x0010B0
+  symbol: ganon_final_room_0Vtx_0010B0
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_0015B0:
+  type: GFX
+  offset: 0x0015B0
+  symbol: ganon_final_room_0DL_0015B0
+
+ganon_final_room_0Vtx_001708:
+  type: OOT:ARRAY
+  offset: 0x001708
+  symbol: ganon_final_room_0Vtx_001708
+  count: 113
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_001E18:
+  type: GFX
+  offset: 0x001E18
+  symbol: ganon_final_room_0DL_001E18
+
+ganon_final_room_0Vtx_001FC0:
+  type: OOT:ARRAY
+  offset: 0x001FC0
+  symbol: ganon_final_room_0Vtx_001FC0
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_0023D0:
+  type: GFX
+  offset: 0x0023D0
+  symbol: ganon_final_room_0DL_0023D0
+
+ganon_final_room_0Vtx_002520:
+  type: OOT:ARRAY
+  offset: 0x002520
+  symbol: ganon_final_room_0Vtx_002520
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_0029C0:
+  type: GFX
+  offset: 0x0029C0
+  symbol: ganon_final_room_0DL_0029C0
+
+ganon_final_room_0Vtx_002B18:
+  type: OOT:ARRAY
+  offset: 0x002B18
+  symbol: ganon_final_room_0Vtx_002B18
+  count: 175
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_003608:
+  type: GFX
+  offset: 0x003608
+  symbol: ganon_final_room_0DL_003608
+
+ganon_final_room_0Vtx_004150:
+  type: OOT:ARRAY
+  offset: 0x004150
+  symbol: ganon_final_room_0Vtx_004150
+  count: 244
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_005090:
+  type: GFX
+  offset: 0x005090
+  symbol: ganon_final_room_0DL_005090
+
+ganon_final_room_0Vtx_005F08:
+  type: OOT:ARRAY
+  offset: 0x005F08
+  symbol: ganon_final_room_0Vtx_005F08
+  count: 220
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_006CC8:
+  type: GFX
+  offset: 0x006CC8
+  symbol: ganon_final_room_0DL_006CC8
+
+ganon_final_room_0Vtx_0079E8:
+  type: OOT:ARRAY
+  offset: 0x0079E8
+  symbol: ganon_final_room_0Vtx_0079E8
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_0081A8:
+  type: GFX
+  offset: 0x0081A8
+  symbol: ganon_final_room_0DL_0081A8
+
+ganon_final_room_0Vtx_0089E8:
+  type: OOT:ARRAY
+  offset: 0x0089E8
+  symbol: ganon_final_room_0Vtx_0089E8
+  count: 160
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_0093E8:
+  type: GFX
+  offset: 0x0093E8
+  symbol: ganon_final_room_0DL_0093E8
+
+ganon_final_room_0Vtx_009808:
+  type: OOT:ARRAY
+  offset: 0x009808
+  symbol: ganon_final_room_0Vtx_009808
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_009A08:
+  type: GFX
+  offset: 0x009A08
+  symbol: ganon_final_room_0DL_009A08
+
+ganon_final_room_0Vtx_009B30:
+  type: OOT:ARRAY
+  offset: 0x009B30
+  symbol: ganon_final_room_0Vtx_009B30
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_00A190:
+  type: GFX
+  offset: 0x00A190
+  symbol: ganon_final_room_0DL_00A190
+
+ganon_final_room_0Vtx_00A5B0:
+  type: OOT:ARRAY
+  offset: 0x00A5B0
+  symbol: ganon_final_room_0Vtx_00A5B0
+  count: 112
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_00ACB0:
+  type: GFX
+  offset: 0x00ACB0
+  symbol: ganon_final_room_0DL_00ACB0
+
+ganon_final_room_0Vtx_00B1D8:
+  type: OOT:ARRAY
+  offset: 0x00B1D8
+  symbol: ganon_final_room_0Vtx_00B1D8
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_00B6D8:
+  type: GFX
+  offset: 0x00B6D8
+  symbol: ganon_final_room_0DL_00B6D8
+
+ganon_final_room_0Vtx_00BA38:
+  type: OOT:ARRAY
+  offset: 0x00BA38
+  symbol: ganon_final_room_0Vtx_00BA38
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_00BFD8:
+  type: GFX
+  offset: 0x00BFD8
+  symbol: ganon_final_room_0DL_00BFD8
+
+ganon_final_room_0Vtx_00C3B8:
+  type: OOT:ARRAY
+  offset: 0x00C3B8
+  symbol: ganon_final_room_0Vtx_00C3B8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_00C578:
+  type: GFX
+  offset: 0x00C578
+  symbol: ganon_final_room_0DL_00C578
+
+ganon_final_room_0Vtx_00C670:
+  type: OOT:ARRAY
+  offset: 0x00C670
+  symbol: ganon_final_room_0Vtx_00C670
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_00C920:
+  type: GFX
+  offset: 0x00C920
+  symbol: ganon_final_room_0DL_00C920
+
+ganon_final_room_0DL_00CA40:
+  type: GFX
+  offset: 0x00CA40
+  symbol: ganon_final_room_0DL_00CA40
+
+ganon_final_room_0Vtx_00CAE0:
+  type: OOT:ARRAY
+  offset: 0x00CAE0
+  symbol: ganon_final_room_0Vtx_00CAE0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_final_room_0DL_00CD90:
+  type: GFX
+  offset: 0x00CD90
+  symbol: ganon_final_room_0DL_00CD90
+
+ganon_final_room_0DL_00CE98:
+  type: GFX
+  offset: 0x00CE98
+  symbol: ganon_final_room_0DL_00CE98

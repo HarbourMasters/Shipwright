@@ -1,0 +1,59 @@
+:config:
+  segments:
+    - [ 128, 0x00CD2BA0 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x00CD2BA0 ]
+    - [ 9, 0x00CD2BA0 ]
+    - [ 10, 0x00CD2BA0 ]
+    - [ 11, 0x00CD2BA0 ]
+    - [ 12, 0x00CD2BA0 ]
+    - [ 13, 0x00CD2BA0 ]
+  virtual: [ 0x80AE89C0, 0x00CD2BA0 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gMant1Vtx:
+  type: OOT:ARRAY
+  offset: 0x29E8
+  symbol: gMant1Vtx
+  count: 144
+  array_type: VTX
+
+gMant2Vtx:
+  type: OOT:ARRAY
+  offset: 0x37E8
+  symbol: gMant2Vtx
+  count: 144
+  array_type: VTX
+
+gMantDL:
+  type: GFX
+  offset: 0x3398
+  symbol: gMantDL
+
+gMantMaterialDL:
+  type: GFX
+  offset: 0x32E8
+  symbol: gMantMaterialDL
+
+gMantTex:
+  type: TEXTURE
+  offset: 0x11E8
+  symbol: gMantTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMantUnusedMaterialDL:
+  type: GFX
+  offset: 0x3340
+  symbol: gMantUnusedMaterialDL
+
+gMantUnusedTex:
+  type: TEXTURE
+  offset: 0x21E8
+  symbol: gMantUnusedTex
+  format: RGBA16
+  width: 32
+  height: 32
+

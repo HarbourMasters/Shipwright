@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 6, 0x011F05F0 ]
+
+gGanonTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x22e90
+  symbol: gGanonTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gGanonTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x21a90
+  symbol: gGanonTitleCardJPNTex
+  format: IA8
+  width: 128
+  height: 40
+

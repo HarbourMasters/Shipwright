@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01CB1030 ]
+
+entra_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: entra_scene
+
+
+entra_sceneCollisionHeader_0003B4:
+  type: OOT:COLLISION
+  offset: 0x0003B4
+  symbol: entra_sceneCollisionHeader_0003B4

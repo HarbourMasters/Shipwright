@@ -7,31 +7,29 @@ void RegionTable_Init_KokiriForest() {
     // clang-format off
     areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", SCENE_KOKIRI_FOREST, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->CallGossipFairyExceptSuns() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS))),
+        EVENT_ACCESS(LOGIC_PLANT_KOKIRI_FOREST_BEAN,     CanPlantBean(RG_KOKIRI_FOREST_BEAN_SOUL)),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
         EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
     }, {
         //Locations
         LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE,                  logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanGetNightTimeGS()),
         LOCATION(RC_KF_GS_BEAN_PATCH,                         logic->CanSpawnSoilSkull(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
-        LOCATION(RC_KF_GS_HOUSE_OF_TWINS,                     logic->IsAdult && logic->CanGetNightTimeGS() && 
-                                                              (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || 
-                                                               (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)))),
-        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_1,                   logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_2,                   logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_3,                   logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_GS_HOUSE_OF_TWINS,                     logic->IsAdult && logic->CanGetNightTimeGS() &&
+                                                              (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) ||
+                                                               (((ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage(DAMAGE_NO_FAIRY))) &&
+                                                                logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)))),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_1,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_2,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_3,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_KF_BRIDGE_RUPEE,                          logic->IsChild),
         LOCATION(RC_KF_BEHIND_MIDOS_RUPEE,                    logic->IsChild),
         LOCATION(RC_KF_SOUTH_GRASS_WEST_RUPEE,                logic->IsChild),
         LOCATION(RC_KF_SOUTH_GRASS_EAST_RUPEE,                logic->IsChild),
         LOCATION(RC_KF_NORTH_GRASS_WEST_RUPEE,                logic->IsChild),
         LOCATION(RC_KF_NORTH_GRASS_EAST_RUPEE,                logic->IsChild),
-        LOCATION(RC_KF_BEAN_RUPEE_1,                          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_2,                          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_3,                          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_4,                          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_5,                          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_6,                          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RED_RUPEE,                        logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_1,                          logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_BEAN_RUPEE_2,                          logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_BEAN_RUPEE_6,                          logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_KF_SARIAS_ROOF_WEST_HEART,                logic->IsChild),
         LOCATION(RC_KF_SARIAS_ROOF_EAST_HEART,                logic->IsChild),
         LOCATION(RC_KF_SARIAS_ROOF_NORTH_HEART,               logic->IsChild),
@@ -93,19 +91,19 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_TRAINING_CENTER_ENTRANCE_ARROW_SIGN,   logic->IsChild && logic->CanRead()),
         LOCATION(RC_KF_INNER_TRAINING_CENTER_ARROW_SIGN,      logic->IsChild && logic->CanRead()),
         LOCATION(RC_KF_KNOW_IT_ALL_BROTHERS_HOUSE_ARROW_SIGN, logic->CanRead()),
-        LOCATION(RC_KF_WONDER_TRAINING_1,       			  logic->IsChild),
-        LOCATION(RC_KF_WONDER_TRAINING_2,       			  logic->IsChild),
-        LOCATION(RC_KF_WONDER_TRAINING_3,       			  logic->IsChild),
-        LOCATION(RC_KF_WONDER_SIGN,             			  logic->IsChild && logic->CanJumpslashExceptHammer()),
-        LOCATION(RC_KF_WONDER_PLATFORMS_1,      			  logic->IsChild),
-        LOCATION(RC_KF_WONDER_PLATFORMS_2,      			  logic->IsChild),
+        LOCATION(RC_KF_WONDER_TRAINING_1,                     logic->IsChild),
+        LOCATION(RC_KF_WONDER_TRAINING_2,                     logic->IsChild),
+        LOCATION(RC_KF_WONDER_TRAINING_3,                     logic->IsChild),
+        LOCATION(RC_KF_WONDER_SIGN,                           logic->IsChild && logic->CanUseSword()),
+        LOCATION(RC_KF_WONDER_PLATFORMS_1,                    logic->IsChild),
+        LOCATION(RC_KF_WONDER_PLATFORMS_2,                    logic->IsChild),
         //Technically bad logic, because we can move Mido out of logic, but then we already have KSword...
-        LOCATION(RC_MIDO_HINT,      			              !ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) && logic->IsChild && logic->CanUse(RG_SPEAK_KOKIRI)),
+        LOCATION(RC_MIDO_HINT,                                !ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) && logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI)),
     }, {
         //Exits
         ENTRANCE(RR_KF_BOULDER_LOOP,       logic->CanUse(RG_CRAWL)),
         //The Deku Baba blocks the setup as Adult, and stunning doesn't last long enough to perform it.
-        ENTRANCE(RR_KF_LINKS_PORCH,        logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOVER_BOOTS) || 
+        ENTRANCE(RR_KF_LINKS_PORCH,        logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump() ||
                                            ((logic->IsChild || logic->CanKillEnemy(RE_DEKU_BABA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR)) && logic->CanClimbLadder())),
         ENTRANCE(RR_KF_MIDOS_HOUSE,        true),
         ENTRANCE(RR_KF_SARIAS_HOUSE,       true),
@@ -113,12 +111,14 @@ void RegionTable_Init_KokiriForest() {
         ENTRANCE(RR_KF_KNOW_IT_ALL_HOUSE,  true),
         ENTRANCE(RR_KF_KOKIRI_SHOP,        true),
         ENTRANCE(RR_KF_OUTSIDE_DEKU_TREE,  (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR))) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD)),
-        ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)))),
-        ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL)),
+        ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)))),
+        ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN)),
         ENTRANCE(RR_LW_BRIDGE_FROM_FOREST, logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || logic->Get(LOGIC_DEKU_TREE_CLEAR)),
     });
 
-    areaTable[RR_KF_OUTSIDE_LOST_WOODS] = Region("KF Outside Lost Woods", SCENE_KOKIRI_FOREST, {}, {
+    areaTable[RR_KF_OUTSIDE_LOST_WOODS] = Region("KF Outside Lost Woods", SCENE_KOKIRI_FOREST, {
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
+    }, {
         //Locations
         LOCATION(RC_KF_BEAN_RUPEE_1,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_KF_BEAN_RUPEE_2,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
@@ -135,26 +135,26 @@ void RegionTable_Init_KokiriForest() {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST,         true),
         ENTRANCE(RR_THE_LOST_WOODS,        true),
-        ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_KF_RUPEE_ALCOVE,       (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMidairGroundJump() || logic->CanMegajump()),
         ENTRANCE(RR_KF_STORMS_GROTTO,      logic->CanOpenStormsGrotto()),
     });
 
     areaTable[RR_KF_RUPEE_ALCOVE] = Region("KF Alcove", SCENE_KOKIRI_FOREST, {}, {
         //Locations
-        LOCATION(RC_KF_BEAN_RUPEE_1,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_2,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_3,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_4,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_5,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_6,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RED_RUPEE, logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_KF_BEAN_RUPEE_1,   logic->IsAdult),
+        LOCATION(RC_KF_BEAN_RUPEE_2,   logic->IsAdult),
+        LOCATION(RC_KF_BEAN_RUPEE_3,   logic->IsAdult),
+        LOCATION(RC_KF_BEAN_RUPEE_4,   logic->IsAdult),
+        LOCATION(RC_KF_BEAN_RUPEE_5,   logic->IsAdult),
+        LOCATION(RC_KF_BEAN_RUPEE_6,   logic->IsAdult),
+        LOCATION(RC_KF_BEAN_RED_RUPEE, logic->IsAdult),
     }, {
         ENTRANCE(RR_KOKIRI_FOREST, true),
     });
 
     areaTable[RR_KF_BOULDER_LOOP] = Region("KF Boulder Loop", SCENE_KOKIRI_FOREST, {}, {
         //Locations
-        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,              logic->IsChild && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,              logic->IsChild && logic->CanOpenLargeChest()),
         LOCATION(RC_KF_BOULDER_RUPEE_1,                 logic->IsChild),
         LOCATION(RC_KF_BOULDER_RUPEE_2,                 logic->IsChild),
         LOCATION(RC_KF_CHILD_GRASS_MAZE_1,              logic->IsChild && logic->CanCutShrubs()),
@@ -162,8 +162,8 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_CHILD_GRASS_MAZE_3,              logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_KF_AFTER_CRAWLSPACE_RECTANGLE_SIGN, logic->IsChild && logic->CanRead()),
         LOCATION(RC_KF_BOULDER_MAZE_RECTANGLE_SIGN,     logic->IsChild && logic->CanRead()),
-        LOCATION(RC_KF_WONDER_CRAWL_GRASS_1, 			logic->IsChild),
-        LOCATION(RC_KF_WONDER_CRAWL_GRASS_2, 			logic->IsChild),
+        LOCATION(RC_KF_WONDER_CRAWL_GRASS_1,            logic->IsChild),
+        LOCATION(RC_KF_WONDER_CRAWL_GRASS_2,            logic->IsChild),
     }, {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST, logic->CanUse(RG_CRAWL)),
@@ -197,7 +197,7 @@ void RegionTable_Init_KokiriForest() {
     areaTable[RR_KF_LINKS_HOUSE] = Region("KF Link's House", SCENE_LINKS_HOUSE, {}, {
         //Locations
         LOCATION(RC_KF_LINKS_HOUSE_COW,  logic->IsAdult && logic->CanUse(RG_EPONAS_SONG) && logic->Get(LOGIC_LINKS_COW)),
-        LOCATION(RC_KF_LINKS_HOUSE_POT,  logic->HasItem(RG_POWER_BRACELET)), // TODO: CanBreakPots() restricted
+        LOCATION(RC_KF_LINKS_HOUSE_POT,  logic->CanBreakPots()),
         LOCATION(RC_KF_LINKS_HOUSE_SIGN, logic->CanRead()),
     }, {
         //Exits
@@ -210,7 +210,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_MIDOS_TOP_RIGHT_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_KF_MIDOS_BOTTOM_LEFT_CHEST,  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_KF_MIDOS_BOTTOM_RIGHT_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_MIDO_HINT,      			 logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD) && logic->IsChild && logic->CanUse(RG_SPEAK_KOKIRI)),
+        LOCATION(RC_MIDO_HINT,                   logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD) && logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI)),
     }, {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST, true),
@@ -229,8 +229,8 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_HOUSE_OF_TWINS] = Region("KF House of Twins", SCENE_TWINS_HOUSE, {}, {
         //Locations
-        LOCATION(RC_KF_TWINS_HOUSE_POT_1, logic->HasItem(RG_POWER_BRACELET)), // TODO: CanBreakPots() restricted
-        LOCATION(RC_KF_TWINS_HOUSE_POT_2, logic->HasItem(RG_POWER_BRACELET)), // TODO: CanBreakPots() restricted
+        LOCATION(RC_KF_TWINS_HOUSE_POT_1, logic->CanBreakPots()),
+        LOCATION(RC_KF_TWINS_HOUSE_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST, true),
@@ -238,8 +238,8 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_KNOW_IT_ALL_HOUSE] = Region("KF Know It All House", SCENE_KNOW_IT_ALL_BROS_HOUSE, {}, {
         // Locations
-        LOCATION(RC_KF_BROTHERS_HOUSE_POT_1, logic->HasItem(RG_POWER_BRACELET)), // TODO: CanBreakPots() restricted
-        LOCATION(RC_KF_BROTHERS_HOUSE_POT_2, logic->HasItem(RG_POWER_BRACELET)), // TODO: CanBreakPots() restricted
+        LOCATION(RC_KF_BROTHERS_HOUSE_POT_1, logic->CanBreakPots()),
+        LOCATION(RC_KF_BROTHERS_HOUSE_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST, true),
@@ -274,6 +274,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_STORMS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
         LOCATION(RC_KF_STORMS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
         LOCATION(RC_KF_STORMS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_KF_STORMS_GROTTO_BUTTERFLY_FAIRY,        logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, true),

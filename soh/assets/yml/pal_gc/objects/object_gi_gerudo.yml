@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x010D84A0 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x010D84A0 ]
+    - [ 9, 0x010D84A0 ]
+    - [ 10, 0x010D84A0 ]
+    - [ 11, 0x010D84A0 ]
+    - [ 12, 0x010D84A0 ]
+    - [ 13, 0x010D84A0 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+gGiGerudoCardDL:
+  type: GFX
+  offset: 0x0F60
+  symbol: gGiGerudoCardDL
+
+object_gi_gerudoTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_gerudoTex_000000
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_gerudoVtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_gerudoVtx_000400
+  count: 182
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

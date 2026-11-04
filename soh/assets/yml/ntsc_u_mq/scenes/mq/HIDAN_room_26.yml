@@ -1,0 +1,198 @@
+:config:
+  segments:
+    - [ 3, 0x0182DEA0 ]
+    - [ 2, 0x017C07A0 ]
+  directory: scenes/mq/HIDAN_scene
+  external_files:
+    - ntsc_u_mq/scenes/mq/HIDAN_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+HIDAN_room_26:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HIDAN_room_26
+
+HIDAN_room_26Tex_004A98:
+  type: TEXTURE
+  offset: 0x4A98
+  symbol: HIDAN_room_26Tex_004A98
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_26Tex_005298:
+  type: TEXTURE
+  offset: 0x5298
+  symbol: HIDAN_room_26Tex_005298
+  format: CI4
+  width: 64
+  height: 32
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18990
+
+HIDAN_room_26Tex_005698:
+  type: TEXTURE
+  offset: 0x5698
+  symbol: HIDAN_room_26Tex_005698
+  format: CI4
+  width: 32
+  height: 32
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18990
+
+HIDAN_room_26Tex_005898:
+  type: TEXTURE
+  offset: 0x5898
+  symbol: HIDAN_room_26Tex_005898
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_26Tex_006098:
+  type: TEXTURE
+  offset: 0x6098
+  symbol: HIDAN_room_26Tex_006098
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HIDAN_room_26Vtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: HIDAN_room_26Vtx_000100
+  count: 152
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_000A80:
+  type: GFX
+  offset: 0x000A80
+  symbol: HIDAN_room_26DL_000A80
+
+HIDAN_room_26Vtx_000D90:
+  type: OOT:ARRAY
+  offset: 0x000D90
+  symbol: HIDAN_room_26Vtx_000D90
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_000EF0:
+  type: GFX
+  offset: 0x000EF0
+  symbol: HIDAN_room_26DL_000EF0
+
+HIDAN_room_26Vtx_000FC0:
+  type: OOT:ARRAY
+  offset: 0x000FC0
+  symbol: HIDAN_room_26Vtx_000FC0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_0010C0:
+  type: GFX
+  offset: 0x0010C0
+  symbol: HIDAN_room_26DL_0010C0
+
+HIDAN_room_26Vtx_001188:
+  type: OOT:ARRAY
+  offset: 0x001188
+  symbol: HIDAN_room_26Vtx_001188
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_0015B8:
+  type: GFX
+  offset: 0x0015B8
+  symbol: HIDAN_room_26DL_0015B8
+
+HIDAN_room_26Vtx_001A70:
+  type: OOT:ARRAY
+  offset: 0x001A70
+  symbol: HIDAN_room_26Vtx_001A70
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_001D40:
+  type: GFX
+  offset: 0x001D40
+  symbol: HIDAN_room_26DL_001D40
+
+HIDAN_room_26Vtx_002108:
+  type: OOT:ARRAY
+  offset: 0x002108
+  symbol: HIDAN_room_26Vtx_002108
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_0024F8:
+  type: GFX
+  offset: 0x0024F8
+  symbol: HIDAN_room_26DL_0024F8
+
+HIDAN_room_26Vtx_002968:
+  type: OOT:ARRAY
+  offset: 0x002968
+  symbol: HIDAN_room_26Vtx_002968
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_002F68:
+  type: GFX
+  offset: 0x002F68
+  symbol: HIDAN_room_26DL_002F68
+
+HIDAN_room_26Vtx_003480:
+  type: OOT:ARRAY
+  offset: 0x003480
+  symbol: HIDAN_room_26Vtx_003480
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_003590:
+  type: GFX
+  offset: 0x003590
+  symbol: HIDAN_room_26DL_003590
+
+HIDAN_room_26Vtx_0036A0:
+  type: OOT:ARRAY
+  offset: 0x0036A0
+  symbol: HIDAN_room_26Vtx_0036A0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_0037A0:
+  type: GFX
+  offset: 0x0037A0
+  symbol: HIDAN_room_26DL_0037A0
+
+HIDAN_room_26Vtx_0038A8:
+  type: OOT:ARRAY
+  offset: 0x0038A8
+  symbol: HIDAN_room_26Vtx_0038A8
+  count: 225
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_26DL_0046B8:
+  type: GFX
+  offset: 0x0046B8
+  symbol: HIDAN_room_26DL_0046B8

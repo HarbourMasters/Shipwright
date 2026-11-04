@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x011B85A0 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x011B85A0 ]
+    - [ 9, 0x011B85A0 ]
+    - [ 10, 0x011B85A0 ]
+    - [ 11, 0x011B85A0 ]
+    - [ 12, 0x011B85A0 ]
+    - [ 13, 0x011B85A0 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+gGiPrescriptionDL:
+  type: GFX
+  offset: 0x09C0
+  symbol: gGiPrescriptionDL
+
+gGiPrescriptionWritingDL:
+  type: GFX
+  offset: 0x0AF0
+  symbol: gGiPrescriptionWritingDL
+
+object_gi_prescriptionTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_prescriptionTex_000000
+  format: IA8
+  width: 32
+  height: 48
+
+
+object_gi_prescriptionVtx_000600:
+  type: OOT:ARRAY
+  offset: 0x000600
+  symbol: object_gi_prescriptionVtx_000600
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_prescriptionVtx_0007E0:
+  type: OOT:ARRAY
+  offset: 0x0007E0
+  symbol: object_gi_prescriptionVtx_0007E0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

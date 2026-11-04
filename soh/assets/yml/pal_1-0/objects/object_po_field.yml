@@ -1,0 +1,424 @@
+:config:
+  segments:
+    - [ 6, 0x0126D440 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x0126D440 ]
+    - [ 9, 0x0126D440 ]
+    - [ 10, 0x0126D440 ]
+    - [ 11, 0x0126D440 ]
+    - [ 12, 0x0126D440 ]
+    - [ 13, 0x0126D440 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gBigPoeBodyDL:
+  type: GFX
+  offset: 0x59F0
+  symbol: gBigPoeBodyDL
+
+gBigPoeCloakDL:
+  type: GFX
+  offset: 0x5620
+  symbol: gBigPoeCloakDL
+
+gBigPoeFaceDL:
+  type: GFX
+  offset: 0x5900
+  symbol: gBigPoeFaceDL
+
+gBigPoeSoulTex:
+  type: TEXTURE
+  offset: 0x1370
+  symbol: gBigPoeSoulTex
+  format: I8
+  width: 32
+  height: 64
+
+gPoeFieldAppearAnim:
+  type: OOT:ANIMATION
+  offset: 0x0F9C
+  symbol: gPoeFieldAppearAnim
+
+gPoeFieldAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x0158
+  symbol: gPoeFieldAttackAnim
+
+gPoeFieldBurnDL:
+  type: GFX
+  offset: 0x66D0
+  symbol: gPoeFieldBurnDL
+
+gPoeFieldDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x0454
+  symbol: gPoeFieldDamagedAnim
+
+gPoeFieldDisappearAnim:
+  type: OOT:ANIMATION
+  offset: 0x1360
+  symbol: gPoeFieldDisappearAnim
+
+gPoeFieldFleeAnim:
+  type: OOT:ANIMATION
+  offset: 0x0608
+  symbol: gPoeFieldFleeAnim
+
+gPoeFieldFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x0924
+  symbol: gPoeFieldFloatAnim
+
+gPoeFieldLanternDL:
+  type: GFX
+  offset: 0x4BA0
+  symbol: gPoeFieldLanternDL
+
+gPoeFieldLanternTopDL:
+  type: GFX
+  offset: 0x4CC0
+  symbol: gPoeFieldLanternTopDL
+
+gPoeFieldSkel:
+  type: OOT:SKELETON
+  offset: 0x6A30
+  symbol: gPoeFieldSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gPoeFieldSoulDL:
+  type: GFX
+  offset: 0x23B0
+  symbol: gPoeFieldSoulDL
+
+gPoeFieldSoulTex:
+  type: TEXTURE
+  offset: 0x1B70
+  symbol: gPoeFieldSoulTex
+  format: I8
+  width: 32
+  height: 64
+
+object_po_fieldTex_002470:
+  type: TEXTURE
+  offset: 0x2470
+  symbol: object_po_fieldTex_002470
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_fieldTex_002670:
+  type: TEXTURE
+  offset: 0x2670
+  symbol: object_po_fieldTex_002670
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_fieldTex_002870:
+  type: TEXTURE
+  offset: 0x2870
+  symbol: object_po_fieldTex_002870
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_fieldTex_003070:
+  type: TEXTURE
+  offset: 0x3070
+  symbol: object_po_fieldTex_003070
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_fieldTex_003270:
+  type: TEXTURE
+  offset: 0x3270
+  symbol: object_po_fieldTex_003270
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_po_fieldTex_0032F0:
+  type: TEXTURE
+  offset: 0x32F0
+  symbol: object_po_fieldTex_0032F0
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_po_fieldTex_0033F0:
+  type: TEXTURE
+  offset: 0x33F0
+  symbol: object_po_fieldTex_0033F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_fieldTex_0035F0:
+  type: TEXTURE
+  offset: 0x35F0
+  symbol: object_po_fieldTex_0035F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_fieldTex_0037F0:
+  type: TEXTURE
+  offset: 0x37F0
+  symbol: object_po_fieldTex_0037F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_fieldTex_005AB0:
+  type: TEXTURE
+  offset: 0x5AB0
+  symbol: object_po_fieldTex_005AB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_fieldTex_005CB0:
+  type: TEXTURE
+  offset: 0x5CB0
+  symbol: object_po_fieldTex_005CB0
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_po_fieldVtx_002370:
+  type: OOT:ARRAY
+  offset: 0x002370
+  symbol: object_po_fieldVtx_002370
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_0039F0:
+  type: OOT:ARRAY
+  offset: 0x0039F0
+  symbol: object_po_fieldVtx_0039F0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_003B00:
+  type: OOT:ARRAY
+  offset: 0x003B00
+  symbol: object_po_fieldVtx_003B00
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_003BA0:
+  type: OOT:ARRAY
+  offset: 0x003BA0
+  symbol: object_po_fieldVtx_003BA0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_003C00:
+  type: OOT:ARRAY
+  offset: 0x003C00
+  symbol: object_po_fieldVtx_003C00
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_003DA0:
+  type: OOT:ARRAY
+  offset: 0x003DA0
+  symbol: object_po_fieldVtx_003DA0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_003F50:
+  type: OOT:ARRAY
+  offset: 0x003F50
+  symbol: object_po_fieldVtx_003F50
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_003FD0:
+  type: OOT:ARRAY
+  offset: 0x003FD0
+  symbol: object_po_fieldVtx_003FD0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_004060:
+  type: OOT:ARRAY
+  offset: 0x004060
+  symbol: object_po_fieldVtx_004060
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_004110:
+  type: OOT:ARRAY
+  offset: 0x004110
+  symbol: object_po_fieldVtx_004110
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_004190:
+  type: OOT:ARRAY
+  offset: 0x004190
+  symbol: object_po_fieldVtx_004190
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_004500:
+  type: OOT:ARRAY
+  offset: 0x004500
+  symbol: object_po_fieldVtx_004500
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_0049A0:
+  type: OOT:ARRAY
+  offset: 0x0049A0
+  symbol: object_po_fieldVtx_0049A0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fieldVtx_004AF0:
+  type: OOT:ARRAY
+  offset: 0x004AF0
+  symbol: object_po_fieldVtx_004AF0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeFieldSkelLimbsLimb_0069DCDL_004D48:
+  type: GFX
+  offset: 0x004D48
+  symbol: gPoeFieldSkelLimbsLimb_0069DCDL_004D48
+
+gPoeFieldSkelLimbsLimb_006A00DL_004DF8:
+  type: GFX
+  offset: 0x004DF8
+  symbol: gPoeFieldSkelLimbsLimb_006A00DL_004DF8
+
+gPoeFieldSkelLimbsLimb_0069A0DL_004F60:
+  type: GFX
+  offset: 0x004F60
+  symbol: gPoeFieldSkelLimbsLimb_0069A0DL_004F60
+
+gPoeFieldSkelLimbsLimb_0069D0DL_005058:
+  type: GFX
+  offset: 0x005058
+  symbol: gPoeFieldSkelLimbsLimb_0069D0DL_005058
+
+gPoeFieldSkelLimbsLimb_0069C4DL_0050F8:
+  type: GFX
+  offset: 0x0050F8
+  symbol: gPoeFieldSkelLimbsLimb_0069C4DL_0050F8
+
+gPoeFieldSkelLimbsLimb_0069B8DL_0051A0:
+  type: GFX
+  offset: 0x0051A0
+  symbol: gPoeFieldSkelLimbsLimb_0069B8DL_0051A0
+
+gPoeFieldSkelLimbsLimb_0069ACDL_005288:
+  type: GFX
+  offset: 0x005288
+  symbol: gPoeFieldSkelLimbsLimb_0069ACDL_005288
+
+gPoeFieldSkelLimbsLimb_0069F4DL_005328:
+  type: GFX
+  offset: 0x005328
+  symbol: gPoeFieldSkelLimbsLimb_0069F4DL_005328
+
+object_po_fieldVtx_005D30:
+  type: OOT:ARRAY
+  offset: 0x005D30
+  symbol: object_po_fieldVtx_005D30
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeFieldSkelLimbsLimb_0069A0:
+  type: OOT:LIMB
+  offset: 0x0069A0
+  symbol: gPoeFieldSkelLimbsLimb_0069A0
+  limb_type: Standard
+
+gPoeFieldSkelLimbsLimb_0069AC:
+  type: OOT:LIMB
+  offset: 0x0069AC
+  symbol: gPoeFieldSkelLimbsLimb_0069AC
+  limb_type: Standard
+
+gPoeFieldSkelLimbsLimb_0069B8:
+  type: OOT:LIMB
+  offset: 0x0069B8
+  symbol: gPoeFieldSkelLimbsLimb_0069B8
+  limb_type: Standard
+
+gPoeFieldSkelLimbsLimb_0069C4:
+  type: OOT:LIMB
+  offset: 0x0069C4
+  symbol: gPoeFieldSkelLimbsLimb_0069C4
+  limb_type: Standard
+
+gPoeFieldSkelLimbsLimb_0069D0:
+  type: OOT:LIMB
+  offset: 0x0069D0
+  symbol: gPoeFieldSkelLimbsLimb_0069D0
+  limb_type: Standard
+
+gPoeFieldSkelLimbsLimb_0069DC:
+  type: OOT:LIMB
+  offset: 0x0069DC
+  symbol: gPoeFieldSkelLimbsLimb_0069DC
+  limb_type: Standard
+
+gPoeFieldSkelLimbsLimb_0069E8:
+  type: OOT:LIMB
+  offset: 0x0069E8
+  symbol: gPoeFieldSkelLimbsLimb_0069E8
+  limb_type: Standard
+
+gPoeFieldSkelLimbsLimb_0069F4:
+  type: OOT:LIMB
+  offset: 0x0069F4
+  symbol: gPoeFieldSkelLimbsLimb_0069F4
+  limb_type: Standard
+
+gPoeFieldSkelLimbsLimb_006A00:
+  type: OOT:LIMB
+  offset: 0x006A00
+  symbol: gPoeFieldSkelLimbsLimb_006A00
+  limb_type: Standard
+
+gPoeFieldSkelLimbs:
+  type: BLOB
+  offset: 0x6A0C
+  symbol: gPoeFieldSkelLimbs
+  size: 0

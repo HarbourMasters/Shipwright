@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012EB920 ]
+
+gJabuJabuTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gJabuJabuTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gJabuJabuTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gJabuJabuTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

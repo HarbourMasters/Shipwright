@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x01056A20 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x01056A20 ]
+    - [ 9, 0x01056A20 ]
+    - [ 10, 0x01056A20 ]
+    - [ 11, 0x01056A20 ]
+    - [ 12, 0x01056A20 ]
+    - [ 13, 0x01056A20 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gGiNutDL:
+  type: GFX
+  offset: 0x0E90
+  symbol: gGiNutDL
+
+object_gi_nutsTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_nutsTex_000000
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_nutsVtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_nutsVtx_000400
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

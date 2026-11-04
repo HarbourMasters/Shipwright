@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 128, 0x014F4FE0 ]
+
+gBazaar2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gBazaar2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_SP1a_pal_static
+  external_tlut_offset: 0x200
+
+gBazaarBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBazaarBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_SP1a_pal_static
+  external_tlut_offset: 0x000
+

@@ -25,6 +25,7 @@ void RegionTable_Init_CastleGrounds() {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,   logic->HasItem(RG_POWER_BRACELET)),
+        EVENT_ACCESS(LOGIC_MALON_RETURNED_FROM_CASTLE, logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG,      logic->HasItem(RG_SPEAK_HYLIAN)),
@@ -37,6 +38,7 @@ void RegionTable_Init_CastleGrounds() {
         //Exits
         ENTRANCE(RR_CASTLE_GROUNDS, true),
         ENTRANCE(RR_HC_ABOVE_VINE,  logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)),
+        //Rando changes this guard to always be bribable
         ENTRANCE(RR_HC_PAST_GATE,   logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
     });
 
@@ -95,29 +97,32 @@ void RegionTable_Init_CastleGrounds() {
         ENTRANCE(RR_HC_MOAT,      true),
     });
 
-    areaTable[RR_HC_MOAT] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {}, {
+    areaTable[RR_HC_MOAT] = Region("Hyrule Castle Moat", SCENE_HYRULE_CASTLE, {
+        //Events
+        EVENT_ACCESS(LOGIC_TALON_RETURNED_FROM_CASTLE, logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_SPEAK_HYLIAN)),
+    }, {
         //Locations
         LOCATION(RC_HC_GRASS_1,             logic->CanCutShrubs()),
         LOCATION(RC_HC_GRASS_2,             logic->CanCutShrubs()),
         LOCATION(RC_HC_GROTTO_TREE,         logic->CanBonkTrees()),
-        LOCATION(RC_HC_WONDER_LEFT_TORCH,   logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_HC_WONDER_RIGHT_TORCH,  logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_HC_WONDER_MOAT_1,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
-        LOCATION(RC_HC_WONDER_MOAT_2,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_3,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_4,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
-        LOCATION(RC_HC_WONDER_MOAT_5,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_6,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_7,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_8,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_9,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_10,      logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_LEFT_TORCH,   logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_HC_WONDER_RIGHT_TORCH,  logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_HC_WONDER_MOAT_1,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())),
+        LOCATION(RC_HC_WONDER_MOAT_2,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_3,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_4,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())),
+        LOCATION(RC_HC_WONDER_MOAT_5,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_6,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_7,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_8,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_9,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_10,      logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,          true),
         ENTRANCE(RR_HC_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET) && logic->HasItem(RG_SPEAK_HYLIAN)) || 
-                                      (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage() && logic->HasExplosives() && logic->CanJumpslash())),
+        ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_HOVER_BOOTS) ||
+                                      logic->CanMegajump() || logic->CanMidairDamageBoost()),
     });
 
     areaTable[RR_HC_DRAIN_LEDGE] = Region("Hyrule Castle Drain Ledge", SCENE_HYRULE_CASTLE, {}, {}, {
@@ -126,10 +131,13 @@ void RegionTable_Init_CastleGrounds() {
         ENTRANCE(RR_HC_GARDEN, logic->CanUse(RG_CRAWL)),
     });
 
-    areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {}, {
+    areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {
+        //Events
+        EVENT_ACCESS(LOGIC_MET_ZELDA, logic->HasItem(RG_SPEAK_HYLIAN)),
+    }, {
         //Locations
-        LOCATION(RC_HC_ZELDAS_LETTER,                 logic->HasItem(RG_SPEAK_HYLIAN)),
-        LOCATION(RC_SONG_FROM_IMPA,                   logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_HC_ZELDAS_LETTER,                 logic->Get(LOGIC_MET_ZELDA)),
+        LOCATION(RC_SONG_FROM_IMPA,                   logic->Get(LOGIC_MET_ZELDA)),
         LOCATION(RC_HC_WONDER_COURTYARD_RIGHT_WINDOW, logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_HC_WONDER_COURTYARD_LEFT_WINDOW,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
@@ -192,7 +200,7 @@ void RegionTable_Init_CastleGrounds() {
         EVENT_ACCESS(LOGIC_BUILD_RAINBOW_BRIDGE, logic->CanBuildRainbowBridge()),
     }, {
         //Locations
-        LOCATION(RC_OGC_GS,               logic->HookshotOrBoomerang() || ((logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))) ,
+        LOCATION(RC_OGC_GS,               logic->HookshotOrBoomerang() || ((logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)) && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))) ,
         LOCATION(RC_OGC_BRONZE_BOULDER_1, logic->CanUse(RG_MEGATON_HAMMER)),
         LOCATION(RC_OGC_BRONZE_BOULDER_2, logic->CanUse(RG_MEGATON_HAMMER)),
         LOCATION(RC_OGC_BRONZE_BOULDER_3, logic->CanUse(RG_MEGATON_HAMMER)),
@@ -223,7 +231,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_GANONS_CASTLE_LEDGE] = Region("Ganon's Castle Ledge", SCENE_OUTSIDE_GANONS_CASTLE, {}, {}, {
         // Exits
-        ENTRANCE(RR_GANONS_CASTLE_GROUNDS,  logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE)),
+        ENTRANCE(RR_GANONS_CASTLE_GROUNDS,  logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE) || logic->CanBunnyMegaJumpslash()),
         ENTRANCE(RR_GANONS_CASTLE_ENTRYWAY, logic->IsAdult),
     });
 

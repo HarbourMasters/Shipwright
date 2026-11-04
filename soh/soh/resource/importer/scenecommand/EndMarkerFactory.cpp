@@ -1,8 +1,6 @@
 #include "soh/resource/importer/scenecommand/EndMarkerFactory.h"
 #include "soh/resource/type/scenecommand/EndMarker.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include "spdlog/spdlog.h"
-#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> EndMarkerFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,

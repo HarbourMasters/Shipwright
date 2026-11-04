@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x018C2000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x018C2000 ]
+    - [ 9, 0x018C2000 ]
+    - [ 10, 0x018C2000 ]
+    - [ 11, 0x018C2000 ]
+    - [ 12, 0x018C2000 ]
+    - [ 13, 0x018C2000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGiDinsFireColorDL:
+  type: GFX
+  offset: 0x09E0
+  symbol: gGiDinsFireColorDL
+
+gGiFaroresWindColorDL:
+  type: GFX
+  offset: 0x0A00
+  symbol: gGiFaroresWindColorDL
+
+gGiMagicSpellDiamondDL:
+  type: GFX
+  offset: 0x0920
+  symbol: gGiMagicSpellDiamondDL
+
+gGiMagicSpellOrbDL:
+  type: GFX
+  offset: 0x0A40
+  symbol: gGiMagicSpellOrbDL
+
+gGiNayrusLoveColorDL:
+  type: GFX
+  offset: 0x0A20
+  symbol: gGiNayrusLoveColorDL
+
+
+object_gi_goddessVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_goddessVtx_000000
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_goddessVtx_000140:
+  type: OOT:ARRAY
+  offset: 0x000140
+  symbol: object_gi_goddessVtx_000140
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

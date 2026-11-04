@@ -1,0 +1,430 @@
+:config:
+  segments:
+    - [ 6, 0x01137D20 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x01137D20 ]
+    - [ 9, 0x01137D20 ]
+    - [ 10, 0x01137D20 ]
+    - [ 11, 0x01137D20 ]
+    - [ 12, 0x01137D20 ]
+    - [ 13, 0x01137D20 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gDogLadyBackOfHandTex:
+  type: TEXTURE
+  offset: 0x1DC8
+  symbol: gDogLadyBackOfHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0108
+
+gDogLadyDL_4448:
+  type: GFX
+  offset: 0x4448
+  symbol: gDogLadyDL_4448
+
+gDogLadyDL_4650:
+  type: GFX
+  offset: 0x4650
+  symbol: gDogLadyDL_4650
+
+gDogLadyDL_4780:
+  type: GFX
+  offset: 0x4780
+  symbol: gDogLadyDL_4780
+
+gDogLadyDL_4928:
+  type: GFX
+  offset: 0x4928
+  symbol: gDogLadyDL_4928
+
+gDogLadyDL_4B30:
+  type: GFX
+  offset: 0x4B30
+  symbol: gDogLadyDL_4B30
+
+gDogLadyDL_4C60:
+  type: GFX
+  offset: 0x4C60
+  symbol: gDogLadyDL_4C60
+
+gDogLadyDL_50A8:
+  type: GFX
+  offset: 0x50A8
+  symbol: gDogLadyDL_50A8
+
+gDogLadyDL_5178:
+  type: GFX
+  offset: 0x5178
+  symbol: gDogLadyDL_5178
+
+gDogLadyDL_5248:
+  type: GFX
+  offset: 0x5248
+  symbol: gDogLadyDL_5248
+
+gDogLadyDL_5318:
+  type: GFX
+  offset: 0x5318
+  symbol: gDogLadyDL_5318
+
+gDogLadyDL_53E8:
+  type: GFX
+  offset: 0x53E8
+  symbol: gDogLadyDL_53E8
+
+gDogLadyDL_54B8:
+  type: GFX
+  offset: 0x54B8
+  symbol: gDogLadyDL_54B8
+
+gDogLadyDressDL:
+  type: GFX
+  offset: 0x5588
+  symbol: gDogLadyDressDL
+
+gDogLadyDressShoulderPatternTex:
+  type: TEXTURE
+  offset: 0x1EC8
+  symbol: gDogLadyDressShoulderPatternTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0108
+
+gDogLadyDressTex:
+  type: TEXTURE
+  offset: 0x1F08
+  symbol: gDogLadyDressTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0108
+
+gDogLadyEarTex:
+  type: TEXTURE
+  offset: 0x0448
+  symbol: gDogLadyEarTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0108
+
+gDogLadyEyeClosedTex:
+  type: TEXTURE
+  offset: 0x15C8
+  symbol: gDogLadyEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogLadyEyeHalfTex:
+  type: TEXTURE
+  offset: 0x0DC8
+  symbol: gDogLadyEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogLadyEyeOpenTex:
+  type: TEXTURE
+  offset: 0x05C8
+  symbol: gDogLadyEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogLadyHairTex:
+  type: TEXTURE
+  offset: 0x0308
+  symbol: gDogLadyHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0108
+
+gDogLadyHeadDL:
+  type: GFX
+  offset: 0x3C88
+  symbol: gDogLadyHeadDL
+
+gDogLadyHeadLimb:
+  type: OOT:LIMB
+  offset: 0x0A8
+  symbol: gDogLadyHeadLimb
+  limb_type: Standard
+
+gDogLadyLimb_00C:
+  type: OOT:LIMB
+  offset: 0x00C
+  symbol: gDogLadyLimb_00C
+  limb_type: Standard
+
+gDogLadyLimb_018:
+  type: OOT:LIMB
+  offset: 0x018
+  symbol: gDogLadyLimb_018
+  limb_type: Standard
+
+gDogLadyLimb_024:
+  type: OOT:LIMB
+  offset: 0x024
+  symbol: gDogLadyLimb_024
+  limb_type: Standard
+
+gDogLadyLimb_030:
+  type: OOT:LIMB
+  offset: 0x030
+  symbol: gDogLadyLimb_030
+  limb_type: Standard
+
+gDogLadyLimb_03C:
+  type: OOT:LIMB
+  offset: 0x03C
+  symbol: gDogLadyLimb_03C
+  limb_type: Standard
+
+gDogLadyLimb_048:
+  type: OOT:LIMB
+  offset: 0x048
+  symbol: gDogLadyLimb_048
+  limb_type: Standard
+
+gDogLadyLimb_060:
+  type: OOT:LIMB
+  offset: 0x060
+  symbol: gDogLadyLimb_060
+  limb_type: Standard
+
+gDogLadyLimb_06C:
+  type: OOT:LIMB
+  offset: 0x06C
+  symbol: gDogLadyLimb_06C
+  limb_type: Standard
+
+gDogLadyLimb_078:
+  type: OOT:LIMB
+  offset: 0x078
+  symbol: gDogLadyLimb_078
+  limb_type: Standard
+
+gDogLadyLimb_084:
+  type: OOT:LIMB
+  offset: 0x084
+  symbol: gDogLadyLimb_084
+  limb_type: Standard
+
+gDogLadyLimb_090:
+  type: OOT:LIMB
+  offset: 0x090
+  symbol: gDogLadyLimb_090
+  limb_type: Standard
+
+gDogLadyLimb_09C:
+  type: OOT:LIMB
+  offset: 0x09C
+  symbol: gDogLadyLimb_09C
+  limb_type: Standard
+
+gDogLadyLipGradientTex:
+  type: TEXTURE
+  offset: 0x0548
+  symbol: gDogLadyLipGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0108
+
+gDogLadyNostrilTex:
+  type: TEXTURE
+  offset: 0x0588
+  symbol: gDogLadyNostrilTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0108
+
+gDogLadyRootLimb:
+  type: OOT:LIMB
+  offset: 0x000
+  symbol: gDogLadyRootLimb
+  limb_type: Standard
+
+gDogLadySkel:
+  type: OOT:SKELETON
+  offset: 0xF0
+  symbol: gDogLadySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDogLadySkinGradientTex:
+  type: TEXTURE
+  offset: 0x0408
+  symbol: gDogLadySkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0108
+
+gDogLadyTLUT:
+  type: TEXTURE
+  offset: 0x0108
+  symbol: gDogLadyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDogLadyTorsoDL:
+  type: GFX
+  offset: 0x4E08
+  symbol: gDogLadyTorsoDL
+
+gDogLadyTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x054
+  symbol: gDogLadyTorsoLimb
+  limb_type: Standard
+
+
+gDogLadySkelLimbs:
+  type: BLOB
+  offset: 0xB4
+  symbol: gDogLadySkelLimbs
+  size: 0
+
+object_aobVtx_001F48:
+  type: OOT:ARRAY
+  offset: 0x001F48
+  symbol: object_aobVtx_001F48
+  count: 174
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_002A28:
+  type: OOT:ARRAY
+  offset: 0x002A28
+  symbol: object_aobVtx_002A28
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_002CF8:
+  type: OOT:ARRAY
+  offset: 0x002CF8
+  symbol: object_aobVtx_002CF8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_002E78:
+  type: OOT:ARRAY
+  offset: 0x002E78
+  symbol: object_aobVtx_002E78
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003008:
+  type: OOT:ARRAY
+  offset: 0x003008
+  symbol: object_aobVtx_003008
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_0032D8:
+  type: OOT:ARRAY
+  offset: 0x0032D8
+  symbol: object_aobVtx_0032D8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003458:
+  type: OOT:ARRAY
+  offset: 0x003458
+  symbol: object_aobVtx_003458
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_0035E8:
+  type: OOT:ARRAY
+  offset: 0x0035E8
+  symbol: object_aobVtx_0035E8
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003A28:
+  type: OOT:ARRAY
+  offset: 0x003A28
+  symbol: object_aobVtx_003A28
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003A58:
+  type: OOT:ARRAY
+  offset: 0x003A58
+  symbol: object_aobVtx_003A58
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003A88:
+  type: OOT:ARRAY
+  offset: 0x003A88
+  symbol: object_aobVtx_003A88
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003AB8:
+  type: OOT:ARRAY
+  offset: 0x003AB8
+  symbol: object_aobVtx_003AB8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003AE8:
+  type: OOT:ARRAY
+  offset: 0x003AE8
+  symbol: object_aobVtx_003AE8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003B18:
+  type: OOT:ARRAY
+  offset: 0x003B18
+  symbol: object_aobVtx_003B18
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003B48:
+  type: OOT:ARRAY
+  offset: 0x003B48
+  symbol: object_aobVtx_003B48
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

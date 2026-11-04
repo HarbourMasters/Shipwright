@@ -1,0 +1,249 @@
+:config:
+  segments:
+    - [ 3, 0x01F60220 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x01F60220 ]
+    - [ 9, 0x01F60220 ]
+    - [ 10, 0x01F60220 ]
+    - [ 11, 0x01F60220 ]
+    - [ 12, 0x01F60220 ]
+    - [ 13, 0x01F60220 ]
+    - [ 2, 0x01F5F480 ]
+  directory: scenes/shared/kinsuta_scene
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+    - ntsc_1-0/scenes/shared/kinsuta_scene.yml
+    - ntsc_1-0/code/sys_matrix.yml
+
+kinsuta_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: kinsuta_room_0
+
+gKinsutaDL_0030B0:
+  type: GFX
+  offset: 0x30B0
+  symbol: gKinsutaDL_0030B0
+
+gKinsutaDL_00B088:
+  type: GFX
+  offset: 0xB088
+  symbol: gKinsutaDL_00B088
+
+kinsuta_room_0TLUT_0030F0:
+  type: TEXTURE
+  offset: 0x30F0
+  symbol: kinsuta_room_0TLUT_0030F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+kinsuta_room_0Tex_003110:
+  type: TEXTURE
+  offset: 0x3110
+  symbol: kinsuta_room_0Tex_003110
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x30F0
+
+kinsuta_room_0Tex_003910:
+  type: TEXTURE
+  offset: 0x3910
+  symbol: kinsuta_room_0Tex_003910
+  format: I4
+  width: 64
+  height: 128
+
+kinsuta_room_0Tex_004910:
+  type: TEXTURE
+  offset: 0x4910
+  symbol: kinsuta_room_0Tex_004910
+  format: I4
+  width: 64
+  height: 128
+
+kinsuta_room_0Tex_005910:
+  type: TEXTURE
+  offset: 0x5910
+  symbol: kinsuta_room_0Tex_005910
+  format: I4
+  width: 64
+  height: 128
+
+kinsuta_room_0Tex_006910:
+  type: TEXTURE
+  offset: 0x6910
+  symbol: kinsuta_room_0Tex_006910
+  format: RGBA16
+  width: 32
+  height: 64
+
+kinsuta_room_0Tex_007910:
+  type: TEXTURE
+  offset: 0x7910
+  symbol: kinsuta_room_0Tex_007910
+  format: RGBA16
+  width: 32
+  height: 64
+
+kinsuta_room_0Tex_008910:
+  type: TEXTURE
+  offset: 0x8910
+  symbol: kinsuta_room_0Tex_008910
+  format: I8
+  width: 32
+  height: 32
+
+kinsuta_room_0Tex_008D10:
+  type: TEXTURE
+  offset: 0x8D10
+  symbol: kinsuta_room_0Tex_008D10
+  format: RGBA16
+  width: 64
+  height: 32
+
+kinsuta_room_0Tex_009D10:
+  type: TEXTURE
+  offset: 0x9D10
+  symbol: kinsuta_room_0Tex_009D10
+  format: RGBA16
+  width: 32
+  height: 16
+
+kinsuta_room_0Tex_00B098:
+  type: TEXTURE
+  offset: 0xB098
+  symbol: kinsuta_room_0Tex_00B098
+  format: IA16
+  width: 32
+  height: 64
+
+kinsuta_room_0Tex_00C098:
+  type: TEXTURE
+  offset: 0xC098
+  symbol: kinsuta_room_0Tex_00C098
+  format: I8
+  width: 64
+  height: 64
+
+kinsuta_room_0Tex_00D098:
+  type: TEXTURE
+  offset: 0xD098
+  symbol: kinsuta_room_0Tex_00D098
+  format: I8
+  width: 64
+  height: 64
+
+
+kinsuta_room_0Vtx_0001A0:
+  type: OOT:ARRAY
+  offset: 0x0001A0
+  symbol: kinsuta_room_0Vtx_0001A0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kinsuta_room_0DL_0002E0:
+  type: GFX
+  offset: 0x0002E0
+  symbol: kinsuta_room_0DL_0002E0
+
+kinsuta_room_0Vtx_0003E0:
+  type: OOT:ARRAY
+  offset: 0x0003E0
+  symbol: kinsuta_room_0Vtx_0003E0
+  count: 145
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kinsuta_room_0DL_000CF0:
+  type: GFX
+  offset: 0x000CF0
+  symbol: kinsuta_room_0DL_000CF0
+
+kinsuta_room_0Vtx_000ED8:
+  type: OOT:ARRAY
+  offset: 0x000ED8
+  symbol: kinsuta_room_0Vtx_000ED8
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kinsuta_room_0DL_0013E8:
+  type: GFX
+  offset: 0x0013E8
+  symbol: kinsuta_room_0DL_0013E8
+
+kinsuta_room_0Vtx_001668:
+  type: OOT:ARRAY
+  offset: 0x001668
+  symbol: kinsuta_room_0Vtx_001668
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kinsuta_room_0DL_001B38:
+  type: GFX
+  offset: 0x001B38
+  symbol: kinsuta_room_0DL_001B38
+
+kinsuta_room_0Vtx_001D18:
+  type: OOT:ARRAY
+  offset: 0x001D18
+  symbol: kinsuta_room_0Vtx_001D18
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kinsuta_room_0DL_001F78:
+  type: GFX
+  offset: 0x001F78
+  symbol: kinsuta_room_0DL_001F78
+
+kinsuta_room_0Vtx_0020D8:
+  type: OOT:ARRAY
+  offset: 0x0020D8
+  symbol: kinsuta_room_0Vtx_0020D8
+  count: 175
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kinsuta_room_0DL_002BC8:
+  type: GFX
+  offset: 0x002BC8
+  symbol: kinsuta_room_0DL_002BC8
+
+kinsuta_room_0Vtx_002E88:
+  type: OOT:ARRAY
+  offset: 0x002E88
+  symbol: kinsuta_room_0Vtx_002E88
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kinsuta_room_0DL_002FD8:
+  type: GFX
+  offset: 0x002FD8
+  symbol: kinsuta_room_0DL_002FD8
+
+kinsuta_room_0Vtx_00A110:
+  type: OOT:ARRAY
+  offset: 0x00A110
+  symbol: kinsuta_room_0Vtx_00A110
+  count: 189
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kinsuta_room_0DL_00ACE0:
+  type: GFX
+  offset: 0x00ACE0
+  symbol: kinsuta_room_0DL_00ACE0

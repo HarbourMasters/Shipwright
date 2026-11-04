@@ -1,0 +1,60 @@
+:config:
+  segments:
+    - [ 7, 0x008C7670 ]
+
+gDefaultMessageBackgroundTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDefaultMessageBackgroundTex
+  format: IA4
+  width: 128
+  height: 64
+
+gFadingMessageBackgroundTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gFadingMessageBackgroundTex
+  format: I4
+  width: 128
+  height: 64
+
+gMessageArrowTex:
+  type: TEXTURE
+  offset: 0x4100
+  symbol: gMessageArrowTex
+  format: I4
+  width: 16
+  height: 16
+
+gMessageContinueTriangleTex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gMessageContinueTriangleTex
+  format: I4
+  width: 16
+  height: 16
+
+gMessageEndSquareTex:
+  type: TEXTURE
+  offset: 0x4080
+  symbol: gMessageEndSquareTex
+  format: I4
+  width: 16
+  height: 16
+
+gNoteStaffMessageBackgroundTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gNoteStaffMessageBackgroundTex
+  format: IA4
+  width: 128
+  height: 64
+
+gSignMessageBackgroundTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gSignMessageBackgroundTex
+  format: IA4
+  width: 128
+  height: 64
+

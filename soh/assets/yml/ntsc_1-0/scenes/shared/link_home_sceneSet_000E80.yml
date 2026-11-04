@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x019E77A0 ]
+  directory: scenes/shared/link_home_scene
+  external_files:
+    - ntsc_1-0/scenes/shared/link_home_scene.yml
+
+link_home_sceneSet_000E80:
+  type: OOT:SCENE
+  offset: 0xE80
+  symbol: link_home_sceneSet_000E80
+  base_name: link_home_scene

@@ -1,23 +1,25 @@
-#ifndef NETWORK_SAIL_H
-#define NETWORK_SAIL_H
+#pragma once
+
 #ifdef __cplusplus
+
+#include <memory>
 
 #include "soh/Network/Network.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 class Sail : public Network {
   private:
-    GameInteractionEffectBase* EffectFromJson(nlohmann::json payload);
+    std::unique_ptr<GameInteractionEffectBase> EffectFromJson(nlohmann::json payload);
     void RegisterHooks();
 
   public:
     static Sail* Instance;
 
     void Enable();
+    void Disable();
     void OnIncomingJson(nlohmann::json payload);
     void OnConnected();
     void OnDisconnected();
 };
 
 #endif // __cplusplus
-#endif // NETWORK_SAIL_H

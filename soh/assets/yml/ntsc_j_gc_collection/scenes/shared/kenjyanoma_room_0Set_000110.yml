@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01C381A0 ]
+    - [ 2, 0x01C36AA0 ]
+  directory: scenes/shared/kenjyanoma_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/shared/kenjyanoma_room_0.yml
+    - ntsc_j_gc_collection/scenes/shared/kenjyanoma_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+
+kenjyanoma_room_0Set_000110:
+  type: OOT:ROOM
+  offset: 0x110
+  symbol: kenjyanoma_room_0Set_000110
+  base_name: kenjyanoma_room_0

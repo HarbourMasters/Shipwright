@@ -1,9 +1,14 @@
-#ifndef SHIP_UTILS_H
-#define SHIP_UTILS_H
+#pragma once
 
-#include <libultraship/libultraship.h>
+#include <libultraship/libultra.h>
 
 #ifdef __cplusplus
+#include <array>
+#include <set>
+#include <vector>
+
+#include <string>
+std::string Ship_FormatTimeDisplay(uint32_t value);
 
 void LoadGuiTextures();
 
@@ -17,6 +22,8 @@ f32 Ship_GetExtendedAspectRatioMultiplier();
 void Ship_ExtendedCullingActorAdjustProjectedZ(Actor* actor);
 void Ship_ExtendedCullingActorAdjustProjectedX(Actor* actor);
 void Ship_ExtendedCullingActorRestoreProjectedPos(PlayState* play, Actor* actor);
+
+s32 Ship_GetActorSpawnObjectIndex(PlayState* play, s16 objectId, s16 actorId);
 
 bool Ship_IsCStringEmpty(const char* str);
 void Ship_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
@@ -73,5 +80,3 @@ template <typename T, size_t size> void Shuffle(std::array<T, size>& arr, uint64
 }
 } // namespace ShipUtils
 #endif
-
-#endif // SHIP_UTILS_H

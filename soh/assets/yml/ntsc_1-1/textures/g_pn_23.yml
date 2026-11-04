@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012FE3B0 ]
+
+gBazaarTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gBazaarTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gBazaarTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBazaarTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

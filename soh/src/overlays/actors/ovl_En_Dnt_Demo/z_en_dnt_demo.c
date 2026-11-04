@@ -137,7 +137,7 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
         }
     } else {
         if ((Player_GetMask(play) != 0) && (this->subCamera == SUBCAM_FREE)) {
-            this->subCamera = OnePointCutscene_Init(play, 2220, -99, &this->scrubs[3]->actor, MAIN_CAM);
+            this->subCamera = OnePointCutscene_Init(play, 2220, -99, &this->scrubs[3]->actor, CAM_ID_MAIN);
         }
         this->debugArrowTimer = 0;
         if (this->judgeTimer == 40) {
@@ -168,15 +168,15 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
                     if (GameInteractor_Should(VB_DEKU_SCRUBS_REACT_TO_MASK_OF_TRUTH,
                                               !Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) &&
                                                   (Player_GetMask(play) != PLAYER_MASK_SKULL))) {
-                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         this->prize = DNT_PRIZE_NUTS;
                         this->leader->stageSignal = DNT_LEADER_SIGNAL_UP;
                         reaction = DNT_SIGNAL_LOOK;
                         if (this->subCamera != SUBCAM_FREE) {
                             this->subCamera = SUBCAM_FREE;
                             reaction = DNT_SIGNAL_LOOK;
-                            OnePointCutscene_Init(play, 2340, -99, &this->leader->actor, MAIN_CAM);
+                            OnePointCutscene_Init(play, 2340, -99, &this->leader->actor, CAM_ID_MAIN);
                         }
                         break;
                     }
@@ -215,7 +215,7 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
                             case DNT_ACTION_ATTACK:
                                 if (this->subCamera != SUBCAM_FREE) {
                                     this->subCamera = SUBCAM_FREE;
-                                    OnePointCutscene_Init(play, 2350, -99, &this->scrubs[3]->actor, MAIN_CAM);
+                                    OnePointCutscene_Init(play, 2350, -99, &this->scrubs[3]->actor, CAM_ID_MAIN);
                                 }
                                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_ENEMY | 0x800);
                                 break;

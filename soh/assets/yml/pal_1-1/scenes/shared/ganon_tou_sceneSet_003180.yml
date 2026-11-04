@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01BA8D70 ]
+  directory: scenes/shared/ganon_tou_scene
+  external_files:
+    - pal_1-1/scenes/shared/ganon_tou_scene.yml
+
+ganon_tou_sceneSet_003180:
+  type: OOT:SCENE
+  offset: 0x3180
+  symbol: ganon_tou_sceneSet_003180
+  base_name: ganon_tou_scene

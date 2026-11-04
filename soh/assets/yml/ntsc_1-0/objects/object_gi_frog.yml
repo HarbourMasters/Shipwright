@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x011CC7C0 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x011CC7C0 ]
+    - [ 9, 0x011CC7C0 ]
+    - [ 10, 0x011CC7C0 ]
+    - [ 11, 0x011CC7C0 ]
+    - [ 12, 0x011CC7C0 ]
+    - [ 13, 0x011CC7C0 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gGiFrogDL:
+  type: GFX
+  offset: 0x0D60
+  symbol: gGiFrogDL
+
+gGiFrogEyesDL:
+  type: GFX
+  offset: 0x1060
+  symbol: gGiFrogEyesDL
+
+object_gi_frogTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_frogTex_000000
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_frogVtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_frogVtx_000400
+  count: 139
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_frogVtx_000CB0:
+  type: OOT:ARRAY
+  offset: 0x000CB0
+  symbol: object_gi_frogVtx_000CB0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

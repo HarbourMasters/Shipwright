@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x01053230 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x01053230 ]
+    - [ 9, 0x01053230 ]
+    - [ 10, 0x01053230 ]
+    - [ 11, 0x01053230 ]
+    - [ 12, 0x01053230 ]
+    - [ 13, 0x01053230 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gGiRecoveryHeartDL:
+  type: GFX
+  offset: 0x00E0
+  symbol: gGiRecoveryHeartDL
+
+
+object_gi_heartVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_heartVtx_000000
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

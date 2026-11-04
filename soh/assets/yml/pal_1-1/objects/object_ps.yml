@@ -1,0 +1,538 @@
+:config:
+  segments:
+    - [ 6, 0x012C8F40 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x012C8F40 ]
+    - [ 9, 0x012C8F40 ]
+    - [ 10, 0x012C8F40 ]
+    - [ 11, 0x012C8F40 ]
+    - [ 12, 0x012C8F40 ]
+    - [ 13, 0x012C8F40 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gPoeSellerAngrySoulTex:
+  type: TEXTURE
+  offset: 0xA870
+  symbol: gPoeSellerAngrySoulTex
+  format: I8
+  width: 32
+  height: 64
+
+gPoeSellerBottleLabelTex:
+  type: TEXTURE
+  offset: 0x6580
+  symbol: gPoeSellerBottleLabelTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSellerCagedSoulDL:
+  type: GFX
+  offset: 0xC0B0
+  symbol: gPoeSellerCagedSoulDL
+
+gPoeSellerCarpetTex:
+  type: TEXTURE
+  offset: 0x6380
+  symbol: gPoeSellerCarpetTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSellerClothTex:
+  type: TEXTURE
+  offset: 0x5B80
+  symbol: gPoeSellerClothTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gPoeSellerCol:
+  type: OOT:COLLISION
+  offset: 0xC2D0
+  symbol: gPoeSellerCol
+
+gPoeSellerHappySoulTex:
+  type: TEXTURE
+  offset: 0xB070
+  symbol: gPoeSellerHappySoulTex
+  format: I8
+  width: 32
+  height: 64
+
+gPoeSellerIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x049C
+  symbol: gPoeSellerIdleAnim
+
+gPoeSellerLanternTex:
+  type: TEXTURE
+  offset: 0x6F80
+  symbol: gPoeSellerLanternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSellerMattressTex:
+  type: TEXTURE
+  offset: 0x5B00
+  symbol: gPoeSellerMattressTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPoeSellerMetalFrameTex:
+  type: TEXTURE
+  offset: 0x5A80
+  symbol: gPoeSellerMetalFrameTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPoeSellerSadSoulTex:
+  type: TEXTURE
+  offset: 0xB870
+  symbol: gPoeSellerSadSoulTex
+  format: I8
+  width: 32
+  height: 64
+
+gPoeSellerSkel:
+  type: OOT:SKELETON
+  offset: 0xC220
+  symbol: gPoeSellerSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gPoeSellerSwingStickAnim:
+  type: OOT:ANIMATION
+  offset: 0xC8EC
+  symbol: gPoeSellerSwingStickAnim
+
+gPoeSellerWoodenPanelTex:
+  type: TEXTURE
+  offset: 0x6780
+  symbol: gPoeSellerWoodenPanelTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_psTLUT_0004B0:
+  type: TEXTURE
+  offset: 0x4B0
+  symbol: object_psTLUT_0004B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_psTLUT_005880:
+  type: TEXTURE
+  offset: 0x5880
+  symbol: object_psTLUT_005880
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_psTex_0005B8:
+  type: TEXTURE
+  offset: 0x5B8
+  symbol: object_psTex_0005B8
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_psTex_0015B8:
+  type: TEXTURE
+  offset: 0x15B8
+  symbol: object_psTex_0015B8
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4B0
+
+object_psTex_0015F8:
+  type: TEXTURE
+  offset: 0x15F8
+  symbol: object_psTex_0015F8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_psTex_0017F8:
+  type: TEXTURE
+  offset: 0x17F8
+  symbol: object_psTex_0017F8
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4B0
+
+object_psTex_001838:
+  type: TEXTURE
+  offset: 0x1838
+  symbol: object_psTex_001838
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4B0
+
+object_psTex_001C38:
+  type: TEXTURE
+  offset: 0x1C38
+  symbol: object_psTex_001C38
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4B0
+
+object_psTex_001D38:
+  type: TEXTURE
+  offset: 0x1D38
+  symbol: object_psTex_001D38
+  format: I8
+  width: 8
+  height: 8
+
+object_psTex_001D78:
+  type: TEXTURE
+  offset: 0x1D78
+  symbol: object_psTex_001D78
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4B0
+
+object_psTex_001E78:
+  type: TEXTURE
+  offset: 0x1E78
+  symbol: object_psTex_001E78
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4B0
+
+object_psTex_001F78:
+  type: TEXTURE
+  offset: 0x1F78
+  symbol: object_psTex_001F78
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_psTex_002178:
+  type: TEXTURE
+  offset: 0x2178
+  symbol: object_psTex_002178
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_psTex_002378:
+  type: TEXTURE
+  offset: 0x2378
+  symbol: object_psTex_002378
+  format: I4
+  width: 32
+  height: 32
+
+object_psTex_002578:
+  type: TEXTURE
+  offset: 0x2578
+  symbol: object_psTex_002578
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4B0
+
+object_psTex_002978:
+  type: TEXTURE
+  offset: 0x2978
+  symbol: object_psTex_002978
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_psTex_007180:
+  type: TEXTURE
+  offset: 0x7180
+  symbol: object_psTex_007180
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5880
+
+object_psTex_0071C0:
+  type: TEXTURE
+  offset: 0x71C0
+  symbol: object_psTex_0071C0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5880
+
+object_psTex_0075C0:
+  type: TEXTURE
+  offset: 0x75C0
+  symbol: object_psTex_0075C0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5880
+
+object_psTex_007600:
+  type: TEXTURE
+  offset: 0x7600
+  symbol: object_psTex_007600
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5880
+
+object_psTex_007640:
+  type: TEXTURE
+  offset: 0x7640
+  symbol: object_psTex_007640
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5880
+
+object_psTex_007A40:
+  type: TEXTURE
+  offset: 0x7A40
+  symbol: object_psTex_007A40
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_psTex_007C40:
+  type: TEXTURE
+  offset: 0x7C40
+  symbol: object_psTex_007C40
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5880
+
+
+object_psVtx_002A78:
+  type: OOT:ARRAY
+  offset: 0x002A78
+  symbol: object_psVtx_002A78
+  count: 476
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSellerSkelLimbsLimb_00C170DL_004838:
+  type: GFX
+  offset: 0x004838
+  symbol: gPoeSellerSkelLimbsLimb_00C170DL_004838
+
+object_psVtx_008040:
+  type: OOT:ARRAY
+  offset: 0x008040
+  symbol: object_psVtx_008040
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_0083B0:
+  type: OOT:ARRAY
+  offset: 0x0083B0
+  symbol: object_psVtx_0083B0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_008430:
+  type: OOT:ARRAY
+  offset: 0x008430
+  symbol: object_psVtx_008430
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_0085B0:
+  type: OOT:ARRAY
+  offset: 0x0085B0
+  symbol: object_psVtx_0085B0
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_008C20:
+  type: OOT:ARRAY
+  offset: 0x008C20
+  symbol: object_psVtx_008C20
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_008E00:
+  type: OOT:ARRAY
+  offset: 0x008E00
+  symbol: object_psVtx_008E00
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_008EE0:
+  type: OOT:ARRAY
+  offset: 0x008EE0
+  symbol: object_psVtx_008EE0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_0090C0:
+  type: OOT:ARRAY
+  offset: 0x0090C0
+  symbol: object_psVtx_0090C0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_0091A0:
+  type: OOT:ARRAY
+  offset: 0x0091A0
+  symbol: object_psVtx_0091A0
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSellerSkelLimbsLimb_00C1E8DL_0096C0:
+  type: GFX
+  offset: 0x0096C0
+  symbol: gPoeSellerSkelLimbsLimb_00C1E8DL_0096C0
+
+gPoeSellerSkelLimbsLimb_00C1B8DL_009AE8:
+  type: GFX
+  offset: 0x009AE8
+  symbol: gPoeSellerSkelLimbsLimb_00C1B8DL_009AE8
+
+gPoeSellerSkelLimbsLimb_00C1C4DL_009FC8:
+  type: GFX
+  offset: 0x009FC8
+  symbol: gPoeSellerSkelLimbsLimb_00C1C4DL_009FC8
+
+gPoeSellerSkelLimbsLimb_00C1D0DL_00A0F8:
+  type: GFX
+  offset: 0x00A0F8
+  symbol: gPoeSellerSkelLimbsLimb_00C1D0DL_00A0F8
+
+gPoeSellerSkelLimbsLimb_00C1DCDL_00A1D8:
+  type: GFX
+  offset: 0x00A1D8
+  symbol: gPoeSellerSkelLimbsLimb_00C1DCDL_00A1D8
+
+gPoeSellerSkelLimbsLimb_00C1A0DL_00A400:
+  type: GFX
+  offset: 0x00A400
+  symbol: gPoeSellerSkelLimbsLimb_00C1A0DL_00A400
+
+gPoeSellerSkelLimbsLimb_00C1ACDL_00A510:
+  type: GFX
+  offset: 0x00A510
+  symbol: gPoeSellerSkelLimbsLimb_00C1ACDL_00A510
+
+gPoeSellerSkelLimbsLimb_00C188DL_00A638:
+  type: GFX
+  offset: 0x00A638
+  symbol: gPoeSellerSkelLimbsLimb_00C188DL_00A638
+
+gPoeSellerSkelLimbsLimb_00C194DL_00A748:
+  type: GFX
+  offset: 0x00A748
+  symbol: gPoeSellerSkelLimbsLimb_00C194DL_00A748
+
+object_psVtx_00C070:
+  type: OOT:ARRAY
+  offset: 0x00C070
+  symbol: object_psVtx_00C070
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSellerSkelLimbsLimb_00C170:
+  type: OOT:LIMB
+  offset: 0x00C170
+  symbol: gPoeSellerSkelLimbsLimb_00C170
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C17C:
+  type: OOT:LIMB
+  offset: 0x00C17C
+  symbol: gPoeSellerSkelLimbsLimb_00C17C
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C188:
+  type: OOT:LIMB
+  offset: 0x00C188
+  symbol: gPoeSellerSkelLimbsLimb_00C188
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C194:
+  type: OOT:LIMB
+  offset: 0x00C194
+  symbol: gPoeSellerSkelLimbsLimb_00C194
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C1A0:
+  type: OOT:LIMB
+  offset: 0x00C1A0
+  symbol: gPoeSellerSkelLimbsLimb_00C1A0
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C1AC:
+  type: OOT:LIMB
+  offset: 0x00C1AC
+  symbol: gPoeSellerSkelLimbsLimb_00C1AC
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C1B8:
+  type: OOT:LIMB
+  offset: 0x00C1B8
+  symbol: gPoeSellerSkelLimbsLimb_00C1B8
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C1C4:
+  type: OOT:LIMB
+  offset: 0x00C1C4
+  symbol: gPoeSellerSkelLimbsLimb_00C1C4
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C1D0:
+  type: OOT:LIMB
+  offset: 0x00C1D0
+  symbol: gPoeSellerSkelLimbsLimb_00C1D0
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C1DC:
+  type: OOT:LIMB
+  offset: 0x00C1DC
+  symbol: gPoeSellerSkelLimbsLimb_00C1DC
+  limb_type: Standard
+
+gPoeSellerSkelLimbsLimb_00C1E8:
+  type: OOT:LIMB
+  offset: 0x00C1E8
+  symbol: gPoeSellerSkelLimbsLimb_00C1E8
+  limb_type: Standard
+
+gPoeSellerSkelLimbs:
+  type: BLOB
+  offset: 0xC1F4
+  symbol: gPoeSellerSkelLimbs
+  size: 0

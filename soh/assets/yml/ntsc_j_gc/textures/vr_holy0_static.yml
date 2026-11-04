@@ -1,0 +1,64 @@
+:config:
+  segments:
+    - [ 128, 0x01358360 ]
+
+gHoly0Skybox1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHoly0Skybox1Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_holy0_pal_static
+  external_tlut_offset: 0x000
+
+gHoly0Skybox2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gHoly0Skybox2Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_holy0_pal_static
+  external_tlut_offset: 0x000
+
+gHoly0Skybox3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gHoly0Skybox3Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_holy0_pal_static
+  external_tlut_offset: 0x000
+
+gHoly0Skybox4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gHoly0Skybox4Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_holy0_pal_static
+  external_tlut_offset: 0x000
+
+gHoly0Skybox5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gHoly0Skybox5Tex
+  format: CI8
+  width: 128
+  height: 128
+  external_tlut: vr_holy0_pal_static
+  external_tlut_offset: 0x000
+
+gHoly0Skybox6Tex:
+  type: TEXTURE
+  offset: 0xC000
+  symbol: gHoly0Skybox6Tex
+  format: CI8
+  width: 128
+  height: 128
+  external_tlut: vr_holy0_pal_static
+  external_tlut_offset: 0x000
+

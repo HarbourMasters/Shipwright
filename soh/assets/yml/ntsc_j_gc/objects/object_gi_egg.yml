@@ -1,0 +1,32 @@
+:config:
+  segments:
+    - [ 6, 0x010E57D0 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x010E57D0 ]
+    - [ 9, 0x010E57D0 ]
+    - [ 10, 0x010E57D0 ]
+    - [ 11, 0x010E57D0 ]
+    - [ 12, 0x010E57D0 ]
+    - [ 13, 0x010E57D0 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gGiEggDL:
+  type: GFX
+  offset: 0x1008
+  symbol: gGiEggDL
+
+gGiEggMaterialDL:
+  type: GFX
+  offset: 0x0FD0
+  symbol: gGiEggMaterialDL
+
+
+object_gi_eggVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_eggVtx_000000
+  count: 253
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

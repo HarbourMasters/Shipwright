@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [ 2, 0x02AEA000 ]
+
+testroom_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: testroom_scene
+
+testroom_sceneTex_002200:
+  type: TEXTURE
+  offset: 0x2200
+  symbol: testroom_sceneTex_002200
+  format: RGBA16
+  width: 32
+  height: 32
+
+testroom_sceneTex_002A00:
+  type: TEXTURE
+  offset: 0x2A00
+  symbol: testroom_sceneTex_002A00
+  format: RGBA16
+  width: 32
+  height: 64
+
+testroom_sceneTex_003A00:
+  type: TEXTURE
+  offset: 0x3A00
+  symbol: testroom_sceneTex_003A00
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+testroom_sceneCollisionHeader_0021D4:
+  type: OOT:COLLISION
+  offset: 0x0021D4
+  symbol: testroom_sceneCollisionHeader_0021D4

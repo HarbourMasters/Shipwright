@@ -1,10 +1,10 @@
-#ifndef CUSTOMMESSAGEDEBUGGER_H
-#define CUSTOMMESSAGEDEBUGGER_H
+#pragma once
+
 #include "z64.h"
 
 #ifdef __cplusplus
 #include <ship/window/gui/GuiWindow.h>
-#include <unordered_map>
+
 extern "C" {
 #endif
 /**
@@ -56,4 +56,3 @@ class MessageViewer final : public Ship::GuiWindow {
 };
 
 #endif //__cplusplus
-#endif // CUSTOMMESSAGEDEBUGGER_H

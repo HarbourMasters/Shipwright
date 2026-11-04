@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x0113A000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0113A000 ]
+    - [ 9, 0x0113A000 ]
+    - [ 10, 0x0113A000 ]
+    - [ 11, 0x0113A000 ]
+    - [ 12, 0x0113A000 ]
+    - [ 13, 0x0113A000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gBubbleDL:
+  type: GFX
+  offset: 0x1000
+  symbol: gBubbleDL
+
+gBubbleTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBubbleTex
+  format: IA8
+  width: 64
+  height: 64
+
+
+object_bubbleVtx_001080:
+  type: OOT:ARRAY
+  offset: 0x001080
+  symbol: object_bubbleVtx_001080
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

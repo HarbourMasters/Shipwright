@@ -1,0 +1,295 @@
+:config:
+  segments:
+    - [ 3, 0x01BE5220 ]
+    - [ 2, 0x01BE4830 ]
+  directory: scenes/shared/market_alley_n_scene
+  external_files:
+    - pal_1-1/scenes/shared/market_alley_n_scene.yml
+    - pal_1-1/code/sys_matrix.yml
+
+market_alley_n_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: market_alley_n_room_0
+
+
+market_alley_n_room_0Vtx_070910:
+  type: OOT:ARRAY
+  offset: 0x070910
+  symbol: market_alley_n_room_0Vtx_070910
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_070990:
+  type: OOT:ARRAY
+  offset: 0x070990
+  symbol: market_alley_n_room_0Vtx_070990
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_070A10:
+  type: OOT:ARRAY
+  offset: 0x070A10
+  symbol: market_alley_n_room_0Vtx_070A10
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_070D20:
+  type: OOT:ARRAY
+  offset: 0x070D20
+  symbol: market_alley_n_room_0Vtx_070D20
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_070EB0:
+  type: OOT:ARRAY
+  offset: 0x070EB0
+  symbol: market_alley_n_room_0Vtx_070EB0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_0710F0:
+  type: OOT:ARRAY
+  offset: 0x0710F0
+  symbol: market_alley_n_room_0Vtx_0710F0
+  count: 637
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_0738C0:
+  type: OOT:ARRAY
+  offset: 0x0738C0
+  symbol: market_alley_n_room_0Vtx_0738C0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_073BF0:
+  type: OOT:ARRAY
+  offset: 0x073BF0
+  symbol: market_alley_n_room_0Vtx_073BF0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_073CF0:
+  type: OOT:ARRAY
+  offset: 0x073CF0
+  symbol: market_alley_n_room_0Vtx_073CF0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_073E10:
+  type: OOT:ARRAY
+  offset: 0x073E10
+  symbol: market_alley_n_room_0Vtx_073E10
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_073ED0:
+  type: OOT:ARRAY
+  offset: 0x073ED0
+  symbol: market_alley_n_room_0Vtx_073ED0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_073F90:
+  type: OOT:ARRAY
+  offset: 0x073F90
+  symbol: market_alley_n_room_0Vtx_073F90
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_074050:
+  type: OOT:ARRAY
+  offset: 0x074050
+  symbol: market_alley_n_room_0Vtx_074050
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_0740D0:
+  type: OOT:ARRAY
+  offset: 0x0740D0
+  symbol: market_alley_n_room_0Vtx_0740D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_074150:
+  type: OOT:ARRAY
+  offset: 0x074150
+  symbol: market_alley_n_room_0Vtx_074150
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_0741D0:
+  type: OOT:ARRAY
+  offset: 0x0741D0
+  symbol: market_alley_n_room_0Vtx_0741D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_074250:
+  type: OOT:ARRAY
+  offset: 0x074250
+  symbol: market_alley_n_room_0Vtx_074250
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_0742D0:
+  type: OOT:ARRAY
+  offset: 0x0742D0
+  symbol: market_alley_n_room_0Vtx_0742D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_074350:
+  type: OOT:ARRAY
+  offset: 0x074350
+  symbol: market_alley_n_room_0Vtx_074350
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_0743D0:
+  type: OOT:ARRAY
+  offset: 0x0743D0
+  symbol: market_alley_n_room_0Vtx_0743D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_074450:
+  type: OOT:ARRAY
+  offset: 0x074450
+  symbol: market_alley_n_room_0Vtx_074450
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_0744D0:
+  type: OOT:ARRAY
+  offset: 0x0744D0
+  symbol: market_alley_n_room_0Vtx_0744D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_074550:
+  type: OOT:ARRAY
+  offset: 0x074550
+  symbol: market_alley_n_room_0Vtx_074550
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0Vtx_0745D0:
+  type: OOT:ARRAY
+  offset: 0x0745D0
+  symbol: market_alley_n_room_0Vtx_0745D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_alley_n_room_0DL_074650:
+  type: GFX
+  offset: 0x074650
+  symbol: market_alley_n_room_0DL_074650
+
+market_alley_n_room_0DL_0746D8:
+  type: GFX
+  offset: 0x0746D8
+  symbol: market_alley_n_room_0DL_0746D8
+
+market_alley_n_room_0DL_074760:
+  type: GFX
+  offset: 0x074760
+  symbol: market_alley_n_room_0DL_074760
+
+market_alley_n_room_0DL_0748A0:
+  type: GFX
+  offset: 0x0748A0
+  symbol: market_alley_n_room_0DL_0748A0
+
+market_alley_n_room_0DL_074978:
+  type: GFX
+  offset: 0x074978
+  symbol: market_alley_n_room_0DL_074978
+
+market_alley_n_room_0DL_074A58:
+  type: GFX
+  offset: 0x074A58
+  symbol: market_alley_n_room_0DL_074A58
+
+market_alley_n_room_0DL_075260:
+  type: GFX
+  offset: 0x075260
+  symbol: market_alley_n_room_0DL_075260
+
+market_alley_n_room_0DL_075360:
+  type: GFX
+  offset: 0x075360
+  symbol: market_alley_n_room_0DL_075360
+
+market_alley_n_room_0DL_0753F8:
+  type: GFX
+  offset: 0x0753F8
+  symbol: market_alley_n_room_0DL_0753F8
+
+market_alley_n_room_0DL_0754B0:
+  type: GFX
+  offset: 0x0754B0
+  symbol: market_alley_n_room_0DL_0754B0
+
+market_alley_n_room_0DL_075548:
+  type: GFX
+  offset: 0x075548
+  symbol: market_alley_n_room_0DL_075548
+
+market_alley_n_room_0DL_0755E0:
+  type: GFX
+  offset: 0x0755E0
+  symbol: market_alley_n_room_0DL_0755E0
+
+market_alley_n_room_0DL_075678:
+  type: GFX
+  offset: 0x075678
+  symbol: market_alley_n_room_0DL_075678

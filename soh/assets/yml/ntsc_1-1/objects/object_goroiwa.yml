@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x011882B0 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x011882B0 ]
+    - [ 9, 0x011882B0 ]
+    - [ 10, 0x011882B0 ]
+    - [ 11, 0x011882B0 ]
+    - [ 12, 0x011882B0 ]
+    - [ 13, 0x011882B0 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gRollingRockDL:
+  type: GFX
+  offset: 0x6B0
+  symbol: gRollingRockDL
+
+gRollingRockTex:
+  type: TEXTURE
+  offset: 0x8A0
+  symbol: gRollingRockTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_goroiwaVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_goroiwaVtx_000000
+  count: 107
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

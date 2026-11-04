@@ -7,6 +7,7 @@
 #include "z_bg_mori_kaitenkabe.h"
 #include "objects/object_mori_objects/object_mori_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #define FLAGS 0
 

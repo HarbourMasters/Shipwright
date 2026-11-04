@@ -1,0 +1,71 @@
+:config:
+  segments:
+    - [ 6, 0x010666E0 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x010666E0 ]
+    - [ 9, 0x010666E0 ]
+    - [ 10, 0x010666E0 ]
+    - [ 11, 0x010666E0 ]
+    - [ 12, 0x010666E0 ]
+    - [ 13, 0x010666E0 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gGiQuiver30InnerColorDL:
+  type: GFX
+  offset: 0x08D0
+  symbol: gGiQuiver30InnerColorDL
+
+gGiQuiver30OuterColorDL:
+  type: GFX
+  offset: 0x0930
+  symbol: gGiQuiver30OuterColorDL
+
+gGiQuiver40InnerColorDL:
+  type: GFX
+  offset: 0x08F0
+  symbol: gGiQuiver40InnerColorDL
+
+gGiQuiver40OuterColorDL:
+  type: GFX
+  offset: 0x0950
+  symbol: gGiQuiver40OuterColorDL
+
+gGiQuiver50InnerColorDL:
+  type: GFX
+  offset: 0x0910
+  symbol: gGiQuiver50InnerColorDL
+
+gGiQuiver50OuterColorDL:
+  type: GFX
+  offset: 0x0970
+  symbol: gGiQuiver50OuterColorDL
+
+gGiQuiverInnerDL:
+  type: GFX
+  offset: 0x0990
+  symbol: gGiQuiverInnerDL
+
+gGiQuiverOuterDL:
+  type: GFX
+  offset: 0x0A80
+  symbol: gGiQuiverOuterDL
+
+
+object_gi_arrowcaseVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_arrowcaseVtx_000000
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_arrowcaseVtx_000250:
+  type: OOT:ARRAY
+  offset: 0x000250
+  symbol: object_gi_arrowcaseVtx_000250
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

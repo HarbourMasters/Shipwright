@@ -206,7 +206,7 @@ void DemoGj_Explode(DemoGj* this, PlayState* play, Vec3f* initialPos, Vec3f* dir
 }
 
 s32 DemoGj_IsSceneInvalid(void) {
-    if (gSaveContext.sceneSetupIndex < 4) {
+    if (gSaveContext.sceneLayer < 4) {
         return false;
     }
     return true;

@@ -1,0 +1,378 @@
+:config:
+  segments:
+    - [ 6, 0x01266AC0 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x01266AC0 ]
+    - [ 9, 0x01266AC0 ]
+    - [ 10, 0x01266AC0 ]
+    - [ 11, 0x01266AC0 ]
+    - [ 12, 0x01266AC0 ]
+    - [ 13, 0x01266AC0 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+gClearBlockCol:
+  type: OOT:COLLISION
+  offset: 0xC080
+  symbol: gClearBlockCol
+
+gClearBlockDL:
+  type: GFX
+  offset: 0xBEC0
+  symbol: gClearBlockDL
+
+gDemoKekkaiDL_005FF0:
+  type: GFX
+  offset: 0x5FF0
+  symbol: gDemoKekkaiDL_005FF0
+
+gFireTrialPlatformCol:
+  type: OOT:COLLISION
+  offset: 0xECD8
+  symbol: gFireTrialPlatformCol
+
+gFireTrialPlatformDL:
+  type: GFX
+  offset: 0xE210
+  symbol: gFireTrialPlatformDL
+
+gGanonsCastleDoorDL:
+  type: GFX
+  offset: 0x20D0
+  symbol: gGanonsCastleDoorDL
+
+gGanonsCastleScrubsFakeWallDL:
+  type: GFX
+  offset: 0xB4A0
+  symbol: gGanonsCastleScrubsFakeWallDL
+
+gGanonsCastleUnusedFakeWallDL:
+  type: GFX
+  offset: 0xA390
+  symbol: gGanonsCastleUnusedFakeWallDL
+
+gLightTrialFakeWallDL:
+  type: GFX
+  offset: 0x9230
+  symbol: gLightTrialFakeWallDL
+
+gShadowTrialPathDL:
+  type: GFX
+  offset: 0x88B0
+  symbol: gShadowTrialPathDL
+
+gSpiritTrialLightFloorDL:
+  type: GFX
+  offset: 0x35A0
+  symbol: gSpiritTrialLightFloorDL
+
+gSpiritTrialLightSourceDL:
+  type: GFX
+  offset: 0x2320
+  symbol: gSpiritTrialLightSourceDL
+
+gSpiritTrialWebDL:
+  type: GFX
+  offset: 0x7C00
+  symbol: gSpiritTrialWebDL
+
+gTowerBarrierDL:
+  type: GFX
+  offset: 0x4930
+  symbol: gTowerBarrierDL
+
+gTrialBarrierEnergyDL:
+  type: GFX
+  offset: 0x5A30
+  symbol: gTrialBarrierEnergyDL
+
+gTrialBarrierEnergyVtx:
+  type: OOT:ARRAY
+  offset: 0x4FD0
+  symbol: gTrialBarrierEnergyVtx
+  count: 102
+  array_type: VTX
+
+gTrialBarrierFloorDL:
+  type: GFX
+  offset: 0x4F00
+  symbol: gTrialBarrierFloorDL
+
+gTrialBarrierOrbDL:
+  type: GFX
+  offset: 0x5CB0
+  symbol: gTrialBarrierOrbDL
+
+gWaterTrialIceBlockCol:
+  type: OOT:COLLISION
+  offset: 0x4618
+  symbol: gWaterTrialIceBlockCol
+
+gWaterTrialIceBlockDL:
+  type: GFX
+  offset: 0x4420
+  symbol: gWaterTrialIceBlockDL
+
+object_demo_kekkaiTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_demo_kekkaiTex_000000
+  format: I8
+  width: 32
+  height: 64
+
+object_demo_kekkaiTex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_demo_kekkaiTex_000800
+  format: I8
+  width: 32
+  height: 64
+
+object_demo_kekkaiTex_001000:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: object_demo_kekkaiTex_001000
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_demo_kekkaiTex_002450:
+  type: TEXTURE
+  offset: 0x2450
+  symbol: object_demo_kekkaiTex_002450
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_demo_kekkaiTex_0036A0:
+  type: TEXTURE
+  offset: 0x36A0
+  symbol: object_demo_kekkaiTex_0036A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_demo_kekkaiTex_003EA0:
+  type: TEXTURE
+  offset: 0x3EA0
+  symbol: object_demo_kekkaiTex_003EA0
+  format: I8
+  width: 32
+  height: 32
+
+object_demo_kekkaiTex_004AC0:
+  type: TEXTURE
+  offset: 0x4AC0
+  symbol: object_demo_kekkaiTex_004AC0
+  format: I8
+  width: 32
+  height: 32
+
+object_demo_kekkaiTex_006140:
+  type: TEXTURE
+  offset: 0x6140
+  symbol: object_demo_kekkaiTex_006140
+  format: IA16
+  width: 8
+  height: 128
+
+object_demo_kekkaiTex_006940:
+  type: TEXTURE
+  offset: 0x6940
+  symbol: object_demo_kekkaiTex_006940
+  format: IA8
+  width: 64
+  height: 64
+
+object_demo_kekkaiTex_007DB0:
+  type: TEXTURE
+  offset: 0x7DB0
+  symbol: object_demo_kekkaiTex_007DB0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_demo_kekkaiTex_0089D0:
+  type: TEXTURE
+  offset: 0x89D0
+  symbol: object_demo_kekkaiTex_0089D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_demo_kekkaiTex_0092D0:
+  type: TEXTURE
+  offset: 0x92D0
+  symbol: object_demo_kekkaiTex_0092D0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_demo_kekkaiTex_00A440:
+  type: TEXTURE
+  offset: 0xA440
+  symbol: object_demo_kekkaiTex_00A440
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_demo_kekkaiTex_00B540:
+  type: TEXTURE
+  offset: 0xB540
+  symbol: object_demo_kekkaiTex_00B540
+  format: IA16
+  width: 32
+  height: 32
+
+object_demo_kekkaiTex_00C0B0:
+  type: TEXTURE
+  offset: 0xC0B0
+  symbol: object_demo_kekkaiTex_00C0B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_demo_kekkaiTex_00C8B0:
+  type: TEXTURE
+  offset: 0xC8B0
+  symbol: object_demo_kekkaiTex_00C8B0
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_demo_kekkaiVtx_002000:
+  type: OOT:ARRAY
+  offset: 0x002000
+  symbol: object_demo_kekkaiVtx_002000
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_002180:
+  type: OOT:ARRAY
+  offset: 0x002180
+  symbol: object_demo_kekkaiVtx_002180
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_003450:
+  type: OOT:ARRAY
+  offset: 0x003450
+  symbol: object_demo_kekkaiVtx_003450
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_0042A0:
+  type: OOT:ARRAY
+  offset: 0x0042A0
+  symbol: object_demo_kekkaiVtx_0042A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_004650:
+  type: OOT:ARRAY
+  offset: 0x004650
+  symbol: object_demo_kekkaiVtx_004650
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_004EC0:
+  type: OOT:ARRAY
+  offset: 0x004EC0
+  symbol: object_demo_kekkaiVtx_004EC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_005630:
+  type: OOT:ARRAY
+  offset: 0x005630
+  symbol: object_demo_kekkaiVtx_005630
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_005E30:
+  type: OOT:ARRAY
+  offset: 0x005E30
+  symbol: object_demo_kekkaiVtx_005E30
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_007940:
+  type: OOT:ARRAY
+  offset: 0x007940
+  symbol: object_demo_kekkaiVtx_007940
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_0085B0:
+  type: OOT:ARRAY
+  offset: 0x0085B0
+  symbol: object_demo_kekkaiVtx_0085B0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_0091D0:
+  type: OOT:ARRAY
+  offset: 0x0091D0
+  symbol: object_demo_kekkaiVtx_0091D0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_00A2D0:
+  type: OOT:ARRAY
+  offset: 0x00A2D0
+  symbol: object_demo_kekkaiVtx_00A2D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_00B440:
+  type: OOT:ARRAY
+  offset: 0x00B440
+  symbol: object_demo_kekkaiVtx_00B440
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_00BD40:
+  type: OOT:ARRAY
+  offset: 0x00BD40
+  symbol: object_demo_kekkaiVtx_00BD40
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_demo_kekkaiVtx_00D8B0:
+  type: OOT:ARRAY
+  offset: 0x00D8B0
+  symbol: object_demo_kekkaiVtx_00D8B0
+  count: 150
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

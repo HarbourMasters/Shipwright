@@ -1,3 +1,5 @@
+#include <ship/window/Window.h>
+
 #include "tricks.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include <unordered_map>
@@ -12,6 +14,7 @@ const std::unordered_map<RandomizerArea, std::string> rtAreaNames = {
     { RA_LAKE_HYLIA, "Lake Hylia" },
     { RA_GERUDO_VALLEY, "Gerudo Valley" },
     { RA_GERUDO_FORTRESS, "Gerudo Fortress" },
+    { RA_THIEVES_HIDEOUT, "Thieves' Hideout" },
     { RA_HAUNTED_WASTELAND, "Haunted Wasteland" },
     { RA_DESERT_COLOSSUS, "Desert Colossus" },
     { RA_THE_MARKET, "Hyrule Market" },

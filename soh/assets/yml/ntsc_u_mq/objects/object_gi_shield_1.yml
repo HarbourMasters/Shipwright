@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x010A3530 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x010A3530 ]
+    - [ 9, 0x010A3530 ]
+    - [ 10, 0x010A3530 ]
+    - [ 11, 0x010A3530 ]
+    - [ 12, 0x010A3530 ]
+    - [ 13, 0x010A3530 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gGiDekuShieldDL:
+  type: GFX
+  offset: 0x0A50
+  symbol: gGiDekuShieldDL
+
+object_gi_shield_1Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_shield_1Tex_000000
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_shield_1Vtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_shield_1Vtx_000400
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

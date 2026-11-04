@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 6, 0x01141250 ]
+
+gGoronShopkeeperAnim:
+  type: OOT:ANIMATION
+  offset: 0xFC
+  symbol: gGoronShopkeeperAnim
+

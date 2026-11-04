@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x0110C230 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x0110C230 ]
+    - [ 9, 0x0110C230 ]
+    - [ 10, 0x0110C230 ]
+    - [ 11, 0x0110C230 ]
+    - [ 12, 0x0110C230 ]
+    - [ 13, 0x0110C230 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gGiMirrorShieldDL:
+  type: GFX
+  offset: 0x0FB0
+  symbol: gGiMirrorShieldDL
+
+gGiMirrorShieldSymbolDL:
+  type: GFX
+  offset: 0x11C8
+  symbol: gGiMirrorShieldSymbolDL
+
+object_gi_shield_3Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_shield_3Tex_000000
+  format: I4
+  width: 64
+  height: 32
+
+object_gi_shield_3Tex_000400:
+  type: TEXTURE
+  offset: 0x400
+  symbol: object_gi_shield_3Tex_000400
+  format: I4
+  width: 64
+  height: 64
+
+
+object_gi_shield_3Vtx_000C00:
+  type: OOT:ARRAY
+  offset: 0x000C00
+  symbol: object_gi_shield_3Vtx_000C00
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_shield_3Vtx_000F10:
+  type: OOT:ARRAY
+  offset: 0x000F10
+  symbol: object_gi_shield_3Vtx_000F10
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

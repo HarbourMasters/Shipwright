@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
@@ -6,7 +8,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Haka_Ship/z_bg_haka_ship.h"
 }
 
-void RegisterFasterShadowShip() {
+static void RegisterFasterShadowShip() {
     COND_VB_SHOULD(VB_SHADOW_SHIP_SET_SPEED, CVarGetInteger(CVAR_ENHANCEMENT("FasterShadowShip"), 0), {
         BgHakaShip* ship = va_arg(args, BgHakaShip*);
         PlayState* play = va_arg(args, PlayState*);

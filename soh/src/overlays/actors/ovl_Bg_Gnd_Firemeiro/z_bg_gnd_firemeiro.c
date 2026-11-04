@@ -71,7 +71,7 @@ void BgGndFiremeiro_Sink(BgGndFiremeiro* this, PlayState* play) {
             this->dyna.actor.world.pos.y = sunkHeight;
         }
 
-        func_8002F948(&this->dyna.actor, NA_SE_EV_ROLL_STAND_2 - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_ROLL_STAND_2 - SFX_FLAG);
     }
 
     if (this->timer > 0) {

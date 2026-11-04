@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F2100 ]
+
+gShadowTempleTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gShadowTempleTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gShadowTempleTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gShadowTempleTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

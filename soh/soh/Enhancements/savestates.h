@@ -1,7 +1,6 @@
-#ifndef SAVE_STATES_H
-#define SAVE_STATES_H
+#pragma once
 
-#include <cstdint>
+#include <stdint.h>
 #include <queue>
 #include <unordered_map>
 #include <memory>
@@ -57,5 +56,3 @@ class SaveStateMgr {
     void ProcessSaveStateRequests(void);
 };
 extern std::shared_ptr<SaveStateMgr> gSaveStateMgr;
-
-#endif

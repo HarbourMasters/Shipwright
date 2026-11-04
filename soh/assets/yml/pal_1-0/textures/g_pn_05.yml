@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x012EC790 ]
+
+gSpiritTempleTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSpiritTempleTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gSpiritTempleTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gSpiritTempleTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gSpiritTempleTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gSpiritTempleTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

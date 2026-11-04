@@ -7,6 +7,7 @@
 #include "z_bg_haka.h"
 #include "objects/object_haka/object_haka.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #define FLAGS 0
 
@@ -139,7 +140,7 @@ void BgHaka_Pull(BgHaka* this, PlayState* play) {
 
         this->actionFunc = BgHaka_IdleOpened;
     }
-    func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
 }
 
 void BgHaka_IdleOpened(BgHaka* this, PlayState* play) {

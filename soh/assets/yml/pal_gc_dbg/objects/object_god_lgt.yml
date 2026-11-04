@@ -1,0 +1,65 @@
+:config:
+  segments:
+    - [ 6, 0x013C8000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x013C8000 ]
+    - [ 9, 0x013C8000 ]
+    - [ 10, 0x013C8000 ]
+    - [ 11, 0x013C8000 ]
+    - [ 12, 0x013C8000 ]
+    - [ 13, 0x013C8000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGoldenGoddessAuraDL:
+  type: GFX
+  offset: 0x0330
+  symbol: gGoldenGoddessAuraDL
+
+gGoldenGoddessAuraHTailTex:
+  type: TEXTURE
+  offset: 0x0530
+  symbol: gGoldenGoddessAuraHTailTex
+  format: I8
+  width: 32
+  height: 32
+
+gGoldenGoddessAuraHeadTex:
+  type: TEXTURE
+  offset: 0x0930
+  symbol: gGoldenGoddessAuraHeadTex
+  format: I8
+  width: 64
+  height: 64
+
+gGoldenGoddessAuraMaskTex:
+  type: TEXTURE
+  offset: 0x1930
+  symbol: gGoldenGoddessAuraMaskTex
+  format: I8
+  width: 16
+  height: 96
+
+gGoldenGoddessBodyDL:
+  type: GFX
+  offset: 0x3C50
+  symbol: gGoldenGoddessBodyDL
+
+
+object_god_lgtVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_god_lgtVtx_000000
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_god_lgtVtx_001F30:
+  type: OOT:ARRAY
+  offset: 0x001F30
+  symbol: object_god_lgtVtx_001F30
+  count: 466
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

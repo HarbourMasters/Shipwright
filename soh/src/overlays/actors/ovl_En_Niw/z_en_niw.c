@@ -9,7 +9,7 @@
 #include "overlays/actors/ovl_En_Attack_Niw/z_en_attack_niw.h"
 #include "vt.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_THROW_ONLY)
 
@@ -37,7 +37,7 @@ void EnNiw_FeatherSpawn(EnNiw* this, Vec3f* pos, Vec3f* vel, Vec3f* accel, f32 s
 void EnNiw_FeatherUpdate(EnNiw* this, PlayState* play);
 void EnNiw_FeatherDraw(EnNiw* this, PlayState* play);
 
-s16 D_80AB85E0 = 0;
+static s16 D_80AB85E0 = 0;
 
 const ActorInit En_Niw_InitVars = {
     ACTOR_EN_NIW,
@@ -72,9 +72,16 @@ static s16 sKakarikoFlagList[] = {
     0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0x8000,
 };
 
-u8 sLowerRiverSpawned = false;
+static u8 sLowerRiverSpawned = false;
 
-u8 sUpperRiverSpawned = false;
+static u8 sUpperRiverSpawned = false;
+
+#define EN_NIW_SHIP_SAVESTATE_FIELDS(F) \
+    F(D_80AB85E0)                       \
+    F(sLowerRiverSpawned)               \
+    F(sUpperRiverSpawned)
+
+SHIP_SAVESTATE_DEFINE(EnNiw, EN_NIW_SHIP_SAVESTATE_FIELDS)
 
 static ColliderCylinderInit sCylinderInit1 = {
     {
@@ -247,8 +254,6 @@ void EnNiw_Destroy(Actor* thisx, PlayState* play) {
     EnNiw* this = (EnNiw*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AB5BF8(EnNiw* this, PlayState* play, s16 arg2) {
@@ -379,7 +384,7 @@ void func_80AB6100(EnNiw* this, PlayState* play, s32 arg2) {
     if (this->timer4 == 0) {
         this->timer4 = 3;
 
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->actor.velocity.y = 3.5f;
         }
     }
@@ -394,7 +399,7 @@ void func_80AB6100(EnNiw* this, PlayState* play, s32 arg2) {
         factor = -D_80AB860C[arg2];
     }
     if (arg2 == 1) {
-        if (this->timer6 == 0 || this->actor.bgCheckFlags & 8) {
+        if (this->timer6 == 0 || this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             this->timer6 = 150;
             if (this->timer8 == 0) {
                 this->timer8 = 70;
@@ -552,7 +557,7 @@ void func_80AB6570(EnNiw* this, PlayState* play) {
             this->unk_2B8.z = this->unk_2AC.z + posZ;
         } else {
             this->timer4 = 4;
-            if (this->actor.bgCheckFlags & 1) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                 this->actor.speedXZ = 0.0f;
                 this->actor.velocity.y = 3.5f;
             }
@@ -650,7 +655,7 @@ void func_80AB6BF8(EnNiw* this, PlayState* play) {
 
 void func_80AB6D08(EnNiw* this, PlayState* play) {
     if (this->path == 0) {
-        if (!(this->actor.bgCheckFlags & 1)) {
+        if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
             return;
         }
         if (this->actor.params == 0xE) {
@@ -671,7 +676,7 @@ void func_80AB6D08(EnNiw* this, PlayState* play) {
         this->actor.speedXZ = 0.0f;
         this->actor.velocity.y = 4.0f;
     } else {
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->sfxTimer1 = 0;
             this->actor.velocity.y = 4.0f;
             this->unk_2A6 = 1;
@@ -730,21 +735,21 @@ void func_80AB6F04(EnNiw* this, PlayState* play) {
             pos.y += this->actor.yDistToWater;
             EffectSsGRipple_Spawn(play, &pos, 100, 500, 30);
         }
-        if (this->actor.bgCheckFlags & 8) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             this->actor.velocity.y = 10.0f;
             this->actor.speedXZ = 1.0f;
         }
     } else {
         this->actor.gravity = -2.0f;
 
-        if (this->actor.bgCheckFlags & 8) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             this->actor.velocity.y = 10.0f;
             this->actor.speedXZ = 1.0f;
             this->actor.gravity = 0.0f;
         } else {
             this->actor.speedXZ = 4.0f;
         }
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->actor.gravity = -2.0f;
             this->timer6 = 100;
             this->timer4 = 0;
@@ -761,7 +766,7 @@ void func_80AB6F04(EnNiw* this, PlayState* play) {
 }
 
 void func_80AB70A0(EnNiw* this, PlayState* play) {
-    OnePointCutscene_Init(play, 2290, -99, &this->actor, MAIN_CAM);
+    OnePointCutscene_Init(play, 2290, -99, &this->actor, CAM_ID_MAIN);
     this->timer5 = 100;
     this->unk_2A2 = 1;
     this->actionFunc = func_80AB70F8;
@@ -856,7 +861,7 @@ void func_80AB7328(EnNiw* this, PlayState* play) {
 }
 
 void func_80AB7420(EnNiw* this, PlayState* play) {
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->unk_2A4 = (s16)Rand_ZeroFloat(3.99f) + 5;
         this->actionFunc = EnNiw_ResetAction;
     }
@@ -1077,7 +1082,7 @@ void EnNiw_Update(Actor* thisx, PlayState* play) {
     dist = 20.0f;
 
     if (this->unk_2A8 != 0 && thisx->xyzDistToPlayerSq < SQ(dist) && player->invincibilityTimer == 0) {
-        func_8002F6D4(play, &this->actor, 2.0f, thisx->world.rot.y, 0.0f, 0x10);
+        Actor_SetPlayerKnockbackLarge(play, &this->actor, 2.0f, thisx->world.rot.y, 0.0f, 0x10);
     }
 
     func_80AB747C(this, play);

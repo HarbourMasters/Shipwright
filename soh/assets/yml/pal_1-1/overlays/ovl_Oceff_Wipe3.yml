@@ -1,0 +1,39 @@
+:config:
+  segments:
+    - [ 128, 0x00D03F30 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00D03F30 ]
+    - [ 9, 0x00D03F30 ]
+    - [ 10, 0x00D03F30 ]
+    - [ 11, 0x00D03F30 ]
+    - [ 12, 0x00D03F30 ]
+    - [ 13, 0x00D03F30 ]
+  virtual: [ 0x80B489F0, 0x00D03F30 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+sFrustumDL:
+  type: GFX
+  offset: 0x1618
+  symbol: sFrustumDL
+
+sFrustumVtx:
+  type: OOT:ARRAY
+  offset: 0x1430
+  symbol: sFrustumVtx
+  count: 22
+  array_type: VTX
+
+sMaterialDL:
+  type: GFX
+  offset: 0x1590
+  symbol: sMaterialDL
+
+sTex:
+  type: TEXTURE
+  offset: 0x430
+  symbol: sTex
+  format: I8
+  width: 64
+  height: 64
+

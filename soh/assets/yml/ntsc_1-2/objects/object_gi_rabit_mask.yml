@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x011B7E70 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x011B7E70 ]
+    - [ 9, 0x011B7E70 ]
+    - [ 10, 0x011B7E70 ]
+    - [ 11, 0x011B7E70 ]
+    - [ 12, 0x011B7E70 ]
+    - [ 13, 0x011B7E70 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gGiBunnyHoodDL:
+  type: GFX
+  offset: 0x0BC0
+  symbol: gGiBunnyHoodDL
+
+gGiBunnyHoodEyesDL:
+  type: GFX
+  offset: 0x0E58
+  symbol: gGiBunnyHoodEyesDL
+
+object_gi_rabit_maskTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_rabit_maskTex_000000
+  format: IA8
+  width: 16
+  height: 16
+
+
+object_gi_rabit_maskVtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: object_gi_rabit_maskVtx_000100
+  count: 166
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_rabit_maskVtx_000B60:
+  type: OOT:ARRAY
+  offset: 0x000B60
+  symbol: object_gi_rabit_maskVtx_000B60
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

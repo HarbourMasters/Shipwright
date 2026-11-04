@@ -1,0 +1,658 @@
+:config:
+  segments:
+    - [ 6, 0x012534F0 ]
+
+gGerudoRedBlockAnim:
+  type: OOT:ANIMATION
+  offset: 0x1578
+  symbol: gGerudoRedBlockAnim
+
+gGerudoRedDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x2280
+  symbol: gGerudoRedDamageAnim
+
+gGerudoRedDefeatAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E10
+  symbol: gGerudoRedDefeatAnim
+
+gGerudoRedEyeHalfTex:
+  type: TEXTURE
+  offset: 0x65A8
+  symbol: gGerudoRedEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5D30
+
+gGerudoRedEyeOpenTex:
+  type: TEXTURE
+  offset: 0x5FE8
+  symbol: gGerudoRedEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5D30
+
+gGerudoRedEyeShutTex:
+  type: TEXTURE
+  offset: 0x6D28
+  symbol: gGerudoRedEyeShutTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5D30
+
+gGerudoRedFlipAnim:
+  type: OOT:ANIMATION
+  offset: 0x1390
+  symbol: gGerudoRedFlipAnim
+
+gGerudoRedJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0xADF8
+  symbol: gGerudoRedJumpAnim
+
+gGerudoRedNeutralAnim:
+  type: OOT:ANIMATION
+  offset: 0xB6D4
+  symbol: gGerudoRedNeutralAnim
+
+gGerudoRedSidestepAnim:
+  type: OOT:ANIMATION
+  offset: 0xA814
+  symbol: gGerudoRedSidestepAnim
+
+gGerudoRedSkel:
+  type: OOT:SKELETON
+  offset: 0xA458
+  symbol: gGerudoRedSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGerudoRedSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0x03CC
+  symbol: gGerudoRedSlashAnim
+
+gGerudoRedSpinAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x0F5C
+  symbol: gGerudoRedSpinAttackAnim
+
+gGerudoRedStandAnim:
+  type: OOT:ANIMATION
+  offset: 0xB07C
+  symbol: gGerudoRedStandAnim
+
+gGerudoRedWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x24E8
+  symbol: gGerudoRedWalkAnim
+
+object_geldbTLUT_002500:
+  type: TEXTURE
+  offset: 0x2500
+  symbol: object_geldbTLUT_002500
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_geldbTex_002700:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: object_geldbTex_002700
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2500
+
+object_geldbTex_002740:
+  type: TEXTURE
+  offset: 0x2740
+  symbol: object_geldbTex_002740
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2500
+
+object_geldbTex_002780:
+  type: TEXTURE
+  offset: 0x2780
+  symbol: object_geldbTex_002780
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2500
+
+object_geldbTex_002880:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: object_geldbTex_002880
+  format: I8
+  width: 16
+  height: 16
+
+object_geldbTex_002980:
+  type: TEXTURE
+  offset: 0x2980
+  symbol: object_geldbTex_002980
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2500
+
+object_geldbTex_002A80:
+  type: TEXTURE
+  offset: 0x2A80
+  symbol: object_geldbTex_002A80
+  format: I8
+  width: 16
+  height: 16
+
+object_geldbTex_002B80:
+  type: TEXTURE
+  offset: 0x2B80
+  symbol: object_geldbTex_002B80
+  format: I8
+  width: 8
+  height: 16
+
+object_geldbTex_005F68:
+  type: TEXTURE
+  offset: 0x5F68
+  symbol: object_geldbTex_005F68
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x5D30
+
+object_geldbTex_0063E8:
+  type: TEXTURE
+  offset: 0x63E8
+  symbol: object_geldbTex_0063E8
+  format: I8
+  width: 16
+  height: 16
+
+object_geldbTex_0064E8:
+  type: TEXTURE
+  offset: 0x64E8
+  symbol: object_geldbTex_0064E8
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x5D30
+
+object_geldbTex_006568:
+  type: TEXTURE
+  offset: 0x6568
+  symbol: object_geldbTex_006568
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5D30
+
+object_geldbTex_0069A8:
+  type: TEXTURE
+  offset: 0x69A8
+  symbol: object_geldbTex_0069A8
+  format: I8
+  width: 8
+  height: 16
+
+object_geldbTex_006A28:
+  type: TEXTURE
+  offset: 0x6A28
+  symbol: object_geldbTex_006A28
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5D30
+
+object_geldbTex_006B28:
+  type: TEXTURE
+  offset: 0x6B28
+  symbol: object_geldbTex_006B28
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5D30
+
+object_geldbTex_006C28:
+  type: TEXTURE
+  offset: 0x6C28
+  symbol: object_geldbTex_006C28
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5D30
+
+sGerudoRedTexHint1:
+  type: TEXTURE
+  offset: 0x5D30
+  symbol: sGerudoRedTexHint1
+  format: RGBA16
+  width: 18
+  height: 14
+
+sGerudoRedTexHint2:
+  type: TEXTURE
+  offset: 0x5F28
+  symbol: sGerudoRedTexHint2
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5D30
+
+
+object_geldbVtx_002C00:
+  type: OOT:ARRAY
+  offset: 0x002C00
+  symbol: object_geldbVtx_002C00
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_002DE0:
+  type: OOT:ARRAY
+  offset: 0x002DE0
+  symbol: object_geldbVtx_002DE0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_002F70:
+  type: OOT:ARRAY
+  offset: 0x002F70
+  symbol: object_geldbVtx_002F70
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003150:
+  type: OOT:ARRAY
+  offset: 0x003150
+  symbol: object_geldbVtx_003150
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0032E0:
+  type: OOT:ARRAY
+  offset: 0x0032E0
+  symbol: object_geldbVtx_0032E0
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003930:
+  type: OOT:ARRAY
+  offset: 0x003930
+  symbol: object_geldbVtx_003930
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003D40:
+  type: OOT:ARRAY
+  offset: 0x003D40
+  symbol: object_geldbVtx_003D40
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003F30:
+  type: OOT:ARRAY
+  offset: 0x003F30
+  symbol: object_geldbVtx_003F30
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_004300:
+  type: OOT:ARRAY
+  offset: 0x004300
+  symbol: object_geldbVtx_004300
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0044F0:
+  type: OOT:ARRAY
+  offset: 0x0044F0
+  symbol: object_geldbVtx_0044F0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGerudoRedSkelLimbsLimb_00A2F4DL_0048E0:
+  type: GFX
+  offset: 0x0048E0
+  symbol: gGerudoRedSkelLimbsLimb_00A2F4DL_0048E0
+
+gGerudoRedSkelLimbsLimb_00A330DL_004D60:
+  type: GFX
+  offset: 0x004D60
+  symbol: gGerudoRedSkelLimbsLimb_00A330DL_004D60
+
+gGerudoRedSkelLimbsLimb_00A33CDL_004E98:
+  type: GFX
+  offset: 0x004E98
+  symbol: gGerudoRedSkelLimbsLimb_00A33CDL_004E98
+
+gGerudoRedSkelLimbsLimb_00A36CDL_0050C0:
+  type: GFX
+  offset: 0x0050C0
+  symbol: gGerudoRedSkelLimbsLimb_00A36CDL_0050C0
+
+gGerudoRedSkelLimbsLimb_00A378DL_0051F8:
+  type: GFX
+  offset: 0x0051F8
+  symbol: gGerudoRedSkelLimbsLimb_00A378DL_0051F8
+
+gGerudoRedSkelLimbsLimb_00A3F0DL_005420:
+  type: GFX
+  offset: 0x005420
+  symbol: gGerudoRedSkelLimbsLimb_00A3F0DL_005420
+
+gGerudoRedSkelLimbsLimb_00A3CCDL_005640:
+  type: GFX
+  offset: 0x005640
+  symbol: gGerudoRedSkelLimbsLimb_00A3CCDL_005640
+
+gGerudoRedSkelLimbsLimb_00A3D8DL_005740:
+  type: GFX
+  offset: 0x005740
+  symbol: gGerudoRedSkelLimbsLimb_00A3D8DL_005740
+
+gGerudoRedSkelLimbsLimb_00A3A8DL_0059B0:
+  type: GFX
+  offset: 0x0059B0
+  symbol: gGerudoRedSkelLimbsLimb_00A3A8DL_0059B0
+
+gGerudoRedSkelLimbsLimb_00A3B4DL_005AB0:
+  type: GFX
+  offset: 0x005AB0
+  symbol: gGerudoRedSkelLimbsLimb_00A3B4DL_005AB0
+
+object_geldbVtx_007128:
+  type: OOT:ARRAY
+  offset: 0x007128
+  symbol: object_geldbVtx_007128
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0073D8:
+  type: OOT:ARRAY
+  offset: 0x0073D8
+  symbol: object_geldbVtx_0073D8
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007688:
+  type: OOT:ARRAY
+  offset: 0x007688
+  symbol: object_geldbVtx_007688
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0078A8:
+  type: OOT:ARRAY
+  offset: 0x0078A8
+  symbol: object_geldbVtx_0078A8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007AD8:
+  type: OOT:ARRAY
+  offset: 0x007AD8
+  symbol: object_geldbVtx_007AD8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007CF8:
+  type: OOT:ARRAY
+  offset: 0x007CF8
+  symbol: object_geldbVtx_007CF8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007F28:
+  type: OOT:ARRAY
+  offset: 0x007F28
+  symbol: object_geldbVtx_007F28
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007FE8:
+  type: OOT:ARRAY
+  offset: 0x007FE8
+  symbol: object_geldbVtx_007FE8
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0080C8:
+  type: OOT:ARRAY
+  offset: 0x0080C8
+  symbol: object_geldbVtx_0080C8
+  count: 232
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGerudoRedSkelLimbsLimb_00A3C0DL_008F48:
+  type: GFX
+  offset: 0x008F48
+  symbol: gGerudoRedSkelLimbsLimb_00A3C0DL_008F48
+
+gGerudoRedSkelLimbsLimb_00A3E4DL_009108:
+  type: GFX
+  offset: 0x009108
+  symbol: gGerudoRedSkelLimbsLimb_00A3E4DL_009108
+
+gGerudoRedSkelLimbsLimb_00A390DL_0092C8:
+  type: GFX
+  offset: 0x0092C8
+  symbol: gGerudoRedSkelLimbsLimb_00A390DL_0092C8
+
+gGerudoRedSkelLimbsLimb_00A39CDL_009460:
+  type: GFX
+  offset: 0x009460
+  symbol: gGerudoRedSkelLimbsLimb_00A39CDL_009460
+
+gGerudoRedSkelLimbsLimb_00A354DL_009638:
+  type: GFX
+  offset: 0x009638
+  symbol: gGerudoRedSkelLimbsLimb_00A354DL_009638
+
+gGerudoRedSkelLimbsLimb_00A360DL_0097D0:
+  type: GFX
+  offset: 0x0097D0
+  symbol: gGerudoRedSkelLimbsLimb_00A360DL_0097D0
+
+gGerudoRedSkelLimbsLimb_00A318DL_0099A8:
+  type: GFX
+  offset: 0x0099A8
+  symbol: gGerudoRedSkelLimbsLimb_00A318DL_0099A8
+
+gGerudoRedSkelLimbsLimb_00A30CDL_009A60:
+  type: GFX
+  offset: 0x009A60
+  symbol: gGerudoRedSkelLimbsLimb_00A30CDL_009A60
+
+gGerudoRedSkelLimbsLimb_00A324DL_009B50:
+  type: GFX
+  offset: 0x009B50
+  symbol: gGerudoRedSkelLimbsLimb_00A324DL_009B50
+
+gGerudoRedSkelLimbsLimb_00A2E8:
+  type: OOT:LIMB
+  offset: 0x00A2E8
+  symbol: gGerudoRedSkelLimbsLimb_00A2E8
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A2F4:
+  type: OOT:LIMB
+  offset: 0x00A2F4
+  symbol: gGerudoRedSkelLimbsLimb_00A2F4
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A300:
+  type: OOT:LIMB
+  offset: 0x00A300
+  symbol: gGerudoRedSkelLimbsLimb_00A300
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A30C:
+  type: OOT:LIMB
+  offset: 0x00A30C
+  symbol: gGerudoRedSkelLimbsLimb_00A30C
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A318:
+  type: OOT:LIMB
+  offset: 0x00A318
+  symbol: gGerudoRedSkelLimbsLimb_00A318
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A324:
+  type: OOT:LIMB
+  offset: 0x00A324
+  symbol: gGerudoRedSkelLimbsLimb_00A324
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A330:
+  type: OOT:LIMB
+  offset: 0x00A330
+  symbol: gGerudoRedSkelLimbsLimb_00A330
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A33C:
+  type: OOT:LIMB
+  offset: 0x00A33C
+  symbol: gGerudoRedSkelLimbsLimb_00A33C
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A348:
+  type: OOT:LIMB
+  offset: 0x00A348
+  symbol: gGerudoRedSkelLimbsLimb_00A348
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A354:
+  type: OOT:LIMB
+  offset: 0x00A354
+  symbol: gGerudoRedSkelLimbsLimb_00A354
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A360:
+  type: OOT:LIMB
+  offset: 0x00A360
+  symbol: gGerudoRedSkelLimbsLimb_00A360
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A36C:
+  type: OOT:LIMB
+  offset: 0x00A36C
+  symbol: gGerudoRedSkelLimbsLimb_00A36C
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A378:
+  type: OOT:LIMB
+  offset: 0x00A378
+  symbol: gGerudoRedSkelLimbsLimb_00A378
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A384:
+  type: OOT:LIMB
+  offset: 0x00A384
+  symbol: gGerudoRedSkelLimbsLimb_00A384
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A390:
+  type: OOT:LIMB
+  offset: 0x00A390
+  symbol: gGerudoRedSkelLimbsLimb_00A390
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A39C:
+  type: OOT:LIMB
+  offset: 0x00A39C
+  symbol: gGerudoRedSkelLimbsLimb_00A39C
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A3A8:
+  type: OOT:LIMB
+  offset: 0x00A3A8
+  symbol: gGerudoRedSkelLimbsLimb_00A3A8
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A3B4:
+  type: OOT:LIMB
+  offset: 0x00A3B4
+  symbol: gGerudoRedSkelLimbsLimb_00A3B4
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A3C0:
+  type: OOT:LIMB
+  offset: 0x00A3C0
+  symbol: gGerudoRedSkelLimbsLimb_00A3C0
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A3CC:
+  type: OOT:LIMB
+  offset: 0x00A3CC
+  symbol: gGerudoRedSkelLimbsLimb_00A3CC
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A3D8:
+  type: OOT:LIMB
+  offset: 0x00A3D8
+  symbol: gGerudoRedSkelLimbsLimb_00A3D8
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A3E4:
+  type: OOT:LIMB
+  offset: 0x00A3E4
+  symbol: gGerudoRedSkelLimbsLimb_00A3E4
+  limb_type: Standard
+
+gGerudoRedSkelLimbsLimb_00A3F0:
+  type: OOT:LIMB
+  offset: 0x00A3F0
+  symbol: gGerudoRedSkelLimbsLimb_00A3F0
+  limb_type: Standard
+
+gGerudoRedSkelLimbs:
+  type: BLOB
+  offset: 0xA3FC
+  symbol: gGerudoRedSkelLimbs
+  size: 0

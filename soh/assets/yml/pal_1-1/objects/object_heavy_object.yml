@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 6, 0x00FBC720 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00FBC720 ]
+    - [ 9, 0x00FBC720 ]
+    - [ 10, 0x00FBC720 ]
+    - [ 11, 0x00FBC720 ]
+    - [ 12, 0x00FBC720 ]
+    - [ 13, 0x00FBC720 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gHeavyBlockBigPieceDL:
+  type: GFX
+  offset: 0x18A0
+  symbol: gHeavyBlockBigPieceDL
+
+gHeavyBlockCol:
+  type: OOT:COLLISION
+  offset: 0x169C
+  symbol: gHeavyBlockCol
+
+gHeavyBlockEntirePillarDL:
+  type: GFX
+  offset: 0x13C0
+  symbol: gHeavyBlockEntirePillarDL
+
+gHeavyBlockSmallPieceDL:
+  type: GFX
+  offset: 0x1A30
+  symbol: gHeavyBlockSmallPieceDL
+
+gHeavyBlockTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHeavyBlockTex
+  format: I4
+  width: 64
+  height: 128
+
+
+object_heavy_objectVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_heavy_objectVtx_001000
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_heavy_objectVtx_0016D0:
+  type: OOT:ARRAY
+  offset: 0x0016D0
+  symbol: object_heavy_objectVtx_0016D0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_heavy_objectVtx_001980:
+  type: OOT:ARRAY
+  offset: 0x001980
+  symbol: object_heavy_objectVtx_001980
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

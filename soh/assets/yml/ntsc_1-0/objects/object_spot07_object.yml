@@ -1,0 +1,197 @@
+:config:
+  segments:
+    - [ 6, 0x01173110 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x01173110 ]
+    - [ 9, 0x01173110 ]
+    - [ 10, 0x01173110 ]
+    - [ 11, 0x01173110 ]
+    - [ 12, 0x01173110 ]
+    - [ 13, 0x01173110 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+object_spot07_object_Col_002590:
+  type: OOT:COLLISION
+  offset: 0x2590
+  symbol: object_spot07_object_Col_002590
+
+object_spot07_object_Col_0038FC:
+  type: OOT:COLLISION
+  offset: 0x38FC
+  symbol: object_spot07_object_Col_0038FC
+
+object_spot07_object_DL_000460:
+  type: GFX
+  offset: 0x460
+  symbol: object_spot07_object_DL_000460
+
+object_spot07_object_DL_000BE0:
+  type: GFX
+  offset: 0xBE0
+  symbol: object_spot07_object_DL_000BE0
+
+object_spot07_object_DL_001CF0:
+  type: GFX
+  offset: 0x1CF0
+  symbol: object_spot07_object_DL_001CF0
+
+object_spot07_object_DL_001F68:
+  type: GFX
+  offset: 0x1F68
+  symbol: object_spot07_object_DL_001F68
+
+object_spot07_object_DL_003210:
+  type: GFX
+  offset: 0x3210
+  symbol: object_spot07_object_DL_003210
+
+object_spot07_object_DL_0032D8:
+  type: GFX
+  offset: 0x32D8
+  symbol: object_spot07_object_DL_0032D8
+
+object_spot07_object_TLUT_000EC0:
+  type: TEXTURE
+  offset: 0xEC0
+  symbol: object_spot07_object_TLUT_000EC0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_spot07_object_TLUT_0025C0:
+  type: TEXTURE
+  offset: 0x25C0
+  symbol: object_spot07_object_TLUT_0025C0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_spot07_object_Tex_000EE0:
+  type: TEXTURE
+  offset: 0xEE0
+  symbol: object_spot07_object_Tex_000EE0
+  format: CI4
+  width: 32
+  height: 128
+  tlut: 0xEC0
+
+object_spot07_object_Tex_0025E0:
+  type: TEXTURE
+  offset: 0x25E0
+  symbol: object_spot07_object_Tex_0025E0
+  format: CI4
+  width: 32
+  height: 128
+  tlut: 0x25C0
+
+object_spot07_object_Tex_003930:
+  type: TEXTURE
+  offset: 0x3930
+  symbol: object_spot07_object_Tex_003930
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot07_object_Tex_004130:
+  type: TEXTURE
+  offset: 0x4130
+  symbol: object_spot07_object_Tex_004130
+  format: I4
+  width: 64
+  height: 64
+
+object_spot07_object_Tex_004930:
+  type: TEXTURE
+  offset: 0x4930
+  symbol: object_spot07_object_Tex_004930
+  format: I4
+  width: 32
+  height: 128
+
+object_spot07_object_Tex_005130:
+  type: TEXTURE
+  offset: 0x5130
+  symbol: object_spot07_object_Tex_005130
+  format: I8
+  width: 32
+  height: 32
+
+object_spot07_object_Tex_005530:
+  type: TEXTURE
+  offset: 0x5530
+  symbol: object_spot07_object_Tex_005530
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot07_object_Tex_005D30:
+  type: TEXTURE
+  offset: 0x5D30
+  symbol: object_spot07_object_Tex_005D30
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot07_object_Tex_006530:
+  type: TEXTURE
+  offset: 0x6530
+  symbol: object_spot07_object_Tex_006530
+  format: I4
+  width: 64
+  height: 64
+
+
+object_spot07_objectVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_spot07_objectVtx_000000
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot07_objectVtx_000700:
+  type: OOT:ARRAY
+  offset: 0x000700
+  symbol: object_spot07_objectVtx_000700
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot07_objectVtx_0016E0:
+  type: OOT:ARRAY
+  offset: 0x0016E0
+  symbol: object_spot07_objectVtx_0016E0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot07_objectVtx_001A30:
+  type: OOT:ARRAY
+  offset: 0x001A30
+  symbol: object_spot07_objectVtx_001A30
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot07_objectVtx_002DE0:
+  type: OOT:ARRAY
+  offset: 0x002DE0
+  symbol: object_spot07_objectVtx_002DE0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot07_objectVtx_002E40:
+  type: OOT:ARRAY
+  offset: 0x002E40
+  symbol: object_spot07_objectVtx_002E40
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

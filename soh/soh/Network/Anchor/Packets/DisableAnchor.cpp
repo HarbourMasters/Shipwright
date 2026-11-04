@@ -1,7 +1,4 @@
 #include "soh/Network/Anchor/Anchor.h"
-#include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 /**
  * DISABLE_ANCHOR

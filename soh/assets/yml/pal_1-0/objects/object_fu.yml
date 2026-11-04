@@ -1,0 +1,469 @@
+:config:
+  segments:
+    - [ 6, 0x011AA440 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x011AA440 ]
+    - [ 9, 0x011AA440 ]
+    - [ 10, 0x011AA440 ]
+    - [ 11, 0x011AA440 ]
+    - [ 12, 0x011AA440 ]
+    - [ 13, 0x011AA440 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gWindmillManBlueTriangleDL:
+  type: GFX
+  offset: 0x4390
+  symbol: gWindmillManBlueTriangleDL
+
+gWindmillManChestAndMusicBoxPipeDL:
+  type: GFX
+  offset: 0x3320
+  symbol: gWindmillManChestAndMusicBoxPipeDL
+
+gWindmillManChestAndMusicBoxPipeLimb:
+  type: OOT:LIMB
+  offset: 0x6BF4
+  symbol: gWindmillManChestAndMusicBoxPipeLimb
+  limb_type: Standard
+
+gWindmillManClothesTLUT:
+  type: TEXTURE
+  offset: 0x4C60
+  symbol: gWindmillManClothesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWindmillManEarTex:
+  type: TEXTURE
+  offset: 0x56A0
+  symbol: gWindmillManEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4E60
+
+gWindmillManEyeAngryTex:
+  type: TEXTURE
+  offset: 0x6320
+  symbol: gWindmillManEyeAngryTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4E60
+
+gWindmillManEyeClosedTex:
+  type: TEXTURE
+  offset: 0x5F20
+  symbol: gWindmillManEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4E60
+
+gWindmillManFingersAndToesTex:
+  type: TEXTURE
+  offset: 0x55A0
+  symbol: gWindmillManFingersAndToesTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4E60
+
+gWindmillManHairTex:
+  type: TEXTURE
+  offset: 0x6B20
+  symbol: gWindmillManHairTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x4E60
+
+gWindmillManHeadDL:
+  type: GFX
+  offset: 0x36A0
+  symbol: gWindmillManHeadDL
+
+gWindmillManHeadLimb:
+  type: OOT:LIMB
+  offset: 0x6C3C
+  symbol: gWindmillManHeadLimb
+  limb_type: Standard
+
+gWindmillManHeadSkinTex:
+  type: TEXTURE
+  offset: 0x5160
+  symbol: gWindmillManHeadSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4E60
+
+gWindmillManHornAndPipeTex:
+  type: TEXTURE
+  offset: 0x5EE0
+  symbol: gWindmillManHornAndPipeTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4C60
+
+gWindmillManHornDL:
+  type: GFX
+  offset: 0x3130
+  symbol: gWindmillManHornDL
+
+gWindmillManHornLimb:
+  type: OOT:LIMB
+  offset: 0x6C48
+  symbol: gWindmillManHornLimb
+  limb_type: Standard
+
+gWindmillManLeftArmAndMusicBoxDL:
+  type: GFX
+  offset: 0x40E0
+  symbol: gWindmillManLeftArmAndMusicBoxDL
+
+gWindmillManLeftArmAndMusicBoxLimb:
+  type: OOT:LIMB
+  offset: 0x6C00
+  symbol: gWindmillManLeftArmAndMusicBoxLimb
+  limb_type: Standard
+
+gWindmillManLeftFootDL:
+  type: GFX
+  offset: 0x4B58
+  symbol: gWindmillManLeftFootDL
+
+gWindmillManLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x6BC4
+  symbol: gWindmillManLeftFootLimb
+  limb_type: Standard
+
+gWindmillManLeftLegDL:
+  type: GFX
+  offset: 0x4A08
+  symbol: gWindmillManLeftLegDL
+
+gWindmillManLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x6BB8
+  symbol: gWindmillManLeftLegLimb
+  limb_type: Standard
+
+gWindmillManLeftThighDL:
+  type: GFX
+  offset: 0x48E8
+  symbol: gWindmillManLeftThighDL
+
+gWindmillManLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x6BAC
+  symbol: gWindmillManLeftThighLimb
+  limb_type: Standard
+
+gWindmillManLimb_006C0C:
+  type: OOT:LIMB
+  offset: 0x6C0C
+  symbol: gWindmillManLimb_006C0C
+  limb_type: Standard
+
+gWindmillManMouthAngryTex:
+  type: TEXTURE
+  offset: 0x6920
+  symbol: gWindmillManMouthAngryTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x4E60
+
+gWindmillManMouthOpenTex:
+  type: TEXTURE
+  offset: 0x6720
+  symbol: gWindmillManMouthOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x4E60
+
+gWindmillManMusicBoxTex:
+  type: TEXTURE
+  offset: 0x51A0
+  symbol: gWindmillManMusicBoxTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4C60
+
+gWindmillManPantsTex:
+  type: TEXTURE
+  offset: 0x5060
+  symbol: gWindmillManPantsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4C60
+
+gWindmillManPlayAndMoveHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x57C
+  symbol: gWindmillManPlayAndMoveHeadAnim
+
+gWindmillManPlayStillAnim:
+  type: OOT:ANIMATION
+  offset: 0xB04
+  symbol: gWindmillManPlayStillAnim
+
+gWindmillManRightArmDL:
+  type: GFX
+  offset: 0x3D08
+  symbol: gWindmillManRightArmDL
+
+gWindmillManRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x6C24
+  symbol: gWindmillManRightArmLimb
+  limb_type: Standard
+
+gWindmillManRightFootDL:
+  type: GFX
+  offset: 0x47E0
+  symbol: gWindmillManRightFootDL
+
+gWindmillManRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x6BE8
+  symbol: gWindmillManRightFootLimb
+  limb_type: Standard
+
+gWindmillManRightHandAndCrankDL:
+  type: GFX
+  offset: 0x3E38
+  symbol: gWindmillManRightHandAndCrankDL
+
+gWindmillManRightHandAndCrankLimb:
+  type: OOT:LIMB
+  offset: 0x6C30
+  symbol: gWindmillManRightHandAndCrankLimb
+  limb_type: Standard
+
+gWindmillManRightLegDL:
+  type: GFX
+  offset: 0x4690
+  symbol: gWindmillManRightLegDL
+
+gWindmillManRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x6BDC
+  symbol: gWindmillManRightLegLimb
+  limb_type: Standard
+
+gWindmillManRightShoulderDL:
+  type: GFX
+  offset: 0x3BD8
+  symbol: gWindmillManRightShoulderDL
+
+gWindmillManRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x6C18
+  symbol: gWindmillManRightShoulderLimb
+  limb_type: Standard
+
+gWindmillManRightThighDL:
+  type: GFX
+  offset: 0x4570
+  symbol: gWindmillManRightThighDL
+
+gWindmillManRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x6BD0
+  symbol: gWindmillManRightThighLimb
+  limb_type: Standard
+
+gWindmillManShirtTex:
+  type: TEXTURE
+  offset: 0x5AE0
+  symbol: gWindmillManShirtTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4C60
+
+gWindmillManSkel:
+  type: OOT:SKELETON
+  offset: 0x6C90
+  symbol: gWindmillManSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gWindmillManSkinTLUT:
+  type: TEXTURE
+  offset: 0x4E60
+  symbol: gWindmillManSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWindmillManTorsoDL:
+  type: GFX
+  offset: 0x4460
+  symbol: gWindmillManTorsoDL
+
+gWindmillManTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x6BA0
+  symbol: gWindmillManTorsoLimb
+  limb_type: Standard
+
+gWindmillManUpperHornAndCrankTex:
+  type: TEXTURE
+  offset: 0x56E0
+  symbol: gWindmillManUpperHornAndCrankTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4C60
+
+
+object_fuVtx_000B20:
+  type: OOT:ARRAY
+  offset: 0x000B20
+  symbol: object_fuVtx_000B20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_000B50:
+  type: OOT:ARRAY
+  offset: 0x000B50
+  symbol: object_fuVtx_000B50
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_000F00:
+  type: OOT:ARRAY
+  offset: 0x000F00
+  symbol: object_fuVtx_000F00
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0012A0:
+  type: OOT:ARRAY
+  offset: 0x0012A0
+  symbol: object_fuVtx_0012A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_001420:
+  type: OOT:ARRAY
+  offset: 0x001420
+  symbol: object_fuVtx_001420
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0015A0:
+  type: OOT:ARRAY
+  offset: 0x0015A0
+  symbol: object_fuVtx_0015A0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0018A0:
+  type: OOT:ARRAY
+  offset: 0x0018A0
+  symbol: object_fuVtx_0018A0
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0020F0:
+  type: OOT:ARRAY
+  offset: 0x0020F0
+  symbol: object_fuVtx_0020F0
+  count: 112
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0027F0:
+  type: OOT:ARRAY
+  offset: 0x0027F0
+  symbol: object_fuVtx_0027F0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0028D0:
+  type: OOT:ARRAY
+  offset: 0x0028D0
+  symbol: object_fuVtx_0028D0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_002A90:
+  type: OOT:ARRAY
+  offset: 0x002A90
+  symbol: object_fuVtx_002A90
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_002C00:
+  type: OOT:ARRAY
+  offset: 0x002C00
+  symbol: object_fuVtx_002C00
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_002CE0:
+  type: OOT:ARRAY
+  offset: 0x002CE0
+  symbol: object_fuVtx_002CE0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_002EA0:
+  type: OOT:ARRAY
+  offset: 0x002EA0
+  symbol: object_fuVtx_002EA0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_003010:
+  type: OOT:ARRAY
+  offset: 0x003010
+  symbol: object_fuVtx_003010
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWindmillManSkelLimbs:
+  type: BLOB
+  offset: 0x6C54
+  symbol: gWindmillManSkelLimbs
+  size: 0

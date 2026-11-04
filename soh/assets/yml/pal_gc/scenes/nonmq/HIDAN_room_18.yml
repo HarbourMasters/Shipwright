@@ -1,0 +1,76 @@
+:config:
+  segments:
+    - [ 3, 0x0181C460 ]
+    - [ 2, 0x017C7BF0 ]
+  directory: scenes/nonmq/HIDAN_scene
+  external_files:
+    - pal_gc/scenes/nonmq/HIDAN_scene.yml
+    - pal_gc/code/sys_matrix.yml
+
+HIDAN_room_18:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HIDAN_room_18
+
+HIDAN_room_18Tex_0027F8:
+  type: TEXTURE
+  offset: 0x2778
+  symbol: HIDAN_room_18Tex_0027F8
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_18Tex_002FF8:
+  type: TEXTURE
+  offset: 0x2F78
+  symbol: HIDAN_room_18Tex_002FF8
+  format: CI4
+  width: 32
+  height: 64
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18B50
+
+HIDAN_room_18Tex_0033F8:
+  type: TEXTURE
+  offset: 0x3378
+  symbol: HIDAN_room_18Tex_0033F8
+  format: CI4
+  width: 64
+  height: 32
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18B30
+
+HIDAN_room_18Tex_0037F8:
+  type: TEXTURE
+  offset: 0x3778
+  symbol: HIDAN_room_18Tex_0037F8
+  format: CI4
+  width: 32
+  height: 32
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18B30
+
+HIDAN_room_18Tex_0039F8:
+  type: TEXTURE
+  offset: 0x3978
+  symbol: HIDAN_room_18Tex_0039F8
+  format: CI4
+  width: 32
+  height: 32
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18B30
+
+
+HIDAN_room_18Vtx_0000F0:
+  type: OOT:ARRAY
+  offset: 0x0000F0
+  symbol: HIDAN_room_18Vtx_0000F0
+  count: 370
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_18DL_001810:
+  type: GFX
+  offset: 0x001810
+  symbol: HIDAN_room_18DL_001810

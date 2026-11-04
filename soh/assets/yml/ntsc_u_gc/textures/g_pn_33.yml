@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012FA760 ]
+
+gZorasDomainTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gZorasDomainTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gZorasDomainTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZorasDomainTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

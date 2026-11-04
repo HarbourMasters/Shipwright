@@ -1,0 +1,485 @@
+:config:
+  segments:
+    - [ 6, 0x011BE790 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x011BE790 ]
+    - [ 9, 0x011BE790 ]
+    - [ 10, 0x011BE790 ]
+    - [ 11, 0x011BE790 ]
+    - [ 12, 0x011BE790 ]
+    - [ 13, 0x011BE790 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGraveyardKidBoot1Tex:
+  type: TEXTURE
+  offset: 0x3BF0
+  symbol: gGraveyardKidBoot1Tex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x1970
+
+gGraveyardKidBoot2Tex:
+  type: TEXTURE
+  offset: 0x3BB0
+  symbol: gGraveyardKidBoot2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1970
+
+gGraveyardKidChestDL:
+  type: GFX
+  offset: 0x65B0
+  symbol: gGraveyardKidChestDL
+
+gGraveyardKidChestLimb:
+  type: OOT:LIMB
+  offset: 0x84A4
+  symbol: gGraveyardKidChestLimb
+  limb_type: Standard
+
+gGraveyardKidEarTex:
+  type: TEXTURE
+  offset: 0x1CB0
+  symbol: gGraveyardKidEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1970
+
+gGraveyardKidEyesClosedTex:
+  type: TEXTURE
+  offset: 0x3130
+  symbol: gGraveyardKidEyesClosedTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+gGraveyardKidEyesHalfTex:
+  type: TEXTURE
+  offset: 0x2930
+  symbol: gGraveyardKidEyesHalfTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+gGraveyardKidEyesOpenTex:
+  type: TEXTURE
+  offset: 0x2130
+  symbol: gGraveyardKidEyesOpenTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+gGraveyardKidFingersTex:
+  type: TEXTURE
+  offset: 0x3930
+  symbol: gGraveyardKidFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1970
+
+gGraveyardKidGrabStickTwoHandsAnim:
+  type: OOT:ANIMATION
+  offset: 0x1588
+  symbol: gGraveyardKidGrabStickTwoHandsAnim
+
+gGraveyardKidGradientTex:
+  type: TEXTURE
+  offset: 0x1B70
+  symbol: gGraveyardKidGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1970
+
+gGraveyardKidHairTex:
+  type: TEXTURE
+  offset: 0x1BB0
+  symbol: gGraveyardKidHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1970
+
+gGraveyardKidHeadDL:
+  type: GFX
+  offset: 0x6808
+  symbol: gGraveyardKidHeadDL
+
+gGraveyardKidHeadLimb:
+  type: OOT:LIMB
+  offset: 0x84F8
+  symbol: gGraveyardKidHeadLimb
+  limb_type: Standard
+
+gGraveyardKidIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x195C
+  symbol: gGraveyardKidIdleAnim
+
+gGraveyardKidLeftArmDL:
+  type: GFX
+  offset: 0x7540
+  symbol: gGraveyardKidLeftArmDL
+
+gGraveyardKidLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x84BC
+  symbol: gGraveyardKidLeftArmLimb
+  limb_type: Standard
+
+gGraveyardKidLeftFootDL:
+  type: GFX
+  offset: 0x81E8
+  symbol: gGraveyardKidLeftFootDL
+
+gGraveyardKidLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x8474
+  symbol: gGraveyardKidLeftFootLimb
+  limb_type: Standard
+
+gGraveyardKidLeftHandDL:
+  type: GFX
+  offset: 0x7788
+  symbol: gGraveyardKidLeftHandDL
+
+gGraveyardKidLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x84C8
+  symbol: gGraveyardKidLeftHandLimb
+  limb_type: Standard
+
+gGraveyardKidLeftShinDL:
+  type: GFX
+  offset: 0x8050
+  symbol: gGraveyardKidLeftShinDL
+
+gGraveyardKidLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x8468
+  symbol: gGraveyardKidLeftShinLimb
+  limb_type: Standard
+
+gGraveyardKidLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x84B0
+  symbol: gGraveyardKidLeftShoulderLimb
+  limb_type: Standard
+
+gGraveyardKidLeftThighDL:
+  type: GFX
+  offset: 0x7F00
+  symbol: gGraveyardKidLeftThighDL
+
+gGraveyardKidLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x845C
+  symbol: gGraveyardKidLeftThighLimb
+  limb_type: Standard
+
+gGraveyardKidLeftUpperArmDL:
+  type: GFX
+  offset: 0x7388
+  symbol: gGraveyardKidLeftUpperArmDL
+
+gGraveyardKidMouthTex:
+  type: TEXTURE
+  offset: 0x1D30
+  symbol: gGraveyardKidMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gGraveyardKidNoseTex:
+  type: TEXTURE
+  offset: 0x1CF0
+  symbol: gGraveyardKidNoseTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1970
+
+gGraveyardKidPantsTex:
+  type: TEXTURE
+  offset: 0x3C70
+  symbol: gGraveyardKidPantsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1970
+
+gGraveyardKidRightArmDL:
+  type: GFX
+  offset: 0x6E60
+  symbol: gGraveyardKidRightArmDL
+
+gGraveyardKidRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x84E0
+  symbol: gGraveyardKidRightArmLimb
+  limb_type: Standard
+
+gGraveyardKidRightFootDL:
+  type: GFX
+  offset: 0x7D18
+  symbol: gGraveyardKidRightFootDL
+
+gGraveyardKidRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x8498
+  symbol: gGraveyardKidRightFootLimb
+  limb_type: Standard
+
+gGraveyardKidRightHandDL:
+  type: GFX
+  offset: 0x70A8
+  symbol: gGraveyardKidRightHandDL
+
+gGraveyardKidRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x84EC
+  symbol: gGraveyardKidRightHandLimb
+  limb_type: Standard
+
+gGraveyardKidRightShinDL:
+  type: GFX
+  offset: 0x7B80
+  symbol: gGraveyardKidRightShinDL
+
+gGraveyardKidRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x848C
+  symbol: gGraveyardKidRightShinLimb
+  limb_type: Standard
+
+gGraveyardKidRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x84D4
+  symbol: gGraveyardKidRightShoulderLimb
+  limb_type: Standard
+
+gGraveyardKidRightThighDL:
+  type: GFX
+  offset: 0x7A30
+  symbol: gGraveyardKidRightThighDL
+
+gGraveyardKidRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x8480
+  symbol: gGraveyardKidRightThighLimb
+  limb_type: Standard
+
+gGraveyardKidRightUpperArmDL:
+  type: GFX
+  offset: 0x6CA8
+  symbol: gGraveyardKidRightUpperArmDL
+
+gGraveyardKidShirt1Tex:
+  type: TEXTURE
+  offset: 0x3A30
+  symbol: gGraveyardKidShirt1Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1970
+
+gGraveyardKidShirt2Tex:
+  type: TEXTURE
+  offset: 0x3B30
+  symbol: gGraveyardKidShirt2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1970
+
+gGraveyardKidSkel:
+  type: OOT:SKELETON
+  offset: 0x8540
+  symbol: gGraveyardKidSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGraveyardKidStickTex:
+  type: TEXTURE
+  offset: 0x3B70
+  symbol: gGraveyardKidStickTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1970
+
+gGraveyardKidSwingStickUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x0E10
+  symbol: gGraveyardKidSwingStickUpAnim
+
+gGraveyardKidTLUT:
+  type: TEXTURE
+  offset: 0x1970
+  symbol: gGraveyardKidTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGraveyardKidTorsoDL:
+  type: GFX
+  offset: 0x7910
+  symbol: gGraveyardKidTorsoDL
+
+gGraveyardKidTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x8450
+  symbol: gGraveyardKidTorsoLimb
+  limb_type: Standard
+
+gGraveyardKidWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x0700
+  symbol: gGraveyardKidWalkAnim
+
+
+object_csVtx_003D70:
+  type: OOT:ARRAY
+  offset: 0x003D70
+  symbol: object_csVtx_003D70
+  count: 119
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_0044E0:
+  type: OOT:ARRAY
+  offset: 0x0044E0
+  symbol: object_csVtx_0044E0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_004790:
+  type: OOT:ARRAY
+  offset: 0x004790
+  symbol: object_csVtx_004790
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_004900:
+  type: OOT:ARRAY
+  offset: 0x004900
+  symbol: object_csVtx_004900
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_004AC0:
+  type: OOT:ARRAY
+  offset: 0x004AC0
+  symbol: object_csVtx_004AC0
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_004E90:
+  type: OOT:ARRAY
+  offset: 0x004E90
+  symbol: object_csVtx_004E90
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_005000:
+  type: OOT:ARRAY
+  offset: 0x005000
+  symbol: object_csVtx_005000
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_0051C0:
+  type: OOT:ARRAY
+  offset: 0x0051C0
+  symbol: object_csVtx_0051C0
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_005980:
+  type: OOT:ARRAY
+  offset: 0x005980
+  symbol: object_csVtx_005980
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_005BF0:
+  type: OOT:ARRAY
+  offset: 0x005BF0
+  symbol: object_csVtx_005BF0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_005CE0:
+  type: OOT:ARRAY
+  offset: 0x005CE0
+  symbol: object_csVtx_005CE0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_005EF0:
+  type: OOT:ARRAY
+  offset: 0x005EF0
+  symbol: object_csVtx_005EF0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_006160:
+  type: OOT:ARRAY
+  offset: 0x006160
+  symbol: object_csVtx_006160
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_006250:
+  type: OOT:ARRAY
+  offset: 0x006250
+  symbol: object_csVtx_006250
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_csVtx_006460:
+  type: OOT:ARRAY
+  offset: 0x006460
+  symbol: object_csVtx_006460
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGraveyardKidSkelLimbs:
+  type: BLOB
+  offset: 0x8504
+  symbol: gGraveyardKidSkelLimbs
+  size: 0

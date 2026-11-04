@@ -1,0 +1,105 @@
+:config:
+  segments:
+    - [ 3, 0x017E0FE0 ]
+    - [ 2, 0x017CB600 ]
+  directory: scenes/shared/spot10_scene
+  external_files:
+    - ntsc_1-0/scenes/shared/spot10_scene.yml
+    - ntsc_1-0/code/sys_matrix.yml
+    - ntsc_1-0/scenes/shared/spot10_room_4Set_0000B0.yml
+    - ntsc_1-0/scenes/shared/spot10_room_4Set_000130.yml
+
+spot10_room_4:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: spot10_room_4
+
+
+spot10_room_4Vtx_000160:
+  type: OOT:ARRAY
+  offset: 0x000160
+  symbol: spot10_room_4Vtx_000160
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_4DL_000220:
+  type: GFX
+  offset: 0x000220
+  symbol: spot10_room_4DL_000220
+
+spot10_room_4Vtx_000310:
+  type: OOT:ARRAY
+  offset: 0x000310
+  symbol: spot10_room_4Vtx_000310
+  count: 73
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_4DL_0007A0:
+  type: GFX
+  offset: 0x0007A0
+  symbol: spot10_room_4DL_0007A0
+
+spot10_room_4Vtx_000A70:
+  type: OOT:ARRAY
+  offset: 0x000A70
+  symbol: spot10_room_4Vtx_000A70
+  count: 73
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_4DL_000F00:
+  type: GFX
+  offset: 0x000F00
+  symbol: spot10_room_4DL_000F00
+
+spot10_room_4Vtx_0011D0:
+  type: OOT:ARRAY
+  offset: 0x0011D0
+  symbol: spot10_room_4Vtx_0011D0
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_4DL_0016A0:
+  type: GFX
+  offset: 0x0016A0
+  symbol: spot10_room_4DL_0016A0
+
+spot10_room_4Vtx_001988:
+  type: OOT:ARRAY
+  offset: 0x001988
+  symbol: spot10_room_4Vtx_001988
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_4DL_001DF8:
+  type: GFX
+  offset: 0x001DF8
+  symbol: spot10_room_4DL_001DF8
+
+spot10_room_4Vtx_0020C8:
+  type: OOT:ARRAY
+  offset: 0x0020C8
+  symbol: spot10_room_4Vtx_0020C8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_4DL_002348:
+  type: GFX
+  offset: 0x002348
+  symbol: spot10_room_4DL_002348
+
+spot10_room_4DL_002490:
+  type: GFX
+  offset: 0x002490
+  symbol: spot10_room_4DL_002490

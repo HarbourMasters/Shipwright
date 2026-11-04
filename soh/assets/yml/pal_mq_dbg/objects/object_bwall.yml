@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x019C5000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x019C5000 ]
+    - [ 9, 0x019C5000 ]
+    - [ 10, 0x019C5000 ]
+    - [ 11, 0x019C5000 ]
+    - [ 12, 0x019C5000 ]
+    - [ 13, 0x019C5000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+object_bwall_Col_000118:
+  type: OOT:COLLISION
+  offset: 0x118
+  symbol: object_bwall_Col_000118
+
+object_bwall_DL_000040:
+  type: GFX
+  offset: 0x40
+  symbol: object_bwall_DL_000040
+
+object_bwall_Tex_000150:
+  type: TEXTURE
+  offset: 0x150
+  symbol: object_bwall_Tex_000150
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_bwallVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_bwallVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,26 @@
+:config:
+  segments:
+    - [ 128, 0x00B7E500 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x00B7E500 ]
+    - [ 9, 0x00B7E500 ]
+    - [ 10, 0x00B7E500 ]
+    - [ 11, 0x00B7E500 ]
+    - [ 12, 0x00B7E500 ]
+    - [ 13, 0x00B7E500 ]
+  virtual: [ 0x808C4300, 0x00B7E500 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+sSkulltulaUnusedDL:
+  type: GFX
+  offset: 0x26E0
+  symbol: sSkulltulaUnusedDL
+
+sSkulltulaUnusedVtx:
+  type: OOT:ARRAY
+  offset: 0x26A0
+  symbol: sSkulltulaUnusedVtx
+  count: 4
+  array_type: VTX
+

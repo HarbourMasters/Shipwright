@@ -1,0 +1,107 @@
+:config:
+  segments:
+    - [ 6, 0x012C51D0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x012C51D0 ]
+    - [ 9, 0x012C51D0 ]
+    - [ 10, 0x012C51D0 ]
+    - [ 11, 0x012C51D0 ]
+    - [ 12, 0x012C51D0 ]
+    - [ 13, 0x012C51D0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gShadowDoorLeftDL:
+  type: GFX
+  offset: 0x13B8
+  symbol: gShadowDoorLeftDL
+
+gShadowDoorRightDL:
+  type: GFX
+  offset: 0x1420
+  symbol: gShadowDoorRightDL
+
+object_haka_door_DL_001310:
+  type: GFX
+  offset: 0x1310
+  symbol: object_haka_door_DL_001310
+
+object_haka_door_DL_002620:
+  type: GFX
+  offset: 0x2620
+  symbol: object_haka_door_DL_002620
+
+object_haka_door_DL_003890:
+  type: GFX
+  offset: 0x3890
+  symbol: object_haka_door_DL_003890
+
+object_haka_door_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_haka_door_Tex_000000
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_haka_door_Tex_001490:
+  type: TEXTURE
+  offset: 0x1490
+  symbol: object_haka_door_Tex_001490
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_haka_door_Tex_002700:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: object_haka_door_Tex_002700
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_haka_doorVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_haka_doorVtx_001000
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_doorVtx_001110:
+  type: OOT:ARRAY
+  offset: 0x001110
+  symbol: object_haka_doorVtx_001110
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_doorVtx_001220:
+  type: OOT:ARRAY
+  offset: 0x001220
+  symbol: object_haka_doorVtx_001220
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_doorVtx_002490:
+  type: OOT:ARRAY
+  offset: 0x002490
+  symbol: object_haka_doorVtx_002490
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_doorVtx_003700:
+  type: OOT:ARRAY
+  offset: 0x003700
+  symbol: object_haka_doorVtx_003700
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

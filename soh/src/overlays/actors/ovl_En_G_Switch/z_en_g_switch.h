@@ -45,7 +45,7 @@ typedef struct EnGSwitch {
     /* 0x0158 */ s16 colorIdx;
     /* 0x015A */ s16 broken;
     /* 0x015C */ s16 numEffects;
-    /* 0x015E */ s16 objId; 
+    /* 0x015E */ s16 objId;
     /* 0x0160 */ s16 index; // first or second rupee in two-rupee patterns
     /* 0x0162 */ s16 delayTimer; // delay between the two blue rupees appearing
     /* 0x0164 */ s16 waitTimer; // time rupee waits before retreating

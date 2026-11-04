@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01301C40 ]
+
+gZorasRiverTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZorasRiverTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gZorasRiverTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gZorasRiverTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gZorasRiverTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gZorasRiverTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

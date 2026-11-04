@@ -1,0 +1,92 @@
+:config:
+  segments:
+    - [ 3, 0x022C6000 ]
+    - [ 2, 0x02213000 ]
+  directory: scenes/mq/HIDAN_scene
+  external_files:
+    - pal_mq_dbg/scenes/mq/HIDAN_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+HIDAN_room_17:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HIDAN_room_17
+
+HIDAN_room_17Tex_005168:
+  type: TEXTURE
+  offset: 0x5168
+  symbol: HIDAN_room_17Tex_005168
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_17Tex_005968:
+  type: TEXTURE
+  offset: 0x5968
+  symbol: HIDAN_room_17Tex_005968
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_17Tex_006168:
+  type: TEXTURE
+  offset: 0x6168
+  symbol: HIDAN_room_17Tex_006168
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_17Tex_006968:
+  type: TEXTURE
+  offset: 0x6968
+  symbol: HIDAN_room_17Tex_006968
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_17Tex_007168:
+  type: TEXTURE
+  offset: 0x7168
+  symbol: HIDAN_room_17Tex_007168
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_17Tex_007968:
+  type: TEXTURE
+  offset: 0x7968
+  symbol: HIDAN_room_17Tex_007968
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_17Tex_008168:
+  type: TEXTURE
+  offset: 0x8168
+  symbol: HIDAN_room_17Tex_008168
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_17Tex_008968:
+  type: TEXTURE
+  offset: 0x8968
+  symbol: HIDAN_room_17Tex_008968
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HIDAN_room_17Vtx_000130:
+  type: OOT:ARRAY
+  offset: 0x000130
+  symbol: HIDAN_room_17Vtx_000130
+  count: 790
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_17DL_003290:
+  type: GFX
+  offset: 0x003290
+  symbol: HIDAN_room_17DL_003290

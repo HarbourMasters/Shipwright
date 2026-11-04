@@ -1,0 +1,587 @@
+:config:
+  segments:
+    - [ 6, 0x00FFEAC0 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x00FFEAC0 ]
+    - [ 9, 0x00FFEAC0 ]
+    - [ 10, 0x00FFEAC0 ]
+    - [ 11, 0x00FFEAC0 ]
+    - [ 12, 0x00FFEAC0 ]
+    - [ 13, 0x00FFEAC0 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gRutoChildAnim_009060:
+  type: OOT:ANIMATION
+  offset: 0x9060
+  symbol: gRutoChildAnim_009060
+
+gRutoChildBlueSkinGradientTex:
+  type: TEXTURE
+  offset: 0xE7B8
+  symbol: gRutoChildBlueSkinGradientTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gRutoChildBlueSkinPatchesTex:
+  type: TEXTURE
+  offset: 0xEE38
+  symbol: gRutoChildBlueSkinPatchesTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRutoChildBringArmsUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x3784
+  symbol: gRutoChildBringArmsUpAnim
+
+gRutoChildBringHandsDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x2EC0
+  symbol: gRutoChildBringHandsDownAnim
+
+gRutoChildChestDL:
+  type: GFX
+  offset: 0xCE18
+  symbol: gRutoChildChestDL
+
+gRutoChildChestLimb:
+  type: OOT:LIMB
+  offset: 0x12654
+  symbol: gRutoChildChestLimb
+  limb_type: Standard
+
+gRutoChildCircleGradientTex:
+  type: TEXTURE
+  offset: 0x12400
+  symbol: gRutoChildCircleGradientTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRutoChildEarTex:
+  type: TEXTURE
+  offset: 0xEC38
+  symbol: gRutoChildEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRutoChildEyeClosedTex:
+  type: TEXTURE
+  offset: 0xF638
+  symbol: gRutoChildEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE038
+
+gRutoChildEyeHalf2Tex:
+  type: TEXTURE
+  offset: 0x10238
+  symbol: gRutoChildEyeHalf2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE038
+
+gRutoChildEyeHalfTex:
+  type: TEXTURE
+  offset: 0xF238
+  symbol: gRutoChildEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE038
+
+gRutoChildEyeHalfWithBlushTex:
+  type: TEXTURE
+  offset: 0x10A38
+  symbol: gRutoChildEyeHalfWithBlushTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE038
+
+gRutoChildEyeOpenTex:
+  type: TEXTURE
+  offset: 0xE3B8
+  symbol: gRutoChildEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE038
+
+gRutoChildEyeRollLeftTex:
+  type: TEXTURE
+  offset: 0xFE38
+  symbol: gRutoChildEyeRollLeftTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE038
+
+gRutoChildEyeTLUT:
+  type: TEXTURE
+  offset: 0xE038
+  symbol: gRutoChildEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRutoChildFingersTex:
+  type: TEXTURE
+  offset: 0x12200
+  symbol: gRutoChildFingersTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRutoChildHeadDL:
+  type: GFX
+  offset: 0x119F8
+  symbol: gRutoChildHeadDL
+
+gRutoChildHeadLimb:
+  type: OOT:LIMB
+  offset: 0x126A8
+  symbol: gRutoChildHeadLimb
+  limb_type: Standard
+
+gRutoChildHoldArmsUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x3608
+  symbol: gRutoChildHoldArmsUpAnim
+
+gRutoChildLeftFinDL:
+  type: GFX
+  offset: 0xDAC0
+  symbol: gRutoChildLeftFinDL
+
+gRutoChildLeftFinLimb:
+  type: OOT:LIMB
+  offset: 0x1266C
+  symbol: gRutoChildLeftFinLimb
+  limb_type: Standard
+
+gRutoChildLeftFootDL:
+  type: GFX
+  offset: 0xC630
+  symbol: gRutoChildLeftFootDL
+
+gRutoChildLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x12624
+  symbol: gRutoChildLeftFootLimb
+  limb_type: Standard
+
+gRutoChildLeftHandDL:
+  type: GFX
+  offset: 0xDDA8
+  symbol: gRutoChildLeftHandDL
+
+gRutoChildLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x12678
+  symbol: gRutoChildLeftHandLimb
+  limb_type: Standard
+
+gRutoChildLeftShinDL:
+  type: GFX
+  offset: 0xC3D8
+  symbol: gRutoChildLeftShinDL
+
+gRutoChildLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x12618
+  symbol: gRutoChildLeftShinLimb
+  limb_type: Standard
+
+gRutoChildLeftThighDL:
+  type: GFX
+  offset: 0xC188
+  symbol: gRutoChildLeftThighDL
+
+gRutoChildLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1260C
+  symbol: gRutoChildLeftThighLimb
+  limb_type: Standard
+
+gRutoChildLeftUpperArmDL:
+  type: GFX
+  offset: 0xD870
+  symbol: gRutoChildLeftUpperArmDL
+
+gRutoChildLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x12660
+  symbol: gRutoChildLeftUpperArmLimb
+  limb_type: Standard
+
+gRutoChildMouthClosedTex:
+  type: TEXTURE
+  offset: 0xE838
+  symbol: gRutoChildMouthClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE238
+
+gRutoChildMouthFrownTex:
+  type: TEXTURE
+  offset: 0xFA38
+  symbol: gRutoChildMouthFrownTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE238
+
+gRutoChildMouthOpenTex:
+  type: TEXTURE
+  offset: 0x10638
+  symbol: gRutoChildMouthOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE238
+
+gRutoChildMouthTLUT:
+  type: TEXTURE
+  offset: 0xE238
+  symbol: gRutoChildMouthTLUT
+  format: RGBA16
+  width: 16
+  height: 12
+
+gRutoChildRightFinDL:
+  type: GFX
+  offset: 0xD308
+  symbol: gRutoChildRightFinDL
+
+gRutoChildRightFinLimb:
+  type: OOT:LIMB
+  offset: 0x12690
+  symbol: gRutoChildRightFinLimb
+  limb_type: Standard
+
+gRutoChildRightFootDL:
+  type: GFX
+  offset: 0xCC78
+  symbol: gRutoChildRightFootDL
+
+gRutoChildRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x12648
+  symbol: gRutoChildRightFootLimb
+  limb_type: Standard
+
+gRutoChildRightHandDL:
+  type: GFX
+  offset: 0xD5E0
+  symbol: gRutoChildRightHandDL
+
+gRutoChildRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x1269C
+  symbol: gRutoChildRightHandLimb
+  limb_type: Standard
+
+gRutoChildRightShinDL:
+  type: GFX
+  offset: 0xCA20
+  symbol: gRutoChildRightShinDL
+
+gRutoChildRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1263C
+  symbol: gRutoChildRightShinLimb
+  limb_type: Standard
+
+gRutoChildRightThighDL:
+  type: GFX
+  offset: 0xC7D0
+  symbol: gRutoChildRightThighDL
+
+gRutoChildRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x12630
+  symbol: gRutoChildRightThighLimb
+  limb_type: Standard
+
+gRutoChildRightUpperArmDL:
+  type: GFX
+  offset: 0xD0B8
+  symbol: gRutoChildRightUpperArmDL
+
+gRutoChildRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x12684
+  symbol: gRutoChildRightUpperArmLimb
+  limb_type: Standard
+
+gRutoChildRootLimb:
+  type: OOT:LIMB
+  offset: 0x12600
+  symbol: gRutoChildRootLimb
+  limb_type: Standard
+
+gRutoChildSeesSapphireAnim:
+  type: OOT:ANIMATION
+  offset: 0x4648
+  symbol: gRutoChildSeesSapphireAnim
+
+gRutoChildShutterAnim:
+  type: OOT:ANIMATION
+  offset: 0x4BF0
+  symbol: gRutoChildShutterAnim
+
+gRutoChildSitAnim:
+  type: OOT:ANIMATION
+  offset: 0x7534
+  symbol: gRutoChildSitAnim
+
+gRutoChildSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x6B9C
+  symbol: gRutoChildSittingAnim
+
+gRutoChildSkel:
+  type: OOT:SKELETON
+  offset: 0x12700
+  symbol: gRutoChildSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gRutoChildSquirmAnim:
+  type: OOT:ANIMATION
+  offset: 0x4350
+  symbol: gRutoChildSquirmAnim
+
+gRutoChildSwimOnBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x12E94
+  symbol: gRutoChildSwimOnBackAnim
+
+gRutoChildTorsoDL:
+  type: GFX
+  offset: 0xC0A0
+  symbol: gRutoChildTorsoDL
+
+gRutoChildTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x126B4
+  symbol: gRutoChildTorsoLimb
+  limb_type: Standard
+
+gRutoChildTransitionFromSwimOnBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x8100
+  symbol: gRutoChildTransitionFromSwimOnBackAnim
+
+gRutoChildTransitionHandsOnHipToCrossArmsAndLegsAnim:
+  type: OOT:ANIMATION
+  offset: 0x1488
+  symbol: gRutoChildTransitionHandsOnHipToCrossArmsAndLegsAnim
+
+gRutoChildTransitionToSwimOnBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x8AA8
+  symbol: gRutoChildTransitionToSwimOnBackAnim
+
+gRutoChildTreadWaterAnim:
+  type: OOT:ANIMATION
+  offset: 0x13A64
+  symbol: gRutoChildTreadWaterAnim
+
+gRutoChildTurnAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x4074
+  symbol: gRutoChildTurnAroundAnim
+
+gRutoChildUnkHeadCircleTex:
+  type: TEXTURE
+  offset: 0xF038
+  symbol: gRutoChildUnkHeadCircleTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRutoChildWait2Anim:
+  type: OOT:ANIMATION
+  offset: 0x97B8
+  symbol: gRutoChildWait2Anim
+
+gRutoChildWaitHandsBehindBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x690
+  symbol: gRutoChildWaitHandsBehindBackAnim
+
+gRutoChildWaitHandsOnHipsAnim:
+  type: OOT:ANIMATION
+  offset: 0xE54
+  symbol: gRutoChildWaitHandsOnHipsAnim
+
+gRutoChildWaitInBlueWarpAnim:
+  type: OOT:ANIMATION
+  offset: 0x2990
+  symbol: gRutoChildWaitInBlueWarpAnim
+
+gRutoChildWaitSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2058
+  symbol: gRutoChildWaitSittingAnim
+
+gRutoChildWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x78E4
+  symbol: gRutoChildWalkAnim
+
+gRutoChildWalkToAndHoldUpSapphireAnim:
+  type: OOT:ANIMATION
+  offset: 0x63F4
+  symbol: gRutoChildWalkToAndHoldUpSapphireAnim
+
+
+object_ru1Vtx_0097D0:
+  type: OOT:ARRAY
+  offset: 0x0097D0
+  symbol: object_ru1Vtx_0097D0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_009970:
+  type: OOT:ARRAY
+  offset: 0x009970
+  symbol: object_ru1Vtx_009970
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_009D20:
+  type: OOT:ARRAY
+  offset: 0x009D20
+  symbol: object_ru1Vtx_009D20
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00A060:
+  type: OOT:ARRAY
+  offset: 0x00A060
+  symbol: object_ru1Vtx_00A060
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00A200:
+  type: OOT:ARRAY
+  offset: 0x00A200
+  symbol: object_ru1Vtx_00A200
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00A5B0:
+  type: OOT:ARRAY
+  offset: 0x00A5B0
+  symbol: object_ru1Vtx_00A5B0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00A8F0:
+  type: OOT:ARRAY
+  offset: 0x00A8F0
+  symbol: object_ru1Vtx_00A8F0
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00AF70:
+  type: OOT:ARRAY
+  offset: 0x00AF70
+  symbol: object_ru1Vtx_00AF70
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00B2F0:
+  type: OOT:ARRAY
+  offset: 0x00B2F0
+  symbol: object_ru1Vtx_00B2F0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00B560:
+  type: OOT:ARRAY
+  offset: 0x00B560
+  symbol: object_ru1Vtx_00B560
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00B780:
+  type: OOT:ARRAY
+  offset: 0x00B780
+  symbol: object_ru1Vtx_00B780
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00BB00:
+  type: OOT:ARRAY
+  offset: 0x00BB00
+  symbol: object_ru1Vtx_00BB00
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00BD70:
+  type: OOT:ARRAY
+  offset: 0x00BD70
+  symbol: object_ru1Vtx_00BD70
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_00BF90:
+  type: OOT:ARRAY
+  offset: 0x00BF90
+  symbol: object_ru1Vtx_00BF90
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru1Vtx_010E38:
+  type: OOT:ARRAY
+  offset: 0x010E38
+  symbol: object_ru1Vtx_010E38
+  count: 188
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gRutoChildSkelLimbs:
+  type: BLOB
+  offset: 0x126C0
+  symbol: gRutoChildSkelLimbs
+  size: 0

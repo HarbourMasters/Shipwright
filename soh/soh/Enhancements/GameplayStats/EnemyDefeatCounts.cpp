@@ -1,10 +1,9 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
-#include "src/overlays/actors/ovl_En_Mb/z_en_mb.h"
 #include "src/overlays/actors/ovl_En_Tite/z_en_tite.h"
 #include "src/overlays/actors/ovl_En_Zf/z_en_zf.h"
 #include "src/overlays/actors/ovl_En_Wf/z_en_wf.h"
@@ -14,7 +13,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
-
 extern SaveContext gSaveContext;
 }
 

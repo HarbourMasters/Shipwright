@@ -1,0 +1,216 @@
+:config:
+  segments:
+    - [ 3, 0x01F1AE00 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x01F1AE00 ]
+    - [ 9, 0x01F1AE00 ]
+    - [ 10, 0x01F1AE00 ]
+    - [ 11, 0x01F1AE00 ]
+    - [ 12, 0x01F1AE00 ]
+    - [ 13, 0x01F1AE00 ]
+    - [ 2, 0x01F13940 ]
+  directory: scenes/shared/miharigoya_scene
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+    - ntsc_1-1/scenes/shared/miharigoya_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+    - ntsc_1-1/scenes/shared/miharigoya_room_0Set_000470.yml
+
+miharigoya_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: miharigoya_room_0
+
+gMiharigoyaBlob_0038D8:
+  type: BLOB
+  offset: 0x38D8
+  size: 0x68
+  symbol: gMiharigoyaBlob_0038D8
+
+gMiharigoyaDL_003DA0:
+  type: GFX
+  offset: 0x3DA0
+  symbol: gMiharigoyaDL_003DA0
+
+
+miharigoya_room_0Vtx_0005A0:
+  type: OOT:ARRAY
+  offset: 0x0005A0
+  symbol: miharigoya_room_0Vtx_0005A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_000660:
+  type: GFX
+  offset: 0x000660
+  symbol: miharigoya_room_0DL_000660
+
+miharigoya_room_0Vtx_000718:
+  type: OOT:ARRAY
+  offset: 0x000718
+  symbol: miharigoya_room_0Vtx_000718
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_000A68:
+  type: GFX
+  offset: 0x000A68
+  symbol: miharigoya_room_0DL_000A68
+
+miharigoya_room_0Vtx_000D40:
+  type: OOT:ARRAY
+  offset: 0x000D40
+  symbol: miharigoya_room_0Vtx_000D40
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_000E60:
+  type: GFX
+  offset: 0x000E60
+  symbol: miharigoya_room_0DL_000E60
+
+miharigoya_room_0Vtx_000F20:
+  type: OOT:ARRAY
+  offset: 0x000F20
+  symbol: miharigoya_room_0Vtx_000F20
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_000FE0:
+  type: GFX
+  offset: 0x000FE0
+  symbol: miharigoya_room_0DL_000FE0
+
+miharigoya_room_0Vtx_001098:
+  type: OOT:ARRAY
+  offset: 0x001098
+  symbol: miharigoya_room_0Vtx_001098
+  count: 235
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_001F48:
+  type: GFX
+  offset: 0x001F48
+  symbol: miharigoya_room_0DL_001F48
+
+miharigoya_room_0Vtx_0022F8:
+  type: OOT:ARRAY
+  offset: 0x0022F8
+  symbol: miharigoya_room_0Vtx_0022F8
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_002778:
+  type: GFX
+  offset: 0x002778
+  symbol: miharigoya_room_0DL_002778
+
+miharigoya_room_0Vtx_0028B0:
+  type: OOT:ARRAY
+  offset: 0x0028B0
+  symbol: miharigoya_room_0Vtx_0028B0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_002A10:
+  type: GFX
+  offset: 0x002A10
+  symbol: miharigoya_room_0DL_002A10
+
+miharigoya_room_0Vtx_002B20:
+  type: OOT:ARRAY
+  offset: 0x002B20
+  symbol: miharigoya_room_0Vtx_002B20
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_002C60:
+  type: GFX
+  offset: 0x002C60
+  symbol: miharigoya_room_0DL_002C60
+
+miharigoya_room_0Vtx_002D30:
+  type: OOT:ARRAY
+  offset: 0x002D30
+  symbol: miharigoya_room_0Vtx_002D30
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_002F30:
+  type: GFX
+  offset: 0x002F30
+  symbol: miharigoya_room_0DL_002F30
+
+miharigoya_room_0Vtx_003010:
+  type: OOT:ARRAY
+  offset: 0x003010
+  symbol: miharigoya_room_0Vtx_003010
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_003490:
+  type: GFX
+  offset: 0x003490
+  symbol: miharigoya_room_0DL_003490
+
+miharigoya_room_0Vtx_0035E8:
+  type: OOT:ARRAY
+  offset: 0x0035E8
+  symbol: miharigoya_room_0Vtx_0035E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_0036A8:
+  type: GFX
+  offset: 0x0036A8
+  symbol: miharigoya_room_0DL_0036A8
+
+miharigoya_room_0Vtx_003760:
+  type: OOT:ARRAY
+  offset: 0x003760
+  symbol: miharigoya_room_0Vtx_003760
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_003820:
+  type: GFX
+  offset: 0x003820
+  symbol: miharigoya_room_0DL_003820
+
+miharigoya_room_0Vtx_003940:
+  type: OOT:ARRAY
+  offset: 0x003940
+  symbol: miharigoya_room_0Vtx_003940
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+miharigoya_room_0DL_003C40:
+  type: GFX
+  offset: 0x003C40
+  symbol: miharigoya_room_0DL_003C40

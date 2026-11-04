@@ -1,0 +1,210 @@
+:config:
+  segments:
+    - [ 3, 0x019D5E30 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x019D5E30 ]
+    - [ 9, 0x019D5E30 ]
+    - [ 10, 0x019D5E30 ]
+    - [ 11, 0x019D5E30 ]
+    - [ 12, 0x019D5E30 ]
+    - [ 13, 0x019D5E30 ]
+    - [ 2, 0x019CA890 ]
+  directory: scenes/nonmq/men_scene
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+    - ntsc_u_gc/scenes/nonmq/men_scene.yml
+    - ntsc_u_gc/code/sys_matrix.yml
+
+men_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: men_room_0
+
+gMenDL_008118:
+  type: GFX
+  offset: 0x8118
+  symbol: gMenDL_008118
+
+gMenDL_00FF78:
+  type: GFX
+  offset: 0xFF78
+  symbol: gMenDL_00FF78
+
+men_room_0Tex_008138:
+  type: TEXTURE
+  offset: 0x8138
+  symbol: men_room_0Tex_008138
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_0Tex_008938:
+  type: TEXTURE
+  offset: 0x8938
+  symbol: men_room_0Tex_008938
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_0Tex_009138:
+  type: TEXTURE
+  offset: 0x9138
+  symbol: men_room_0Tex_009138
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_0Tex_009538:
+  type: TEXTURE
+  offset: 0x9538
+  symbol: men_room_0Tex_009538
+  format: RGBA16
+  width: 32
+  height: 32
+
+men_room_0Tex_009D38:
+  type: TEXTURE
+  offset: 0x9D38
+  symbol: men_room_0Tex_009D38
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_0Tex_00A538:
+  type: TEXTURE
+  offset: 0xA538
+  symbol: men_room_0Tex_00A538
+  format: IA8
+  width: 64
+  height: 64
+
+men_room_0Tex_00B538:
+  type: TEXTURE
+  offset: 0xB538
+  symbol: men_room_0Tex_00B538
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_0Tex_00BD38:
+  type: TEXTURE
+  offset: 0xBD38
+  symbol: men_room_0Tex_00BD38
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_0Tex_00C538:
+  type: TEXTURE
+  offset: 0xC538
+  symbol: men_room_0Tex_00C538
+  format: I4
+  width: 64
+  height: 128
+
+men_room_0Tex_00D538:
+  type: TEXTURE
+  offset: 0xD538
+  symbol: men_room_0Tex_00D538
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_0Tex_00DD38:
+  type: TEXTURE
+  offset: 0xDD38
+  symbol: men_room_0Tex_00DD38
+  format: RGBA16
+  width: 16
+  height: 128
+
+men_room_0Tex_00ED38:
+  type: TEXTURE
+  offset: 0xED38
+  symbol: men_room_0Tex_00ED38
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_0Tex_00F538:
+  type: TEXTURE
+  offset: 0xF538
+  symbol: men_room_0Tex_00F538
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+
+men_room_0Vtx_000130:
+  type: OOT:ARRAY
+  offset: 0x000130
+  symbol: men_room_0Vtx_000130
+  count: 666
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_0DL_002AD0:
+  type: GFX
+  offset: 0x002AD0
+  symbol: men_room_0DL_002AD0
+
+men_room_0Vtx_003BD0:
+  type: OOT:ARRAY
+  offset: 0x003BD0
+  symbol: men_room_0Vtx_003BD0
+  count: 688
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_0DL_0066D0:
+  type: GFX
+  offset: 0x0066D0
+  symbol: men_room_0DL_0066D0
+
+men_room_0Vtx_007E38:
+  type: OOT:ARRAY
+  offset: 0x007E38
+  symbol: men_room_0Vtx_007E38
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_0DL_007FD8:
+  type: GFX
+  offset: 0x007FD8
+  symbol: men_room_0DL_007FD8
+
+men_room_0Vtx_00FD40:
+  type: OOT:ARRAY
+  offset: 0x00FD40
+  symbol: men_room_0Vtx_00FD40
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_0DL_00FEA0:
+  type: GFX
+  offset: 0x00FEA0
+  symbol: men_room_0DL_00FEA0

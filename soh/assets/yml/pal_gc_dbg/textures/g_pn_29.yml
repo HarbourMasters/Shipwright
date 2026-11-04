@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A42000 ]
+
+gGraveyardTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGraveyardTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGraveyardTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gGraveyardTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gGraveyardTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGraveyardTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

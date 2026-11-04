@@ -1,0 +1,295 @@
+:config:
+  segments:
+    - [ 6, 0x00EA3780 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x00EA3780 ]
+    - [ 9, 0x00EA3780 ]
+    - [ 10, 0x00EA3780 ]
+    - [ 11, 0x00EA3780 ]
+    - [ 12, 0x00EA3780 ]
+    - [ 13, 0x00EA3780 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gDTDungeonDoor1DL:
+  type: GFX
+  offset: 0x67A0
+  symbol: gDTDungeonDoor1DL
+
+gDTDungeonDoor2DL:
+  type: GFX
+  offset: 0x6910
+  symbol: gDTDungeonDoor2DL
+
+gDTFallingLadderCol:
+  type: OOT:COLLISION
+  offset: 0x66A8
+  symbol: gDTFallingLadderCol
+
+gDTFallingLadderDL:
+  type: GFX
+  offset: 0x6570
+  symbol: gDTFallingLadderDL
+
+gDTRisingPlatformsCol:
+  type: OOT:COLLISION
+  offset: 0x5780
+  symbol: gDTRisingPlatformsCol
+
+gDTRisingPlatformsDL:
+  type: GFX
+  offset: 0x5018
+  symbol: gDTRisingPlatformsDL
+
+gDTRollingSpikeTrapDL:
+  type: GFX
+  offset: 0x8D88
+  symbol: gDTRollingSpikeTrapDL
+
+gDTSlidingPlatformCol:
+  type: OOT:COLLISION
+  offset: 0x7798
+  symbol: gDTSlidingPlatformCol
+
+gDTSlidingPlatformDL:
+  type: GFX
+  offset: 0x7508
+  symbol: gDTSlidingPlatformDL
+
+gDTUnknownWebDL:
+  type: GFX
+  offset: 0x3850
+  symbol: gDTUnknownWebDL
+
+gDTWaterPlaneDL:
+  type: GFX
+  offset: 0x5DE0
+  symbol: gDTWaterPlaneDL
+
+gDTWebFloorCol:
+  type: OOT:COLLISION
+  offset: 0x6460
+  symbol: gDTWebFloorCol
+
+gDTWebFloorDL:
+  type: GFX
+  offset: 0x61B0
+  symbol: gDTWebFloorDL
+
+gDTWebWallCol:
+  type: OOT:COLLISION
+  offset: 0x6050
+  symbol: gDTWebWallCol
+
+gDTWebWallDL:
+  type: GFX
+  offset: 0x5F40
+  symbol: gDTWebWallDL
+
+gYdanDoor1Tex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gYdanDoor1Tex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gYdanHasi2TLUT:
+  type: TEXTURE
+  offset: 0x69C0
+  symbol: gYdanHasi2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYdanHasi3BlocksSideTex:
+  type: TEXTURE
+  offset: 0x42F8
+  symbol: gYdanHasi3BlocksSideTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x38F0
+
+gYdanHasi3BlocksTopTex:
+  type: TEXTURE
+  offset: 0x3AF8
+  symbol: gYdanHasi3BlocksTopTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x38F0
+
+gYdanHasiFloatingBlockBottomTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gYdanHasiFloatingBlockBottomTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gYdanHasiFloatingBlockSideTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gYdanHasiFloatingBlockSideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gYdanHasiWaterTLUT:
+  type: TEXTURE
+  offset: 0x57B0
+  symbol: gYdanHasiWaterTLUT
+  format: RGBA16
+  width: 208
+  height: 1
+
+gYdanHasiWaterTex:
+  type: TEXTURE
+  offset: 0x5950
+  symbol: gYdanHasiWaterTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x57B0
+
+gYdanMaruta1TLUT:
+  type: TEXTURE
+  offset: 0x77D0
+  symbol: gYdanMaruta1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYdanMarutaUnused1Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gYdanMarutaUnused1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gYdanMarutaUnused2Tex:
+  type: TEXTURE
+  offset: 0x79D8
+  symbol: gYdanMarutaUnused2Tex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x77D0
+
+gYdanTLUT_38F0:
+  type: TEXTURE
+  offset: 0x38F0
+  symbol: gYdanTLUT_38F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYdanUnused1Tex:
+  type: TEXTURE
+  offset: 0x6BC8
+  symbol: gYdanUnused1Tex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x69C0
+
+gYdanWebTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gYdanWebTex
+  format: IA16
+  width: 32
+  height: 64
+
+
+object_ydan_objectsVtx_003800:
+  type: OOT:ARRAY
+  offset: 0x003800
+  symbol: object_ydan_objectsVtx_003800
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_004AF8:
+  type: OOT:ARRAY
+  offset: 0x004AF8
+  symbol: object_ydan_objectsVtx_004AF8
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_005D50:
+  type: OOT:ARRAY
+  offset: 0x005D50
+  symbol: object_ydan_objectsVtx_005D50
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_005EE0:
+  type: OOT:ARRAY
+  offset: 0x005EE0
+  symbol: object_ydan_objectsVtx_005EE0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_006080:
+  type: OOT:ARRAY
+  offset: 0x006080
+  symbol: object_ydan_objectsVtx_006080
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_006490:
+  type: OOT:ARRAY
+  offset: 0x006490
+  symbol: object_ydan_objectsVtx_006490
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_0066E0:
+  type: OOT:ARRAY
+  offset: 0x0066E0
+  symbol: object_ydan_objectsVtx_0066E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_006850:
+  type: OOT:ARRAY
+  offset: 0x006850
+  symbol: object_ydan_objectsVtx_006850
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_0073C8:
+  type: OOT:ARRAY
+  offset: 0x0073C8
+  symbol: object_ydan_objectsVtx_0073C8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ydan_objectsVtx_0081D8:
+  type: OOT:ARRAY
+  offset: 0x0081D8
+  symbol: object_ydan_objectsVtx_0081D8
+  count: 187
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

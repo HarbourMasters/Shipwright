@@ -1,0 +1,84 @@
+:config:
+  segments:
+    - [ 6, 0x00F3BEA0 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x00F3BEA0 ]
+    - [ 9, 0x00F3BEA0 ]
+    - [ 10, 0x00F3BEA0 ]
+    - [ 11, 0x00F3BEA0 ]
+    - [ 12, 0x00F3BEA0 ]
+    - [ 13, 0x00F3BEA0 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gDampeRaceDoorCol:
+  type: OOT:COLLISION
+  offset: 0x3C4
+  symbol: gDampeRaceDoorCol
+
+gDampeRaceDoorDL:
+  type: GFX
+  offset: 0x1A0
+  symbol: gDampeRaceDoorDL
+
+gDampeRaceDoorTex:
+  type: TEXTURE
+  offset: 0x2630
+  symbol: gDampeRaceDoorTex
+  format: I4
+  width: 64
+  height: 128
+
+gWindmillRotatingPlatform1Tex:
+  type: TEXTURE
+  offset: 0x410
+  symbol: gWindmillRotatingPlatform1Tex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x3F0
+
+gWindmillRotatingPlatform2Tex:
+  type: TEXTURE
+  offset: 0xC10
+  symbol: gWindmillRotatingPlatform2Tex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gWindmillRotatingPlatformCol:
+  type: OOT:COLLISION
+  offset: 0x25FC
+  symbol: gWindmillRotatingPlatformCol
+
+gWindmillRotatingPlatformDL:
+  type: GFX
+  offset: 0x1AB0
+  symbol: gWindmillRotatingPlatformDL
+
+gWindmillRotatingPlatformTLUT:
+  type: TEXTURE
+  offset: 0x3F0
+  symbol: gWindmillRotatingPlatformTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+
+object_relay_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_relay_objectsVtx_000000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_relay_objectsVtx_001010:
+  type: OOT:ARRAY
+  offset: 0x001010
+  symbol: object_relay_objectsVtx_001010
+  count: 170
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

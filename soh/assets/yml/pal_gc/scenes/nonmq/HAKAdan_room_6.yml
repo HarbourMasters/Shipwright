@@ -1,0 +1,109 @@
+:config:
+  segments:
+    - [ 3, 0x01942010 ]
+    - [ 2, 0x01924410 ]
+  directory: scenes/nonmq/HAKAdan_scene
+  external_files:
+    - pal_gc/scenes/nonmq/HAKAdan_scene.yml
+    - pal_gc/code/sys_matrix.yml
+
+HAKAdan_room_6:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdan_room_6
+
+HAKAdan_room_6Tex_004BF0:
+  type: TEXTURE
+  offset: 0x4B70
+  symbol: HAKAdan_room_6Tex_004BF0
+  format: I4
+  width: 64
+  height: 64
+
+HAKAdan_room_6Tex_0053F0:
+  type: TEXTURE
+  offset: 0x5370
+  symbol: HAKAdan_room_6Tex_0053F0
+  format: RGBA16
+  width: 32
+  height: 8
+
+HAKAdan_room_6Tex_0055F0:
+  type: TEXTURE
+  offset: 0x5570
+  symbol: HAKAdan_room_6Tex_0055F0
+  format: RGBA16
+  width: 32
+  height: 64
+
+HAKAdan_room_6Tex_0065F0:
+  type: TEXTURE
+  offset: 0x6570
+  symbol: HAKAdan_room_6Tex_0065F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdan_room_6Tex_006DF0:
+  type: TEXTURE
+  offset: 0x6D70
+  symbol: HAKAdan_room_6Tex_006DF0
+  format: RGBA16
+  width: 16
+  height: 32
+
+HAKAdan_room_6Tex_0071F0:
+  type: TEXTURE
+  offset: 0x7170
+  symbol: HAKAdan_room_6Tex_0071F0
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+HAKAdan_room_6Vtx_000120:
+  type: OOT:ARRAY
+  offset: 0x000120
+  symbol: HAKAdan_room_6Vtx_000120
+  count: 410
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_6DL_001AC0:
+  type: GFX
+  offset: 0x001AC0
+  symbol: HAKAdan_room_6DL_001AC0
+
+HAKAdan_room_6Vtx_001F98:
+  type: OOT:ARRAY
+  offset: 0x001F98
+  symbol: HAKAdan_room_6Vtx_001F98
+  count: 534
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_6DL_0040F8:
+  type: GFX
+  offset: 0x0040F8
+  symbol: HAKAdan_room_6DL_0040F8
+
+HAKAdan_room_6Vtx_0049D8:
+  type: OOT:ARRAY
+  offset: 0x0049D8
+  symbol: HAKAdan_room_6Vtx_0049D8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_6DL_004A98:
+  type: GFX
+  offset: 0x004A98
+  symbol: HAKAdan_room_6DL_004A98
+
+HAKAdan_room_6DL_004B50:
+  type: GFX
+  offset: 0x004B50
+  symbol: HAKAdan_room_6DL_004B50

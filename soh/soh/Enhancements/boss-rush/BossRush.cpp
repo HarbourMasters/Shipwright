@@ -1,15 +1,20 @@
-#include "BossRush.h"
-#include "soh/ShipInit.hpp"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh_assets.h"
-#include "soh/frame_interpolation.h"
-
+#include <algorithm>
 #include <array>
 #include <string>
 #include <vector>
 
+#include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
+
+#include "BossRush.h"
+#include "soh/SaveManager.h"
+#include "soh/ShipInit.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/frame_interpolation.h"
+
 extern "C" {
+#include "soh_assets.h"
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
@@ -21,13 +26,9 @@ extern "C" {
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 #include "textures/icon_item_ger_static/icon_item_ger_static.h"
 #include "textures/icon_item_fra_static/icon_item_fra_static.h"
-
 extern PlayState* gPlayState;
-
 Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
 void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx);
-void FileChoose_DrawTextRec(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t,
-                            f32 dx, f32 dy);
 }
 
 typedef enum {
@@ -198,53 +199,9 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
     Input* input = &fileChooseContext->state.input[0];
     bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
-    // Fade in elements after opening Boss Rush options menu
-    fileChooseContext->bossRushUIAlpha += 25;
-    if (fileChooseContext->bossRushUIAlpha > 255) {
-        fileChooseContext->bossRushUIAlpha = 255;
-    }
-
-    // Animate up/down arrows.
-    fileChooseContext->bossRushArrowOffset += 1;
-    if (fileChooseContext->bossRushArrowOffset >= 30) {
-        fileChooseContext->bossRushArrowOffset = 0;
-    }
-
-    // Move menu selection up or down.
-    if (ABS(fileChooseContext->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-        // Move down
-        if (fileChooseContext->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
-            // When selecting past the last option, cycle back to the first option.
-            if ((fileChooseContext->bossRushIndex + 1) > BR_OPTIONS_MAX - 1) {
-                fileChooseContext->bossRushIndex = 0;
-                fileChooseContext->bossRushOffset = 0;
-            } else {
-                fileChooseContext->bossRushIndex++;
-                // When last visible option is selected when moving down, offset the list down by one.
-                if (fileChooseContext->bossRushIndex - fileChooseContext->bossRushOffset >
-                    BOSSRUSH_MAX_OPTIONS_ON_SCREEN - 1) {
-                    fileChooseContext->bossRushOffset++;
-                }
-            }
-        } else if (fileChooseContext->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
-            // When selecting past the first option, cycle back to the last option and offset the list to view it
-            // properly.
-            if ((fileChooseContext->bossRushIndex - 1) < 0) {
-                fileChooseContext->bossRushIndex = BR_OPTIONS_MAX - 1;
-                fileChooseContext->bossRushOffset =
-                    fileChooseContext->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
-            } else {
-                // When first visible option is selected when moving up, offset the list up by one.
-                if (fileChooseContext->bossRushIndex - fileChooseContext->bossRushOffset == 0) {
-                    fileChooseContext->bossRushOffset--;
-                }
-                fileChooseContext->bossRushIndex--;
-            }
-        }
-
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-    }
+    FileChoose_UpdateListMenuAnim(&fileChooseContext->bossRushUIAlpha, &fileChooseContext->bossRushArrowOffset);
+    FileChoose_MoveListCursor(fileChooseContext, &fileChooseContext->bossRushIndex, &fileChooseContext->bossRushOffset,
+                              BR_OPTIONS_MAX, BOSSRUSH_MAX_OPTIONS_ON_SCREEN);
 
     // Cycle through choices for currently selected option.
     if (ABS(fileChooseContext->stickRelX) > 30 ||
@@ -267,8 +224,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
             }
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
@@ -287,8 +244,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
 
     // Load into the game.
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         fileChooseContext->buttonIndex = 0xFE;
         fileChooseContext->menuMode = FS_MENU_MODE_SELECT;
         fileChooseContext->selectMode = SM_FADE_OUT;
@@ -298,33 +255,12 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
 }
 
 void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseContext) {
-    OPEN_DISPS(fileChooseContext->state.gfxCtx);
-
-    uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+    uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
     uint8_t listOffset = fileChooseContext->bossRushOffset;
-    uint8_t textAlpha = fileChooseContext->bossRushUIAlpha;
+    int16_t textAlpha = fileChooseContext->bossRushUIAlpha;
 
-    // Draw arrows to indicate that the list can scroll up or down.
-    // Arrow up
-    if (listOffset > 0) {
-        uint16_t arrowUpX = 140;
-        uint16_t arrowUpY = 76 - (fileChooseContext->bossRushArrowOffset / 10);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowUpTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        gSPWideTextureRectangle(POLY_OPA_DISP++, arrowUpX << 2, arrowUpY << 2, (arrowUpX + 8) << 2, (arrowUpY + 8) << 2,
-                                G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
-    }
-    // Arrow down
-    if (BR_OPTIONS_MAX - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
-        uint16_t arrowDownX = 140;
-        uint16_t arrowDownY = 181 + (fileChooseContext->bossRushArrowOffset / 10);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        gSPWideTextureRectangle(POLY_OPA_DISP++, arrowDownX << 2, arrowDownY << 2, (arrowDownX + 8) << 2,
-                                (arrowDownY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
-    }
+    FileChoose_DrawListScrollArrows(fileChooseContext, listOffset, BR_OPTIONS_MAX, BOSSRUSH_MAX_OPTIONS_ON_SCREEN,
+                                    fileChooseContext->bossRushArrowOffset);
 
     // Draw options. There's more options than what fits on the screen, so the visible options
     // depend on the current offset of the list. Currently selected option pulses in
@@ -344,23 +280,12 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
 
         // Draw arrows around selected option.
         if (fileChooseContext->bossRushIndex == i) {
-            Gfx_SetupDL_39Opa(fileChooseContext->state.gfxCtx);
-            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                                G_TX_NOLOD);
-            FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickLeftPrompt.arrowColorR,
-                                   fileChooseContext->stickLeftPrompt.arrowColorG,
-                                   fileChooseContext->stickLeftPrompt.arrowColorB, textAlpha, 160, (92 + textYOffset),
-                                   0.42f, 0, 0, -1.0f, 1.0f);
-            FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickRightPrompt.arrowColorR,
-                                   fileChooseContext->stickRightPrompt.arrowColorG,
-                                   fileChooseContext->stickRightPrompt.arrowColorB, textAlpha, (171 + finalKerning),
-                                   (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
+            FileChoose_DrawListCursorArrow(fileChooseContext, textAlpha, 160.0f, static_cast<f32>(92 + textYOffset),
+                                           true);
+            FileChoose_DrawListCursorArrow(fileChooseContext, textAlpha, static_cast<f32>(171 + finalKerning),
+                                           static_cast<f32>(92 + textYOffset), false);
         }
     }
-
-    CLOSE_DISPS(fileChooseContext->state.gfxCtx);
 }
 
 void BossRush_SpawnBlueWarps(PlayState* play) {
@@ -567,11 +492,11 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
 
 extern "C" void BossRush_InitSave() {
 
-    // Set player name to Lonk for the few textboxes that show up during Boss Rush. Player can't input their own name.
-    std::array<char, 8> brPlayerName = { 21, 50, 49, 46, 62, 62, 62, 62 };
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = brPlayerName[i];
-    }
+    // Set player name to Link using PAL charset for few textboxes that show up during Boss Rush.
+    static const u8 brPlayerName[] = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+    static_assert(sizeof(brPlayerName) == sizeof(gSaveContext.playerName));
+    std::copy(std::begin(brPlayerName), std::end(brPlayerName), gSaveContext.playerName);
+    gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
 
     gSaveContext.ship.quest.id = QUEST_BOSSRUSH;
     gSaveContext.ship.quest.data.bossRush.isPaused = true;
@@ -914,6 +839,8 @@ void BossRush_OnBlueWarpUpdate(void* actor) {
 
 void RegisterBossRush() {
     COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
+        ShipInit::Init("IS_BOSS_RUSH");
+
         COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](void* actorPtr) {
             BossRush_SpawnBlueWarps(gPlayState);
             Actor_Kill((Actor*)actorPtr);

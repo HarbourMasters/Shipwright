@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01D9F880 ]
+
+kokiri_home4_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: kokiri_home4_scene
+
+
+kokiri_home4_sceneCollisionHeader_001A84:
+  type: OOT:COLLISION
+  offset: 0x001A84
+  symbol: kokiri_home4_sceneCollisionHeader_001A84

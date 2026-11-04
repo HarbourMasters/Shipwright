@@ -1,0 +1,118 @@
+:config:
+  segments:
+    - [ 3, 0x017A0390 ]
+    - [ 2, 0x0175E490 ]
+  directory: scenes/nonmq/Bmori1_scene
+  external_files:
+    - ntsc_u_gc/scenes/nonmq/Bmori1_scene.yml
+    - ntsc_u_gc/code/sys_matrix.yml
+
+Bmori1_room_10:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: Bmori1_room_10
+
+Bmori1_room_10Tex_001260:
+  type: TEXTURE
+  offset: 0x1250
+  symbol: Bmori1_room_10Tex_001260
+  format: RGBA16
+  width: 32
+  height: 32
+
+Bmori1_room_10Tex_001A60:
+  type: TEXTURE
+  offset: 0x1A50
+  symbol: Bmori1_room_10Tex_001A60
+  format: CI8
+  width: 16
+  height: 128
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+Bmori1_room_10Tex_002260:
+  type: TEXTURE
+  offset: 0x2250
+  symbol: Bmori1_room_10Tex_002260
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+Bmori1_room_10Tex_002A60:
+  type: TEXTURE
+  offset: 0x2A50
+  symbol: Bmori1_room_10Tex_002A60
+  format: RGBA16
+  width: 32
+  height: 64
+
+Bmori1_room_10Tex_003A60:
+  type: TEXTURE
+  offset: 0x3A50
+  symbol: Bmori1_room_10Tex_003A60
+  format: RGBA16
+  width: 32
+  height: 64
+
+Bmori1_room_10Tex_004BD8:
+  type: TEXTURE
+  offset: 0x4BC8
+  symbol: Bmori1_room_10Tex_004BD8
+  format: IA16
+  width: 32
+  height: 32
+
+
+Bmori1_room_10Vtx_0000A0:
+  type: OOT:ARRAY
+  offset: 0x0000A0
+  symbol: Bmori1_room_10Vtx_0000A0
+  count: 130
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_10DL_0008C0:
+  type: GFX
+  offset: 0x0008C0
+  symbol: Bmori1_room_10DL_0008C0
+
+Bmori1_room_10Vtx_000F10:
+  type: OOT:ARRAY
+  offset: 0x000F10
+  symbol: Bmori1_room_10Vtx_000F10
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_10DL_0010D0:
+  type: GFX
+  offset: 0x0010D0
+  symbol: Bmori1_room_10DL_0010D0
+
+Bmori1_room_10DL_001238:
+  type: GFX
+  offset: 0x001238
+  symbol: Bmori1_room_10DL_001238
+
+Bmori1_room_10Vtx_004A50:
+  type: OOT:ARRAY
+  offset: 0x004A50
+  symbol: Bmori1_room_10Vtx_004A50
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_10DL_004B00:
+  type: GFX
+  offset: 0x004B00
+  symbol: Bmori1_room_10DL_004B00
+
+Bmori1_room_10DL_004BB8:
+  type: GFX
+  offset: 0x004BB8
+  symbol: Bmori1_room_10DL_004BB8

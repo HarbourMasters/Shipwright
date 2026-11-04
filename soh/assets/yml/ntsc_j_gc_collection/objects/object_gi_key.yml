@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x0101D120 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x0101D120 ]
+    - [ 9, 0x0101D120 ]
+    - [ 10, 0x0101D120 ]
+    - [ 11, 0x0101D120 ]
+    - [ 12, 0x0101D120 ]
+    - [ 13, 0x0101D120 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gGiSmallKeyDL:
+  type: GFX
+  offset: 0x0800
+  symbol: gGiSmallKeyDL
+
+
+object_gi_keyVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_keyVtx_000000
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

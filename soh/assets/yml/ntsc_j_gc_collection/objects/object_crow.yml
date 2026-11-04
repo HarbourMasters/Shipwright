@@ -1,0 +1,192 @@
+:config:
+  segments:
+    - [ 6, 0x012CE6D0 ]
+
+gGuayBodyTex:
+  type: TEXTURE
+  offset: 0xA40
+  symbol: gGuayBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGuayEyeTex:
+  type: TEXTURE
+  offset: 0xC40
+  symbol: gGuayEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGuayFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0xF0
+  symbol: gGuayFlyAnim
+
+gGuaySkel:
+  type: OOT:SKELETON
+  offset: 0x10C0
+  symbol: gGuaySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGuayTailTex:
+  type: TEXTURE
+  offset: 0xE40
+  symbol: gGuayTailTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_crowVtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: object_crowVtx_000100
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_000180:
+  type: OOT:ARRAY
+  offset: 0x000180
+  symbol: object_crowVtx_000180
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_0001D0:
+  type: OOT:ARRAY
+  offset: 0x0001D0
+  symbol: object_crowVtx_0001D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_000250:
+  type: OOT:ARRAY
+  offset: 0x000250
+  symbol: object_crowVtx_000250
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_0002A0:
+  type: OOT:ARRAY
+  offset: 0x0002A0
+  symbol: object_crowVtx_0002A0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_000430:
+  type: OOT:ARRAY
+  offset: 0x000430
+  symbol: object_crowVtx_000430
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_000460:
+  type: OOT:ARRAY
+  offset: 0x000460
+  symbol: object_crowVtx_000460
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGuaySkelLimbsLimb_00104CDL_000490:
+  type: GFX
+  offset: 0x000490
+  symbol: gGuaySkelLimbsLimb_00104CDL_000490
+
+gGuaySkelLimbsLimb_001064DL_0005E0:
+  type: GFX
+  offset: 0x0005E0
+  symbol: gGuaySkelLimbsLimb_001064DL_0005E0
+
+gGuaySkelLimbsLimb_001058DL_0006B0:
+  type: GFX
+  offset: 0x0006B0
+  symbol: gGuaySkelLimbsLimb_001058DL_0006B0
+
+gGuaySkelLimbsLimb_00107CDL_000770:
+  type: GFX
+  offset: 0x000770
+  symbol: gGuaySkelLimbsLimb_00107CDL_000770
+
+gGuaySkelLimbsLimb_001070DL_000840:
+  type: GFX
+  offset: 0x000840
+  symbol: gGuaySkelLimbsLimb_001070DL_000840
+
+gGuaySkelLimbsLimb_001094DL_000900:
+  type: GFX
+  offset: 0x000900
+  symbol: gGuaySkelLimbsLimb_001094DL_000900
+
+gGuaySkelLimbsLimb_001088DL_0009A0:
+  type: GFX
+  offset: 0x0009A0
+  symbol: gGuaySkelLimbsLimb_001088DL_0009A0
+
+gGuaySkelLimbsLimb_001040:
+  type: OOT:LIMB
+  offset: 0x001040
+  symbol: gGuaySkelLimbsLimb_001040
+  limb_type: Standard
+
+gGuaySkelLimbsLimb_00104C:
+  type: OOT:LIMB
+  offset: 0x00104C
+  symbol: gGuaySkelLimbsLimb_00104C
+  limb_type: Standard
+
+gGuaySkelLimbsLimb_001058:
+  type: OOT:LIMB
+  offset: 0x001058
+  symbol: gGuaySkelLimbsLimb_001058
+  limb_type: Standard
+
+gGuaySkelLimbsLimb_001064:
+  type: OOT:LIMB
+  offset: 0x001064
+  symbol: gGuaySkelLimbsLimb_001064
+  limb_type: Standard
+
+gGuaySkelLimbsLimb_001070:
+  type: OOT:LIMB
+  offset: 0x001070
+  symbol: gGuaySkelLimbsLimb_001070
+  limb_type: Standard
+
+gGuaySkelLimbsLimb_00107C:
+  type: OOT:LIMB
+  offset: 0x00107C
+  symbol: gGuaySkelLimbsLimb_00107C
+  limb_type: Standard
+
+gGuaySkelLimbsLimb_001088:
+  type: OOT:LIMB
+  offset: 0x001088
+  symbol: gGuaySkelLimbsLimb_001088
+  limb_type: Standard
+
+gGuaySkelLimbsLimb_001094:
+  type: OOT:LIMB
+  offset: 0x001094
+  symbol: gGuaySkelLimbsLimb_001094
+  limb_type: Standard
+
+gGuaySkelLimbs:
+  type: BLOB
+  offset: 0x10A0
+  symbol: gGuaySkelLimbs
+  size: 0

@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 #include <set>
-#include <cstdint>
+#include <stdint.h>
 
 enum SeqType {
     SEQ_NOSHUFFLE = 0,

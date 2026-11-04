@@ -1,0 +1,138 @@
+:config:
+  segments:
+    - [ 128, 0x00CB6270 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00CB6270 ]
+    - [ 9, 0x00CB6270 ]
+    - [ 10, 0x00CB6270 ]
+    - [ 11, 0x00CB6270 ]
+    - [ 12, 0x00CB6270 ]
+    - [ 13, 0x00CB6270 ]
+  virtual: [ 0x80AC9140, 0x00CB6270 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+sRoomCarpetTex:
+  type: TEXTURE
+  offset: 0x328
+  symbol: sRoomCarpetTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+sRoomColumnFriezeAndCanopyTex:
+  type: TEXTURE
+  offset: 0x11A8
+  symbol: sRoomColumnFriezeAndCanopyTex
+  format: I4
+  width: 16
+  height: 16
+
+sRoomColumnMetalEdgingTex:
+  type: TEXTURE
+  offset: 0x1228
+  symbol: sRoomColumnMetalEdgingTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+sRoomCrestFriezeTex:
+  type: TEXTURE
+  offset: 0xFA8
+  symbol: sRoomCrestFriezeTex
+  format: I4
+  width: 32
+  height: 32
+
+sRoomOrganAndFloorDL:
+  type: GFX
+  offset: 0x4BE8
+  symbol: sRoomOrganAndFloorDL
+
+sRoomOrganCorbelsTex:
+  type: TEXTURE
+  offset: 0xD28
+  symbol: sRoomOrganCorbelsTex
+  format: I4
+  width: 16
+  height: 16
+
+sRoomOrganGrillTex:
+  type: TEXTURE
+  offset: 0xDA8
+  symbol: sRoomOrganGrillTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+sRoomOrganKeyEndTex:
+  type: TEXTURE
+  offset: 0x1928
+  symbol: sRoomOrganKeyEndTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+sRoomOrganKeyboardTex:
+  type: TEXTURE
+  offset: 0x1728
+  symbol: sRoomOrganKeyboardTex
+  format: RGBA16
+  width: 32
+  height: 8
+
+sRoomOrganPipeTex:
+  type: TEXTURE
+  offset: 0xB28
+  symbol: sRoomOrganPipeTex
+  format: I4
+  width: 16
+  height: 64
+
+sRoomPillarTex:
+  type: TEXTURE
+  offset: 0x1628
+  symbol: sRoomPillarTex
+  format: I8
+  width: 8
+  height: 32
+
+sRoomStatueWingTex:
+  type: TEXTURE
+  offset: 0x1428
+  symbol: sRoomStatueWingTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+sRoomStatuesDL:
+  type: GFX
+  offset: 0x69F0
+  symbol: sRoomStatuesDL
+
+sRoomStepTex:
+  type: TEXTURE
+  offset: 0x1968
+  symbol: sRoomStepTex
+  format: I4
+  width: 16
+  height: 16
+
+
+ovl_En_Ganon_OrganVtx_0019E8:
+  type: OOT:ARRAY
+  offset: 0x0019E8
+  symbol: ovl_En_Ganon_OrganVtx_0019E8
+  count: 800
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Ganon_OrganVtx_005950:
+  type: OOT:ARRAY
+  offset: 0x005950
+  symbol: ovl_En_Ganon_OrganVtx_005950
+  count: 266
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

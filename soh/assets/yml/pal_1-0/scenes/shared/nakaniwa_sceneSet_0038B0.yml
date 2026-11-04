@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01D33610 ]
+  directory: scenes/shared/nakaniwa_scene
+  external_files:
+    - pal_1-0/scenes/shared/nakaniwa_scene.yml
+
+nakaniwa_sceneSet_0038B0:
+  type: OOT:SCENE
+  offset: 0x38B0
+  symbol: nakaniwa_sceneSet_0038B0
+  base_name: nakaniwa_scene

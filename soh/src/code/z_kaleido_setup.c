@@ -25,7 +25,7 @@ void KaleidoSetup_Update(PlayState* play) {
             }
         } else if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
 
-            gSaveContext.unk_13EE = gSaveContext.unk_13EA;
+            gSaveContext.prevHudVisibilityMode = gSaveContext.hudVisibilityMode;
 
             if (CHECK_BTN_ALL(input->cur.button, BTN_L))
                 CVarSetInteger(CVAR_GENERAL("PauseMenuAnimatedLinkTriforce"), 1);
@@ -60,7 +60,7 @@ void KaleidoSetup_Update(PlayState* play) {
             R_UPDATE_RATE = 2;
 
             if (ShrinkWindow_GetVal()) {
-                ShrinkWindow_SetVal(0);
+                Letterbox_SetSizeTarget(0);
             }
 
             func_800F64E0(1);

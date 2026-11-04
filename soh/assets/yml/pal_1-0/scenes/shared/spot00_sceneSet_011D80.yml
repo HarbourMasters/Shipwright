@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x016F2D70 ]
+  directory: scenes/shared/spot00_scene
+  external_files:
+    - pal_1-0/scenes/shared/spot00_scene.yml
+
+spot00_sceneSet_011D80:
+  type: OOT:SCENE
+  offset: 0x11D80
+  symbol: spot00_sceneSet_011D80
+  base_name: spot00_scene

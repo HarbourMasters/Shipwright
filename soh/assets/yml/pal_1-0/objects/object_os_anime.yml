@@ -1,0 +1,329 @@
+:config:
+  segments:
+    - [ 6, 0x01086430 ]
+
+gKokiriBackflipAnim:
+  type: OOT:ANIMATION
+  offset: 0x6EE0
+  symbol: gKokiriBackflipAnim
+
+gKokiriBlockingAnim:
+  type: OOT:ANIMATION
+  offset: 0x8F6C
+  symbol: gKokiriBlockingAnim
+
+gKokiriCuttingGrassAnim:
+  type: OOT:ANIMATION
+  offset: 0x7D94
+  symbol: gKokiriCuttingGrassAnim
+
+gKokiriIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x62DC
+  symbol: gKokiriIdleAnim
+
+gKokiriLaughingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5808
+  symbol: gKokiriLaughingAnim
+
+gKokiriLeaningForwardAnim:
+  type: OOT:ANIMATION
+  offset: 0x98EC
+  symbol: gKokiriLeaningForwardAnim
+
+gKokiriLeaningOnArmsAnim:
+  type: OOT:ANIMATION
+  offset: 0x7120
+  symbol: gKokiriLeaningOnArmsAnim
+
+gKokiriLiftingRockAnim:
+  type: OOT:ANIMATION
+  offset: 0x7830
+  symbol: gKokiriLiftingRockAnim
+
+gKokiriPunchingAnim:
+  type: OOT:ANIMATION
+  offset: 0x879C
+  symbol: gKokiriPunchingAnim
+
+gKokiriRecliningLeaningBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x7F38
+  symbol: gKokiriRecliningLeaningBackAnim
+
+gKokiriRecliningSittingUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x65E0
+  symbol: gKokiriRecliningSittingUpAnim
+
+gKokiriRecliningStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x8178
+  symbol: gKokiriRecliningStandingAnim
+
+gKokiriSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x91AC
+  symbol: gKokiriSittingAnim
+
+gKokiriSittingArmsUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x9028
+  symbol: gKokiriSittingArmsUpAnim
+
+gKokiriSittingCrossedArmsLegsAnim:
+  type: OOT:ANIMATION
+  offset: 0x6F9C
+  symbol: gKokiriSittingCrossedArmsLegsAnim
+
+gKokiriSittingCrossedLegsAnim:
+  type: OOT:ANIMATION
+  offset: 0x99A4
+  symbol: gKokiriSittingCrossedLegsAnim
+
+gKokiriSittingDiggingAnim:
+  type: OOT:ANIMATION
+  offset: 0x7454
+  symbol: gKokiriSittingDiggingAnim
+
+gKokiriSittingHeadOnHandAnim:
+  type: OOT:ANIMATION
+  offset: 0x7E64
+  symbol: gKokiriSittingHeadOnHandAnim
+
+gKokiriStandUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x9B64
+  symbol: gKokiriStandUpAnim
+
+gKokiriStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x9274
+  symbol: gKokiriStandingAnim
+
+gKokiriStandingApprehensiveAnim:
+  type: OOT:ANIMATION
+  offset: 0x7064
+  symbol: gKokiriStandingApprehensiveAnim
+
+gKokiriStandingArmsBehindBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x982C
+  symbol: gKokiriStandingArmsBehindBackAnim
+
+gKokiriStandingHandOnChestAnim:
+  type: OOT:ANIMATION
+  offset: 0x7FFC
+  symbol: gKokiriStandingHandOnChestAnim
+
+gKokiriStandingHandsOnHipsAnim:
+  type: OOT:ANIMATION
+  offset: 0x80B4
+  symbol: gKokiriStandingHandsOnHipsAnim
+
+gKokiriStandingRightArmUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x90EC
+  symbol: gKokiriStandingRightArmUpAnim
+
+gKokiriWipingForeheadAnim:
+  type: OOT:ANIMATION
+  offset: 0x6A60
+  symbol: gKokiriWipingForeheadAnim
+
+gObjOsAnim_00B4:
+  type: OOT:ANIMATION
+  offset: 0x0B4
+  symbol: gObjOsAnim_00B4
+
+gObjOsAnim_0170:
+  type: OOT:ANIMATION
+  offset: 0x170
+  symbol: gObjOsAnim_0170
+
+gObjOsAnim_0228:
+  type: OOT:ANIMATION
+  offset: 0x228
+  symbol: gObjOsAnim_0228
+
+gObjOsAnim_0718:
+  type: OOT:ANIMATION
+  offset: 0x718
+  symbol: gObjOsAnim_0718
+
+gObjOsAnim_07D0:
+  type: OOT:ANIMATION
+  offset: 0x7D0
+  symbol: gObjOsAnim_07D0
+
+gObjOsAnim_0894:
+  type: OOT:ANIMATION
+  offset: 0x894
+  symbol: gObjOsAnim_0894
+
+gObjOsAnim_092C:
+  type: OOT:ANIMATION
+  offset: 0x92C
+  symbol: gObjOsAnim_092C
+
+gObjOsAnim_0BFC:
+  type: OOT:ANIMATION
+  offset: 0xBFC
+  symbol: gObjOsAnim_0BFC
+
+gObjOsAnim_0FE4:
+  type: OOT:ANIMATION
+  offset: 0xFE4
+  symbol: gObjOsAnim_0FE4
+
+gObjOsAnim_12E8:
+  type: OOT:ANIMATION
+  offset: 0x12E8
+  symbol: gObjOsAnim_12E8
+
+gObjOsAnim_14A0:
+  type: OOT:ANIMATION
+  offset: 0x14A0
+  symbol: gObjOsAnim_14A0
+
+gObjOsAnim_1650:
+  type: OOT:ANIMATION
+  offset: 0x1650
+  symbol: gObjOsAnim_1650
+
+gObjOsAnim_16EC:
+  type: OOT:ANIMATION
+  offset: 0x16EC
+  symbol: gObjOsAnim_16EC
+
+gObjOsAnim_18A0:
+  type: OOT:ANIMATION
+  offset: 0x18A0
+  symbol: gObjOsAnim_18A0
+
+gObjOsAnim_1E7C:
+  type: OOT:ANIMATION
+  offset: 0x1E7C
+  symbol: gObjOsAnim_1E7C
+
+gObjOsAnim_1F18:
+  type: OOT:ANIMATION
+  offset: 0x1F18
+  symbol: gObjOsAnim_1F18
+
+gObjOsAnim_2160:
+  type: OOT:ANIMATION
+  offset: 0x2160
+  symbol: gObjOsAnim_2160
+
+gObjOsAnim_25D0:
+  type: OOT:ANIMATION
+  offset: 0x25D0
+  symbol: gObjOsAnim_25D0
+
+gObjOsAnim_265C:
+  type: OOT:ANIMATION
+  offset: 0x265C
+  symbol: gObjOsAnim_265C
+
+gObjOsAnim_2850:
+  type: OOT:ANIMATION
+  offset: 0x2850
+  symbol: gObjOsAnim_2850
+
+gObjOsAnim_28DC:
+  type: OOT:ANIMATION
+  offset: 0x28DC
+  symbol: gObjOsAnim_28DC
+
+gObjOsAnim_2D0C:
+  type: OOT:ANIMATION
+  offset: 0x2D0C
+  symbol: gObjOsAnim_2D0C
+
+gObjOsAnim_2DC0:
+  type: OOT:ANIMATION
+  offset: 0x2DC0
+  symbol: gObjOsAnim_2DC0
+
+gObjOsAnim_300C:
+  type: OOT:ANIMATION
+  offset: 0x300C
+  symbol: gObjOsAnim_300C
+
+gObjOsAnim_31B0:
+  type: OOT:ANIMATION
+  offset: 0x31B0
+  symbol: gObjOsAnim_31B0
+
+gObjOsAnim_33B4:
+  type: OOT:ANIMATION
+  offset: 0x33B4
+  symbol: gObjOsAnim_33B4
+
+gObjOsAnim_3D84:
+  type: OOT:ANIMATION
+  offset: 0x3D84
+  symbol: gObjOsAnim_3D84
+
+gObjOsAnim_41F8:
+  type: OOT:ANIMATION
+  offset: 0x41F8
+  symbol: gObjOsAnim_41F8
+
+gObjOsAnim_42AC:
+  type: OOT:ANIMATION
+  offset: 0x42AC
+  symbol: gObjOsAnim_42AC
+
+gObjOsAnim_4408:
+  type: OOT:ANIMATION
+  offset: 0x4408
+  symbol: gObjOsAnim_4408
+
+gObjOsAnim_4788:
+  type: OOT:ANIMATION
+  offset: 0x4788
+  symbol: gObjOsAnim_4788
+
+gObjOsAnim_4C4C:
+  type: OOT:ANIMATION
+  offset: 0x4C4C
+  symbol: gObjOsAnim_4C4C
+
+gObjOsAnim_4CF4:
+  type: OOT:ANIMATION
+  offset: 0x4CF4
+  symbol: gObjOsAnim_4CF4
+
+gObjOsAnim_4E90:
+  type: OOT:ANIMATION
+  offset: 0x4E90
+  symbol: gObjOsAnim_4E90
+
+gObjOsAnim_4F28:
+  type: OOT:ANIMATION
+  offset: 0x4F28
+  symbol: gObjOsAnim_4F28
+
+gObjOsAnim_6458:
+  type: OOT:ANIMATION
+  offset: 0x6458
+  symbol: gObjOsAnim_6458
+
+gObjOsAnim_6518:
+  type: OOT:ANIMATION
+  offset: 0x6518
+  symbol: gObjOsAnim_6518
+
+gObjOsAnim_9F94:
+  type: OOT:ANIMATION
+  offset: 0x9F94
+  symbol: gObjOsAnim_9F94
+
+gObjOsAnim_A630:
+  type: OOT:ANIMATION
+  offset: 0xA630
+  symbol: gObjOsAnim_A630
+

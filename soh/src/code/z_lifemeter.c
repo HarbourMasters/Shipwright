@@ -4,6 +4,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 s16 Top_LM_Margin = 0;
 s16 Left_LM_Margin = 0;

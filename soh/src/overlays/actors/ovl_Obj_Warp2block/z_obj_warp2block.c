@@ -6,6 +6,7 @@
 
 #include "z_obj_warp2block.h"
 #include "objects/object_timeblock/object_timeblock.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "vt.h"
 
 #define FLAGS                                                                                               \
@@ -280,7 +281,9 @@ void func_80BA2610(ObjWarp2block* this, PlayState* play) {
     if ((func_80BA2304(this, play) != 0) && (this->unk_16C <= 0)) {
         ObjWarp2block_Spawn(this, play);
         this->unk_16C = 0xA0;
-        OnePointCutscene_Attention(play, &this->dyna.actor);
+        if (GameInteractor_Should(VB_PLAY_TIMEBLOCK_CS, true, this)) {
+            OnePointCutscene_Attention(play, &this->dyna.actor);
+        }
         this->unk_170 = 0xC;
     }
 

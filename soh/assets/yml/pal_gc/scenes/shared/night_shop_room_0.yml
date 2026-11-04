@@ -1,0 +1,226 @@
+:config:
+  segments:
+    - [ 3, 0x01D91F70 ]
+    - [ 2, 0x01D91B40 ]
+  directory: scenes/shared/night_shop_scene
+  external_files:
+    - pal_gc/scenes/shared/night_shop_scene.yml
+    - pal_gc/code/sys_matrix.yml
+
+night_shop_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: night_shop_room_0
+
+
+night_shop_room_0Vtx_0000A0:
+  type: OOT:ARRAY
+  offset: 0x0000A0
+  symbol: night_shop_room_0Vtx_0000A0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_0002A0:
+  type: OOT:ARRAY
+  offset: 0x0002A0
+  symbol: night_shop_room_0Vtx_0002A0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_000380:
+  type: OOT:ARRAY
+  offset: 0x000380
+  symbol: night_shop_room_0Vtx_000380
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_000460:
+  type: OOT:ARRAY
+  offset: 0x000460
+  symbol: night_shop_room_0Vtx_000460
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_000530:
+  type: OOT:ARRAY
+  offset: 0x000530
+  symbol: night_shop_room_0Vtx_000530
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_000A90:
+  type: OOT:ARRAY
+  offset: 0x000A90
+  symbol: night_shop_room_0Vtx_000A90
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_000B60:
+  type: OOT:ARRAY
+  offset: 0x000B60
+  symbol: night_shop_room_0Vtx_000B60
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_0010A0:
+  type: OOT:ARRAY
+  offset: 0x0010A0
+  symbol: night_shop_room_0Vtx_0010A0
+  count: 268
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_002160:
+  type: OOT:ARRAY
+  offset: 0x002160
+  symbol: night_shop_room_0Vtx_002160
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_0021E0:
+  type: OOT:ARRAY
+  offset: 0x0021E0
+  symbol: night_shop_room_0Vtx_0021E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_002260:
+  type: OOT:ARRAY
+  offset: 0x002260
+  symbol: night_shop_room_0Vtx_002260
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_0022E0:
+  type: OOT:ARRAY
+  offset: 0x0022E0
+  symbol: night_shop_room_0Vtx_0022E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_002360:
+  type: OOT:ARRAY
+  offset: 0x002360
+  symbol: night_shop_room_0Vtx_002360
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_0023E0:
+  type: OOT:ARRAY
+  offset: 0x0023E0
+  symbol: night_shop_room_0Vtx_0023E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_002460:
+  type: OOT:ARRAY
+  offset: 0x002460
+  symbol: night_shop_room_0Vtx_002460
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_0024E0:
+  type: OOT:ARRAY
+  offset: 0x0024E0
+  symbol: night_shop_room_0Vtx_0024E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_002560:
+  type: OOT:ARRAY
+  offset: 0x002560
+  symbol: night_shop_room_0Vtx_002560
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0Vtx_0025E0:
+  type: OOT:ARRAY
+  offset: 0x0025E0
+  symbol: night_shop_room_0Vtx_0025E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+night_shop_room_0DL_002660:
+  type: GFX
+  offset: 0x002660
+  symbol: night_shop_room_0DL_002660
+
+night_shop_room_0DL_002748:
+  type: GFX
+  offset: 0x002748
+  symbol: night_shop_room_0DL_002748
+
+night_shop_room_0DL_0027F0:
+  type: GFX
+  offset: 0x0027F0
+  symbol: night_shop_room_0DL_0027F0
+
+night_shop_room_0DL_002898:
+  type: GFX
+  offset: 0x002898
+  symbol: night_shop_room_0DL_002898
+
+night_shop_room_0DL_002940:
+  type: GFX
+  offset: 0x002940
+  symbol: night_shop_room_0DL_002940
+
+night_shop_room_0DL_002AE8:
+  type: GFX
+  offset: 0x002AE8
+  symbol: night_shop_room_0DL_002AE8
+
+night_shop_room_0DL_002B90:
+  type: GFX
+  offset: 0x002B90
+  symbol: night_shop_room_0DL_002B90
+
+night_shop_room_0DL_002D38:
+  type: GFX
+  offset: 0x002D38
+  symbol: night_shop_room_0DL_002D38
+
+night_shop_room_0DL_003070:
+  type: GFX
+  offset: 0x003070
+  symbol: night_shop_room_0DL_003070
+
+night_shop_room_0DL_003100:
+  type: GFX
+  offset: 0x003100
+  symbol: night_shop_room_0DL_003100

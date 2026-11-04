@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 3, 0x01DB70F0 ]
+    - [ 2, 0x01DB4E10 ]
+  directory: scenes/shared/ddan_boss_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/ddan_boss_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+ddan_boss_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ddan_boss_room_0
+
+ddan_boss_room_0Tex_003628:
+  type: TEXTURE
+  offset: 0x3628
+  symbol: ddan_boss_room_0Tex_003628
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_boss_scene
+  external_tlut_offset: 0xE50
+
+ddan_boss_room_0Tex_003A28:
+  type: TEXTURE
+  offset: 0x3A28
+  symbol: ddan_boss_room_0Tex_003A28
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_boss_scene
+  external_tlut_offset: 0xE50
+
+ddan_boss_room_0Tex_003E28:
+  type: TEXTURE
+  offset: 0x3E28
+  symbol: ddan_boss_room_0Tex_003E28
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_boss_scene
+  external_tlut_offset: 0xE50
+
+ddan_boss_room_0Tex_004628:
+  type: TEXTURE
+  offset: 0x4628
+  symbol: ddan_boss_room_0Tex_004628
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_boss_scene
+  external_tlut_offset: 0xE50
+
+
+ddan_boss_room_0Vtx_000070:
+  type: OOT:ARRAY
+  offset: 0x000070
+  symbol: ddan_boss_room_0Vtx_000070
+  count: 505
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_boss_room_0DL_002000:
+  type: GFX
+  offset: 0x002000
+  symbol: ddan_boss_room_0DL_002000

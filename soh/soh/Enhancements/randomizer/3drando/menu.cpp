@@ -1,13 +1,8 @@
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <ctime>
-
 #include "menu.hpp"
 #include "playthrough.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
+#include "soh/ShipUtils.h"
 #include <spdlog/spdlog.h>
-#include "../../randomizer/randomizerTypes.h"
 
 namespace {
 bool seedChanged;
@@ -21,11 +16,16 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     const auto ctx = Rando::Context::GetInstance();
     ResetPerformanceTimers();
     StartPerformanceTimer(PT_WHOLE_SEED);
+    ctx->SetSpoilerLoaded(false);
 
-    srand(static_cast<uint32_t>(time(NULL)));
     // if a blank seed was entered, make a random one
     if (seedInput.empty()) {
-        seedInput = std::to_string(rand());
+        char seedString[11];
+        for (size_t i = 0; i < 10; i++) {
+            seedString[i] = '0' + ShipUtils::Random(0, 10);
+        }
+        seedString[10] = '\0';
+        seedInput = std::string(seedString);
     } else if (seedInput.rfind("seed_testing_count", 0) == 0 && seedInput.length() > 18) {
         int count;
         try {
@@ -44,8 +44,8 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     ctx->ClearItemLocations();
     int ret = Playthrough::Playthrough_Init(ctx->GetSeed(), excludedLocations, enabledTricks);
     if (ret < 0) {
-        if (ret == -1) { // Failed to generate after 5 tries
-            SPDLOG_ERROR("Failed to generate after 5 tries.");
+        if (ret == -1) {
+            SPDLOG_ERROR("Failed to generate after 10 tries.");
             return false;
         } else {
             SPDLOG_ERROR("Error {} with fill.", ret);
@@ -70,9 +70,5 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     SPDLOG_DEBUG("Total Overrides time: {}ms", GetPerformanceTimer(PT_OVERRIDES).count());
     SPDLOG_DEBUG("Total Hint Generation time: {}ms", GetPerformanceTimer(PT_HINTS).count());
     SPDLOG_DEBUG("SpoilerLog writing time: {}ms", GetPerformanceTimer(PT_SPOILER_LOG).count());
-    SPDLOG_DEBUG("Total Event Access Calculation time: {}ms", GetPerformanceTimer(PT_EVENT_ACCESS).count());
-    SPDLOG_DEBUG("Total ToD Access Calculation: {}ms", GetPerformanceTimer(PT_TOD_ACCESS).count());
-    SPDLOG_DEBUG("Total Entrance Logic Calculation time: {}ms", GetPerformanceTimer(PT_ENTRANCE_LOGIC).count());
-    SPDLOG_DEBUG("Total Check Logic Calculation time: {}ms", GetPerformanceTimer(PT_LOCATION_LOGIC).count());
     return true;
 }

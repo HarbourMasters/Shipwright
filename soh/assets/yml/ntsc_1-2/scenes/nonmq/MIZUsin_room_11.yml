@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 3, 0x01A3E1B0 ]
+    - [ 2, 0x019F8B40 ]
+  directory: scenes/nonmq/MIZUsin_scene
+  external_files:
+    - ntsc_1-2/scenes/nonmq/MIZUsin_scene.yml
+    - ntsc_1-2/code/sys_matrix.yml
+
+MIZUsin_room_11:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: MIZUsin_room_11
+
+MIZUsin_room_11Tex_002220:
+  type: TEXTURE
+  offset: 0x21B0
+  symbol: MIZUsin_room_11Tex_002220
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_11Tex_002A20:
+  type: TEXTURE
+  offset: 0x29B0
+  symbol: MIZUsin_room_11Tex_002A20
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_11Tex_003220:
+  type: TEXTURE
+  offset: 0x31B0
+  symbol: MIZUsin_room_11Tex_003220
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_11Tex_003A20:
+  type: TEXTURE
+  offset: 0x39B0
+  symbol: MIZUsin_room_11Tex_003A20
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_11Tex_004220:
+  type: TEXTURE
+  offset: 0x41B0
+  symbol: MIZUsin_room_11Tex_004220
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+MIZUsin_room_11Vtx_0000B0:
+  type: OOT:ARRAY
+  offset: 0x0000B0
+  symbol: MIZUsin_room_11Vtx_0000B0
+  count: 326
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_11DL_001510:
+  type: GFX
+  offset: 0x001510
+  symbol: MIZUsin_room_11DL_001510

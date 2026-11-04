@@ -1,0 +1,84 @@
+:config:
+  segments:
+    - [ 3, 0x02B4C000 ]
+    - [ 2, 0x02B4B000 ]
+  directory: scenes/shared/sutaru_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/sutaru_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+sutaru_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: sutaru_room_0
+
+sutaru_room_0Tex_0020F0:
+  type: TEXTURE
+  offset: 0x20F0
+  symbol: sutaru_room_0Tex_0020F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+sutaru_room_0Tex_0028F0:
+  type: TEXTURE
+  offset: 0x28F0
+  symbol: sutaru_room_0Tex_0028F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+sutaru_room_0Tex_002AF0:
+  type: TEXTURE
+  offset: 0x2AF0
+  symbol: sutaru_room_0Tex_002AF0
+  format: RGBA16
+  width: 64
+  height: 32
+
+sutaru_room_0Tex_003AF0:
+  type: TEXTURE
+  offset: 0x3AF0
+  symbol: sutaru_room_0Tex_003AF0
+  format: RGBA16
+  width: 32
+  height: 32
+
+sutaru_room_0Tex_0042F0:
+  type: TEXTURE
+  offset: 0x42F0
+  symbol: sutaru_room_0Tex_0042F0
+  format: RGBA16
+  width: 64
+  height: 32
+
+sutaru_room_0Tex_0052F0:
+  type: TEXTURE
+  offset: 0x52F0
+  symbol: sutaru_room_0Tex_0052F0
+  format: RGBA16
+  width: 32
+  height: 64
+
+sutaru_room_0Tex_0062F0:
+  type: TEXTURE
+  offset: 0x62F0
+  symbol: sutaru_room_0Tex_0062F0
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+sutaru_room_0Vtx_0000C0:
+  type: OOT:ARRAY
+  offset: 0x0000C0
+  symbol: sutaru_room_0Vtx_0000C0
+  count: 420
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+sutaru_room_0DL_001B00:
+  type: GFX
+  offset: 0x001B00
+  symbol: sutaru_room_0DL_001B00

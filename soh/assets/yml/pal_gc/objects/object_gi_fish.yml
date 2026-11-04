@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x01112A70 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x01112A70 ]
+    - [ 9, 0x01112A70 ]
+    - [ 10, 0x01112A70 ]
+    - [ 11, 0x01112A70 ]
+    - [ 12, 0x01112A70 ]
+    - [ 13, 0x01112A70 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+gGiFishDL:
+  type: GFX
+  offset: 0x0600
+  symbol: gGiFishDL
+
+
+object_gi_fishVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_fishVtx_000000
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

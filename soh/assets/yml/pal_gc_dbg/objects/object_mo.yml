@@ -1,0 +1,420 @@
+:config:
+  segments:
+    - [ 6, 0x01508000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01508000 ]
+    - [ 9, 0x01508000 ]
+    - [ 10, 0x01508000 ]
+    - [ 11, 0x01508000 ]
+    - [ 12, 0x01508000 ]
+    - [ 13, 0x01508000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gMorphaBubbleDL:
+  type: GFX
+  offset: 0x140
+  symbol: gMorphaBubbleDL
+
+gMorphaCoreMembraneDL:
+  type: GFX
+  offset: 0x6700
+  symbol: gMorphaCoreMembraneDL
+
+gMorphaCoreNucleusDL:
+  type: GFX
+  offset: 0x6838
+  symbol: gMorphaCoreNucleusDL
+
+gMorphaDL_000550:
+  type: GFX
+  offset: 0x550
+  symbol: gMorphaDL_000550
+
+gMorphaDL_000EC0:
+  type: GFX
+  offset: 0xEC0
+  symbol: gMorphaDL_000EC0
+
+gMorphaDL_000EF8:
+  type: GFX
+  offset: 0xEF8
+  symbol: gMorphaDL_000EF8
+
+gMorphaDL_007BF8:
+  type: GFX
+  offset: 0x7BF8
+  symbol: gMorphaDL_007BF8
+
+gMorphaDropletMaterialDL:
+  type: GFX
+  offset: 0xF20
+  symbol: gMorphaDropletMaterialDL
+
+gMorphaDropletModelDL:
+  type: GFX
+  offset: 0xF70
+  symbol: gMorphaDropletModelDL
+
+gMorphaTentacleBaseDL:
+  type: GFX
+  offset: 0x7C00
+  symbol: gMorphaTentacleBaseDL
+
+gMorphaTentaclePart0DL:
+  type: GFX
+  offset: 0x7C78
+  symbol: gMorphaTentaclePart0DL
+
+gMorphaTentaclePart10DL:
+  type: GFX
+  offset: 0x7FC8
+  symbol: gMorphaTentaclePart10DL
+
+gMorphaTentaclePart11DL:
+  type: GFX
+  offset: 0x8010
+  symbol: gMorphaTentaclePart11DL
+
+gMorphaTentaclePart12DL:
+  type: GFX
+  offset: 0x8058
+  symbol: gMorphaTentaclePart12DL
+
+gMorphaTentaclePart13DL:
+  type: GFX
+  offset: 0x80A0
+  symbol: gMorphaTentaclePart13DL
+
+gMorphaTentaclePart14DL:
+  type: GFX
+  offset: 0x80E8
+  symbol: gMorphaTentaclePart14DL
+
+gMorphaTentaclePart15DL:
+  type: GFX
+  offset: 0x8130
+  symbol: gMorphaTentaclePart15DL
+
+gMorphaTentaclePart16DL:
+  type: GFX
+  offset: 0x8178
+  symbol: gMorphaTentaclePart16DL
+
+gMorphaTentaclePart17DL:
+  type: GFX
+  offset: 0x81C0
+  symbol: gMorphaTentaclePart17DL
+
+gMorphaTentaclePart18DL:
+  type: GFX
+  offset: 0x8208
+  symbol: gMorphaTentaclePart18DL
+
+gMorphaTentaclePart19DL:
+  type: GFX
+  offset: 0x8250
+  symbol: gMorphaTentaclePart19DL
+
+gMorphaTentaclePart1DL:
+  type: GFX
+  offset: 0x7D38
+  symbol: gMorphaTentaclePart1DL
+
+gMorphaTentaclePart20DL:
+  type: GFX
+  offset: 0x8298
+  symbol: gMorphaTentaclePart20DL
+
+gMorphaTentaclePart21DL:
+  type: GFX
+  offset: 0x82E0
+  symbol: gMorphaTentaclePart21DL
+
+gMorphaTentaclePart22DL:
+  type: GFX
+  offset: 0x8328
+  symbol: gMorphaTentaclePart22DL
+
+gMorphaTentaclePart23DL:
+  type: GFX
+  offset: 0x8370
+  symbol: gMorphaTentaclePart23DL
+
+gMorphaTentaclePart24DL:
+  type: GFX
+  offset: 0x83B8
+  symbol: gMorphaTentaclePart24DL
+
+gMorphaTentaclePart25DL:
+  type: GFX
+  offset: 0x8400
+  symbol: gMorphaTentaclePart25DL
+
+gMorphaTentaclePart26DL:
+  type: GFX
+  offset: 0x8448
+  symbol: gMorphaTentaclePart26DL
+
+gMorphaTentaclePart27DL:
+  type: GFX
+  offset: 0x8490
+  symbol: gMorphaTentaclePart27DL
+
+gMorphaTentaclePart28DL:
+  type: GFX
+  offset: 0x84D8
+  symbol: gMorphaTentaclePart28DL
+
+gMorphaTentaclePart29DL:
+  type: GFX
+  offset: 0x8520
+  symbol: gMorphaTentaclePart29DL
+
+gMorphaTentaclePart2DL:
+  type: GFX
+  offset: 0x7D88
+  symbol: gMorphaTentaclePart2DL
+
+gMorphaTentaclePart30DL:
+  type: GFX
+  offset: 0x8568
+  symbol: gMorphaTentaclePart30DL
+
+gMorphaTentaclePart31DL:
+  type: GFX
+  offset: 0x85B0
+  symbol: gMorphaTentaclePart31DL
+
+gMorphaTentaclePart32DL:
+  type: GFX
+  offset: 0x85F8
+  symbol: gMorphaTentaclePart32DL
+
+gMorphaTentaclePart33DL:
+  type: GFX
+  offset: 0x8640
+  symbol: gMorphaTentaclePart33DL
+
+gMorphaTentaclePart34DL:
+  type: GFX
+  offset: 0x8688
+  symbol: gMorphaTentaclePart34DL
+
+gMorphaTentaclePart35DL:
+  type: GFX
+  offset: 0x86D0
+  symbol: gMorphaTentaclePart35DL
+
+gMorphaTentaclePart36DL:
+  type: GFX
+  offset: 0x8718
+  symbol: gMorphaTentaclePart36DL
+
+gMorphaTentaclePart37DL:
+  type: GFX
+  offset: 0x8760
+  symbol: gMorphaTentaclePart37DL
+
+gMorphaTentaclePart38DL:
+  type: GFX
+  offset: 0x87A8
+  symbol: gMorphaTentaclePart38DL
+
+gMorphaTentaclePart39DL:
+  type: GFX
+  offset: 0x87F0
+  symbol: gMorphaTentaclePart39DL
+
+gMorphaTentaclePart3DL:
+  type: GFX
+  offset: 0x7DD0
+  symbol: gMorphaTentaclePart3DL
+
+gMorphaTentaclePart40DL:
+  type: GFX
+  offset: 0x8838
+  symbol: gMorphaTentaclePart40DL
+
+gMorphaTentaclePart4DL:
+  type: GFX
+  offset: 0x7E18
+  symbol: gMorphaTentaclePart4DL
+
+gMorphaTentaclePart5DL:
+  type: GFX
+  offset: 0x7E60
+  symbol: gMorphaTentaclePart5DL
+
+gMorphaTentaclePart6DL:
+  type: GFX
+  offset: 0x7EA8
+  symbol: gMorphaTentaclePart6DL
+
+gMorphaTentaclePart7DL:
+  type: GFX
+  offset: 0x7EF0
+  symbol: gMorphaTentaclePart7DL
+
+gMorphaTentaclePart8DL:
+  type: GFX
+  offset: 0x7F38
+  symbol: gMorphaTentaclePart8DL
+
+gMorphaTentaclePart9DL:
+  type: GFX
+  offset: 0x7F80
+  symbol: gMorphaTentaclePart9DL
+
+gMorphaTitleCardTex:
+  type: TEXTURE
+  offset: 0x1010
+  symbol: gMorphaTitleCardTex
+  format: IA8
+  width: 128
+  height: 120
+
+gMorphaVtx_006938:
+  type: OOT:ARRAY
+  offset: 0x6938
+  symbol: gMorphaVtx_006938
+  count: 14
+  array_type: VTX
+
+gMorphaVtx_006A18:
+  type: OOT:ARRAY
+  offset: 0x006A18
+  symbol: gMorphaVtx_006A18
+  count: 286
+  array_type: VTX
+
+gMorphaWaterDL:
+  type: GFX
+  offset: 0x4C50
+  symbol: gMorphaWaterDL
+
+gMorphaWaterTex:
+  type: TEXTURE
+  offset: 0x8870
+  symbol: gMorphaWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMorphaWetSpotModelDL:
+  type: GFX
+  offset: 0xFC8
+  symbol: gMorphaWetSpotModelDL
+
+object_moTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_moTex_000000
+  format: IA8
+  width: 16
+  height: 16
+
+object_moTex_000680:
+  type: TEXTURE
+  offset: 0x680
+  symbol: object_moTex_000680
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_moTex_004D20:
+  type: TEXTURE
+  offset: 0x4D20
+  symbol: object_moTex_004D20
+  format: IA16
+  width: 32
+  height: 32
+
+object_moTex_005520:
+  type: TEXTURE
+  offset: 0x5520
+  symbol: object_moTex_005520
+  format: IA16
+  width: 32
+  height: 32
+
+object_moTex_005D20:
+  type: TEXTURE
+  offset: 0x5D20
+  symbol: object_moTex_005D20
+  format: IA16
+  width: 32
+  height: 32
+
+
+object_moVtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: object_moVtx_000100
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moVtx_0001B0:
+  type: OOT:ARRAY
+  offset: 0x0001B0
+  symbol: object_moVtx_0001B0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moVtx_000E80:
+  type: OOT:ARRAY
+  offset: 0x000E80
+  symbol: object_moVtx_000E80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moVtx_000F88:
+  type: OOT:ARRAY
+  offset: 0x000F88
+  symbol: object_moVtx_000F88
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moVtx_000FE0:
+  type: OOT:ARRAY
+  offset: 0x000FE0
+  symbol: object_moVtx_000FE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moVtx_004C10:
+  type: OOT:ARRAY
+  offset: 0x004C10
+  symbol: object_moVtx_004C10
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moVtx_006520:
+  type: OOT:ARRAY
+  offset: 0x006520
+  symbol: object_moVtx_006520
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moVtx_006610:
+  type: OOT:ARRAY
+  offset: 0x006610
+  symbol: object_moVtx_006610
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

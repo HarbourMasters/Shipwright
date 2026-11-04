@@ -321,7 +321,7 @@ void EnHonotrap_SetupFlameDrop(EnHonotrap* this) {
 void EnHonotrap_FlameDrop(EnHonotrap* this, PlayState* play) {
     if ((this->collider.cyl.base.atFlags & AT_HIT) || (this->timer <= 0)) {
         if ((this->collider.cyl.base.atFlags & AT_HIT) && !(this->collider.cyl.base.atFlags & AT_BOUNCED)) {
-            func_8002F71C(play, &this->actor, 5.0f, this->actor.yawTowardsPlayer, 0.0f);
+            Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 5.0f, this->actor.yawTowardsPlayer, 0.0f);
         }
         this->actor.velocity.x = this->actor.velocity.y = this->actor.velocity.z = 0.0f;
         EnHonotrap_SetupFlameVanish(this);
@@ -431,7 +431,7 @@ void EnHonotrap_FlameChase(EnHonotrap* this, PlayState* play) {
         this->actor.speedXZ *= 0.1f;
         this->actor.velocity.y *= 0.1f;
         EnHonotrap_SetupFlameVanish(this);
-    } else if ((this->actor.bgCheckFlags & 8) || (this->timer <= 0)) {
+    } else if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) || (this->timer <= 0)) {
         EnHonotrap_SetupFlameVanish(this);
     } else {
         EnHonotrap_FlameCollisionCheck(this, play);

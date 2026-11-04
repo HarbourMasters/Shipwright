@@ -1,0 +1,182 @@
+:config:
+  segments:
+    - [ 3, 0x019E89B0 ]
+    - [ 2, 0x019E7D40 ]
+  directory: scenes/shared/link_home_scene
+  external_files:
+    - ntsc_1-1/scenes/shared/link_home_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+    - ntsc_1-1/scenes/shared/link_home_room_0Set_002400.yml
+    - ntsc_1-1/scenes/shared/link_home_room_0Set_002440.yml
+
+link_home_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: link_home_room_0
+
+
+link_home_room_0Vtx_0000D0:
+  type: OOT:ARRAY
+  offset: 0x0000D0
+  symbol: link_home_room_0Vtx_0000D0
+  count: 228
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_000F10:
+  type: OOT:ARRAY
+  offset: 0x000F10
+  symbol: link_home_room_0Vtx_000F10
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001190:
+  type: OOT:ARRAY
+  offset: 0x001190
+  symbol: link_home_room_0Vtx_001190
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001250:
+  type: OOT:ARRAY
+  offset: 0x001250
+  symbol: link_home_room_0Vtx_001250
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001320:
+  type: OOT:ARRAY
+  offset: 0x001320
+  symbol: link_home_room_0Vtx_001320
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001420:
+  type: OOT:ARRAY
+  offset: 0x001420
+  symbol: link_home_room_0Vtx_001420
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001560:
+  type: OOT:ARRAY
+  offset: 0x001560
+  symbol: link_home_room_0Vtx_001560
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_0017E0:
+  type: OOT:ARRAY
+  offset: 0x0017E0
+  symbol: link_home_room_0Vtx_0017E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001860:
+  type: OOT:ARRAY
+  offset: 0x001860
+  symbol: link_home_room_0Vtx_001860
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_0018E0:
+  type: OOT:ARRAY
+  offset: 0x0018E0
+  symbol: link_home_room_0Vtx_0018E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001960:
+  type: OOT:ARRAY
+  offset: 0x001960
+  symbol: link_home_room_0Vtx_001960
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_0019E0:
+  type: OOT:ARRAY
+  offset: 0x0019E0
+  symbol: link_home_room_0Vtx_0019E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001A60:
+  type: OOT:ARRAY
+  offset: 0x001A60
+  symbol: link_home_room_0Vtx_001A60
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0Vtx_001AE0:
+  type: OOT:ARRAY
+  offset: 0x001AE0
+  symbol: link_home_room_0Vtx_001AE0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+link_home_room_0DL_001B60:
+  type: GFX
+  offset: 0x001B60
+  symbol: link_home_room_0DL_001B60
+
+link_home_room_0DL_001F58:
+  type: GFX
+  offset: 0x001F58
+  symbol: link_home_room_0DL_001F58
+
+link_home_room_0DL_002030:
+  type: GFX
+  offset: 0x002030
+  symbol: link_home_room_0DL_002030
+
+link_home_room_0DL_0020D0:
+  type: GFX
+  offset: 0x0020D0
+  symbol: link_home_room_0DL_0020D0
+
+link_home_room_0DL_002170:
+  type: GFX
+  offset: 0x002170
+  symbol: link_home_room_0DL_002170
+
+link_home_room_0DL_002210:
+  type: GFX
+  offset: 0x002210
+  symbol: link_home_room_0DL_002210
+
+link_home_room_0DL_0022D0:
+  type: GFX
+  offset: 0x0022D0
+  symbol: link_home_room_0DL_0022D0
+
+link_home_room_0DL_0023A8:
+  type: GFX
+  offset: 0x0023A8
+  symbol: link_home_room_0DL_0023A8

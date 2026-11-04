@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 128, 0x013B8AA0 ]
+
+gMarketNightBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gMarketNightBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMarketNightBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gMarketNightBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMarketNightBg4TLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gMarketNightBg4TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMarketNightBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMarketNightBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

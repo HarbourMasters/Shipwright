@@ -1,0 +1,72 @@
+name: 'Verify compiler version meets the project minimum'
+description: 'Compares the installed compiler against the version in linux-build-deps/minimum-${compiler}-version.txt and reports whether we need to install a newer version and whether that version is available in the distro repos.'
+inputs:
+  compiler:
+    description: 'gcc or clang'
+    required: true
+  packageManager:
+    description: 'apt, dnf, pacman, or zypper'
+    required: true
+outputs:
+  needs_install:
+    description: 'true if default version is below the minimum'
+    value: ${{ steps.check.outputs.needs_install }}
+  available_in_distro:
+    description: 'true if compiler-${min} can be installed from the distro repos'
+    value: ${{ steps.check.outputs.available_in_distro }}
+  cc:
+    description: 'resolved C compiler binary name to use downstream'
+    value: ${{ steps.check.outputs.cc }}
+  cxx:
+    description: 'resolved C++ compiler binary name to use downstream'
+    value: ${{ steps.check.outputs.cxx }}
+  version:
+    description: 'the minimum version read from linux-build-deps/minimum-${compiler}-version.txt'
+    value: ${{ steps.check.outputs.version }}
+runs:
+  using: composite
+  steps:
+    - id: check
+      shell: bash
+      run: |
+        get_min()           { cat "linux-build-deps/minimum-$1-version.txt"; }
+        get_default_major() { "$1" --version 2>/dev/null | head -1 | grep -oE '[0-9]+' | head -1; }
+        cxx_for()           { case "$1" in gcc) echo g++ ;; clang) echo clang++ ;; esac; }
+
+        probe_distro() {
+          local compiler="$1" min="$2" package_manager="$3"
+          case "$package_manager" in
+            apt)    apt-cache show "${compiler}-${min}" >/dev/null 2>&1 ;;
+            dnf)    return 1 ;;  # Fedora ships a single gcc/clang version, no -N packages
+            pacman) return 1 ;;  # Arch ships a single gcc/clang version, no -N packages
+            zypper) zypper -n se -x "${compiler}${min}" 2>/dev/null | grep -q "${compiler}${min}" ;;
+            *)      return 1 ;;
+          esac
+        }
+
+        compiler='${{ inputs.compiler }}'
+        package_manager='${{ inputs.packageManager }}'
+        min=$(get_min "$compiler")
+        default_major=$(get_default_major "$compiler")
+        cc_base="$compiler"
+        cxx_base=$(cxx_for "$compiler")
+
+        if [ -n "$default_major" ] && [ "$default_major" -ge "$min" ]; then
+          needs_install=false
+          cc="$cc_base"; cxx="$cxx_base"
+          available_in_distro=true
+        else
+          needs_install=true
+          cc="$cc_base-$min"; cxx="$cxx_base-$min"
+          probe_distro "$cc_base" "$min" "$package_manager" && available_in_distro=true || available_in_distro=false
+        fi
+
+        echo "compiler=$compiler  min=$min  default_major=${default_major:-NONE}"
+        echo "needs_install=$needs_install  available_in_distro=$available_in_distro  cc=$cc  cxx=$cxx"
+        {
+          echo "needs_install=$needs_install"
+          echo "available_in_distro=$available_in_distro"
+          echo "cc=$cc"
+          echo "cxx=$cxx"
+          echo "version=$min"
+        } >> "$GITHUB_OUTPUT"

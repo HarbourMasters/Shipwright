@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01EE70F0 ]
+    - [ 2, 0x01EDD000 ]
+  directory: scenes/shared/hakaana_ouke_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/shared/hakaana_ouke_room_2.yml
+    - ntsc_j_gc_collection/scenes/shared/hakaana_ouke_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+
+hakaana_ouke_room_2Set_000140:
+  type: OOT:ROOM
+  offset: 0x140
+  symbol: hakaana_ouke_room_2Set_000140
+  base_name: hakaana_ouke_room_2

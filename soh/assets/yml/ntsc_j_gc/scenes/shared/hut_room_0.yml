@@ -1,0 +1,134 @@
+:config:
+  segments:
+    - [ 3, 0x01D51C40 ]
+    - [ 2, 0x01D51940 ]
+  directory: scenes/shared/hut_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/hut_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+
+hut_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: hut_room_0
+
+
+hut_room_0Vtx_000090:
+  type: OOT:ARRAY
+  offset: 0x000090
+  symbol: hut_room_0Vtx_000090
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_000460:
+  type: OOT:ARRAY
+  offset: 0x000460
+  symbol: hut_room_0Vtx_000460
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_0006E0:
+  type: OOT:ARRAY
+  offset: 0x0006E0
+  symbol: hut_room_0Vtx_0006E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_000720:
+  type: OOT:ARRAY
+  offset: 0x000720
+  symbol: hut_room_0Vtx_000720
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_000A90:
+  type: OOT:ARRAY
+  offset: 0x000A90
+  symbol: hut_room_0Vtx_000A90
+  count: 544
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_002C90:
+  type: OOT:ARRAY
+  offset: 0x002C90
+  symbol: hut_room_0Vtx_002C90
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_002D10:
+  type: OOT:ARRAY
+  offset: 0x002D10
+  symbol: hut_room_0Vtx_002D10
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_002D90:
+  type: OOT:ARRAY
+  offset: 0x002D90
+  symbol: hut_room_0Vtx_002D90
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_002E10:
+  type: OOT:ARRAY
+  offset: 0x002E10
+  symbol: hut_room_0Vtx_002E10
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0Vtx_002E90:
+  type: OOT:ARRAY
+  offset: 0x002E90
+  symbol: hut_room_0Vtx_002E90
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hut_room_0DL_002F10:
+  type: GFX
+  offset: 0x002F10
+  symbol: hut_room_0DL_002F10
+
+hut_room_0DL_003070:
+  type: GFX
+  offset: 0x003070
+  symbol: hut_room_0DL_003070
+
+hut_room_0DL_003148:
+  type: GFX
+  offset: 0x003148
+  symbol: hut_room_0DL_003148
+
+hut_room_0DL_0031C8:
+  type: GFX
+  offset: 0x0031C8
+  symbol: hut_room_0DL_0031C8
+
+hut_room_0DL_0032C0:
+  type: GFX
+  offset: 0x0032C0
+  symbol: hut_room_0DL_0032C0
+
+hut_room_0DL_003D58:
+  type: GFX
+  offset: 0x003D58
+  symbol: hut_room_0DL_003D58

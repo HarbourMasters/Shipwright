@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 6, 0x00DDC6A0 ]
+
+gKingDodongoTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x17410
+  symbol: gKingDodongoTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gKingDodongoTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x19c10
+  symbol: gKingDodongoTitleCardFRATex
+  format: IA8
+  width: 128
+  height: 40
+
+gKingDodongoTitleCardGERTex:
+  type: TEXTURE
+  offset: 0x18810
+  symbol: gKingDodongoTitleCardGERTex
+  format: IA8
+  width: 128
+  height: 40
+

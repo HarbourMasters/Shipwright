@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x02B0C000 ]
+  directory: scenes/shared/kenjyanoma_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/kenjyanoma_scene.yml
+
+kenjyanoma_sceneSet_0036D0:
+  type: OOT:SCENE
+  offset: 0x36D0
+  symbol: kenjyanoma_sceneSet_0036D0
+  base_name: kenjyanoma_scene

@@ -1,0 +1,268 @@
+:config:
+  segments:
+    - [ 128, 0x00CD7A30 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00CD7A30 ]
+    - [ 9, 0x00CD7A30 ]
+    - [ 10, 0x00CD7A30 ]
+    - [ 11, 0x00CD7A30 ]
+    - [ 12, 0x00CD7A30 ]
+    - [ 13, 0x00CD7A30 ]
+  virtual: [ 0x80B05FE0, 0x00CD7A30 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gGanonFireRingDL:
+  type: GFX
+  offset: 0x00DE30
+  symbol: gGanonFireRingDL
+
+gGanonFireRingTex:
+  type: TEXTURE
+  offset: 0x00D490
+  symbol: gGanonFireRingTex
+  format: I8
+  width: 32
+  height: 64
+
+gGanonLightOrbMaterialDL:
+  type: GFX
+  offset: 0x00AF78
+  symbol: gGanonLightOrbMaterialDL
+
+gGanonLightOrbModelDL:
+  type: GFX
+  offset: 0x00AFE8
+  symbol: gGanonLightOrbModelDL
+
+gGanonLightOrbTex:
+  type: TEXTURE
+  offset: 0x009F38
+  symbol: gGanonLightOrbTex
+  format: I8
+  width: 64
+  height: 64
+
+gGanonLightningDL:
+  type: GFX
+  offset: 0x00D408
+  symbol: gGanonLightningDL
+
+gGanonLightningTex:
+  type: TEXTURE
+  offset: 0x00C9C8
+  symbol: gGanonLightningTex
+  format: I4
+  width: 32
+  height: 160
+
+gGanonMasterSwordDL:
+  type: GFX
+  offset: 0x010018
+  symbol: gGanonMasterSwordDL
+
+gGanonMasterSwordGuardTex:
+  type: TEXTURE
+  offset: 0x00F078
+  symbol: gGanonMasterSwordGuardTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGanonMasterSwordPommelTex:
+  type: TEXTURE
+  offset: 0x00EE78
+  symbol: gGanonMasterSwordPommelTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonMasterSwordShadowDL:
+  type: GFX
+  offset: 0x00EDF8
+  symbol: gGanonMasterSwordShadowDL
+
+gGanonMasterSwordShadowTex:
+  type: TEXTURE
+  offset: 0x00E9B8
+  symbol: gGanonMasterSwordShadowTex
+  format: I8
+  width: 32
+  height: 32
+
+gGanonShadowMaterialDL:
+  type: GFX
+  offset: 0x00B040
+  symbol: gGanonShadowMaterialDL
+
+gGanonShadowModelDL:
+  type: GFX
+  offset: 0x00B060
+  symbol: gGanonShadowModelDL
+
+gGanonSwordTrailDL:
+  type: GFX
+  offset: 0x00B7F0
+  symbol: gGanonSwordTrailDL
+
+gGanonSwordTrailMaskTex:
+  type: TEXTURE
+  offset: 0x00B490
+  symbol: gGanonSwordTrailMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gGanonSwordTrailTex:
+  type: TEXTURE
+  offset: 0x00B090
+  symbol: gGanonSwordTrailTex
+  format: I8
+  width: 32
+  height: 32
+
+gGanonSwordTrailVtx:
+  type: OOT:ARRAY
+  offset: 0x00B690
+  symbol: gGanonSwordTrailVtx
+  count: 22
+  array_type: VTX
+
+gGanonTriforceDL:
+  type: GFX
+  offset: 0x00C948
+  symbol: gGanonTriforceDL
+
+gGanonTriforceTex:
+  type: TEXTURE
+  offset: 0x00B908
+  symbol: gGanonTriforceTex
+  format: I8
+  width: 64
+  height: 64
+
+gGanonZeldaMagicDL:
+  type: GFX
+  offset: 0x00E8B0
+  symbol: gGanonZeldaMagicDL
+
+gGanonZeldaMagicTex:
+  type: TEXTURE
+  offset: 0x00DF50
+  symbol: gGanonZeldaMagicTex
+  format: I8
+  width: 32
+  height: 64
+
+ovl_Boss_Ganon2_Vtx_00B2C8:
+  type: OOT:ARRAY
+  offset: 0x00AF38
+  symbol: ovl_Boss_Ganon2_Vtx_00B2C8
+  count: 4
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00B390:
+  type: OOT:ARRAY
+  offset: 0x00B000
+  symbol: ovl_Boss_Ganon2_Vtx_00B390
+  count: 4
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00CC98:
+  type: OOT:ARRAY
+  offset: 0x00C908
+  symbol: ovl_Boss_Ganon2_Vtx_00CC98
+  count: 4
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00D758:
+  type: OOT:ARRAY
+  offset: 0x00D3C8
+  symbol: ovl_Boss_Ganon2_Vtx_00D758
+  count: 4
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00E020:
+  type: OOT:ARRAY
+  offset: 0x00DC90
+  symbol: ovl_Boss_Ganon2_Vtx_00E020
+  count: 26
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00EAE0:
+  type: OOT:ARRAY
+  offset: 0x00E750
+  symbol: ovl_Boss_Ganon2_Vtx_00EAE0
+  count: 22
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00F148:
+  type: OOT:ARRAY
+  offset: 0x00EDB8
+  symbol: ovl_Boss_Ganon2_Vtx_00F148
+  count: 4
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00FC08:
+  type: OOT:ARRAY
+  offset: 0x00F878
+  symbol: ovl_Boss_Ganon2_Vtx_00FC08
+  count: 3
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00FC38:
+  type: OOT:ARRAY
+  offset: 0x00F8A8
+  symbol: ovl_Boss_Ganon2_Vtx_00FC38
+  count: 32
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00FE38:
+  type: OOT:ARRAY
+  offset: 0x00FAA8
+  symbol: ovl_Boss_Ganon2_Vtx_00FE38
+  count: 15
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00FF28:
+  type: OOT:ARRAY
+  offset: 0x00FB98
+  symbol: ovl_Boss_Ganon2_Vtx_00FF28
+  count: 11
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_00FFD8:
+  type: OOT:ARRAY
+  offset: 0x00FC48
+  symbol: ovl_Boss_Ganon2_Vtx_00FFD8
+  count: 6
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_010038:
+  type: OOT:ARRAY
+  offset: 0xFCA8
+  symbol: ovl_Boss_Ganon2_Vtx_010038
+  count: 12
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_0100F8:
+  type: OOT:ARRAY
+  offset: 0xFD68
+  symbol: ovl_Boss_Ganon2_Vtx_0100F8
+  count: 10
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_010198:
+  type: OOT:ARRAY
+  offset: 0xFE08
+  symbol: ovl_Boss_Ganon2_Vtx_010198
+  count: 16
+  array_type: VTX
+
+ovl_Boss_Ganon2_Vtx_010298:
+  type: OOT:ARRAY
+  offset: 0xFF08
+  symbol: ovl_Boss_Ganon2_Vtx_010298
+  count: 17
+  array_type: VTX
+

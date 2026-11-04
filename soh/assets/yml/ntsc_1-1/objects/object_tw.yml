@@ -1,0 +1,3097 @@
+:config:
+  segments:
+    - [ 6, 0x010C3FE0 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x010C3FE0 ]
+    - [ 9, 0x010C3FE0 ]
+    - [ 10, 0x010C3FE0 ]
+    - [ 11, 0x010C3FE0 ]
+    - [ 12, 0x010C3FE0 ]
+    - [ 13, 0x010C3FE0 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gTwinrovaBeamDL:
+  type: GFX
+  offset: 0x1DDF0
+  symbol: gTwinrovaBeamDL
+
+gTwinrovaBigFlameDL:
+  type: GFX
+  offset: 0x19938
+  symbol: gTwinrovaBigFlameDL
+
+gTwinrovaBigFlameMaskTex:
+  type: TEXTURE
+  offset: 0x19478
+  symbol: gTwinrovaBigFlameMaskTex
+  format: I4
+  width: 32
+  height: 64
+
+gTwinrovaBigFlameTex:
+  type: TEXTURE
+  offset: 0x19078
+  symbol: gTwinrovaBigFlameTex
+  format: I8
+  width: 32
+  height: 32
+
+gTwinrovaBraidEndTex:
+  type: TEXTURE
+  offset: 0x16650
+  symbol: gTwinrovaBraidEndTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTwinrovaBreastTex:
+  type: TEXTURE
+  offset: 0x24710
+  symbol: gTwinrovaBreastTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinrovaBroomFireJetDL:
+  type: GFX
+  offset: 0x2DFB0
+  symbol: gTwinrovaBroomFireJetDL
+
+gTwinrovaBroomFireJetLimb:
+  type: OOT:LIMB
+  offset: 0x30B50
+  symbol: gTwinrovaBroomFireJetLimb
+  limb_type: Standard
+
+gTwinrovaBroomFireTrailDL:
+  type: GFX
+  offset: 0x2E098
+  symbol: gTwinrovaBroomFireTrailDL
+
+gTwinrovaBroomFireTrailLimb:
+  type: OOT:LIMB
+  offset: 0x30B5C
+  symbol: gTwinrovaBroomFireTrailLimb
+  limb_type: Standard
+
+gTwinrovaBroomHandleTex:
+  type: TEXTURE
+  offset: 0xABB8
+  symbol: gTwinrovaBroomHandleTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTwinrovaBroomHeadTex:
+  type: TEXTURE
+  offset: 0xAC38
+  symbol: gTwinrovaBroomHeadTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gTwinrovaBroomIceJetDL:
+  type: GFX
+  offset: 0x2DDD8
+  symbol: gTwinrovaBroomIceJetDL
+
+gTwinrovaBroomIceJetLimb:
+  type: OOT:LIMB
+  offset: 0x30AE4
+  symbol: gTwinrovaBroomIceJetLimb
+  limb_type: Standard
+
+gTwinrovaBroomIceTrailDL:
+  type: GFX
+  offset: 0x2DEB0
+  symbol: gTwinrovaBroomIceTrailDL
+
+gTwinrovaBroomIceTrailLimb:
+  type: OOT:LIMB
+  offset: 0x30AD8
+  symbol: gTwinrovaBroomIceTrailLimb
+  limb_type: Standard
+
+gTwinrovaChargedAttackHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x324F0
+  symbol: gTwinrovaChargedAttackHitAnim
+
+gTwinrovaCircleTex:
+  type: TEXTURE
+  offset: 0x1EB28
+  symbol: gTwinrovaCircleTex
+  format: I8
+  width: 16
+  height: 16
+
+gTwinrovaCloudMaskTex:
+  type: TEXTURE
+  offset: 0x1E430
+  symbol: gTwinrovaCloudMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gTwinrovaDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x24374
+  symbol: gTwinrovaDamageAnim
+
+gTwinrovaDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x216DC
+  symbol: gTwinrovaDeathAnim
+
+gTwinrovaEarAndFingerTLUT:
+  type: TEXTURE
+  offset: 0x2A020
+  symbol: gTwinrovaEarAndFingerTLUT
+  format: RGBA16
+  width: 8
+  height: 5
+
+gTwinrovaEarTex:
+  type: TEXTURE
+  offset: 0x2ADF0
+  symbol: gTwinrovaEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2A020
+
+gTwinrovaEffectHaloDL:
+  type: GFX
+  offset: 0x1A790
+  symbol: gTwinrovaEffectHaloDL
+
+gTwinrovaEffectMaskTex:
+  type: TEXTURE
+  offset: 0xBE38
+  symbol: gTwinrovaEffectMaskTex
+  format: I4
+  width: 32
+  height: 64
+
+gTwinrovaEffectTex:
+  type: TEXTURE
+  offset: 0xBA38
+  symbol: gTwinrovaEffectTex
+  format: I8
+  width: 32
+  height: 32
+
+gTwinrovaEmblemTex:
+  type: TEXTURE
+  offset: 0x24510
+  symbol: gTwinrovaEmblemTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinrovaEyeAndMouthTLUT:
+  type: TEXTURE
+  offset: 0x29E50
+  symbol: gTwinrovaEyeAndMouthTLUT
+  format: RGBA16
+  width: 29
+  height: 8
+
+gTwinrovaEyeClosedTex:
+  type: TEXTURE
+  offset: 0x2A470
+  symbol: gTwinrovaEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x29E50
+
+gTwinrovaEyeHalfTex:
+  type: TEXTURE
+  offset: 0x2A070
+  symbol: gTwinrovaEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x29E50
+
+gTwinrovaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x2A9B0
+  symbol: gTwinrovaEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x29E50
+
+gTwinrovaEyebrowTex:
+  type: TEXTURE
+  offset: 0x2A970
+  symbol: gTwinrovaEyebrowTex
+  format: RGBA16
+  width: 8
+  height: 4
+
+gTwinrovaFingerTex:
+  type: TEXTURE
+  offset: 0x2AF30
+  symbol: gTwinrovaFingerTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x2A020
+
+gTwinrovaFireAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x23750
+  symbol: gTwinrovaFireAttackAnim
+
+gTwinrovaFireDL:
+  type: GFX
+  offset: 0x1A430
+  symbol: gTwinrovaFireDL
+
+gTwinrovaFireMaskTex:
+  type: TEXTURE
+  offset: 0x1A200
+  symbol: gTwinrovaFireMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gTwinrovaFirePoolAndShieldChargeCenterTex:
+  type: TEXTURE
+  offset: 0x19A20
+  symbol: gTwinrovaFirePoolAndShieldChargeCenterTex
+  format: I4
+  width: 32
+  height: 32
+
+gTwinrovaFirePoolDL:
+  type: GFX
+  offset: 0x19D40
+  symbol: gTwinrovaFirePoolDL
+
+gTwinrovaFireSmokeDL:
+  type: GFX
+  offset: 0x18FC0
+  symbol: gTwinrovaFireSmokeDL
+
+gTwinrovaFireSmokeTex:
+  type: TEXTURE
+  offset: 0x18B60
+  symbol: gTwinrovaFireSmokeTex
+  format: I4
+  width: 32
+  height: 64
+
+gTwinrovaFireTex:
+  type: TEXTURE
+  offset: 0x19E00
+  symbol: gTwinrovaFireTex
+  format: I4
+  width: 32
+  height: 64
+
+gTwinrovaGrimaceTex:
+  type: TEXTURE
+  offset: 0x2A870
+  symbol: gTwinrovaGrimaceTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x29e50
+
+gTwinrovaHairFireJetDL:
+  type: GFX
+  offset: 0x2DBC8
+  symbol: gTwinrovaHairFireJetDL
+
+gTwinrovaHairFireJetLimb:
+  type: OOT:LIMB
+  offset: 0x30A30
+  symbol: gTwinrovaHairFireJetLimb
+  limb_type: Standard
+
+gTwinrovaHairFireTrailDL:
+  type: GFX
+  offset: 0x2DCB8
+  symbol: gTwinrovaHairFireTrailDL
+
+gTwinrovaHairFireTrailLimb:
+  type: OOT:LIMB
+  offset: 0x30A3C
+  symbol: gTwinrovaHairFireTrailLimb
+  limb_type: Standard
+
+gTwinrovaHairIceJetDL:
+  type: GFX
+  offset: 0x2D9F0
+  symbol: gTwinrovaHairIceJetDL
+
+gTwinrovaHairIceJetLimb:
+  type: OOT:LIMB
+  offset: 0x30A24
+  symbol: gTwinrovaHairIceJetLimb
+  limb_type: Standard
+
+gTwinrovaHairIceTrailDL:
+  type: GFX
+  offset: 0x2DAE0
+  symbol: gTwinrovaHairIceTrailDL
+
+gTwinrovaHairIceTrailLimb:
+  type: OOT:LIMB
+  offset: 0x30A18
+  symbol: gTwinrovaHairIceTrailLimb
+  limb_type: Standard
+
+gTwinrovaHairTex:
+  type: TEXTURE
+  offset: 0xA8F8
+  symbol: gTwinrovaHairTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gTwinrovaHaloDL:
+  type: GFX
+  offset: 0x1F608
+  symbol: gTwinrovaHaloDL
+
+gTwinrovaHeadDL:
+  type: GFX
+  offset: 0x2CBB0
+  symbol: gTwinrovaHeadDL
+
+gTwinrovaHeadLimb:
+  type: OOT:LIMB
+  offset: 0x30A60
+  symbol: gTwinrovaHeadLimb
+  limb_type: Standard
+
+gTwinrovaHoverAnim:
+  type: OOT:ANIMATION
+  offset: 0x317F8
+  symbol: gTwinrovaHoverAnim
+
+gTwinrovaIceAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x22700
+  symbol: gTwinrovaIceAttackAnim
+
+gTwinrovaIceMaterialDL:
+  type: GFX
+  offset: 0x1A998
+  symbol: gTwinrovaIceMaterialDL
+
+gTwinrovaIceModelDL:
+  type: GFX
+  offset: 0x1AB00
+  symbol: gTwinrovaIceModelDL
+
+gTwinrovaIcePoolDL:
+  type: GFX
+  offset: 0x1BC00
+  symbol: gTwinrovaIcePoolDL
+
+gTwinrovaIcePoolShineDL:
+  type: GFX
+  offset: 0x1C1C0
+  symbol: gTwinrovaIcePoolShineDL
+
+gTwinrovaIcePoolShineMaskTex:
+  type: TEXTURE
+  offset: 0x1C0A0
+  symbol: gTwinrovaIcePoolShineMaskTex
+  format: I4
+  width: 16
+  height: 16
+
+gTwinrovaIcePoolShineTex:
+  type: TEXTURE
+  offset: 0x1BCA0
+  symbol: gTwinrovaIcePoolShineTex
+  format: I4
+  width: 32
+  height: 64
+
+gTwinrovaIcePoolTex:
+  type: TEXTURE
+  offset: 0x1AB20
+  symbol: gTwinrovaIcePoolTex
+  format: I8
+  width: 64
+  height: 64
+
+gTwinrovaIceSurroundingPlayerMaterialDL:
+  type: GFX
+  offset: 0x1AA50
+  symbol: gTwinrovaIceSurroundingPlayerMaterialDL
+
+gTwinrovaIntroAnim:
+  type: OOT:ANIMATION
+  offset: 0x37A2C
+  symbol: gTwinrovaIntroAnim
+
+gTwinrovaInvisibleLeftHairBunDL:
+  type: GFX
+  offset: 0x2CAF0
+  symbol: gTwinrovaInvisibleLeftHairBunDL
+
+gTwinrovaInvisibleRightHairBunDL:
+  type: GFX
+  offset: 0x2CB50
+  symbol: gTwinrovaInvisibleRightHairBunDL
+
+gTwinrovaKotakeBroomDL:
+  type: GFX
+  offset: 0x12B38
+  symbol: gTwinrovaKotakeBroomDL
+
+gTwinrovaKotakeBroomInvisibleHeadDL:
+  type: GFX
+  offset: 0x11C98
+  symbol: gTwinrovaKotakeBroomInvisibleHeadDL
+
+gTwinrovaKotakeBroomLimb:
+  type: OOT:LIMB
+  offset: 0x6FDC
+  symbol: gTwinrovaKotakeBroomLimb
+  limb_type: Standard
+
+gTwinrovaKotakeFireBroomHeadDL:
+  type: GFX
+  offset: 0x14070
+  symbol: gTwinrovaKotakeFireBroomHeadDL
+
+gTwinrovaKotakeFireBroomHeadOuterDL:
+  type: GFX
+  offset: 0x14158
+  symbol: gTwinrovaKotakeFireBroomHeadOuterDL
+
+gTwinrovaKotakeGerudoFabricTex:
+  type: TEXTURE
+  offset: 0x9638
+  symbol: gTwinrovaKotakeGerudoFabricTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinrovaKotakeHeadDL:
+  type: GFX
+  offset: 0x12CE0
+  symbol: gTwinrovaKotakeHeadDL
+
+gTwinrovaKotakeHeadInvisibleHairDL:
+  type: GFX
+  offset: 0x110A8
+  symbol: gTwinrovaKotakeHeadInvisibleHairDL
+
+gTwinrovaKotakeHeadLimb:
+  type: OOT:LIMB
+  offset: 0x7030
+  symbol: gTwinrovaKotakeHeadLimb
+  limb_type: Standard
+
+gTwinrovaKotakeIceBroomHeadDL:
+  type: GFX
+  offset: 0x13E98
+  symbol: gTwinrovaKotakeIceBroomHeadDL
+
+gTwinrovaKotakeIceBroomHeadOuterDL:
+  type: GFX
+  offset: 0x13F98
+  symbol: gTwinrovaKotakeIceBroomHeadOuterDL
+
+gTwinrovaKotakeIceHairDL:
+  type: GFX
+  offset: 0x13AE8
+  symbol: gTwinrovaKotakeIceHairDL
+
+gTwinrovaKotakeJewelTex:
+  type: TEXTURE
+  offset: 0xB138
+  symbol: gTwinrovaKotakeJewelTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTwinrovaKotakeKoumeAttackEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x4548
+  symbol: gTwinrovaKotakeKoumeAttackEndAnim
+
+gTwinrovaKotakeKoumeAttackLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x3E34
+  symbol: gTwinrovaKotakeKoumeAttackLoopAnim
+
+gTwinrovaKotakeKoumeAttackStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x3614
+  symbol: gTwinrovaKotakeKoumeAttackStartAnim
+
+gTwinrovaKotakeKoumeBickerAnim:
+  type: OOT:ANIMATION
+  offset: 0x12A4
+  symbol: gTwinrovaKotakeKoumeBickerAnim
+
+gTwinrovaKotakeKoumeChargeUpAttackLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x9398
+  symbol: gTwinrovaKotakeKoumeChargeUpAttackLoopAnim
+
+gTwinrovaKotakeKoumeChargeUpAttackStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x7688
+  symbol: gTwinrovaKotakeKoumeChargeUpAttackStartAnim
+
+gTwinrovaKotakeKoumeDamageEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x6530
+  symbol: gTwinrovaKotakeKoumeDamageEndAnim
+
+gTwinrovaKotakeKoumeDamageStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x578C
+  symbol: gTwinrovaKotakeKoumeDamageStartAnim
+
+gTwinrovaKotakeKoumeEarTex:
+  type: TEXTURE
+  offset: 0xAAF8
+  symbol: gTwinrovaKotakeKoumeEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeEyeClosedTex:
+  type: TEXTURE
+  offset: 0xB638
+  symbol: gTwinrovaKotakeKoumeEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeEyeHalfTex:
+  type: TEXTURE
+  offset: 0xB238
+  symbol: gTwinrovaKotakeKoumeEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeEyeOpenTex:
+  type: TEXTURE
+  offset: 0xA438
+  symbol: gTwinrovaKotakeKoumeEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeFingerTex:
+  type: TEXTURE
+  offset: 0xAB38
+  symbol: gTwinrovaKotakeKoumeFingerTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeFloatLookForwardAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D10
+  symbol: gTwinrovaKotakeKoumeFloatLookForwardAnim
+
+gTwinrovaKotakeKoumeFloatLookUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x17E0
+  symbol: gTwinrovaKotakeKoumeFloatLookUpAnim
+
+gTwinrovaKotakeKoumeFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x6F28
+  symbol: gTwinrovaKotakeKoumeFlyAnim
+
+gTwinrovaKotakeKoumeIdleEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xAAC
+  symbol: gTwinrovaKotakeKoumeIdleEndAnim
+
+gTwinrovaKotakeKoumeIdleLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x4A4
+  symbol: gTwinrovaKotakeKoumeIdleLoopAnim
+
+gTwinrovaKotakeKoumeJewelHolderTex:
+  type: TEXTURE
+  offset: 0xB038
+  symbol: gTwinrovaKotakeKoumeJewelHolderTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gTwinrovaKotakeKoumeLaughAnim:
+  type: OOT:ANIMATION
+  offset: 0x88C8
+  symbol: gTwinrovaKotakeKoumeLaughAnim
+
+gTwinrovaKotakeKoumeMouthTex:
+  type: TEXTURE
+  offset: 0xA8B8
+  symbol: gTwinrovaKotakeKoumeMouthTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeNeckTex:
+  type: TEXTURE
+  offset: 0xB1B8
+  symbol: gTwinrovaKotakeKoumeNeckTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeNostrilsTex:
+  type: TEXTURE
+  offset: 0xB1F8
+  symbol: gTwinrovaKotakeKoumeNostrilsTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeShakeHandAnim:
+  type: OOT:ANIMATION
+  offset: 0x230C
+  symbol: gTwinrovaKotakeKoumeShakeHandAnim
+
+gTwinrovaKotakeKoumeSkinTex:
+  type: TEXTURE
+  offset: 0xA838
+  symbol: gTwinrovaKotakeKoumeSkinTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x9490
+
+gTwinrovaKotakeKoumeSpinAnim:
+  type: OOT:ANIMATION
+  offset: 0x7CA8
+  symbol: gTwinrovaKotakeKoumeSpinAnim
+
+gTwinrovaKotakeKoumeTPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x947C
+  symbol: gTwinrovaKotakeKoumeTPoseAnim
+
+gTwinrovaKotakeLeftBraidEndDL:
+  type: GFX
+  offset: 0x15440
+  symbol: gTwinrovaKotakeLeftBraidEndDL
+
+gTwinrovaKotakeLeftBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0x706C
+  symbol: gTwinrovaKotakeLeftBraidEndLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftBraidStartDL:
+  type: GFX
+  offset: 0x15538
+  symbol: gTwinrovaKotakeLeftBraidStartDL
+
+gTwinrovaKotakeLeftBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0x7060
+  symbol: gTwinrovaKotakeLeftBraidStartLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftFootDL:
+  type: GFX
+  offset: 0x12210
+  symbol: gTwinrovaKotakeLeftFootDL
+
+gTwinrovaKotakeLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x6F64
+  symbol: gTwinrovaKotakeLeftFootLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftHandDL:
+  type: GFX
+  offset: 0x12410
+  symbol: gTwinrovaKotakeLeftHandDL
+
+gTwinrovaKotakeLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x6FD0
+  symbol: gTwinrovaKotakeLeftHandLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftShinDL:
+  type: GFX
+  offset: 0x120C8
+  symbol: gTwinrovaKotakeLeftShinDL
+
+gTwinrovaKotakeLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x6F58
+  symbol: gTwinrovaKotakeLeftShinLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftSleeveEndDL:
+  type: GFX
+  offset: 0x15FF8
+  symbol: gTwinrovaKotakeLeftSleeveEndDL
+
+gTwinrovaKotakeLeftSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x6FB8
+  symbol: gTwinrovaKotakeLeftSleeveEndLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftSleeveFrontDL:
+  type: GFX
+  offset: 0x15E78
+  symbol: gTwinrovaKotakeLeftSleeveFrontDL
+
+gTwinrovaKotakeLeftSleeveFrontLimb:
+  type: OOT:LIMB
+  offset: 0x6FC4
+  symbol: gTwinrovaKotakeLeftSleeveFrontLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftSleeveMidDL:
+  type: GFX
+  offset: 0x16118
+  symbol: gTwinrovaKotakeLeftSleeveMidDL
+
+gTwinrovaKotakeLeftSleeveMidLimb:
+  type: OOT:LIMB
+  offset: 0x6FAC
+  symbol: gTwinrovaKotakeLeftSleeveMidLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftSleeveStartDL:
+  type: GFX
+  offset: 0x16240
+  symbol: gTwinrovaKotakeLeftSleeveStartDL
+
+gTwinrovaKotakeLeftSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0x6FA0
+  symbol: gTwinrovaKotakeLeftSleeveStartLimb
+  limb_type: Standard
+
+gTwinrovaKotakeLeftThighDL:
+  type: GFX
+  offset: 0x164C8
+  symbol: gTwinrovaKotakeLeftThighDL
+
+gTwinrovaKotakeLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x6F4C
+  symbol: gTwinrovaKotakeLeftThighLimb
+  limb_type: Standard
+
+gTwinrovaKotakeMagicSigilDL:
+  type: GFX
+  offset: 0x1CEE0
+  symbol: gTwinrovaKotakeMagicSigilDL
+
+gTwinrovaKotakeMagicSigilMaskTex:
+  type: TEXTURE
+  offset: 0x1C2A0
+  symbol: gTwinrovaKotakeMagicSigilMaskTex
+  format: I4
+  width: 32
+  height: 64
+
+gTwinrovaKotakeMagicSigilTex:
+  type: TEXTURE
+  offset: 0x1C6A0
+  symbol: gTwinrovaKotakeMagicSigilTex
+  format: I4
+  width: 64
+  height: 64
+
+gTwinrovaKotakeNeckDL:
+  type: GFX
+  offset: 0x15850
+  symbol: gTwinrovaKotakeNeckDL
+
+gTwinrovaKotakeNeckLimb:
+  type: OOT:LIMB
+  offset: 0x7024
+  symbol: gTwinrovaKotakeNeckLimb
+  limb_type: Standard
+
+gTwinrovaKotakePelvisDL:
+  type: GFX
+  offset: 0x164D0
+  symbol: gTwinrovaKotakePelvisDL
+
+gTwinrovaKotakePelvisLimb:
+  type: OOT:LIMB
+  offset: 0x6F40
+  symbol: gTwinrovaKotakePelvisLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightBraidEndDL:
+  type: GFX
+  offset: 0x15648
+  symbol: gTwinrovaKotakeRightBraidEndDL
+
+gTwinrovaKotakeRightBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0x7048
+  symbol: gTwinrovaKotakeRightBraidEndLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightBraidStartDL:
+  type: GFX
+  offset: 0x15740
+  symbol: gTwinrovaKotakeRightBraidStartDL
+
+gTwinrovaKotakeRightBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0x703C
+  symbol: gTwinrovaKotakeRightBraidStartLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightFootDL:
+  type: GFX
+  offset: 0x12178
+  symbol: gTwinrovaKotakeRightFootDL
+
+gTwinrovaKotakeRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x6F88
+  symbol: gTwinrovaKotakeRightFootLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightHandDL:
+  type: GFX
+  offset: 0x122A8
+  symbol: gTwinrovaKotakeRightHandDL
+
+gTwinrovaKotakeRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x7018
+  symbol: gTwinrovaKotakeRightHandLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightShinDL:
+  type: GFX
+  offset: 0x12018
+  symbol: gTwinrovaKotakeRightShinDL
+
+gTwinrovaKotakeRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x6F7C
+  symbol: gTwinrovaKotakeRightShinLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightSleeveEndDL:
+  type: GFX
+  offset: 0x15B10
+  symbol: gTwinrovaKotakeRightSleeveEndDL
+
+gTwinrovaKotakeRightSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x7000
+  symbol: gTwinrovaKotakeRightSleeveEndLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightSleeveFrontDL:
+  type: GFX
+  offset: 0x15990
+  symbol: gTwinrovaKotakeRightSleeveFrontDL
+
+gTwinrovaKotakeRightSleeveFrontLimb:
+  type: OOT:LIMB
+  offset: 0x700C
+  symbol: gTwinrovaKotakeRightSleeveFrontLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightSleeveMidDL:
+  type: GFX
+  offset: 0x15C30
+  symbol: gTwinrovaKotakeRightSleeveMidDL
+
+gTwinrovaKotakeRightSleeveMidLimb:
+  type: OOT:LIMB
+  offset: 0x6FF4
+  symbol: gTwinrovaKotakeRightSleeveMidLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightSleeveStartDL:
+  type: GFX
+  offset: 0x15D58
+  symbol: gTwinrovaKotakeRightSleeveStartDL
+
+gTwinrovaKotakeRightSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0x6FE8
+  symbol: gTwinrovaKotakeRightSleeveStartLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRightThighDL:
+  type: GFX
+  offset: 0x164C0
+  symbol: gTwinrovaKotakeRightThighDL
+
+gTwinrovaKotakeRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x6F70
+  symbol: gTwinrovaKotakeRightThighLimb
+  limb_type: Standard
+
+gTwinrovaKotakeRobeTex:
+  type: TEXTURE
+  offset: 0x9E38
+  symbol: gTwinrovaKotakeRobeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinrovaKotakeSkel:
+  type: OOT:SKELETON
+  offset: 0x70E0
+  symbol: gTwinrovaKotakeSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTwinrovaKotakeTeethDL:
+  type: GFX
+  offset: 0x11FB8
+  symbol: gTwinrovaKotakeTeethDL
+
+gTwinrovaKotakeTeethLimb:
+  type: OOT:LIMB
+  offset: 0x7054
+  symbol: gTwinrovaKotakeTeethLimb
+  limb_type: Standard
+
+gTwinrovaKotakeTorsoDL:
+  type: GFX
+  offset: 0x16360
+  symbol: gTwinrovaKotakeTorsoDL
+
+gTwinrovaKotakeTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x6F94
+  symbol: gTwinrovaKotakeTorsoLimb
+  limb_type: Standard
+
+gTwinrovaKoumeBroomDL:
+  type: GFX
+  offset: 0x13310
+  symbol: gTwinrovaKoumeBroomDL
+
+gTwinrovaKoumeBroomInvisibleHeadDL:
+  type: GFX
+  offset: 0x11E28
+  symbol: gTwinrovaKoumeBroomInvisibleHeadDL
+
+gTwinrovaKoumeBroomLimb:
+  type: OOT:LIMB
+  offset: 0x1F784
+  symbol: gTwinrovaKoumeBroomLimb
+  limb_type: Standard
+
+gTwinrovaKoumeFireHairDL:
+  type: GFX
+  offset: 0x13D68
+  symbol: gTwinrovaKoumeFireHairDL
+
+gTwinrovaKoumeGerudoFabricTex:
+  type: TEXTURE
+  offset: 0xC238
+  symbol: gTwinrovaKoumeGerudoFabricTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinrovaKoumeHeadDL:
+  type: GFX
+  offset: 0x134B8
+  symbol: gTwinrovaKoumeHeadDL
+
+gTwinrovaKoumeHeadInvisibleHairDL:
+  type: GFX
+  offset: 0x116A0
+  symbol: gTwinrovaKoumeHeadInvisibleHairDL
+
+gTwinrovaKoumeHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1F7D8
+  symbol: gTwinrovaKoumeHeadLimb
+  limb_type: Standard
+
+gTwinrovaKoumeJewelTex:
+  type: TEXTURE
+  offset: 0xCA38
+  symbol: gTwinrovaKoumeJewelTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTwinrovaKoumeKotakeTLUT:
+  type: TEXTURE
+  offset: 0x9490
+  symbol: gTwinrovaKoumeKotakeTLUT
+  format: RGBA16
+  width: 53
+  height: 4
+
+gTwinrovaKoumeLeftBraidEndDL:
+  type: GFX
+  offset: 0x17910
+  symbol: gTwinrovaKoumeLeftBraidEndDL
+
+gTwinrovaKoumeLeftBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0x1F814
+  symbol: gTwinrovaKoumeLeftBraidEndLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftBraidStartDL:
+  type: GFX
+  offset: 0x17A08
+  symbol: gTwinrovaKoumeLeftBraidStartDL
+
+gTwinrovaKoumeLeftBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0x1F808
+  symbol: gTwinrovaKoumeLeftBraidStartLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftFootDL:
+  type: GFX
+  offset: 0x12848
+  symbol: gTwinrovaKoumeLeftFootDL
+
+gTwinrovaKoumeLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x1F70C
+  symbol: gTwinrovaKoumeLeftFootLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftHandDL:
+  type: GFX
+  offset: 0x126E0
+  symbol: gTwinrovaKoumeLeftHandDL
+
+gTwinrovaKoumeLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x1F778
+  symbol: gTwinrovaKoumeLeftHandLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftShinDL:
+  type: GFX
+  offset: 0x12978
+  symbol: gTwinrovaKoumeLeftShinDL
+
+gTwinrovaKoumeLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x1F700
+  symbol: gTwinrovaKoumeLeftShinLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftSleeveEndDL:
+  type: GFX
+  offset: 0x184C8
+  symbol: gTwinrovaKoumeLeftSleeveEndDL
+
+gTwinrovaKoumeLeftSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x1F760
+  symbol: gTwinrovaKoumeLeftSleeveEndLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftSleeveFrontDL:
+  type: GFX
+  offset: 0x18348
+  symbol: gTwinrovaKoumeLeftSleeveFrontDL
+
+gTwinrovaKoumeLeftSleeveFrontLimb:
+  type: OOT:LIMB
+  offset: 0x1F76C
+  symbol: gTwinrovaKoumeLeftSleeveFrontLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftSleeveMidDL:
+  type: GFX
+  offset: 0x185E8
+  symbol: gTwinrovaKoumeLeftSleeveMidDL
+
+gTwinrovaKoumeLeftSleeveMidLimb:
+  type: OOT:LIMB
+  offset: 0x1F754
+  symbol: gTwinrovaKoumeLeftSleeveMidLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftSleeveStartDL:
+  type: GFX
+  offset: 0x18710
+  symbol: gTwinrovaKoumeLeftSleeveStartDL
+
+gTwinrovaKoumeLeftSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0x1F748
+  symbol: gTwinrovaKoumeLeftSleeveStartLimb
+  limb_type: Standard
+
+gTwinrovaKoumeLeftThighDL:
+  type: GFX
+  offset: 0x18998
+  symbol: gTwinrovaKoumeLeftThighDL
+
+gTwinrovaKoumeLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1F6F4
+  symbol: gTwinrovaKoumeLeftThighLimb
+  limb_type: Standard
+
+gTwinrovaKoumeMagicSigilDL:
+  type: GFX
+  offset: 0x1DBE8
+  symbol: gTwinrovaKoumeMagicSigilDL
+
+gTwinrovaKoumeMagicSigilMaskTex:
+  type: TEXTURE
+  offset: 0x1CFA8
+  symbol: gTwinrovaKoumeMagicSigilMaskTex
+  format: I4
+  width: 32
+  height: 64
+
+gTwinrovaKoumeMagicSigilTex:
+  type: TEXTURE
+  offset: 0x1D3A8
+  symbol: gTwinrovaKoumeMagicSigilTex
+  format: I4
+  width: 64
+  height: 64
+
+gTwinrovaKoumeNeckDL:
+  type: GFX
+  offset: 0x17D20
+  symbol: gTwinrovaKoumeNeckDL
+
+gTwinrovaKoumeNeckLimb:
+  type: OOT:LIMB
+  offset: 0x1F7CC
+  symbol: gTwinrovaKoumeNeckLimb
+  limb_type: Standard
+
+gTwinrovaKoumePelvisDL:
+  type: GFX
+  offset: 0x189A0
+  symbol: gTwinrovaKoumePelvisDL
+
+gTwinrovaKoumePelvisLimb:
+  type: OOT:LIMB
+  offset: 0x1F6E8
+  symbol: gTwinrovaKoumePelvisLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightBraidEndDL:
+  type: GFX
+  offset: 0x17B18
+  symbol: gTwinrovaKoumeRightBraidEndDL
+
+gTwinrovaKoumeRightBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0x1F7F0
+  symbol: gTwinrovaKoumeRightBraidEndLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightBraidStartDL:
+  type: GFX
+  offset: 0x17C10
+  symbol: gTwinrovaKoumeRightBraidStartDL
+
+gTwinrovaKoumeRightBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0x1F7E4
+  symbol: gTwinrovaKoumeRightBraidStartLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightFootDL:
+  type: GFX
+  offset: 0x128E0
+  symbol: gTwinrovaKoumeRightFootDL
+
+gTwinrovaKoumeRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x1F730
+  symbol: gTwinrovaKoumeRightFootLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightHandDL:
+  type: GFX
+  offset: 0x12578
+  symbol: gTwinrovaKoumeRightHandDL
+
+gTwinrovaKoumeRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x1F7C0
+  symbol: gTwinrovaKoumeRightHandLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightShinDL:
+  type: GFX
+  offset: 0x12A28
+  symbol: gTwinrovaKoumeRightShinDL
+
+gTwinrovaKoumeRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1F724
+  symbol: gTwinrovaKoumeRightShinLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightSleeveEndDL:
+  type: GFX
+  offset: 0x17FE0
+  symbol: gTwinrovaKoumeRightSleeveEndDL
+
+gTwinrovaKoumeRightSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x1F7A8
+  symbol: gTwinrovaKoumeRightSleeveEndLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightSleeveFrontDL:
+  type: GFX
+  offset: 0x17E60
+  symbol: gTwinrovaKoumeRightSleeveFrontDL
+
+gTwinrovaKoumeRightSleeveFrontLimb:
+  type: OOT:LIMB
+  offset: 0x1F7B4
+  symbol: gTwinrovaKoumeRightSleeveFrontLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightSleeveMidDL:
+  type: GFX
+  offset: 0x18100
+  symbol: gTwinrovaKoumeRightSleeveMidDL
+
+gTwinrovaKoumeRightSleeveMidLimb:
+  type: OOT:LIMB
+  offset: 0x1F79C
+  symbol: gTwinrovaKoumeRightSleeveMidLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightSleeveStartDL:
+  type: GFX
+  offset: 0x18228
+  symbol: gTwinrovaKoumeRightSleeveStartDL
+
+gTwinrovaKoumeRightSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0x1F790
+  symbol: gTwinrovaKoumeRightSleeveStartLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRightThighDL:
+  type: GFX
+  offset: 0x18990
+  symbol: gTwinrovaKoumeRightThighDL
+
+gTwinrovaKoumeRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x1F718
+  symbol: gTwinrovaKoumeRightThighLimb
+  limb_type: Standard
+
+gTwinrovaKoumeRobeTex:
+  type: TEXTURE
+  offset: 0xCAB8
+  symbol: gTwinrovaKoumeRobeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinrovaKoumeSkel:
+  type: OOT:SKELETON
+  offset: 0x1F888
+  symbol: gTwinrovaKoumeSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTwinrovaKoumeTeethDL:
+  type: GFX
+  offset: 0x12AD8
+  symbol: gTwinrovaKoumeTeethDL
+
+gTwinrovaKoumeTeethLimb:
+  type: OOT:LIMB
+  offset: 0x1F7FC
+  symbol: gTwinrovaKoumeTeethLimb
+  limb_type: Standard
+
+gTwinrovaKoumeTorsoDL:
+  type: GFX
+  offset: 0x18830
+  symbol: gTwinrovaKoumeTorsoDL
+
+gTwinrovaKoumeTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x1F73C
+  symbol: gTwinrovaKoumeTorsoLimb
+  limb_type: Standard
+
+gTwinrovaLaughAnim:
+  type: OOT:ANIMATION
+  offset: 0x38ED0
+  symbol: gTwinrovaLaughAnim
+
+gTwinrovaLeftBraidEndDL:
+  type: GFX
+  offset: 0x28570
+  symbol: gTwinrovaLeftBraidEndDL
+
+gTwinrovaLeftBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0x30A90
+  symbol: gTwinrovaLeftBraidEndLimb
+  limb_type: Standard
+
+gTwinrovaLeftBraidStartDL:
+  type: GFX
+  offset: 0x28668
+  symbol: gTwinrovaLeftBraidStartDL
+
+gTwinrovaLeftBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0x30A84
+  symbol: gTwinrovaLeftBraidStartLimb
+  limb_type: Standard
+
+gTwinrovaLeftBreastDL:
+  type: GFX
+  offset: 0x28B78
+  symbol: gTwinrovaLeftBreastDL
+
+gTwinrovaLeftBreastLimb:
+  type: OOT:LIMB
+  offset: 0x30A00
+  symbol: gTwinrovaLeftBreastLimb
+  limb_type: Standard
+
+gTwinrovaLeftBroomDL:
+  type: GFX
+  offset: 0x2D5D8
+  symbol: gTwinrovaLeftBroomDL
+
+gTwinrovaLeftBroomLimb:
+  type: OOT:LIMB
+  offset: 0x30AFC
+  symbol: gTwinrovaLeftBroomLimb
+  limb_type: Standard
+
+gTwinrovaLeftFootDL:
+  type: GFX
+  offset: 0x29268
+  symbol: gTwinrovaLeftFootDL
+
+gTwinrovaLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x309C4
+  symbol: gTwinrovaLeftFootLimb
+  limb_type: Standard
+
+gTwinrovaLeftFootTex:
+  type: TEXTURE
+  offset: 0x166D0
+  symbol: gTwinrovaLeftFootTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gTwinrovaLeftForearmDL:
+  type: GFX
+  offset: 0x28220
+  symbol: gTwinrovaLeftForearmDL
+
+gTwinrovaLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x30AB4
+  symbol: gTwinrovaLeftForearmLimb
+  limb_type: Standard
+
+gTwinrovaLeftHairBunDL:
+  type: GFX
+  offset: 0x2D940
+  symbol: gTwinrovaLeftHairBunDL
+
+gTwinrovaLeftHairBunLimb:
+  type: OOT:LIMB
+  offset: 0x30A48
+  symbol: gTwinrovaLeftHairBunLimb
+  limb_type: Standard
+
+gTwinrovaLeftHandDL:
+  type: GFX
+  offset: 0x2D320
+  symbol: gTwinrovaLeftHandDL
+
+gTwinrovaLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x30AF0
+  symbol: gTwinrovaLeftHandLimb
+  limb_type: Standard
+
+gTwinrovaLeftPantLegTex:
+  type: TEXTURE
+  offset: 0x24B10
+  symbol: gTwinrovaLeftPantLegTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinrovaLeftShinDL:
+  type: GFX
+  offset: 0x293E0
+  symbol: gTwinrovaLeftShinDL
+
+gTwinrovaLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x309B8
+  symbol: gTwinrovaLeftShinLimb
+  limb_type: Standard
+
+gTwinrovaLeftShoulderDL:
+  type: GFX
+  offset: 0x28468
+  symbol: gTwinrovaLeftShoulderDL
+
+gTwinrovaLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x30A9C
+  symbol: gTwinrovaLeftShoulderLimb
+  limb_type: Standard
+
+gTwinrovaLeftSleeveEndDL:
+  type: GFX
+  offset: 0x27FE8
+  symbol: gTwinrovaLeftSleeveEndDL
+
+gTwinrovaLeftSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x30ACC
+  symbol: gTwinrovaLeftSleeveEndLimb
+  limb_type: Standard
+
+gTwinrovaLeftSleeveStartDL:
+  type: GFX
+  offset: 0x28100
+  symbol: gTwinrovaLeftSleeveStartDL
+
+gTwinrovaLeftSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0x30AC0
+  symbol: gTwinrovaLeftSleeveStartLimb
+  limb_type: Standard
+
+gTwinrovaLeftThighDL:
+  type: GFX
+  offset: 0x29530
+  symbol: gTwinrovaLeftThighDL
+
+gTwinrovaLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x309AC
+  symbol: gTwinrovaLeftThighLimb
+  limb_type: Standard
+
+gTwinrovaLeftUpperArmDL:
+  type: GFX
+  offset: 0x28370
+  symbol: gTwinrovaLeftUpperArmDL
+
+gTwinrovaLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x30AA8
+  symbol: gTwinrovaLeftUpperArmLimb
+  limb_type: Standard
+
+gTwinrovaLightCircleDL:
+  type: GFX
+  offset: 0x1F390
+  symbol: gTwinrovaLightCircleDL
+
+gTwinrovaLightPillarAndHaloTex:
+  type: TEXTURE
+  offset: 0x1ECF0
+  symbol: gTwinrovaLightPillarAndHaloTex
+  format: I4
+  width: 16
+  height: 16
+
+gTwinrovaLightPillarDL:
+  type: GFX
+  offset: 0x1EEB0
+  symbol: gTwinrovaLightPillarDL
+
+gTwinrovaLightRaysDL:
+  type: GFX
+  offset: 0x1F238
+  symbol: gTwinrovaLightRaysDL
+
+gTwinrovaMagicParticleMaterialDL:
+  type: GFX
+  offset: 0x1A528
+  symbol: gTwinrovaMagicParticleMaterialDL
+
+gTwinrovaMagicParticleModelDL:
+  type: GFX
+  offset: 0x1A5A8
+  symbol: gTwinrovaMagicParticleModelDL
+
+gTwinrovaMagicParticleTex:
+  type: TEXTURE
+  offset: 0x1A5C0
+  symbol: gTwinrovaMagicParticleTex
+  format: I8
+  width: 16
+  height: 16
+
+gTwinrovaMirrorShieldFireChargeCenterDL:
+  type: GFX
+  offset: 0x1E020
+  symbol: gTwinrovaMirrorShieldFireChargeCenterDL
+
+gTwinrovaMirrorShieldFireChargeSidesDL:
+  type: GFX
+  offset: 0x1E0E0
+  symbol: gTwinrovaMirrorShieldFireChargeSidesDL
+
+gTwinrovaMirrorShieldIceChargeCenterDL:
+  type: GFX
+  offset: 0x1E2C0
+  symbol: gTwinrovaMirrorShieldIceChargeCenterDL
+
+gTwinrovaMirrorShieldIceChargeSidesDL:
+  type: GFX
+  offset: 0x1E3A0
+  symbol: gTwinrovaMirrorShieldIceChargeSidesDL
+
+gTwinrovaNoseTex:
+  type: TEXTURE
+  offset: 0x2ADB0
+  symbol: gTwinrovaNoseTex
+  format: I8
+  width: 8
+  height: 8
+
+gTwinrovaPelvisDL:
+  type: GFX
+  offset: 0x29B10
+  symbol: gTwinrovaPelvisDL
+
+gTwinrovaPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x30970
+  symbol: gTwinrovaPelvisLimb
+  limb_type: Standard
+
+gTwinrovaRightBraidEndDL:
+  type: GFX
+  offset: 0x28778
+  symbol: gTwinrovaRightBraidEndDL
+
+gTwinrovaRightBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0x30A78
+  symbol: gTwinrovaRightBraidEndLimb
+  limb_type: Standard
+
+gTwinrovaRightBraidStartDL:
+  type: GFX
+  offset: 0x28870
+  symbol: gTwinrovaRightBraidStartDL
+
+gTwinrovaRightBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0x30A6C
+  symbol: gTwinrovaRightBraidStartLimb
+  limb_type: Standard
+
+gTwinrovaRightBreastDL:
+  type: GFX
+  offset: 0x28980
+  symbol: gTwinrovaRightBreastDL
+
+gTwinrovaRightBreastLimb:
+  type: OOT:LIMB
+  offset: 0x30A0C
+  symbol: gTwinrovaRightBreastLimb
+  limb_type: Standard
+
+gTwinrovaRightBroomDL:
+  type: GFX
+  offset: 0x2D4A0
+  symbol: gTwinrovaRightBroomDL
+
+gTwinrovaRightBroomLimb:
+  type: OOT:LIMB
+  offset: 0x30B44
+  symbol: gTwinrovaRightBroomLimb
+  limb_type: Standard
+
+gTwinrovaRightFootDL:
+  type: GFX
+  offset: 0x27720
+  symbol: gTwinrovaRightFootDL
+
+gTwinrovaRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x309E8
+  symbol: gTwinrovaRightFootLimb
+  limb_type: Standard
+
+gTwinrovaRightFootTex:
+  type: TEXTURE
+  offset: 0x18B20
+  symbol: gTwinrovaRightFootTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gTwinrovaRightForearmDL:
+  type: GFX
+  offset: 0x27C98
+  symbol: gTwinrovaRightForearmDL
+
+gTwinrovaRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x30B20
+  symbol: gTwinrovaRightForearmLimb
+  limb_type: Standard
+
+gTwinrovaRightHairBunDL:
+  type: GFX
+  offset: 0x2D890
+  symbol: gTwinrovaRightHairBunDL
+
+gTwinrovaRightHairBunLimb:
+  type: OOT:LIMB
+  offset: 0x30A54
+  symbol: gTwinrovaRightHairBunLimb
+  limb_type: Standard
+
+gTwinrovaRightHandDL:
+  type: GFX
+  offset: 0x2D710
+  symbol: gTwinrovaRightHandDL
+
+gTwinrovaRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x30B68
+  symbol: gTwinrovaRightHandLimb
+  limb_type: Standard
+
+gTwinrovaRightPantLegTex:
+  type: TEXTURE
+  offset: 0x24910
+  symbol: gTwinrovaRightPantLegTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinrovaRightShinDL:
+  type: GFX
+  offset: 0x27820
+  symbol: gTwinrovaRightShinDL
+
+gTwinrovaRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x309DC
+  symbol: gTwinrovaRightShinLimb
+  limb_type: Standard
+
+gTwinrovaRightShoulderDL:
+  type: GFX
+  offset: 0x27EE0
+  symbol: gTwinrovaRightShoulderDL
+
+gTwinrovaRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x30B08
+  symbol: gTwinrovaRightShoulderLimb
+  limb_type: Standard
+
+gTwinrovaRightSleeveEndDL:
+  type: GFX
+  offset: 0x27A60
+  symbol: gTwinrovaRightSleeveEndDL
+
+gTwinrovaRightSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x30B38
+  symbol: gTwinrovaRightSleeveEndLimb
+  limb_type: Standard
+
+gTwinrovaRightSleeveStartDL:
+  type: GFX
+  offset: 0x27B78
+  symbol: gTwinrovaRightSleeveStartDL
+
+gTwinrovaRightSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0x30B2C
+  symbol: gTwinrovaRightSleeveStartLimb
+  limb_type: Standard
+
+gTwinrovaRightThighDL:
+  type: GFX
+  offset: 0x27970
+  symbol: gTwinrovaRightThighDL
+
+gTwinrovaRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x309D0
+  symbol: gTwinrovaRightThighLimb
+  limb_type: Standard
+
+gTwinrovaRightUpperArmDL:
+  type: GFX
+  offset: 0x27DE8
+  symbol: gTwinrovaRightUpperArmDL
+
+gTwinrovaRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x30B14
+  symbol: gTwinrovaRightUpperArmLimb
+  limb_type: Standard
+
+gTwinrovaRobePatternTex:
+  type: TEXTURE
+  offset: 0xA038
+  symbol: gTwinrovaRobePatternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinrovaRobeTrimTex:
+  type: TEXTURE
+  offset: 0xA238
+  symbol: gTwinrovaRobeTrimTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinrovaSash1DL:
+  type: GFX
+  offset: 0x299F8
+  symbol: gTwinrovaSash1DL
+
+gTwinrovaSash1Limb:
+  type: OOT:LIMB
+  offset: 0x3097C
+  symbol: gTwinrovaSash1Limb
+  limb_type: Standard
+
+gTwinrovaSash2DL:
+  type: GFX
+  offset: 0x29900
+  symbol: gTwinrovaSash2DL
+
+gTwinrovaSash2Limb:
+  type: OOT:LIMB
+  offset: 0x30988
+  symbol: gTwinrovaSash2Limb
+  limb_type: Standard
+
+gTwinrovaSash3DL:
+  type: GFX
+  offset: 0x29738
+  symbol: gTwinrovaSash3DL
+
+gTwinrovaSash3Limb:
+  type: OOT:LIMB
+  offset: 0x30994
+  symbol: gTwinrovaSash3Limb
+  limb_type: Standard
+
+gTwinrovaSash4DL:
+  type: GFX
+  offset: 0x29620
+  symbol: gTwinrovaSash4DL
+
+gTwinrovaSash4Limb:
+  type: OOT:LIMB
+  offset: 0x309A0
+  symbol: gTwinrovaSash4Limb
+  limb_type: Standard
+
+gTwinrovaShieldAbsorbAndReflectEffectDL:
+  type: GFX
+  offset: 0x1E9F0
+  symbol: gTwinrovaShieldAbsorbAndReflectEffectDL
+
+gTwinrovaSkel:
+  type: OOT:SKELETON
+  offset: 0x30C20
+  symbol: gTwinrovaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTwinrovaSkinAndBangleTex:
+  type: TEXTURE
+  offset: 0x244D0
+  symbol: gTwinrovaSkinAndBangleTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gTwinrovaSmileTex:
+  type: TEXTURE
+  offset: 0x2AE30
+  symbol: gTwinrovaSmileTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x29e50
+
+gTwinrovaSpawnPortalShadowDL:
+  type: GFX
+  offset: 0x1EC68
+  symbol: gTwinrovaSpawnPortalShadowDL
+
+gTwinrovaStunEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x34588
+  symbol: gTwinrovaStunEndAnim
+
+gTwinrovaStunLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x33C30
+  symbol: gTwinrovaStunLoopAnim
+
+gTwinrovaStunStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x32FB4
+  symbol: gTwinrovaStunStartAnim
+
+gTwinrovaTPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x244B4
+  symbol: gTwinrovaTPoseAnim
+
+gTwinrovaTitleCardTex:
+  type: TEXTURE
+  offset: 0x2E170
+  symbol: gTwinrovaTitleCardTex
+  format: IA8
+  width: 128
+  height: 80
+
+gTwinrovaTorsoDL:
+  type: GFX
+  offset: 0x28D70
+  symbol: gTwinrovaTorsoDL
+
+gTwinrovaTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x309F4
+  symbol: gTwinrovaTorsoLimb
+  limb_type: Standard
+
+gTwinrovaUnusedBoulderDL:
+  type: GFX
+  offset: 0x39280
+  symbol: gTwinrovaUnusedBoulderDL
+
+gTwinrovaUnusedBoulderTex:
+  type: TEXTURE
+  offset: 0x393B0
+  symbol: gTwinrovaUnusedBoulderTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinrovaUnusedIceSteamCloudDL:
+  type: GFX
+  offset: 0x1A8A0
+  symbol: gTwinrovaUnusedIceSteamCloudDL
+
+gTwinrovaWindUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x35BBC
+  symbol: gTwinrovaWindUpAnim
+
+
+gTwinrovaKotakeSkelLimbs:
+  type: BLOB
+  offset: 0x7078
+  symbol: gTwinrovaKotakeSkelLimbs
+  size: 0
+
+object_twVtx_00CCB8:
+  type: OOT:ARRAY
+  offset: 0x00CCB8
+  symbol: object_twVtx_00CCB8
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00D688:
+  type: OOT:ARRAY
+  offset: 0x00D688
+  symbol: object_twVtx_00D688
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E058:
+  type: OOT:ARRAY
+  offset: 0x00E058
+  symbol: object_twVtx_00E058
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E2F8:
+  type: OOT:ARRAY
+  offset: 0x00E2F8
+  symbol: object_twVtx_00E2F8
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E598:
+  type: OOT:ARRAY
+  offset: 0x00E598
+  symbol: object_twVtx_00E598
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E628:
+  type: OOT:ARRAY
+  offset: 0x00E628
+  symbol: object_twVtx_00E628
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E698:
+  type: OOT:ARRAY
+  offset: 0x00E698
+  symbol: object_twVtx_00E698
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E708:
+  type: OOT:ARRAY
+  offset: 0x00E708
+  symbol: object_twVtx_00E708
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E748:
+  type: OOT:ARRAY
+  offset: 0x00E748
+  symbol: object_twVtx_00E748
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E788:
+  type: OOT:ARRAY
+  offset: 0x00E788
+  symbol: object_twVtx_00E788
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00E948:
+  type: OOT:ARRAY
+  offset: 0x00E948
+  symbol: object_twVtx_00E948
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00EB08:
+  type: OOT:ARRAY
+  offset: 0x00EB08
+  symbol: object_twVtx_00EB08
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00ECC8:
+  type: OOT:ARRAY
+  offset: 0x00ECC8
+  symbol: object_twVtx_00ECC8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00EE88:
+  type: OOT:ARRAY
+  offset: 0x00EE88
+  symbol: object_twVtx_00EE88
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00EEC8:
+  type: OOT:ARRAY
+  offset: 0x00EEC8
+  symbol: object_twVtx_00EEC8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00EF08:
+  type: OOT:ARRAY
+  offset: 0x00EF08
+  symbol: object_twVtx_00EF08
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00EF78:
+  type: OOT:ARRAY
+  offset: 0x00EF78
+  symbol: object_twVtx_00EF78
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00EFE8:
+  type: OOT:ARRAY
+  offset: 0x00EFE8
+  symbol: object_twVtx_00EFE8
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00F078:
+  type: OOT:ARRAY
+  offset: 0x00F078
+  symbol: object_twVtx_00F078
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00F378:
+  type: OOT:ARRAY
+  offset: 0x00F378
+  symbol: object_twVtx_00F378
+  count: 159
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_00FD68:
+  type: OOT:ARRAY
+  offset: 0x00FD68
+  symbol: object_twVtx_00FD68
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_010068:
+  type: OOT:ARRAY
+  offset: 0x010068
+  symbol: object_twVtx_010068
+  count: 159
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_010A58:
+  type: OOT:ARRAY
+  offset: 0x010A58
+  symbol: object_twVtx_010A58
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_010C98:
+  type: OOT:ARRAY
+  offset: 0x010C98
+  symbol: object_twVtx_010C98
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_010DC8:
+  type: OOT:ARRAY
+  offset: 0x010DC8
+  symbol: object_twVtx_010DC8
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_010E38:
+  type: OOT:ARRAY
+  offset: 0x010E38
+  symbol: object_twVtx_010E38
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_010F48:
+  type: OOT:ARRAY
+  offset: 0x010F48
+  symbol: object_twVtx_010F48
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_010FE8:
+  type: OOT:ARRAY
+  offset: 0x010FE8
+  symbol: object_twVtx_010FE8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014240:
+  type: OOT:ARRAY
+  offset: 0x014240
+  symbol: object_twVtx_014240
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014390:
+  type: OOT:ARRAY
+  offset: 0x014390
+  symbol: object_twVtx_014390
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014430:
+  type: OOT:ARRAY
+  offset: 0x014430
+  symbol: object_twVtx_014430
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014580:
+  type: OOT:ARRAY
+  offset: 0x014580
+  symbol: object_twVtx_014580
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014620:
+  type: OOT:ARRAY
+  offset: 0x014620
+  symbol: object_twVtx_014620
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0147A0:
+  type: OOT:ARRAY
+  offset: 0x0147A0
+  symbol: object_twVtx_0147A0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0148D0:
+  type: OOT:ARRAY
+  offset: 0x0148D0
+  symbol: object_twVtx_0148D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014990:
+  type: OOT:ARRAY
+  offset: 0x014990
+  symbol: object_twVtx_014990
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014AB0:
+  type: OOT:ARRAY
+  offset: 0x014AB0
+  symbol: object_twVtx_014AB0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014BA0:
+  type: OOT:ARRAY
+  offset: 0x014BA0
+  symbol: object_twVtx_014BA0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014CD0:
+  type: OOT:ARRAY
+  offset: 0x014CD0
+  symbol: object_twVtx_014CD0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014D90:
+  type: OOT:ARRAY
+  offset: 0x014D90
+  symbol: object_twVtx_014D90
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014EB0:
+  type: OOT:ARRAY
+  offset: 0x014EB0
+  symbol: object_twVtx_014EB0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_014FA0:
+  type: OOT:ARRAY
+  offset: 0x014FA0
+  symbol: object_twVtx_014FA0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_015260:
+  type: OOT:ARRAY
+  offset: 0x015260
+  symbol: object_twVtx_015260
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016710:
+  type: OOT:ARRAY
+  offset: 0x016710
+  symbol: object_twVtx_016710
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016860:
+  type: OOT:ARRAY
+  offset: 0x016860
+  symbol: object_twVtx_016860
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016900:
+  type: OOT:ARRAY
+  offset: 0x016900
+  symbol: object_twVtx_016900
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016A50:
+  type: OOT:ARRAY
+  offset: 0x016A50
+  symbol: object_twVtx_016A50
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016AF0:
+  type: OOT:ARRAY
+  offset: 0x016AF0
+  symbol: object_twVtx_016AF0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016C70:
+  type: OOT:ARRAY
+  offset: 0x016C70
+  symbol: object_twVtx_016C70
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016DA0:
+  type: OOT:ARRAY
+  offset: 0x016DA0
+  symbol: object_twVtx_016DA0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016E60:
+  type: OOT:ARRAY
+  offset: 0x016E60
+  symbol: object_twVtx_016E60
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_016F80:
+  type: OOT:ARRAY
+  offset: 0x016F80
+  symbol: object_twVtx_016F80
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_017070:
+  type: OOT:ARRAY
+  offset: 0x017070
+  symbol: object_twVtx_017070
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0171A0:
+  type: OOT:ARRAY
+  offset: 0x0171A0
+  symbol: object_twVtx_0171A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_017260:
+  type: OOT:ARRAY
+  offset: 0x017260
+  symbol: object_twVtx_017260
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_017380:
+  type: OOT:ARRAY
+  offset: 0x017380
+  symbol: object_twVtx_017380
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_017470:
+  type: OOT:ARRAY
+  offset: 0x017470
+  symbol: object_twVtx_017470
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_017730:
+  type: OOT:ARRAY
+  offset: 0x017730
+  symbol: object_twVtx_017730
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_018F60:
+  type: OOT:ARRAY
+  offset: 0x018F60
+  symbol: object_twVtx_018F60
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_019878:
+  type: OOT:ARRAY
+  offset: 0x019878
+  symbol: object_twVtx_019878
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_019C20:
+  type: OOT:ARRAY
+  offset: 0x019C20
+  symbol: object_twVtx_019C20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01A400:
+  type: OOT:ARRAY
+  offset: 0x01A400
+  symbol: object_twVtx_01A400
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01A4F8:
+  type: OOT:ARRAY
+  offset: 0x01A4F8
+  symbol: object_twVtx_01A4F8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01A6C0:
+  type: OOT:ARRAY
+  offset: 0x01A6C0
+  symbol: object_twVtx_01A6C0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01A860:
+  type: OOT:ARRAY
+  offset: 0x01A860
+  symbol: object_twVtx_01A860
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01A968:
+  type: OOT:ARRAY
+  offset: 0x01A968
+  symbol: object_twVtx_01A968
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01BB60:
+  type: OOT:ARRAY
+  offset: 0x01BB60
+  symbol: object_twVtx_01BB60
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01C120:
+  type: OOT:ARRAY
+  offset: 0x01C120
+  symbol: object_twVtx_01C120
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01CEA0:
+  type: OOT:ARRAY
+  offset: 0x01CEA0
+  symbol: object_twVtx_01CEA0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01DBA8:
+  type: OOT:ARRAY
+  offset: 0x01DBA8
+  symbol: object_twVtx_01DBA8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01DCB0:
+  type: OOT:ARRAY
+  offset: 0x01DCB0
+  symbol: object_twVtx_01DCB0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01DED0:
+  type: OOT:ARRAY
+  offset: 0x01DED0
+  symbol: object_twVtx_01DED0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01DF60:
+  type: OOT:ARRAY
+  offset: 0x01DF60
+  symbol: object_twVtx_01DF60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01E170:
+  type: OOT:ARRAY
+  offset: 0x01E170
+  symbol: object_twVtx_01E170
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01E200:
+  type: OOT:ARRAY
+  offset: 0x01E200
+  symbol: object_twVtx_01E200
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01E630:
+  type: OOT:ARRAY
+  offset: 0x01E630
+  symbol: object_twVtx_01E630
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01EC28:
+  type: OOT:ARRAY
+  offset: 0x01EC28
+  symbol: object_twVtx_01EC28
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01ED70:
+  type: OOT:ARRAY
+  offset: 0x01ED70
+  symbol: object_twVtx_01ED70
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01EFB8:
+  type: OOT:ARRAY
+  offset: 0x01EFB8
+  symbol: object_twVtx_01EFB8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01F350:
+  type: OOT:ARRAY
+  offset: 0x01F350
+  symbol: object_twVtx_01F350
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_01F428:
+  type: OOT:ARRAY
+  offset: 0x01F428
+  symbol: object_twVtx_01F428
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTwinrovaKoumeSkelLimbs:
+  type: BLOB
+  offset: 0x1F820
+  symbol: gTwinrovaKoumeSkelLimbs
+  size: 0
+
+object_twVtx_024D10:
+  type: OOT:ARRAY
+  offset: 0x024D10
+  symbol: object_twVtx_024D10
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_024D90:
+  type: OOT:ARRAY
+  offset: 0x024D90
+  symbol: object_twVtx_024D90
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_024E70:
+  type: OOT:ARRAY
+  offset: 0x024E70
+  symbol: object_twVtx_024E70
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025010:
+  type: OOT:ARRAY
+  offset: 0x025010
+  symbol: object_twVtx_025010
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025180:
+  type: OOT:ARRAY
+  offset: 0x025180
+  symbol: object_twVtx_025180
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025380:
+  type: OOT:ARRAY
+  offset: 0x025380
+  symbol: object_twVtx_025380
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025400:
+  type: OOT:ARRAY
+  offset: 0x025400
+  symbol: object_twVtx_025400
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0254E0:
+  type: OOT:ARRAY
+  offset: 0x0254E0
+  symbol: object_twVtx_0254E0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025680:
+  type: OOT:ARRAY
+  offset: 0x025680
+  symbol: object_twVtx_025680
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0257F0:
+  type: OOT:ARRAY
+  offset: 0x0257F0
+  symbol: object_twVtx_0257F0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0259F0:
+  type: OOT:ARRAY
+  offset: 0x0259F0
+  symbol: object_twVtx_0259F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025B30:
+  type: OOT:ARRAY
+  offset: 0x025B30
+  symbol: object_twVtx_025B30
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025BD0:
+  type: OOT:ARRAY
+  offset: 0x025BD0
+  symbol: object_twVtx_025BD0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025D10:
+  type: OOT:ARRAY
+  offset: 0x025D10
+  symbol: object_twVtx_025D10
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_025DB0:
+  type: OOT:ARRAY
+  offset: 0x025DB0
+  symbol: object_twVtx_025DB0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_026010:
+  type: OOT:ARRAY
+  offset: 0x026010
+  symbol: object_twVtx_026010
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_026270:
+  type: OOT:ARRAY
+  offset: 0x026270
+  symbol: object_twVtx_026270
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0268E0:
+  type: OOT:ARRAY
+  offset: 0x0268E0
+  symbol: object_twVtx_0268E0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_026980:
+  type: OOT:ARRAY
+  offset: 0x026980
+  symbol: object_twVtx_026980
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_026A40:
+  type: OOT:ARRAY
+  offset: 0x026A40
+  symbol: object_twVtx_026A40
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_026AC0:
+  type: OOT:ARRAY
+  offset: 0x026AC0
+  symbol: object_twVtx_026AC0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_026B60:
+  type: OOT:ARRAY
+  offset: 0x026B60
+  symbol: object_twVtx_026B60
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_026DB0:
+  type: OOT:ARRAY
+  offset: 0x026DB0
+  symbol: object_twVtx_026DB0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_026F50:
+  type: OOT:ARRAY
+  offset: 0x026F50
+  symbol: object_twVtx_026F50
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_027060:
+  type: OOT:ARRAY
+  offset: 0x027060
+  symbol: object_twVtx_027060
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_027230:
+  type: OOT:ARRAY
+  offset: 0x027230
+  symbol: object_twVtx_027230
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0273D0:
+  type: OOT:ARRAY
+  offset: 0x0273D0
+  symbol: object_twVtx_0273D0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_0274E0:
+  type: OOT:ARRAY
+  offset: 0x0274E0
+  symbol: object_twVtx_0274E0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02AFB0:
+  type: OOT:ARRAY
+  offset: 0x02AFB0
+  symbol: object_twVtx_02AFB0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02B000:
+  type: OOT:ARRAY
+  offset: 0x02B000
+  symbol: object_twVtx_02B000
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02B050:
+  type: OOT:ARRAY
+  offset: 0x02B050
+  symbol: object_twVtx_02B050
+  count: 196
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02BC90:
+  type: OOT:ARRAY
+  offset: 0x02BC90
+  symbol: object_twVtx_02BC90
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02BE90:
+  type: OOT:ARRAY
+  offset: 0x02BE90
+  symbol: object_twVtx_02BE90
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02BFF0:
+  type: OOT:ARRAY
+  offset: 0x02BFF0
+  symbol: object_twVtx_02BFF0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C150:
+  type: OOT:ARRAY
+  offset: 0x02C150
+  symbol: object_twVtx_02C150
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C350:
+  type: OOT:ARRAY
+  offset: 0x02C350
+  symbol: object_twVtx_02C350
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C3E0:
+  type: OOT:ARRAY
+  offset: 0x02C3E0
+  symbol: object_twVtx_02C3E0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C470:
+  type: OOT:ARRAY
+  offset: 0x02C470
+  symbol: object_twVtx_02C470
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C550:
+  type: OOT:ARRAY
+  offset: 0x02C550
+  symbol: object_twVtx_02C550
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C640:
+  type: OOT:ARRAY
+  offset: 0x02C640
+  symbol: object_twVtx_02C640
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C720:
+  type: OOT:ARRAY
+  offset: 0x02C720
+  symbol: object_twVtx_02C720
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C840:
+  type: OOT:ARRAY
+  offset: 0x02C840
+  symbol: object_twVtx_02C840
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C8B0:
+  type: OOT:ARRAY
+  offset: 0x02C8B0
+  symbol: object_twVtx_02C8B0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02C9C0:
+  type: OOT:ARRAY
+  offset: 0x02C9C0
+  symbol: object_twVtx_02C9C0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twVtx_02CA60:
+  type: OOT:ARRAY
+  offset: 0x02CA60
+  symbol: object_twVtx_02CA60
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTwinrovaSkelLimbs:
+  type: BLOB
+  offset: 0x30B74
+  symbol: gTwinrovaSkelLimbs
+  size: 0
+
+object_twVtx_038EE0:
+  type: OOT:ARRAY
+  offset: 0x038EE0
+  symbol: object_twVtx_038EE0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

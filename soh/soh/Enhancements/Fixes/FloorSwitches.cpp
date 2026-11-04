@@ -1,8 +1,9 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
+
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "macros.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 }
 

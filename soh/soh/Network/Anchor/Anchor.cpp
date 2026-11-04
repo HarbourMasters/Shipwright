@@ -1,11 +1,11 @@
-#include "Anchor.h"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
-#include "soh/OTRGlobals.h"
+
+#include "Anchor.h"
 #include "soh/Enhancements/nametag.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
+#include "macros.h"
 #include "variables.h"
 #include "functions.h"
 extern PlayState* gPlayState;

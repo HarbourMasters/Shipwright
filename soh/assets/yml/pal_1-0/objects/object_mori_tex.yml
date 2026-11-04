@@ -1,0 +1,148 @@
+:config:
+  segments:
+    - [ 8, 0x00F3C700 ]
+
+gForestTwistedHallBrickTex:
+  type: TEXTURE
+  offset: 0x8600
+  symbol: gForestTwistedHallBrickTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gForestTwistedHallCarpetTex:
+  type: TEXTURE
+  offset: 0x7C00
+  symbol: gForestTwistedHallCarpetTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gForestTwistedHallLadderTex:
+  type: TEXTURE
+  offset: 0x7E00
+  symbol: gForestTwistedHallLadderTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gForestTwistedHallwayPillarTex:
+  type: TEXTURE
+  offset: 0x5C00
+  symbol: gForestTwistedHallwayPillarTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gForestTwistedHallwayWallAndFloorTex:
+  type: TEXTURE
+  offset: 0x6400
+  symbol: gForestTwistedHallwayWallAndFloorTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gForestTwistedHallwayWallDesignTex:
+  type: TEXTURE
+  offset: 0x6C00
+  symbol: gForestTwistedHallwayWallDesignTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gMoriElevatorBarTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMoriElevatorBarTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+gMoriElevatorSideTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gMoriElevatorSideTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMoriElevatorTopTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gMoriElevatorTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoriHashigoLadderTex:
+  type: TEXTURE
+  offset: 0x5400
+  symbol: gMoriHashigoLadderTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoriHashiraGateTex:
+  type: TEXTURE
+  offset: 0x8E00
+  symbol: gMoriHashiraGateTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMoriHashiraPlatformsTex:
+  type: TEXTURE
+  offset: 0x4A00
+  symbol: gMoriHashiraPlatformsTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMoriKaitenkabeMetalWallTex:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: gMoriKaitenkabeMetalWallTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoriRakkatenjoCheckerboardTex:
+  type: TEXTURE
+  offset: 0x2200
+  symbol: gMoriRakkatenjoCheckerboardTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gMoriStalfosPlatformSideTex:
+  type: TEXTURE
+  offset: 0x3200
+  symbol: gMoriStalfosPlatformSideTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gMoriStalfosPlatformTopTex:
+  type: TEXTURE
+  offset: 0x4200
+  symbol: gMoriStalfosPlatformTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoriStoneWallTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gMoriStoneWallTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoriWaterTex:
+  type: TEXTURE
+  offset: 0x4C00
+  symbol: gMoriWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+

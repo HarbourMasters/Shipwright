@@ -275,7 +275,7 @@ void EnSb_TurnAround(EnSb* this, PlayState* play) {
 
 void EnSb_Lunge(EnSb* this, PlayState* play) {
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.2f);
-    if ((this->actor.velocity.y <= -0.1f) || ((this->actor.bgCheckFlags & 2))) {
+    if ((this->actor.velocity.y <= -0.1f) || ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH))) {
         if (!(this->actor.yDistToWater > 0.0f)) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         }
@@ -308,7 +308,7 @@ void EnSb_Bounce(EnSb* this, PlayState* play) {
             }
             EnSb_SpawnBubbles(play, this);
             EnSb_SetupLunge(this);
-        } else if (this->actor.bgCheckFlags & 1) {
+        } else if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->actor.bgCheckFlags &= ~2;
             this->actor.speedXZ = 0.0f;
             this->timer = 1;
@@ -321,12 +321,12 @@ void EnSb_Bounce(EnSb* this, PlayState* play) {
 void EnSb_Cooldown(EnSb* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->actor.bgCheckFlags &= ~1;
             this->actor.speedXZ = 0.0f;
         }
     } else {
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->actor.bgCheckFlags &= ~1;
             this->actionFunc = EnSb_WaitClosed;
             this->actor.speedXZ = 0.0f;

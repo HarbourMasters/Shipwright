@@ -1,5 +1,4 @@
-#ifndef _RANDO_ENTRANCE_H_
-#define _RANDO_ENTRANCE_H_
+#pragma once
 
 #include <stdint.h>
 
@@ -50,11 +49,8 @@ void Entrance_OverrideWeatherState(void);
 void Entrance_OverrideGerudoGuardCapture(void);
 void Entrance_OverrideSpawnScene(int32_t sceneNum, int32_t spawn);
 int32_t Entrance_OverrideSpawnSceneRoom(int32_t sceneNum, int32_t spawn, int32_t room);
-void Entrance_EnableFW(void);
 uint8_t Entrance_GetIsEntranceDiscovered(uint16_t entranceIndex);
 void Entrance_SetEntranceDiscovered(uint16_t entranceIndex, uint8_t isReversedEntrance);
 #ifdef __cplusplus
 }
 #endif
-
-#endif //_RANDO_ENTRANCE_H_

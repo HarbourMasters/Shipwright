@@ -1,0 +1,582 @@
+:config:
+  segments:
+    - [ 6, 0x00DBCEB0 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x00DBCEB0 ]
+    - [ 9, 0x00DBCEB0 ]
+    - [ 10, 0x00DBCEB0 ]
+    - [ 11, 0x00DBCEB0 ]
+    - [ 12, 0x00DBCEB0 ]
+    - [ 13, 0x00DBCEB0 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gOctorokAppearAnim:
+  type: OOT:ANIMATION
+  offset: 0x3C64
+  symbol: gOctorokAppearAnim
+
+gOctorokArmTex:
+  type: TEXTURE
+  offset: 0x28D0
+  symbol: gOctorokArmTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gOctorokDieAnim:
+  type: OOT:ANIMATION
+  offset: 0x8FC
+  symbol: gOctorokDieAnim
+
+gOctorokEyeTex:
+  type: TEXTURE
+  offset: 0x2ED0
+  symbol: gOctorokEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOctorokFadeToBlackTex:
+  type: TEXTURE
+  offset: 0x30D0
+  symbol: gOctorokFadeToBlackTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gOctorokFinTex:
+  type: TEXTURE
+  offset: 0x2CD0
+  symbol: gOctorokFinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOctorokFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0xDDC
+  symbol: gOctorokFloatAnim
+
+gOctorokHideAnim:
+  type: OOT:ANIMATION
+  offset: 0xAC0
+  symbol: gOctorokHideAnim
+
+gOctorokHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x3910
+  symbol: gOctorokHitAnim
+
+gOctorokMouthTex:
+  type: TEXTURE
+  offset: 0x27D0
+  symbol: gOctorokMouthTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gOctorokProjectileDL:
+  type: GFX
+  offset: 0x3380
+  symbol: gOctorokProjectileDL
+
+gOctorokProjectileTex:
+  type: TEXTURE
+  offset: 0x3150
+  symbol: gOctorokProjectileTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOctorokRoughSkinTex:
+  type: TEXTURE
+  offset: 0x2250
+  symbol: gOctorokRoughSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOctorokScalesTex:
+  type: TEXTURE
+  offset: 0x2550
+  symbol: gOctorokScalesTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOctorokShootAnim:
+  type: OOT:ANIMATION
+  offset: 0x344
+  symbol: gOctorokShootAnim
+
+gOctorokSkel:
+  type: OOT:SKELETON
+  offset: 0x3660
+  symbol: gOctorokSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gOctorokSnoutConnectionTex:
+  type: TEXTURE
+  offset: 0x2750
+  symbol: gOctorokSnoutConnectionTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gOctorokStripesTex:
+  type: TEXTURE
+  offset: 0x2450
+  symbol: gOctorokStripesTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+
+object_okutaVtx_000DF0:
+  type: OOT:ARRAY
+  offset: 0x000DF0
+  symbol: object_okutaVtx_000DF0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_000EC0:
+  type: OOT:ARRAY
+  offset: 0x000EC0
+  symbol: object_okutaVtx_000EC0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001300:
+  type: OOT:ARRAY
+  offset: 0x001300
+  symbol: object_okutaVtx_001300
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_0013D0:
+  type: OOT:ARRAY
+  offset: 0x0013D0
+  symbol: object_okutaVtx_0013D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001400:
+  type: OOT:ARRAY
+  offset: 0x001400
+  symbol: object_okutaVtx_001400
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001450:
+  type: OOT:ARRAY
+  offset: 0x001450
+  symbol: object_okutaVtx_001450
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001490:
+  type: OOT:ARRAY
+  offset: 0x001490
+  symbol: object_okutaVtx_001490
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_0014C0:
+  type: OOT:ARRAY
+  offset: 0x0014C0
+  symbol: object_okutaVtx_0014C0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001510:
+  type: OOT:ARRAY
+  offset: 0x001510
+  symbol: object_okutaVtx_001510
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001550:
+  type: OOT:ARRAY
+  offset: 0x001550
+  symbol: object_okutaVtx_001550
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001580:
+  type: OOT:ARRAY
+  offset: 0x001580
+  symbol: object_okutaVtx_001580
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_0015D0:
+  type: OOT:ARRAY
+  offset: 0x0015D0
+  symbol: object_okutaVtx_0015D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001610:
+  type: OOT:ARRAY
+  offset: 0x001610
+  symbol: object_okutaVtx_001610
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001640:
+  type: OOT:ARRAY
+  offset: 0x001640
+  symbol: object_okutaVtx_001640
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_okutaVtx_001690:
+  type: OOT:ARRAY
+  offset: 0x001690
+  symbol: object_okutaVtx_001690
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gOctorokSkelLimbsLimb_0035C0DL_0016D0:
+  type: GFX
+  offset: 0x0016D0
+  symbol: gOctorokSkelLimbsLimb_0035C0DL_0016D0
+
+gOctorokSkelLimbsLimb_003440DL_0017C0:
+  type: GFX
+  offset: 0x0017C0
+  symbol: gOctorokSkelLimbsLimb_003440DL_0017C0
+
+gOctorokSkelLimbsLimb_003464DL_001A70:
+  type: GFX
+  offset: 0x001A70
+  symbol: gOctorokSkelLimbsLimb_003464DL_001A70
+
+gOctorokSkelLimbsLimb_0034A0DL_001B70:
+  type: GFX
+  offset: 0x001B70
+  symbol: gOctorokSkelLimbsLimb_0034A0DL_001B70
+
+gOctorokSkelLimbsLimb_0034ACDL_001C00:
+  type: GFX
+  offset: 0x001C00
+  symbol: gOctorokSkelLimbsLimb_0034ACDL_001C00
+
+gOctorokSkelLimbsLimb_0034B8DL_001C98:
+  type: GFX
+  offset: 0x001C98
+  symbol: gOctorokSkelLimbsLimb_0034B8DL_001C98
+
+gOctorokSkelLimbsLimb_00359CDL_001D28:
+  type: GFX
+  offset: 0x001D28
+  symbol: gOctorokSkelLimbsLimb_00359CDL_001D28
+
+gOctorokSkelLimbsLimb_0035A8DL_001DB8:
+  type: GFX
+  offset: 0x001DB8
+  symbol: gOctorokSkelLimbsLimb_0035A8DL_001DB8
+
+gOctorokSkelLimbsLimb_0035B4DL_001E50:
+  type: GFX
+  offset: 0x001E50
+  symbol: gOctorokSkelLimbsLimb_0035B4DL_001E50
+
+gOctorokSkelLimbsLimb_0034F4DL_001EE0:
+  type: GFX
+  offset: 0x001EE0
+  symbol: gOctorokSkelLimbsLimb_0034F4DL_001EE0
+
+gOctorokSkelLimbsLimb_003500DL_001F70:
+  type: GFX
+  offset: 0x001F70
+  symbol: gOctorokSkelLimbsLimb_003500DL_001F70
+
+gOctorokSkelLimbsLimb_00350CDL_002008:
+  type: GFX
+  offset: 0x002008
+  symbol: gOctorokSkelLimbsLimb_00350CDL_002008
+
+gOctorokSkelLimbsLimb_003548DL_002098:
+  type: GFX
+  offset: 0x002098
+  symbol: gOctorokSkelLimbsLimb_003548DL_002098
+
+gOctorokSkelLimbsLimb_003554DL_002128:
+  type: GFX
+  offset: 0x002128
+  symbol: gOctorokSkelLimbsLimb_003554DL_002128
+
+gOctorokSkelLimbsLimb_003560DL_0021C0:
+  type: GFX
+  offset: 0x0021C0
+  symbol: gOctorokSkelLimbsLimb_003560DL_0021C0
+
+object_okutaVtx_003350:
+  type: OOT:ARRAY
+  offset: 0x003350
+  symbol: object_okutaVtx_003350
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gOctorokSkelLimbsLimb_003410:
+  type: OOT:LIMB
+  offset: 0x003410
+  symbol: gOctorokSkelLimbsLimb_003410
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_00341C:
+  type: OOT:LIMB
+  offset: 0x00341C
+  symbol: gOctorokSkelLimbsLimb_00341C
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003428:
+  type: OOT:LIMB
+  offset: 0x003428
+  symbol: gOctorokSkelLimbsLimb_003428
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003434:
+  type: OOT:LIMB
+  offset: 0x003434
+  symbol: gOctorokSkelLimbsLimb_003434
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003440:
+  type: OOT:LIMB
+  offset: 0x003440
+  symbol: gOctorokSkelLimbsLimb_003440
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_00344C:
+  type: OOT:LIMB
+  offset: 0x00344C
+  symbol: gOctorokSkelLimbsLimb_00344C
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003458:
+  type: OOT:LIMB
+  offset: 0x003458
+  symbol: gOctorokSkelLimbsLimb_003458
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003464:
+  type: OOT:LIMB
+  offset: 0x003464
+  symbol: gOctorokSkelLimbsLimb_003464
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003470:
+  type: OOT:LIMB
+  offset: 0x003470
+  symbol: gOctorokSkelLimbsLimb_003470
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_00347C:
+  type: OOT:LIMB
+  offset: 0x00347C
+  symbol: gOctorokSkelLimbsLimb_00347C
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003488:
+  type: OOT:LIMB
+  offset: 0x003488
+  symbol: gOctorokSkelLimbsLimb_003488
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003494:
+  type: OOT:LIMB
+  offset: 0x003494
+  symbol: gOctorokSkelLimbsLimb_003494
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0034A0:
+  type: OOT:LIMB
+  offset: 0x0034A0
+  symbol: gOctorokSkelLimbsLimb_0034A0
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0034AC:
+  type: OOT:LIMB
+  offset: 0x0034AC
+  symbol: gOctorokSkelLimbsLimb_0034AC
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0034B8:
+  type: OOT:LIMB
+  offset: 0x0034B8
+  symbol: gOctorokSkelLimbsLimb_0034B8
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0034C4:
+  type: OOT:LIMB
+  offset: 0x0034C4
+  symbol: gOctorokSkelLimbsLimb_0034C4
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0034D0:
+  type: OOT:LIMB
+  offset: 0x0034D0
+  symbol: gOctorokSkelLimbsLimb_0034D0
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0034DC:
+  type: OOT:LIMB
+  offset: 0x0034DC
+  symbol: gOctorokSkelLimbsLimb_0034DC
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0034E8:
+  type: OOT:LIMB
+  offset: 0x0034E8
+  symbol: gOctorokSkelLimbsLimb_0034E8
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0034F4:
+  type: OOT:LIMB
+  offset: 0x0034F4
+  symbol: gOctorokSkelLimbsLimb_0034F4
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003500:
+  type: OOT:LIMB
+  offset: 0x003500
+  symbol: gOctorokSkelLimbsLimb_003500
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_00350C:
+  type: OOT:LIMB
+  offset: 0x00350C
+  symbol: gOctorokSkelLimbsLimb_00350C
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003518:
+  type: OOT:LIMB
+  offset: 0x003518
+  symbol: gOctorokSkelLimbsLimb_003518
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003524:
+  type: OOT:LIMB
+  offset: 0x003524
+  symbol: gOctorokSkelLimbsLimb_003524
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003530:
+  type: OOT:LIMB
+  offset: 0x003530
+  symbol: gOctorokSkelLimbsLimb_003530
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_00353C:
+  type: OOT:LIMB
+  offset: 0x00353C
+  symbol: gOctorokSkelLimbsLimb_00353C
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003548:
+  type: OOT:LIMB
+  offset: 0x003548
+  symbol: gOctorokSkelLimbsLimb_003548
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003554:
+  type: OOT:LIMB
+  offset: 0x003554
+  symbol: gOctorokSkelLimbsLimb_003554
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003560:
+  type: OOT:LIMB
+  offset: 0x003560
+  symbol: gOctorokSkelLimbsLimb_003560
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_00356C:
+  type: OOT:LIMB
+  offset: 0x00356C
+  symbol: gOctorokSkelLimbsLimb_00356C
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003578:
+  type: OOT:LIMB
+  offset: 0x003578
+  symbol: gOctorokSkelLimbsLimb_003578
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003584:
+  type: OOT:LIMB
+  offset: 0x003584
+  symbol: gOctorokSkelLimbsLimb_003584
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_003590:
+  type: OOT:LIMB
+  offset: 0x003590
+  symbol: gOctorokSkelLimbsLimb_003590
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_00359C:
+  type: OOT:LIMB
+  offset: 0x00359C
+  symbol: gOctorokSkelLimbsLimb_00359C
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0035A8:
+  type: OOT:LIMB
+  offset: 0x0035A8
+  symbol: gOctorokSkelLimbsLimb_0035A8
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0035B4:
+  type: OOT:LIMB
+  offset: 0x0035B4
+  symbol: gOctorokSkelLimbsLimb_0035B4
+  limb_type: Standard
+
+gOctorokSkelLimbsLimb_0035C0:
+  type: OOT:LIMB
+  offset: 0x0035C0
+  symbol: gOctorokSkelLimbsLimb_0035C0
+  limb_type: Standard
+
+gOctorokSkelLimbs:
+  type: BLOB
+  offset: 0x35CC
+  symbol: gOctorokSkelLimbs
+  size: 0

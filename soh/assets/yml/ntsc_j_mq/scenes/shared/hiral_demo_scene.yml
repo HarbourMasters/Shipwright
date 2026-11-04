@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 2, 0x01D2A040 ]
+
+  external_files:
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_0037C0.yml
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_003890.yml
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_003920.yml
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_0039B0.yml
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_003A60.yml
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_003AF0.yml
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_003B80.yml
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_003C10.yml
+    - ntsc_j_mq/scenes/shared/hiral_demo_sceneSet_003CA0.yml
+hiral_demo_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: hiral_demo_scene
+
+
+hiral_demo_sceneCollisionHeader_003548:
+  type: OOT:COLLISION
+  offset: 0x003548
+  symbol: hiral_demo_sceneCollisionHeader_003548

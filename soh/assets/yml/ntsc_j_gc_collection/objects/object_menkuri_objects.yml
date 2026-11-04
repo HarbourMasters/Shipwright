@@ -1,0 +1,152 @@
+:config:
+  segments:
+    - [ 6, 0x00ED7E20 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x00ED7E20 ]
+    - [ 9, 0x00ED7E20 ]
+    - [ 10, 0x00ED7E20 ]
+    - [ 11, 0x00ED7E20 ]
+    - [ 12, 0x00ED7E20 ]
+    - [ 13, 0x00ED7E20 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gGTGDoorDL:
+  type: GFX
+  offset: 0x10D0
+  symbol: gGTGDoorDL
+
+gGTGDoorTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGTGDoorTex
+  format: I4
+  width: 64
+  height: 128
+
+gGTGEyeStatueEyeDL:
+  type: GFX
+  offset: 0x2D20
+  symbol: gGTGEyeStatueEyeDL
+
+gGTGFakeCeilingDL:
+  type: GFX
+  offset: 0x2BC0
+  symbol: gGTGFakeCeilingDL
+
+gGTGFakeCeilingTex:
+  type: TEXTURE
+  offset: 0x2340
+  symbol: gGTGFakeCeilingTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGTGFakeWallDL:
+  type: GFX
+  offset: 0x2280
+  symbol: gGTGFakeWallDL
+
+gGTGFakeWallTex:
+  type: TEXTURE
+  offset: 0x1180
+  symbol: gGTGFakeWallTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gGTGRotatingRingPlatformCol:
+  type: OOT:COLLISION
+  offset: 0x42D8
+  symbol: gGTGRotatingRingPlatformCol
+
+gGTGRotatingRingPlatformDL:
+  type: GFX
+  offset: 0x38D0
+  symbol: gGTGRotatingRingPlatformDL
+
+gGTGRotatingRingPlatformInnerCircleTex:
+  type: TEXTURE
+  offset: 0x4310
+  symbol: gGTGRotatingRingPlatformInnerCircleTex
+  format: I4
+  width: 64
+  height: 128
+
+gGTGRotatingRingPlatformOuterCircleTex:
+  type: TEXTURE
+  offset: 0x7B10
+  symbol: gGTGRotatingRingPlatformOuterCircleTex
+  format: I4
+  width: 128
+  height: 64
+
+gGTGStatueEyeTex:
+  type: TEXTURE
+  offset: 0x6B10
+  symbol: gGTGStatueEyeTex
+  format: I4
+  width: 64
+  height: 128
+
+gGTGStatueTex:
+  type: TEXTURE
+  offset: 0x5310
+  symbol: gGTGStatueTex
+  format: I4
+  width: 64
+  height: 128
+
+gGTGTex_6310:
+  type: TEXTURE
+  offset: 0x6310
+  symbol: gGTGTex_6310
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_menkuri_objectsVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_menkuri_objectsVtx_001000
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_menkuri_objectsVtx_002180:
+  type: OOT:ARRAY
+  offset: 0x002180
+  symbol: object_menkuri_objectsVtx_002180
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_menkuri_objectsVtx_002B40:
+  type: OOT:ARRAY
+  offset: 0x002B40
+  symbol: object_menkuri_objectsVtx_002B40
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_menkuri_objectsVtx_002C60:
+  type: OOT:ARRAY
+  offset: 0x002C60
+  symbol: object_menkuri_objectsVtx_002C60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_menkuri_objectsVtx_002DD0:
+  type: OOT:ARRAY
+  offset: 0x002DD0
+  symbol: object_menkuri_objectsVtx_002DD0
+  count: 176
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

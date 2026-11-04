@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 9, 0x008CBFF0 ]
+
+gRedMessageXLeftTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gRedMessageXLeftTex
+  format: I4
+  width: 96
+  height: 48
+
+gRedMessageXRightTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gRedMessageXRightTex
+  format: I4
+  width: 96
+  height: 48
+

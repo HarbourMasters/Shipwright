@@ -1,0 +1,104 @@
+:config:
+  segments:
+    - [ 2, 0x01F4D310 ]
+
+  external_files:
+    - ntsc_1-0/scenes/shared/ganon_demo_sceneSet_001AD0.yml
+ganon_demo_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ganon_demo_scene
+
+ganon_demo_sceneTex_001B70:
+  type: TEXTURE
+  offset: 0x1B70
+  symbol: ganon_demo_sceneTex_001B70
+  format: I8
+  width: 128
+  height: 32
+
+ganon_demo_sceneTex_002B70:
+  type: TEXTURE
+  offset: 0x2B70
+  symbol: ganon_demo_sceneTex_002B70
+  format: I8
+  width: 64
+  height: 64
+
+ganon_demo_sceneTex_003B70:
+  type: TEXTURE
+  offset: 0x3B70
+  symbol: ganon_demo_sceneTex_003B70
+  format: I8
+  width: 64
+  height: 64
+
+ganon_demo_sceneTex_004B70:
+  type: TEXTURE
+  offset: 0x4B70
+  symbol: ganon_demo_sceneTex_004B70
+  format: I8
+  width: 64
+  height: 64
+
+ganon_demo_sceneTex_005B70:
+  type: TEXTURE
+  offset: 0x5B70
+  symbol: ganon_demo_sceneTex_005B70
+  format: RGBA16
+  width: 64
+  height: 16
+
+ganon_demo_sceneTex_006370:
+  type: TEXTURE
+  offset: 0x6370
+  symbol: ganon_demo_sceneTex_006370
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganon_demo_sceneTex_006B70:
+  type: TEXTURE
+  offset: 0x6B70
+  symbol: ganon_demo_sceneTex_006B70
+  format: IA4
+  width: 128
+  height: 32
+
+ganon_demo_sceneTex_007370:
+  type: TEXTURE
+  offset: 0x7370
+  symbol: ganon_demo_sceneTex_007370
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganon_demo_sceneTex_008370:
+  type: TEXTURE
+  offset: 0x8370
+  symbol: ganon_demo_sceneTex_008370
+  format: RGBA16
+  width: 16
+  height: 32
+
+ganon_demo_sceneTex_008770:
+  type: TEXTURE
+  offset: 0x8770
+  symbol: ganon_demo_sceneTex_008770
+  format: I8
+  width: 16
+  height: 16
+
+ganon_demo_sceneTex_008870:
+  type: TEXTURE
+  offset: 0x8870
+  symbol: ganon_demo_sceneTex_008870
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+ganon_demo_sceneCollisionHeader_001AA0:
+  type: OOT:COLLISION
+  offset: 0x001AA0
+  symbol: ganon_demo_sceneCollisionHeader_001AA0

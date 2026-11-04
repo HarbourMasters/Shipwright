@@ -1,0 +1,170 @@
+:config:
+  segments:
+    - [ 6, 0x00F372C0 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x00F372C0 ]
+    - [ 9, 0x00F372C0 ]
+    - [ 10, 0x00F372C0 ]
+    - [ 11, 0x00F372C0 ]
+    - [ 12, 0x00F372C0 ]
+    - [ 13, 0x00F372C0 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gZorasFountainBombableWallCol:
+  type: OOT:COLLISION
+  offset: 0x39D4
+  symbol: gZorasFountainBombableWallCol
+
+gZorasFountainBombableWallDL:
+  type: GFX
+  offset: 0x3898
+  symbol: gZorasFountainBombableWallDL
+
+gZorasFountainBombableWallTLUT:
+  type: TEXTURE
+  offset: 0x3010
+  symbol: gZorasFountainBombableWallTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gZorasFountainBombableWallTex:
+  type: TEXTURE
+  offset: 0x3038
+  symbol: gZorasFountainBombableWallTex
+  format: CI4
+  width: 128
+  height: 32
+  tlut: 0x3010
+
+gZorasFountainIceRampCol:
+  type: OOT:COLLISION
+  offset: 0x1904
+  symbol: gZorasFountainIceRampCol
+
+gZorasFountainIceRampDL:
+  type: GFX
+  offset: 0xDE0
+  symbol: gZorasFountainIceRampDL
+
+gZorasFountainIceRampLowerSideTex:
+  type: TEXTURE
+  offset: 0x20
+  symbol: gZorasFountainIceRampLowerSideTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x0
+
+gZorasFountainIceRampMiddleSlopeTex:
+  type: TEXTURE
+  offset: 0x4E00
+  symbol: gZorasFountainIceRampMiddleSlopeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZorasFountainIceRampSurfaceTex:
+  type: TEXTURE
+  offset: 0x3E00
+  symbol: gZorasFountainIceRampSurfaceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZorasFountainIceRampTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZorasFountainIceRampTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gZorasFountainIceRampUpperSideTex:
+  type: TEXTURE
+  offset: 0x4600
+  symbol: gZorasFountainIceRampUpperSideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZorasFountainIceberg1TLUT:
+  type: TEXTURE
+  offset: 0x1930
+  symbol: gZorasFountainIceberg1TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gZorasFountainIceberg2TLUT:
+  type: TEXTURE
+  offset: 0x1950
+  symbol: gZorasFountainIceberg2TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gZorasFountainIcebergCol:
+  type: OOT:COLLISION
+  offset: 0x2FD8
+  symbol: gZorasFountainIcebergCol
+
+gZorasFountainIcebergDL:
+  type: GFX
+  offset: 0x2BD0
+  symbol: gZorasFountainIcebergDL
+
+gZorasFountainIcebergSideTex:
+  type: TEXTURE
+  offset: 0x1970
+  symbol: gZorasFountainIcebergSideTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x1930
+
+gZorasFountainIcebergTopTex:
+  type: TEXTURE
+  offset: 0x2170
+  symbol: gZorasFountainIcebergTopTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x1950
+
+gZorasFountainIcebergUndersideTex:
+  type: TEXTURE
+  offset: 0x3A00
+  symbol: gZorasFountainIcebergUndersideTex
+  format: RGBA16
+  width: 64
+  height: 8
+
+
+object_spot08_objVtx_000820:
+  type: OOT:ARRAY
+  offset: 0x000820
+  symbol: object_spot08_objVtx_000820
+  count: 92
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot08_objVtx_002970:
+  type: OOT:ARRAY
+  offset: 0x002970
+  symbol: object_spot08_objVtx_002970
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot08_objVtx_003838:
+  type: OOT:ARRAY
+  offset: 0x003838
+  symbol: object_spot08_objVtx_003838
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

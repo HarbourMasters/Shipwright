@@ -19,15 +19,17 @@ char* GameplayStats_GetCurrentTime();
 // Total gameplay time is tracked in tenths of seconds
 // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
 // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME                                                                \
-    (gSaveContext.ship.stats.rtaTiming                                                         \
-         ? (!gSaveContext.ship.stats.gameComplete                                              \
-                ? (!gSaveContext.ship.stats.firstInput                                         \
-                       ? 0                                                                     \
-                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.firstInput) / 100))    \
-                : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]               \
-                       ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
-                       : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
+#define GAMEPLAYSTAT_TOTAL_TIME                                                                          \
+    (gSaveContext.ship.stats.rtaTiming                                                                   \
+         ? (!gSaveContext.ship.stats.gameComplete                                                        \
+                ? (!gSaveContext.ship.stats.firstInput                                                   \
+                       ? 0                                                                               \
+                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.firstInput) / 100))              \
+                : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED]                   \
+                       ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED]             \
+                       : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]                  \
+                              ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]            \
+                              : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TIMESPLITS_COMPLETED]))) \
          : (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
 #define CURRENT_MODE_TIMER                                                                       \
     (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ? gSaveContext.ship.stats.roomTimer \
@@ -92,7 +94,35 @@ typedef enum {
     /* 0xD2 */ TIMESTAMP_FOUND_BACK_TOWER_KEY,
     /* 0xD3 */ TIMESTAMP_FOUND_HYLIA_LAB_KEY,
     /* 0xD4 */ TIMESTAMP_FOUND_FISHING_HOLE_KEY,
-    /* 0xD5 */ TIMESTAMP_MAX
+    /* 0xD5 */ TIMESTAMP_FOUND_CHILD_WALLET,
+    /* 0xD6 */ TIMESTAMP_FOUND_TYCOON_WALLET,
+    /* 0xD7 */ TIMESTAMP_FOUND_DEKU_STICK_BAG,
+    /* 0xD8 */ TIMESTAMP_FOUND_DEKU_NUT_BAG,
+    /* 0xD9 */ TIMESTAMP_FOUND_GRAB,
+    /* 0xDA */ TIMESTAMP_FOUND_CLIMB,
+    /* 0xDB */ TIMESTAMP_FOUND_CRAWL,
+    /* 0xDC */ TIMESTAMP_FOUND_OPEN_CHESTS,
+    /* 0xDD */ TIMESTAMP_FOUND_SPEAK_DEKU,
+    /* 0xDE */ TIMESTAMP_FOUND_SPEAK_GERUDO,
+    /* 0xDF */ TIMESTAMP_FOUND_SPEAK_GORON,
+    /* 0xE0 */ TIMESTAMP_FOUND_SPEAK_HYLIAN,
+    /* 0xE1 */ TIMESTAMP_FOUND_SPEAK_KOKIRI,
+    /* 0xE2 */ TIMESTAMP_FOUND_SPEAK_ZORA,
+    /* 0xE3 */ TIMESTAMP_FOUND_DMC_BEAN_SOUL,
+    /* 0xE4 */ TIMESTAMP_FOUND_DMT_BEAN_SOUL,
+    /* 0xE5 */ TIMESTAMP_FOUND_COLOSSUS_BEAN_SOUL,
+    /* 0xE6 */ TIMESTAMP_FOUND_GV_BEAN_SOUL,
+    /* 0xE7 */ TIMESTAMP_FOUND_GY_BEAN_SOUL,
+    /* 0xE8 */ TIMESTAMP_FOUND_KF_BEAN_SOUL,
+    /* 0xE9 */ TIMESTAMP_FOUND_LH_BEAN_SOUL,
+    /* 0xEA */ TIMESTAMP_FOUND_LW_BRIDGE_BEAN_SOUL,
+    /* 0xEB */ TIMESTAMP_FOUND_LW_MEADOW_BEAN_SOUL,
+    /* 0xEC */ TIMESTAMP_FOUND_ZR_BEAN_SOUL,
+    /* 0xED */ TIMESTAMP_FOUND_SKELETON_KEY,
+    /* 0xEE */ TIMESTAMP_FOUND_ROCS_FEATHER,
+    /* 0xEF */ TIMESTAMP_TIMESPLITS_COMPLETED,
+    /* 0xF0 */ TIMESTAMP_FOUND_SCARECROWS_SONG,
+    /* 0xF1 */ TIMESTAMP_MAX
 } GameplayStatTimestamp;
 
 typedef enum {
@@ -205,7 +235,7 @@ typedef enum {
     COUNT_SWORD_SWINGS,     // z_player.c
     COUNT_SIDEHOPS,         // z_player.c
     COUNT_BACKFLIPS,        // z_player.c
-    COUNT_TIME_BUNNY_HOOD,  // z_play.c
+    COUNT_TIME_BUNNY_HOOD,  // BunnyHood.cpp
 
     COUNT_MAX
 

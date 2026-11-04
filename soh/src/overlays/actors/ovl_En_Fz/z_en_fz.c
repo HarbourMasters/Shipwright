@@ -326,7 +326,7 @@ void EnFz_SpawnIceSmokeActiveState(EnFz* this) {
 void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
     Vec3f vec;
 
-    if (this->isMoving && ((this->actor.bgCheckFlags & 8) ||
+    if (this->isMoving && ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) ||
                            (Actor_TestFloorInDirection(&this->actor, play, 60.0f, this->actor.world.rot.y) == 0))) {
         this->actor.bgCheckFlags &= ~8;
         this->isMoving = false;
@@ -511,7 +511,7 @@ void EnFz_BlowSmoke(EnFz* this, PlayState* play) {
     } else if (this->timer >= 11) {
         isTimerMod8 = false;
         primAlpha = 150;
-        func_8002F974(&this->actor, NA_SE_EN_FREEZAD_BREATH - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_FREEZAD_BREATH - SFX_FLAG);
 
         if ((this->timer - 10) < 16) { // t < 26
             primAlpha = (this->timer * 10) - 100;
@@ -623,7 +623,7 @@ void EnFz_BlowSmokeStationary(EnFz* this, PlayState* play) {
     } else {
         isTimerMod8 = false;
         primAlpha = 150;
-        func_8002F974(&this->actor, NA_SE_EN_FREEZAD_BREATH - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_FREEZAD_BREATH - SFX_FLAG);
 
         if ((this->counter & 0x3F) >= 48) {
             primAlpha = 630 - ((this->counter & 0x3F) * 10);
@@ -886,8 +886,8 @@ void EnFz_DrawIceSmoke(EnFz* this, PlayState* play) {
 
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, iceSmoke->primAlpha);
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 3 * (iceSmoke->timer + (3 * i)),
-                                        15 * (iceSmoke->timer + (3 * i)), 32, 64, 1, 0, 0, 32, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 3 * (iceSmoke->timer + (3 * i)),
+                                          15 * (iceSmoke->timer + (3 * i)), 32, 64, 1, 0, 0, 32, 32, 3, 15, 0, 0));
             Matrix_Translate(iceSmoke->pos.x, iceSmoke->pos.y, iceSmoke->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(iceSmoke->xyScale, iceSmoke->xyScale, 1.0f, MTXMODE_APPLY);

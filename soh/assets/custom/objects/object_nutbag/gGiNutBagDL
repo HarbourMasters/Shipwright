@@ -1,0 +1,19 @@
+<DisplayList Version="0">
+    <Matrix Path="objects/gameplay_keep/gGiScaleMtx" Param="G_MTX_PUSH"/>
+	<CallDisplayList Path="objects/object_nutbag/mat_gGiNutBagDL_Nuts_layerOpaque"/>
+	<CallDisplayList Path="objects/object_nutbag/gGiNutBagDL_tri_0"/>
+	<CallDisplayList Path="objects/object_nutbag/mat_gGiNutBagDL_nutgold_layerOpaque"/>
+	<CallDisplayList Path="objects/object_nutbag/gGiNutBagDL_tri_1"/>
+	<CallDisplayList Path="objects/object_nutbag/mat_gGiNutBagDL_Inside_layerOpaque"/>
+	<CallDisplayList Path="objects/object_nutbag/gGiNutBagDL_tri_2"/>
+	<CallDisplayList Path="objects/object_nutbag/mat_gGiNutBagDL_Pouch_layerOpaque"/>
+	<CallDisplayList Path="objects/object_nutbag/gGiNutBagDL_tri_3"/>
+	<CallDisplayList Path="objects/object_nutbag/mat_gGiNutBagDL_UpgradeColor_layerOpaque"/>
+	<CallDisplayList Path="objects/object_nutbag/gGiNutBagDL_tri_4"/>
+	<CallDisplayList Path="objects/object_nutbag/mat_gGiNutBagDL_NutTx_layerOpaque"/>
+	<CallDisplayList Path="objects/object_nutbag/gGiNutBagDL_tri_5"/>
+	<CallDisplayList Path="objects/object_nutbag/mat_gGiNutBagDL_String_layerOpaque"/>
+	<CallDisplayList Path="objects/object_nutbag/gGiNutBagDL_tri_6"/>
+	<EndDisplayList/>
+</DisplayList>
+

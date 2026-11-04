@@ -9,7 +9,7 @@
 #include <sapi.h>
 #include <thread>
 #include <string>
-#include <spdlog/fmt/fmt.h>
+#include <spdlog/common.h>
 #include <spdlog/fmt/xchar.h>
 
 ISpVoice* ispVoice = NULL;
@@ -41,7 +41,7 @@ void SpeakThreadTask(std::string text, std::string language) {
     auto wText = CharToWideString(text);
     auto wLanguage = CharToWideString(language);
 
-    auto speakText = fmt::format(
+    auto speakText = spdlog::fmt_lib::format(
         L"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='{}'>{}</speak>", wLanguage, wText);
     ispVoice->Speak(speakText.c_str(), SPF_IS_XML | SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
 }

@@ -1,0 +1,706 @@
+:config:
+  segments:
+    - [ 6, 0x00E6B0E0 ]
+
+gHorseGanonEyeTex:
+  type: TEXTURE
+  offset: 0xAC10
+  symbol: gHorseGanonEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHorseGanonGallopingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2650
+  symbol: gHorseGanonGallopingAnim
+
+gHorseGanonHeadHairTex:
+  type: TEXTURE
+  offset: 0xAE10
+  symbol: gHorseGanonHeadHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHorseGanonIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x4AA4
+  symbol: gHorseGanonIdleAnim
+
+gHorseGanonLegTex:
+  type: TEXTURE
+  offset: 0xA370
+  symbol: gHorseGanonLegTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHorseGanonRearingAnim:
+  type: OOT:ANIMATION
+  offset: 0x3858
+  symbol: gHorseGanonRearingAnim
+
+gHorseGanonSkel:
+  type: OOT:SKELETON
+  offset: 0x8668
+  symbol: gHorseGanonSkel
+  limb_type: Skin
+  skel_type: Normal
+
+gHorseGanonTrottingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2CE4
+  symbol: gHorseGanonTrottingAnim
+
+gHorseGanonWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5B78
+  symbol: gHorseGanonWalkingAnim
+
+gHorseGanonWhinnyAnim:
+  type: OOT:ANIMATION
+  offset: 0x5264
+  symbol: gHorseGanonWhinnyAnim
+
+object_horse_ganonTex_00A570:
+  type: TEXTURE
+  offset: 0xA570
+  symbol: object_horse_ganonTex_00A570
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_horse_ganonTex_00A5F0:
+  type: TEXTURE
+  offset: 0xA5F0
+  symbol: object_horse_ganonTex_00A5F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_ganonTex_00A7F0:
+  type: TEXTURE
+  offset: 0xA7F0
+  symbol: object_horse_ganonTex_00A7F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_horse_ganonTex_00A810:
+  type: TEXTURE
+  offset: 0xA810
+  symbol: object_horse_ganonTex_00A810
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_ganonTex_00AA10:
+  type: TEXTURE
+  offset: 0xAA10
+  symbol: object_horse_ganonTex_00AA10
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_ganonTex_00B010:
+  type: TEXTURE
+  offset: 0xB010
+  symbol: object_horse_ganonTex_00B010
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_horse_ganonTex_00B110:
+  type: TEXTURE
+  offset: 0xB110
+  symbol: object_horse_ganonTex_00B110
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_horse_ganonTex_00B510:
+  type: TEXTURE
+  offset: 0xB510
+  symbol: object_horse_ganonTex_00B510
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_horse_ganonTex_00B610:
+  type: TEXTURE
+  offset: 0xB610
+  symbol: object_horse_ganonTex_00B610
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_horse_ganonTex_00B690:
+  type: TEXTURE
+  offset: 0xB690
+  symbol: object_horse_ganonTex_00B690
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_horse_ganonTex_00BE90:
+  type: TEXTURE
+  offset: 0xBE90
+  symbol: object_horse_ganonTex_00BE90
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_horse_ganonVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_horse_ganonVtx_000000
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008394DL_0001C0:
+  type: GFX
+  offset: 0x0001C0
+  symbol: gHorseGanonSkelLimbsLimb_008394DL_0001C0
+
+object_horse_ganonVtx_0002F0:
+  type: OOT:ARRAY
+  offset: 0x0002F0
+  symbol: object_horse_ganonVtx_0002F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_0083A4DL_000430:
+  type: GFX
+  offset: 0x000430
+  symbol: gHorseGanonSkelLimbsLimb_0083A4DL_000430
+
+object_horse_ganonVtx_0004E0:
+  type: OOT:ARRAY
+  offset: 0x0004E0
+  symbol: object_horse_ganonVtx_0004E0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_0083B4DL_0007E0:
+  type: GFX
+  offset: 0x0007E0
+  symbol: gHorseGanonSkelLimbsLimb_0083B4DL_0007E0
+
+object_horse_ganonVtx_000920:
+  type: OOT:ARRAY
+  offset: 0x000920
+  symbol: object_horse_ganonVtx_000920
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008434DL_000AE0:
+  type: GFX
+  offset: 0x000AE0
+  symbol: gHorseGanonSkelLimbsLimb_008434DL_000AE0
+
+object_horse_ganonVtx_000C10:
+  type: OOT:ARRAY
+  offset: 0x000C10
+  symbol: object_horse_ganonVtx_000C10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008444DL_000D50:
+  type: GFX
+  offset: 0x000D50
+  symbol: gHorseGanonSkelLimbsLimb_008444DL_000D50
+
+object_horse_ganonVtx_000E00:
+  type: OOT:ARRAY
+  offset: 0x000E00
+  symbol: object_horse_ganonVtx_000E00
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008454DL_001100:
+  type: GFX
+  offset: 0x001100
+  symbol: gHorseGanonSkelLimbsLimb_008454DL_001100
+
+object_horse_ganonVtx_001240:
+  type: OOT:ARRAY
+  offset: 0x001240
+  symbol: object_horse_ganonVtx_001240
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_0083C4DL_0013D0:
+  type: GFX
+  offset: 0x0013D0
+  symbol: gHorseGanonSkelLimbsLimb_0083C4DL_0013D0
+
+object_horse_ganonVtx_0014D0:
+  type: OOT:ARRAY
+  offset: 0x0014D0
+  symbol: object_horse_ganonVtx_0014D0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_0084F4DL_001630:
+  type: GFX
+  offset: 0x001630
+  symbol: gHorseGanonSkelLimbsLimb_0084F4DL_001630
+
+object_horse_ganonVtx_001740:
+  type: OOT:ARRAY
+  offset: 0x001740
+  symbol: object_horse_ganonVtx_001740
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008504DL_001880:
+  type: GFX
+  offset: 0x001880
+  symbol: gHorseGanonSkelLimbsLimb_008504DL_001880
+
+object_horse_ganonVtx_001930:
+  type: OOT:ARRAY
+  offset: 0x001930
+  symbol: object_horse_ganonVtx_001930
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008574DL_001A90:
+  type: GFX
+  offset: 0x001A90
+  symbol: gHorseGanonSkelLimbsLimb_008574DL_001A90
+
+object_horse_ganonVtx_001BA0:
+  type: OOT:ARRAY
+  offset: 0x001BA0
+  symbol: object_horse_ganonVtx_001BA0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008584DL_001CE0:
+  type: GFX
+  offset: 0x001CE0
+  symbol: gHorseGanonSkelLimbsLimb_008584DL_001CE0
+
+object_horse_ganonVtx_001D90:
+  type: OOT:ARRAY
+  offset: 0x001D90
+  symbol: object_horse_ganonVtx_001D90
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008464DL_001F20:
+  type: GFX
+  offset: 0x001F20
+  symbol: gHorseGanonSkelLimbsLimb_008464DL_001F20
+
+object_horse_ganonVtx_005B90:
+  type: OOT:ARRAY
+  offset: 0x005B90
+  symbol: object_horse_ganonVtx_005B90
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008474DL_0060F0:
+  type: GFX
+  offset: 0x0060F0
+  symbol: gHorseGanonSkelLimbsLimb_008474DL_0060F0
+
+gHorseGanonSkelLimbsLimb_008244:
+  type: OOT:LIMB
+  offset: 0x008244
+  symbol: gHorseGanonSkelLimbsLimb_008244
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008254:
+  type: OOT:LIMB
+  offset: 0x008254
+  symbol: gHorseGanonSkelLimbsLimb_008254
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008264:
+  type: OOT:LIMB
+  offset: 0x008264
+  symbol: gHorseGanonSkelLimbsLimb_008264
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008274:
+  type: OOT:LIMB
+  offset: 0x008274
+  symbol: gHorseGanonSkelLimbsLimb_008274
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008284:
+  type: OOT:LIMB
+  offset: 0x008284
+  symbol: gHorseGanonSkelLimbsLimb_008284
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008294:
+  type: OOT:LIMB
+  offset: 0x008294
+  symbol: gHorseGanonSkelLimbsLimb_008294
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0082A4:
+  type: OOT:LIMB
+  offset: 0x0082A4
+  symbol: gHorseGanonSkelLimbsLimb_0082A4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0082B4:
+  type: OOT:LIMB
+  offset: 0x0082B4
+  symbol: gHorseGanonSkelLimbsLimb_0082B4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0082C4:
+  type: OOT:LIMB
+  offset: 0x0082C4
+  symbol: gHorseGanonSkelLimbsLimb_0082C4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0082D4:
+  type: OOT:LIMB
+  offset: 0x0082D4
+  symbol: gHorseGanonSkelLimbsLimb_0082D4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0082E4:
+  type: OOT:LIMB
+  offset: 0x0082E4
+  symbol: gHorseGanonSkelLimbsLimb_0082E4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0082F4:
+  type: OOT:LIMB
+  offset: 0x0082F4
+  symbol: gHorseGanonSkelLimbsLimb_0082F4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008304:
+  type: OOT:LIMB
+  offset: 0x008304
+  symbol: gHorseGanonSkelLimbsLimb_008304
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008314:
+  type: OOT:LIMB
+  offset: 0x008314
+  symbol: gHorseGanonSkelLimbsLimb_008314
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008324:
+  type: OOT:LIMB
+  offset: 0x008324
+  symbol: gHorseGanonSkelLimbsLimb_008324
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008334:
+  type: OOT:LIMB
+  offset: 0x008334
+  symbol: gHorseGanonSkelLimbsLimb_008334
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008344:
+  type: OOT:LIMB
+  offset: 0x008344
+  symbol: gHorseGanonSkelLimbsLimb_008344
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008354:
+  type: OOT:LIMB
+  offset: 0x008354
+  symbol: gHorseGanonSkelLimbsLimb_008354
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008364:
+  type: OOT:LIMB
+  offset: 0x008364
+  symbol: gHorseGanonSkelLimbsLimb_008364
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008374:
+  type: OOT:LIMB
+  offset: 0x008374
+  symbol: gHorseGanonSkelLimbsLimb_008374
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008384:
+  type: OOT:LIMB
+  offset: 0x008384
+  symbol: gHorseGanonSkelLimbsLimb_008384
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008394:
+  type: OOT:LIMB
+  offset: 0x008394
+  symbol: gHorseGanonSkelLimbsLimb_008394
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0083A4:
+  type: OOT:LIMB
+  offset: 0x0083A4
+  symbol: gHorseGanonSkelLimbsLimb_0083A4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0083B4:
+  type: OOT:LIMB
+  offset: 0x0083B4
+  symbol: gHorseGanonSkelLimbsLimb_0083B4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0083C4:
+  type: OOT:LIMB
+  offset: 0x0083C4
+  symbol: gHorseGanonSkelLimbsLimb_0083C4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0083D4:
+  type: OOT:LIMB
+  offset: 0x0083D4
+  symbol: gHorseGanonSkelLimbsLimb_0083D4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0083E4:
+  type: OOT:LIMB
+  offset: 0x0083E4
+  symbol: gHorseGanonSkelLimbsLimb_0083E4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0083F4:
+  type: OOT:LIMB
+  offset: 0x0083F4
+  symbol: gHorseGanonSkelLimbsLimb_0083F4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008404:
+  type: OOT:LIMB
+  offset: 0x008404
+  symbol: gHorseGanonSkelLimbsLimb_008404
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008414:
+  type: OOT:LIMB
+  offset: 0x008414
+  symbol: gHorseGanonSkelLimbsLimb_008414
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008424:
+  type: OOT:LIMB
+  offset: 0x008424
+  symbol: gHorseGanonSkelLimbsLimb_008424
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008434:
+  type: OOT:LIMB
+  offset: 0x008434
+  symbol: gHorseGanonSkelLimbsLimb_008434
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008444:
+  type: OOT:LIMB
+  offset: 0x008444
+  symbol: gHorseGanonSkelLimbsLimb_008444
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008454:
+  type: OOT:LIMB
+  offset: 0x008454
+  symbol: gHorseGanonSkelLimbsLimb_008454
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008464:
+  type: OOT:LIMB
+  offset: 0x008464
+  symbol: gHorseGanonSkelLimbsLimb_008464
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008474:
+  type: OOT:LIMB
+  offset: 0x008474
+  symbol: gHorseGanonSkelLimbsLimb_008474
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008484:
+  type: OOT:LIMB
+  offset: 0x008484
+  symbol: gHorseGanonSkelLimbsLimb_008484
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008494:
+  type: OOT:LIMB
+  offset: 0x008494
+  symbol: gHorseGanonSkelLimbsLimb_008494
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0084A4:
+  type: OOT:LIMB
+  offset: 0x0084A4
+  symbol: gHorseGanonSkelLimbsLimb_0084A4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0084B4:
+  type: OOT:LIMB
+  offset: 0x0084B4
+  symbol: gHorseGanonSkelLimbsLimb_0084B4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0084C4:
+  type: OOT:LIMB
+  offset: 0x0084C4
+  symbol: gHorseGanonSkelLimbsLimb_0084C4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0084D4:
+  type: OOT:LIMB
+  offset: 0x0084D4
+  symbol: gHorseGanonSkelLimbsLimb_0084D4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0084E4:
+  type: OOT:LIMB
+  offset: 0x0084E4
+  symbol: gHorseGanonSkelLimbsLimb_0084E4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_0084F4:
+  type: OOT:LIMB
+  offset: 0x0084F4
+  symbol: gHorseGanonSkelLimbsLimb_0084F4
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008504:
+  type: OOT:LIMB
+  offset: 0x008504
+  symbol: gHorseGanonSkelLimbsLimb_008504
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008514:
+  type: OOT:LIMB
+  offset: 0x008514
+  symbol: gHorseGanonSkelLimbsLimb_008514
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008524:
+  type: OOT:LIMB
+  offset: 0x008524
+  symbol: gHorseGanonSkelLimbsLimb_008524
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008534:
+  type: OOT:LIMB
+  offset: 0x008534
+  symbol: gHorseGanonSkelLimbsLimb_008534
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008544:
+  type: OOT:LIMB
+  offset: 0x008544
+  symbol: gHorseGanonSkelLimbsLimb_008544
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008554:
+  type: OOT:LIMB
+  offset: 0x008554
+  symbol: gHorseGanonSkelLimbsLimb_008554
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008564:
+  type: OOT:LIMB
+  offset: 0x008564
+  symbol: gHorseGanonSkelLimbsLimb_008564
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008574:
+  type: OOT:LIMB
+  offset: 0x008574
+  symbol: gHorseGanonSkelLimbsLimb_008574
+  limb_type: Skin
+
+gHorseGanonSkelLimbsLimb_008584:
+  type: OOT:LIMB
+  offset: 0x008584
+  symbol: gHorseGanonSkelLimbsLimb_008584
+  limb_type: Skin
+
+gHorseGanonSkelLimbs:
+  type: BLOB
+  offset: 0x8594
+  symbol: gHorseGanonSkelLimbs
+  size: 0
+
+object_horse_ganonVtx_008670:
+  type: OOT:ARRAY
+  offset: 0x008670
+  symbol: object_horse_ganonVtx_008670
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008314DL_0090F0:
+  type: GFX
+  offset: 0x0090F0
+  symbol: gHorseGanonSkelLimbsLimb_008314DL_0090F0
+
+object_horse_ganonVtx_009480:
+  type: OOT:ARRAY
+  offset: 0x009480
+  symbol: object_horse_ganonVtx_009480
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008484DL_009790:
+  type: GFX
+  offset: 0x009790
+  symbol: gHorseGanonSkelLimbsLimb_008484DL_009790
+
+object_horse_ganonVtx_009950:
+  type: OOT:ARRAY
+  offset: 0x009950
+  symbol: object_horse_ganonVtx_009950
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseGanonSkelLimbsLimb_008324DL_009BE0:
+  type: GFX
+  offset: 0x009BE0
+  symbol: gHorseGanonSkelLimbsLimb_008324DL_009BE0
+
+gHorseGanonSkelLimbsLimb_008294SkinLimbDL_009D20:
+  type: GFX
+  offset: 0x009D20
+  symbol: gHorseGanonSkelLimbsLimb_008294SkinLimbDL_009D20

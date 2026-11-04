@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 3, 0x02E5B000 ]
+    - [ 2, 0x02E57000 ]
+  directory: scenes/shared/hiral_demo_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/hiral_demo_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_0001E0.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_000270.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_0002E0.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_000380.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_0003E0.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_000450.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_0004C0.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_000530.yml
+    - pal_gc_dbg/scenes/shared/hiral_demo_room_0Set_0005D0.yml
+
+hiral_demo_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: hiral_demo_room_0
+
+
+hiral_demo_room_0DL_000630:
+  type: GFX
+  offset: 0x000630
+  symbol: hiral_demo_room_0DL_000630

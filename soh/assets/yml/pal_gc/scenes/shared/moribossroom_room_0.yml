@@ -1,0 +1,133 @@
+:config:
+  segments:
+    - [ 3, 0x01CC00C0 ]
+    - [ 2, 0x01CBEC90 ]
+  directory: scenes/shared/moribossroom_scene
+  external_files:
+    - pal_gc/scenes/shared/moribossroom_scene.yml
+    - pal_gc/code/sys_matrix.yml
+
+moribossroom_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: moribossroom_room_0
+
+moribossroom_room_0Tex_0038B8:
+  type: TEXTURE
+  offset: 0x38B8
+  symbol: moribossroom_room_0Tex_0038B8
+  format: RGBA16
+  width: 32
+  height: 32
+
+moribossroom_room_0Tex_0040B8:
+  type: TEXTURE
+  offset: 0x40B8
+  symbol: moribossroom_room_0Tex_0040B8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: moribossroom_scene
+  external_tlut_offset: 0xB50
+
+moribossroom_room_0Tex_0044B8:
+  type: TEXTURE
+  offset: 0x44B8
+  symbol: moribossroom_room_0Tex_0044B8
+  format: RGBA16
+  width: 64
+  height: 32
+
+moribossroom_room_0Tex_0054B8:
+  type: TEXTURE
+  offset: 0x54B8
+  symbol: moribossroom_room_0Tex_0054B8
+  format: RGBA16
+  width: 16
+  height: 16
+
+moribossroom_room_0Tex_0056B8:
+  type: TEXTURE
+  offset: 0x56B8
+  symbol: moribossroom_room_0Tex_0056B8
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: moribossroom_scene
+  external_tlut_offset: 0xB50
+
+
+moribossroom_room_0Vtx_000070:
+  type: OOT:ARRAY
+  offset: 0x000070
+  symbol: moribossroom_room_0Vtx_000070
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_0DL_0002F0:
+  type: GFX
+  offset: 0x0002F0
+  symbol: moribossroom_room_0DL_0002F0
+
+moribossroom_room_0Vtx_000418:
+  type: OOT:ARRAY
+  offset: 0x000418
+  symbol: moribossroom_room_0Vtx_000418
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_0DL_0008F8:
+  type: GFX
+  offset: 0x0008F8
+  symbol: moribossroom_room_0DL_0008F8
+
+moribossroom_room_0Vtx_000AE8:
+  type: OOT:ARRAY
+  offset: 0x000AE8
+  symbol: moribossroom_room_0Vtx_000AE8
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_0DL_000E68:
+  type: GFX
+  offset: 0x000E68
+  symbol: moribossroom_room_0DL_000E68
+
+moribossroom_room_0Vtx_000FC0:
+  type: OOT:ARRAY
+  offset: 0x000FC0
+  symbol: moribossroom_room_0Vtx_000FC0
+  count: 370
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_0DL_0026E0:
+  type: GFX
+  offset: 0x0026E0
+  symbol: moribossroom_room_0DL_0026E0
+
+moribossroom_room_0Vtx_002CB8:
+  type: OOT:ARRAY
+  offset: 0x002CB8
+  symbol: moribossroom_room_0Vtx_002CB8
+  count: 144
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+moribossroom_room_0DL_0035B8:
+  type: GFX
+  offset: 0x0035B8
+  symbol: moribossroom_room_0DL_0035B8
+
+moribossroom_room_0DL_003888:
+  type: GFX
+  offset: 0x003888
+  symbol: moribossroom_room_0DL_003888

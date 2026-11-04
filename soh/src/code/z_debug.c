@@ -1,5 +1,6 @@
 #include "global.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 typedef struct {
     u8 x;
@@ -202,7 +203,7 @@ void func_8006390C(Input* input) {
                 }
                 if (iREG(0)) {
                     iREG(0) = 0;
-                    func_800AA000(0, iREG(1), iREG(2), iREG(3));
+                    Rumble_Request(0, iREG(1), iREG(2), iREG(3));
                 }
         }
     }

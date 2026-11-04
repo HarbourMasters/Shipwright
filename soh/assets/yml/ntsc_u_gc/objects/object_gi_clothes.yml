@@ -1,0 +1,69 @@
+:config:
+  segments:
+    - [ 6, 0x0111B740 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x0111B740 ]
+    - [ 9, 0x0111B740 ]
+    - [ 10, 0x0111B740 ]
+    - [ 11, 0x0111B740 ]
+    - [ 12, 0x0111B740 ]
+    - [ 13, 0x0111B740 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gGiGoronCollarColorDL:
+  type: GFX
+  offset: 0x14E0
+  symbol: gGiGoronCollarColorDL
+
+gGiGoronTunicColorDL:
+  type: GFX
+  offset: 0x1520
+  symbol: gGiGoronTunicColorDL
+
+gGiTunicCollarDL:
+  type: GFX
+  offset: 0x1560
+  symbol: gGiTunicCollarDL
+
+gGiTunicDL:
+  type: GFX
+  offset: 0x1608
+  symbol: gGiTunicDL
+
+gGiZoraCollarColorDL:
+  type: GFX
+  offset: 0x1500
+  symbol: gGiZoraCollarColorDL
+
+gGiZoraTunicColorDL:
+  type: GFX
+  offset: 0x1540
+  symbol: gGiZoraTunicColorDL
+
+object_gi_clothesTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_clothesTex_000000
+  format: I4
+  width: 64
+  height: 64
+
+
+object_gi_clothesVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_gi_clothesVtx_000800
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_clothesVtx_000900:
+  type: OOT:ARRAY
+  offset: 0x000900
+  symbol: object_gi_clothesVtx_000900
+  count: 190
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

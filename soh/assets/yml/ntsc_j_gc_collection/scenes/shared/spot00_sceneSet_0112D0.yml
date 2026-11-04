@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01A71BF0 ]
+  directory: scenes/shared/spot00_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/shared/spot00_scene.yml
+
+spot00_sceneSet_0112D0:
+  type: OOT:SCENE
+  offset: 0x112D0
+  symbol: spot00_sceneSet_0112D0
+  base_name: spot00_scene

@@ -1,6 +1,7 @@
-#include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "z64save.h"
@@ -20,7 +21,7 @@ void RegisterVBOverrides() {
         }
         int8_t capacity = 50;
         if (bombchuBag.Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
-            capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+            capacity = Rando::Context::GetInstance()->GetBombchuCapacity();
         }
         if (AMMO(ITEM_BOMBCHU) >= capacity) {
             *canBuy = CANBUY_RESULT_CANT_GET_NOW;
@@ -30,7 +31,7 @@ void RegisterVBOverrides() {
 
     COND_VB_SHOULD(VB_CHECK_BOMBCHU_CAPACITY, shouldRegister, {
         *should = false;
-        uint8_t capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+        uint8_t capacity = Rando::Context::GetInstance()->GetBombchuCapacity();
         if (AMMO(ITEM_BOMBCHU) > capacity) {
             AMMO(ITEM_BOMBCHU) = capacity;
         }
@@ -39,7 +40,7 @@ void RegisterVBOverrides() {
     COND_VB_SHOULD(VB_COLOR_AMMO_GREEN, shouldRegister, {
         int16_t i = va_arg(args, int);
         if (i == ITEM_BOMBCHU) {
-            uint8_t capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+            uint8_t capacity = Rando::Context::GetInstance()->GetBombchuCapacity();
             if (AMMO(i) == capacity) {
                 *should = true;
             }

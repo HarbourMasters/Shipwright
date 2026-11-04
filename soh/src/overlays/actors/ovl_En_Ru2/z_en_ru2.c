@@ -8,7 +8,6 @@
 #include "objects/object_ru2/object_ru2.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -156,8 +155,6 @@ void EnRu2_Destroy(Actor* thisx, PlayState* play) {
     EnRu2* this = (EnRu2*)thisx;
     D_80AF4118 = 0;
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnRu2_UpdateEyes(EnRu2* this) {
@@ -345,7 +342,7 @@ void EnRu2_CheckWaterMedallionCutscene(EnRu2* this, PlayState* play) {
     Player* player;
     s16 yaw;
 
-    if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneLayer < 4)) {
         player = GET_PLAYER(play);
         this->action = ENRU2_AWAIT_BLUE_WARP;
         play->csCtx.segment = &gWaterMedallionCs;
@@ -769,7 +766,7 @@ s32 EnRu2_IsPlayerInRangeForEncounter(EnRu2* this, PlayState* play) {
 void EnRu2_CheckRangeToStartEncounter(EnRu2* this, PlayState* play) {
     if (EnRu2_IsPlayerInRangeForEncounter(this, play) && !Play_InCsMode(play)) {
         this->action = ENRU2_WATER_TEMPLE_ENCOUNTER_BEGINNING;
-        this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, MAIN_CAM);
+        this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, CAM_ID_MAIN);
     }
 }
 
@@ -778,7 +775,7 @@ void EnRu2_CheckRangeToStartEncounter(EnRu2* this, PlayState* play) {
  */
 void EnRu2_StartEncounter(EnRu2* this, PlayState* play) {
     this->action = ENRU2_WATER_TEMPLE_ENCOUNTER_BEGINNING;
-    this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, MAIN_CAM);
+    this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, CAM_ID_MAIN);
 }
 
 /**

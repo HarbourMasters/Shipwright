@@ -7,7 +7,6 @@
 #include "z_en_mm2.h"
 #include "vt.h"
 #include "objects/object_mm/object_mm.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -162,8 +161,6 @@ void EnMm2_Destroy(Actor* thisx, PlayState* play) {
     EnMm2* this = (EnMm2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80AAF224(EnMm2* this, PlayState* play, EnMm2ActionFunc actionFunc) {
@@ -175,7 +172,7 @@ s32 func_80AAF224(EnMm2* this, PlayState* play, EnMm2ActionFunc actionFunc) {
     }
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     if ((ABS(yawDiff) <= 0x4300) && (this->actor.xzDistToPlayer < 100.0f)) {
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     }
     return 0;
 }
@@ -295,7 +292,7 @@ void EnMm2_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     if (this->unk_1F4 & 1) {
-        func_80038290(play, &this->actor, &this->unk_1E8, &this->unk_1EE, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_1E8, &this->unk_1EE, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->unk_1E8.x, 0, 6, 6200, 100);
         Math_SmoothStepToS(&this->unk_1E8.y, 0, 6, 6200, 100);

@@ -1,0 +1,183 @@
+:config:
+  segments:
+    - [ 6, 0x01027B40 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x01027B40 ]
+    - [ 9, 0x01027B40 ]
+    - [ 10, 0x01027B40 ]
+    - [ 11, 0x01027B40 ]
+    - [ 12, 0x01027B40 ]
+    - [ 13, 0x01027B40 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+object_brob_Anim_000290:
+  type: OOT:ANIMATION
+  offset: 0x290
+  symbol: object_brob_Anim_000290
+
+object_brob_Anim_001678:
+  type: OOT:ANIMATION
+  offset: 0x1678
+  symbol: object_brob_Anim_001678
+
+object_brob_Anim_001750:
+  type: OOT:ANIMATION
+  offset: 0x1750
+  symbol: object_brob_Anim_001750
+
+object_brob_Anim_001958:
+  type: OOT:ANIMATION
+  offset: 0x1958
+  symbol: object_brob_Anim_001958
+
+object_brob_Col_001A70:
+  type: OOT:COLLISION
+  offset: 0x1A70
+  symbol: object_brob_Col_001A70
+
+object_brob_DL_0007E0:
+  type: GFX
+  offset: 0x7E0
+  symbol: object_brob_DL_0007E0
+
+object_brob_DL_000898:
+  type: GFX
+  offset: 0x898
+  symbol: object_brob_DL_000898
+
+object_brob_DL_0009D0:
+  type: GFX
+  offset: 0x9D0
+  symbol: object_brob_DL_0009D0
+
+object_brob_DL_000AE8:
+  type: GFX
+  offset: 0xAE8
+  symbol: object_brob_DL_000AE8
+
+object_brob_DL_000C00:
+  type: GFX
+  offset: 0xC00
+  symbol: object_brob_DL_000C00
+
+object_brob_Limb_001548:
+  type: OOT:LIMB
+  offset: 0x1548
+  symbol: object_brob_Limb_001548
+  limb_type: Standard
+
+object_brob_Limb_001554:
+  type: OOT:LIMB
+  offset: 0x1554
+  symbol: object_brob_Limb_001554
+  limb_type: Standard
+
+object_brob_Limb_001560:
+  type: OOT:LIMB
+  offset: 0x1560
+  symbol: object_brob_Limb_001560
+  limb_type: Standard
+
+object_brob_Limb_00156C:
+  type: OOT:LIMB
+  offset: 0x156C
+  symbol: object_brob_Limb_00156C
+  limb_type: Standard
+
+object_brob_Limb_001578:
+  type: OOT:LIMB
+  offset: 0x1578
+  symbol: object_brob_Limb_001578
+  limb_type: Standard
+
+object_brob_Limb_001584:
+  type: OOT:LIMB
+  offset: 0x1584
+  symbol: object_brob_Limb_001584
+  limb_type: Standard
+
+object_brob_Limb_001590:
+  type: OOT:LIMB
+  offset: 0x1590
+  symbol: object_brob_Limb_001590
+  limb_type: Standard
+
+object_brob_Limb_00159C:
+  type: OOT:LIMB
+  offset: 0x159C
+  symbol: object_brob_Limb_00159C
+  limb_type: Standard
+
+object_brob_Limb_0015A8:
+  type: OOT:LIMB
+  offset: 0x15A8
+  symbol: object_brob_Limb_0015A8
+  limb_type: Standard
+
+object_brob_Skel_0015D8:
+  type: OOT:SKELETON
+  offset: 0x15D8
+  symbol: object_brob_Skel_0015D8
+  limb_type: Standard
+  skel_type: Flex
+
+object_brob_Tex_000D48:
+  type: TEXTURE
+  offset: 0xD48
+  symbol: object_brob_Tex_000D48
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_brobVtx_0002A0:
+  type: OOT:ARRAY
+  offset: 0x0002A0
+  symbol: object_brobVtx_0002A0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_brobVtx_0003E0:
+  type: OOT:ARRAY
+  offset: 0x0003E0
+  symbol: object_brobVtx_0003E0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_brobVtx_0004E0:
+  type: OOT:ARRAY
+  offset: 0x0004E0
+  symbol: object_brobVtx_0004E0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_brobVtx_0005E0:
+  type: OOT:ARRAY
+  offset: 0x0005E0
+  symbol: object_brobVtx_0005E0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_brobVtx_0006E0:
+  type: OOT:ARRAY
+  offset: 0x0006E0
+  symbol: object_brobVtx_0006E0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_brob_Skel_0015D8Limbs:
+  type: BLOB
+  offset: 0x15B4
+  symbol: object_brob_Skel_0015D8Limbs
+  size: 0

@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01F4D7B0 ]
+  directory: scenes/shared/ganon_demo_scene
+  external_files:
+    - pal_gc/scenes/shared/ganon_demo_scene.yml
+
+ganon_demo_sceneSet_001AD0:
+  type: OOT:SCENE
+  offset: 0x1AD0
+  symbol: ganon_demo_sceneSet_001AD0
+  base_name: ganon_demo_scene

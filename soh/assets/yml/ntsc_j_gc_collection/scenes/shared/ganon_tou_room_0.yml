@@ -1,0 +1,573 @@
+:config:
+  segments:
+    - [ 3, 0x01CE2B00 ]
+    - [ 2, 0x01CDF430 ]
+  directory: scenes/shared/ganon_tou_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/shared/ganon_tou_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+    - ntsc_j_gc_collection/scenes/shared/ganon_tou_room_0Set_000160.yml
+
+ganon_tou_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganon_tou_room_0
+
+ganon_tou_room_0Tex_008550:
+  type: TEXTURE
+  offset: 0x8550
+  symbol: ganon_tou_room_0Tex_008550
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganon_tou_room_0Tex_008D50:
+  type: TEXTURE
+  offset: 0x8D50
+  symbol: ganon_tou_room_0Tex_008D50
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_tou_room_0Tex_008F50:
+  type: TEXTURE
+  offset: 0x8F50
+  symbol: ganon_tou_room_0Tex_008F50
+  format: RGBA16
+  width: 32
+  height: 8
+
+ganon_tou_room_0Tex_009150:
+  type: TEXTURE
+  offset: 0x9150
+  symbol: ganon_tou_room_0Tex_009150
+  format: RGBA16
+  width: 64
+  height: 32
+
+ganon_tou_room_0Tex_00A150:
+  type: TEXTURE
+  offset: 0xA150
+  symbol: ganon_tou_room_0Tex_00A150
+  format: RGBA16
+  width: 128
+  height: 16
+
+ganon_tou_room_0Tex_00B150:
+  type: TEXTURE
+  offset: 0xB150
+  symbol: ganon_tou_room_0Tex_00B150
+  format: RGBA16
+  width: 32
+  height: 16
+
+ganon_tou_room_0Tex_00B550:
+  type: TEXTURE
+  offset: 0xB550
+  symbol: ganon_tou_room_0Tex_00B550
+  format: I8
+  width: 32
+  height: 32
+
+ganon_tou_room_0Tex_00B950:
+  type: TEXTURE
+  offset: 0xB950
+  symbol: ganon_tou_room_0Tex_00B950
+  format: I8
+  width: 32
+  height: 32
+
+ganon_tou_room_0Tex_00BD50:
+  type: TEXTURE
+  offset: 0xBD50
+  symbol: ganon_tou_room_0Tex_00BD50
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_tou_room_0Tex_00BF50:
+  type: TEXTURE
+  offset: 0xBF50
+  symbol: ganon_tou_room_0Tex_00BF50
+  format: I8
+  width: 64
+  height: 64
+
+ganon_tou_room_0Tex_00CF50:
+  type: TEXTURE
+  offset: 0xCF50
+  symbol: ganon_tou_room_0Tex_00CF50
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganon_tou_room_0Tex_00D750:
+  type: TEXTURE
+  offset: 0xD750
+  symbol: ganon_tou_room_0Tex_00D750
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganon_tou_room_0Tex_00E750:
+  type: TEXTURE
+  offset: 0xE750
+  symbol: ganon_tou_room_0Tex_00E750
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganon_tou_room_0Tex_00F750:
+  type: TEXTURE
+  offset: 0xF750
+  symbol: ganon_tou_room_0Tex_00F750
+  format: I8
+  width: 32
+  height: 32
+
+ganon_tou_room_0Tex_00FB50:
+  type: TEXTURE
+  offset: 0xFB50
+  symbol: ganon_tou_room_0Tex_00FB50
+  format: I8
+  width: 64
+  height: 16
+
+ganon_tou_room_0Tex_00FF50:
+  type: TEXTURE
+  offset: 0xFF50
+  symbol: ganon_tou_room_0Tex_00FF50
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_tou_room_0Tex_010150:
+  type: TEXTURE
+  offset: 0x10150
+  symbol: ganon_tou_room_0Tex_010150
+  format: RGBA16
+  width: 32
+  height: 16
+
+ganon_tou_room_0Tex_010550:
+  type: TEXTURE
+  offset: 0x10550
+  symbol: ganon_tou_room_0Tex_010550
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganon_tou_room_0Tex_0124F0:
+  type: TEXTURE
+  offset: 0x124F0
+  symbol: ganon_tou_room_0Tex_0124F0
+  format: IA8
+  width: 32
+  height: 8
+
+ganon_tou_room_0Tex_0125F0:
+  type: TEXTURE
+  offset: 0x125F0
+  symbol: ganon_tou_room_0Tex_0125F0
+  format: IA4
+  width: 128
+  height: 32
+
+ganon_tou_room_0Tex_012DF0:
+  type: TEXTURE
+  offset: 0x12DF0
+  symbol: ganon_tou_room_0Tex_012DF0
+  format: I4
+  width: 64
+  height: 64
+
+ganon_tou_room_0Tex_0135F0:
+  type: TEXTURE
+  offset: 0x135F0
+  symbol: ganon_tou_room_0Tex_0135F0
+  format: IA8
+  width: 32
+  height: 32
+
+ganon_tou_room_0Tex_0139F0:
+  type: TEXTURE
+  offset: 0x139F0
+  symbol: ganon_tou_room_0Tex_0139F0
+  format: IA8
+  width: 16
+  height: 16
+
+
+ganon_tou_room_0Vtx_0001F0:
+  type: OOT:ARRAY
+  offset: 0x0001F0
+  symbol: ganon_tou_room_0Vtx_0001F0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_000630:
+  type: GFX
+  offset: 0x000630
+  symbol: ganon_tou_room_0DL_000630
+
+ganon_tou_room_0Vtx_000768:
+  type: OOT:ARRAY
+  offset: 0x000768
+  symbol: ganon_tou_room_0Vtx_000768
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_000C48:
+  type: GFX
+  offset: 0x000C48
+  symbol: ganon_tou_room_0DL_000C48
+
+ganon_tou_room_0Vtx_000DF8:
+  type: OOT:ARRAY
+  offset: 0x000DF8
+  symbol: ganon_tou_room_0Vtx_000DF8
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_0012F8:
+  type: GFX
+  offset: 0x0012F8
+  symbol: ganon_tou_room_0DL_0012F8
+
+ganon_tou_room_0Vtx_001470:
+  type: OOT:ARRAY
+  offset: 0x001470
+  symbol: ganon_tou_room_0Vtx_001470
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_0016A0:
+  type: GFX
+  offset: 0x0016A0
+  symbol: ganon_tou_room_0DL_0016A0
+
+ganon_tou_room_0Vtx_001788:
+  type: OOT:ARRAY
+  offset: 0x001788
+  symbol: ganon_tou_room_0Vtx_001788
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_001CA8:
+  type: GFX
+  offset: 0x001CA8
+  symbol: ganon_tou_room_0DL_001CA8
+
+ganon_tou_room_0Vtx_001DF8:
+  type: OOT:ARRAY
+  offset: 0x001DF8
+  symbol: ganon_tou_room_0Vtx_001DF8
+  count: 134
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_002658:
+  type: GFX
+  offset: 0x002658
+  symbol: ganon_tou_room_0DL_002658
+
+ganon_tou_room_0Vtx_002870:
+  type: OOT:ARRAY
+  offset: 0x002870
+  symbol: ganon_tou_room_0Vtx_002870
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_002D60:
+  type: GFX
+  offset: 0x002D60
+  symbol: ganon_tou_room_0DL_002D60
+
+ganon_tou_room_0Vtx_002EE0:
+  type: OOT:ARRAY
+  offset: 0x002EE0
+  symbol: ganon_tou_room_0Vtx_002EE0
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_003530:
+  type: GFX
+  offset: 0x003530
+  symbol: ganon_tou_room_0DL_003530
+
+ganon_tou_room_0Vtx_003678:
+  type: OOT:ARRAY
+  offset: 0x003678
+  symbol: ganon_tou_room_0Vtx_003678
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_0037B8:
+  type: GFX
+  offset: 0x0037B8
+  symbol: ganon_tou_room_0DL_0037B8
+
+ganon_tou_room_0Vtx_0038B8:
+  type: OOT:ARRAY
+  offset: 0x0038B8
+  symbol: ganon_tou_room_0Vtx_0038B8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_003A38:
+  type: GFX
+  offset: 0x003A38
+  symbol: ganon_tou_room_0DL_003A38
+
+ganon_tou_room_0Vtx_003B08:
+  type: OOT:ARRAY
+  offset: 0x003B08
+  symbol: ganon_tou_room_0Vtx_003B08
+  count: 166
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_004568:
+  type: GFX
+  offset: 0x004568
+  symbol: ganon_tou_room_0DL_004568
+
+ganon_tou_room_0Vtx_004890:
+  type: OOT:ARRAY
+  offset: 0x004890
+  symbol: ganon_tou_room_0Vtx_004890
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_005010:
+  type: GFX
+  offset: 0x005010
+  symbol: ganon_tou_room_0DL_005010
+
+ganon_tou_room_0Vtx_005200:
+  type: OOT:ARRAY
+  offset: 0x005200
+  symbol: ganon_tou_room_0Vtx_005200
+  count: 111
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_0058F0:
+  type: GFX
+  offset: 0x0058F0
+  symbol: ganon_tou_room_0DL_0058F0
+
+ganon_tou_room_0Vtx_005AF8:
+  type: OOT:ARRAY
+  offset: 0x005AF8
+  symbol: ganon_tou_room_0Vtx_005AF8
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_005DF8:
+  type: GFX
+  offset: 0x005DF8
+  symbol: ganon_tou_room_0DL_005DF8
+
+ganon_tou_room_0Vtx_005F48:
+  type: OOT:ARRAY
+  offset: 0x005F48
+  symbol: ganon_tou_room_0Vtx_005F48
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_006088:
+  type: GFX
+  offset: 0x006088
+  symbol: ganon_tou_room_0DL_006088
+
+ganon_tou_room_0Vtx_006148:
+  type: OOT:ARRAY
+  offset: 0x006148
+  symbol: ganon_tou_room_0Vtx_006148
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_006548:
+  type: GFX
+  offset: 0x006548
+  symbol: ganon_tou_room_0DL_006548
+
+ganon_tou_room_0Vtx_0066F0:
+  type: OOT:ARRAY
+  offset: 0x0066F0
+  symbol: ganon_tou_room_0Vtx_0066F0
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_006C50:
+  type: GFX
+  offset: 0x006C50
+  symbol: ganon_tou_room_0DL_006C50
+
+ganon_tou_room_0Vtx_006EB0:
+  type: OOT:ARRAY
+  offset: 0x006EB0
+  symbol: ganon_tou_room_0Vtx_006EB0
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_007600:
+  type: GFX
+  offset: 0x007600
+  symbol: ganon_tou_room_0DL_007600
+
+ganon_tou_room_0Vtx_0077F0:
+  type: OOT:ARRAY
+  offset: 0x0077F0
+  symbol: ganon_tou_room_0Vtx_0077F0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_0079B0:
+  type: GFX
+  offset: 0x0079B0
+  symbol: ganon_tou_room_0DL_0079B0
+
+ganon_tou_room_0Vtx_007B60:
+  type: OOT:ARRAY
+  offset: 0x007B60
+  symbol: ganon_tou_room_0Vtx_007B60
+  count: 118
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_0082C0:
+  type: GFX
+  offset: 0x0082C0
+  symbol: ganon_tou_room_0DL_0082C0
+
+ganon_tou_room_0DL_0084A8:
+  type: GFX
+  offset: 0x0084A8
+  symbol: ganon_tou_room_0DL_0084A8
+
+ganon_tou_room_0Vtx_010D50:
+  type: OOT:ARRAY
+  offset: 0x010D50
+  symbol: ganon_tou_room_0Vtx_010D50
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_010E50:
+  type: GFX
+  offset: 0x010E50
+  symbol: ganon_tou_room_0DL_010E50
+
+ganon_tou_room_0Vtx_010F10:
+  type: OOT:ARRAY
+  offset: 0x010F10
+  symbol: ganon_tou_room_0Vtx_010F10
+  count: 100
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_011550:
+  type: GFX
+  offset: 0x011550
+  symbol: ganon_tou_room_0DL_011550
+
+ganon_tou_room_0Vtx_011718:
+  type: OOT:ARRAY
+  offset: 0x011718
+  symbol: ganon_tou_room_0Vtx_011718
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_011A98:
+  type: GFX
+  offset: 0x011A98
+  symbol: ganon_tou_room_0DL_011A98
+
+ganon_tou_room_0Vtx_011C10:
+  type: OOT:ARRAY
+  offset: 0x011C10
+  symbol: ganon_tou_room_0Vtx_011C10
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_011FD0:
+  type: GFX
+  offset: 0x011FD0
+  symbol: ganon_tou_room_0DL_011FD0
+
+ganon_tou_room_0Vtx_012120:
+  type: OOT:ARRAY
+  offset: 0x012120
+  symbol: ganon_tou_room_0Vtx_012120
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_0121E0:
+  type: GFX
+  offset: 0x0121E0
+  symbol: ganon_tou_room_0DL_0121E0
+
+ganon_tou_room_0Vtx_012298:
+  type: OOT:ARRAY
+  offset: 0x012298
+  symbol: ganon_tou_room_0Vtx_012298
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_tou_room_0DL_0123D8:
+  type: GFX
+  offset: 0x0123D8
+  symbol: ganon_tou_room_0DL_0123D8
+
+ganon_tou_room_0DL_0124B8:
+  type: GFX
+  offset: 0x0124B8
+  symbol: ganon_tou_room_0DL_0124B8

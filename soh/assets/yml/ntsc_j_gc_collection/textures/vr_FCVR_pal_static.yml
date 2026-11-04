@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x01684AD0 ]
+
+gMaskShopBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gMaskShopBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMaskShopBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMaskShopBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

@@ -1,8 +1,14 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh_assets.h"
 #include "static_data.h"
 #include "item_category_adj.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "variables.h"
@@ -32,7 +38,8 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (grassIdentity != nullptr && grassIdentity->randomizerCheck != RC_MAX &&
-        Flags_GetRandomizerInf(grassIdentity->randomizerInf) == 0) {
+        Flags_GetRandomizerInf(grassIdentity->randomizerInf) == 0 &&
+        !Rando::Context::GetInstance()->GetItemLocation(grassIdentity->randomizerCheck)->IsExcluded()) {
         bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
@@ -114,6 +121,66 @@ void EnKusa_RandomizerSpawnCollectible(EnKusa* grassActor, PlayState* play) {
     item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
+static CheckIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge) {
+    CheckIdentity grassIdentity;
+
+    grassIdentity.randomizerInf = RAND_INF_MAX;
+    grassIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    if (sceneNum == SCENE_GROTTOS) {
+        respawnData = TWO_ACTOR_PARAMS(posX, respawnData);
+    } else {
+        // We'll just pretend it's always daytime for our market bushes.
+        if (sceneNum == SCENE_MARKET_NIGHT) {
+            sceneNum = SCENE_MARKET_DAY;
+
+            /*
+                The two bushes by the tree are not in the same spot
+                between night and day. We'll assume the coordinates
+                of the daytime bushes so that we can count them as
+                the same locations.
+            */
+            if (posX == -74) {
+                posX = -106;
+                posZ = 277;
+            }
+            if (posX == -87) {
+                posX = -131;
+                posZ = 225;
+            }
+        }
+
+        /*
+            Same as with Market. ZR has a bush slightly off pos
+            between Child and Adult. This is to merge them into
+            a single location.
+        */
+        if (sceneNum == SCENE_ZORAS_RIVER) {
+            if (posX == 233) {
+                posX = 231;
+                posZ = -1478;
+            }
+        }
+
+        // The two bushes behind the sign in KF should be separate
+        // locations between Child and Adult.
+        if (sceneNum == SCENE_KOKIRI_FOREST && linkAge == 0) {
+            if (posX == -498 || posX == -523) {
+                posZ = 0xFF;
+            }
+        }
+
+        respawnData = TWO_ACTOR_PARAMS(posX, posZ);
+    }
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_KUSA, sceneNum, respawnData);
+
+    IdentifyCheck(&grassIdentity, location);
+
+    return grassIdentity;
+}
+
 void EnKusa_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -123,8 +190,8 @@ void EnKusa_RandomizerInit(void* actorRef) {
     EnKusa* grassActor = static_cast<EnKusa*>(actorRef);
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
 
-    auto grassIdentity = OTRGlobals::Instance->gRandomizer->IdentifyGrass(
-        gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, respawnData, gPlayState->linkAgeOnLoad);
+    auto grassIdentity = IdentifyGrass(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z,
+                                       respawnData, gPlayState->linkAgeOnLoad);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(grassIdentity));
 }
 
@@ -165,7 +232,7 @@ void Rando::StaticData::RegisterGrassLocations() {
     registered = true;
     // clang-format off
     // Overworld Grass
-    //            Randomizer Check                                 	       Randomizer Check                                           Quest         Area                          Scene ID                           Params                          Short Name                    	Hint Text Key                     Vanilla             Spoiler Collection Check
+    //            Randomizer Check                                         Randomizer Check                                           Quest         Area                          Scene ID                           Params                          Short Name                     Hint Text Key                     Vanilla             Spoiler Collection Check
     locationTable[RC_KF_CHILD_GRASS_1]                                 =   Location::Grass(RC_KF_CHILD_GRASS_1,                       RCQUEST_BOTH, RCAREA_KOKIRI_FOREST,         SCENE_KOKIRI_FOREST,    TWO_ACTOR_PARAMS(678, 596),     "Child Grass 1",               RHT_KF_GRASS,                     RG_GREEN_RUPEE,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_CHILD_GRASS_1));
     locationTable[RC_KF_CHILD_GRASS_2]                                 =   Location::Grass(RC_KF_CHILD_GRASS_2,                       RCQUEST_BOTH, RCAREA_KOKIRI_FOREST,         SCENE_KOKIRI_FOREST,    TWO_ACTOR_PARAMS(594, 542),     "Child Grass 2",               RHT_KF_GRASS,                     RG_GREEN_RUPEE,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_CHILD_GRASS_2));
     locationTable[RC_KF_CHILD_GRASS_3]                                 =   Location::Grass(RC_KF_CHILD_GRASS_3,                       RCQUEST_BOTH, RCAREA_KOKIRI_FOREST,         SCENE_KOKIRI_FOREST,    TWO_ACTOR_PARAMS(572, 603),     "Child Grass 3",               RHT_KF_GRASS,                     RG_GREEN_RUPEE,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_CHILD_GRASS_3));

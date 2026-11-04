@@ -1,0 +1,565 @@
+:config:
+  segments:
+    - [ 3, 0x02801000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x02801000 ]
+    - [ 9, 0x02801000 ]
+    - [ 10, 0x02801000 ]
+    - [ 11, 0x02801000 ]
+    - [ 12, 0x02801000 ]
+    - [ 13, 0x02801000 ]
+    - [ 2, 0x027D6000 ]
+  directory: scenes/shared/spot00_scene
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+    - pal_mq_dbg/scenes/shared/spot00_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_000770.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_000C50.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_001120.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_0011F0.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_0012C0.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_001360.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_001570.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_0018D0.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_001920.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_001C80.yml
+    - pal_mq_dbg/scenes/shared/spot00_room_0Set_001CF0.yml
+
+spot00_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: spot00_room_0
+
+spot00_room_0DL_012B20:
+  type: GFX
+  offset: 0x12B20
+  symbol: spot00_room_0DL_012B20
+
+
+spot00_room_0Vtx_002340:
+  type: OOT:ARRAY
+  offset: 0x002340
+  symbol: spot00_room_0Vtx_002340
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_002790:
+  type: GFX
+  offset: 0x002790
+  symbol: spot00_room_0DL_002790
+
+spot00_room_0Vtx_002AB8:
+  type: OOT:ARRAY
+  offset: 0x002AB8
+  symbol: spot00_room_0Vtx_002AB8
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_003338:
+  type: GFX
+  offset: 0x003338
+  symbol: spot00_room_0DL_003338
+
+spot00_room_0Vtx_0037E0:
+  type: OOT:ARRAY
+  offset: 0x0037E0
+  symbol: spot00_room_0Vtx_0037E0
+  count: 111
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_003ED0:
+  type: GFX
+  offset: 0x003ED0
+  symbol: spot00_room_0DL_003ED0
+
+spot00_room_0Vtx_0043E0:
+  type: OOT:ARRAY
+  offset: 0x0043E0
+  symbol: spot00_room_0Vtx_0043E0
+  count: 197
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_005030:
+  type: GFX
+  offset: 0x005030
+  symbol: spot00_room_0DL_005030
+
+spot00_room_0Vtx_005720:
+  type: OOT:ARRAY
+  offset: 0x005720
+  symbol: spot00_room_0Vtx_005720
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_005850:
+  type: GFX
+  offset: 0x005850
+  symbol: spot00_room_0DL_005850
+
+spot00_room_0Vtx_0059F0:
+  type: OOT:ARRAY
+  offset: 0x0059F0
+  symbol: spot00_room_0Vtx_0059F0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_005BC0:
+  type: GFX
+  offset: 0x005BC0
+  symbol: spot00_room_0DL_005BC0
+
+spot00_room_0Vtx_005D78:
+  type: OOT:ARRAY
+  offset: 0x005D78
+  symbol: spot00_room_0Vtx_005D78
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_005E78:
+  type: GFX
+  offset: 0x005E78
+  symbol: spot00_room_0DL_005E78
+
+spot00_room_0Vtx_005F88:
+  type: OOT:ARRAY
+  offset: 0x005F88
+  symbol: spot00_room_0Vtx_005F88
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_0067C8:
+  type: GFX
+  offset: 0x0067C8
+  symbol: spot00_room_0DL_0067C8
+
+spot00_room_0Vtx_006CF0:
+  type: OOT:ARRAY
+  offset: 0x006CF0
+  symbol: spot00_room_0Vtx_006CF0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_006ED0:
+  type: GFX
+  offset: 0x006ED0
+  symbol: spot00_room_0DL_006ED0
+
+spot00_room_0Vtx_0070A0:
+  type: OOT:ARRAY
+  offset: 0x0070A0
+  symbol: spot00_room_0Vtx_0070A0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_007230:
+  type: GFX
+  offset: 0x007230
+  symbol: spot00_room_0DL_007230
+
+spot00_room_0Vtx_007358:
+  type: OOT:ARRAY
+  offset: 0x007358
+  symbol: spot00_room_0Vtx_007358
+  count: 271
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_008448:
+  type: GFX
+  offset: 0x008448
+  symbol: spot00_room_0DL_008448
+
+spot00_room_0Vtx_008BF8:
+  type: OOT:ARRAY
+  offset: 0x008BF8
+  symbol: spot00_room_0Vtx_008BF8
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_008ED8:
+  type: GFX
+  offset: 0x008ED8
+  symbol: spot00_room_0DL_008ED8
+
+spot00_room_0Vtx_009110:
+  type: OOT:ARRAY
+  offset: 0x009110
+  symbol: spot00_room_0Vtx_009110
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_0093A0:
+  type: GFX
+  offset: 0x0093A0
+  symbol: spot00_room_0DL_0093A0
+
+spot00_room_0Vtx_009550:
+  type: OOT:ARRAY
+  offset: 0x009550
+  symbol: spot00_room_0Vtx_009550
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_009D10:
+  type: GFX
+  offset: 0x009D10
+  symbol: spot00_room_0DL_009D10
+
+spot00_room_0Vtx_00A070:
+  type: OOT:ARRAY
+  offset: 0x00A070
+  symbol: spot00_room_0Vtx_00A070
+  count: 201
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00AD00:
+  type: GFX
+  offset: 0x00AD00
+  symbol: spot00_room_0DL_00AD00
+
+spot00_room_0Vtx_00B250:
+  type: OOT:ARRAY
+  offset: 0x00B250
+  symbol: spot00_room_0Vtx_00B250
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00B520:
+  type: GFX
+  offset: 0x00B520
+  symbol: spot00_room_0DL_00B520
+
+spot00_room_0Vtx_00B7A0:
+  type: OOT:ARRAY
+  offset: 0x00B7A0
+  symbol: spot00_room_0Vtx_00B7A0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00B8B0:
+  type: GFX
+  offset: 0x00B8B0
+  symbol: spot00_room_0DL_00B8B0
+
+spot00_room_0Vtx_00B9C0:
+  type: OOT:ARRAY
+  offset: 0x00B9C0
+  symbol: spot00_room_0Vtx_00B9C0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00BD20:
+  type: GFX
+  offset: 0x00BD20
+  symbol: spot00_room_0DL_00BD20
+
+spot00_room_0Vtx_00BF98:
+  type: OOT:ARRAY
+  offset: 0x00BF98
+  symbol: spot00_room_0Vtx_00BF98
+  count: 242
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00CEB8:
+  type: GFX
+  offset: 0x00CEB8
+  symbol: spot00_room_0DL_00CEB8
+
+spot00_room_0Vtx_00D430:
+  type: OOT:ARRAY
+  offset: 0x00D430
+  symbol: spot00_room_0Vtx_00D430
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00D980:
+  type: GFX
+  offset: 0x00D980
+  symbol: spot00_room_0DL_00D980
+
+spot00_room_0Vtx_00DC80:
+  type: OOT:ARRAY
+  offset: 0x00DC80
+  symbol: spot00_room_0Vtx_00DC80
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00DD70:
+  type: GFX
+  offset: 0x00DD70
+  symbol: spot00_room_0DL_00DD70
+
+spot00_room_0Vtx_00DE78:
+  type: OOT:ARRAY
+  offset: 0x00DE78
+  symbol: spot00_room_0Vtx_00DE78
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00DFA8:
+  type: GFX
+  offset: 0x00DFA8
+  symbol: spot00_room_0DL_00DFA8
+
+spot00_room_0Vtx_00E148:
+  type: OOT:ARRAY
+  offset: 0x00E148
+  symbol: spot00_room_0Vtx_00E148
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00E328:
+  type: GFX
+  offset: 0x00E328
+  symbol: spot00_room_0DL_00E328
+
+spot00_room_0Vtx_00E460:
+  type: OOT:ARRAY
+  offset: 0x00E460
+  symbol: spot00_room_0Vtx_00E460
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00E7B0:
+  type: GFX
+  offset: 0x00E7B0
+  symbol: spot00_room_0DL_00E7B0
+
+spot00_room_0Vtx_00EA08:
+  type: OOT:ARRAY
+  offset: 0x00EA08
+  symbol: spot00_room_0Vtx_00EA08
+  count: 159
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00F3F8:
+  type: GFX
+  offset: 0x00F3F8
+  symbol: spot00_room_0DL_00F3F8
+
+spot00_room_0Vtx_00F9E0:
+  type: OOT:ARRAY
+  offset: 0x00F9E0
+  symbol: spot00_room_0Vtx_00F9E0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00FB50:
+  type: GFX
+  offset: 0x00FB50
+  symbol: spot00_room_0DL_00FB50
+
+spot00_room_0Vtx_00FCF8:
+  type: OOT:ARRAY
+  offset: 0x00FCF8
+  symbol: spot00_room_0Vtx_00FCF8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_00FE98:
+  type: GFX
+  offset: 0x00FE98
+  symbol: spot00_room_0DL_00FE98
+
+spot00_room_0Vtx_010048:
+  type: OOT:ARRAY
+  offset: 0x010048
+  symbol: spot00_room_0Vtx_010048
+  count: 295
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_0112B8:
+  type: GFX
+  offset: 0x0112B8
+  symbol: spot00_room_0DL_0112B8
+
+spot00_room_0Vtx_012090:
+  type: OOT:ARRAY
+  offset: 0x012090
+  symbol: spot00_room_0Vtx_012090
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_0121D0:
+  type: GFX
+  offset: 0x0121D0
+  symbol: spot00_room_0DL_0121D0
+
+spot00_room_0Vtx_0122E8:
+  type: OOT:ARRAY
+  offset: 0x0122E8
+  symbol: spot00_room_0Vtx_0122E8
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_0127B8:
+  type: GFX
+  offset: 0x0127B8
+  symbol: spot00_room_0DL_0127B8
+
+spot00_room_0Vtx_012A60:
+  type: OOT:ARRAY
+  offset: 0x012A60
+  symbol: spot00_room_0Vtx_012A60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0Vtx_012BB8:
+  type: OOT:ARRAY
+  offset: 0x012BB8
+  symbol: spot00_room_0Vtx_012BB8
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_012C38:
+  type: GFX
+  offset: 0x012C38
+  symbol: spot00_room_0DL_012C38
+
+spot00_room_0Vtx_012C78:
+  type: OOT:ARRAY
+  offset: 0x012C78
+  symbol: spot00_room_0Vtx_012C78
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_012E18:
+  type: GFX
+  offset: 0x012E18
+  symbol: spot00_room_0DL_012E18
+
+spot00_room_0Vtx_012F90:
+  type: OOT:ARRAY
+  offset: 0x012F90
+  symbol: spot00_room_0Vtx_012F90
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_013250:
+  type: GFX
+  offset: 0x013250
+  symbol: spot00_room_0DL_013250
+
+spot00_room_0Vtx_013508:
+  type: OOT:ARRAY
+  offset: 0x013508
+  symbol: spot00_room_0Vtx_013508
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_0139A8:
+  type: GFX
+  offset: 0x0139A8
+  symbol: spot00_room_0DL_0139A8
+
+spot00_room_0Vtx_013DC8:
+  type: OOT:ARRAY
+  offset: 0x013DC8
+  symbol: spot00_room_0Vtx_013DC8
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_0143C8:
+  type: GFX
+  offset: 0x0143C8
+  symbol: spot00_room_0DL_0143C8
+
+spot00_room_0Vtx_014828:
+  type: OOT:ARRAY
+  offset: 0x014828
+  symbol: spot00_room_0Vtx_014828
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_014E28:
+  type: GFX
+  offset: 0x014E28
+  symbol: spot00_room_0DL_014E28
+
+spot00_room_0Vtx_014FC0:
+  type: OOT:ARRAY
+  offset: 0x014FC0
+  symbol: spot00_room_0Vtx_014FC0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot00_room_0DL_015100:
+  type: GFX
+  offset: 0x015100
+  symbol: spot00_room_0DL_015100

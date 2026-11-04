@@ -1,0 +1,71 @@
+:config:
+  segments:
+    - [ 6, 0x0184C000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0184C000 ]
+    - [ 9, 0x0184C000 ]
+    - [ 10, 0x0184C000 ]
+    - [ 11, 0x0184C000 ]
+    - [ 12, 0x0184C000 ]
+    - [ 13, 0x0184C000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGiGoronMaskDL:
+  type: GFX
+  offset: 0x14F8
+  symbol: gGiGoronMaskDL
+
+object_gi_golonmaskTLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_golonmaskTLUT_000000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_gi_golonmaskTex_000208:
+  type: TEXTURE
+  offset: 0x208
+  symbol: object_gi_golonmaskTex_000208
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+object_gi_golonmaskTex_000248:
+  type: TEXTURE
+  offset: 0x248
+  symbol: object_gi_golonmaskTex_000248
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+object_gi_golonmaskTex_000348:
+  type: TEXTURE
+  offset: 0x348
+  symbol: object_gi_golonmaskTex_000348
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0
+
+object_gi_golonmaskTex_000748:
+  type: TEXTURE
+  offset: 0x748
+  symbol: object_gi_golonmaskTex_000748
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x0
+
+
+object_gi_golonmaskVtx_000F48:
+  type: OOT:ARRAY
+  offset: 0x000F48
+  symbol: object_gi_golonmaskVtx_000F48
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

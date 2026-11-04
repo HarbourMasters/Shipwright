@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x011C3F10 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x011C3F10 ]
+    - [ 9, 0x011C3F10 ]
+    - [ 10, 0x011C3F10 ]
+    - [ 11, 0x011C3F10 ]
+    - [ 12, 0x011C3F10 ]
+    - [ 13, 0x011C3F10 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gGiGoronBraceletDL:
+  type: GFX
+  offset: 0x0960
+  symbol: gGiGoronBraceletDL
+
+
+object_gi_braceletVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_braceletVtx_000000
+  count: 150
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

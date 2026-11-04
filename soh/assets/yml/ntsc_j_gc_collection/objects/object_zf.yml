@@ -1,0 +1,1448 @@
+:config:
+  segments:
+    - [ 6, 0x00E08D50 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x00E08D50 ]
+    - [ 9, 0x00E08D50 ]
+    - [ 10, 0x00E08D50 ]
+    - [ 11, 0x00E08D50 ]
+    - [ 12, 0x00E08D50 ]
+    - [ 13, 0x00E08D50 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gZfCryingAnim:
+  type: OOT:ANIMATION
+  offset: 0xB10C
+  symbol: gZfCryingAnim
+
+gZfDinolfosBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x639C
+  symbol: gZfDinolfosBodyRootLimb
+  limb_type: Standard
+
+gZfDinolfosChestArmorDL:
+  type: GFX
+  offset: 0x5180
+  symbol: gZfDinolfosChestArmorDL
+
+gZfDinolfosChestArmorLimb:
+  type: OOT:LIMB
+  offset: 0x64B0
+  symbol: gZfDinolfosChestArmorLimb
+  limb_type: Standard
+
+gZfDinolfosHeadDL:
+  type: GFX
+  offset: 0x59C8
+  symbol: gZfDinolfosHeadDL
+
+gZfDinolfosHeadLimb:
+  type: OOT:LIMB
+  offset: 0x63F0
+  symbol: gZfDinolfosHeadLimb
+  limb_type: Standard
+
+gZfDinolfosHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x63C0
+  symbol: gZfDinolfosHeadRootLimb
+  limb_type: Standard
+
+gZfDinolfosJawDL:
+  type: GFX
+  offset: 0x5598
+  symbol: gZfDinolfosJawDL
+
+gZfDinolfosJawLimb:
+  type: OOT:LIMB
+  offset: 0x63E4
+  symbol: gZfDinolfosJawLimb
+  limb_type: Standard
+
+gZfDinolfosJawRootLimb:
+  type: OOT:LIMB
+  offset: 0x63D8
+  symbol: gZfDinolfosJawRootLimb
+  limb_type: Standard
+
+gZfDinolfosJawRootRootLimb:
+  type: OOT:LIMB
+  offset: 0x63CC
+  symbol: gZfDinolfosJawRootRootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x645C
+  symbol: gZfDinolfosLeftArmRootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftFootDL:
+  type: GFX
+  offset: 0x3E58
+  symbol: gZfDinolfosLeftFootDL
+
+gZfDinolfosLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x65A0
+  symbol: gZfDinolfosLeftFootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x6594
+  symbol: gZfDinolfosLeftFootRootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftForearmDL:
+  type: GFX
+  offset: 0x46E8
+  symbol: gZfDinolfosLeftForearmDL
+
+gZfDinolfosLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x6498
+  symbol: gZfDinolfosLeftForearmLimb
+  limb_type: Standard
+
+gZfDinolfosLeftForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0x6474
+  symbol: gZfDinolfosLeftForearmRootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftHandDL:
+  type: GFX
+  offset: 0x4870
+  symbol: gZfDinolfosLeftHandDL
+
+gZfDinolfosLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x648C
+  symbol: gZfDinolfosLeftHandLimb
+  limb_type: Standard
+
+gZfDinolfosLeftHandRootLimb:
+  type: OOT:LIMB
+  offset: 0x6480
+  symbol: gZfDinolfosLeftHandRootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x6570
+  symbol: gZfDinolfosLeftLegRootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftShinDL:
+  type: GFX
+  offset: 0x3CC8
+  symbol: gZfDinolfosLeftShinDL
+
+gZfDinolfosLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x65AC
+  symbol: gZfDinolfosLeftShinLimb
+  limb_type: Standard
+
+gZfDinolfosLeftShinRootLimb:
+  type: OOT:LIMB
+  offset: 0x6588
+  symbol: gZfDinolfosLeftShinRootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftThighDL:
+  type: GFX
+  offset: 0x3A60
+  symbol: gZfDinolfosLeftThighDL
+
+gZfDinolfosLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x65B8
+  symbol: gZfDinolfosLeftThighLimb
+  limb_type: Standard
+
+gZfDinolfosLeftThighRootLimb:
+  type: OOT:LIMB
+  offset: 0x657C
+  symbol: gZfDinolfosLeftThighRootLimb
+  limb_type: Standard
+
+gZfDinolfosLeftUpperArmDL:
+  type: GFX
+  offset: 0x44F0
+  symbol: gZfDinolfosLeftUpperArmDL
+
+gZfDinolfosLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x64A4
+  symbol: gZfDinolfosLeftUpperArmLimb
+  limb_type: Standard
+
+gZfDinolfosLeftUpperArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x6468
+  symbol: gZfDinolfosLeftUpperArmRootLimb
+  limb_type: Standard
+
+gZfDinolfosNeckDL:
+  type: GFX
+  offset: 0x5300
+  symbol: gZfDinolfosNeckDL
+
+gZfDinolfosNeckLimb:
+  type: OOT:LIMB
+  offset: 0x63FC
+  symbol: gZfDinolfosNeckLimb
+  limb_type: Standard
+
+gZfDinolfosNeckRootLimb:
+  type: OOT:LIMB
+  offset: 0x63B4
+  symbol: gZfDinolfosNeckRootLimb
+  limb_type: Standard
+
+gZfDinolfosNormalEyeTex:
+  type: TEXTURE
+  offset: 0x700
+  symbol: gZfDinolfosNormalEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZfDinolfosRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x6408
+  symbol: gZfDinolfosRightArmRootLimb
+  limb_type: Standard
+
+gZfDinolfosRightFootDL:
+  type: GFX
+  offset: 0x3908
+  symbol: gZfDinolfosRightFootDL
+
+gZfDinolfosRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x654C
+  symbol: gZfDinolfosRightFootLimb
+  limb_type: Standard
+
+gZfDinolfosRightFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x6540
+  symbol: gZfDinolfosRightFootRootLimb
+  limb_type: Standard
+
+gZfDinolfosRightForearmDL:
+  type: GFX
+  offset: 0x41A8
+  symbol: gZfDinolfosRightForearmDL
+
+gZfDinolfosRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x6444
+  symbol: gZfDinolfosRightForearmLimb
+  limb_type: Standard
+
+gZfDinolfosRightForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0x6420
+  symbol: gZfDinolfosRightForearmRootLimb
+  limb_type: Standard
+
+gZfDinolfosRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x651C
+  symbol: gZfDinolfosRightLegRootLimb
+  limb_type: Standard
+
+gZfDinolfosRightShinDL:
+  type: GFX
+  offset: 0x3778
+  symbol: gZfDinolfosRightShinDL
+
+gZfDinolfosRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x6558
+  symbol: gZfDinolfosRightShinLimb
+  limb_type: Standard
+
+gZfDinolfosRightShinRootLimb:
+  type: OOT:LIMB
+  offset: 0x6534
+  symbol: gZfDinolfosRightShinRootLimb
+  limb_type: Standard
+
+gZfDinolfosRightThighDL:
+  type: GFX
+  offset: 0x3510
+  symbol: gZfDinolfosRightThighDL
+
+gZfDinolfosRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x6564
+  symbol: gZfDinolfosRightThighLimb
+  limb_type: Standard
+
+gZfDinolfosRightThighRootLimb:
+  type: OOT:LIMB
+  offset: 0x6528
+  symbol: gZfDinolfosRightThighRootLimb
+  limb_type: Standard
+
+gZfDinolfosRightUpperArmDL:
+  type: GFX
+  offset: 0x3FB0
+  symbol: gZfDinolfosRightUpperArmDL
+
+gZfDinolfosRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x6450
+  symbol: gZfDinolfosRightUpperArmLimb
+  limb_type: Standard
+
+gZfDinolfosRightUpperArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x6414
+  symbol: gZfDinolfosRightUpperArmRootLimb
+  limb_type: Standard
+
+gZfDinolfosRootLimb:
+  type: OOT:LIMB
+  offset: 0x6390
+  symbol: gZfDinolfosRootLimb
+  limb_type: Standard
+
+gZfDinolfosScabbardDL:
+  type: GFX
+  offset: 0x4DF8
+  symbol: gZfDinolfosScabbardDL
+
+gZfDinolfosScabbardLimb:
+  type: OOT:LIMB
+  offset: 0x6510
+  symbol: gZfDinolfosScabbardLimb
+  limb_type: Standard
+
+gZfDinolfosScabbardRootLimb:
+  type: OOT:LIMB
+  offset: 0x6504
+  symbol: gZfDinolfosScabbardRootLimb
+  limb_type: Standard
+
+gZfDinolfosScabbardRootRootLimb:
+  type: OOT:LIMB
+  offset: 0x64F8
+  symbol: gZfDinolfosScabbardRootRootLimb
+  limb_type: Standard
+
+gZfDinolfosSkel:
+  type: OOT:SKELETON
+  offset: 0x6690
+  symbol: gZfDinolfosSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gZfDinolfosSpineTex:
+  type: TEXTURE
+  offset: 0x340
+  symbol: gZfDinolfosSpineTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gZfDinolfosSwordDL:
+  type: GFX
+  offset: 0x4330
+  symbol: gZfDinolfosSwordDL
+
+gZfDinolfosSwordLimb:
+  type: OOT:LIMB
+  offset: 0x6438
+  symbol: gZfDinolfosSwordLimb
+  limb_type: Standard
+
+gZfDinolfosSwordRootLimb:
+  type: OOT:LIMB
+  offset: 0x642C
+  symbol: gZfDinolfosSwordRootLimb
+  limb_type: Standard
+
+gZfDinolfosTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZfDinolfosTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZfDinolfosTailBaseDL:
+  type: GFX
+  offset: 0x4A00
+  symbol: gZfDinolfosTailBaseDL
+
+gZfDinolfosTailBaseLimb:
+  type: OOT:LIMB
+  offset: 0x64EC
+  symbol: gZfDinolfosTailBaseLimb
+  limb_type: Standard
+
+gZfDinolfosTailBaseRootLimb:
+  type: OOT:LIMB
+  offset: 0x64C8
+  symbol: gZfDinolfosTailBaseRootLimb
+  limb_type: Standard
+
+gZfDinolfosTailRootLimb:
+  type: OOT:LIMB
+  offset: 0x64BC
+  symbol: gZfDinolfosTailRootLimb
+  limb_type: Standard
+
+gZfDinolfosTailTipDL:
+  type: GFX
+  offset: 0x4D50
+  symbol: gZfDinolfosTailTipDL
+
+gZfDinolfosTailTipLimb:
+  type: OOT:LIMB
+  offset: 0x64E0
+  symbol: gZfDinolfosTailTipLimb
+  limb_type: Standard
+
+gZfDinolfosTailTipRootLimb:
+  type: OOT:LIMB
+  offset: 0x64D4
+  symbol: gZfDinolfosTailTipRootLimb
+  limb_type: Standard
+
+gZfDinolfosTrunkDL:
+  type: GFX
+  offset: 0x4EA0
+  symbol: gZfDinolfosTrunkDL
+
+gZfDinolfosTrunkLimb:
+  type: OOT:LIMB
+  offset: 0x65C4
+  symbol: gZfDinolfosTrunkLimb
+  limb_type: Standard
+
+gZfDinolfosUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x63A8
+  symbol: gZfDinolfosUpperBodyRootLimb
+  limb_type: Standard
+
+gZfDrawingSwordAnim:
+  type: OOT:ANIMATION
+  offset: 0x1366C
+  symbol: gZfDrawingSwordAnim
+
+gZfDyingAnim:
+  type: OOT:ANIMATION
+  offset: 0x14E60
+  symbol: gZfDyingAnim
+
+gZfEmptyHandDL:
+  type: GFX
+  offset: 0xE198
+  symbol: gZfEmptyHandDL
+
+gZfHopCrouchingAnim:
+  type: OOT:ANIMATION
+  offset: 0x1081C
+  symbol: gZfHopCrouchingAnim
+
+gZfHopLandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x11070
+  symbol: gZfHopLandingAnim
+
+gZfHopLeapingAnim:
+  type: OOT:ANIMATION
+  offset: 0x10CAC
+  symbol: gZfHopLeapingAnim
+
+gZfJumpingAnim:
+  type: OOT:ANIMATION
+  offset: 0x9530
+  symbol: gZfJumpingAnim
+
+gZfKnockedBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x157F8
+  symbol: gZfKnockedBackAnim
+
+gZfLandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x8C6C
+  symbol: gZfLandingAnim
+
+gZfLizalfosBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x101C4
+  symbol: gZfLizalfosBodyRootLimb
+  limb_type: Standard
+
+gZfLizalfosChestArmorDL:
+  type: GFX
+  offset: 0xF620
+  symbol: gZfLizalfosChestArmorDL
+
+gZfLizalfosChestArmorLimb:
+  type: OOT:LIMB
+  offset: 0x102D8
+  symbol: gZfLizalfosChestArmorLimb
+  limb_type: Standard
+
+gZfLizalfosHeadDL:
+  type: GFX
+  offset: 0xE7E0
+  symbol: gZfLizalfosHeadDL
+
+gZfLizalfosHeadLimb:
+  type: OOT:LIMB
+  offset: 0x10218
+  symbol: gZfLizalfosHeadLimb
+  limb_type: Standard
+
+gZfLizalfosHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x101E8
+  symbol: gZfLizalfosHeadRootLimb
+  limb_type: Standard
+
+gZfLizalfosJawDL:
+  type: GFX
+  offset: 0xE3E8
+  symbol: gZfLizalfosJawDL
+
+gZfLizalfosJawLimb:
+  type: OOT:LIMB
+  offset: 0x1020C
+  symbol: gZfLizalfosJawLimb
+  limb_type: Standard
+
+gZfLizalfosJawRootLimb:
+  type: OOT:LIMB
+  offset: 0x10200
+  symbol: gZfLizalfosJawRootLimb
+  limb_type: Standard
+
+gZfLizalfosJawRootRootLimb:
+  type: OOT:LIMB
+  offset: 0x101F4
+  symbol: gZfLizalfosJawRootRootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x10284
+  symbol: gZfLizalfosLeftArmRootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftFootDL:
+  type: GFX
+  offset: 0xC978
+  symbol: gZfLizalfosLeftFootDL
+
+gZfLizalfosLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x103C8
+  symbol: gZfLizalfosLeftFootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x103BC
+  symbol: gZfLizalfosLeftFootRootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftForearmDL:
+  type: GFX
+  offset: 0xCC80
+  symbol: gZfLizalfosLeftForearmDL
+
+gZfLizalfosLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x102C0
+  symbol: gZfLizalfosLeftForearmLimb
+  limb_type: Standard
+
+gZfLizalfosLeftForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0x1029C
+  symbol: gZfLizalfosLeftForearmRootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftHandDL:
+  type: GFX
+  offset: 0xCFF0
+  symbol: gZfLizalfosLeftHandDL
+
+gZfLizalfosLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x102B4
+  symbol: gZfLizalfosLeftHandLimb
+  limb_type: Standard
+
+gZfLizalfosLeftHandRootLimb:
+  type: OOT:LIMB
+  offset: 0x102A8
+  symbol: gZfLizalfosLeftHandRootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x10398
+  symbol: gZfLizalfosLeftLegRootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftShinDL:
+  type: GFX
+  offset: 0xC640
+  symbol: gZfLizalfosLeftShinDL
+
+gZfLizalfosLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x103D4
+  symbol: gZfLizalfosLeftShinLimb
+  limb_type: Standard
+
+gZfLizalfosLeftShinRootLimb:
+  type: OOT:LIMB
+  offset: 0x103B0
+  symbol: gZfLizalfosLeftShinRootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftThighDL:
+  type: GFX
+  offset: 0xC410
+  symbol: gZfLizalfosLeftThighDL
+
+gZfLizalfosLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x103E0
+  symbol: gZfLizalfosLeftThighLimb
+  limb_type: Standard
+
+gZfLizalfosLeftThighRootLimb:
+  type: OOT:LIMB
+  offset: 0x103A4
+  symbol: gZfLizalfosLeftThighRootLimb
+  limb_type: Standard
+
+gZfLizalfosLeftUpperArmDL:
+  type: GFX
+  offset: 0xCB48
+  symbol: gZfLizalfosLeftUpperArmDL
+
+gZfLizalfosLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x102CC
+  symbol: gZfLizalfosLeftUpperArmLimb
+  limb_type: Standard
+
+gZfLizalfosLeftUpperArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x10290
+  symbol: gZfLizalfosLeftUpperArmRootLimb
+  limb_type: Standard
+
+gZfLizalfosNeckDL:
+  type: GFX
+  offset: 0xEE60
+  symbol: gZfLizalfosNeckDL
+
+gZfLizalfosNeckLimb:
+  type: OOT:LIMB
+  offset: 0x10224
+  symbol: gZfLizalfosNeckLimb
+  limb_type: Standard
+
+gZfLizalfosNeckRootLimb:
+  type: OOT:LIMB
+  offset: 0x101DC
+  symbol: gZfLizalfosNeckRootLimb
+  limb_type: Standard
+
+gZfLizalfosRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x10230
+  symbol: gZfLizalfosRightArmRootLimb
+  limb_type: Standard
+
+gZfLizalfosRightFootDL:
+  type: GFX
+  offset: 0xD798
+  symbol: gZfLizalfosRightFootDL
+
+gZfLizalfosRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x10374
+  symbol: gZfLizalfosRightFootLimb
+  limb_type: Standard
+
+gZfLizalfosRightFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x10368
+  symbol: gZfLizalfosRightFootRootLimb
+  limb_type: Standard
+
+gZfLizalfosRightForearmDL:
+  type: GFX
+  offset: 0xDAA0
+  symbol: gZfLizalfosRightForearmDL
+
+gZfLizalfosRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x1026C
+  symbol: gZfLizalfosRightForearmLimb
+  limb_type: Standard
+
+gZfLizalfosRightForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0x10248
+  symbol: gZfLizalfosRightForearmRootLimb
+  limb_type: Standard
+
+gZfLizalfosRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x10344
+  symbol: gZfLizalfosRightLegRootLimb
+  limb_type: Standard
+
+gZfLizalfosRightShinDL:
+  type: GFX
+  offset: 0xD460
+  symbol: gZfLizalfosRightShinDL
+
+gZfLizalfosRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x10380
+  symbol: gZfLizalfosRightShinLimb
+  limb_type: Standard
+
+gZfLizalfosRightShinRootLimb:
+  type: OOT:LIMB
+  offset: 0x1035C
+  symbol: gZfLizalfosRightShinRootLimb
+  limb_type: Standard
+
+gZfLizalfosRightThighDL:
+  type: GFX
+  offset: 0xD230
+  symbol: gZfLizalfosRightThighDL
+
+gZfLizalfosRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x1038C
+  symbol: gZfLizalfosRightThighLimb
+  limb_type: Standard
+
+gZfLizalfosRightThighRootLimb:
+  type: OOT:LIMB
+  offset: 0x10350
+  symbol: gZfLizalfosRightThighRootLimb
+  limb_type: Standard
+
+gZfLizalfosRightUpperArmDL:
+  type: GFX
+  offset: 0xD968
+  symbol: gZfLizalfosRightUpperArmDL
+
+gZfLizalfosRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x10278
+  symbol: gZfLizalfosRightUpperArmLimb
+  limb_type: Standard
+
+gZfLizalfosRightUpperArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x1023C
+  symbol: gZfLizalfosRightUpperArmRootLimb
+  limb_type: Standard
+
+gZfLizalfosRootLimb:
+  type: OOT:LIMB
+  offset: 0x101B8
+  symbol: gZfLizalfosRootLimb
+  limb_type: Standard
+
+gZfLizalfosScabbardDL:
+  type: GFX
+  offset: 0xFDA0
+  symbol: gZfLizalfosScabbardDL
+
+gZfLizalfosScabbardLimb:
+  type: OOT:LIMB
+  offset: 0x10338
+  symbol: gZfLizalfosScabbardLimb
+  limb_type: Standard
+
+gZfLizalfosScabbardRootLimb:
+  type: OOT:LIMB
+  offset: 0x1032C
+  symbol: gZfLizalfosScabbardRootLimb
+  limb_type: Standard
+
+gZfLizalfosScabbardRootRootLimb:
+  type: OOT:LIMB
+  offset: 0x10320
+  symbol: gZfLizalfosScabbardRootRootLimb
+  limb_type: Standard
+
+gZfLizalfosSkel:
+  type: OOT:SKELETON
+  offset: 0x104B8
+  symbol: gZfLizalfosSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gZfLizalfosSwordDL:
+  type: GFX
+  offset: 0xDD20
+  symbol: gZfLizalfosSwordDL
+
+gZfLizalfosSwordLimb:
+  type: OOT:LIMB
+  offset: 0x10260
+  symbol: gZfLizalfosSwordLimb
+  limb_type: Standard
+
+gZfLizalfosSwordRootLimb:
+  type: OOT:LIMB
+  offset: 0x10254
+  symbol: gZfLizalfosSwordRootLimb
+  limb_type: Standard
+
+gZfLizalfosTailBaseDL:
+  type: GFX
+  offset: 0xF970
+  symbol: gZfLizalfosTailBaseDL
+
+gZfLizalfosTailBaseLimb:
+  type: OOT:LIMB
+  offset: 0x10314
+  symbol: gZfLizalfosTailBaseLimb
+  limb_type: Standard
+
+gZfLizalfosTailBaseRootLimb:
+  type: OOT:LIMB
+  offset: 0x102F0
+  symbol: gZfLizalfosTailBaseRootLimb
+  limb_type: Standard
+
+gZfLizalfosTailRootLimb:
+  type: OOT:LIMB
+  offset: 0x102E4
+  symbol: gZfLizalfosTailRootLimb
+  limb_type: Standard
+
+gZfLizalfosTailTipDL:
+  type: GFX
+  offset: 0xFB88
+  symbol: gZfLizalfosTailTipDL
+
+gZfLizalfosTailTipLimb:
+  type: OOT:LIMB
+  offset: 0x10308
+  symbol: gZfLizalfosTailTipLimb
+  limb_type: Standard
+
+gZfLizalfosTailTipRootLimb:
+  type: OOT:LIMB
+  offset: 0x102FC
+  symbol: gZfLizalfosTailTipRootLimb
+  limb_type: Standard
+
+gZfLizalfosTrunkDL:
+  type: GFX
+  offset: 0xEBA8
+  symbol: gZfLizalfosTrunkDL
+
+gZfLizalfosTrunkLimb:
+  type: OOT:LIMB
+  offset: 0x103EC
+  symbol: gZfLizalfosTrunkLimb
+  limb_type: Standard
+
+gZfLizalfosUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x101D0
+  symbol: gZfLizalfosUpperBodyRootLimb
+  limb_type: Standard
+
+gZfSheathedSwordDL:
+  type: GFX
+  offset: 0x10060
+  symbol: gZfSheathedSwordDL
+
+gZfSheathingSwordAnim:
+  type: OOT:ANIMATION
+  offset: 0x119F4
+  symbol: gZfSheathingSwordAnim
+
+gZfSidesteppingAnim:
+  type: OOT:ANIMATION
+  offset: 0x16388
+  symbol: gZfSidesteppingAnim
+
+gZfSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0xA3D4
+  symbol: gZfSlashAnim
+
+gZfWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x8138
+  symbol: gZfWalkingAnim
+
+object_zf_Tex_000200:
+  type: TEXTURE
+  offset: 0x200
+  symbol: object_zf_Tex_000200
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+object_zf_Tex_000240:
+  type: TEXTURE
+  offset: 0x240
+  symbol: object_zf_Tex_000240
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+object_zf_Tex_0003C0:
+  type: TEXTURE
+  offset: 0x3C0
+  symbol: object_zf_Tex_0003C0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zf_Tex_000440:
+  type: TEXTURE
+  offset: 0x440
+  symbol: object_zf_Tex_000440
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+object_zf_Tex_000540:
+  type: TEXTURE
+  offset: 0x540
+  symbol: object_zf_Tex_000540
+  format: I8
+  width: 8
+  height: 8
+
+object_zf_Tex_000580:
+  type: TEXTURE
+  offset: 0x580
+  symbol: object_zf_Tex_000580
+  format: I8
+  width: 8
+  height: 16
+
+object_zf_Tex_000600:
+  type: TEXTURE
+  offset: 0x600
+  symbol: object_zf_Tex_000600
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+object_zf_Tex_00B120:
+  type: TEXTURE
+  offset: 0xB120
+  symbol: object_zf_Tex_00B120
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_zf_Tex_00B920:
+  type: TEXTURE
+  offset: 0xB920
+  symbol: object_zf_Tex_00B920
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zf_Tex_00B9A0:
+  type: TEXTURE
+  offset: 0xB9A0
+  symbol: object_zf_Tex_00B9A0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zf_Tex_00BA20:
+  type: TEXTURE
+  offset: 0xBA20
+  symbol: object_zf_Tex_00BA20
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zf_Tex_00BAA0:
+  type: TEXTURE
+  offset: 0xBAA0
+  symbol: object_zf_Tex_00BAA0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zf_Tex_00BB20:
+  type: TEXTURE
+  offset: 0xBB20
+  symbol: object_zf_Tex_00BB20
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zf_Tex_00BBA0:
+  type: TEXTURE
+  offset: 0xBBA0
+  symbol: object_zf_Tex_00BBA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zf_Tex_00BDA0:
+  type: TEXTURE
+  offset: 0xBDA0
+  symbol: object_zf_Tex_00BDA0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zf_Tex_00BE20:
+  type: TEXTURE
+  offset: 0xBE20
+  symbol: object_zf_Tex_00BE20
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zf_Tex_00C020:
+  type: TEXTURE
+  offset: 0xC020
+  symbol: object_zf_Tex_00C020
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zf_Tex_00C220:
+  type: TEXTURE
+  offset: 0xC220
+  symbol: object_zf_Tex_00C220
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zf_Tex_00C2A0:
+  type: TEXTURE
+  offset: 0xC2A0
+  symbol: object_zf_Tex_00C2A0
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_zfVtx_000900:
+  type: OOT:ARRAY
+  offset: 0x000900
+  symbol: object_zfVtx_000900
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_000B20:
+  type: OOT:ARRAY
+  offset: 0x000B20
+  symbol: object_zfVtx_000B20
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_000C80:
+  type: OOT:ARRAY
+  offset: 0x000C80
+  symbol: object_zfVtx_000C80
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_000E60:
+  type: OOT:ARRAY
+  offset: 0x000E60
+  symbol: object_zfVtx_000E60
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_001080:
+  type: OOT:ARRAY
+  offset: 0x001080
+  symbol: object_zfVtx_001080
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_0011E0:
+  type: OOT:ARRAY
+  offset: 0x0011E0
+  symbol: object_zfVtx_0011E0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_0013C0:
+  type: OOT:ARRAY
+  offset: 0x0013C0
+  symbol: object_zfVtx_0013C0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_001510:
+  type: OOT:ARRAY
+  offset: 0x001510
+  symbol: object_zfVtx_001510
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_0015F0:
+  type: OOT:ARRAY
+  offset: 0x0015F0
+  symbol: object_zfVtx_0015F0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_001780:
+  type: OOT:ARRAY
+  offset: 0x001780
+  symbol: object_zfVtx_001780
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_0018D0:
+  type: OOT:ARRAY
+  offset: 0x0018D0
+  symbol: object_zfVtx_0018D0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_0019B0:
+  type: OOT:ARRAY
+  offset: 0x0019B0
+  symbol: object_zfVtx_0019B0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_001BE0:
+  type: OOT:ARRAY
+  offset: 0x001BE0
+  symbol: object_zfVtx_001BE0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_001D90:
+  type: OOT:ARRAY
+  offset: 0x001D90
+  symbol: object_zfVtx_001D90
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_001E70:
+  type: OOT:ARRAY
+  offset: 0x001E70
+  symbol: object_zfVtx_001E70
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_001F70:
+  type: OOT:ARRAY
+  offset: 0x001F70
+  symbol: object_zfVtx_001F70
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_002290:
+  type: OOT:ARRAY
+  offset: 0x002290
+  symbol: object_zfVtx_002290
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_002710:
+  type: OOT:ARRAY
+  offset: 0x002710
+  symbol: object_zfVtx_002710
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_0028E0:
+  type: OOT:ARRAY
+  offset: 0x0028E0
+  symbol: object_zfVtx_0028E0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_002C90:
+  type: OOT:ARRAY
+  offset: 0x002C90
+  symbol: object_zfVtx_002C90
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZfDinolfosSkelLimbs:
+  type: BLOB
+  offset: 0x65D0
+  symbol: gZfDinolfosSkelLimbs
+  size: 0
+
+object_zfVtx_00C320:
+  type: OOT:ARRAY
+  offset: 0x00C320
+  symbol: object_zfVtx_00C320
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00C4D0:
+  type: OOT:ARRAY
+  offset: 0x00C4D0
+  symbol: object_zfVtx_00C4D0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00C798:
+  type: OOT:ARRAY
+  offset: 0x00C798
+  symbol: object_zfVtx_00C798
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00CA98:
+  type: OOT:ARRAY
+  offset: 0x00CA98
+  symbol: object_zfVtx_00CA98
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00CC00:
+  type: OOT:ARRAY
+  offset: 0x00CC00
+  symbol: object_zfVtx_00CC00
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00CD80:
+  type: OOT:ARRAY
+  offset: 0x00CD80
+  symbol: object_zfVtx_00CD80
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00D140:
+  type: OOT:ARRAY
+  offset: 0x00D140
+  symbol: object_zfVtx_00D140
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00D2F0:
+  type: OOT:ARRAY
+  offset: 0x00D2F0
+  symbol: object_zfVtx_00D2F0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00D5B8:
+  type: OOT:ARRAY
+  offset: 0x00D5B8
+  symbol: object_zfVtx_00D5B8
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00D8B8:
+  type: OOT:ARRAY
+  offset: 0x00D8B8
+  symbol: object_zfVtx_00D8B8
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00DA20:
+  type: OOT:ARRAY
+  offset: 0x00DA20
+  symbol: object_zfVtx_00DA20
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00DBA0:
+  type: OOT:ARRAY
+  offset: 0x00DBA0
+  symbol: object_zfVtx_00DBA0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00DF28:
+  type: OOT:ARRAY
+  offset: 0x00DF28
+  symbol: object_zfVtx_00DF28
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00E2E8:
+  type: OOT:ARRAY
+  offset: 0x00E2E8
+  symbol: object_zfVtx_00E2E8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00E4E0:
+  type: OOT:ARRAY
+  offset: 0x00E4E0
+  symbol: object_zfVtx_00E4E0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00E9A8:
+  type: OOT:ARRAY
+  offset: 0x00E9A8
+  symbol: object_zfVtx_00E9A8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00ED50:
+  type: OOT:ARRAY
+  offset: 0x00ED50
+  symbol: object_zfVtx_00ED50
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00EFA0:
+  type: OOT:ARRAY
+  offset: 0x00EFA0
+  symbol: object_zfVtx_00EFA0
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00F840:
+  type: OOT:ARRAY
+  offset: 0x00F840
+  symbol: object_zfVtx_00F840
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00FA98:
+  type: OOT:ARRAY
+  offset: 0x00FA98
+  symbol: object_zfVtx_00FA98
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00FCA0:
+  type: OOT:ARRAY
+  offset: 0x00FCA0
+  symbol: object_zfVtx_00FCA0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zfVtx_00FE90:
+  type: OOT:ARRAY
+  offset: 0x00FE90
+  symbol: object_zfVtx_00FE90
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZfLizalfosSkelLimbs:
+  type: BLOB
+  offset: 0x103F8
+  symbol: gZfLizalfosSkelLimbs
+  size: 0

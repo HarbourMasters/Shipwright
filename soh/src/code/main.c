@@ -6,10 +6,9 @@
 #include "global.h"
 #include "vt.h"
 #include "stdio.h"
+#include <libultraship/bridge/crashhandlerbridge.h>
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
-
-#include <libultraship/bridge.h>
 #include "soh/CrashHandlerExt.h"
 
 s32 gScreenWidth = SCREEN_WIDTH;
@@ -55,6 +54,8 @@ int SDL_main(int argc, char* argv[]) {
 #endif
     // Allow non-ascii characters for Windows
     setlocale(LC_ALL, ".UTF8");
+    // Keep '.' as the decimal point, user locale may use ','
+    setlocale(LC_NUMERIC, "C");
 
 #else //_WIN32
 int main(int argc, char* argv[]) {

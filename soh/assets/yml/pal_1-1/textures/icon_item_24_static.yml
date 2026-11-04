@@ -1,0 +1,164 @@
+:config:
+  segments:
+    - [ 9, 0x007C9D60 ]
+
+gQuestIconDungeonBossKeyTex:
+  type: TEXTURE
+  offset: 0x7E00
+  symbol: gQuestIconDungeonBossKeyTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconDungeonCompassTex:
+  type: TEXTURE
+  offset: 0x8700
+  symbol: gQuestIconDungeonCompassTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconDungeonMapTex:
+  type: TEXTURE
+  offset: 0x9000
+  symbol: gQuestIconDungeonMapTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconGerudosCardTex:
+  type: TEXTURE
+  offset: 0x5A00
+  symbol: gQuestIconGerudosCardTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconGoldSkulltulaTex:
+  type: TEXTURE
+  offset: 0x6300
+  symbol: gQuestIconGoldSkulltulaTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconGoronRubyTex:
+  type: TEXTURE
+  offset: 0x3F00
+  symbol: gQuestIconGoronRubyTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconHeartContainerTex:
+  type: TEXTURE
+  offset: 0x6C00
+  symbol: gQuestIconHeartContainerTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconHeartPieceTex:
+  type: TEXTURE
+  offset: 0x7500
+  symbol: gQuestIconHeartPieceTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconKokiriEmeraldTex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gQuestIconKokiriEmeraldTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconMagicJarBigTex:
+  type: TEXTURE
+  offset: 0xAB00
+  symbol: gQuestIconMagicJarBigTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconMagicJarSmallTex:
+  type: TEXTURE
+  offset: 0xA200
+  symbol: gQuestIconMagicJarSmallTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconMedallionFireTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gQuestIconMedallionFireTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconMedallionForestTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gQuestIconMedallionForestTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconMedallionLightTex:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: gQuestIconMedallionLightTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconMedallionShadowTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gQuestIconMedallionShadowTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconMedallionSpiritTex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gQuestIconMedallionSpiritTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconMedallionWaterTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gQuestIconMedallionWaterTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconSmallKeyTex:
+  type: TEXTURE
+  offset: 0x9900
+  symbol: gQuestIconSmallKeyTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconStoneOfAgonyTex:
+  type: TEXTURE
+  offset: 0x5100
+  symbol: gQuestIconStoneOfAgonyTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconZoraSapphireTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gQuestIconZoraSapphireTex
+  format: RGBA32
+  width: 24
+  height: 24
+

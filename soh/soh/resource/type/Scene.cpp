@@ -2,7 +2,7 @@
 
 namespace SOH {
 void* Scene::GetPointer() {
-    // Scene is a special type that requries C++ processing. As such, we return nothing.
+    // Scene is a special type that requires C++ processing. As such, we return nothing.
     return nullptr;
 }
 

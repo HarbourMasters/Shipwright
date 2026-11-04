@@ -1,0 +1,114 @@
+:config:
+  segments:
+    - [ 3, 0x018E0B10 ]
+    - [ 2, 0x018B7CC0 ]
+  directory: scenes/nonmq/HIDAN_scene
+  external_files:
+    - pal_1-0/scenes/nonmq/HIDAN_scene.yml
+    - pal_1-0/code/sys_matrix.yml
+
+HIDAN_room_6:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HIDAN_room_6
+
+HIDAN_room_6Tex_003990:
+  type: TEXTURE
+  offset: 0x39A0
+  symbol: HIDAN_room_6Tex_003990
+  format: RGBA16
+  width: 16
+  height: 16
+
+HIDAN_room_6Tex_003B90:
+  type: TEXTURE
+  offset: 0x3BA0
+  symbol: HIDAN_room_6Tex_003B90
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_6Tex_004390:
+  type: TEXTURE
+  offset: 0x43A0
+  symbol: HIDAN_room_6Tex_004390
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_6Tex_004B90:
+  type: TEXTURE
+  offset: 0x4BA0
+  symbol: HIDAN_room_6Tex_004B90
+  format: RGBA16
+  width: 64
+  height: 32
+
+HIDAN_room_6Tex_005B90:
+  type: TEXTURE
+  offset: 0x5BA0
+  symbol: HIDAN_room_6Tex_005B90
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_room_6Tex_006390:
+  type: TEXTURE
+  offset: 0x63A0
+  symbol: HIDAN_room_6Tex_006390
+  format: CI4
+  width: 32
+  height: 64
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18B50
+
+HIDAN_room_6Tex_006790:
+  type: TEXTURE
+  offset: 0x67A0
+  symbol: HIDAN_room_6Tex_006790
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HIDAN_room_6Vtx_0000E0:
+  type: OOT:ARRAY
+  offset: 0x0000E0
+  symbol: HIDAN_room_6Vtx_0000E0
+  count: 296
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_6DL_001360:
+  type: GFX
+  offset: 0x001360
+  symbol: HIDAN_room_6DL_001360
+
+HIDAN_room_6Vtx_001950:
+  type: OOT:ARRAY
+  offset: 0x001950
+  symbol: HIDAN_room_6Vtx_001950
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_6DL_001A10:
+  type: GFX
+  offset: 0x001A10
+  symbol: HIDAN_room_6DL_001A10
+
+HIDAN_room_6Vtx_001B08:
+  type: OOT:ARRAY
+  offset: 0x001B08
+  symbol: HIDAN_room_6Vtx_001B08
+  count: 264
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_6DL_002B88:
+  type: GFX
+  offset: 0x002B88
+  symbol: HIDAN_room_6DL_002B88

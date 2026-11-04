@@ -1,0 +1,156 @@
+:config:
+  segments:
+    - [ 3, 0x02661000 ]
+    - [ 2, 0x02635000 ]
+  directory: scenes/mq/men_scene
+  external_files:
+    - pal_mq_dbg/scenes/mq/men_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+men_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: men_room_2
+
+men_room_2Tex_003C48:
+  type: TEXTURE
+  offset: 0x3C48
+  symbol: men_room_2Tex_003C48
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF6C0
+
+men_room_2Tex_004448:
+  type: TEXTURE
+  offset: 0x4448
+  symbol: men_room_2Tex_004448
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF6C0
+
+men_room_2Tex_004C48:
+  type: TEXTURE
+  offset: 0x4C48
+  symbol: men_room_2Tex_004C48
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF6C0
+
+
+men_room_2Vtx_0002E0:
+  type: OOT:ARRAY
+  offset: 0x0002E0
+  symbol: men_room_2Vtx_0002E0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_2DL_000580:
+  type: GFX
+  offset: 0x000580
+  symbol: men_room_2DL_000580
+
+men_room_2Vtx_000740:
+  type: OOT:ARRAY
+  offset: 0x000740
+  symbol: men_room_2Vtx_000740
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_2DL_000940:
+  type: GFX
+  offset: 0x000940
+  symbol: men_room_2DL_000940
+
+men_room_2Vtx_000AA0:
+  type: OOT:ARRAY
+  offset: 0x000AA0
+  symbol: men_room_2Vtx_000AA0
+  count: 134
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_2DL_001300:
+  type: GFX
+  offset: 0x001300
+  symbol: men_room_2DL_001300
+
+men_room_2Vtx_001680:
+  type: OOT:ARRAY
+  offset: 0x001680
+  symbol: men_room_2Vtx_001680
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_2DL_001C30:
+  type: GFX
+  offset: 0x001C30
+  symbol: men_room_2DL_001C30
+
+men_room_2Vtx_001DF0:
+  type: OOT:ARRAY
+  offset: 0x001DF0
+  symbol: men_room_2Vtx_001DF0
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_2DL_0026E0:
+  type: GFX
+  offset: 0x0026E0
+  symbol: men_room_2DL_0026E0
+
+men_room_2Vtx_002940:
+  type: OOT:ARRAY
+  offset: 0x002940
+  symbol: men_room_2Vtx_002940
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_2DL_002C30:
+  type: GFX
+  offset: 0x002C30
+  symbol: men_room_2DL_002C30
+
+men_room_2Vtx_002DC0:
+  type: OOT:ARRAY
+  offset: 0x002DC0
+  symbol: men_room_2Vtx_002DC0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_2DL_002FA0:
+  type: GFX
+  offset: 0x002FA0
+  symbol: men_room_2DL_002FA0
+
+men_room_2Vtx_0030B8:
+  type: OOT:ARRAY
+  offset: 0x0030B8
+  symbol: men_room_2Vtx_0030B8
+  count: 135
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_2DL_003928:
+  type: GFX
+  offset: 0x003928
+  symbol: men_room_2DL_003928

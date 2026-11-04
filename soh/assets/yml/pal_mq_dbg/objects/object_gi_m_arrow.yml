@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x01898000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01898000 ]
+    - [ 9, 0x01898000 ]
+    - [ 10, 0x01898000 ]
+    - [ 11, 0x01898000 ]
+    - [ 12, 0x01898000 ]
+    - [ 13, 0x01898000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGiArrowMagicDL:
+  type: GFX
+  offset: 0x0D00
+  symbol: gGiArrowMagicDL
+
+gGiFireArrowColorDL:
+  type: GFX
+  offset: 0x0CA0
+  symbol: gGiFireArrowColorDL
+
+gGiIceArrowColorDL:
+  type: GFX
+  offset: 0x0CC0
+  symbol: gGiIceArrowColorDL
+
+gGiLightArrowColorDL:
+  type: GFX
+  offset: 0x0CE0
+  symbol: gGiLightArrowColorDL
+
+gGiMagicArrowDL:
+  type: GFX
+  offset: 0x0AE0
+  symbol: gGiMagicArrowDL
+
+
+object_gi_m_arrowVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_m_arrowVtx_000000
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_m_arrowVtx_000330:
+  type: OOT:ARRAY
+  offset: 0x000330
+  symbol: object_gi_m_arrowVtx_000330
+  count: 123
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

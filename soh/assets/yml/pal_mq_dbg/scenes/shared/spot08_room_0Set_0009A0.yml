@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x02940000 ]
+    - [ 2, 0x0292E000 ]
+  directory: scenes/shared/spot08_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/spot08_room_0.yml
+    - pal_mq_dbg/scenes/shared/spot08_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+spot08_room_0Set_0009A0:
+  type: OOT:ROOM
+  offset: 0x9A0
+  symbol: spot08_room_0Set_0009A0
+  base_name: spot08_room_0

@@ -1,20 +1,10 @@
-#ifndef IM_GUI_UTILS_H
-#define IM_GUI_UTILS_H
-
 #pragma once
 
 #include <imgui.h>
 #include <array>
 #include <map>
 #include <string>
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h" //only for gItemIcons
-
-extern "C" {
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
-#include "textures/parameter_static/parameter_static.h"
-}
 
 const char* GetTextureForItemId(uint32_t itemId);
 void RegisterImGuiItemIcons();
@@ -75,5 +65,3 @@ extern std::map<QuestItem, SongMapEntry> songMapping;
 
 // Maps song ids to info for use in ImGui
 extern std::array<SongMapEntry, 12> vanillaSongMapping;
-
-#endif // IM_GUI_UTILS_H

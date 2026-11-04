@@ -1,0 +1,426 @@
+:config:
+  segments:
+    - [ 6, 0x01154A60 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x01154A60 ]
+    - [ 9, 0x01154A60 ]
+    - [ 10, 0x01154A60 ]
+    - [ 11, 0x01154A60 ]
+    - [ 12, 0x01154A60 ]
+    - [ 13, 0x01154A60 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gCneBrownHairFaceTex:
+  type: TEXTURE
+  offset: 0x3FC
+  symbol: gCneBrownHairFaceTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0xFC
+
+gCneBrownHairSkinTex:
+  type: TEXTURE
+  offset: 0x3BC
+  symbol: gCneBrownHairSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+gCneBrownHairTex:
+  type: TEXTURE
+  offset: 0x33C
+  symbol: gCneBrownHairTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+gCneDressNeckTex:
+  type: TEXTURE
+  offset: 0x4BC
+  symbol: gCneDressNeckTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+gCneDressTex:
+  type: TEXTURE
+  offset: 0x47C
+  symbol: gCneDressTex
+  format: I8
+  width: 8
+  height: 8
+
+gCneHandTex:
+  type: TEXTURE
+  offset: 0x37C
+  symbol: gCneHandTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+gCneHeadBrownHairDL:
+  type: GFX
+  offset: 0x1300
+  symbol: gCneHeadBrownHairDL
+
+gCneHeadLimb:
+  type: OOT:LIMB
+  offset: 0xA8
+  symbol: gCneHeadLimb
+  limb_type: Standard
+
+gCneHeadOrangeHairDL:
+  type: GFX
+  offset: 0x2860
+  symbol: gCneHeadOrangeHairDL
+
+gCneLeftFootDL:
+  type: GFX
+  offset: 0x20A8
+  symbol: gCneLeftFootDL
+
+gCneLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x24
+  symbol: gCneLeftFootLimb
+  limb_type: Standard
+
+gCneLeftForearmDL:
+  type: GFX
+  offset: 0x19A8
+  symbol: gCneLeftForearmDL
+
+gCneLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x6C
+  symbol: gCneLeftForearmLimb
+  limb_type: Standard
+
+gCneLeftHandDL:
+  type: GFX
+  offset: 0x18C8
+  symbol: gCneLeftHandDL
+
+gCneLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x78
+  symbol: gCneLeftHandLimb
+  limb_type: Standard
+
+gCneLeftShinDL:
+  type: GFX
+  offset: 0x2170
+  symbol: gCneLeftShinDL
+
+gCneLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x18
+  symbol: gCneLeftShinLimb
+  limb_type: Standard
+
+gCneLeftThighDL:
+  type: GFX
+  offset: 0x2238
+  symbol: gCneLeftThighDL
+
+gCneLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xC
+  symbol: gCneLeftThighLimb
+  limb_type: Standard
+
+gCneLeftUpperArmDL:
+  type: GFX
+  offset: 0x1AC8
+  symbol: gCneLeftUpperArmDL
+
+gCneLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x60
+  symbol: gCneLeftUpperArmLimb
+  limb_type: Standard
+
+gCneOrangeHairFaceTex:
+  type: TEXTURE
+  offset: 0x23D0
+  symbol: gCneOrangeHairFaceTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gCneOrangeHairSkinTex:
+  type: TEXTURE
+  offset: 0x24D0
+  symbol: gCneOrangeHairSkinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gCnePelvisDL:
+  type: GFX
+  offset: 0x2300
+  symbol: gCnePelvisDL
+
+gCnePelvisLimb:
+  type: OOT:LIMB
+  offset: 0x0
+  symbol: gCnePelvisLimb
+  limb_type: Standard
+
+gCneRightFootDL:
+  type: GFX
+  offset: 0x1E50
+  symbol: gCneRightFootDL
+
+gCneRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x48
+  symbol: gCneRightFootLimb
+  limb_type: Standard
+
+gCneRightForearmDL:
+  type: GFX
+  offset: 0x16E8
+  symbol: gCneRightForearmDL
+
+gCneRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x90
+  symbol: gCneRightForearmLimb
+  limb_type: Standard
+
+gCneRightHandDL:
+  type: GFX
+  offset: 0x1608
+  symbol: gCneRightHandDL
+
+gCneRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x9C
+  symbol: gCneRightHandLimb
+  limb_type: Standard
+
+gCneRightShinDL:
+  type: GFX
+  offset: 0x1F18
+  symbol: gCneRightShinDL
+
+gCneRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x3C
+  symbol: gCneRightShinLimb
+  limb_type: Standard
+
+gCneRightThighDL:
+  type: GFX
+  offset: 0x1FE0
+  symbol: gCneRightThighDL
+
+gCneRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x30
+  symbol: gCneRightThighLimb
+  limb_type: Standard
+
+gCneRightUpperArmDL:
+  type: GFX
+  offset: 0x1808
+  symbol: gCneRightUpperArmDL
+
+gCneRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x84
+  symbol: gCneRightUpperArmLimb
+  limb_type: Standard
+
+gCneSkel:
+  type: OOT:SKELETON
+  offset: 0xF0
+  symbol: gCneSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gCneSkinTex:
+  type: TEXTURE
+  offset: 0x2FC
+  symbol: gCneSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+gCneTLUT:
+  type: TEXTURE
+  offset: 0xFC
+  symbol: gCneTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCneTorsoDL:
+  type: GFX
+  offset: 0x1B88
+  symbol: gCneTorsoDL
+
+gCneTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x54
+  symbol: gCneTorsoLimb
+  limb_type: Standard
+
+
+gCneSkelLimbs:
+  type: BLOB
+  offset: 0xB4
+  symbol: gCneSkelLimbs
+  size: 0
+
+object_cneVtx_000500:
+  type: OOT:ARRAY
+  offset: 0x000500
+  symbol: object_cneVtx_000500
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000530:
+  type: OOT:ARRAY
+  offset: 0x000530
+  symbol: object_cneVtx_000530
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000560:
+  type: OOT:ARRAY
+  offset: 0x000560
+  symbol: object_cneVtx_000560
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000590:
+  type: OOT:ARRAY
+  offset: 0x000590
+  symbol: object_cneVtx_000590
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_0005C0:
+  type: OOT:ARRAY
+  offset: 0x0005C0
+  symbol: object_cneVtx_0005C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_0005F0:
+  type: OOT:ARRAY
+  offset: 0x0005F0
+  symbol: object_cneVtx_0005F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000620:
+  type: OOT:ARRAY
+  offset: 0x000620
+  symbol: object_cneVtx_000620
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000A70:
+  type: OOT:ARRAY
+  offset: 0x000A70
+  symbol: object_cneVtx_000A70
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000AD0:
+  type: OOT:ARRAY
+  offset: 0x000AD0
+  symbol: object_cneVtx_000AD0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000BE0:
+  type: OOT:ARRAY
+  offset: 0x000BE0
+  symbol: object_cneVtx_000BE0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000C90:
+  type: OOT:ARRAY
+  offset: 0x000C90
+  symbol: object_cneVtx_000C90
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000CF0:
+  type: OOT:ARRAY
+  offset: 0x000CF0
+  symbol: object_cneVtx_000CF0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000E00:
+  type: OOT:ARRAY
+  offset: 0x000E00
+  symbol: object_cneVtx_000E00
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000EB0:
+  type: OOT:ARRAY
+  offset: 0x000EB0
+  symbol: object_cneVtx_000EB0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_001230:
+  type: OOT:ARRAY
+  offset: 0x001230
+  symbol: object_cneVtx_001230
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_002550:
+  type: OOT:ARRAY
+  offset: 0x002550
+  symbol: object_cneVtx_002550
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

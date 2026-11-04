@@ -170,7 +170,7 @@ void func_80B3943C(EnWonderTalk* this, PlayState* play) {
                     osSyncPrintf("\n\n");
                 }
                 this->unk_15A = 0;
-                func_8002F2CC(&this->actor, play, this->unk_15C);
+                Actor_OfferTalk(&this->actor, play, this->unk_15C);
             }
         }
     }

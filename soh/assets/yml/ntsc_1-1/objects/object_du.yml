@@ -1,0 +1,658 @@
+:config:
+  segments:
+    - [ 6, 0x00FDAA10 ]
+
+gDaruniaCreditsHitBreastAnim:
+  type: OOT:ANIMATION
+  offset: 0x6704
+  symbol: gDaruniaCreditsHitBreastAnim
+
+gDaruniaCreditsIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x6DCC
+  symbol: gDaruniaCreditsIdleAnim
+
+gDaruniaDancingEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x45A4
+  symbol: gDaruniaDancingEndAnim
+
+gDaruniaDancingLoop1Anim:
+  type: OOT:ANIMATION
+  offset: 0x2E8C
+  symbol: gDaruniaDancingLoop1Anim
+
+gDaruniaDancingLoop2Anim:
+  type: OOT:ANIMATION
+  offset: 0x40FC
+  symbol: gDaruniaDancingLoop2Anim
+
+gDaruniaDancingLoop3Anim:
+  type: OOT:ANIMATION
+  offset: 0x516C
+  symbol: gDaruniaDancingLoop3Anim
+
+gDaruniaDancingLoop4Anim:
+  type: OOT:ANIMATION
+  offset: 0x54DC
+  symbol: gDaruniaDancingLoop4Anim
+
+gDaruniaEyeClosingTex:
+  type: TEXTURE
+  offset: 0xAB40
+  symbol: gDaruniaEyeClosingTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x80F8
+
+gDaruniaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x8680
+  symbol: gDaruniaEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x80F8
+
+gDaruniaEyeOpeningTex:
+  type: TEXTURE
+  offset: 0x8A80
+  symbol: gDaruniaEyeOpeningTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x80F8
+
+gDaruniaEyeShutTex:
+  type: TEXTURE
+  offset: 0x8E80
+  symbol: gDaruniaEyeShutTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x80F8
+
+gDaruniaHitBreastAnim:
+  type: OOT:ANIMATION
+  offset: 0x2374
+  symbol: gDaruniaHitBreastAnim
+
+gDaruniaHitLinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D70
+  symbol: gDaruniaHitLinkAnim
+
+gDaruniaIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x74B0
+  symbol: gDaruniaIdleAnim
+
+gDaruniaItemGiveAnim:
+  type: OOT:ANIMATION
+  offset: 0x800
+  symbol: gDaruniaItemGiveAnim
+
+gDaruniaItemGiveIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xD00
+  symbol: gDaruniaItemGiveIdleAnim
+
+gDaruniaLookingUpToSariaAnim:
+  type: OOT:ANIMATION
+  offset: 0x5A58
+  symbol: gDaruniaLookingUpToSariaAnim
+
+gDaruniaMouthGrinningTex:
+  type: TEXTURE
+  offset: 0xA340
+  symbol: gDaruniaMouthGrinningTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x82C8
+
+gDaruniaMouthHappyTex:
+  type: TEXTURE
+  offset: 0xB780
+  symbol: gDaruniaMouthHappyTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x82C8
+
+gDaruniaMouthOpenTex:
+  type: TEXTURE
+  offset: 0xAF40
+  symbol: gDaruniaMouthOpenTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x82C8
+
+gDaruniaMouthSeriousTex:
+  type: TEXTURE
+  offset: 0x9280
+  symbol: gDaruniaMouthSeriousTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x82C8
+
+gDaruniaNoseHappyTex:
+  type: TEXTURE
+  offset: 0xB740
+  symbol: gDaruniaNoseHappyTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x7F80
+
+gDaruniaNoseSeriousTex:
+  type: TEXTURE
+  offset: 0x85C0
+  symbol: gDaruniaNoseSeriousTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x7F80
+
+gDaruniaSageFormationAnim:
+  type: OOT:ANIMATION
+  offset: 0x12614
+  symbol: gDaruniaSageFormationAnim
+
+gDaruniaSkel:
+  type: OOT:SKELETON
+  offset: 0x122A8
+  symbol: gDaruniaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDaruniaSkelTex_70C0:
+  type: TEXTURE
+  offset: 0x76C0
+  symbol: gDaruniaSkelTex_70C0
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x74C0
+
+gDaruniaSkelTex_72C0:
+  type: TEXTURE
+  offset: 0x78C0
+  symbol: gDaruniaSkelTex_72C0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x74C0
+
+gDaruniaSkelTex_73C0:
+  type: TEXTURE
+  offset: 0x79C0
+  symbol: gDaruniaSkelTex_73C0
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x74C0
+
+gDaruniaSkelTex_7440:
+  type: TEXTURE
+  offset: 0x7A40
+  symbol: gDaruniaSkelTex_7440
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x74C0
+
+gDaruniaSkelTex_7480:
+  type: TEXTURE
+  offset: 0x7A80
+  symbol: gDaruniaSkelTex_7480
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x74C0
+
+gDaruniaSkelTex_7580:
+  type: TEXTURE
+  offset: 0x7B80
+  symbol: gDaruniaSkelTex_7580
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x74C0
+
+gDaruniaSkelTex_7EC0:
+  type: TEXTURE
+  offset: 0x84C0
+  symbol: gDaruniaSkelTex_7EC0
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x7F80
+
+gDaruniaSkelTex_7F40:
+  type: TEXTURE
+  offset: 0x8540
+  symbol: gDaruniaSkelTex_7F40
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x7F80
+
+gDaruniaSkelTex_8000:
+  type: TEXTURE
+  offset: 0x8600
+  symbol: gDaruniaSkelTex_8000
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x7F80
+
+gDaruniaSkelTex_9480:
+  type: TEXTURE
+  offset: 0x9A80
+  symbol: gDaruniaSkelTex_9480
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x7F80
+
+gDaruniaSkelTex_9500:
+  type: TEXTURE
+  offset: 0x9B00
+  symbol: gDaruniaSkelTex_9500
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x7F80
+
+gDaruniaSkelTex_9D00:
+  type: TEXTURE
+  offset: 0xA300
+  symbol: gDaruniaSkelTex_9D00
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x7F80
+
+gDaruniaStandUpAfterFallingAnim:
+  type: OOT:ANIMATION
+  offset: 0x288C
+  symbol: gDaruniaStandUpAfterFallingAnim
+
+gDaruniaTLUT_6EC0:
+  type: TEXTURE
+  offset: 0x74C0
+  symbol: gDaruniaTLUT_6EC0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDaruniaTLUT_7980:
+  type: TEXTURE
+  offset: 0x7F80
+  symbol: gDaruniaTLUT_7980
+  format: RGBA16
+  width: 47
+  height: 4
+
+gDaruniaTLUT_7AF8:
+  type: TEXTURE
+  offset: 0x80F8
+  symbol: gDaruniaTLUT_7AF8
+  format: RGBA16
+  width: 29
+  height: 8
+
+gDaruniaTLUT_7CC8:
+  type: TEXTURE
+  offset: 0x82C8
+  symbol: gDaruniaTLUT_7CC8
+  format: RGBA16
+  width: 21
+  height: 12
+
+gDaruniaWrongSongAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D88
+  symbol: gDaruniaWrongSongAnim
+
+gDaruniaWrongSongEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x4B6C
+  symbol: gDaruniaWrongSongEndAnim
+
+
+object_duVtx_00BF80:
+  type: OOT:ARRAY
+  offset: 0x00BF80
+  symbol: object_duVtx_00BF80
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00BFB0:
+  type: OOT:ARRAY
+  offset: 0x00BFB0
+  symbol: object_duVtx_00BFB0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00BFE0:
+  type: OOT:ARRAY
+  offset: 0x00BFE0
+  symbol: object_duVtx_00BFE0
+  count: 149
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00C930:
+  type: OOT:ARRAY
+  offset: 0x00C930
+  symbol: object_duVtx_00C930
+  count: 228
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDaruniaSkelLimbsLimb_0121A4DL_00D770:
+  type: GFX
+  offset: 0x00D770
+  symbol: gDaruniaSkelLimbsLimb_0121A4DL_00D770
+
+gDaruniaSkelLimbsLimb_01224CDL_00D7D0:
+  type: GFX
+  offset: 0x00D7D0
+  symbol: gDaruniaSkelLimbsLimb_01224CDL_00D7D0
+
+gDaruniaSkelLimbsLimb_0121F8DL_00D830:
+  type: GFX
+  offset: 0x00D830
+  symbol: gDaruniaSkelLimbsLimb_0121F8DL_00D830
+
+gDaruniaSkelLimbsLimb_012258DL_00DE10:
+  type: GFX
+  offset: 0x00DE10
+  symbol: gDaruniaSkelLimbsLimb_012258DL_00DE10
+
+object_duVtx_00E938:
+  type: OOT:ARRAY
+  offset: 0x00E938
+  symbol: object_duVtx_00E938
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00EB88:
+  type: OOT:ARRAY
+  offset: 0x00EB88
+  symbol: object_duVtx_00EB88
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00ED98:
+  type: OOT:ARRAY
+  offset: 0x00ED98
+  symbol: object_duVtx_00ED98
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00EEB8:
+  type: OOT:ARRAY
+  offset: 0x00EEB8
+  symbol: object_duVtx_00EEB8
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00F108:
+  type: OOT:ARRAY
+  offset: 0x00F108
+  symbol: object_duVtx_00F108
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00F318:
+  type: OOT:ARRAY
+  offset: 0x00F318
+  symbol: object_duVtx_00F318
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00F438:
+  type: OOT:ARRAY
+  offset: 0x00F438
+  symbol: object_duVtx_00F438
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00FA38:
+  type: OOT:ARRAY
+  offset: 0x00FA38
+  symbol: object_duVtx_00FA38
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_00FC88:
+  type: OOT:ARRAY
+  offset: 0x00FC88
+  symbol: object_duVtx_00FC88
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_010038:
+  type: OOT:ARRAY
+  offset: 0x010038
+  symbol: object_duVtx_010038
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_010638:
+  type: OOT:ARRAY
+  offset: 0x010638
+  symbol: object_duVtx_010638
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_duVtx_010888:
+  type: OOT:ARRAY
+  offset: 0x010888
+  symbol: object_duVtx_010888
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDaruniaSkelLimbsLimb_012228DL_010C38:
+  type: GFX
+  offset: 0x010C38
+  symbol: gDaruniaSkelLimbsLimb_012228DL_010C38
+
+gDaruniaSkelLimbsLimb_012234DL_010DF0:
+  type: GFX
+  offset: 0x010DF0
+  symbol: gDaruniaSkelLimbsLimb_012234DL_010DF0
+
+gDaruniaSkelLimbsLimb_012240DL_010F30:
+  type: GFX
+  offset: 0x010F30
+  symbol: gDaruniaSkelLimbsLimb_012240DL_010F30
+
+gDaruniaSkelLimbsLimb_012204DL_011158:
+  type: GFX
+  offset: 0x011158
+  symbol: gDaruniaSkelLimbsLimb_012204DL_011158
+
+gDaruniaSkelLimbsLimb_012210DL_011310:
+  type: GFX
+  offset: 0x011310
+  symbol: gDaruniaSkelLimbsLimb_012210DL_011310
+
+gDaruniaSkelLimbsLimb_01221CDL_011450:
+  type: GFX
+  offset: 0x011450
+  symbol: gDaruniaSkelLimbsLimb_01221CDL_011450
+
+gDaruniaSkelLimbsLimb_0121D4DL_011678:
+  type: GFX
+  offset: 0x011678
+  symbol: gDaruniaSkelLimbsLimb_0121D4DL_011678
+
+gDaruniaSkelLimbsLimb_0121E0DL_011778:
+  type: GFX
+  offset: 0x011778
+  symbol: gDaruniaSkelLimbsLimb_0121E0DL_011778
+
+gDaruniaSkelLimbsLimb_0121ECDL_0119B8:
+  type: GFX
+  offset: 0x0119B8
+  symbol: gDaruniaSkelLimbsLimb_0121ECDL_0119B8
+
+gDaruniaSkelLimbsLimb_0121B0DL_011C08:
+  type: GFX
+  offset: 0x011C08
+  symbol: gDaruniaSkelLimbsLimb_0121B0DL_011C08
+
+gDaruniaSkelLimbsLimb_0121BCDL_011D08:
+  type: GFX
+  offset: 0x011D08
+  symbol: gDaruniaSkelLimbsLimb_0121BCDL_011D08
+
+gDaruniaSkelLimbsLimb_0121C8DL_011F48:
+  type: GFX
+  offset: 0x011F48
+  symbol: gDaruniaSkelLimbsLimb_0121C8DL_011F48
+
+gDaruniaSkelLimbsLimb_012198:
+  type: OOT:LIMB
+  offset: 0x012198
+  symbol: gDaruniaSkelLimbsLimb_012198
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_0121A4:
+  type: OOT:LIMB
+  offset: 0x0121A4
+  symbol: gDaruniaSkelLimbsLimb_0121A4
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_0121B0:
+  type: OOT:LIMB
+  offset: 0x0121B0
+  symbol: gDaruniaSkelLimbsLimb_0121B0
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_0121BC:
+  type: OOT:LIMB
+  offset: 0x0121BC
+  symbol: gDaruniaSkelLimbsLimb_0121BC
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_0121C8:
+  type: OOT:LIMB
+  offset: 0x0121C8
+  symbol: gDaruniaSkelLimbsLimb_0121C8
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_0121D4:
+  type: OOT:LIMB
+  offset: 0x0121D4
+  symbol: gDaruniaSkelLimbsLimb_0121D4
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_0121E0:
+  type: OOT:LIMB
+  offset: 0x0121E0
+  symbol: gDaruniaSkelLimbsLimb_0121E0
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_0121EC:
+  type: OOT:LIMB
+  offset: 0x0121EC
+  symbol: gDaruniaSkelLimbsLimb_0121EC
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_0121F8:
+  type: OOT:LIMB
+  offset: 0x0121F8
+  symbol: gDaruniaSkelLimbsLimb_0121F8
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_012204:
+  type: OOT:LIMB
+  offset: 0x012204
+  symbol: gDaruniaSkelLimbsLimb_012204
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_012210:
+  type: OOT:LIMB
+  offset: 0x012210
+  symbol: gDaruniaSkelLimbsLimb_012210
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_01221C:
+  type: OOT:LIMB
+  offset: 0x01221C
+  symbol: gDaruniaSkelLimbsLimb_01221C
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_012228:
+  type: OOT:LIMB
+  offset: 0x012228
+  symbol: gDaruniaSkelLimbsLimb_012228
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_012234:
+  type: OOT:LIMB
+  offset: 0x012234
+  symbol: gDaruniaSkelLimbsLimb_012234
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_012240:
+  type: OOT:LIMB
+  offset: 0x012240
+  symbol: gDaruniaSkelLimbsLimb_012240
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_01224C:
+  type: OOT:LIMB
+  offset: 0x01224C
+  symbol: gDaruniaSkelLimbsLimb_01224C
+  limb_type: Standard
+
+gDaruniaSkelLimbsLimb_012258:
+  type: OOT:LIMB
+  offset: 0x012258
+  symbol: gDaruniaSkelLimbsLimb_012258
+  limb_type: Standard
+
+gDaruniaSkelLimbs:
+  type: BLOB
+  offset: 0x12264
+  symbol: gDaruniaSkelLimbs
+  size: 0

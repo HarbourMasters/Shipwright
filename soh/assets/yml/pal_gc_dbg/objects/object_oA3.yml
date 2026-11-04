@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 6, 0x0120A000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0120A000 ]
+    - [ 9, 0x0120A000 ]
+    - [ 10, 0x0120A000 ]
+    - [ 11, 0x0120A000 ]
+    - [ 12, 0x0120A000 ]
+    - [ 13, 0x0120A000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+object_oA3_Blob_00000000:
+  type: BLOB
+  offset: 0x0
+  size: 0x8
+  symbol: object_oA3_Blob_00000000
+
+object_oA3_DL_00000008:
+  type: GFX
+  offset: 0x8
+  symbol: object_oA3_DL_00000008
+
+object_oA3_Tex_000012F0:
+  type: TEXTURE
+  offset: 0x12F0
+  symbol: object_oA3_Tex_000012F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_oA3_Tex_00001AF0:
+  type: TEXTURE
+  offset: 0x1AF0
+  symbol: object_oA3_Tex_00001AF0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oA3_Tex_00001CF0:
+  type: TEXTURE
+  offset: 0x1CF0
+  symbol: object_oA3_Tex_00001CF0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oA3_Tex_00001EF0:
+  type: TEXTURE
+  offset: 0x1EF0
+  symbol: object_oA3_Tex_00001EF0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oA3_Tex_000020F0:
+  type: TEXTURE
+  offset: 0x20F0
+  symbol: object_oA3_Tex_000020F0
+  format: RGBA16
+  width: 4
+  height: 8
+
+
+object_oA3Vtx_000428:
+  type: OOT:ARRAY
+  offset: 0x000428
+  symbol: object_oA3Vtx_000428
+  count: 236
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

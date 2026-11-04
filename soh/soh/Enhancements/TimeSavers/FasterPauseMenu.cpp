@@ -1,8 +1,11 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "variables.h"
+#include "z64.h"
 extern PlayState* gPlayState;
 extern void func_808237B4(PlayState* play, Input* input);
 }

@@ -1,0 +1,93 @@
+:config:
+  segments:
+    - [ 6, 0x0103AE20 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x0103AE20 ]
+    - [ 9, 0x0103AE20 ]
+    - [ 10, 0x0103AE20 ]
+    - [ 11, 0x0103AE20 ]
+    - [ 12, 0x0103AE20 ]
+    - [ 13, 0x0103AE20 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gCraterBombableWallCol:
+  type: OOT:COLLISION
+  offset: 0xA38
+  symbol: gCraterBombableWallCol
+
+gCraterBombableWallCracksDL:
+  type: GFX
+  offset: 0x960
+  symbol: gCraterBombableWallCracksDL
+
+gCraterBombableWallCracksTex:
+  type: TEXTURE
+  offset: 0x1030
+  symbol: gCraterBombableWallCracksTex
+  format: IA8
+  width: 32
+  height: 64
+
+gCraterBombableWallDL:
+  type: GFX
+  offset: 0x8A0
+  symbol: gCraterBombableWallDL
+
+gCraterRockTLUT:
+  type: TEXTURE
+  offset: 0x00
+  symbol: gCraterRockTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gCraterRockTex:
+  type: TEXTURE
+  offset: 0x20
+  symbol: gCraterRockTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x00
+
+gCraterSmokeConeDL:
+  type: GFX
+  offset: 0xB40
+  symbol: gCraterSmokeConeDL
+
+gCraterSmokeConeTex:
+  type: TEXTURE
+  offset: 0xC30
+  symbol: gCraterSmokeConeTex
+  format: IA8
+  width: 32
+  height: 32
+
+
+object_spot17_objVtx_000820:
+  type: OOT:ARRAY
+  offset: 0x000820
+  symbol: object_spot17_objVtx_000820
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot17_objVtx_000860:
+  type: OOT:ARRAY
+  offset: 0x000860
+  symbol: object_spot17_objVtx_000860
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot17_objVtx_000A70:
+  type: OOT:ARRAY
+  offset: 0x000A70
+  symbol: object_spot17_objVtx_000A70
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

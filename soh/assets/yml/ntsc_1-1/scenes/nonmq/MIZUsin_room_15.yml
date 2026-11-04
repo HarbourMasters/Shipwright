@@ -1,0 +1,114 @@
+:config:
+  segments:
+    - [ 3, 0x01A47930 ]
+    - [ 2, 0x019F8180 ]
+  directory: scenes/nonmq/MIZUsin_scene
+  external_files:
+    - ntsc_1-1/scenes/nonmq/MIZUsin_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+
+MIZUsin_room_15:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: MIZUsin_room_15
+
+MIZUsin_room_15Tex_002C68:
+  type: TEXTURE
+  offset: 0x2C28
+  symbol: MIZUsin_room_15Tex_002C68
+  format: I4
+  width: 64
+  height: 64
+
+MIZUsin_room_15Tex_003468:
+  type: TEXTURE
+  offset: 0x3428
+  symbol: MIZUsin_room_15Tex_003468
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_15Tex_003C68:
+  type: TEXTURE
+  offset: 0x3C28
+  symbol: MIZUsin_room_15Tex_003C68
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_15Tex_004468:
+  type: TEXTURE
+  offset: 0x4428
+  symbol: MIZUsin_room_15Tex_004468
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_15Tex_004C68:
+  type: TEXTURE
+  offset: 0x4C28
+  symbol: MIZUsin_room_15Tex_004C68
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_15Tex_005468:
+  type: TEXTURE
+  offset: 0x5428
+  symbol: MIZUsin_room_15Tex_005468
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_15Tex_005C68:
+  type: TEXTURE
+  offset: 0x5C28
+  symbol: MIZUsin_room_15Tex_005C68
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_15Tex_006468:
+  type: TEXTURE
+  offset: 0x6428
+  symbol: MIZUsin_room_15Tex_006468
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_15Tex_006C68:
+  type: TEXTURE
+  offset: 0x6C28
+  symbol: MIZUsin_room_15Tex_006C68
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+MIZUsin_room_15Vtx_0000F0:
+  type: OOT:ARRAY
+  offset: 0x0000F0
+  symbol: MIZUsin_room_15Vtx_0000F0
+  count: 390
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_15DL_001950:
+  type: GFX
+  offset: 0x001950
+  symbol: MIZUsin_room_15DL_001950
+
+MIZUsin_room_15Vtx_002A98:
+  type: OOT:ARRAY
+  offset: 0x002A98
+  symbol: MIZUsin_room_15Vtx_002A98
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_15DL_002B58:
+  type: GFX
+  offset: 0x002B58
+  symbol: MIZUsin_room_15DL_002B58

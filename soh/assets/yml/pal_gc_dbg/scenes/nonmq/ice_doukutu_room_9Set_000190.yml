@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x02616000 ]
+    - [ 2, 0x025C1000 ]
+  directory: scenes/nonmq/ice_doukutu_scene
+  external_files:
+    - pal_gc_dbg/scenes/nonmq/ice_doukutu_room_9.yml
+    - pal_gc_dbg/scenes/nonmq/ice_doukutu_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+ice_doukutu_room_9Set_000190:
+  type: OOT:ROOM
+  offset: 0x190
+  symbol: ice_doukutu_room_9Set_000190
+  base_name: ice_doukutu_room_9

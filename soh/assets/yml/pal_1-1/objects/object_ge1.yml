@@ -1,0 +1,544 @@
+:config:
+  segments:
+    - [ 6, 0x01172AC0 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x01172AC0 ]
+    - [ 9, 0x01172AC0 ]
+    - [ 10, 0x01172AC0 ]
+    - [ 11, 0x01172AC0 ]
+    - [ 12, 0x01172AC0 ]
+    - [ 13, 0x01172AC0 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gGerudoWhiteArmletTex:
+  type: TEXTURE
+  offset: 0x2308
+  symbol: gGerudoWhiteArmletTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0348
+
+gGerudoWhiteClapAnim:
+  type: OOT:ANIMATION
+  offset: 0xA048
+  symbol: gGerudoWhiteClapAnim
+
+gGerudoWhiteCleavageTex:
+  type: TEXTURE
+  offset: 0x2688
+  symbol: gGerudoWhiteCleavageTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0348
+
+gGerudoWhiteCrotchTex:
+  type: TEXTURE
+  offset: 0x2788
+  symbol: gGerudoWhiteCrotchTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGerudoWhiteDismissiveAnim:
+  type: OOT:ANIMATION
+  offset: 0xA498
+  symbol: gGerudoWhiteDismissiveAnim
+
+gGerudoWhiteEarTex:
+  type: TEXTURE
+  offset: 0x0688
+  symbol: gGerudoWhiteEarTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0348
+
+gGerudoWhiteEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1708
+  symbol: gGerudoWhiteEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGerudoWhiteEyeHalfTex:
+  type: TEXTURE
+  offset: 0x0F08
+  symbol: gGerudoWhiteEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGerudoWhiteEyeOpenTex:
+  type: TEXTURE
+  offset: 0x0708
+  symbol: gGerudoWhiteEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGerudoWhiteFingersTex:
+  type: TEXTURE
+  offset: 0x1F08
+  symbol: gGerudoWhiteFingersTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0348
+
+gGerudoWhiteGeneralTLUT:
+  type: TEXTURE
+  offset: 0x0348
+  symbol: gGerudoWhiteGeneralTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGerudoWhiteHairTLUT:
+  type: TEXTURE
+  offset: 0x2808
+  symbol: gGerudoWhiteHairTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGerudoWhiteHairTex:
+  type: TEXTURE
+  offset: 0x2A08
+  symbol: gGerudoWhiteHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2808
+
+gGerudoWhiteHairstyleBobDL:
+  type: GFX
+  offset: 0x9198
+  symbol: gGerudoWhiteHairstyleBobDL
+
+gGerudoWhiteHairstyleSpikyDL:
+  type: GFX
+  offset: 0x9690
+  symbol: gGerudoWhiteHairstyleSpikyDL
+
+gGerudoWhiteHairstyleStraightFringeDL:
+  type: GFX
+  offset: 0x9430
+  symbol: gGerudoWhiteHairstyleStraightFringeDL
+
+gGerudoWhiteHeadDL:
+  type: GFX
+  offset: 0x5C38
+  symbol: gGerudoWhiteHeadDL
+
+gGerudoWhiteHeadLimb:
+  type: OOT:LIMB
+  offset: 0x02E8
+  symbol: gGerudoWhiteHeadLimb
+  limb_type: Standard
+
+gGerudoWhiteIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x0228
+  symbol: gGerudoWhiteIdleAnim
+
+gGerudoWhiteJacketTex:
+  type: TEXTURE
+  offset: 0x2388
+  symbol: gGerudoWhiteJacketTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0348
+
+gGerudoWhiteLeftFootDL:
+  type: GFX
+  offset: 0x73A8
+  symbol: gGerudoWhiteLeftFootDL
+
+gGerudoWhiteLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x0264
+  symbol: gGerudoWhiteLeftFootLimb
+  limb_type: Standard
+
+gGerudoWhiteLeftForearmDL:
+  type: GFX
+  offset: 0x66B8
+  symbol: gGerudoWhiteLeftForearmDL
+
+gGerudoWhiteLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x02AC
+  symbol: gGerudoWhiteLeftForearmLimb
+  limb_type: Standard
+
+gGerudoWhiteLeftHandDL:
+  type: GFX
+  offset: 0x67E8
+  symbol: gGerudoWhiteLeftHandDL
+
+gGerudoWhiteLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x02B8
+  symbol: gGerudoWhiteLeftHandLimb
+  limb_type: Standard
+
+gGerudoWhiteLeftShinDL:
+  type: GFX
+  offset: 0x71E0
+  symbol: gGerudoWhiteLeftShinDL
+
+gGerudoWhiteLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x0258
+  symbol: gGerudoWhiteLeftShinLimb
+  limb_type: Standard
+
+gGerudoWhiteLeftThighDL:
+  type: GFX
+  offset: 0x70B0
+  symbol: gGerudoWhiteLeftThighDL
+
+gGerudoWhiteLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x024C
+  symbol: gGerudoWhiteLeftThighLimb
+  limb_type: Standard
+
+gGerudoWhiteLeftUpperArmDL:
+  type: GFX
+  offset: 0x6510
+  symbol: gGerudoWhiteLeftUpperArmDL
+
+gGerudoWhiteLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x02A0
+  symbol: gGerudoWhiteLeftUpperArmLimb
+  limb_type: Standard
+
+gGerudoWhiteNavelTex:
+  type: TEXTURE
+  offset: 0x2588
+  symbol: gGerudoWhiteNavelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0348
+
+gGerudoWhiteRightFootDL:
+  type: GFX
+  offset: 0x6E50
+  symbol: gGerudoWhiteRightFootDL
+
+gGerudoWhiteRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x0288
+  symbol: gGerudoWhiteRightFootLimb
+  limb_type: Standard
+
+gGerudoWhiteRightForearmDL:
+  type: GFX
+  offset: 0x61E8
+  symbol: gGerudoWhiteRightForearmDL
+
+gGerudoWhiteRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x02D0
+  symbol: gGerudoWhiteRightForearmLimb
+  limb_type: Standard
+
+gGerudoWhiteRightHandDL:
+  type: GFX
+  offset: 0x6318
+  symbol: gGerudoWhiteRightHandDL
+
+gGerudoWhiteRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x02DC
+  symbol: gGerudoWhiteRightHandLimb
+  limb_type: Standard
+
+gGerudoWhiteRightShinDL:
+  type: GFX
+  offset: 0x6C00
+  symbol: gGerudoWhiteRightShinDL
+
+gGerudoWhiteRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x027C
+  symbol: gGerudoWhiteRightShinLimb
+  limb_type: Standard
+
+gGerudoWhiteRightThighDL:
+  type: GFX
+  offset: 0x6AD0
+  symbol: gGerudoWhiteRightThighDL
+
+gGerudoWhiteRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x0270
+  symbol: gGerudoWhiteRightThighLimb
+  limb_type: Standard
+
+gGerudoWhiteRightUpperArmDL:
+  type: GFX
+  offset: 0x6040
+  symbol: gGerudoWhiteRightUpperArmDL
+
+gGerudoWhiteRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x02C4
+  symbol: gGerudoWhiteRightUpperArmLimb
+  limb_type: Standard
+
+gGerudoWhiteShoeSoleTex:
+  type: TEXTURE
+  offset: 0x2748
+  symbol: gGerudoWhiteShoeSoleTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0348
+
+gGerudoWhiteShoeUpperTex:
+  type: TEXTURE
+  offset: 0x26C8
+  symbol: gGerudoWhiteShoeUpperTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0348
+
+gGerudoWhiteSkel:
+  type: OOT:SKELETON
+  offset: 0x0330
+  symbol: gGerudoWhiteSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGerudoWhiteSkinGradientTex:
+  type: TEXTURE
+  offset: 0x0548
+  symbol: gGerudoWhiteSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0348
+
+gGerudoWhiteTorsoDL:
+  type: GFX
+  offset: 0x5608
+  symbol: gGerudoWhiteTorsoDL
+
+gGerudoWhiteTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x0294
+  symbol: gGerudoWhiteTorsoLimb
+  limb_type: Standard
+
+gGerudoWhiteTubeTopTex:
+  type: TEXTURE
+  offset: 0x2488
+  symbol: gGerudoWhiteTubeTopTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0348
+
+gGerudoWhiteUnusedFoldingArmsAnim:
+  type: OOT:ANIMATION
+  offset: 0x0168
+  symbol: gGerudoWhiteUnusedFoldingArmsAnim
+
+gGerudoWhiteWaistDL:
+  type: GFX
+  offset: 0x69E0
+  symbol: gGerudoWhiteWaistDL
+
+gGerudoWhiteWaistLimb:
+  type: OOT:LIMB
+  offset: 0x0240
+  symbol: gGerudoWhiteWaistLimb
+  limb_type: Standard
+
+gGerudoWhiteWhiteFabricLipsTex:
+  type: TEXTURE
+  offset: 0x0588
+  symbol: gGerudoWhiteWhiteFabricLipsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0348
+
+
+gGerudoWhiteSkelLimbs:
+  type: BLOB
+  offset: 0x2F4
+  symbol: gGerudoWhiteSkelLimbs
+  size: 0
+
+object_ge1Vtx_002B08:
+  type: OOT:ARRAY
+  offset: 0x002B08
+  symbol: object_ge1Vtx_002B08
+  count: 123
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_0032B8:
+  type: OOT:ARRAY
+  offset: 0x0032B8
+  symbol: object_ge1Vtx_0032B8
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_003628:
+  type: OOT:ARRAY
+  offset: 0x003628
+  symbol: object_ge1Vtx_003628
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_0037A8:
+  type: OOT:ARRAY
+  offset: 0x0037A8
+  symbol: object_ge1Vtx_0037A8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_003928:
+  type: OOT:ARRAY
+  offset: 0x003928
+  symbol: object_ge1Vtx_003928
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_003C98:
+  type: OOT:ARRAY
+  offset: 0x003C98
+  symbol: object_ge1Vtx_003C98
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_003E18:
+  type: OOT:ARRAY
+  offset: 0x003E18
+  symbol: object_ge1Vtx_003E18
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_003F98:
+  type: OOT:ARRAY
+  offset: 0x003F98
+  symbol: object_ge1Vtx_003F98
+  count: 118
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_0046F8:
+  type: OOT:ARRAY
+  offset: 0x0046F8
+  symbol: object_ge1Vtx_0046F8
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_004A08:
+  type: OOT:ARRAY
+  offset: 0x004A08
+  symbol: object_ge1Vtx_004A08
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_004C08:
+  type: OOT:ARRAY
+  offset: 0x004C08
+  symbol: object_ge1Vtx_004C08
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_004DC8:
+  type: OOT:ARRAY
+  offset: 0x004DC8
+  symbol: object_ge1Vtx_004DC8
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_0050D8:
+  type: OOT:ARRAY
+  offset: 0x0050D8
+  symbol: object_ge1Vtx_0050D8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_0052D8:
+  type: OOT:ARRAY
+  offset: 0x0052D8
+  symbol: object_ge1Vtx_0052D8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_005498:
+  type: OOT:ARRAY
+  offset: 0x005498
+  symbol: object_ge1Vtx_005498
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_007588:
+  type: OOT:ARRAY
+  offset: 0x007588
+  symbol: object_ge1Vtx_007588
+  count: 161
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_007F98:
+  type: OOT:ARRAY
+  offset: 0x007F98
+  symbol: object_ge1Vtx_007F98
+  count: 125
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ge1Vtx_008768:
+  type: OOT:ARRAY
+  offset: 0x008768
+  symbol: object_ge1Vtx_008768
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

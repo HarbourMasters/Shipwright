@@ -1,0 +1,67 @@
+:config:
+  segments:
+    - [ 6, 0x0117B4D0 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x0117B4D0 ]
+    - [ 9, 0x0117B4D0 ]
+    - [ 10, 0x0117B4D0 ]
+    - [ 11, 0x0117B4D0 ]
+    - [ 12, 0x0117B4D0 ]
+    - [ 13, 0x0117B4D0 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gHookshotPostCol:
+  type: OOT:COLLISION
+  offset: 0x730
+  symbol: gHookshotPostCol
+
+gHookshotPostDL:
+  type: GFX
+  offset: 0x210
+  symbol: gHookshotPostDL
+
+gHookshotPostTex:
+  type: TEXTURE
+  offset: 0xF60
+  symbol: gHookshotPostTex
+  format: I8
+  width: 32
+  height: 64
+
+gHookshotTargetCol:
+  type: OOT:COLLISION
+  offset: 0x578
+  symbol: gHookshotTargetCol
+
+gHookshotTargetDL:
+  type: GFX
+  offset: 0x470
+  symbol: gHookshotTargetDL
+
+gHookshotTargetTex:
+  type: TEXTURE
+  offset: 0x760
+  symbol: gHookshotTargetTex
+  format: I4
+  width: 64
+  height: 64
+
+
+object_d_hsblockVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_d_hsblockVtx_000000
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_d_hsblockVtx_000330:
+  type: OOT:ARRAY
+  offset: 0x000330
+  symbol: object_d_hsblockVtx_000330
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

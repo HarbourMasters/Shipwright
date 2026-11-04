@@ -1,0 +1,31 @@
+:config:
+  segments:
+    - [ 2, 0x01D3CE30 ]
+
+ydan_boss_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ydan_boss_scene
+
+ydan_boss_sceneTLUT_000D30:
+  type: TEXTURE
+  offset: 0xD30
+  symbol: ydan_boss_sceneTLUT_000D30
+  format: RGBA16
+  width: 16
+  height: 16
+
+ydan_boss_sceneTex_000F38:
+  type: TEXTURE
+  offset: 0xF38
+  symbol: ydan_boss_sceneTex_000F38
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0xD30
+
+
+ydan_boss_sceneCollisionHeader_000CFC:
+  type: OOT:COLLISION
+  offset: 0x000CFC
+  symbol: ydan_boss_sceneCollisionHeader_000CFC

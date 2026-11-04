@@ -1,0 +1,62 @@
+:config:
+  segments:
+    - [ 3, 0x019BEAA0 ]
+    - [ 2, 0x01985B90 ]
+  directory: scenes/mq/ice_doukutu_scene
+  external_files:
+    - ntsc_j_mq/scenes/mq/ice_doukutu_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+    - ntsc_j_mq/scenes/mq/ice_doukutu_room_8Set_000100.yml
+
+ice_doukutu_room_8:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ice_doukutu_room_8
+
+
+ice_doukutu_room_8Vtx_000140:
+  type: OOT:ARRAY
+  offset: 0x000140
+  symbol: ice_doukutu_room_8Vtx_000140
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_8DL_000480:
+  type: GFX
+  offset: 0x000480
+  symbol: ice_doukutu_room_8DL_000480
+
+ice_doukutu_room_8Vtx_000600:
+  type: OOT:ARRAY
+  offset: 0x000600
+  symbol: ice_doukutu_room_8Vtx_000600
+  count: 211
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_8DL_001330:
+  type: GFX
+  offset: 0x001330
+  symbol: ice_doukutu_room_8DL_001330
+
+ice_doukutu_room_8Vtx_001690:
+  type: OOT:ARRAY
+  offset: 0x001690
+  symbol: ice_doukutu_room_8Vtx_001690
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ice_doukutu_room_8DL_001810:
+  type: GFX
+  offset: 0x001810
+  symbol: ice_doukutu_room_8DL_001810
+
+ice_doukutu_room_8DL_0018F8:
+  type: GFX
+  offset: 0x0018F8
+  symbol: ice_doukutu_room_8DL_0018F8

@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 6, 0x0103AA40 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x0103AA40 ]
+    - [ 9, 0x0103AA40 ]
+    - [ 10, 0x0103AA40 ]
+    - [ 11, 0x0103AA40 ]
+    - [ 12, 0x0103AA40 ]
+    - [ 13, 0x0103AA40 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gShopDungenStone1Tex:
+  type: TEXTURE
+  offset: 0xE08
+  symbol: gShopDungenStone1Tex
+  format: CI4
+  width: 64
+  height: 64
+
+gShopDungenStone2Tex:
+  type: TEXTURE
+  offset: 0x1608
+  symbol: gShopDungenStone2Tex
+  format: CI4
+  width: 64
+  height: 64
+
+gShopDungenStoneShelvesDL:
+  type: GFX
+  offset: 0x27E8
+  symbol: gShopDungenStoneShelvesDL
+
+gShopDungenStoneTLUT:
+  type: TEXTURE
+  offset: 0xDE0
+  symbol: gShopDungenStoneTLUT
+  format: RGBA16
+  width: 16
+  height: 1
+
+gShopDungenWoodPlankTex:
+  type: TEXTURE
+  offset: 0x2A20
+  symbol: gShopDungenWoodPlankTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gShopDungenWoodenShelvesDL:
+  type: GFX
+  offset: 0xB80
+  symbol: gShopDungenWoodenShelvesDL
+
+
+object_shop_dungenVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_shop_dungenVtx_000000
+  count: 184
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shop_dungenVtx_001E08:
+  type: OOT:ARRAY
+  offset: 0x001E08
+  symbol: object_shop_dungenVtx_001E08
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

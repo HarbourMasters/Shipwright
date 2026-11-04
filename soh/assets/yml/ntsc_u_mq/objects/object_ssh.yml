@@ -1,0 +1,494 @@
+:config:
+  segments:
+    - [ 6, 0x012376D0 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x012376D0 ]
+    - [ 9, 0x012376D0 ]
+    - [ 10, 0x012376D0 ]
+    - [ 11, 0x012376D0 ]
+    - [ 12, 0x012376D0 ]
+    - [ 13, 0x012376D0 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+object_ssh_Anim_000304:
+  type: OOT:ANIMATION
+  offset: 0x304
+  symbol: object_ssh_Anim_000304
+
+object_ssh_Anim_0055F8:
+  type: OOT:ANIMATION
+  offset: 0x55F8
+  symbol: object_ssh_Anim_0055F8
+
+object_ssh_Anim_005BE8:
+  type: OOT:ANIMATION
+  offset: 0x5BE8
+  symbol: object_ssh_Anim_005BE8
+
+object_ssh_DL_003CD0:
+  type: GFX
+  offset: 0x3CD0
+  symbol: object_ssh_DL_003CD0
+
+object_ssh_DL_004080:
+  type: GFX
+  offset: 0x4080
+  symbol: object_ssh_DL_004080
+
+object_ssh_DL_004510:
+  type: GFX
+  offset: 0x4510
+  symbol: object_ssh_DL_004510
+
+object_ssh_DL_0046C0:
+  type: GFX
+  offset: 0x46C0
+  symbol: object_ssh_DL_0046C0
+
+object_ssh_DL_004878:
+  type: GFX
+  offset: 0x4878
+  symbol: object_ssh_DL_004878
+
+object_ssh_DL_004940:
+  type: GFX
+  offset: 0x4940
+  symbol: object_ssh_DL_004940
+
+object_ssh_DL_004A08:
+  type: GFX
+  offset: 0x4A08
+  symbol: object_ssh_DL_004A08
+
+object_ssh_DL_004AD0:
+  type: GFX
+  offset: 0x4AD0
+  symbol: object_ssh_DL_004AD0
+
+object_ssh_DL_004B98:
+  type: GFX
+  offset: 0x4B98
+  symbol: object_ssh_DL_004B98
+
+object_ssh_DL_004C60:
+  type: GFX
+  offset: 0x4C60
+  symbol: object_ssh_DL_004C60
+
+object_ssh_DL_004D28:
+  type: GFX
+  offset: 0x4D28
+  symbol: object_ssh_DL_004D28
+
+object_ssh_DL_004DE8:
+  type: GFX
+  offset: 0x4DE8
+  symbol: object_ssh_DL_004DE8
+
+object_ssh_DL_005048:
+  type: GFX
+  offset: 0x5048
+  symbol: object_ssh_DL_005048
+
+object_ssh_Limb_005110:
+  type: OOT:LIMB
+  offset: 0x5110
+  symbol: object_ssh_Limb_005110
+  limb_type: Standard
+
+object_ssh_Limb_00511C:
+  type: OOT:LIMB
+  offset: 0x511C
+  symbol: object_ssh_Limb_00511C
+  limb_type: Standard
+
+object_ssh_Limb_005128:
+  type: OOT:LIMB
+  offset: 0x5128
+  symbol: object_ssh_Limb_005128
+  limb_type: Standard
+
+object_ssh_Limb_005134:
+  type: OOT:LIMB
+  offset: 0x5134
+  symbol: object_ssh_Limb_005134
+  limb_type: Standard
+
+object_ssh_Limb_005140:
+  type: OOT:LIMB
+  offset: 0x5140
+  symbol: object_ssh_Limb_005140
+  limb_type: Standard
+
+object_ssh_Limb_00514C:
+  type: OOT:LIMB
+  offset: 0x514C
+  symbol: object_ssh_Limb_00514C
+  limb_type: Standard
+
+object_ssh_Limb_005158:
+  type: OOT:LIMB
+  offset: 0x5158
+  symbol: object_ssh_Limb_005158
+  limb_type: Standard
+
+object_ssh_Limb_005164:
+  type: OOT:LIMB
+  offset: 0x5164
+  symbol: object_ssh_Limb_005164
+  limb_type: Standard
+
+object_ssh_Limb_005170:
+  type: OOT:LIMB
+  offset: 0x5170
+  symbol: object_ssh_Limb_005170
+  limb_type: Standard
+
+object_ssh_Limb_00517C:
+  type: OOT:LIMB
+  offset: 0x517C
+  symbol: object_ssh_Limb_00517C
+  limb_type: Standard
+
+object_ssh_Limb_005188:
+  type: OOT:LIMB
+  offset: 0x5188
+  symbol: object_ssh_Limb_005188
+  limb_type: Standard
+
+object_ssh_Limb_005194:
+  type: OOT:LIMB
+  offset: 0x5194
+  symbol: object_ssh_Limb_005194
+  limb_type: Standard
+
+object_ssh_Limb_0051A0:
+  type: OOT:LIMB
+  offset: 0x51A0
+  symbol: object_ssh_Limb_0051A0
+  limb_type: Standard
+
+object_ssh_Limb_0051AC:
+  type: OOT:LIMB
+  offset: 0x51AC
+  symbol: object_ssh_Limb_0051AC
+  limb_type: Standard
+
+object_ssh_Limb_0051B8:
+  type: OOT:LIMB
+  offset: 0x51B8
+  symbol: object_ssh_Limb_0051B8
+  limb_type: Standard
+
+object_ssh_Limb_0051C4:
+  type: OOT:LIMB
+  offset: 0x51C4
+  symbol: object_ssh_Limb_0051C4
+  limb_type: Standard
+
+object_ssh_Limb_0051D0:
+  type: OOT:LIMB
+  offset: 0x51D0
+  symbol: object_ssh_Limb_0051D0
+  limb_type: Standard
+
+object_ssh_Limb_0051DC:
+  type: OOT:LIMB
+  offset: 0x51DC
+  symbol: object_ssh_Limb_0051DC
+  limb_type: Standard
+
+object_ssh_Limb_0051E8:
+  type: OOT:LIMB
+  offset: 0x51E8
+  symbol: object_ssh_Limb_0051E8
+  limb_type: Standard
+
+object_ssh_Limb_0051F4:
+  type: OOT:LIMB
+  offset: 0x51F4
+  symbol: object_ssh_Limb_0051F4
+  limb_type: Standard
+
+object_ssh_Limb_005200:
+  type: OOT:LIMB
+  offset: 0x5200
+  symbol: object_ssh_Limb_005200
+  limb_type: Standard
+
+object_ssh_Limb_00520C:
+  type: OOT:LIMB
+  offset: 0x520C
+  symbol: object_ssh_Limb_00520C
+  limb_type: Standard
+
+object_ssh_Limb_005218:
+  type: OOT:LIMB
+  offset: 0x5218
+  symbol: object_ssh_Limb_005218
+  limb_type: Standard
+
+object_ssh_Limb_005224:
+  type: OOT:LIMB
+  offset: 0x5224
+  symbol: object_ssh_Limb_005224
+  limb_type: Standard
+
+object_ssh_Limb_005230:
+  type: OOT:LIMB
+  offset: 0x5230
+  symbol: object_ssh_Limb_005230
+  limb_type: Standard
+
+object_ssh_Limb_00523C:
+  type: OOT:LIMB
+  offset: 0x523C
+  symbol: object_ssh_Limb_00523C
+  limb_type: Standard
+
+object_ssh_Limb_005248:
+  type: OOT:LIMB
+  offset: 0x5248
+  symbol: object_ssh_Limb_005248
+  limb_type: Standard
+
+object_ssh_Limb_005254:
+  type: OOT:LIMB
+  offset: 0x5254
+  symbol: object_ssh_Limb_005254
+  limb_type: Standard
+
+object_ssh_Limb_005260:
+  type: OOT:LIMB
+  offset: 0x5260
+  symbol: object_ssh_Limb_005260
+  limb_type: Standard
+
+object_ssh_Skel_0052E0:
+  type: OOT:SKELETON
+  offset: 0x52E0
+  symbol: object_ssh_Skel_0052E0
+  limb_type: Standard
+  skel_type: Normal
+
+object_ssh_TLUT_000320:
+  type: TEXTURE
+  offset: 0x320
+  symbol: object_ssh_TLUT_000320
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ssh_Tex_000520:
+  type: TEXTURE
+  offset: 0x520
+  symbol: object_ssh_Tex_000520
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x320
+
+object_ssh_Tex_000560:
+  type: TEXTURE
+  offset: 0x560
+  symbol: object_ssh_Tex_000560
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x320
+
+object_ssh_Tex_0005E0:
+  type: TEXTURE
+  offset: 0x5E0
+  symbol: object_ssh_Tex_0005E0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x320
+
+object_ssh_Tex_000620:
+  type: TEXTURE
+  offset: 0x620
+  symbol: object_ssh_Tex_000620
+  format: I8
+  width: 16
+  height: 16
+
+object_ssh_Tex_000720:
+  type: TEXTURE
+  offset: 0x720
+  symbol: object_ssh_Tex_000720
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x320
+
+object_ssh_Tex_0007A0:
+  type: TEXTURE
+  offset: 0x7A0
+  symbol: object_ssh_Tex_0007A0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x320
+
+object_ssh_Tex_0007E0:
+  type: TEXTURE
+  offset: 0x7E0
+  symbol: object_ssh_Tex_0007E0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x320
+
+object_ssh_Tex_000BE0:
+  type: TEXTURE
+  offset: 0xBE0
+  symbol: object_ssh_Tex_000BE0
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x320
+
+object_ssh_Tex_000C60:
+  type: TEXTURE
+  offset: 0xC60
+  symbol: object_ssh_Tex_000C60
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x320
+
+object_ssh_Tex_001060:
+  type: TEXTURE
+  offset: 0x1060
+  symbol: object_ssh_Tex_001060
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x320
+
+
+object_sshVtx_001460:
+  type: OOT:ARRAY
+  offset: 0x001460
+  symbol: object_sshVtx_001460
+  count: 177
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_001F70:
+  type: OOT:ARRAY
+  offset: 0x001F70
+  symbol: object_sshVtx_001F70
+  count: 230
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_002DD0:
+  type: OOT:ARRAY
+  offset: 0x002DD0
+  symbol: object_sshVtx_002DD0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_003040:
+  type: OOT:ARRAY
+  offset: 0x003040
+  symbol: object_sshVtx_003040
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_003220:
+  type: OOT:ARRAY
+  offset: 0x003220
+  symbol: object_sshVtx_003220
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_0032E0:
+  type: OOT:ARRAY
+  offset: 0x0032E0
+  symbol: object_sshVtx_0032E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_0033A0:
+  type: OOT:ARRAY
+  offset: 0x0033A0
+  symbol: object_sshVtx_0033A0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_003430:
+  type: OOT:ARRAY
+  offset: 0x003430
+  symbol: object_sshVtx_003430
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_0034F0:
+  type: OOT:ARRAY
+  offset: 0x0034F0
+  symbol: object_sshVtx_0034F0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_0035B0:
+  type: OOT:ARRAY
+  offset: 0x0035B0
+  symbol: object_sshVtx_0035B0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_003650:
+  type: OOT:ARRAY
+  offset: 0x003650
+  symbol: object_sshVtx_003650
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_0036B0:
+  type: OOT:ARRAY
+  offset: 0x0036B0
+  symbol: object_sshVtx_0036B0
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sshVtx_003C10:
+  type: OOT:ARRAY
+  offset: 0x003C10
+  symbol: object_sshVtx_003C10
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ssh_Skel_0052E0Limbs:
+  type: BLOB
+  offset: 0x526C
+  symbol: object_ssh_Skel_0052E0Limbs
+  size: 0

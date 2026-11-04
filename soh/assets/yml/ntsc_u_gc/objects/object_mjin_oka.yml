@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x00F1A130 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00F1A130 ]
+    - [ 9, 0x00F1A130 ]
+    - [ 10, 0x00F1A130 ]
+    - [ 11, 0x00F1A130 ]
+    - [ 12, 0x00F1A130 ]
+    - [ 13, 0x00F1A130 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gOcarinaWarpPadCol:
+  type: OOT:COLLISION
+  offset: 0x330
+  symbol: gOcarinaWarpPadCol
+
+gOcarinaWarpPadDL:
+  type: GFX
+  offset: 0x140
+  symbol: gOcarinaWarpPadDL
+
+gOcarinaWarpPadOcarinaTex:
+  type: TEXTURE
+  offset: 0xB60
+  symbol: gOcarinaWarpPadOcarinaTex
+  format: I8
+  width: 64
+  height: 64
+
+gOcarinaWarpPadSideTex:
+  type: TEXTURE
+  offset: 0x360
+  symbol: gOcarinaWarpPadSideTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+
+object_mjin_okaVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_mjin_okaVtx_000000
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

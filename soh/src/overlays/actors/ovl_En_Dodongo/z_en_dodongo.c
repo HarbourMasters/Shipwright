@@ -3,7 +3,6 @@
 #include "overlays/actors/ovl_En_Bombf/z_en_bombf.h"
 #include "objects/object_dodongo/object_dodongo.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -354,8 +353,6 @@ void EnDodongo_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->colliderHard);
     Collider_DestroyJntSph(play, &this->colliderBody);
     Collider_DestroyQuad(play, &this->colliderAT);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDodongo_SetupIdle(EnDodongo* this) {
@@ -775,7 +772,7 @@ void EnDodongo_Update(Actor* thisx, PlayState* play) {
         this->actionFunc(this, play);
         Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 60.0f, 70.0f, 0x1D);
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DOWN);
         }
     }

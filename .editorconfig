@@ -1,0 +1,15 @@
+# matching .clang-format and scripts/check-whitespace.sh
+root = true
+
+[*]
+end_of_line = lf
+
+[soh/**.{c,cpp,h,hpp}]
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[soh/include/**]
+indent_style = unset
+indent_size = unset
+trim_trailing_whitespace = unset

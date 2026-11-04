@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01B8AA90 ]
+    - [ 2, 0x01B78E10 ]
+  directory: scenes/shared/spot11_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/spot11_room_0.yml
+    - ntsc_j_mq/scenes/shared/spot11_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+spot11_room_0Set_0007F0:
+  type: OOT:ROOM
+  offset: 0x7F0
+  symbol: spot11_room_0Set_0007F0
+  base_name: spot11_room_0

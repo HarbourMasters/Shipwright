@@ -1,5 +1,4 @@
-#ifndef _RANDO_GROTTO_H_
-#define _RANDO_GROTTO_H_
+#pragma once
 
 #include "z64math.h"
 #include "z64actor.h"
@@ -40,5 +39,3 @@ s8 Grotto_CurrentGrotto();
 #ifdef __cplusplus
 };
 #endif
-
-#endif //_RANDO_GROTTO_H_

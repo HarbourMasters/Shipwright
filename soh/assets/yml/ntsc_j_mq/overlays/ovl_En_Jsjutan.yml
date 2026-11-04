@@ -1,0 +1,70 @@
+:config:
+  segments:
+    - [ 128, 0x00C7EE70 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00C7EE70 ]
+    - [ 9, 0x00C7EE70 ]
+    - [ 10, 0x00C7EE70 ]
+    - [ 11, 0x00C7EE70 ]
+    - [ 12, 0x00C7EE70 ]
+    - [ 13, 0x00C7EE70 ]
+  virtual: [ 0x80A6F300, 0x00C7EE70 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gShadowOddVtx:
+  type: OOT:ARRAY
+  offset: 0x22C8
+  symbol: gShadowOddVtx
+  count: 144
+  array_type: VTX
+
+sCarpetEvenVtx:
+  type: OOT:ARRAY
+  offset: 0x42E8
+  symbol: sCarpetEvenVtx
+  count: 144
+  array_type: VTX
+
+sCarpetMaterialDL:
+  type: GFX
+  offset: 0x3DC8
+  symbol: sCarpetMaterialDL
+
+sCarpetOddVtx:
+  type: OOT:ARRAY
+  offset: 0x34C8
+  symbol: sCarpetOddVtx
+  count: 144
+  array_type: VTX
+
+sCarpetTex:
+  type: TEXTURE
+  offset: 0x12C8
+  symbol: sCarpetTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+sCol:
+  type: OOT:COLLISION
+  offset: 0x4C30
+  symbol: sCol
+
+sModelDL:
+  type: GFX
+  offset: 0x3EB8
+  symbol: sModelDL
+
+sShadowEvenVtx:
+  type: OOT:ARRAY
+  offset: 0x2BC8
+  symbol: sShadowEvenVtx
+  count: 144
+  array_type: VTX
+
+sShadowMaterialDL:
+  type: GFX
+  offset: 0x3E48
+  symbol: sShadowMaterialDL
+

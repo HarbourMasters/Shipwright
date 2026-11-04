@@ -1,5 +1,4 @@
-#ifndef RANDOSAVEFILE_H
-#define RANDOSAVEFILE_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,6 +8,4 @@ void Randomizer_InitSaveFile();
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

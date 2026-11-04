@@ -1,0 +1,188 @@
+:config:
+  segments:
+    - [ 3, 0x034A9000 ]
+    - [ 2, 0x0348D000 ]
+  directory: scenes/shared/souko_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/souko_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+souko_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: souko_room_2
+
+souko_room_2Tex_004EE0:
+  type: TEXTURE
+  offset: 0x4EE0
+  symbol: souko_room_2Tex_004EE0
+  format: RGBA16
+  width: 16
+  height: 32
+
+souko_room_2Tex_0052E0:
+  type: TEXTURE
+  offset: 0x52E0
+  symbol: souko_room_2Tex_0052E0
+  format: I4
+  width: 64
+  height: 64
+
+souko_room_2Tex_005AE0:
+  type: TEXTURE
+  offset: 0x5AE0
+  symbol: souko_room_2Tex_005AE0
+  format: RGBA16
+  width: 8
+  height: 128
+
+souko_room_2Tex_0062E0:
+  type: TEXTURE
+  offset: 0x62E0
+  symbol: souko_room_2Tex_0062E0
+  format: RGBA16
+  width: 16
+  height: 64
+
+souko_room_2Tex_006AE0:
+  type: TEXTURE
+  offset: 0x6AE0
+  symbol: souko_room_2Tex_006AE0
+  format: RGBA16
+  width: 32
+  height: 64
+
+souko_room_2Tex_007F78:
+  type: TEXTURE
+  offset: 0x7F78
+  symbol: souko_room_2Tex_007F78
+  format: IA8
+  width: 16
+  height: 32
+
+
+souko_room_2Vtx_000130:
+  type: OOT:ARRAY
+  offset: 0x000130
+  symbol: souko_room_2Vtx_000130
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_0002B0:
+  type: GFX
+  offset: 0x0002B0
+  symbol: souko_room_2DL_0002B0
+
+souko_room_2Vtx_000380:
+  type: OOT:ARRAY
+  offset: 0x000380
+  symbol: souko_room_2Vtx_000380
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_0009D0:
+  type: GFX
+  offset: 0x0009D0
+  symbol: souko_room_2DL_0009D0
+
+souko_room_2Vtx_000B58:
+  type: OOT:ARRAY
+  offset: 0x000B58
+  symbol: souko_room_2Vtx_000B58
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_000EF8:
+  type: GFX
+  offset: 0x000EF8
+  symbol: souko_room_2DL_000EF8
+
+souko_room_2Vtx_0012A0:
+  type: OOT:ARRAY
+  offset: 0x0012A0
+  symbol: souko_room_2Vtx_0012A0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_0015E0:
+  type: GFX
+  offset: 0x0015E0
+  symbol: souko_room_2DL_0015E0
+
+souko_room_2Vtx_0016F8:
+  type: OOT:ARRAY
+  offset: 0x0016F8
+  symbol: souko_room_2Vtx_0016F8
+  count: 416
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_0030F8:
+  type: GFX
+  offset: 0x0030F8
+  symbol: souko_room_2DL_0030F8
+
+souko_room_2Vtx_003DA8:
+  type: OOT:ARRAY
+  offset: 0x003DA8
+  symbol: souko_room_2Vtx_003DA8
+  count: 114
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_0044C8:
+  type: GFX
+  offset: 0x0044C8
+  symbol: souko_room_2DL_0044C8
+
+souko_room_2Vtx_004670:
+  type: OOT:ARRAY
+  offset: 0x004670
+  symbol: souko_room_2Vtx_004670
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_004B10:
+  type: GFX
+  offset: 0x004B10
+  symbol: souko_room_2DL_004B10
+
+souko_room_2Vtx_007AE0:
+  type: OOT:ARRAY
+  offset: 0x007AE0
+  symbol: souko_room_2Vtx_007AE0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_007C20:
+  type: GFX
+  offset: 0x007C20
+  symbol: souko_room_2DL_007C20
+
+souko_room_2Vtx_007D10:
+  type: OOT:ARRAY
+  offset: 0x007D10
+  symbol: souko_room_2Vtx_007D10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+souko_room_2DL_007E90:
+  type: GFX
+  offset: 0x007E90
+  symbol: souko_room_2DL_007E90

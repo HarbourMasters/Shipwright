@@ -59,7 +59,7 @@ typedef enum {
 #define ENHORSE_FLAG_28                    (1 << 28)  /* 0x1000 0000 */
 #define ENHORSE_FLAG_29                    (1 << 29)  /* 0x2000 0000 */
 #define ENHORSE_FLAG_30                    (1 << 30)  /* 0x4000 0000 */
-#define ENHORSE_FLAG_31                    (1 << 31)  /* 0x8000 0000 */
+#define ENHORSE_FLAG_31                    (1u << 31)  /* 0x8000 0000 */
 
 struct EnHorse;
 

@@ -1,0 +1,438 @@
+:config:
+  segments:
+    - [ 3, 0x01E2C810 ]
+    - [ 2, 0x01E2BD20 ]
+  directory: scenes/shared/shrine_r_scene
+  external_files:
+    - pal_1-1/scenes/shared/shrine_r_scene.yml
+    - pal_1-1/code/sys_matrix.yml
+
+shrine_r_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: shrine_r_room_0
+
+
+shrine_r_room_0Vtx_0000F0:
+  type: OOT:ARRAY
+  offset: 0x0000F0
+  symbol: shrine_r_room_0Vtx_0000F0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_000430:
+  type: OOT:ARRAY
+  offset: 0x000430
+  symbol: shrine_r_room_0Vtx_000430
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_000770:
+  type: OOT:ARRAY
+  offset: 0x000770
+  symbol: shrine_r_room_0Vtx_000770
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_0008B0:
+  type: OOT:ARRAY
+  offset: 0x0008B0
+  symbol: shrine_r_room_0Vtx_0008B0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_0009B0:
+  type: OOT:ARRAY
+  offset: 0x0009B0
+  symbol: shrine_r_room_0Vtx_0009B0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_000AB0:
+  type: OOT:ARRAY
+  offset: 0x000AB0
+  symbol: shrine_r_room_0Vtx_000AB0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_000BB0:
+  type: OOT:ARRAY
+  offset: 0x000BB0
+  symbol: shrine_r_room_0Vtx_000BB0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_000C70:
+  type: OOT:ARRAY
+  offset: 0x000C70
+  symbol: shrine_r_room_0Vtx_000C70
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_000F30:
+  type: OOT:ARRAY
+  offset: 0x000F30
+  symbol: shrine_r_room_0Vtx_000F30
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_001070:
+  type: OOT:ARRAY
+  offset: 0x001070
+  symbol: shrine_r_room_0Vtx_001070
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_001300:
+  type: OOT:ARRAY
+  offset: 0x001300
+  symbol: shrine_r_room_0Vtx_001300
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_001440:
+  type: OOT:ARRAY
+  offset: 0x001440
+  symbol: shrine_r_room_0Vtx_001440
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_001540:
+  type: OOT:ARRAY
+  offset: 0x001540
+  symbol: shrine_r_room_0Vtx_001540
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_001680:
+  type: OOT:ARRAY
+  offset: 0x001680
+  symbol: shrine_r_room_0Vtx_001680
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_0017C0:
+  type: OOT:ARRAY
+  offset: 0x0017C0
+  symbol: shrine_r_room_0Vtx_0017C0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_001900:
+  type: OOT:ARRAY
+  offset: 0x001900
+  symbol: shrine_r_room_0Vtx_001900
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_001DC0:
+  type: OOT:ARRAY
+  offset: 0x001DC0
+  symbol: shrine_r_room_0Vtx_001DC0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_001E40:
+  type: OOT:ARRAY
+  offset: 0x001E40
+  symbol: shrine_r_room_0Vtx_001E40
+  count: 883
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005570:
+  type: OOT:ARRAY
+  offset: 0x005570
+  symbol: shrine_r_room_0Vtx_005570
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_0055F0:
+  type: OOT:ARRAY
+  offset: 0x0055F0
+  symbol: shrine_r_room_0Vtx_0055F0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005670:
+  type: OOT:ARRAY
+  offset: 0x005670
+  symbol: shrine_r_room_0Vtx_005670
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_0056F0:
+  type: OOT:ARRAY
+  offset: 0x0056F0
+  symbol: shrine_r_room_0Vtx_0056F0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005770:
+  type: OOT:ARRAY
+  offset: 0x005770
+  symbol: shrine_r_room_0Vtx_005770
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_0057F0:
+  type: OOT:ARRAY
+  offset: 0x0057F0
+  symbol: shrine_r_room_0Vtx_0057F0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005870:
+  type: OOT:ARRAY
+  offset: 0x005870
+  symbol: shrine_r_room_0Vtx_005870
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_0058F0:
+  type: OOT:ARRAY
+  offset: 0x0058F0
+  symbol: shrine_r_room_0Vtx_0058F0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005970:
+  type: OOT:ARRAY
+  offset: 0x005970
+  symbol: shrine_r_room_0Vtx_005970
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_0059F0:
+  type: OOT:ARRAY
+  offset: 0x0059F0
+  symbol: shrine_r_room_0Vtx_0059F0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005A70:
+  type: OOT:ARRAY
+  offset: 0x005A70
+  symbol: shrine_r_room_0Vtx_005A70
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005AF0:
+  type: OOT:ARRAY
+  offset: 0x005AF0
+  symbol: shrine_r_room_0Vtx_005AF0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005B70:
+  type: OOT:ARRAY
+  offset: 0x005B70
+  symbol: shrine_r_room_0Vtx_005B70
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005BF0:
+  type: OOT:ARRAY
+  offset: 0x005BF0
+  symbol: shrine_r_room_0Vtx_005BF0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005C70:
+  type: OOT:ARRAY
+  offset: 0x005C70
+  symbol: shrine_r_room_0Vtx_005C70
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005CF0:
+  type: OOT:ARRAY
+  offset: 0x005CF0
+  symbol: shrine_r_room_0Vtx_005CF0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005D70:
+  type: OOT:ARRAY
+  offset: 0x005D70
+  symbol: shrine_r_room_0Vtx_005D70
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0Vtx_005DF0:
+  type: OOT:ARRAY
+  offset: 0x005DF0
+  symbol: shrine_r_room_0Vtx_005DF0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+shrine_r_room_0DL_005E70:
+  type: GFX
+  offset: 0x005E70
+  symbol: shrine_r_room_0DL_005E70
+
+shrine_r_room_0DL_005F68:
+  type: GFX
+  offset: 0x005F68
+  symbol: shrine_r_room_0DL_005F68
+
+shrine_r_room_0DL_006060:
+  type: GFX
+  offset: 0x006060
+  symbol: shrine_r_room_0DL_006060
+
+shrine_r_room_0DL_006100:
+  type: GFX
+  offset: 0x006100
+  symbol: shrine_r_room_0DL_006100
+
+shrine_r_room_0DL_006198:
+  type: GFX
+  offset: 0x006198
+  symbol: shrine_r_room_0DL_006198
+
+shrine_r_room_0DL_006230:
+  type: GFX
+  offset: 0x006230
+  symbol: shrine_r_room_0DL_006230
+
+shrine_r_room_0DL_0062C8:
+  type: GFX
+  offset: 0x0062C8
+  symbol: shrine_r_room_0DL_0062C8
+
+shrine_r_room_0DL_006358:
+  type: GFX
+  offset: 0x006358
+  symbol: shrine_r_room_0DL_006358
+
+shrine_r_room_0DL_006430:
+  type: GFX
+  offset: 0x006430
+  symbol: shrine_r_room_0DL_006430
+
+shrine_r_room_0DL_0064E0:
+  type: GFX
+  offset: 0x0064E0
+  symbol: shrine_r_room_0DL_0064E0
+
+shrine_r_room_0DL_0065B8:
+  type: GFX
+  offset: 0x0065B8
+  symbol: shrine_r_room_0DL_0065B8
+
+shrine_r_room_0DL_006668:
+  type: GFX
+  offset: 0x006668
+  symbol: shrine_r_room_0DL_006668
+
+shrine_r_room_0DL_006700:
+  type: GFX
+  offset: 0x006700
+  symbol: shrine_r_room_0DL_006700
+
+shrine_r_room_0DL_0067A0:
+  type: GFX
+  offset: 0x0067A0
+  symbol: shrine_r_room_0DL_0067A0
+
+shrine_r_room_0DL_006840:
+  type: GFX
+  offset: 0x006840
+  symbol: shrine_r_room_0DL_006840
+
+shrine_r_room_0DL_0068E0:
+  type: GFX
+  offset: 0x0068E0
+  symbol: shrine_r_room_0DL_0068E0
+
+shrine_r_room_0DL_006A20:
+  type: GFX
+  offset: 0x006A20
+  symbol: shrine_r_room_0DL_006A20
+
+shrine_r_room_0DL_006AA8:
+  type: GFX
+  offset: 0x006AA8
+  symbol: shrine_r_room_0DL_006AA8
+
+shrine_r_room_0DL_007A48:
+  type: GFX
+  offset: 0x007A48
+  symbol: shrine_r_room_0DL_007A48
+
+shrine_r_room_0DL_007AE0:
+  type: GFX
+  offset: 0x007AE0
+  symbol: shrine_r_room_0DL_007AE0

@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F56A0 ]
+
+gPotionShopTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gPotionShopTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gPotionShopTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gPotionShopTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

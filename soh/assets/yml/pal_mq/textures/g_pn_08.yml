@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x012E5A60 ]
+
+gDodongosCavernTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDodongosCavernTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gDodongosCavernTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gDodongosCavernTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gDodongosCavernTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gDodongosCavernTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

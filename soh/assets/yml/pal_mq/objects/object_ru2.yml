@@ -1,0 +1,695 @@
+:config:
+  segments:
+    - [ 6, 0x0108F120 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x0108F120 ]
+    - [ 9, 0x0108F120 ]
+    - [ 10, 0x0108F120 ]
+    - [ 11, 0x0108F120 ]
+    - [ 12, 0x0108F120 ]
+    - [ 13, 0x0108F120 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gAdultRutoBackOfHandTex:
+  type: TEXTURE
+  offset: 0x4640
+  symbol: gAdultRutoBackOfHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x43C0
+
+gAdultRutoCrossingArmsAnim:
+  type: OOT:ANIMATION
+  offset: 0x04CC
+  symbol: gAdultRutoCrossingArmsAnim
+
+gAdultRutoEar1Tex:
+  type: TEXTURE
+  offset: 0x1760
+  symbol: gAdultRutoEar1Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE00
+
+gAdultRutoEar2Tex:
+  type: TEXTURE
+  offset: 0x21E0
+  symbol: gAdultRutoEar2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE00
+
+gAdultRutoEarringTex:
+  type: TEXTURE
+  offset: 0x32E0
+  symbol: gAdultRutoEarringTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gAdultRutoEyeClosedTex:
+  type: TEXTURE
+  offset: 0x2AE0
+  symbol: gAdultRutoEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAdultRutoEyeHalfTex:
+  type: TEXTURE
+  offset: 0x22E0
+  symbol: gAdultRutoEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAdultRutoEyeOpenTex:
+  type: TEXTURE
+  offset: 0xF20
+  symbol: gAdultRutoEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAdultRutoHeadDL:
+  type: GFX
+  offset: 0x3EB0
+  symbol: gAdultRutoHeadDL
+
+gAdultRutoHeadGradientTex:
+  type: TEXTURE
+  offset: 0x1860
+  symbol: gAdultRutoHeadGradientTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE00
+
+gAdultRutoHeadHoleTex:
+  type: TEXTURE
+  offset: 0x1960
+  symbol: gAdultRutoHeadHoleTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xE00
+
+gAdultRutoHeadLimb:
+  type: OOT:LIMB
+  offset: 0xC690
+  symbol: gAdultRutoHeadLimb
+  limb_type: Standard
+
+gAdultRutoHeadTurnDownLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0xDCAC
+  symbol: gAdultRutoHeadTurnDownLeftAnim
+
+gAdultRutoIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xDE8
+  symbol: gAdultRutoIdleAnim
+
+gAdultRutoIdleHandsOnHipsAnim:
+  type: OOT:ANIMATION
+  offset: 0xE630
+  symbol: gAdultRutoIdleHandsOnHipsAnim
+
+gAdultRutoLeftFootDL:
+  type: GFX
+  offset: 0xC228
+  symbol: gAdultRutoLeftFootDL
+
+gAdultRutoLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xC5C4
+  symbol: gAdultRutoLeftFootLimb
+  limb_type: Standard
+
+gAdultRutoLeftForearmDL:
+  type: GFX
+  offset: 0xA468
+  symbol: gAdultRutoLeftForearmDL
+
+gAdultRutoLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xC63C
+  symbol: gAdultRutoLeftForearmLimb
+  limb_type: Standard
+
+gAdultRutoLeftHandDL:
+  type: GFX
+  offset: 0xA650
+  symbol: gAdultRutoLeftHandDL
+
+gAdultRutoLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xC648
+  symbol: gAdultRutoLeftHandLimb
+  limb_type: Standard
+
+gAdultRutoLeftLegDL:
+  type: GFX
+  offset: 0xBE38
+  symbol: gAdultRutoLeftLegDL
+
+gAdultRutoLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0xC5B8
+  symbol: gAdultRutoLeftLegLimb
+  limb_type: Standard
+
+gAdultRutoLeftLowerWingDL:
+  type: GFX
+  offset: 0xAB00
+  symbol: gAdultRutoLeftLowerWingDL
+
+gAdultRutoLeftLowerWingLimb:
+  type: OOT:LIMB
+  offset: 0xC630
+  symbol: gAdultRutoLeftLowerWingLimb
+  limb_type: Standard
+
+gAdultRutoLeftTailDL:
+  type: GFX
+  offset: 0xBD08
+  symbol: gAdultRutoLeftTailDL
+
+gAdultRutoLeftTailLimb:
+  type: OOT:LIMB
+  offset: 0xC5D0
+  symbol: gAdultRutoLeftTailLimb
+  limb_type: Standard
+
+gAdultRutoLeftThighDL:
+  type: GFX
+  offset: 0xB8E0
+  symbol: gAdultRutoLeftThighDL
+
+gAdultRutoLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xC5AC
+  symbol: gAdultRutoLeftThighLimb
+  limb_type: Standard
+
+gAdultRutoLeftUpperArmDL:
+  type: GFX
+  offset: 0xA150
+  symbol: gAdultRutoLeftUpperArmDL
+
+gAdultRutoLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xC618
+  symbol: gAdultRutoLeftUpperArmLimb
+  limb_type: Standard
+
+gAdultRutoLeftUpperWingDL:
+  type: GFX
+  offset: 0xAA20
+  symbol: gAdultRutoLeftUpperWingDL
+
+gAdultRutoLeftUpperWingLimb:
+  type: OOT:LIMB
+  offset: 0xC624
+  symbol: gAdultRutoLeftUpperWingLimb
+  limb_type: Standard
+
+gAdultRutoLookingDownLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0xF03C
+  symbol: gAdultRutoLookingDownLeftAnim
+
+gAdultRutoMouthTex:
+  type: TEXTURE
+  offset: 0x19A0
+  symbol: gAdultRutoMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAdultRutoRaisingArmsUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xD3DC
+  symbol: gAdultRutoRaisingArmsUpAnim
+
+gAdultRutoRightFootDL:
+  type: GFX
+  offset: 0xB568
+  symbol: gAdultRutoRightFootDL
+
+gAdultRutoRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xC5F4
+  symbol: gAdultRutoRightFootLimb
+  limb_type: Standard
+
+gAdultRutoRightForearmDL:
+  type: GFX
+  offset: 0x9998
+  symbol: gAdultRutoRightForearmDL
+
+gAdultRutoRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xC678
+  symbol: gAdultRutoRightForearmLimb
+  limb_type: Standard
+
+gAdultRutoRightHandDL:
+  type: GFX
+  offset: 0x9B80
+  symbol: gAdultRutoRightHandDL
+
+gAdultRutoRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xC684
+  symbol: gAdultRutoRightHandLimb
+  limb_type: Standard
+
+gAdultRutoRightLegDL:
+  type: GFX
+  offset: 0xB178
+  symbol: gAdultRutoRightLegDL
+
+gAdultRutoRightLegLimb:
+  type: OOT:LIMB
+  offset: 0xC5E8
+  symbol: gAdultRutoRightLegLimb
+  limb_type: Standard
+
+gAdultRutoRightLowerWingDL:
+  type: GFX
+  offset: 0xA030
+  symbol: gAdultRutoRightLowerWingDL
+
+gAdultRutoRightLowerWingLimb:
+  type: OOT:LIMB
+  offset: 0xC66C
+  symbol: gAdultRutoRightLowerWingLimb
+  limb_type: Standard
+
+gAdultRutoRightTailDL:
+  type: GFX
+  offset: 0xB048
+  symbol: gAdultRutoRightTailDL
+
+gAdultRutoRightTailLimb:
+  type: OOT:LIMB
+  offset: 0xC600
+  symbol: gAdultRutoRightTailLimb
+  limb_type: Standard
+
+gAdultRutoRightThighDL:
+  type: GFX
+  offset: 0xAC20
+  symbol: gAdultRutoRightThighDL
+
+gAdultRutoRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xC5DC
+  symbol: gAdultRutoRightThighLimb
+  limb_type: Standard
+
+gAdultRutoRightUpperArmDL:
+  type: GFX
+  offset: 0x9680
+  symbol: gAdultRutoRightUpperArmDL
+
+gAdultRutoRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xC654
+  symbol: gAdultRutoRightUpperArmLimb
+  limb_type: Standard
+
+gAdultRutoRightUpperWingDL:
+  type: GFX
+  offset: 0x9F50
+  symbol: gAdultRutoRightUpperWingDL
+
+gAdultRutoRightUpperWingLimb:
+  type: OOT:LIMB
+  offset: 0xC660
+  symbol: gAdultRutoRightUpperWingLimb
+  limb_type: Standard
+
+gAdultRutoRootLimb:
+  type: OOT:LIMB
+  offset: 0xC5A0
+  symbol: gAdultRutoRootLimb
+  limb_type: Standard
+
+gAdultRutoSkel:
+  type: OOT:SKELETON
+  offset: 0xC700
+  symbol: gAdultRutoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gAdultRutoSkinGradient:
+  type: TEXTURE
+  offset: 0x1720
+  symbol: gAdultRutoSkinGradient
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xE00
+
+gAdultRutoSkinPattern1Tex:
+  type: TEXTURE
+  offset: 0x4840
+  symbol: gAdultRutoSkinPattern1Tex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x43C0
+
+gAdultRutoSkinPattern2Tex:
+  type: TEXTURE
+  offset: 0x5040
+  symbol: gAdultRutoSkinPattern2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x43C0
+
+gAdultRutoSwimmingUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xF8B8
+  symbol: gAdultRutoSwimmingUpAnim
+
+gAdultRutoTLUT1:
+  type: TEXTURE
+  offset: 0xE00
+  symbol: gAdultRutoTLUT1
+  format: RGBA16
+  width: 144
+  height: 1
+
+gAdultRutoTLUT2:
+  type: TEXTURE
+  offset: 0x43C0
+  symbol: gAdultRutoTLUT2
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAdultRutoTailGradientTex:
+  type: TEXTURE
+  offset: 0x45C0
+  symbol: gAdultRutoTailGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x43C0
+
+gAdultRutoTex_21A0:
+  type: TEXTURE
+  offset: 0x21A0
+  symbol: gAdultRutoTex_21A0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xE00
+
+gAdultRutoTex_4600:
+  type: TEXTURE
+  offset: 0x4600
+  symbol: gAdultRutoTex_4600
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x43C0
+
+gAdultRutoTex_4740:
+  type: TEXTURE
+  offset: 0x4740
+  symbol: gAdultRutoTex_4740
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x43C0
+
+gAdultRutoTex_5440:
+  type: TEXTURE
+  offset: 0x5440
+  symbol: gAdultRutoTex_5440
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x43C0
+
+gAdultRutoTex_5480:
+  type: TEXTURE
+  offset: 0x5480
+  symbol: gAdultRutoTex_5480
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x43C0
+
+gAdultRutoTex_5580:
+  type: TEXTURE
+  offset: 0x5580
+  symbol: gAdultRutoTex_5580
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x43C0
+
+gAdultRutoTorsoDL:
+  type: GFX
+  offset: 0x8D30
+  symbol: gAdultRutoTorsoDL
+
+gAdultRutoTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xC60C
+  symbol: gAdultRutoTorsoLimb
+  limb_type: Standard
+
+gAdultRutoWaistDL:
+  type: GFX
+  offset: 0x88F0
+  symbol: gAdultRutoWaistDL
+
+gAdultRutoWaistLimb:
+  type: OOT:LIMB
+  offset: 0xC69C
+  symbol: gAdultRutoWaistLimb
+  limb_type: Standard
+
+object_ru2Tex_0055C0:
+  type: TEXTURE
+  offset: 0x55C0
+  symbol: object_ru2Tex_0055C0
+  format: CI8
+  width: 8
+  height: 32
+  tlut: 0x43C0
+
+object_ru2Tex_0056C0:
+  type: TEXTURE
+  offset: 0x56C0
+  symbol: object_ru2Tex_0056C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_ru2Vtx_0033E0:
+  type: OOT:ARRAY
+  offset: 0x0033E0
+  symbol: object_ru2Vtx_0033E0
+  count: 173
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_005EC0:
+  type: OOT:ARRAY
+  offset: 0x005EC0
+  symbol: object_ru2Vtx_005EC0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_006230:
+  type: OOT:ARRAY
+  offset: 0x006230
+  symbol: object_ru2Vtx_006230
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_0063A0:
+  type: OOT:ARRAY
+  offset: 0x0063A0
+  symbol: object_ru2Vtx_0063A0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_006420:
+  type: OOT:ARRAY
+  offset: 0x006420
+  symbol: object_ru2Vtx_006420
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_006480:
+  type: OOT:ARRAY
+  offset: 0x006480
+  symbol: object_ru2Vtx_006480
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_006660:
+  type: OOT:ARRAY
+  offset: 0x006660
+  symbol: object_ru2Vtx_006660
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_0069D0:
+  type: OOT:ARRAY
+  offset: 0x0069D0
+  symbol: object_ru2Vtx_0069D0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_006B40:
+  type: OOT:ARRAY
+  offset: 0x006B40
+  symbol: object_ru2Vtx_006B40
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_006BC0:
+  type: OOT:ARRAY
+  offset: 0x006BC0
+  symbol: object_ru2Vtx_006BC0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_006C20:
+  type: OOT:ARRAY
+  offset: 0x006C20
+  symbol: object_ru2Vtx_006C20
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_006E00:
+  type: OOT:ARRAY
+  offset: 0x006E00
+  symbol: object_ru2Vtx_006E00
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_007600:
+  type: OOT:ARRAY
+  offset: 0x007600
+  symbol: object_ru2Vtx_007600
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_0077A0:
+  type: OOT:ARRAY
+  offset: 0x0077A0
+  symbol: object_ru2Vtx_0077A0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_007AE0:
+  type: OOT:ARRAY
+  offset: 0x007AE0
+  symbol: object_ru2Vtx_007AE0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_007BD0:
+  type: OOT:ARRAY
+  offset: 0x007BD0
+  symbol: object_ru2Vtx_007BD0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_007E20:
+  type: OOT:ARRAY
+  offset: 0x007E20
+  symbol: object_ru2Vtx_007E20
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_007FC0:
+  type: OOT:ARRAY
+  offset: 0x007FC0
+  symbol: object_ru2Vtx_007FC0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_008300:
+  type: OOT:ARRAY
+  offset: 0x008300
+  symbol: object_ru2Vtx_008300
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_0083F0:
+  type: OOT:ARRAY
+  offset: 0x0083F0
+  symbol: object_ru2Vtx_0083F0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ru2Vtx_008640:
+  type: OOT:ARRAY
+  offset: 0x008640
+  symbol: object_ru2Vtx_008640
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAdultRutoSkelLimbs:
+  type: BLOB
+  offset: 0xC6A8
+  symbol: gAdultRutoSkelLimbs
+  size: 0

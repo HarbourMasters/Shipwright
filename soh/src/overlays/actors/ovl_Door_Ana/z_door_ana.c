@@ -9,6 +9,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_DURING_OCARINA
 
@@ -120,10 +121,10 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play) {
     if (openGrotto) {
         this->actor.params &= ~0x0300;
         DoorAna_SetupAction(this, DoorAna_WaitOpen);
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
-    func_8002F5F0(&this->actor, play);
+    Actor_SetClosestSecretDistance(&this->actor, play);
 }
 
 // update routine for grottos that are open
@@ -152,9 +153,11 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
 
             DoorAna_SetupAction(this, DoorAna_GrabPlayer);
         } else {
-            if (!Player_InCsMode(play) && !(player->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) &&
-                this->actor.xzDistToPlayer <= 15.0f && -50.0f <= this->actor.yDistToPlayer &&
-                this->actor.yDistToPlayer <= 15.0f) {
+            if (GameInteractor_Should(VB_DOOR_ANA_GRAB_PLAYER,
+                                      !Player_InCsMode(play) &&
+                                          !(player->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) &&
+                                          this->actor.xzDistToPlayer <= 15.0f && -50.0f <= this->actor.yDistToPlayer &&
+                                          this->actor.yDistToPlayer <= 15.0f)) {
                 player->stateFlags1 |= PLAYER_STATE1_FLOOR_DISABLED;
                 this->actor.targetMode = 1;
             } else {

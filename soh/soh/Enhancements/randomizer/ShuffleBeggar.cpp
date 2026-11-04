@@ -1,15 +1,33 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Hy/z_en_hy.h"
 extern PlayState* gPlayState;
 }
 
+static CheckIdentity IdentifyBeggar(s32 sceneNum, s32 textId) {
+    CheckIdentity beggarIdentity;
+    beggarIdentity.randomizerInf = RAND_INF_MAX;
+    beggarIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, textId);
+
+    IdentifyCheck(&beggarIdentity, location);
+
+    return beggarIdentity;
+}
+
 CheckIdentity ShuffleBeggar_GetBeggarIdentity(int32_t textId) {
     CheckIdentity beggarIdentity;
     s16 sceneNum = gPlayState->sceneNum;
 
-    beggarIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeggar(sceneNum, textId);
+    beggarIdentity = IdentifyBeggar(sceneNum, textId);
 
     return beggarIdentity;
 }

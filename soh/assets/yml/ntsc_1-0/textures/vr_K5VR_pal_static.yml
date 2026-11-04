@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x014F3180 ]
+
+gSariasHouseBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gSariasHouseBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSariasHouseBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gSariasHouseBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSariasHouseBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSariasHouseBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

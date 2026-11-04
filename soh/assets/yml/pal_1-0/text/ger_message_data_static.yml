@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 128, 0x008C6BC0 ]
+
+ger_message_data_static:
+  type: OOT:TEXT
+  offset: 0x0
+  symbol: ger_message_data_static
+  code_offset: 0xF71DC
+  lang_offset: 0xFB404
+  code_phys_start: 0x00A58A00
+

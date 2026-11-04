@@ -1,15 +1,98 @@
 <DisplayList Version="0">
-	<CallDisplayList Path="objects/object_triforce_piece_2/mat_gTriforcePiece2DL_f3dlite_triforce_edges"/>
-	<CallDisplayList Path="objects/object_triforce_piece_2/gTriforcePiece2DL_tri_0"/>
-	<CallDisplayList Path="objects/object_triforce_piece_2/mat_gTriforcePiece2DL_f3dlite_triforce_surface"/>
-	<CallDisplayList Path="objects/object_triforce_piece_2/gTriforcePiece2DL_tri_1"/>
-	<CallDisplayList Path="objects/object_triforce_piece_2/mat_gTriforcePiece2DL_f3dlite_shard_edge"/>
-	<CallDisplayList Path="objects/object_triforce_piece_2/gTriforcePiece2DL_tri_2"/>
 	<PipeSync/>
-	<SetGeometryMode G_LIGHTING="1" />
-	<ClearGeometryMode G_TEXTURE_GEN="1" />
-	<SetCombineLERP A0="G_CCMUX_0" B0="G_CCMUX_0" C0="G_CCMUX_0" D0="G_CCMUX_SHADE" Aa0="G_ACMUX_0" Ab0="G_ACMUX_0" Ac0="G_ACMUX_0" Ad0="G_ACMUX_ENVIRONMENT" A1="G_CCMUX_0" B1="G_CCMUX_0" C1="G_CCMUX_0" D1="G_CCMUX_SHADE" Aa1="G_ACMUX_0" Ab1="G_ACMUX_0" Ac1="G_ACMUX_0" Ad1="G_ACMUX_ENVIRONMENT"/>
-	<Texture S="65535" T="65535" Level="0" Tile="0" On="0"/>
+	<SetCombineLERP A0="G_CCMUX_0" B0="G_CCMUX_0" C0="G_CCMUX_0" D0="G_CCMUX_TEXEL0" Aa0="G_ACMUX_0" Ab0="G_ACMUX_0" Ac0="G_ACMUX_0" Ad0="G_ACMUX_1" A1="G_CCMUX_COMBINED" B1="G_CCMUX_0" C1="G_CCMUX_PRIMITIVE" D1="G_CCMUX_0" Aa1="G_ACMUX_0" Ab1="G_ACMUX_0" Ac1="G_ACMUX_0" Ad1="G_ACMUX_COMBINED"/>
+	<SetGeometryMode G_CULL_BACK="1" G_FOG="1" G_LIGHTING="1" G_SHADE="1" G_SHADING_SMOOTH="1" G_TEXTURE_GEN="1" G_ZBUFFER="1"/>
+	<ClearGeometryMode G_CULL_FRONT="1" G_LOD="1" G_TEXTURE_GEN_LINEAR="1"/>
+	<SetOtherMode Cmd="G_SETOTHERMODE_H" Sft="4" Length="20" G_AD_NOISE="1" G_CD_MAGICSQ="1" G_CK_NONE="1" G_CYC_2CYCLE="1" G_PM_NPRIMITIVE="1" G_TC_FILT="1" G_TD_CLAMP="1" G_TF_BILERP="1" G_TL_TILE="1" G_TP_PERSP="1" G_TT_NONE="1"/>
+	<SetOtherMode Cmd="G_SETOTHERMODE_L" Sft="0" Length="32" G_AC_NONE="1" G_RM_AA_ZB_OPA_SURF2="1" G_RM_FOG_SHADE_A="1" G_ZS_PIXEL="1"/>
+	<Texture S="1966" T="1966" Level="0" Tile="0" On="1"/>
+	<TileSync/>
+	<SetTextureImage Path="objects/gameplay_keep/gEffUnknown11Tex" Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Width="1"/>
+	<SetTile Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="0" ShiftS="0" MaskT="0" ShiftT="0"/>
+	<LoadSync/>
+	<LoadBlock Tile="7" Uls="0" Ult="0" Lrs="511" Dxt="512" />
+	<PipeSync/>
+	<SetTile Format="G_IM_FMT_I" Size="G_IM_SIZ_8b" Line="4" TMem="0" Tile="0" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_MIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_MIRROR" MaskS="5" ShiftS="0" MaskT="5" ShiftT="0"/>
+	<SetTileSize T="0" Uls="0" Ult="0" Lrs="124" Lrt="124"/>
+	<SetPrimColor M="0" L="0" R="255" G="195" B="0" A="255"/>
+	<LoadVertices Path="objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="32"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="0" V01="3" V02="1"/>
+	<Triangle1 V00="3" V01="4" V02="1"/>
+	<Triangle1 V00="5" V01="6" V02="7"/>
+	<Triangle1 V00="5" V01="8" V02="6"/>
+	<Triangle1 V00="5" V01="9" V02="8"/>
+	<Triangle1 V00="5" V01="10" V02="9"/>
+	<Triangle1 V00="0" V01="11" V02="12"/>
+	<Triangle1 V00="0" V01="12" V02="13"/>
+	<Triangle1 V00="13" V01="12" V02="14"/>
+	<Triangle1 V00="15" V01="16" V02="17"/>
+	<Triangle1 V00="17" V01="18" V02="15"/>
+	<Triangle1 V00="18" V01="19" V02="15"/>
+	<Triangle1 V00="20" V01="21" V02="22"/>
+	<Triangle1 V00="20" V01="22" V02="23"/>
+	<Triangle1 V00="23" V01="22" V02="24"/>
+	<Triangle1 V00="20" V01="25" V02="26"/>
+	<Triangle1 V00="20" V01="27" V02="25"/>
+	<Triangle1 V00="27" V01="28" V02="25"/>
+	<Triangle1 V00="29" V01="30" V02="31"/>
+	<LoadVertices Path="objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_0" VertexBufferIndex="0" VertexOffset="32" Count="4"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="1" V01="3" V02="2"/>
+	<PipeSync/>
+	<SetCombineLERP A0="G_CCMUX_0" B0="G_CCMUX_0" C0="G_CCMUX_0" D0="G_CCMUX_TEXEL0" Aa0="G_ACMUX_0" Ab0="G_ACMUX_0" Ac0="G_ACMUX_0" Ad0="G_ACMUX_1" A1="G_CCMUX_COMBINED" B1="G_CCMUX_0" C1="G_CCMUX_PRIMITIVE" D1="G_CCMUX_0" Aa1="G_ACMUX_0" Ab1="G_ACMUX_0" Ac1="G_ACMUX_0" Ad1="G_ACMUX_COMBINED"/>
+	<SetGeometryMode G_CULL_BACK="1" G_FOG="1" G_LIGHTING="1" G_SHADE="1" G_SHADING_SMOOTH="1" G_TEXTURE_GEN="1" G_ZBUFFER="1"/>
+	<ClearGeometryMode G_CULL_FRONT="1" G_LOD="1" G_TEXTURE_GEN_LINEAR="1"/>
+	<SetOtherMode Cmd="G_SETOTHERMODE_H" Sft="4" Length="20" G_AD_NOISE="1" G_CD_MAGICSQ="1" G_CK_NONE="1" G_CYC_2CYCLE="1" G_PM_NPRIMITIVE="1" G_TC_FILT="1" G_TD_CLAMP="1" G_TF_BILERP="1" G_TL_TILE="1" G_TP_PERSP="1" G_TT_NONE="1"/>
+	<SetOtherMode Cmd="G_SETOTHERMODE_L" Sft="0" Length="32" G_AC_NONE="1" G_RM_AA_ZB_OPA_SURF2="1" G_RM_FOG_SHADE_A="1" G_ZS_PIXEL="1"/>
+	<Texture S="3932" T="1966" Level="0" Tile="0" On="1"/>
+	<TileSync/>
+	<SetTextureImage Path="objects/gameplay_keep/gEffUnknown11Tex" Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Width="1"/>
+	<SetTile Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="0" ShiftS="0" MaskT="0" ShiftT="0"/>
+	<LoadSync/>
+	<LoadBlock Tile="7" Uls="0" Ult="0" Lrs="511" Dxt="512" />
+	<PipeSync/>
+	<SetTile Format="G_IM_FMT_I" Size="G_IM_SIZ_8b" Line="4" TMem="0" Tile="0" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_MIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_MIRROR" MaskS="5" ShiftS="0" MaskT="5" ShiftT="0"/>
+	<SetTileSize T="0" Uls="0" Ult="0" Lrs="124" Lrt="124"/>
+	<SetPrimColor M="0" L="0" R="255" G="195" B="0" A="255"/>
+	<LoadVertices Path="objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_1" VertexBufferIndex="0" VertexOffset="0" Count="10"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="0" V01="3" V02="1"/>
+	<Triangle1 V00="4" V01="3" V02="0"/>
+	<Triangle1 V00="5" V01="6" V02="7"/>
+	<Triangle1 V00="8" V01="5" V02="7"/>
+	<Triangle1 V00="9" V01="5" V02="8"/>
+	<PipeSync/>
+	<SetCombineLERP A0="G_CCMUX_0" B0="G_CCMUX_0" C0="G_CCMUX_0" D0="G_CCMUX_TEXEL0" Aa0="G_ACMUX_0" Ab0="G_ACMUX_0" Ac0="G_ACMUX_0" Ad0="G_ACMUX_1" A1="G_CCMUX_COMBINED" B1="G_CCMUX_0" C1="G_CCMUX_PRIMITIVE" D1="G_CCMUX_0" Aa1="G_ACMUX_0" Ab1="G_ACMUX_0" Ac1="G_ACMUX_0" Ad1="G_ACMUX_COMBINED"/>
+	<SetGeometryMode G_CULL_BACK="1" G_FOG="1" G_LIGHTING="1" G_SHADE="1" G_SHADING_SMOOTH="1" G_ZBUFFER="1"/>
+	<ClearGeometryMode G_CULL_FRONT="1" G_LOD="1" G_TEXTURE_GEN="1" G_TEXTURE_GEN_LINEAR="1"/>
+	<SetOtherMode Cmd="G_SETOTHERMODE_H" Sft="4" Length="20" G_AD_NOISE="1" G_CD_MAGICSQ="1" G_CK_NONE="1" G_CYC_2CYCLE="1" G_PM_NPRIMITIVE="1" G_TC_FILT="1" G_TD_CLAMP="1" G_TF_BILERP="1" G_TL_TILE="1" G_TP_PERSP="1" G_TT_NONE="1"/>
+	<SetOtherMode Cmd="G_SETOTHERMODE_L" Sft="0" Length="32" G_AC_NONE="1" G_RM_AA_ZB_OPA_SURF2="1" G_RM_FOG_SHADE_A="1" G_ZS_PIXEL="1"/>
+	<Texture S="65535" T="65535" Level="0" Tile="0" On="1"/>
+	<TileSync/>
+	<SetTextureImage Path="objects/gameplay_keep/gEffUnknown11Tex" Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Width="1"/>
+	<SetTile Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="0" ShiftS="0" MaskT="0" ShiftT="0"/>
+	<LoadSync/>
+	<LoadBlock Tile="7" Uls="0" Ult="0" Lrs="511" Dxt="512" />
+	<PipeSync/>
+	<SetTile Format="G_IM_FMT_I" Size="G_IM_SIZ_8b" Line="4" TMem="0" Tile="0" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="5" ShiftS="0" MaskT="5" ShiftT="0"/>
+	<SetTileSize T="0" Uls="0" Ult="0" Lrs="124" Lrt="124"/>
+	<SetPrimColor M="0" L="0" R="255" G="195" B="0" A="255"/>
+	<LoadVertices Path="objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_2" VertexBufferIndex="0" VertexOffset="0" Count="16"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="0" V01="2" V02="3"/>
+	<Triangle1 V00="3" V01="2" V02="4"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="5" V01="4" V02="6"/>
+	<Triangle1 V00="5" V01="6" V02="7"/>
+	<Triangle1 V00="7" V01="6" V02="8"/>
+	<Triangle1 V00="7" V01="8" V02="9"/>
+	<Triangle1 V00="9" V01="8" V02="10"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="11" V01="10" V02="12"/>
+	<Triangle1 V00="11" V01="12" V02="13"/>
+	<Triangle1 V00="13" V01="12" V02="14"/>
+	<Triangle1 V00="13" V01="14" V02="15"/>
 	<EndDisplayList/>
 </DisplayList>
 

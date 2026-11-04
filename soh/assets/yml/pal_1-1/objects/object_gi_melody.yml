@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x01052F40 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x01052F40 ]
+    - [ 9, 0x01052F40 ]
+    - [ 10, 0x01052F40 ]
+    - [ 11, 0x01052F40 ]
+    - [ 12, 0x01052F40 ]
+    - [ 13, 0x01052F40 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gGiBoleroColorDL:
+  type: GFX
+  offset: 0x0A90
+  symbol: gGiBoleroColorDL
+
+gGiMinuetColorDL:
+  type: GFX
+  offset: 0x0A80
+  symbol: gGiMinuetColorDL
+
+gGiNocturneColorDL:
+  type: GFX
+  offset: 0x0AC0
+  symbol: gGiNocturneColorDL
+
+gGiPreludeColorDL:
+  type: GFX
+  offset: 0x0AD0
+  symbol: gGiPreludeColorDL
+
+gGiRequiemColorDL:
+  type: GFX
+  offset: 0x0AB0
+  symbol: gGiRequiemColorDL
+
+gGiSerenadeColorDL:
+  type: GFX
+  offset: 0x0AA0
+  symbol: gGiSerenadeColorDL
+
+gGiSongNoteDL:
+  type: GFX
+  offset: 0x0AE0
+  symbol: gGiSongNoteDL
+
+
+object_gi_melodyVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_melodyVtx_000000
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

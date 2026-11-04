@@ -1,7 +1,5 @@
-#ifndef SOH_CONSOLE_H
-#define SOH_CONSOLE_H
+#pragma once
 
-#include <ship/window/gui/GuiWindow.h>
 #include <ship/window/gui/ConsoleWindow.h>
 
 class SohConsoleWindow : public Ship::ConsoleWindow {
@@ -11,5 +9,3 @@ class SohConsoleWindow : public Ship::ConsoleWindow {
   protected:
     void DrawElement() override;
 };
-
-#endif // SOH_CONSOLE_H

@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x011B9330 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x011B9330 ]
+    - [ 9, 0x011B9330 ]
+    - [ 10, 0x011B9330 ]
+    - [ 11, 0x011B9330 ]
+    - [ 12, 0x011B9330 ]
+    - [ 13, 0x011B9330 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGiEyeDropsBottleDL:
+  type: GFX
+  offset: 0x0768
+  symbol: gGiEyeDropsBottleDL
+
+gGiEyeDropsCapDL:
+  type: GFX
+  offset: 0x0680
+  symbol: gGiEyeDropsCapDL
+
+
+object_gi_eye_lotionVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_eye_lotionVtx_000000
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_eye_lotionVtx_000170:
+  type: OOT:ARRAY
+  offset: 0x000170
+  symbol: object_gi_eye_lotionVtx_000170
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

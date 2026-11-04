@@ -1,0 +1,1195 @@
+:config:
+  segments:
+    - [ 6, 0x00E21700 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x00E21700 ]
+    - [ 9, 0x00E21700 ]
+    - [ 10, 0x00E21700 ]
+    - [ 11, 0x00E21700 ]
+    - [ 12, 0x00E21700 ]
+    - [ 13, 0x00E21700 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gGohmaAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x4318
+  symbol: gGohmaAttackAnim
+
+gGohmaBodyDL:
+  type: GFX
+  offset: 0x13A60
+  symbol: gGohmaBodyDL
+
+gGohmaBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1C3C0
+  symbol: gGohmaBodyLimb
+  limb_type: Standard
+
+gGohmaBodyShellBackDL:
+  type: GFX
+  offset: 0x144B0
+  symbol: gGohmaBodyShellBackDL
+
+gGohmaBodyShellBackLimb:
+  type: OOT:LIMB
+  offset: 0x1C798
+  symbol: gGohmaBodyShellBackLimb
+  limb_type: Standard
+
+gGohmaBodyShellBackRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C780
+  symbol: gGohmaBodyShellBackRoot1Limb
+  limb_type: Standard
+
+gGohmaBodyShellBackRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C78C
+  symbol: gGohmaBodyShellBackRoot2Limb
+  limb_type: Standard
+
+gGohmaBodyShellDL:
+  type: GFX
+  offset: 0x14298
+  symbol: gGohmaBodyShellDL
+
+gGohmaBodyShellLimb:
+  type: OOT:LIMB
+  offset: 0x1C3CC
+  symbol: gGohmaBodyShellLimb
+  limb_type: Standard
+
+gGohmaBodyTex:
+  type: TEXTURE
+  offset: 0x183A8
+  symbol: gGohmaBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGohmaClimbAnim:
+  type: OOT:ANIMATION
+  offset: 0x66DC
+  symbol: gGohmaClimbAnim
+
+gGohmaCrashAnim:
+  type: OOT:ANIMATION
+  offset: 0x58C0
+  symbol: gGohmaCrashAnim
+
+gGohmaDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x6E60
+  symbol: gGohmaDamageAnim
+
+gGohmaDarkShellTex:
+  type: TEXTURE
+  offset: 0x187A8
+  symbol: gGohmaDarkShellTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGohmaDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0xB2FC
+  symbol: gGohmaDeathAnim
+
+gGohmaDoorCol:
+  type: OOT:COLLISION
+  offset: 0x1D9D0
+  symbol: gGohmaDoorCol
+
+gGohmaDoorDL:
+  type: GFX
+  offset: 0x1D820
+  symbol: gGohmaDoorDL
+
+gGohmaDoorTex:
+  type: TEXTURE
+  offset: 0x1DA00
+  symbol: gGohmaDoorTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGohmaEyeDL:
+  type: GFX
+  offset: 0x14A10
+  symbol: gGohmaEyeDL
+
+gGohmaEyeLidBottomDL:
+  type: GFX
+  offset: 0x16DA0
+  symbol: gGohmaEyeLidBottomDL
+
+gGohmaEyeLidBottomLimb:
+  type: OOT:LIMB
+  offset: 0x1C528
+  symbol: gGohmaEyeLidBottomLimb
+  limb_type: Standard
+
+gGohmaEyeLidBottomRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C510
+  symbol: gGohmaEyeLidBottomRoot1Limb
+  limb_type: Standard
+
+gGohmaEyeLidBottomRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C51C
+  symbol: gGohmaEyeLidBottomRoot2Limb
+  limb_type: Standard
+
+gGohmaEyeLidTopDL:
+  type: GFX
+  offset: 0x16AB8
+  symbol: gGohmaEyeLidTopDL
+
+gGohmaEyeLidTopLimb:
+  type: OOT:LIMB
+  offset: 0x1C54C
+  symbol: gGohmaEyeLidTopLimb
+  limb_type: Standard
+
+gGohmaEyeLidTopRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C534
+  symbol: gGohmaEyeLidTopRoot1Limb
+  limb_type: Standard
+
+gGohmaEyeLidTopRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C540
+  symbol: gGohmaEyeLidTopRoot2Limb
+  limb_type: Standard
+
+gGohmaEyeLimb:
+  type: OOT:LIMB
+  offset: 0x1C3D8
+  symbol: gGohmaEyeLimb
+  limb_type: Standard
+
+gGohmaEyeRollAnim:
+  type: OOT:ANIMATION
+  offset: 0x10918
+  symbol: gGohmaEyeRollAnim
+
+gGohmaEyeTex:
+  type: TEXTURE
+  offset: 0x191A8
+  symbol: gGohmaEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGohmaHangAnim:
+  type: OOT:ANIMATION
+  offset: 0x193C
+  symbol: gGohmaHangAnim
+
+gGohmaIdleCrouchedAnim:
+  type: OOT:ANIMATION
+  offset: 0x12678
+  symbol: gGohmaIdleCrouchedAnim
+
+gGohmaInitialLandingAnim:
+  type: OOT:ANIMATION
+  offset: 0xF70C
+  symbol: gGohmaInitialLandingAnim
+
+gGohmaIrisDL:
+  type: GFX
+  offset: 0x15338
+  symbol: gGohmaIrisDL
+
+gGohmaIrisLimb:
+  type: OOT:LIMB
+  offset: 0x1C570
+  symbol: gGohmaIrisLimb
+  limb_type: Standard
+
+gGohmaIrisRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C558
+  symbol: gGohmaIrisRoot1Limb
+  limb_type: Standard
+
+gGohmaIrisRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C564
+  symbol: gGohmaIrisRoot2Limb
+  limb_type: Standard
+
+gGohmaIrisTex:
+  type: TEXTURE
+  offset: 0x193A8
+  symbol: gGohmaIrisTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGohmaLandAnim:
+  type: OOT:ANIMATION
+  offset: 0x5F28
+  symbol: gGohmaLandAnim
+
+gGohmaLayEggsAnim:
+  type: OOT:ANIMATION
+  offset: 0x113BC
+  symbol: gGohmaLayEggsAnim
+
+gGohmaLeftAntennaBodyDL:
+  type: GFX
+  offset: 0x12770
+  symbol: gGohmaLeftAntennaBodyDL
+
+gGohmaLeftAntennaBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1C660
+  symbol: gGohmaLeftAntennaBodyLimb
+  limb_type: Standard
+
+gGohmaLeftAntennaBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C624
+  symbol: gGohmaLeftAntennaBodyRootLimb
+  limb_type: Standard
+
+gGohmaLeftAntennaClawDL:
+  type: GFX
+  offset: 0x18008
+  symbol: gGohmaLeftAntennaClawDL
+
+gGohmaLeftAntennaClawLimb:
+  type: OOT:LIMB
+  offset: 0x1C648
+  symbol: gGohmaLeftAntennaClawLimb
+  limb_type: Standard
+
+gGohmaLeftAntennaClawRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C63C
+  symbol: gGohmaLeftAntennaClawRootLimb
+  limb_type: Standard
+
+gGohmaLeftAntennaRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C618
+  symbol: gGohmaLeftAntennaRootLimb
+  limb_type: Standard
+
+gGohmaLeftAntennaShellDL:
+  type: GFX
+  offset: 0x12AF8
+  symbol: gGohmaLeftAntennaShellDL
+
+gGohmaLeftAntennaShellLimb:
+  type: OOT:LIMB
+  offset: 0x1C654
+  symbol: gGohmaLeftAntennaShellLimb
+  limb_type: Standard
+
+gGohmaLeftAntennaShellRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C630
+  symbol: gGohmaLeftAntennaShellRootLimb
+  limb_type: Standard
+
+gGohmaLeftFeetBackDL:
+  type: GFX
+  offset: 0x15D48
+  symbol: gGohmaLeftFeetBackDL
+
+gGohmaLeftFeetBackLimb:
+  type: OOT:LIMB
+  offset: 0x1C708
+  symbol: gGohmaLeftFeetBackLimb
+  limb_type: Standard
+
+gGohmaLeftFeetBackRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C6F0
+  symbol: gGohmaLeftFeetBackRoot1Limb
+  limb_type: Standard
+
+gGohmaLeftFeetBackRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C6FC
+  symbol: gGohmaLeftFeetBackRoot2Limb
+  limb_type: Standard
+
+gGohmaLeftFeetDL:
+  type: GFX
+  offset: 0x14DC0
+  symbol: gGohmaLeftFeetDL
+
+gGohmaLeftFeetLimb:
+  type: OOT:LIMB
+  offset: 0x1C714
+  symbol: gGohmaLeftFeetLimb
+  limb_type: Standard
+
+gGohmaLeftFeetRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C6E4
+  symbol: gGohmaLeftFeetRootLimb
+  limb_type: Standard
+
+gGohmaLeftKneeDL:
+  type: GFX
+  offset: 0x156D8
+  symbol: gGohmaLeftKneeDL
+
+gGohmaLeftKneeLimb:
+  type: OOT:LIMB
+  offset: 0x1C744
+  symbol: gGohmaLeftKneeLimb
+  limb_type: Standard
+
+gGohmaLeftKneeRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C72C
+  symbol: gGohmaLeftKneeRoot1Limb
+  limb_type: Standard
+
+gGohmaLeftKneeRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C738
+  symbol: gGohmaLeftKneeRoot2Limb
+  limb_type: Standard
+
+gGohmaLeftLegLowerRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C6D8
+  symbol: gGohmaLeftLegLowerRootLimb
+  limb_type: Standard
+
+gGohmaLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C6C0
+  symbol: gGohmaLeftLegRootLimb
+  limb_type: Standard
+
+gGohmaLeftMandibles1DL:
+  type: GFX
+  offset: 0x135F0
+  symbol: gGohmaLeftMandibles1DL
+
+gGohmaLeftMandibles1Limb:
+  type: OOT:LIMB
+  offset: 0x1C5D0
+  symbol: gGohmaLeftMandibles1Limb
+  limb_type: Standard
+
+gGohmaLeftMandibles1RootLimb:
+  type: OOT:LIMB
+  offset: 0x1C5AC
+  symbol: gGohmaLeftMandibles1RootLimb
+  limb_type: Standard
+
+gGohmaLeftMandibles2DL:
+  type: GFX
+  offset: 0x13750
+  symbol: gGohmaLeftMandibles2DL
+
+gGohmaLeftMandibles2Limb:
+  type: OOT:LIMB
+  offset: 0x1C5C4
+  symbol: gGohmaLeftMandibles2Limb
+  limb_type: Standard
+
+gGohmaLeftMandibles2RootLimb:
+  type: OOT:LIMB
+  offset: 0x1C5B8
+  symbol: gGohmaLeftMandibles2RootLimb
+  limb_type: Standard
+
+gGohmaLeftMandiblesRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C5A0
+  symbol: gGohmaLeftMandiblesRootLimb
+  limb_type: Standard
+
+gGohmaLeftShinDL:
+  type: GFX
+  offset: 0x17268
+  symbol: gGohmaLeftShinDL
+
+gGohmaLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x1C720
+  symbol: gGohmaLeftShinLimb
+  limb_type: Standard
+
+gGohmaLeftThighDL:
+  type: GFX
+  offset: 0x16348
+  symbol: gGohmaLeftThighDL
+
+gGohmaLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1C774
+  symbol: gGohmaLeftThighLimb
+  limb_type: Standard
+
+gGohmaLeftThighRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C6CC
+  symbol: gGohmaLeftThighRootLimb
+  limb_type: Standard
+
+gGohmaLeftThighShellDL:
+  type: GFX
+  offset: 0x14640
+  symbol: gGohmaLeftThighShellDL
+
+gGohmaLeftThighShellLimb:
+  type: OOT:LIMB
+  offset: 0x1C768
+  symbol: gGohmaLeftThighShellLimb
+  limb_type: Standard
+
+gGohmaLeftThighShellRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C750
+  symbol: gGohmaLeftThighShellRoot1Limb
+  limb_type: Standard
+
+gGohmaLeftThighShellRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C75C
+  symbol: gGohmaLeftThighShellRoot2Limb
+  limb_type: Standard
+
+gGohmaMandiblesBodyDL:
+  type: GFX
+  offset: 0x16FE8
+  symbol: gGohmaMandiblesBodyDL
+
+gGohmaMandiblesBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1C594
+  symbol: gGohmaMandiblesBodyLimb
+  limb_type: Standard
+
+gGohmaMandiblesRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C57C
+  symbol: gGohmaMandiblesRoot1Limb
+  limb_type: Standard
+
+gGohmaMandiblesRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C588
+  symbol: gGohmaMandiblesRoot2Limb
+  limb_type: Standard
+
+gGohmaPrepareAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0xC468
+  symbol: gGohmaPrepareAttackAnim
+
+gGohmaPrepareEggsAnim:
+  type: OOT:ANIMATION
+  offset: 0x29F0
+  symbol: gGohmaPrepareEggsAnim
+
+gGohmaRecoverAfterAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x5330
+  symbol: gGohmaRecoverAfterAttackAnim
+
+gGohmaRestAfterAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x4A20
+  symbol: gGohmaRestAfterAttackAnim
+
+gGohmaRightAntennaBodyDL:
+  type: GFX
+  offset: 0x12D70
+  symbol: gGohmaRightAntennaBodyDL
+
+gGohmaRightAntennaBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1C6B4
+  symbol: gGohmaRightAntennaBodyLimb
+  limb_type: Standard
+
+gGohmaRightAntennaBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C678
+  symbol: gGohmaRightAntennaBodyRootLimb
+  limb_type: Standard
+
+gGohmaRightAntennaClawDL:
+  type: GFX
+  offset: 0x18290
+  symbol: gGohmaRightAntennaClawDL
+
+gGohmaRightAntennaClawLimb:
+  type: OOT:LIMB
+  offset: 0x1C69C
+  symbol: gGohmaRightAntennaClawLimb
+  limb_type: Standard
+
+gGohmaRightAntennaClawRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C690
+  symbol: gGohmaRightAntennaClawRootLimb
+  limb_type: Standard
+
+gGohmaRightAntennaRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C66C
+  symbol: gGohmaRightAntennaRootLimb
+  limb_type: Standard
+
+gGohmaRightAntennaShellDL:
+  type: GFX
+  offset: 0x13128
+  symbol: gGohmaRightAntennaShellDL
+
+gGohmaRightAntennaShellLimb:
+  type: OOT:LIMB
+  offset: 0x1C6A8
+  symbol: gGohmaRightAntennaShellLimb
+  limb_type: Standard
+
+gGohmaRightAntennaShellRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C684
+  symbol: gGohmaRightAntennaShellRootLimb
+  limb_type: Standard
+
+gGohmaRightFeetBackDL:
+  type: GFX
+  offset: 0x15F28
+  symbol: gGohmaRightFeetBackDL
+
+gGohmaRightFeetBackLimb:
+  type: OOT:LIMB
+  offset: 0x1C498
+  symbol: gGohmaRightFeetBackLimb
+  limb_type: Standard
+
+gGohmaRightFeetBackRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C480
+  symbol: gGohmaRightFeetBackRoot1Limb
+  limb_type: Standard
+
+gGohmaRightFeetBackRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C48C
+  symbol: gGohmaRightFeetBackRoot2Limb
+  limb_type: Standard
+
+gGohmaRightFeetDL:
+  type: GFX
+  offset: 0x15168
+  symbol: gGohmaRightFeetDL
+
+gGohmaRightFeetLimb:
+  type: OOT:LIMB
+  offset: 0x1C4A4
+  symbol: gGohmaRightFeetLimb
+  limb_type: Standard
+
+gGohmaRightFeetRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C474
+  symbol: gGohmaRightFeetRootLimb
+  limb_type: Standard
+
+gGohmaRightKneeDL:
+  type: GFX
+  offset: 0x15B28
+  symbol: gGohmaRightKneeDL
+
+gGohmaRightKneeLimb:
+  type: OOT:LIMB
+  offset: 0x1C4D4
+  symbol: gGohmaRightKneeLimb
+  limb_type: Standard
+
+gGohmaRightKneeRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C4BC
+  symbol: gGohmaRightKneeRoot1Limb
+  limb_type: Standard
+
+gGohmaRightKneeRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C4C8
+  symbol: gGohmaRightKneeRoot2Limb
+  limb_type: Standard
+
+gGohmaRightLegLowerRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C468
+  symbol: gGohmaRightLegLowerRootLimb
+  limb_type: Standard
+
+gGohmaRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C450
+  symbol: gGohmaRightLegRootLimb
+  limb_type: Standard
+
+gGohmaRightMandibles1DL:
+  type: GFX
+  offset: 0x13320
+  symbol: gGohmaRightMandibles1DL
+
+gGohmaRightMandibles1Limb:
+  type: OOT:LIMB
+  offset: 0x1C60C
+  symbol: gGohmaRightMandibles1Limb
+  limb_type: Standard
+
+gGohmaRightMandibles1RootLimb:
+  type: OOT:LIMB
+  offset: 0x1C5E8
+  symbol: gGohmaRightMandibles1RootLimb
+  limb_type: Standard
+
+gGohmaRightMandibles2DL:
+  type: GFX
+  offset: 0x13480
+  symbol: gGohmaRightMandibles2DL
+
+gGohmaRightMandibles2Limb:
+  type: OOT:LIMB
+  offset: 0x1C600
+  symbol: gGohmaRightMandibles2Limb
+  limb_type: Standard
+
+gGohmaRightMandibles2RootLimb:
+  type: OOT:LIMB
+  offset: 0x1C5F4
+  symbol: gGohmaRightMandibles2RootLimb
+  limb_type: Standard
+
+gGohmaRightMandiblesRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C5DC
+  symbol: gGohmaRightMandiblesRootLimb
+  limb_type: Standard
+
+gGohmaRightShinDL:
+  type: GFX
+  offset: 0x17500
+  symbol: gGohmaRightShinDL
+
+gGohmaRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1C4B0
+  symbol: gGohmaRightShinLimb
+  limb_type: Standard
+
+gGohmaRightThighDL:
+  type: GFX
+  offset: 0x167A0
+  symbol: gGohmaRightThighDL
+
+gGohmaRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x1C504
+  symbol: gGohmaRightThighLimb
+  limb_type: Standard
+
+gGohmaRightThighRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C45C
+  symbol: gGohmaRightThighRootLimb
+  limb_type: Standard
+
+gGohmaRightThighShellDL:
+  type: GFX
+  offset: 0x147D0
+  symbol: gGohmaRightThighShellDL
+
+gGohmaRightThighShellLimb:
+  type: OOT:LIMB
+  offset: 0x1C4F8
+  symbol: gGohmaRightThighShellLimb
+  limb_type: Standard
+
+gGohmaRightThighShellRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C4E0
+  symbol: gGohmaRightThighShellRoot1Limb
+  limb_type: Standard
+
+gGohmaRightThighShellRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C4EC
+  symbol: gGohmaRightThighShellRoot2Limb
+  limb_type: Standard
+
+gGohmaRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x1C3A8
+  symbol: gGohmaRoot1Limb
+  limb_type: Standard
+
+gGohmaRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x1C3B4
+  symbol: gGohmaRoot2Limb
+  limb_type: Standard
+
+gGohmaShellTex:
+  type: TEXTURE
+  offset: 0x189A8
+  symbol: gGohmaShellTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGohmaShellUndersideTex:
+  type: TEXTURE
+  offset: 0x185A8
+  symbol: gGohmaShellUndersideTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGohmaSkel:
+  type: OOT:SKELETON
+  offset: 0x1C8F8
+  symbol: gGohmaSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gGohmaStandAnim:
+  type: OOT:ANIMATION
+  offset: 0xAE8
+  symbol: gGohmaStandAnim
+
+gGohmaStunnedAnim:
+  type: OOT:ANIMATION
+  offset: 0xCCD8
+  symbol: gGohmaStunnedAnim
+
+gGohmaTail1DL:
+  type: GFX
+  offset: 0x17768
+  symbol: gGohmaTail1DL
+
+gGohmaTail1Limb:
+  type: OOT:LIMB
+  offset: 0x1C444
+  symbol: gGohmaTail1Limb
+  limb_type: Standard
+
+gGohmaTail1RootLimb:
+  type: OOT:LIMB
+  offset: 0x1C3F0
+  symbol: gGohmaTail1RootLimb
+  limb_type: Standard
+
+gGohmaTail2DL:
+  type: GFX
+  offset: 0x17960
+  symbol: gGohmaTail2DL
+
+gGohmaTail2Limb:
+  type: OOT:LIMB
+  offset: 0x1C438
+  symbol: gGohmaTail2Limb
+  limb_type: Standard
+
+gGohmaTail2RootLimb:
+  type: OOT:LIMB
+  offset: 0x1C3FC
+  symbol: gGohmaTail2RootLimb
+  limb_type: Standard
+
+gGohmaTail3DL:
+  type: GFX
+  offset: 0x17B08
+  symbol: gGohmaTail3DL
+
+gGohmaTail3Limb:
+  type: OOT:LIMB
+  offset: 0x1C42C
+  symbol: gGohmaTail3Limb
+  limb_type: Standard
+
+gGohmaTail3RootLimb:
+  type: OOT:LIMB
+  offset: 0x1C408
+  symbol: gGohmaTail3RootLimb
+  limb_type: Standard
+
+gGohmaTail4DL:
+  type: GFX
+  offset: 0x17D80
+  symbol: gGohmaTail4DL
+
+gGohmaTail4Limb:
+  type: OOT:LIMB
+  offset: 0x1C420
+  symbol: gGohmaTail4Limb
+  limb_type: Standard
+
+gGohmaTail4RootLimb:
+  type: OOT:LIMB
+  offset: 0x1C414
+  symbol: gGohmaTail4RootLimb
+  limb_type: Standard
+
+gGohmaTailRootLimb:
+  type: OOT:LIMB
+  offset: 0x1C3E4
+  symbol: gGohmaTailRootLimb
+  limb_type: Standard
+
+gGohmaTitleCardTex:
+  type: TEXTURE
+  offset: 0x19BA8
+  symbol: gGohmaTitleCardTex
+  format: IA8
+  width: 128
+  height: 80
+
+gGohmaViolentAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x39D0
+  symbol: gGohmaViolentAttackAnim
+
+gGohmaWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2360
+  symbol: gGohmaWalkAnim
+
+gGohmaWalkCrouchedAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D74C
+  symbol: gGohmaWalkCrouchedAnim
+
+
+object_gomaVtx_012690:
+  type: OOT:ARRAY
+  offset: 0x012690
+  symbol: object_gomaVtx_012690
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_012828:
+  type: OOT:ARRAY
+  offset: 0x012828
+  symbol: object_gomaVtx_012828
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_012C90:
+  type: OOT:ARRAY
+  offset: 0x012C90
+  symbol: object_gomaVtx_012C90
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_012E28:
+  type: OOT:ARRAY
+  offset: 0x012E28
+  symbol: object_gomaVtx_012E28
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_0132C0:
+  type: OOT:ARRAY
+  offset: 0x0132C0
+  symbol: object_gomaVtx_0132C0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_0133D0:
+  type: OOT:ARRAY
+  offset: 0x0133D0
+  symbol: object_gomaVtx_0133D0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_013590:
+  type: OOT:ARRAY
+  offset: 0x013590
+  symbol: object_gomaVtx_013590
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_0136A0:
+  type: OOT:ARRAY
+  offset: 0x0136A0
+  symbol: object_gomaVtx_0136A0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_013860:
+  type: OOT:ARRAY
+  offset: 0x013860
+  symbol: object_gomaVtx_013860
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_013B48:
+  type: OOT:ARRAY
+  offset: 0x013B48
+  symbol: object_gomaVtx_013B48
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_014420:
+  type: OOT:ARRAY
+  offset: 0x014420
+  symbol: object_gomaVtx_014420
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_014560:
+  type: OOT:ARRAY
+  offset: 0x014560
+  symbol: object_gomaVtx_014560
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_0146F0:
+  type: OOT:ARRAY
+  offset: 0x0146F0
+  symbol: object_gomaVtx_0146F0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_014880:
+  type: OOT:ARRAY
+  offset: 0x014880
+  symbol: object_gomaVtx_014880
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_014B40:
+  type: OOT:ARRAY
+  offset: 0x014B40
+  symbol: object_gomaVtx_014B40
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_014F18:
+  type: OOT:ARRAY
+  offset: 0x014F18
+  symbol: object_gomaVtx_014F18
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_0152A8:
+  type: OOT:ARRAY
+  offset: 0x0152A8
+  symbol: object_gomaVtx_0152A8
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_0153E8:
+  type: OOT:ARRAY
+  offset: 0x0153E8
+  symbol: object_gomaVtx_0153E8
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_015828:
+  type: OOT:ARRAY
+  offset: 0x015828
+  symbol: object_gomaVtx_015828
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_015C78:
+  type: OOT:ARRAY
+  offset: 0x015C78
+  symbol: object_gomaVtx_015C78
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_015E58:
+  type: OOT:ARRAY
+  offset: 0x015E58
+  symbol: object_gomaVtx_015E58
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_016038:
+  type: OOT:ARRAY
+  offset: 0x016038
+  symbol: object_gomaVtx_016038
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_016490:
+  type: OOT:ARRAY
+  offset: 0x016490
+  symbol: object_gomaVtx_016490
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_0168E8:
+  type: OOT:ARRAY
+  offset: 0x0168E8
+  symbol: object_gomaVtx_0168E8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_016BD0:
+  type: OOT:ARRAY
+  offset: 0x016BD0
+  symbol: object_gomaVtx_016BD0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_016EA8:
+  type: OOT:ARRAY
+  offset: 0x016EA8
+  symbol: object_gomaVtx_016EA8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_017108:
+  type: OOT:ARRAY
+  offset: 0x017108
+  symbol: object_gomaVtx_017108
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_0173A0:
+  type: OOT:ARRAY
+  offset: 0x0173A0
+  symbol: object_gomaVtx_0173A0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_017638:
+  type: OOT:ARRAY
+  offset: 0x017638
+  symbol: object_gomaVtx_017638
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_017830:
+  type: OOT:ARRAY
+  offset: 0x017830
+  symbol: object_gomaVtx_017830
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_017A28:
+  type: OOT:ARRAY
+  offset: 0x017A28
+  symbol: object_gomaVtx_017A28
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_017BF0:
+  type: OOT:ARRAY
+  offset: 0x017BF0
+  symbol: object_gomaVtx_017BF0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_017E68:
+  type: OOT:ARRAY
+  offset: 0x017E68
+  symbol: object_gomaVtx_017E68
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gomaVtx_018120:
+  type: OOT:ARRAY
+  offset: 0x018120
+  symbol: object_gomaVtx_018120
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGohmaSkelLimbs:
+  type: BLOB
+  offset: 0x1C7A4
+  symbol: gGohmaSkelLimbs
+  size: 0
+
+object_gomaVtx_01D760:
+  type: OOT:ARRAY
+  offset: 0x01D760
+  symbol: object_gomaVtx_01D760
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

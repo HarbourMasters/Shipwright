@@ -1,0 +1,33 @@
+:config:
+  segments:
+    - [ 3, 0x01D077F0 ]
+    - [ 2, 0x01D075A0 ]
+  directory: scenes/shared/zoora_scene
+  external_files:
+    - pal_1-0/scenes/shared/zoora_scene.yml
+    - pal_1-0/code/sys_matrix.yml
+
+zoora_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: zoora_room_0
+
+
+zoora_room_0Vtx_0000C0:
+  type: OOT:ARRAY
+  offset: 0x0000C0
+  symbol: zoora_room_0Vtx_0000C0
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+zoora_room_0DL_000840:
+  type: GFX
+  offset: 0x000840
+  symbol: zoora_room_0DL_000840
+
+zoora_room_0DL_0009C0:
+  type: GFX
+  offset: 0x0009C0
+  symbol: zoora_room_0DL_0009C0

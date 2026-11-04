@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x025CC000 ]
+  directory: scenes/mq/ice_doukutu_scene
+  external_files:
+    - pal_mq_dbg/scenes/mq/ice_doukutu_scene.yml
+
+ice_doukutu_sceneSet_00F6A0:
+  type: OOT:SCENE
+  offset: 0xF6A0
+  symbol: ice_doukutu_sceneSet_00F6A0
+  base_name: ice_doukutu_scene

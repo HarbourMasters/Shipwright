@@ -1,0 +1,39 @@
+:config:
+  segments:
+    - [ 6, 0x00EC9830 ]
+
+object_opening_demo1_Anim_000450:
+  type: OOT:ANIMATION
+  offset: 0x450
+  symbol: object_opening_demo1_Anim_000450
+
+object_opening_demo1_Anim_001410:
+  type: OOT:ANIMATION
+  offset: 0x1410
+  symbol: object_opening_demo1_Anim_001410
+
+object_opening_demo1_Anim_002574:
+  type: OOT:ANIMATION
+  offset: 0x2574
+  symbol: object_opening_demo1_Anim_002574
+
+object_opening_demo1_Anim_0029CC:
+  type: OOT:ANIMATION
+  offset: 0x29CC
+  symbol: object_opening_demo1_Anim_0029CC
+
+object_opening_demo1_Anim_00420C:
+  type: OOT:ANIMATION
+  offset: 0x420C
+  symbol: object_opening_demo1_Anim_00420C
+
+object_opening_demo1_Anim_0048FC:
+  type: OOT:ANIMATION
+  offset: 0x48FC
+  symbol: object_opening_demo1_Anim_0048FC
+
+object_opening_demo1_Anim_00504C:
+  type: OOT:ANIMATION
+  offset: 0x504C
+  symbol: object_opening_demo1_Anim_00504C
+

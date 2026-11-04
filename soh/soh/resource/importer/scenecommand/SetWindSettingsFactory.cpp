@@ -1,8 +1,8 @@
+#include <tinyxml2.h>
+
 #include "soh/resource/importer/scenecommand/SetWindSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetWindSettings.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include "spdlog/spdlog.h"
-#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> SetWindSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,

@@ -1,11 +1,16 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
-extern "C" SaveContext gSaveContext;
+extern "C" {
+#include "z64save.h"
+extern SaveContext gSaveContext;
+}
 
-#define BOSS_DEFEAT_TIMESTAMP(actorID, timestamp) \
-    COND_ID_HOOK(OnBossDefeat, actorID, true,     \
-                 [](void* refActor) { gSaveContext.ship.stats.itemTimestamp[timestamp] = GAMEPLAYSTAT_TOTAL_TIME; });
+#define BOSS_DEFEAT_TIMESTAMP(actorID, timestamp)                                                     \
+    COND_ID_HOOK(OnBossDefeat, actorID, true, [](void* refActor) {                                    \
+        gSaveContext.ship.stats.itemTimestamp[timestamp] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME); \
+    });
 
 static void RegisterBossDefeatTimestamps() {
     BOSS_DEFEAT_TIMESTAMP(ACTOR_BOSS_GOMA, TIMESTAMP_DEFEAT_GOHMA);
@@ -18,8 +23,10 @@ static void RegisterBossDefeatTimestamps() {
     BOSS_DEFEAT_TIMESTAMP(ACTOR_BOSS_TW, TIMESTAMP_DEFEAT_TWINROVA);
     BOSS_DEFEAT_TIMESTAMP(ACTOR_BOSS_GANON, TIMESTAMP_DEFEAT_GANONDORF);
     COND_ID_HOOK(OnBossDefeat, ACTOR_BOSS_GANON2, true, [](void* refActor) {
-        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-        gSaveContext.ship.stats.gameComplete = true;
+        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+        if (!IS_RANDO || RAND_GET_OPTION(RSK_WINCON).Is(RO_WINCON_DEFEAT_GANON)) {
+            gSaveContext.ship.stats.gameComplete = true;
+        }
     });
 }
 

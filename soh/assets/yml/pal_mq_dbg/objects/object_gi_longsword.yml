@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x016A1000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x016A1000 ]
+    - [ 9, 0x016A1000 ]
+    - [ 10, 0x016A1000 ]
+    - [ 11, 0x016A1000 ]
+    - [ 12, 0x016A1000 ]
+    - [ 13, 0x016A1000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGiBiggoronSwordDL:
+  type: GFX
+  offset: 0x0600
+  symbol: gGiBiggoronSwordDL
+
+
+object_gi_longswordVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_longswordVtx_000000
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

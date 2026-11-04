@@ -1,13 +1,10 @@
 #include "SohModals.h"
 #include <imgui.h>
+#include <ship/window/Window.h>
 #include <vector>
 #include <string>
-#include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "SohGui.hpp"
-#include "soh/OTRGlobals.h"
-#include "z64.h"
 
 extern "C" PlayState* gPlayState;
 struct SohModal {

@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 2, 0x01D1AF00 ]
+
+market_alley_n_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: market_alley_n_scene
+
+gMarketAlleyNightPath_0019C:
+  type: OOT:PATH
+  offset: 0x19C
+  symbol: gMarketAlleyNightPath_0019C
+  num_paths: 4
+
+
+market_alley_n_sceneCollisionHeader_0012C0:
+  type: OOT:COLLISION
+  offset: 0x0012C0
+  symbol: market_alley_n_sceneCollisionHeader_0012C0

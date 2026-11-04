@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x012EF590 ]
+
+gKokiriShopTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKokiriShopTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gKokiriShopTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gKokiriShopTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gKokiriShopTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gKokiriShopTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

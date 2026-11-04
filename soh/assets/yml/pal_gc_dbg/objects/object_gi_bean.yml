@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x0169C000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0169C000 ]
+    - [ 9, 0x0169C000 ]
+    - [ 10, 0x0169C000 ]
+    - [ 11, 0x0169C000 ]
+    - [ 12, 0x0169C000 ]
+    - [ 13, 0x0169C000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGiBeanDL:
+  type: GFX
+  offset: 0x0580
+  symbol: gGiBeanDL
+
+
+object_gi_beanVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_beanVtx_000000
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

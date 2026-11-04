@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 6, 0x012CDA60 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x012CDA60 ]
+    - [ 9, 0x012CDA60 ]
+    - [ 10, 0x012CDA60 ]
+    - [ 11, 0x012CDA60 ]
+    - [ 12, 0x012CDA60 ]
+    - [ 13, 0x012CDA60 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gGanonRubbleDL:
+  type: GFX
+  offset: 0xEA0
+  symbol: gGanonRubbleDL
+
+gGanonRubbleInsideTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGanonRubbleInsideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGanonRubbleOutsideTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gGanonRubbleOutsideTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_geffVtx_000C00:
+  type: OOT:ARRAY
+  offset: 0x000C00
+  symbol: object_geffVtx_000C00
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

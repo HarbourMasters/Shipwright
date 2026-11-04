@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A53000 ]
+
+gZorasDomainTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZorasDomainTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gZorasDomainTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gZorasDomainTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gZorasDomainTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gZorasDomainTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x03280000 ]
+
+hairal_niwa2_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: hairal_niwa2_scene
+
+
+hairal_niwa2_sceneCollisionHeader_002CD8:
+  type: OOT:COLLISION
+  offset: 0x002CD8
+  symbol: hairal_niwa2_sceneCollisionHeader_002CD8

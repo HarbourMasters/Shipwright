@@ -1,0 +1,364 @@
+:config:
+  segments:
+    - [ 6, 0x00FF1C90 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x00FF1C90 ]
+    - [ 9, 0x00FF1C90 ]
+    - [ 10, 0x00FF1C90 ]
+    - [ 11, 0x00FF1C90 ]
+    - [ 12, 0x00FF1C90 ]
+    - [ 13, 0x00FF1C90 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gEffSunGraveSpark1Tex:
+  type: TEXTURE
+  offset: 0x15E0
+  symbol: gEffSunGraveSpark1Tex
+  format: I8
+  width: 64
+  height: 64
+
+gEffSunGraveSpark2Tex:
+  type: TEXTURE
+  offset: 0x25E0
+  symbol: gEffSunGraveSpark2Tex
+  format: I8
+  width: 64
+  height: 64
+
+gEffSunGraveSpark3Tex:
+  type: TEXTURE
+  offset: 0x35E0
+  symbol: gEffSunGraveSpark3Tex
+  format: I8
+  width: 64
+  height: 64
+
+gEffSunGraveSpark4Tex:
+  type: TEXTURE
+  offset: 0x45E0
+  symbol: gEffSunGraveSpark4Tex
+  format: I8
+  width: 64
+  height: 64
+
+gEffSunGraveSpark5Tex:
+  type: TEXTURE
+  offset: 0x55E0
+  symbol: gEffSunGraveSpark5Tex
+  format: I8
+  width: 64
+  height: 64
+
+gEffSunGraveSpark6Tex:
+  type: TEXTURE
+  offset: 0x65E0
+  symbol: gEffSunGraveSpark6Tex
+  format: I8
+  width: 64
+  height: 64
+
+gEffSunGraveSpark7Tex:
+  type: TEXTURE
+  offset: 0x75E0
+  symbol: gEffSunGraveSpark7Tex
+  format: I8
+  width: 64
+  height: 64
+
+gEffSunGraveSpark8Tex:
+  type: TEXTURE
+  offset: 0x85E0
+  symbol: gEffSunGraveSpark8Tex
+  format: I8
+  width: 64
+  height: 64
+
+object_spot02_objects_Blob_0015D8:
+  type: BLOB
+  offset: 0x15D8
+  size: 0x0008
+  symbol: object_spot02_objects_Blob_0015D8
+
+object_spot02_objects_Col_0128D8:
+  type: OOT:COLLISION
+  offset: 0x128D8
+  symbol: object_spot02_objects_Col_0128D8
+
+object_spot02_objects_Col_012BA4:
+  type: OOT:COLLISION
+  offset: 0x12BA4
+  symbol: object_spot02_objects_Col_012BA4
+
+object_spot02_objects_Col_0133EC:
+  type: OOT:COLLISION
+  offset: 0x133EC
+  symbol: object_spot02_objects_Col_0133EC
+
+object_spot02_objects_DL_0013F0:
+  type: GFX
+  offset: 0x13F0
+  symbol: object_spot02_objects_DL_0013F0
+
+object_spot02_objects_DL_009620:
+  type: GFX
+  offset: 0x9620
+  symbol: object_spot02_objects_DL_009620
+
+object_spot02_objects_DL_0126F0:
+  type: GFX
+  offset: 0x126F0
+  symbol: object_spot02_objects_DL_0126F0
+
+object_spot02_objects_DL_0127C0:
+  type: GFX
+  offset: 0x127C0
+  symbol: object_spot02_objects_DL_0127C0
+
+object_spot02_objects_DL_012A50:
+  type: GFX
+  offset: 0x12A50
+  symbol: object_spot02_objects_DL_012A50
+
+object_spot02_objects_DL_012D30:
+  type: GFX
+  offset: 0x12D30
+  symbol: object_spot02_objects_DL_012D30
+
+object_spot02_objects_DL_0130B0:
+  type: GFX
+  offset: 0x130B0
+  symbol: object_spot02_objects_DL_0130B0
+
+object_spot02_objects_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_spot02_objects_Tex_000000
+  format: I8
+  width: 32
+  height: 64
+
+object_spot02_objects_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_spot02_objects_Tex_000800
+  format: I8
+  width: 32
+  height: 64
+
+object_spot02_objects_Tex_0096B0:
+  type: TEXTURE
+  offset: 0x96B0
+  symbol: object_spot02_objects_Tex_0096B0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_00A2B0:
+  type: TEXTURE
+  offset: 0xA2B0
+  symbol: object_spot02_objects_Tex_00A2B0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_00AEB0:
+  type: TEXTURE
+  offset: 0xAEB0
+  symbol: object_spot02_objects_Tex_00AEB0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_00BAB0:
+  type: TEXTURE
+  offset: 0xBAB0
+  symbol: object_spot02_objects_Tex_00BAB0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_00C6B0:
+  type: TEXTURE
+  offset: 0xC6B0
+  symbol: object_spot02_objects_Tex_00C6B0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_00D2B0:
+  type: TEXTURE
+  offset: 0xD2B0
+  symbol: object_spot02_objects_Tex_00D2B0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_00DEB0:
+  type: TEXTURE
+  offset: 0xDEB0
+  symbol: object_spot02_objects_Tex_00DEB0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_00EAB0:
+  type: TEXTURE
+  offset: 0xEAB0
+  symbol: object_spot02_objects_Tex_00EAB0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_00F6B0:
+  type: TEXTURE
+  offset: 0xF6B0
+  symbol: object_spot02_objects_Tex_00F6B0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_0102B0:
+  type: TEXTURE
+  offset: 0x102B0
+  symbol: object_spot02_objects_Tex_0102B0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_010EB0:
+  type: TEXTURE
+  offset: 0x10EB0
+  symbol: object_spot02_objects_Tex_010EB0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_011AB0:
+  type: TEXTURE
+  offset: 0x11AB0
+  symbol: object_spot02_objects_Tex_011AB0
+  format: I8
+  width: 32
+  height: 96
+
+object_spot02_objects_Tex_013420:
+  type: TEXTURE
+  offset: 0x13420
+  symbol: object_spot02_objects_Tex_013420
+  format: I4
+  width: 32
+  height: 64
+
+object_spot02_objects_Tex_013820:
+  type: TEXTURE
+  offset: 0x13820
+  symbol: object_spot02_objects_Tex_013820
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot02_objects_Tex_014020:
+  type: TEXTURE
+  offset: 0x14020
+  symbol: object_spot02_objects_Tex_014020
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot02_objects_Tex_014820:
+  type: TEXTURE
+  offset: 0x14820
+  symbol: object_spot02_objects_Tex_014820
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_spot02_objects_Tex_014C20:
+  type: TEXTURE
+  offset: 0x14C20
+  symbol: object_spot02_objects_Tex_014C20
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_spot02_objects_Tex_015C20:
+  type: TEXTURE
+  offset: 0x15C20
+  symbol: object_spot02_objects_Tex_015C20
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot02_objects_Tex_016420:
+  type: TEXTURE
+  offset: 0x16420
+  symbol: object_spot02_objects_Tex_016420
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_spot02_objectsVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_spot02_objectsVtx_001000
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot02_objectsVtx_0095E0:
+  type: OOT:ARRAY
+  offset: 0x0095E0
+  symbol: object_spot02_objectsVtx_0095E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot02_objectsVtx_0126B0:
+  type: OOT:ARRAY
+  offset: 0x0126B0
+  symbol: object_spot02_objectsVtx_0126B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot02_objectsVtx_012780:
+  type: OOT:ARRAY
+  offset: 0x012780
+  symbol: object_spot02_objectsVtx_012780
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot02_objectsVtx_012910:
+  type: OOT:ARRAY
+  offset: 0x012910
+  symbol: object_spot02_objectsVtx_012910
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot02_objectsVtx_012BD0:
+  type: OOT:ARRAY
+  offset: 0x012BD0
+  symbol: object_spot02_objectsVtx_012BD0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot02_objectsVtx_012E30:
+  type: OOT:ARRAY
+  offset: 0x012E30
+  symbol: object_spot02_objectsVtx_012E30
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,71 @@
+:config:
+  segments:
+    - [ 6, 0x011EF200 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x011EF200 ]
+    - [ 9, 0x011EF200 ]
+    - [ 10, 0x011EF200 ]
+    - [ 11, 0x011EF200 ]
+    - [ 12, 0x011EF200 ]
+    - [ 13, 0x011EF200 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGiGerudoMaskDL:
+  type: GFX
+  offset: 0x10E8
+  symbol: gGiGerudoMaskDL
+
+object_gi_gerudomaskTLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_gerudomaskTLUT_000000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_gi_gerudomaskTex_000208:
+  type: TEXTURE
+  offset: 0x208
+  symbol: object_gi_gerudomaskTex_000208
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+object_gi_gerudomaskTex_000248:
+  type: TEXTURE
+  offset: 0x248
+  symbol: object_gi_gerudomaskTex_000248
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+object_gi_gerudomaskTex_000348:
+  type: TEXTURE
+  offset: 0x348
+  symbol: object_gi_gerudomaskTex_000348
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+object_gi_gerudomaskTex_000448:
+  type: TEXTURE
+  offset: 0x448
+  symbol: object_gi_gerudomaskTex_000448
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0
+
+
+object_gi_gerudomaskVtx_000848:
+  type: OOT:ARRAY
+  offset: 0x000848
+  symbol: object_gi_gerudomaskVtx_000848
+  count: 138
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

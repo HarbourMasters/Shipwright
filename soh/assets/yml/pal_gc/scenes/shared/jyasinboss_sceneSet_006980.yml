@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01E13B10 ]
+  directory: scenes/shared/jyasinboss_scene
+  external_files:
+    - pal_gc/scenes/shared/jyasinboss_scene.yml
+
+jyasinboss_sceneSet_006980:
+  type: OOT:SCENE
+  offset: 0x6980
+  symbol: jyasinboss_sceneSet_006980
+  base_name: jyasinboss_scene

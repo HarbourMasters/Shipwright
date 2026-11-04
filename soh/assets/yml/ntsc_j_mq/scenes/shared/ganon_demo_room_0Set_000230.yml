@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01F4CF30 ]
+    - [ 2, 0x01F45A10 ]
+  directory: scenes/shared/ganon_demo_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/ganon_demo_room_0.yml
+    - ntsc_j_mq/scenes/shared/ganon_demo_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+ganon_demo_room_0Set_000230:
+  type: OOT:ROOM
+  offset: 0x230
+  symbol: ganon_demo_room_0Set_000230
+  base_name: ganon_demo_room_0

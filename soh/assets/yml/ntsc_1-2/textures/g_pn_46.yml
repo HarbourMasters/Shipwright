@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x0130B970 ]
+
+gFishingPondTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gFishingPondTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gFishingPondTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gFishingPondTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

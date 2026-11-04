@@ -186,7 +186,7 @@ void func_808ACB58(BgSpot02Objects* this, PlayState* play) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONEDOOR_STOP);
         this->actionFunc = func_808AC8FC;
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_WALL_MOVE_SP - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_WALL_MOVE_SP - SFX_FLAG);
     }
 }
 

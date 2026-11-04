@@ -1,0 +1,31 @@
+:config:
+  segments:
+    - [ 128, 0x00C98A80 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00C98A80 ]
+    - [ 9, 0x00C98A80 ]
+    - [ 10, 0x00C98A80 ]
+    - [ 11, 0x00C98A80 ]
+    - [ 12, 0x00C98A80 ]
+    - [ 13, 0x00C98A80 ]
+  virtual: [ 0x80A92110, 0x00C98A80 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+D_80AFA398:
+  type: OOT:ARRAY
+  offset: 0x14A8
+  symbol: D_80AFA398
+  count: 4
+  array_type: VTX
+
+D_80AFA3D8:
+  type: GFX
+  offset: 0x14E8
+  symbol: D_80AFA3D8
+
+D_80AFA3F8:
+  type: GFX
+  offset: 0x1508
+  symbol: D_80AFA3F8
+

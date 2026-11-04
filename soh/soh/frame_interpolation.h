@@ -24,6 +24,8 @@ void FrameInterpolation_DontInterpolateCamera(void);
 
 int FrameInterpolation_GetCameraEpoch(void);
 
+void FrameInterpolation_DontInterpolateChild(const void* a);
+
 void FrameInterpolation_RecordActorPosRotMatrix(void);
 
 void FrameInterpolation_RecordMatrixPush(void);
@@ -55,6 +57,15 @@ void FrameInterpolation_RecordMatrixReplaceRotation(MtxF* mf);
 void FrameInterpolation_RecordMatrixRotateAxis(f32 angle, Vec3f* axis, u8 mode);
 
 void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest);
+
+// pairs holds pairCount (moving vertex, vertex it starts from) index pairs
+void FrameInterpolation_RecordRibbonHead(const void* key, void* dest, u32 vtxCount, u32 pairCount, const s16* pairs);
+
+void FrameInterpolation_UpdateRibbonHeads(float step);
+
+void FrameInterpolation_RecordSkinnedLimb(const void* key, void* dest, u32 vtxCount);
+
+void FrameInterpolation_UpdateSkinnedVertices(float step);
 
 #ifdef __cplusplus
 }

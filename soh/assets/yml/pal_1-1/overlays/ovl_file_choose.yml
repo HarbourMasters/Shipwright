@@ -1,0 +1,54 @@
+:config:
+  segments:
+    - [ 128, 0x00AFED30 ]
+  virtual: [ 0x80803880, 0x00AFED30 ]
+
+D_80811BB0:
+  type: OOT:ARRAY
+  offset: 0xF120
+  symbol: D_80811BB0
+  count: 24
+  array_type: VTX
+
+D_80811D30:
+  type: OOT:ARRAY
+  offset: 0xF2A0
+  symbol: D_80811D30
+  count: 24
+  array_type: VTX
+
+D_80811F30:
+  type: OOT:ARRAY
+  offset: 0xF420
+  symbol: D_80811F30
+  count: 52
+  array_type: VTX
+
+gOptionsDividerBottomVtx:
+  type: OOT:ARRAY
+  offset: 0xF920
+  symbol: gOptionsDividerBottomVtx
+  count: 4
+  array_type: VTX
+
+gOptionsDividerChangeLangVtx:
+  type: OOT:ARRAY
+  offset: 0xF960
+  symbol: gOptionsDividerChangeLangVtx
+  count: 4
+  array_type: VTX
+
+gOptionsDividerMiddleVtx:
+  type: OOT:ARRAY
+  offset: 0xF8E0
+  symbol: gOptionsDividerMiddleVtx
+  count: 4
+  array_type: VTX
+
+gOptionsDividerTopVtx:
+  type: OOT:ARRAY
+  offset: 0xF8A0
+  symbol: gOptionsDividerTopVtx
+  count: 4
+  array_type: VTX
+

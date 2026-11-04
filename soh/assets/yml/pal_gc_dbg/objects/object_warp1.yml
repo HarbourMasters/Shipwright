@@ -1,0 +1,285 @@
+:config:
+  segments:
+    - [ 6, 0x0123E000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0123E000 ]
+    - [ 9, 0x0123E000 ]
+    - [ 10, 0x0123E000 ]
+    - [ 11, 0x0123E000 ]
+    - [ 12, 0x0123E000 ]
+    - [ 13, 0x0123E000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gWarp1DL_001750:
+  type: GFX
+  offset: 0x1750
+  symbol: gWarp1DL_001750
+
+gWarp1DL_001828:
+  type: GFX
+  offset: 0x1828
+  symbol: gWarp1DL_001828
+
+gWarp1DL_0018B0:
+  type: GFX
+  offset: 0x18B0
+  symbol: gWarp1DL_0018B0
+
+gWarp1DL_001938:
+  type: GFX
+  offset: 0x1938
+  symbol: gWarp1DL_001938
+
+gWarp1DL_0019C0:
+  type: GFX
+  offset: 0x19C0
+  symbol: gWarp1DL_0019C0
+
+gWarp1DL_001A48:
+  type: GFX
+  offset: 0x1A48
+  symbol: gWarp1DL_001A48
+
+gWarp1DL_001AD0:
+  type: GFX
+  offset: 0x1AD0
+  symbol: gWarp1DL_001AD0
+
+gWarpCrystalAnim:
+  type: OOT:ANIMATION
+  offset: 0x1374
+  symbol: gWarpCrystalAnim
+
+gWarpCrystalLimb_002B58:
+  type: OOT:LIMB
+  offset: 0x2B58
+  symbol: gWarpCrystalLimb_002B58
+  limb_type: Standard
+
+gWarpCrystalLimb_002B64:
+  type: OOT:LIMB
+  offset: 0x2B64
+  symbol: gWarpCrystalLimb_002B64
+  limb_type: Standard
+
+gWarpCrystalLimb_002B70:
+  type: OOT:LIMB
+  offset: 0x2B70
+  symbol: gWarpCrystalLimb_002B70
+  limb_type: Standard
+
+gWarpCrystalLimb_002B7C:
+  type: OOT:LIMB
+  offset: 0x2B7C
+  symbol: gWarpCrystalLimb_002B7C
+  limb_type: Standard
+
+gWarpCrystalLimb_002B88:
+  type: OOT:LIMB
+  offset: 0x2B88
+  symbol: gWarpCrystalLimb_002B88
+  limb_type: Standard
+
+gWarpCrystalLimb_002B94:
+  type: OOT:LIMB
+  offset: 0x2B94
+  symbol: gWarpCrystalLimb_002B94
+  limb_type: Standard
+
+gWarpCrystalLimb_002BA0:
+  type: OOT:LIMB
+  offset: 0x2BA0
+  symbol: gWarpCrystalLimb_002BA0
+  limb_type: Standard
+
+gWarpCrystalLimb_002BAC:
+  type: OOT:LIMB
+  offset: 0x2BAC
+  symbol: gWarpCrystalLimb_002BAC
+  limb_type: Standard
+
+gWarpCrystalLimb_002BB8:
+  type: OOT:LIMB
+  offset: 0x2BB8
+  symbol: gWarpCrystalLimb_002BB8
+  limb_type: Standard
+
+gWarpCrystalLimb_002BC4:
+  type: OOT:LIMB
+  offset: 0x2BC4
+  symbol: gWarpCrystalLimb_002BC4
+  limb_type: Standard
+
+gWarpCrystalLimb_002BD0:
+  type: OOT:LIMB
+  offset: 0x2BD0
+  symbol: gWarpCrystalLimb_002BD0
+  limb_type: Standard
+
+gWarpCrystalLimb_002BDC:
+  type: OOT:LIMB
+  offset: 0x2BDC
+  symbol: gWarpCrystalLimb_002BDC
+  limb_type: Standard
+
+gWarpCrystalLimb_002BE8:
+  type: OOT:LIMB
+  offset: 0x2BE8
+  symbol: gWarpCrystalLimb_002BE8
+  limb_type: Standard
+
+gWarpCrystalLimb_002BF4:
+  type: OOT:LIMB
+  offset: 0x2BF4
+  symbol: gWarpCrystalLimb_002BF4
+  limb_type: Standard
+
+gWarpCrystalLimb_002C00:
+  type: OOT:LIMB
+  offset: 0x2C00
+  symbol: gWarpCrystalLimb_002C00
+  limb_type: Standard
+
+gWarpCrystalLimb_002C0C:
+  type: OOT:LIMB
+  offset: 0x2C0C
+  symbol: gWarpCrystalLimb_002C0C
+  limb_type: Standard
+
+gWarpCrystalLimb_002C18:
+  type: OOT:LIMB
+  offset: 0x2C18
+  symbol: gWarpCrystalLimb_002C18
+  limb_type: Standard
+
+gWarpCrystalLimb_002C24:
+  type: OOT:LIMB
+  offset: 0x2C24
+  symbol: gWarpCrystalLimb_002C24
+  limb_type: Standard
+
+gWarpCrystalLimb_002C30:
+  type: OOT:LIMB
+  offset: 0x2C30
+  symbol: gWarpCrystalLimb_002C30
+  limb_type: Standard
+
+gWarpCrystalLimb_002C3C:
+  type: OOT:LIMB
+  offset: 0x2C3C
+  symbol: gWarpCrystalLimb_002C3C
+  limb_type: Standard
+
+gWarpCrystalLimb_002C48:
+  type: OOT:LIMB
+  offset: 0x2C48
+  symbol: gWarpCrystalLimb_002C48
+  limb_type: Standard
+
+gWarpCrystalSkel:
+  type: OOT:SKELETON
+  offset: 0x2CA8
+  symbol: gWarpCrystalSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gWarpCrystalTex:
+  type: TEXTURE
+  offset: 0x1B58
+  symbol: gWarpCrystalTex
+  format: I8
+  width: 64
+  height: 64
+
+gWarpPortalDL:
+  type: GFX
+  offset: 0x01A0
+  symbol: gWarpPortalDL
+
+gWarpPortalTex:
+  type: TEXTURE
+  offset: 0x02C0
+  symbol: gWarpPortalTex
+  format: I8
+  width: 64
+  height: 64
+
+
+object_warp1Vtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_warp1Vtx_000000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001390:
+  type: OOT:ARRAY
+  offset: 0x001390
+  symbol: object_warp1Vtx_001390
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001630:
+  type: OOT:ARRAY
+  offset: 0x001630
+  symbol: object_warp1Vtx_001630
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001660:
+  type: OOT:ARRAY
+  offset: 0x001660
+  symbol: object_warp1Vtx_001660
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001690:
+  type: OOT:ARRAY
+  offset: 0x001690
+  symbol: object_warp1Vtx_001690
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_0016C0:
+  type: OOT:ARRAY
+  offset: 0x0016C0
+  symbol: object_warp1Vtx_0016C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_0016F0:
+  type: OOT:ARRAY
+  offset: 0x0016F0
+  symbol: object_warp1Vtx_0016F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001720:
+  type: OOT:ARRAY
+  offset: 0x001720
+  symbol: object_warp1Vtx_001720
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWarpCrystalSkelLimbs:
+  type: BLOB
+  offset: 0x2C54
+  symbol: gWarpCrystalSkelLimbs
+  size: 0

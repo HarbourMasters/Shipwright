@@ -1,0 +1,83 @@
+:config:
+  segments:
+    - [ 3, 0x01F28160 ]
+    - [ 2, 0x01F1DEF0 ]
+  directory: scenes/shared/takaraya_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/takaraya_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+takaraya_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: takaraya_room_2
+
+takaraya_room_2Tex_001828:
+  type: TEXTURE
+  offset: 0x1828
+  symbol: takaraya_room_2Tex_001828
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+takaraya_room_2Vtx_0000B0:
+  type: OOT:ARRAY
+  offset: 0x0000B0
+  symbol: takaraya_room_2Vtx_0000B0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+takaraya_room_2DL_000230:
+  type: GFX
+  offset: 0x000230
+  symbol: takaraya_room_2DL_000230
+
+takaraya_room_2Vtx_000310:
+  type: OOT:ARRAY
+  offset: 0x000310
+  symbol: takaraya_room_2Vtx_000310
+  count: 142
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+takaraya_room_2DL_000BF0:
+  type: GFX
+  offset: 0x000BF0
+  symbol: takaraya_room_2DL_000BF0
+
+takaraya_room_2Vtx_000E40:
+  type: OOT:ARRAY
+  offset: 0x000E40
+  symbol: takaraya_room_2Vtx_000E40
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+takaraya_room_2DL_001040:
+  type: GFX
+  offset: 0x001040
+  symbol: takaraya_room_2DL_001040
+
+takaraya_room_2Vtx_001130:
+  type: OOT:ARRAY
+  offset: 0x001130
+  symbol: takaraya_room_2Vtx_001130
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+takaraya_room_2DL_001680:
+  type: GFX
+  offset: 0x001680
+  symbol: takaraya_room_2DL_001680
+
+takaraya_room_2DL_001800:
+  type: GFX
+  offset: 0x001800
+  symbol: takaraya_room_2DL_001800

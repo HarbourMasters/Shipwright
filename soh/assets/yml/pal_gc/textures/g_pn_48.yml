@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01305F50 ]
+
+gStableTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gStableTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gStableTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gStableTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gStableTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gStableTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

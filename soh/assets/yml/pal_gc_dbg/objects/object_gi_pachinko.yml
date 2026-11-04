@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x01665000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01665000 ]
+    - [ 9, 0x01665000 ]
+    - [ 10, 0x01665000 ]
+    - [ 11, 0x01665000 ]
+    - [ 12, 0x01665000 ]
+    - [ 13, 0x01665000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGiSlingshotDL:
+  type: GFX
+  offset: 0x0940
+  symbol: gGiSlingshotDL
+
+
+object_gi_pachinkoVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_pachinkoVtx_000000
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

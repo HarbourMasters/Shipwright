@@ -159,8 +159,8 @@ void EnMag_Update(Actor* thisx, PlayState* play) {
                 CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
                 CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
-                Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
                 this->mainAlpha = 210;
                 this->subAlpha = 255;
@@ -198,8 +198,8 @@ void EnMag_Update(Actor* thisx, PlayState* play) {
                     if (play->transitionTrigger != TRANS_TRIGGER_START) {
                         Audio_SetCutsceneFlag(0);
 
-                        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
                         gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
                         play->transitionTrigger = TRANS_TRIGGER_START;
@@ -482,7 +482,8 @@ bool EnMag_ShouldDrawPressStart(Font* font, Gfx** gfxP, bool isActualText) {
 // #endregion
 
 // Title logo is shifted to the left in Master Quest
-#define LOGO_X_SHIFT (isMQ ? 0 : -8)
+#define LOGO_X_SHIFT (isMQ ? -8 : 0)
+#define TITLE_X_SHIFT (isMQ ? -32 : 0)
 #define LOGO_TEX (isMQ ? gTitleZeldaShieldLogoMQTex : gTitleZeldaShieldLogoTex)
 // Copyright texture is different depending on the version
 // JPN CE displays two slightly different 2004 copyrights when lang is jpn or not
@@ -637,8 +638,8 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 1);
             gDPSetTileSize(gfx++, 1, this->unk_E30C & 0x7F, this->effectScroll & 0x7F,
                            (this->unk_E30C & 0x7F) + ((32 - 1) << 2), (this->effectScroll & 0x7F) + ((32 - 1) << 2));
-            gSPTextureRectangle(gfx++, 106 << 2, 144 << 2, (106 + 128) << 2, (144 + 16) << 2, G_TX_RENDERTILE, 0, 0,
-                                1 << 10, 1 << 10);
+            gSPTextureRectangle(gfx++, 424 + TITLE_X_SHIFT, 576, 424 + TITLE_X_SHIFT + 512, 576 + 64, G_TX_RENDERTILE,
+                                0, 0, 1 << 10, 1 << 10);
         }
     }
 

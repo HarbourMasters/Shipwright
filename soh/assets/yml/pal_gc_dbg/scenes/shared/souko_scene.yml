@@ -1,0 +1,62 @@
+:config:
+  segments:
+    - [ 2, 0x0348D000 ]
+
+souko_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: souko_scene
+
+gLonLonHouseDayEntranceTex:
+  type: TEXTURE
+  offset: 0x5210
+  symbol: gLonLonHouseDayEntranceTex
+  format: IA16
+  width: 64
+  height: 4
+
+gLonLonHouseNightEntranceTex:
+  type: TEXTURE
+  offset: 0x5010
+  symbol: gLonLonHouseNightEntranceTex
+  format: IA16
+  width: 64
+  height: 4
+
+souko_sceneTex_004410:
+  type: TEXTURE
+  offset: 0x4410
+  symbol: souko_sceneTex_004410
+  format: RGBA16
+  width: 32
+  height: 32
+
+souko_sceneTex_004C10:
+  type: TEXTURE
+  offset: 0x4C10
+  symbol: souko_sceneTex_004C10
+  format: RGBA16
+  width: 32
+  height: 16
+
+souko_sceneTex_005410:
+  type: TEXTURE
+  offset: 0x5410
+  symbol: souko_sceneTex_005410
+  format: RGBA16
+  width: 32
+  height: 32
+
+souko_sceneTex_005C10:
+  type: TEXTURE
+  offset: 0x5C10
+  symbol: souko_sceneTex_005C10
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+souko_sceneCollisionHeader_0043E0:
+  type: OOT:COLLISION
+  offset: 0x0043E0
+  symbol: souko_sceneCollisionHeader_0043E0

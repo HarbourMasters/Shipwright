@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01C44E80 ]
+  directory: scenes/shared/tokinoma_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/tokinoma_scene.yml
+
+tokinoma_sceneSet_00CC40:
+  type: OOT:SCENE
+  offset: 0xCC40
+  symbol: tokinoma_sceneSet_00CC40
+  base_name: tokinoma_scene

@@ -1,0 +1,735 @@
+:config:
+  segments:
+    - [ 6, 0x010DB000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x010DB000 ]
+    - [ 9, 0x010DB000 ]
+    - [ 10, 0x010DB000 ]
+    - [ 11, 0x010DB000 ]
+    - [ 12, 0x010DB000 ]
+    - [ 13, 0x010DB000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gEponaBlob_000000:
+  type: BLOB
+  offset: 0x0
+  size: 0x380
+  symbol: gEponaBlob_000000
+
+gEponaBlob_0007C0:
+  type: BLOB
+  offset: 0x7C0
+  size: 0xB0
+  symbol: gEponaBlob_0007C0
+
+gEponaBodyLimb:
+  type: OOT:LIMB
+  offset: 0x9A18
+  symbol: gEponaBodyLimb
+  limb_type: Skin
+
+gEponaCannon1Limb:
+  type: OOT:LIMB
+  offset: 0x9B18
+  symbol: gEponaCannon1Limb
+  limb_type: Skin
+
+gEponaCannon2Limb:
+  type: OOT:LIMB
+  offset: 0x9B98
+  symbol: gEponaCannon2Limb
+  limb_type: Skin
+
+gEponaCannon3Limb:
+  type: OOT:LIMB
+  offset: 0x9C28
+  symbol: gEponaCannon3Limb
+  limb_type: Skin
+
+gEponaCannon4Limb:
+  type: OOT:LIMB
+  offset: 0x9CA8
+  symbol: gEponaCannon4Limb
+  limb_type: Skin
+
+gEponaChestTex:
+  type: TEXTURE
+  offset: 0xDB10
+  symbol: gEponaChestTex
+  format: I8
+  width: 16
+  height: 16
+
+gEponaCrestTex:
+  type: TEXTURE
+  offset: 0xCA10
+  symbol: gEponaCrestTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gEponaEyeClosedTex:
+  type: TEXTURE
+  offset: 0xA380
+  symbol: gEponaEyeClosedTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x9D80
+
+gEponaEyeHalfTex:
+  type: TEXTURE
+  offset: 0xA180
+  symbol: gEponaEyeHalfTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x9D80
+
+gEponaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x9F80
+  symbol: gEponaEyeOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x9D80
+
+gEponaEyeTLUT:
+  type: TEXTURE
+  offset: 0x9D80
+  symbol: gEponaEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEponaFeatheringTex:
+  type: TEXTURE
+  offset: 0xBF10
+  symbol: gEponaFeatheringTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEponaForeheadTex:
+  type: TEXTURE
+  offset: 0xC210
+  symbol: gEponaForeheadTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gEponaGallopingAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E2C
+  symbol: gEponaGallopingAnim
+
+gEponaHairTex:
+  type: TEXTURE
+  offset: 0xC190
+  symbol: gEponaHairTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEponaHeadLimb:
+  type: OOT:LIMB
+  offset: 0x9A98
+  symbol: gEponaHeadLimb
+  limb_type: Skin
+
+gEponaHoof1Limb:
+  type: OOT:LIMB
+  offset: 0x9B08
+  symbol: gEponaHoof1Limb
+  limb_type: Skin
+
+gEponaHoof2Limb:
+  type: OOT:LIMB
+  offset: 0x9B88
+  symbol: gEponaHoof2Limb
+  limb_type: Skin
+
+gEponaHoof3Limb:
+  type: OOT:LIMB
+  offset: 0x9C18
+  symbol: gEponaHoof3Limb
+  limb_type: Skin
+
+gEponaHoof4Limb:
+  type: OOT:LIMB
+  offset: 0x9C98
+  symbol: gEponaHoof4Limb
+  limb_type: Skin
+
+gEponaHorseshoeTex:
+  type: TEXTURE
+  offset: 0xC110
+  symbol: gEponaHorseshoeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEponaIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x6D50
+  symbol: gEponaIdleAnim
+
+gEponaJumpingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2470
+  symbol: gEponaJumpingAnim
+
+gEponaJumpingHighAnim:
+  type: OOT:ANIMATION
+  offset: 0x2C38
+  symbol: gEponaJumpingHighAnim
+
+gEponaManeTex:
+  type: TEXTURE
+  offset: 0xC810
+  symbol: gEponaManeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEponaNeckTex:
+  type: TEXTURE
+  offset: 0xDC10
+  symbol: gEponaNeckTex
+  format: I8
+  width: 16
+  height: 16
+
+gEponaNostrilsTex:
+  type: TEXTURE
+  offset: 0xC410
+  symbol: gEponaNostrilsTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gEponaRearingAnim:
+  type: OOT:ANIMATION
+  offset: 0x3CEC
+  symbol: gEponaRearingAnim
+
+gEponaRefuseAnim:
+  type: OOT:ANIMATION
+  offset: 0x4DEC
+  symbol: gEponaRefuseAnim
+
+gEponaSaddleFlapTex:
+  type: TEXTURE
+  offset: 0xD510
+  symbol: gEponaSaddleFlapTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEponaSaddleGirthTex:
+  type: TEXTURE
+  offset: 0xD710
+  symbol: gEponaSaddleGirthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gEponaSaddleLimb:
+  type: OOT:LIMB
+  offset: 0x9BA8
+  symbol: gEponaSaddleLimb
+  limb_type: Skin
+
+gEponaSaddleLipTex:
+  type: TEXTURE
+  offset: 0xD310
+  symbol: gEponaSaddleLipTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEponaSaddleTex:
+  type: TEXTURE
+  offset: 0xCB10
+  symbol: gEponaSaddleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEponaShoulderTex:
+  type: TEXTURE
+  offset: 0xDE10
+  symbol: gEponaShoulderTex
+  format: I8
+  width: 16
+  height: 16
+
+gEponaSkel:
+  type: OOT:SKELETON
+  offset: 0x9D74
+  symbol: gEponaSkel
+  limb_type: Skin
+  skel_type: Normal
+
+gEponaThighTex:
+  type: TEXTURE
+  offset: 0xDD10
+  symbol: gEponaThighTex
+  format: I8
+  width: 16
+  height: 16
+
+gEponaTrottingAnim:
+  type: OOT:ANIMATION
+  offset: 0x32B0
+  symbol: gEponaTrottingAnim
+
+gEponaUnusedWhiteCubeDL:
+  type: GFX
+  offset: 0x4C0
+  symbol: gEponaUnusedWhiteCubeDL
+
+gEponaUnusedWhiteRectangle1DL:
+  type: GFX
+  offset: 0x580
+  symbol: gEponaUnusedWhiteRectangle1DL
+
+gEponaUnusedWhiteRectangle2DL:
+  type: GFX
+  offset: 0x620
+  symbol: gEponaUnusedWhiteRectangle2DL
+
+gEponaUnusedWhiteRectangle3DL:
+  type: GFX
+  offset: 0x6C0
+  symbol: gEponaUnusedWhiteRectangle3DL
+
+gEponaUnusedWhiteRectangle4DL:
+  type: GFX
+  offset: 0x760
+  symbol: gEponaUnusedWhiteRectangle4DL
+
+gEponaWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x75F0
+  symbol: gEponaWalkingAnim
+
+gEponaWhinnyAnim:
+  type: OOT:ANIMATION
+  offset: 0x5584
+  symbol: gEponaWhinnyAnim
+
+
+object_horseVtx_000380:
+  type: OOT:ARRAY
+  offset: 0x000380
+  symbol: object_horseVtx_000380
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horseVtx_000540:
+  type: OOT:ARRAY
+  offset: 0x000540
+  symbol: object_horseVtx_000540
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horseVtx_0005E0:
+  type: OOT:ARRAY
+  offset: 0x0005E0
+  symbol: object_horseVtx_0005E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horseVtx_000680:
+  type: OOT:ARRAY
+  offset: 0x000680
+  symbol: object_horseVtx_000680
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horseVtx_000720:
+  type: OOT:ARRAY
+  offset: 0x000720
+  symbol: object_horseVtx_000720
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horseVtx_000870:
+  type: OOT:ARRAY
+  offset: 0x000870
+  symbol: object_horseVtx_000870
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaHoof1LimbDL_0009B0:
+  type: GFX
+  offset: 0x0009B0
+  symbol: gEponaHoof1LimbDL_0009B0
+
+object_horseVtx_000AC0:
+  type: OOT:ARRAY
+  offset: 0x000AC0
+  symbol: object_horseVtx_000AC0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaCannon1LimbDL_000BB0:
+  type: GFX
+  offset: 0x000BB0
+  symbol: gEponaCannon1LimbDL_000BB0
+
+object_horseVtx_000C60:
+  type: OOT:ARRAY
+  offset: 0x000C60
+  symbol: object_horseVtx_000C60
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaHoof2LimbDL_000DA0:
+  type: GFX
+  offset: 0x000DA0
+  symbol: gEponaHoof2LimbDL_000DA0
+
+object_horseVtx_000EB0:
+  type: OOT:ARRAY
+  offset: 0x000EB0
+  symbol: object_horseVtx_000EB0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaCannon2LimbDL_000FA0:
+  type: GFX
+  offset: 0x000FA0
+  symbol: gEponaCannon2LimbDL_000FA0
+
+object_horseVtx_001050:
+  type: OOT:ARRAY
+  offset: 0x001050
+  symbol: object_horseVtx_001050
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaHoof3LimbDL_001170:
+  type: GFX
+  offset: 0x001170
+  symbol: gEponaHoof3LimbDL_001170
+
+object_horseVtx_001280:
+  type: OOT:ARRAY
+  offset: 0x001280
+  symbol: object_horseVtx_001280
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaCannon3LimbDL_001370:
+  type: GFX
+  offset: 0x001370
+  symbol: gEponaCannon3LimbDL_001370
+
+object_horseVtx_001420:
+  type: OOT:ARRAY
+  offset: 0x001420
+  symbol: object_horseVtx_001420
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaHoof4LimbDL_001540:
+  type: GFX
+  offset: 0x001540
+  symbol: gEponaHoof4LimbDL_001540
+
+object_horseVtx_001650:
+  type: OOT:ARRAY
+  offset: 0x001650
+  symbol: object_horseVtx_001650
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaCannon4LimbDL_001740:
+  type: GFX
+  offset: 0x001740
+  symbol: gEponaCannon4LimbDL_001740
+
+gEponaSkelLimbsLimb_0099C8:
+  type: OOT:LIMB
+  offset: 0x0099C8
+  symbol: gEponaSkelLimbsLimb_0099C8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_0099D8:
+  type: OOT:LIMB
+  offset: 0x0099D8
+  symbol: gEponaSkelLimbsLimb_0099D8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_0099E8:
+  type: OOT:LIMB
+  offset: 0x0099E8
+  symbol: gEponaSkelLimbsLimb_0099E8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_0099F8:
+  type: OOT:LIMB
+  offset: 0x0099F8
+  symbol: gEponaSkelLimbsLimb_0099F8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009A08:
+  type: OOT:LIMB
+  offset: 0x009A08
+  symbol: gEponaSkelLimbsLimb_009A08
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009A28:
+  type: OOT:LIMB
+  offset: 0x009A28
+  symbol: gEponaSkelLimbsLimb_009A28
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009A38:
+  type: OOT:LIMB
+  offset: 0x009A38
+  symbol: gEponaSkelLimbsLimb_009A38
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009A48:
+  type: OOT:LIMB
+  offset: 0x009A48
+  symbol: gEponaSkelLimbsLimb_009A48
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009A58:
+  type: OOT:LIMB
+  offset: 0x009A58
+  symbol: gEponaSkelLimbsLimb_009A58
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009A68:
+  type: OOT:LIMB
+  offset: 0x009A68
+  symbol: gEponaSkelLimbsLimb_009A68
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009A78:
+  type: OOT:LIMB
+  offset: 0x009A78
+  symbol: gEponaSkelLimbsLimb_009A78
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009A88:
+  type: OOT:LIMB
+  offset: 0x009A88
+  symbol: gEponaSkelLimbsLimb_009A88
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009AA8:
+  type: OOT:LIMB
+  offset: 0x009AA8
+  symbol: gEponaSkelLimbsLimb_009AA8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009AB8:
+  type: OOT:LIMB
+  offset: 0x009AB8
+  symbol: gEponaSkelLimbsLimb_009AB8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009AC8:
+  type: OOT:LIMB
+  offset: 0x009AC8
+  symbol: gEponaSkelLimbsLimb_009AC8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009AD8:
+  type: OOT:LIMB
+  offset: 0x009AD8
+  symbol: gEponaSkelLimbsLimb_009AD8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009AE8:
+  type: OOT:LIMB
+  offset: 0x009AE8
+  symbol: gEponaSkelLimbsLimb_009AE8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009AF8:
+  type: OOT:LIMB
+  offset: 0x009AF8
+  symbol: gEponaSkelLimbsLimb_009AF8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009B28:
+  type: OOT:LIMB
+  offset: 0x009B28
+  symbol: gEponaSkelLimbsLimb_009B28
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009B38:
+  type: OOT:LIMB
+  offset: 0x009B38
+  symbol: gEponaSkelLimbsLimb_009B38
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009B48:
+  type: OOT:LIMB
+  offset: 0x009B48
+  symbol: gEponaSkelLimbsLimb_009B48
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009B58:
+  type: OOT:LIMB
+  offset: 0x009B58
+  symbol: gEponaSkelLimbsLimb_009B58
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009B68:
+  type: OOT:LIMB
+  offset: 0x009B68
+  symbol: gEponaSkelLimbsLimb_009B68
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009B78:
+  type: OOT:LIMB
+  offset: 0x009B78
+  symbol: gEponaSkelLimbsLimb_009B78
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009BB8:
+  type: OOT:LIMB
+  offset: 0x009BB8
+  symbol: gEponaSkelLimbsLimb_009BB8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009BC8:
+  type: OOT:LIMB
+  offset: 0x009BC8
+  symbol: gEponaSkelLimbsLimb_009BC8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009BD8:
+  type: OOT:LIMB
+  offset: 0x009BD8
+  symbol: gEponaSkelLimbsLimb_009BD8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009BE8:
+  type: OOT:LIMB
+  offset: 0x009BE8
+  symbol: gEponaSkelLimbsLimb_009BE8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009BF8:
+  type: OOT:LIMB
+  offset: 0x009BF8
+  symbol: gEponaSkelLimbsLimb_009BF8
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009C08:
+  type: OOT:LIMB
+  offset: 0x009C08
+  symbol: gEponaSkelLimbsLimb_009C08
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009C38:
+  type: OOT:LIMB
+  offset: 0x009C38
+  symbol: gEponaSkelLimbsLimb_009C38
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009C48:
+  type: OOT:LIMB
+  offset: 0x009C48
+  symbol: gEponaSkelLimbsLimb_009C48
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009C58:
+  type: OOT:LIMB
+  offset: 0x009C58
+  symbol: gEponaSkelLimbsLimb_009C58
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009C68:
+  type: OOT:LIMB
+  offset: 0x009C68
+  symbol: gEponaSkelLimbsLimb_009C68
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009C78:
+  type: OOT:LIMB
+  offset: 0x009C78
+  symbol: gEponaSkelLimbsLimb_009C78
+  limb_type: Skin
+
+gEponaSkelLimbsLimb_009C88:
+  type: OOT:LIMB
+  offset: 0x009C88
+  symbol: gEponaSkelLimbsLimb_009C88
+  limb_type: Skin
+
+gEponaSkelLimbs:
+  type: BLOB
+  offset: 0x9CB8
+  symbol: gEponaSkelLimbs
+  size: 0
+
+object_horseVtx_00A580:
+  type: OOT:ARRAY
+  offset: 0x00A580
+  symbol: object_horseVtx_00A580
+  count: 106
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaHeadLimbDL_00AC20:
+  type: GFX
+  offset: 0x00AC20
+  symbol: gEponaHeadLimbDL_00AC20
+
+object_horseVtx_00AFE0:
+  type: OOT:ARRAY
+  offset: 0x00AFE0
+  symbol: object_horseVtx_00AFE0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaSaddleLimbDL_00B5E0:
+  type: GFX
+  offset: 0x00B5E0
+  symbol: gEponaSaddleLimbDL_00B5E0
+
+gEponaBodyLimbSkinLimbDL_00B7C0:
+  type: GFX
+  offset: 0x00B7C0
+  symbol: gEponaBodyLimbSkinLimbDL_00B7C0

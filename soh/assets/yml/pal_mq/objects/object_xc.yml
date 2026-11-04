@@ -1,0 +1,747 @@
+:config:
+  segments:
+    - [ 6, 0x00F5E5F0 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x00F5E5F0 ]
+    - [ 9, 0x00F5E5F0 ]
+    - [ 10, 0x00F5E5F0 ]
+    - [ 11, 0x00F5E5F0 ]
+    - [ 12, 0x00F5E5F0 ]
+    - [ 13, 0x00F5E5F0 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gSheikAnim_01A048:
+  type: OOT:ANIMATION
+  offset: 0x1A048
+  symbol: gSheikAnim_01A048
+
+gSheikArmsCrossedIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x13AA4
+  symbol: gSheikArmsCrossedIdleAnim
+
+gSheikContortionsAnim:
+  type: OOT:ANIMATION
+  offset: 0x169E8
+  symbol: gSheikContortionsAnim
+
+gSheikDL_011620:
+  type: GFX
+  offset: 0x11620
+  symbol: gSheikDL_011620
+
+gSheikDL_012970:
+  type: GFX
+  offset: 0x12970
+  symbol: gSheikDL_012970
+
+gSheikDefenseStanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x18B00
+  symbol: gSheikDefenseStanceAnim
+
+gSheikEyeHalfClosedTex:
+  type: TEXTURE
+  offset: 0x50C0
+  symbol: gSheikEyeHalfClosedTex
+  format: CI8
+  width: 32
+  height: 32
+
+gSheikEyeOpenTex:
+  type: TEXTURE
+  offset: 0x4CC0
+  symbol: gSheikEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+
+gSheikEyeShutTex:
+  type: TEXTURE
+  offset: 0x54C0
+  symbol: gSheikEyeShutTex
+  format: CI8
+  width: 32
+  height: 32
+
+gSheikEyeSquintingTex:
+  type: TEXTURE
+  offset: 0x58C0
+  symbol: gSheikEyeSquintingTex
+  format: CI8
+  width: 32
+  height: 32
+
+gSheikFallingFromContortionsAnim:
+  type: OOT:ANIMATION
+  offset: 0x149E4
+  symbol: gSheikFallingFromContortionsAnim
+
+gSheikFallingFromSkyAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C0E8
+  symbol: gSheikFallingFromSkyAnim
+
+gSheikHarpDL:
+  type: GFX
+  offset: 0x11150
+  symbol: gSheikHarpDL
+
+gSheikHittingGroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x19F78
+  symbol: gSheikHittingGroundAnim
+
+gSheikIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x4828
+  symbol: gSheikIdleAnim
+
+gSheikInitialHarpAnim:
+  type: OOT:ANIMATION
+  offset: 0x17C54
+  symbol: gSheikInitialHarpAnim
+
+gSheikKneelingAnim:
+  type: OOT:ANIMATION
+  offset: 0x19C30
+  symbol: gSheikKneelingAnim
+
+gSheikPlayingHarp2Anim:
+  type: OOT:ANIMATION
+  offset: 0x289C
+  symbol: gSheikPlayingHarp2Anim
+
+gSheikPlayingHarp3Anim:
+  type: OOT:ANIMATION
+  offset: 0x35C8
+  symbol: gSheikPlayingHarp3Anim
+
+gSheikPlayingHarp4Anim:
+  type: OOT:ANIMATION
+  offset: 0x4570
+  symbol: gSheikPlayingHarp4Anim
+
+gSheikPlayingHarp5Anim:
+  type: OOT:ANIMATION
+  offset: 0x177F8
+  symbol: gSheikPlayingHarp5Anim
+
+gSheikPlayingHarpAnim:
+  type: OOT:ANIMATION
+  offset: 0xB6C
+  symbol: gSheikPlayingHarpAnim
+
+gSheikPullingOutHarpAnim:
+  type: OOT:ANIMATION
+  offset: 0x1B19C
+  symbol: gSheikPullingOutHarpAnim
+
+gSheikShowingTriforceOnHandAnim:
+  type: OOT:ANIMATION
+  offset: 0x1A08
+  symbol: gSheikShowingTriforceOnHandAnim
+
+gSheikShowingTriforceOnHandIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D14
+  symbol: gSheikShowingTriforceOnHandIdleAnim
+
+gSheikSkel:
+  type: OOT:SKELETON
+  offset: 0x12AF0
+  symbol: gSheikSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gSheikThrowingNutAnim:
+  type: OOT:ANIMATION
+  offset: 0x19598
+  symbol: gSheikThrowingNutAnim
+
+gSheikWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x12FD0
+  symbol: gSheikWalkingAnim
+
+object_xcTLUT_004840:
+  type: TEXTURE
+  offset: 0x4840
+  symbol: object_xcTLUT_004840
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_xcTLUT_00F6C0:
+  type: TEXTURE
+  offset: 0xF6C0
+  symbol: object_xcTLUT_00F6C0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_xcTLUT_00F720:
+  type: TEXTURE
+  offset: 0xF720
+  symbol: object_xcTLUT_00F720
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_xcTex_004C40:
+  type: TEXTURE
+  offset: 0x4C40
+  symbol: object_xcTex_004C40
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4840
+
+object_xcTex_004C80:
+  type: TEXTURE
+  offset: 0x4C80
+  symbol: object_xcTex_004C80
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4840
+
+object_xcTex_005CC0:
+  type: TEXTURE
+  offset: 0x5CC0
+  symbol: object_xcTex_005CC0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4A40
+
+object_xcTex_0060C0:
+  type: TEXTURE
+  offset: 0x60C0
+  symbol: object_xcTex_0060C0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4840
+
+object_xcTex_0064C0:
+  type: TEXTURE
+  offset: 0x64C0
+  symbol: object_xcTex_0064C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_xcTex_006CC0:
+  type: TEXTURE
+  offset: 0x6CC0
+  symbol: object_xcTex_006CC0
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x4840
+
+object_xcTex_006D40:
+  type: TEXTURE
+  offset: 0x6D40
+  symbol: object_xcTex_006D40
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4840
+
+object_xcTex_006D80:
+  type: TEXTURE
+  offset: 0x6D80
+  symbol: object_xcTex_006D80
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4840
+
+object_xcTex_006E80:
+  type: TEXTURE
+  offset: 0x6E80
+  symbol: object_xcTex_006E80
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4A40
+
+object_xcTex_007280:
+  type: TEXTURE
+  offset: 0x7280
+  symbol: object_xcTex_007280
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4840
+
+object_xcTex_007380:
+  type: TEXTURE
+  offset: 0x7380
+  symbol: object_xcTex_007380
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_xcTex_007B80:
+  type: TEXTURE
+  offset: 0x7B80
+  symbol: object_xcTex_007B80
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x4840
+
+object_xcTex_008380:
+  type: TEXTURE
+  offset: 0x8380
+  symbol: object_xcTex_008380
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x4840
+
+object_xcTex_008B80:
+  type: TEXTURE
+  offset: 0x8B80
+  symbol: object_xcTex_008B80
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x4840
+
+object_xcTex_008C00:
+  type: TEXTURE
+  offset: 0x8C00
+  symbol: object_xcTex_008C00
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x4840
+
+object_xcTex_00F790:
+  type: TEXTURE
+  offset: 0xF790
+  symbol: object_xcTex_00F790
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xF6C0
+
+object_xcTex_00F7D0:
+  type: TEXTURE
+  offset: 0xF7D0
+  symbol: object_xcTex_00F7D0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xF720
+
+object_xcTex_00FBD0:
+  type: TEXTURE
+  offset: 0xFBD0
+  symbol: object_xcTex_00FBD0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xF6C0
+
+object_xcTex_00FCD0:
+  type: TEXTURE
+  offset: 0xFCD0
+  symbol: object_xcTex_00FCD0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xF6C0
+
+object_xcTex_00FD10:
+  type: TEXTURE
+  offset: 0xFD10
+  symbol: object_xcTex_00FD10
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_xcTex_00FD90:
+  type: TEXTURE
+  offset: 0xFD90
+  symbol: object_xcTex_00FD90
+  format: I8
+  width: 8
+  height: 8
+
+object_xcTex_00FDD0:
+  type: TEXTURE
+  offset: 0xFDD0
+  symbol: object_xcTex_00FDD0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_xcTex_0101D0:
+  type: TEXTURE
+  offset: 0x101D0
+  symbol: object_xcTex_0101D0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_xcTex_011930:
+  type: TEXTURE
+  offset: 0x11930
+  symbol: object_xcTex_011930
+  format: I8
+  width: 64
+  height: 64
+
+object_xc_TLUT_004A40:
+  type: TEXTURE
+  offset: 0x4A40
+  symbol: object_xc_TLUT_004A40
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_xcVtx_008E00:
+  type: OOT:ARRAY
+  offset: 0x008E00
+  symbol: object_xcVtx_008E00
+  count: 332
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00A2C0:
+  type: OOT:ARRAY
+  offset: 0x00A2C0
+  symbol: object_xcVtx_00A2C0
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00A710:
+  type: OOT:ARRAY
+  offset: 0x00A710
+  symbol: object_xcVtx_00A710
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00A900:
+  type: OOT:ARRAY
+  offset: 0x00A900
+  symbol: object_xcVtx_00A900
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00AC00:
+  type: OOT:ARRAY
+  offset: 0x00AC00
+  symbol: object_xcVtx_00AC00
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00B050:
+  type: OOT:ARRAY
+  offset: 0x00B050
+  symbol: object_xcVtx_00B050
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00B240:
+  type: OOT:ARRAY
+  offset: 0x00B240
+  symbol: object_xcVtx_00B240
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00B540:
+  type: OOT:ARRAY
+  offset: 0x00B540
+  symbol: object_xcVtx_00B540
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00BE30:
+  type: OOT:ARRAY
+  offset: 0x00BE30
+  symbol: object_xcVtx_00BE30
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00C080:
+  type: OOT:ARRAY
+  offset: 0x00C080
+  symbol: object_xcVtx_00C080
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00C360:
+  type: OOT:ARRAY
+  offset: 0x00C360
+  symbol: object_xcVtx_00C360
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00C6B0:
+  type: OOT:ARRAY
+  offset: 0x00C6B0
+  symbol: object_xcVtx_00C6B0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00C900:
+  type: OOT:ARRAY
+  offset: 0x00C900
+  symbol: object_xcVtx_00C900
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00CBE0:
+  type: OOT:ARRAY
+  offset: 0x00CBE0
+  symbol: object_xcVtx_00CBE0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_00CF30:
+  type: OOT:ARRAY
+  offset: 0x00CF30
+  symbol: object_xcVtx_00CF30
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSheikSkelLimbsLimb_012A50DL_00D120:
+  type: GFX
+  offset: 0x00D120
+  symbol: gSheikSkelLimbsLimb_012A50DL_00D120
+
+gSheikSkelLimbsLimb_012AA4DL_00D710:
+  type: GFX
+  offset: 0x00D710
+  symbol: gSheikSkelLimbsLimb_012AA4DL_00D710
+
+gSheikSkelLimbsLimb_012A80DL_00DE28:
+  type: GFX
+  offset: 0x00DE28
+  symbol: gSheikSkelLimbsLimb_012A80DL_00DE28
+
+gSheikSkelLimbsLimb_012A8CDL_00DFF8:
+  type: GFX
+  offset: 0x00DFF8
+  symbol: gSheikSkelLimbsLimb_012A8CDL_00DFF8
+
+gSheikSkelLimbsLimb_012A98DL_00E220:
+  type: GFX
+  offset: 0x00E220
+  symbol: gSheikSkelLimbsLimb_012A98DL_00E220
+
+gSheikSkelLimbsLimb_012A5CDL_00E460:
+  type: GFX
+  offset: 0x00E460
+  symbol: gSheikSkelLimbsLimb_012A5CDL_00E460
+
+gSheikSkelLimbsLimb_012A68DL_00E630:
+  type: GFX
+  offset: 0x00E630
+  symbol: gSheikSkelLimbsLimb_012A68DL_00E630
+
+gSheikSkelLimbsLimb_012A74DL_00E858:
+  type: GFX
+  offset: 0x00E858
+  symbol: gSheikSkelLimbsLimb_012A74DL_00E858
+
+gSheikSkelLimbsLimb_0129FCDL_00EA98:
+  type: GFX
+  offset: 0x00EA98
+  symbol: gSheikSkelLimbsLimb_0129FCDL_00EA98
+
+gSheikSkelLimbsLimb_012A2CDL_00EBE0:
+  type: GFX
+  offset: 0x00EBE0
+  symbol: gSheikSkelLimbsLimb_012A2CDL_00EBE0
+
+gSheikSkelLimbsLimb_012A38DL_00EDB0:
+  type: GFX
+  offset: 0x00EDB0
+  symbol: gSheikSkelLimbsLimb_012A38DL_00EDB0
+
+gSheikSkelLimbsLimb_012A44DL_00EFA0:
+  type: GFX
+  offset: 0x00EFA0
+  symbol: gSheikSkelLimbsLimb_012A44DL_00EFA0
+
+gSheikSkelLimbsLimb_012A08DL_00F150:
+  type: GFX
+  offset: 0x00F150
+  symbol: gSheikSkelLimbsLimb_012A08DL_00F150
+
+gSheikSkelLimbsLimb_012A14DL_00F320:
+  type: GFX
+  offset: 0x00F320
+  symbol: gSheikSkelLimbsLimb_012A14DL_00F320
+
+gSheikSkelLimbsLimb_012A20DL_00F510:
+  type: GFX
+  offset: 0x00F510
+  symbol: gSheikSkelLimbsLimb_012A20DL_00F510
+
+object_xcVtx_0102D0:
+  type: OOT:ARRAY
+  offset: 0x0102D0
+  symbol: object_xcVtx_0102D0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_0108D0:
+  type: OOT:ARRAY
+  offset: 0x0108D0
+  symbol: object_xcVtx_0108D0
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_xcVtx_012930:
+  type: OOT:ARRAY
+  offset: 0x012930
+  symbol: object_xcVtx_012930
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSheikSkelLimbsLimb_0129F0:
+  type: OOT:LIMB
+  offset: 0x0129F0
+  symbol: gSheikSkelLimbsLimb_0129F0
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_0129FC:
+  type: OOT:LIMB
+  offset: 0x0129FC
+  symbol: gSheikSkelLimbsLimb_0129FC
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A08:
+  type: OOT:LIMB
+  offset: 0x012A08
+  symbol: gSheikSkelLimbsLimb_012A08
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A14:
+  type: OOT:LIMB
+  offset: 0x012A14
+  symbol: gSheikSkelLimbsLimb_012A14
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A20:
+  type: OOT:LIMB
+  offset: 0x012A20
+  symbol: gSheikSkelLimbsLimb_012A20
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A2C:
+  type: OOT:LIMB
+  offset: 0x012A2C
+  symbol: gSheikSkelLimbsLimb_012A2C
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A38:
+  type: OOT:LIMB
+  offset: 0x012A38
+  symbol: gSheikSkelLimbsLimb_012A38
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A44:
+  type: OOT:LIMB
+  offset: 0x012A44
+  symbol: gSheikSkelLimbsLimb_012A44
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A50:
+  type: OOT:LIMB
+  offset: 0x012A50
+  symbol: gSheikSkelLimbsLimb_012A50
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A5C:
+  type: OOT:LIMB
+  offset: 0x012A5C
+  symbol: gSheikSkelLimbsLimb_012A5C
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A68:
+  type: OOT:LIMB
+  offset: 0x012A68
+  symbol: gSheikSkelLimbsLimb_012A68
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A74:
+  type: OOT:LIMB
+  offset: 0x012A74
+  symbol: gSheikSkelLimbsLimb_012A74
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A80:
+  type: OOT:LIMB
+  offset: 0x012A80
+  symbol: gSheikSkelLimbsLimb_012A80
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A8C:
+  type: OOT:LIMB
+  offset: 0x012A8C
+  symbol: gSheikSkelLimbsLimb_012A8C
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012A98:
+  type: OOT:LIMB
+  offset: 0x012A98
+  symbol: gSheikSkelLimbsLimb_012A98
+  limb_type: Standard
+
+gSheikSkelLimbsLimb_012AA4:
+  type: OOT:LIMB
+  offset: 0x012AA4
+  symbol: gSheikSkelLimbsLimb_012AA4
+  limb_type: Standard
+
+gSheikSkelLimbs:
+  type: BLOB
+  offset: 0x12AB0
+  symbol: gSheikSkelLimbs
+  size: 0

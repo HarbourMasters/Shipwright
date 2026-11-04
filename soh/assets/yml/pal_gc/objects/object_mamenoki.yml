@@ -1,0 +1,122 @@
+:config:
+  segments:
+    - [ 6, 0x01172A90 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x01172A90 ]
+    - [ 9, 0x01172A90 ]
+    - [ 10, 0x01172A90 ]
+    - [ 11, 0x01172A90 ]
+    - [ 12, 0x01172A90 ]
+    - [ 13, 0x01172A90 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+gMagicBeanPlatformCol:
+  type: OOT:COLLISION
+  offset: 0x5DC
+  symbol: gMagicBeanPlatformCol
+
+gMagicBeanPlatformDL:
+  type: GFX
+  offset: 0x3F0
+  symbol: gMagicBeanPlatformDL
+
+gMagicBeanPlatformRootsTex:
+  type: TEXTURE
+  offset: 0x1EE0
+  symbol: gMagicBeanPlatformRootsTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gMagicBeanPlatformStemTex:
+  type: TEXTURE
+  offset: 0x1AE0
+  symbol: gMagicBeanPlatformStemTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gMagicBeanPlatformTex:
+  type: TEXTURE
+  offset: 0x12E0
+  symbol: gMagicBeanPlatformTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMagicBeanSeedlingDL:
+  type: GFX
+  offset: 0x90
+  symbol: gMagicBeanSeedlingDL
+
+gMagicBeanSeedlingTex:
+  type: TEXTURE
+  offset: 0xEE0
+  symbol: gMagicBeanSeedlingTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gMagicBeanSoftSoilDL:
+  type: GFX
+  offset: 0x650
+  symbol: gMagicBeanSoftSoilDL
+
+gMagicBeanSoftSoilTex:
+  type: TEXTURE
+  offset: 0x6E0
+  symbol: gMagicBeanSoftSoilTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMagicBeanStemDL:
+  type: GFX
+  offset: 0x1B0
+  symbol: gMagicBeanStemDL
+
+gMagicBeanStemTex:
+  type: TEXTURE
+  offset: 0x22E0
+  symbol: gMagicBeanStemTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_mamenokiVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_mamenokiVtx_000000
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mamenokiVtx_000130:
+  type: OOT:ARRAY
+  offset: 0x000130
+  symbol: object_mamenokiVtx_000130
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mamenokiVtx_000250:
+  type: OOT:ARRAY
+  offset: 0x000250
+  symbol: object_mamenokiVtx_000250
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mamenokiVtx_000610:
+  type: OOT:ARRAY
+  offset: 0x000610
+  symbol: object_mamenokiVtx_000610
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,8 +1,7 @@
 #pragma once
 
-#include <cstdint>
+#include <stdint.h>
 #include <vector>
-#include <memory>
 #include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 // #include <libultraship/libultra/types.h>

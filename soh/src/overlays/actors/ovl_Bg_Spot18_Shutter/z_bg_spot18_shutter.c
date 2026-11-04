@@ -100,7 +100,7 @@ void func_808B9618(BgSpot18Shutter* this, PlayState* play) {
             this->actionFunc = func_808B9698;
         } else {
             this->actionFunc = func_808B971C;
-            OnePointCutscene_Init(play, 4221, 140, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 4221, 140, &this->dyna.actor, CAM_ID_MAIN);
         }
     }
 }
@@ -110,7 +110,7 @@ void func_808B9698(BgSpot18Shutter* this, PlayState* play) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONEDOOR_STOP);
         this->actionFunc = func_808B95AC;
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_STONE_STATUE_OPEN - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_STONE_STATUE_OPEN - SFX_FLAG);
     }
 }
 
@@ -126,7 +126,7 @@ void func_808B971C(BgSpot18Shutter* this, PlayState* play) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONEDOOR_STOP);
         this->actionFunc = func_808B95AC;
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_STONE_STATUE_OPEN - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_STONE_STATUE_OPEN - SFX_FLAG);
     }
 }
 

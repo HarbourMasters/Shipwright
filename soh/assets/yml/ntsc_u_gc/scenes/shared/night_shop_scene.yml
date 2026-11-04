@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01D88730 ]
+
+night_shop_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: night_shop_scene
+
+
+night_shop_sceneCollisionHeader_000644:
+  type: OOT:COLLISION
+  offset: 0x000644
+  symbol: night_shop_sceneCollisionHeader_000644

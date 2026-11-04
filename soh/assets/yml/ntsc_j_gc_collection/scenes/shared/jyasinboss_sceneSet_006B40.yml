@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01E0A240 ]
+  directory: scenes/shared/jyasinboss_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/shared/jyasinboss_scene.yml
+
+jyasinboss_sceneSet_006B40:
+  type: OOT:SCENE
+  offset: 0x6B40
+  symbol: jyasinboss_sceneSet_006B40
+  base_name: jyasinboss_scene

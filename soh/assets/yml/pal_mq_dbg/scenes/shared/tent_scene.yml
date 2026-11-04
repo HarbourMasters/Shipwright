@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x030A4000 ]
+
+tent_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: tent_scene
+
+
+tent_sceneCollisionHeader_00064C:
+  type: OOT:COLLISION
+  offset: 0x00064C
+  symbol: tent_sceneCollisionHeader_00064C

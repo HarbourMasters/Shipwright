@@ -1,0 +1,187 @@
+:config:
+  segments:
+    - [ 3, 0x01D1B330 ]
+    - [ 2, 0x01D1A6E0 ]
+  directory: scenes/shared/market_ruins_scene
+  external_files:
+    - pal_mq/scenes/shared/market_ruins_scene.yml
+    - pal_mq/code/sys_matrix.yml
+
+market_ruins_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: market_ruins_room_0
+
+
+market_ruins_room_0Vtx_0000F0:
+  type: OOT:ARRAY
+  offset: 0x0000F0
+  symbol: market_ruins_room_0Vtx_0000F0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_000270:
+  type: GFX
+  offset: 0x000270
+  symbol: market_ruins_room_0DL_000270
+
+market_ruins_room_0Vtx_000308:
+  type: OOT:ARRAY
+  offset: 0x000308
+  symbol: market_ruins_room_0Vtx_000308
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_000488:
+  type: GFX
+  offset: 0x000488
+  symbol: market_ruins_room_0DL_000488
+
+market_ruins_room_0Vtx_000520:
+  type: OOT:ARRAY
+  offset: 0x000520
+  symbol: market_ruins_room_0Vtx_000520
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_0006A0:
+  type: GFX
+  offset: 0x0006A0
+  symbol: market_ruins_room_0DL_0006A0
+
+market_ruins_room_0Vtx_000738:
+  type: OOT:ARRAY
+  offset: 0x000738
+  symbol: market_ruins_room_0Vtx_000738
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_0008B8:
+  type: GFX
+  offset: 0x0008B8
+  symbol: market_ruins_room_0DL_0008B8
+
+market_ruins_room_0Vtx_000950:
+  type: OOT:ARRAY
+  offset: 0x000950
+  symbol: market_ruins_room_0Vtx_000950
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_000AD0:
+  type: GFX
+  offset: 0x000AD0
+  symbol: market_ruins_room_0DL_000AD0
+
+market_ruins_room_0Vtx_000B68:
+  type: OOT:ARRAY
+  offset: 0x000B68
+  symbol: market_ruins_room_0Vtx_000B68
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_000CE8:
+  type: GFX
+  offset: 0x000CE8
+  symbol: market_ruins_room_0DL_000CE8
+
+market_ruins_room_0Vtx_000D80:
+  type: OOT:ARRAY
+  offset: 0x000D80
+  symbol: market_ruins_room_0Vtx_000D80
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_000F00:
+  type: GFX
+  offset: 0x000F00
+  symbol: market_ruins_room_0DL_000F00
+
+market_ruins_room_0Vtx_000F98:
+  type: OOT:ARRAY
+  offset: 0x000F98
+  symbol: market_ruins_room_0Vtx_000F98
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_001058:
+  type: GFX
+  offset: 0x001058
+  symbol: market_ruins_room_0DL_001058
+
+market_ruins_room_0Vtx_0010D8:
+  type: OOT:ARRAY
+  offset: 0x0010D8
+  symbol: market_ruins_room_0Vtx_0010D8
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_0013D8:
+  type: GFX
+  offset: 0x0013D8
+  symbol: market_ruins_room_0DL_0013D8
+
+market_ruins_room_0Vtx_0014D0:
+  type: OOT:ARRAY
+  offset: 0x0014D0
+  symbol: market_ruins_room_0Vtx_0014D0
+  count: 204
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_002190:
+  type: GFX
+  offset: 0x002190
+  symbol: market_ruins_room_0DL_002190
+
+market_ruins_room_0Vtx_002410:
+  type: OOT:ARRAY
+  offset: 0x002410
+  symbol: market_ruins_room_0Vtx_002410
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_002550:
+  type: GFX
+  offset: 0x002550
+  symbol: market_ruins_room_0DL_002550
+
+market_ruins_room_0Vtx_0025E0:
+  type: OOT:ARRAY
+  offset: 0x0025E0
+  symbol: market_ruins_room_0Vtx_0025E0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+market_ruins_room_0DL_002720:
+  type: GFX
+  offset: 0x002720
+  symbol: market_ruins_room_0DL_002720
+
+market_ruins_room_0DL_0027B0:
+  type: GFX
+  offset: 0x0027B0
+  symbol: market_ruins_room_0DL_0027B0

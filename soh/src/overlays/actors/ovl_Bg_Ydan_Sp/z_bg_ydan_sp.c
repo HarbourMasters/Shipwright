@@ -406,7 +406,7 @@ void BgYdanSp_WallWebIdle(BgYdanSp* this, PlayState* play) {
     } else if (player->heldItemAction == PLAYER_IA_DEKU_STICK && player->unk_860 != 0) {
         Actor_WorldToActorCoords(&this->dyna.actor, &sp30, &player->meleeWeaponInfo[0].tip);
         if (fabsf(sp30.x) < 100.0f && sp30.z < 1.0f && sp30.y < 200.0f) {
-            OnePointCutscene_Init(play, 3020, 40, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3020, 40, &this->dyna.actor, CAM_ID_MAIN);
             Math_Vec3f_Copy(&this->dyna.actor.home.pos, &player->meleeWeaponInfo[0].tip);
             BgYdanSp_BurnWeb(this, play);
         }

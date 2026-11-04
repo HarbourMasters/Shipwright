@@ -112,11 +112,11 @@ void EffectSsHitMark_Update(PlayState* play, u32 index, EffectSs* this) {
 
     if (this->rTexIdx != 0) {
         colorIdx = this->rType * 4 + 2;
-        this->rPrimColorR = func_80027DD4(this->rPrimColorR, sColors[colorIdx].r, this->life + 1);
-        this->rPrimColorG = func_80027DD4(this->rPrimColorG, sColors[colorIdx].g, this->life + 1);
-        this->rPrimColorB = func_80027DD4(this->rPrimColorB, sColors[colorIdx].b, this->life + 1);
-        this->rEnvColorR = func_80027DD4(this->rEnvColorR, sColors[colorIdx + 1].r, this->life + 1);
-        this->rEnvColorG = func_80027DD4(this->rEnvColorG, sColors[colorIdx + 1].g, this->life + 1);
-        this->rEnvColorB = func_80027DD4(this->rEnvColorB, sColors[colorIdx + 1].b, this->life + 1);
+        this->rPrimColorR = EffectSs_LerpInv(this->rPrimColorR, sColors[colorIdx].r, this->life + 1);
+        this->rPrimColorG = EffectSs_LerpInv(this->rPrimColorG, sColors[colorIdx].g, this->life + 1);
+        this->rPrimColorB = EffectSs_LerpInv(this->rPrimColorB, sColors[colorIdx].b, this->life + 1);
+        this->rEnvColorR = EffectSs_LerpInv(this->rEnvColorR, sColors[colorIdx + 1].r, this->life + 1);
+        this->rEnvColorG = EffectSs_LerpInv(this->rEnvColorG, sColors[colorIdx + 1].g, this->life + 1);
+        this->rEnvColorB = EffectSs_LerpInv(this->rEnvColorB, sColors[colorIdx + 1].b, this->life + 1);
     }
 }

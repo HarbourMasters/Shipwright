@@ -1,10 +1,16 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/ObjectExtension/ActorListIndex.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"
@@ -86,12 +92,40 @@ static Vec3f GetStackOffset(RandomizerCheck rc) {
     return it != sStackedWonderOffsets.end() ? it->second : Vec3f{ 0.0f, 0.0f, 0.0f };
 }
 
-void SpawnNTSC10WonderItem() {
+void SpawnNTSC1011WonderItem() {
     if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_ZORAS_FOUNTAIN) {
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, -667, 320, 1053, 0, 0, 1, 4799);
     } else if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, 6, 311, -640, 0, 0, 1, 4799);
     }
+}
+
+static CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2) {
+    CheckIdentity wonderIdentity;
+    uint32_t wonderSceneNum = sceneNum;
+
+    // align oasis trees in colossus between child/adult
+    if (sceneNum == SCENE_DESERT_COLOSSUS && LINK_IS_ADULT) {
+        if (par1 == 1157 && par2 == 2388) {
+            par1 = 1161;
+            par2 = 2383;
+        } else if (par1 == 1114 && par2 == 2580) {
+            par1 = 1113;
+            par2 = 2581;
+        }
+    }
+
+    wonderIdentity.randomizerInf = RAND_INF_MAX;
+    wonderIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS(par1, par2);
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_ITEM, wonderSceneNum, actorParams);
+
+    IdentifyCheck(&wonderIdentity, location);
+
+    return wonderIdentity;
 }
 
 uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* play) {
@@ -102,10 +136,9 @@ uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* p
         bool isDungeonScene = (play->sceneNum >= SCENE_DEKU_TREE && play->sceneNum <= SCENE_GERUDO_TRAINING_GROUND) ||
                               play->sceneNum == SCENE_INSIDE_GANONS_CASTLE;
         // For dungeons, use room Id and actor index. For overworld, use xz coordinates.
-        auto newIdentity = isDungeonScene ? OTRGlobals::Instance->gRandomizer->IdentifyWonderItem(
-                                                play->sceneNum, (s16)play->roomCtx.curRoom.num, actorIndex)
-                                          : OTRGlobals::Instance->gRandomizer->IdentifyWonderItem(
-                                                play->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+        auto newIdentity = isDungeonScene
+                               ? IdentifyWonderItem(play->sceneNum, (s16)play->roomCtx.curRoom.num, actorIndex)
+                               : IdentifyWonderItem(play->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(newIdentity));
         wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
@@ -182,7 +215,8 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(refActor);
-    if (wonderIdentity == nullptr) {
+    if (wonderIdentity == nullptr ||
+        Rando::Context::GetInstance()->GetItemLocation(wonderIdentity->randomizerCheck)->IsExcluded()) {
         return;
     }
 
@@ -240,26 +274,26 @@ void WonderHeishi_RandomizerSpawnCollectible(PlayState* play, Vec3f pos, f32 rot
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = Rand_CenteredFloat(5.0f) + 10.0f;
     item00->actor.speedXZ = Rand_CenteredFloat(5.0f) + 10.0f;
-    item00->actor.world.rot.y = rotY;
+    item00->actor.world.rot.y = static_cast<s16>(rotY);
 }
 
 void RegisterShuffleWonderItems() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS);
-    bool isNtscUs10 = false;
+    bool isNtscUs1011 = false;
     for (uint32_t i = 0; i < ResourceMgr_GetNumGameVersions(); i++) {
-        if (ResourceMgr_GetGameVersion(i) == OOT_NTSC_US_10) {
-            isNtscUs10 = true;
+        if (ResourceMgr_GetGameVersion(i) == OOT_NTSC_US_10 || ResourceMgr_GetGameVersion(i) == OOT_NTSC_US_11) {
+            isNtscUs1011 = true;
         }
     }
     bool shouldRegisterOverworld = RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL) ||
                                    RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD);
-    bool shouldRegisterNTSC10 = shouldRegister && isNtscUs10 && shouldRegisterOverworld;
+    bool shouldRegisterNTSC1011 = shouldRegister && isNtscUs1011 && shouldRegisterOverworld;
 
     // Draw particle effect in wonder item spot to indicate a randomized item
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDrawSetup);
 
-    // Spawn missing wonder items for NTSC 1.0
-    COND_HOOK(OnSceneSpawnActors, shouldRegisterNTSC10, SpawnNTSC10WonderItem);
+    // Spawn missing wonder items for NTSC 1.0 and NTSC 1.1
+    COND_HOOK(OnSceneSpawnActors, shouldRegisterNTSC1011, SpawnNTSC1011WonderItem);
 
     // Prevent or delay actor kill until EnWonderItem_RandomizerDrawSetup in case item isn't yet collected
     COND_VB_SHOULD(VB_WONDER_SPAWN, shouldRegister, { *should = false; });
@@ -301,7 +335,7 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     registered = true;
     // clang-format off
     // Overworld Wonder Items
-    //            Randomizer Check                                              Randomizer Check                                                                        Quest               Area                            Scene ID                            Params                                  Short Name                    	        Hint Text Key                               Vanilla                 Spoiler Collection Check
+    //            Randomizer Check                                              Randomizer Check                                                                        Quest               Area                            Scene ID                            Params                                  Short Name                              Hint Text Key                               Vanilla                 Spoiler Collection Check
     locationTable[RC_KF_WONDER_TRAINING_1]                                      = Location::WonderItem(RC_KF_WONDER_TRAINING_1,                                         RCQUEST_BOTH,       RCAREA_KOKIRI_FOREST,           SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-747, 951),            "Wonder Training 1",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_1));
     locationTable[RC_KF_WONDER_TRAINING_2]                                      = Location::WonderItem(RC_KF_WONDER_TRAINING_2,                                         RCQUEST_BOTH,       RCAREA_KOKIRI_FOREST,           SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-677, 899),            "Wonder Training 2",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_2));
     locationTable[RC_KF_WONDER_TRAINING_3]                                      = Location::WonderItem(RC_KF_WONDER_TRAINING_3,                                         RCQUEST_BOTH,       RCAREA_KOKIRI_FOREST,           SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-698, 830),            "Wonder Training 3",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_3));
@@ -418,7 +452,7 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_COLOSSUS_WONDER_GF_TREE_1]                                 = Location::WonderItem(RC_COLOSSUS_WONDER_GF_TREE_1,                                    RCQUEST_BOTH,       RCAREA_DESERT_COLOSSUS,         SCENE_DESERT_COLOSSUS,              TWO_ACTOR_PARAMS(2406, -1407),          "Wonder Great Fairy Tree 1",            RHT_WONDER_ITEM_DESERT_COLOSSUS,            RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_COLOSSUS_WONDER_GF_TREE_1));
     locationTable[RC_COLOSSUS_WONDER_GF_TREE_2]                                 = Location::WonderItem(RC_COLOSSUS_WONDER_GF_TREE_2,                                    RCQUEST_BOTH,       RCAREA_DESERT_COLOSSUS,         SCENE_DESERT_COLOSSUS,              TWO_ACTOR_PARAMS(2098, -1402),          "Wonder Great Fairy Tree 2",            RHT_WONDER_ITEM_DESERT_COLOSSUS,            RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_COLOSSUS_WONDER_GF_TREE_2));
     // Dungeon Wonder Items
-    locationTable[RC_SHADOW_TEMPLE_WONDER_THREE_POTS]                           = Location::WonderItem(RC_SHADOW_TEMPLE_WONDER_THREE_POTS,                              RCQUEST_VANILLA,    RCAREA_SHADOW_TEMPLE,           SCENE_SHADOW_TEMPLE,                TWO_ACTOR_PARAMS(12, 1),                "Wonder Three Pots Sign",               RHT_WONDER_ITEM_SHADOW_TEMPLE,              RG_ARROWS_30,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_SHADOW_TEMPLE_WONDER_THREE_POTS));    
+    locationTable[RC_SHADOW_TEMPLE_WONDER_THREE_POTS]                           = Location::WonderItem(RC_SHADOW_TEMPLE_WONDER_THREE_POTS,                              RCQUEST_VANILLA,    RCAREA_SHADOW_TEMPLE,           SCENE_SHADOW_TEMPLE,                TWO_ACTOR_PARAMS(12, 1),                "Wonder Three Pots Sign",               RHT_WONDER_ITEM_SHADOW_TEMPLE,              RG_ARROWS_30,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_SHADOW_TEMPLE_WONDER_THREE_POTS));
     locationTable[RC_GERUDO_TRAINING_GROUND_WONDER_BEAMOS_ROOM]                 = Location::WonderItem(RC_GERUDO_TRAINING_GROUND_WONDER_BEAMOS_ROOM,                    RCQUEST_VANILLA,    RCAREA_GERUDO_TRAINING_GROUND,  SCENE_GERUDO_TRAINING_GROUND,       TWO_ACTOR_PARAMS(7, 12),                "Wonder Beamos Sign",                   RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND,     RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_WONDER_BEAMOS_ROOM));
     locationTable[RC_GERUDO_TRAINING_GROUND_WONDER_EYE_STATUE_ROOM]             = Location::WonderItem(RC_GERUDO_TRAINING_GROUND_WONDER_EYE_STATUE_ROOM,                RCQUEST_VANILLA,    RCAREA_GERUDO_TRAINING_GROUND,  SCENE_GERUDO_TRAINING_GROUND,       TWO_ACTOR_PARAMS(4, 2),                 "Wonder Top of Eye Statue",             RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND,     RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_WONDER_EYE_STATUE_ROOM));
     locationTable[RC_GERUDO_TRAINING_GROUND_WONDER_TORCH_SLUGS_ROOM]            = Location::WonderItem(RC_GERUDO_TRAINING_GROUND_WONDER_TORCH_SLUGS_ROOM,               RCQUEST_VANILLA,    RCAREA_GERUDO_TRAINING_GROUND,  SCENE_GERUDO_TRAINING_GROUND,       TWO_ACTOR_PARAMS(5, 16),                "Wonder Torch Slug Sign",               RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND,     RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_WONDER_TORCH_SLUGS_ROOM));

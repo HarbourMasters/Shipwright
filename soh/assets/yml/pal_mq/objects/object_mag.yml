@@ -1,0 +1,156 @@
+:config:
+  segments:
+    - [ 6, 0x011B9DE0 ]
+
+gTitleCopyright19982002Tex:
+  type: TEXTURE
+  offset: 0x19000
+  symbol: gTitleCopyright19982002Tex
+  format: IA8
+  width: 160
+  height: 16
+
+gTitleCopyright19982003Tex:
+  type: TEXTURE
+  offset: 0x19A00
+  symbol: gTitleCopyright19982003Tex
+  format: IA8
+  width: 160
+  height: 16
+
+gTitleDiskTex:
+  type: TEXTURE
+  offset: 0x1FD00
+  symbol: gTitleDiskTex
+  format: IA8
+  width: 48
+  height: 16
+
+gTitleEffectMask00Tex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gTitleEffectMask00Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask01Tex:
+  type: TEXTURE
+  offset: 0x20800
+  symbol: gTitleEffectMask01Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask02Tex:
+  type: TEXTURE
+  offset: 0x21000
+  symbol: gTitleEffectMask02Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask10Tex:
+  type: TEXTURE
+  offset: 0x21800
+  symbol: gTitleEffectMask10Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask11Tex:
+  type: TEXTURE
+  offset: 0x22000
+  symbol: gTitleEffectMask11Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask12Tex:
+  type: TEXTURE
+  offset: 0x22800
+  symbol: gTitleEffectMask12Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask20Tex:
+  type: TEXTURE
+  offset: 0x23000
+  symbol: gTitleEffectMask20Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask21Tex:
+  type: TEXTURE
+  offset: 0x23800
+  symbol: gTitleEffectMask21Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask22Tex:
+  type: TEXTURE
+  offset: 0x24000
+  symbol: gTitleEffectMask22Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleFlameEffectTex:
+  type: TEXTURE
+  offset: 0x24800
+  symbol: gTitleFlameEffectTex
+  format: I8
+  width: 32
+  height: 32
+
+gTitleMasterQuestSubtitleTex:
+  type: TEXTURE
+  offset: 0x1A400
+  symbol: gTitleMasterQuestSubtitleTex
+  format: RGBA32
+  width: 128
+  height: 32
+
+gTitleOcarinaOfTimeTMTextTex:
+  type: TEXTURE
+  offset: 0x24E40
+  symbol: gTitleOcarinaOfTimeTMTextTex
+  format: I8
+  width: 96
+  height: 8
+
+gTitleTheLegendOfTextTex:
+  type: TEXTURE
+  offset: 0x24C00
+  symbol: gTitleTheLegendOfTextTex
+  format: I8
+  width: 72
+  height: 8
+
+gTitleTitleJPNTex:
+  type: TEXTURE
+  offset: 0x25140
+  symbol: gTitleTitleJPNTex
+  format: I8
+  width: 128
+  height: 16
+
+gTitleUraLogoTex:
+  type: TEXTURE
+  offset: 0x1E400
+  symbol: gTitleUraLogoTex
+  format: RGBA32
+  width: 40
+  height: 40
+
+gTitleZeldaShieldLogoMQTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gTitleZeldaShieldLogoMQTex
+  format: RGBA32
+  width: 160
+  height: 160
+

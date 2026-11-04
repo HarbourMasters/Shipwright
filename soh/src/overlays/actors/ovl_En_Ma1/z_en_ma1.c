@@ -192,7 +192,7 @@ s32 EnMa1_ShouldSpawn(EnMa1* this, PlayState* play) {
     bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE,
                                                          Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE));
 
-    if ((this->actor.shape.rot.z == 3) && (gSaveContext.sceneSetupIndex == 5)) {
+    if ((this->actor.shape.rot.z == 3) && (gSaveContext.sceneLayer == 5)) {
         return 1;
     }
     if (!LINK_IS_CHILD) {
@@ -261,12 +261,12 @@ void EnMa1_UpdateSinging(EnMa1* this) {
         if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
             if (this->singingDisabled != 0) {
                 this->singingDisabled = 0;
-                func_800F6584(0);
+                Audio_ToggleMalonSinging(0);
             }
         } else {
             if (this->singingDisabled == 0) {
                 this->singingDisabled = 1;
-                func_800F6584(1);
+                Audio_ToggleMalonSinging(1);
             }
         }
     }
@@ -391,7 +391,7 @@ void EnMa1_IdleTeachSong(EnMa1* this, PlayState* play) {
 void EnMa1_StartTeachSong(EnMa1* this, PlayState* play) {
     GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        Audio_OcaSetInstrument(2);
+        AudioOcarina_SetInstrument(2);
         func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnMa1_TeachSong;
@@ -480,7 +480,7 @@ void EnMa1_Draw(Actor* thisx, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     distFromCamera = Math_Vec3f_DistXZ(&this->actor.world.pos, &camera->eye);
-    func_800F6268(distFromCamera, NA_BGM_LONLON);
+    Audio_UpdateMalonSinging(distFromCamera, NA_BGM_LONLON);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[this->mouthIndex]));

@@ -1,0 +1,606 @@
+:config:
+  segments:
+    - [ 6, 0x0135E000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0135E000 ]
+    - [ 9, 0x0135E000 ]
+    - [ 10, 0x0135E000 ]
+    - [ 11, 0x0135E000 ]
+    - [ 12, 0x0135E000 ]
+    - [ 13, 0x0135E000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gTalon2TLUT:
+  type: TEXTURE
+  offset: 0x6AC0
+  symbol: gTalon2TLUT
+  format: RGBA16
+  width: 132
+  height: 1
+
+gTalonArmHairTex:
+  type: TEXTURE
+  offset: 0xA9F8
+  symbol: gTalonArmHairTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0xA638
+
+gTalonBluePatternTex:
+  type: TEXTURE
+  offset: 0xAC78
+  symbol: gTalonBluePatternTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xA638
+
+gTalonBlueTex:
+  type: TEXTURE
+  offset: 0xAC38
+  symbol: gTalonBlueTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xA638
+
+gTalonBootSideTex:
+  type: TEXTURE
+  offset: 0x7D00
+  symbol: gTalonBootSideTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6AC0
+
+gTalonBootTopTex:
+  type: TEXTURE
+  offset: 0x7E00
+  symbol: gTalonBootTopTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6AC0
+
+gTalonBowserTex:
+  type: TEXTURE
+  offset: 0xAFB8
+  symbol: gTalonBowserTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gTalonBrownBlueOutlineTex:
+  type: TEXTURE
+  offset: 0xACB8
+  symbol: gTalonBrownBlueOutlineTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xA638
+
+gTalonChestDL:
+  type: GFX
+  offset: 0x4288
+  symbol: gTalonChestDL
+
+gTalonChestLimb:
+  type: OOT:LIMB
+  offset: 0xB70C
+  symbol: gTalonChestLimb
+  limb_type: Standard
+
+gTalonEarTex:
+  type: TEXTURE
+  offset: 0x6E00
+  symbol: gTalonEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x6AC0
+
+gTalonEyeClosed2Tex:
+  type: TEXTURE
+  offset: 0x76C0
+  symbol: gTalonEyeClosed2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6BC8
+
+gTalonEyeClosedTex:
+  type: TEXTURE
+  offset: 0x72C0
+  symbol: gTalonEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6BC8
+
+gTalonEyeHalfTex:
+  type: TEXTURE
+  offset: 0x6EC0
+  symbol: gTalonEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6BC8
+
+gTalonEyeOpenTex:
+  type: TEXTURE
+  offset: 0x7F80
+  symbol: gTalonEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6BC8
+
+gTalonEyeTLUT:
+  type: TEXTURE
+  offset: 0x6BC8
+  symbol: gTalonEyeTLUT
+  format: RGBA16
+  width: 63
+  height: 4
+
+gTalonFaceHairTex:
+  type: TEXTURE
+  offset: 0x6E40
+  symbol: gTalonFaceHairTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x6AC0
+
+gTalonFingersTex:
+  type: TEXTURE
+  offset: 0xA8F8
+  symbol: gTalonFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xA638
+
+gTalonGradient2Tex:
+  type: TEXTURE
+  offset: 0xA838
+  symbol: gTalonGradient2Tex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTalonHeadDL:
+  type: GFX
+  offset: 0x96D0
+  symbol: gTalonHeadDL
+
+gTalonHeadHairTex:
+  type: TEXTURE
+  offset: 0x7B00
+  symbol: gTalonHeadHairTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x6AC0
+
+gTalonHeadHairTopTex:
+  type: TEXTURE
+  offset: 0x7F00
+  symbol: gTalonHeadHairTopTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x6AC0
+
+gTalonHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB760
+  symbol: gTalonHeadLimb
+  limb_type: Standard
+
+gTalonHeadSkinTex:
+  type: TEXTURE
+  offset: 0x6DC0
+  symbol: gTalonHeadSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x6AC0
+
+gTalonLeftArmDL:
+  type: GFX
+  offset: 0x54C0
+  symbol: gTalonLeftArmDL
+
+gTalonLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0xB724
+  symbol: gTalonLeftArmLimb
+  limb_type: Standard
+
+gTalonLeftFootDL:
+  type: GFX
+  offset: 0xA498
+  symbol: gTalonLeftFootDL
+
+gTalonLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xB6DC
+  symbol: gTalonLeftFootLimb
+  limb_type: Standard
+
+gTalonLeftHandDL:
+  type: GFX
+  offset: 0x5770
+  symbol: gTalonLeftHandDL
+
+gTalonLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xB730
+  symbol: gTalonLeftHandLimb
+  limb_type: Standard
+
+gTalonLeftLegDL:
+  type: GFX
+  offset: 0x6770
+  symbol: gTalonLeftLegDL
+
+gTalonLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0xB6D0
+  symbol: gTalonLeftLegLimb
+  limb_type: Standard
+
+gTalonLeftShoulderDL:
+  type: GFX
+  offset: 0x5298
+  symbol: gTalonLeftShoulderDL
+
+gTalonLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xB718
+  symbol: gTalonLeftShoulderLimb
+  limb_type: Standard
+
+gTalonLeftThighDL:
+  type: GFX
+  offset: 0x6330
+  symbol: gTalonLeftThighDL
+
+gTalonLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xB6C4
+  symbol: gTalonLeftThighLimb
+  limb_type: Standard
+
+gTalonNecklaceLowerStringsTex:
+  type: TEXTURE
+  offset: 0xB3B8
+  symbol: gTalonNecklaceLowerStringsTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gTalonNecklaceStringUpperTex:
+  type: TEXTURE
+  offset: 0xADB8
+  symbol: gTalonNecklaceStringUpperTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0xA638
+
+gTalonRedTex:
+  type: TEXTURE
+  offset: 0x7AC0
+  symbol: gTalonRedTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x6AC0
+
+gTalonRightArmDL:
+  type: GFX
+  offset: 0x4B40
+  symbol: gTalonRightArmDL
+
+gTalonRightArmLimb:
+  type: OOT:LIMB
+  offset: 0xB748
+  symbol: gTalonRightArmLimb
+  limb_type: Standard
+
+gTalonRightFootDL:
+  type: GFX
+  offset: 0xA2F8
+  symbol: gTalonRightFootDL
+
+gTalonRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xB700
+  symbol: gTalonRightFootLimb
+  limb_type: Standard
+
+gTalonRightHandDL:
+  type: GFX
+  offset: 0x4DF0
+  symbol: gTalonRightHandDL
+
+gTalonRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xB754
+  symbol: gTalonRightHandLimb
+  limb_type: Standard
+
+gTalonRightLegDL:
+  type: GFX
+  offset: 0x5FD8
+  symbol: gTalonRightLegDL
+
+gTalonRightLegLimb:
+  type: OOT:LIMB
+  offset: 0xB6F4
+  symbol: gTalonRightLegLimb
+  limb_type: Standard
+
+gTalonRightShoulderDL:
+  type: GFX
+  offset: 0x4918
+  symbol: gTalonRightShoulderDL
+
+gTalonRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xB73C
+  symbol: gTalonRightShoulderLimb
+  limb_type: Standard
+
+gTalonRightThighDL:
+  type: GFX
+  offset: 0x5B98
+  symbol: gTalonRightThighDL
+
+gTalonRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xB6E8
+  symbol: gTalonRightThighLimb
+  limb_type: Standard
+
+gTalonRootLimb:
+  type: OOT:LIMB
+  offset: 0xB6B8
+  symbol: gTalonRootLimb
+  limb_type: Standard
+
+gTalonRunAnim:
+  type: OOT:ANIMATION
+  offset: 0xC858
+  symbol: gTalonRunAnim
+
+gTalonRunTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0xCF28
+  symbol: gTalonRunTransitionAnim
+
+gTalonSitHandsUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xBF38
+  symbol: gTalonSitHandsUpAnim
+
+gTalonSitSleepingAnim:
+  type: OOT:ANIMATION
+  offset: 0x17E8
+  symbol: gTalonSitSleepingAnim
+
+gTalonSitWakeUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xC48C
+  symbol: gTalonSitWakeUpAnim
+
+gTalonSkel:
+  type: OOT:SKELETON
+  offset: 0xB7B8
+  symbol: gTalonSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTalonSkinAndClothesTLUT:
+  type: TEXTURE
+  offset: 0xA638
+  symbol: gTalonSkinAndClothesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTalonSkinTex:
+  type: TEXTURE
+  offset: 0xA8B8
+  symbol: gTalonSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xA638
+
+gTalonSleepAnim:
+  type: OOT:ANIMATION
+  offset: 0xCD50
+  symbol: gTalonSleepAnim
+
+gTalonSleeveTex:
+  type: TEXTURE
+  offset: 0xABF8
+  symbol: gTalonSleeveTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xA638
+
+gTalonStandAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C94
+  symbol: gTalonStandAnim
+
+gTalonTorsoDL:
+  type: GFX
+  offset: 0x3F70
+  symbol: gTalonTorsoDL
+
+gTalonTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xB76C
+  symbol: gTalonTorsoLimb
+  limb_type: Standard
+
+gTalonWakeUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xE3D8
+  symbol: gTalonWakeUpAnim
+
+object_ta_Blob_00B4B8:
+  type: BLOB
+  offset: 0xB4B8
+  size: 0x200
+  symbol: object_ta_Blob_00B4B8
+
+
+object_taVtx_001CB0:
+  type: OOT:ARRAY
+  offset: 0x001CB0
+  symbol: object_taVtx_001CB0
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_002150:
+  type: OOT:ARRAY
+  offset: 0x002150
+  symbol: object_taVtx_002150
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_002360:
+  type: OOT:ARRAY
+  offset: 0x002360
+  symbol: object_taVtx_002360
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_002540:
+  type: OOT:ARRAY
+  offset: 0x002540
+  symbol: object_taVtx_002540
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_0029E0:
+  type: OOT:ARRAY
+  offset: 0x0029E0
+  symbol: object_taVtx_0029E0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_002BF0:
+  type: OOT:ARRAY
+  offset: 0x002BF0
+  symbol: object_taVtx_002BF0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_002DD0:
+  type: OOT:ARRAY
+  offset: 0x002DD0
+  symbol: object_taVtx_002DD0
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_0033A0:
+  type: OOT:ARRAY
+  offset: 0x0033A0
+  symbol: object_taVtx_0033A0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_003610:
+  type: OOT:ARRAY
+  offset: 0x003610
+  symbol: object_taVtx_003610
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_003870:
+  type: OOT:ARRAY
+  offset: 0x003870
+  symbol: object_taVtx_003870
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_003AE0:
+  type: OOT:ARRAY
+  offset: 0x003AE0
+  symbol: object_taVtx_003AE0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_003D40:
+  type: OOT:ARRAY
+  offset: 0x003D40
+  symbol: object_taVtx_003D40
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_008380:
+  type: OOT:ARRAY
+  offset: 0x008380
+  symbol: object_taVtx_008380
+  count: 225
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_009190:
+  type: OOT:ARRAY
+  offset: 0x009190
+  symbol: object_taVtx_009190
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taVtx_009430:
+  type: OOT:ARRAY
+  offset: 0x009430
+  symbol: object_taVtx_009430
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTalonSkelLimbs:
+  type: BLOB
+  offset: 0xB778
+  symbol: gTalonSkelLimbs
+  size: 0

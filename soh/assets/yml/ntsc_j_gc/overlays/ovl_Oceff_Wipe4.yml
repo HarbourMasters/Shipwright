@@ -1,0 +1,44 @@
+:config:
+  segments:
+    - [ 128, 0x00D2FF00 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x00D2FF00 ]
+    - [ 9, 0x00D2FF00 ]
+    - [ 10, 0x00D2FF00 ]
+    - [ 11, 0x00D2FF00 ]
+    - [ 12, 0x00D2FF00 ]
+    - [ 13, 0x00D2FF00 ]
+  virtual: [ 0x80B86D50, 0x00D2FF00 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+sFrustumVtx:
+  type: OOT:ARRAY
+  offset: 0xC10
+  symbol: sFrustumVtx
+  count: 22
+  array_type: VTX
+
+sMaterial2DL:
+  type: GFX
+  offset: 0xE40
+  symbol: sMaterial2DL
+
+sMaterialDL:
+  type: GFX
+  offset: 0xD70
+  symbol: sMaterialDL
+
+sTex:
+  type: TEXTURE
+  offset: 0x410
+  symbol: sTex
+  format: I8
+  width: 32
+  height: 64
+
+sUnusedMaterialDL:
+  type: GFX
+  offset: 0xDD8
+  symbol: sUnusedMaterialDL
+

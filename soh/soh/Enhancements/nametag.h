@@ -1,8 +1,6 @@
-#ifndef NAMETAG_H
-#define NAMETAG_H
+#pragma once
 
-#include <libultraship/color.h>
-#include <libultraship/libultra.h>
+#include <ship/utils/color.h>
 
 struct Actor;
 
@@ -10,7 +8,7 @@ typedef struct {
     const char* tag;       // Tag identifier to filter/remove multiple tags
     int16_t yOffset;       // Additional Y offset to apply for the name tag
     Color_RGBA8 textColor; // Text color override. Global color is used if alpha is 0
-    uint8_t noZBuffer;     // Allow rendering over geometry
+    bool noZBuffer;        // Allow rendering over geometry
 } NameTagOptions;
 
 // Register required hooks for nametags on startup
@@ -32,5 +30,3 @@ void NameTag_RemoveAllByTag(const char* tag);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // NAMETAG_H

@@ -1,0 +1,420 @@
+:config:
+  segments:
+    - [ 6, 0x00E3E190 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00E3E190 ]
+    - [ 9, 0x00E3E190 ]
+    - [ 10, 0x00E3E190 ]
+    - [ 11, 0x00E3E190 ]
+    - [ 12, 0x00E3E190 ]
+    - [ 13, 0x00E3E190 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gDarkLinkSkel:
+  type: OOT:SKELETON
+  offset: 0x4764
+  symbol: gDarkLinkSkel
+  limb_type: LOD
+  skel_type: Flex
+
+object_torch2Tex_0041C0:
+  type: TEXTURE
+  offset: 0x41C0
+  symbol: object_torch2Tex_0041C0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_torch2Tex_0043C0:
+  type: TEXTURE
+  offset: 0x43C0
+  symbol: object_torch2Tex_0043C0
+  format: IA16
+  width: 16
+  height: 16
+
+sDarkLinkSheathDL:
+  type: GFX
+  offset: 0x3748
+  symbol: sDarkLinkSheathDL
+
+
+object_torch2Vtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_torch2Vtx_000000
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_000150:
+  type: OOT:ARRAY
+  offset: 0x000150
+  symbol: object_torch2Vtx_000150
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_000300:
+  type: OOT:ARRAY
+  offset: 0x000300
+  symbol: object_torch2Vtx_000300
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_000520:
+  type: OOT:ARRAY
+  offset: 0x000520
+  symbol: object_torch2Vtx_000520
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_000670:
+  type: OOT:ARRAY
+  offset: 0x000670
+  symbol: object_torch2Vtx_000670
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_000820:
+  type: OOT:ARRAY
+  offset: 0x000820
+  symbol: object_torch2Vtx_000820
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_000A40:
+  type: OOT:ARRAY
+  offset: 0x000A40
+  symbol: object_torch2Vtx_000A40
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_000B80:
+  type: OOT:ARRAY
+  offset: 0x000B80
+  symbol: object_torch2Vtx_000B80
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_000CD0:
+  type: OOT:ARRAY
+  offset: 0x000CD0
+  symbol: object_torch2Vtx_000CD0
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_001320:
+  type: OOT:ARRAY
+  offset: 0x001320
+  symbol: object_torch2Vtx_001320
+  count: 142
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_001C00:
+  type: OOT:ARRAY
+  offset: 0x001C00
+  symbol: object_torch2Vtx_001C00
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_001DF0:
+  type: OOT:ARRAY
+  offset: 0x001DF0
+  symbol: object_torch2Vtx_001DF0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_001FA0:
+  type: OOT:ARRAY
+  offset: 0x001FA0
+  symbol: object_torch2Vtx_001FA0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_002160:
+  type: OOT:ARRAY
+  offset: 0x002160
+  symbol: object_torch2Vtx_002160
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_002650:
+  type: OOT:ARRAY
+  offset: 0x002650
+  symbol: object_torch2Vtx_002650
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_002850:
+  type: OOT:ARRAY
+  offset: 0x002850
+  symbol: object_torch2Vtx_002850
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_002A00:
+  type: OOT:ARRAY
+  offset: 0x002A00
+  symbol: object_torch2Vtx_002A00
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_torch2Vtx_002B50:
+  type: OOT:ARRAY
+  offset: 0x002B50
+  symbol: object_torch2Vtx_002B50
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDarkLinkSkelLimbsLimb_0045D0FarDL_002BD0:
+  type: GFX
+  offset: 0x002BD0
+  symbol: gDarkLinkSkelLimbsLimb_0045D0FarDL_002BD0
+
+gDarkLinkSkelLimbsLimb_0045F0FarDL_002CD0:
+  type: GFX
+  offset: 0x002CD0
+  symbol: gDarkLinkSkelLimbsLimb_0045F0FarDL_002CD0
+
+gDarkLinkSkelLimbsLimb_004600FarDL_002E10:
+  type: GFX
+  offset: 0x002E10
+  symbol: gDarkLinkSkelLimbsLimb_004600FarDL_002E10
+
+gDarkLinkSkelLimbsLimb_004610FarDL_002F38:
+  type: GFX
+  offset: 0x002F38
+  symbol: gDarkLinkSkelLimbsLimb_004610FarDL_002F38
+
+gDarkLinkSkelLimbsLimb_004620FarDL_003030:
+  type: GFX
+  offset: 0x003030
+  symbol: gDarkLinkSkelLimbsLimb_004620FarDL_003030
+
+gDarkLinkSkelLimbsLimb_004630FarDL_003178:
+  type: GFX
+  offset: 0x003178
+  symbol: gDarkLinkSkelLimbsLimb_004630FarDL_003178
+
+gDarkLinkSkelLimbsLimb_004640FarDL_0032A0:
+  type: GFX
+  offset: 0x0032A0
+  symbol: gDarkLinkSkelLimbsLimb_004640FarDL_0032A0
+
+gDarkLinkSkelLimbsLimb_004670FarDL_003398:
+  type: GFX
+  offset: 0x003398
+  symbol: gDarkLinkSkelLimbsLimb_004670FarDL_003398
+
+gDarkLinkSkelLimbsLimb_004660FarDL_003490:
+  type: GFX
+  offset: 0x003490
+  symbol: gDarkLinkSkelLimbsLimb_004660FarDL_003490
+
+gDarkLinkSkelLimbsLimb_004680FarDL_003820:
+  type: GFX
+  offset: 0x003820
+  symbol: gDarkLinkSkelLimbsLimb_004680FarDL_003820
+
+gDarkLinkSkelLimbsLimb_004700FarDL_0038D0:
+  type: GFX
+  offset: 0x0038D0
+  symbol: gDarkLinkSkelLimbsLimb_004700FarDL_0038D0
+
+gDarkLinkSkelLimbsLimb_0046C0FarDL_0039E8:
+  type: GFX
+  offset: 0x0039E8
+  symbol: gDarkLinkSkelLimbsLimb_0046C0FarDL_0039E8
+
+gDarkLinkSkelLimbsLimb_0046D0FarDL_003B08:
+  type: GFX
+  offset: 0x003B08
+  symbol: gDarkLinkSkelLimbsLimb_0046D0FarDL_003B08
+
+gDarkLinkSkelLimbsLimb_0046E0FarDL_003C10:
+  type: GFX
+  offset: 0x003C10
+  symbol: gDarkLinkSkelLimbsLimb_0046E0FarDL_003C10
+
+gDarkLinkSkelLimbsLimb_004690FarDL_003D70:
+  type: GFX
+  offset: 0x003D70
+  symbol: gDarkLinkSkelLimbsLimb_004690FarDL_003D70
+
+gDarkLinkSkelLimbsLimb_0046A0FarDL_003E90:
+  type: GFX
+  offset: 0x003E90
+  symbol: gDarkLinkSkelLimbsLimb_0046A0FarDL_003E90
+
+gDarkLinkSkelLimbsLimb_0046B0FarDL_003F98:
+  type: GFX
+  offset: 0x003F98
+  symbol: gDarkLinkSkelLimbsLimb_0046B0FarDL_003F98
+
+gDarkLinkSkelLimbsLimb_0045C0:
+  type: OOT:LIMB
+  offset: 0x0045C0
+  symbol: gDarkLinkSkelLimbsLimb_0045C0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0045D0:
+  type: OOT:LIMB
+  offset: 0x0045D0
+  symbol: gDarkLinkSkelLimbsLimb_0045D0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0045E0:
+  type: OOT:LIMB
+  offset: 0x0045E0
+  symbol: gDarkLinkSkelLimbsLimb_0045E0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0045F0:
+  type: OOT:LIMB
+  offset: 0x0045F0
+  symbol: gDarkLinkSkelLimbsLimb_0045F0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004600:
+  type: OOT:LIMB
+  offset: 0x004600
+  symbol: gDarkLinkSkelLimbsLimb_004600
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004610:
+  type: OOT:LIMB
+  offset: 0x004610
+  symbol: gDarkLinkSkelLimbsLimb_004610
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004620:
+  type: OOT:LIMB
+  offset: 0x004620
+  symbol: gDarkLinkSkelLimbsLimb_004620
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004630:
+  type: OOT:LIMB
+  offset: 0x004630
+  symbol: gDarkLinkSkelLimbsLimb_004630
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004640:
+  type: OOT:LIMB
+  offset: 0x004640
+  symbol: gDarkLinkSkelLimbsLimb_004640
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004650:
+  type: OOT:LIMB
+  offset: 0x004650
+  symbol: gDarkLinkSkelLimbsLimb_004650
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004660:
+  type: OOT:LIMB
+  offset: 0x004660
+  symbol: gDarkLinkSkelLimbsLimb_004660
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004670:
+  type: OOT:LIMB
+  offset: 0x004670
+  symbol: gDarkLinkSkelLimbsLimb_004670
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004680:
+  type: OOT:LIMB
+  offset: 0x004680
+  symbol: gDarkLinkSkelLimbsLimb_004680
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004690:
+  type: OOT:LIMB
+  offset: 0x004690
+  symbol: gDarkLinkSkelLimbsLimb_004690
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0046A0:
+  type: OOT:LIMB
+  offset: 0x0046A0
+  symbol: gDarkLinkSkelLimbsLimb_0046A0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0046B0:
+  type: OOT:LIMB
+  offset: 0x0046B0
+  symbol: gDarkLinkSkelLimbsLimb_0046B0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0046C0:
+  type: OOT:LIMB
+  offset: 0x0046C0
+  symbol: gDarkLinkSkelLimbsLimb_0046C0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0046D0:
+  type: OOT:LIMB
+  offset: 0x0046D0
+  symbol: gDarkLinkSkelLimbsLimb_0046D0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0046E0:
+  type: OOT:LIMB
+  offset: 0x0046E0
+  symbol: gDarkLinkSkelLimbsLimb_0046E0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_0046F0:
+  type: OOT:LIMB
+  offset: 0x0046F0
+  symbol: gDarkLinkSkelLimbsLimb_0046F0
+  limb_type: LOD
+
+gDarkLinkSkelLimbsLimb_004700:
+  type: OOT:LIMB
+  offset: 0x004700
+  symbol: gDarkLinkSkelLimbsLimb_004700
+  limb_type: LOD
+
+gDarkLinkSkelLimbs:
+  type: BLOB
+  offset: 0x4710
+  symbol: gDarkLinkSkelLimbs
+  size: 0

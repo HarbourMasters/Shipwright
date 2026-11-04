@@ -1,0 +1,31 @@
+:config:
+  segments:
+    - [ 128, 0x00CC2730 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00CC2730 ]
+    - [ 9, 0x00CC2730 ]
+    - [ 10, 0x00CC2730 ]
+    - [ 11, 0x00CC2730 ]
+    - [ 12, 0x00CC2730 ]
+    - [ 13, 0x00CC2730 ]
+  virtual: [ 0x80AD9C70, 0x00CC2730 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+D_80AFA398:
+  type: OOT:ARRAY
+  offset: 0x1498
+  symbol: D_80AFA398
+  count: 4
+  array_type: VTX
+
+D_80AFA3D8:
+  type: GFX
+  offset: 0x14D8
+  symbol: D_80AFA3D8
+
+D_80AFA3F8:
+  type: GFX
+  offset: 0x14F8
+  symbol: D_80AFA3F8
+

@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 128, 0x01435F50 ]
+
+gLinksHouseBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gLinksHouseBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinksHouseBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gLinksHouseBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinksHouseBg4TLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gLinksHouseBg4TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinksHouseBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gLinksHouseBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

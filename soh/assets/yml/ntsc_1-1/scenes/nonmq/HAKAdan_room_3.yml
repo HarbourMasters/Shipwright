@@ -1,0 +1,107 @@
+:config:
+  segments:
+    - [ 3, 0x01AFF990 ]
+    - [ 2, 0x01AE7450 ]
+  directory: scenes/nonmq/HAKAdan_scene
+  external_files:
+    - ntsc_1-1/scenes/nonmq/HAKAdan_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+
+HAKAdan_room_3:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdan_room_3
+
+HAKAdan_room_3Tex_001578:
+  type: TEXTURE
+  offset: 0x1538
+  symbol: HAKAdan_room_3Tex_001578
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdan_room_3Tex_001D78:
+  type: TEXTURE
+  offset: 0x1D38
+  symbol: HAKAdan_room_3Tex_001D78
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdan_room_3Tex_002578:
+  type: TEXTURE
+  offset: 0x2538
+  symbol: HAKAdan_room_3Tex_002578
+  format: I4
+  width: 32
+  height: 32
+
+HAKAdan_room_3Tex_002778:
+  type: TEXTURE
+  offset: 0x2738
+  symbol: HAKAdan_room_3Tex_002778
+  format: I4
+  width: 32
+  height: 32
+
+
+HAKAdan_room_3Vtx_000080:
+  type: OOT:ARRAY
+  offset: 0x000080
+  symbol: HAKAdan_room_3Vtx_000080
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_3DL_000710:
+  type: GFX
+  offset: 0x000710
+  symbol: HAKAdan_room_3DL_000710
+
+HAKAdan_room_3Vtx_000910:
+  type: OOT:ARRAY
+  offset: 0x000910
+  symbol: HAKAdan_room_3Vtx_000910
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_3DL_000C70:
+  type: GFX
+  offset: 0x000C70
+  symbol: HAKAdan_room_3DL_000C70
+
+HAKAdan_room_3Vtx_000EF0:
+  type: OOT:ARRAY
+  offset: 0x000EF0
+  symbol: HAKAdan_room_3Vtx_000EF0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_3DL_001170:
+  type: GFX
+  offset: 0x001170
+  symbol: HAKAdan_room_3DL_001170
+
+HAKAdan_room_3Vtx_001280:
+  type: OOT:ARRAY
+  offset: 0x001280
+  symbol: HAKAdan_room_3Vtx_001280
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_3DL_0013E0:
+  type: GFX
+  offset: 0x0013E0
+  symbol: HAKAdan_room_3DL_0013E0
+
+HAKAdan_room_3DL_001510:
+  type: GFX
+  offset: 0x001510
+  symbol: HAKAdan_room_3DL_001510

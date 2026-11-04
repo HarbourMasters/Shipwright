@@ -7,25 +7,27 @@ void RegionTable_Init_LakeHylia() {
     // clang-format off
     areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", SCENE_LAKE_HYLIA, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,    logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS))),
-        EVENT_ACCESS(LOGIC_BUG_ACCESS,      logic->IsChild && logic->CanCutShrubs()),
-        EVENT_ACCESS(LOGIC_CHILD_SCARECROW, logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
-        EVENT_ACCESS(LOGIC_ADULT_SCARECROW, logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
+        EVENT_ACCESS(LOGIC_PLANT_LAKE_HYLIA_BEAN, CanPlantBean(RG_LAKE_HYLIA_BEAN_SOUL)),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,          logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,            logic->IsChild && logic->CanCutShrubs()),
+        EVENT_ACCESS(LOGIC_CHILD_SCARECROW,       logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
+        EVENT_ACCESS(LOGIC_ADULT_SCARECROW,       logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
     }, {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),
+        LOCATION(RC_LH_SCARECROWS_SONG,                  logic->Get(LOGIC_CHILD_SCARECROW) && logic->Get(LOGIC_ADULT_SCARECROW)),
         LOCATION(RC_LH_SUN,                              logic->IsAdult && ((logic->Get(LOGIC_WATER_TEMPLE_CLEAR) && logic->HasItem(RG_BRONZE_SCALE)) || logic->ReachDistantScarecrow()) && logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_LH_FREESTANDING_POH,                 logic->IsAdult && (logic->ReachScarecrow() || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)) && logic->CanAvoidEnemy(RE_GUAY, false) && logic->HasItem(RG_CLIMB)),
+        LOCATION(RC_LH_FREESTANDING_POH,                 logic->IsAdult && (logic->ReachScarecrow() || logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN)) && logic->CanAvoidEnemy(RE_GUAY, ED_CLOSE, false) && logic->HasItem(RG_CLIMB)),
         LOCATION(RC_LH_GS_BEAN_PATCH,                    logic->CanSpawnSoilSkull(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_LH_GS_LAB_WALL,                      logic->IsChild && (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (ctx->GetTrickOption(RT_LH_LAB_WALL_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
         LOCATION(RC_LH_GS_SMALL_ISLAND,                  logic->IsChild && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA) && logic->CanGetNightTimeGS() && logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_LH_GS_TREE,                          logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->CanGetNightTimeGS()),
-        LOCATION(RC_LH_FRONT_RUPEE,                      logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_LH_FRONT_RUPEE,                      logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LH_MIDDLE_RUPEE,                     logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LH_BACK_RUPEE,                       logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LH_BEAN_SPROUT_FAIRY_1,              logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LH_BEAN_SPROUT_FAIRY_2,              logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LH_BEAN_SPROUT_FAIRY_3,              logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_LH_BEAN_SPROUT_FAIRY_1,              logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_LH_BEAN_SPROUT_FAIRY_2,              logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_LH_BEAN_SPROUT_FAIRY_3,              logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LH_LAB_GOSSIP_STONE_FAIRY,           logic->CallGossipFairy()),
         LOCATION(RC_LH_LAB_GOSSIP_STONE_FAIRY_BIG,       logic->CanUse(RG_SONG_OF_STORMS)),
         //You can walk along the edge of the lake to get these without swimming, the fairy is created going backwards, which is convenient here
@@ -37,66 +39,67 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_LAB_GOSSIP_STONE,                 true),
         LOCATION(RC_LH_SOUTHEAST_GOSSIP_STONE,           true),
         LOCATION(RC_LH_SOUTHWEST_GOSSIP_STONE,           true),
-        LOCATION(RC_LH_GRASS_1,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_2,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_3,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_4,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_5,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_6,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_7,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_8,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_9,                          logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_10,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_11,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_12,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_13,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_14,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_15,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_16,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_17,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_18,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_19,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_20,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_21,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_22,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_23,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_24,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_25,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_26,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_27,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_28,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_29,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_30,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_31,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_32,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_33,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_34,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_35,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_GRASS_36,                         logic->CanCutShrubs()),
-        LOCATION(RC_LH_CHILD_GRASS_1,                    logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_LH_CHILD_GRASS_2,                    logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_LH_CHILD_GRASS_3,                    logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_LH_CHILD_GRASS_4,                    logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_LH_WARP_PAD_GRASS_1,                 logic->CanCutShrubs()),
-        LOCATION(RC_LH_WARP_PAD_GRASS_2,                 logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_1,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_2,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_3,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_4,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_5,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_6,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_7,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_8,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_9,                          logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_10,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_11,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_12,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_13,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_14,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_15,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_16,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_17,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_18,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_19,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_20,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_21,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_22,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_23,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_24,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_25,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_26,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_27,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_28,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_29,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_30,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_31,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_32,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_33,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_34,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_35,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_GRASS_36,                         logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_CHILD_GRASS_1,                    logic->IsChild && (logic->CanCutShrubs() || logic->SummonEpona())),
+        LOCATION(RC_LH_CHILD_GRASS_2,                    logic->IsChild && (logic->CanCutShrubs() || logic->SummonEpona())),
+        LOCATION(RC_LH_CHILD_GRASS_3,                    logic->IsChild && (logic->CanCutShrubs() || logic->SummonEpona())),
+        LOCATION(RC_LH_CHILD_GRASS_4,                    logic->IsChild && (logic->CanCutShrubs() || logic->SummonEpona())),
+        LOCATION(RC_LH_WARP_PAD_GRASS_1,                 logic->CanCutShrubs() || logic->SummonEpona()),
+        LOCATION(RC_LH_WARP_PAD_GRASS_2,                 logic->CanCutShrubs() || logic->SummonEpona()),
         LOCATION(RC_LH_SCARECROW_BUTTERFLY_FAIRY,        logic->IsChild && logic->CanUse(RG_STICKS)),
         LOCATION(RC_LH_LAB_RECTANGLE_SIGN,               logic->CanRead()),
         LOCATION(RC_LH_NORTH_EXIT_ARROW_SIGN,            logic->CanRead()),
         LOCATION(RC_LH_ISLAND_PEDESTAL,                  logic->CanRead()),
+        LOCATION(RC_LH_WATER_SWITCH_SIGN,                logic->IsAdult && logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_HF_TO_LAKE_HYLIA,     true),
         ENTRANCE(RR_LH_FROM_SHORTCUT,     true),
-        ENTRANCE(RR_LH_OWL_FLIGHT,        logic->IsChild && (logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
-        ENTRANCE(RR_LH_FISHING_ISLAND,    ((logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR)) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->ReachScarecrow() || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)))),
-        ENTRANCE(RR_LH_LAB,               logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY)),
+        ENTRANCE(RR_LH_OWL_FLIGHT,        logic->IsChild && (logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_KOKIRI) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
+        ENTRANCE(RR_LH_FISHING_ISLAND,    ((logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR)) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->ReachScarecrow() || logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN)))),
+        ENTRANCE(RR_LH_LAB,               logic->HasItem(RG_HYLIA_LAB_KEY)),
         ENTRANCE(RR_LH_FROM_WATER_TEMPLE, true),
-        ENTRANCE(RR_LH_GROTTO,            logic->HasItem(RG_POWER_BRACELET) && (logic->IsAdult || logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
+        ENTRANCE(RR_LH_GROTTO,            logic->HasItem(RG_POWER_BRACELET) && (logic->IsAdult || logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_KOKIRI) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
     });
 
     areaTable[RR_LH_FROM_SHORTCUT] = Region("LH From Shortcut", SCENE_LAKE_HYLIA, TIME_DOESNT_PASS, {RA_LAKE_HYLIA}, {}, {}, {
         //Exits
-        ENTRANCE(RR_LAKE_HYLIA,   logic->Hearts() > 1 || logic->HasItem(RG_BOTTLE_WITH_FAIRY) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
+        ENTRANCE(RR_LAKE_HYLIA,   logic->CanVoid() || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_ZORAS_DOMAIN, logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
     });
 
@@ -108,12 +111,13 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", SCENE_LAKE_HYLIA, {}, {
         //Locations
-        LOCATION(RC_LH_ROCK,         logic->CanBreakRocks()),
-        LOCATION(RC_LH_FISHING_SIGN, logic->CanRead()),
+        LOCATION(RC_LH_ROCK,                             logic->CanBreakRocks()),
+        LOCATION(RC_LH_FISHING_SIGN,                     logic->CanRead()),
+        LOCATION(RC_LH_FISHING_ISLAND_WATER_SWITCH_SIGN, logic->IsAdult && logic->CanRead()),
     }, {
         //Exits
-        ENTRANCE(RR_LAKE_HYLIA,      logic->HasItem(RG_BRONZE_SCALE)),
-        ENTRANCE(RR_LH_FISHING_POND, logic->CanOpenOverworldDoor(RG_FISHING_HOLE_KEY)),
+        ENTRANCE(RR_LAKE_HYLIA,      logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_LH_FISHING_POND, logic->HasItem(RG_FISHING_HOLE_KEY)),
     });
 
     areaTable[RR_LH_OWL_FLIGHT] = Region("LH Owl Flight", SCENE_LAKE_HYLIA, {}, {}, {
@@ -123,16 +127,30 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_LAB] = Region("LH Lab", SCENE_LAKESIDE_LABORATORY, {}, {
         //Locations
-        LOCATION(RC_LH_LAB_DIVE,        (logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE))) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_LH_LAB_DIVE,        logic->HasItem(RG_GOLDEN_SCALE) && logic->HasItem(RG_SPEAK_HYLIAN)),
         LOCATION(RC_LH_TRADE_FROG,      logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
-        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
-        LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_CRATE,       logic->CanUse(RG_IRON_BOOTS) && logic->CanBreakCrates()),
+        LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->HasItem(RG_GOLDEN_SCALE)),
+        LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->HasItem(RG_GOLDEN_SCALE)),
+        LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->HasItem(RG_GOLDEN_SCALE)),
     }, {
         //Exits
-        ENTRANCE(RR_LAKE_HYLIA, true),
+        ENTRANCE(RR_LAKE_HYLIA,        true),
+        ENTRANCE(RR_LH_LAB_UNDERWATER, logic->CanUse(RG_IRON_BOOTS)),
+    });
+
+    //Assumes checking logic->CanUse(RG_IRON_BOOTS) on access
+    areaTable[RR_LH_LAB_UNDERWATER] = Region("LH Lab Underwater", SCENE_LAKESIDE_LABORATORY, {}, {
+        //Locations
+        //Assumes RR_LH_LAB access
+        LOCATION(RC_LH_LAB_DIVE,        (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE)) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
+        LOCATION(RC_LH_LAB_FRONT_RUPEE, true),
+        LOCATION(RC_LH_LAB_LEFT_RUPEE,  true),
+        LOCATION(RC_LH_LAB_RIGHT_RUPEE, true),
+        LOCATION(RC_LH_LAB_CRATE,       logic->CanBreakCrates()),
+    }, {
+        //Exits
+        ENTRANCE(RR_LH_LAB, logic->HasItem(RG_BRONZE_SCALE)),
     });
 
     // TODO: should some of these helpers be done via events instead?
@@ -176,6 +194,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_HYRULE_LOACH,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN)),
         LOCATION(RC_FISHING_POLE_HINT,              logic->HasItem(RG_SPEAK_HYLIAN)),
         LOCATION(RC_LH_FISHING_POND_RECTANGLE_SIGN, logic->CanRead()),
+        LOCATION(RC_FISHERMANS_HAT,                 logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult),
     }, {
         //Exits
         ENTRANCE(RR_LH_FISHING_ISLAND, true),

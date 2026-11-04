@@ -1,0 +1,560 @@
+:config:
+  segments:
+    - [ 6, 0x00F99A70 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x00F99A70 ]
+    - [ 9, 0x00F99A70 ]
+    - [ 10, 0x00F99A70 ]
+    - [ 11, 0x00F99A70 ]
+    - [ 12, 0x00F99A70 ]
+    - [ 13, 0x00F99A70 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gEnHeishiArmorTex:
+  type: TEXTURE
+  offset: 0x5FC0
+  symbol: gEnHeishiArmorTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5C40
+
+gEnHeishiChestLimb:
+  type: OOT:LIMB
+  offset: 0xBA28
+  symbol: gEnHeishiChestLimb
+  limb_type: Standard
+
+gEnHeishiDyingGuardAnim_00C444:
+  type: OOT:ANIMATION
+  offset: 0xC444
+  symbol: gEnHeishiDyingGuardAnim_00C444
+
+gEnHeishiDyingGuardDieAnim:
+  type: OOT:ANIMATION
+  offset: 0xC374
+  symbol: gEnHeishiDyingGuardDieAnim
+
+gEnHeishiDyingGuardTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xC6C8
+  symbol: gEnHeishiDyingGuardTalkAnim
+
+gEnHeishiGradient1Tex:
+  type: TEXTURE
+  offset: 0x5F40
+  symbol: gEnHeishiGradient1Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5C40
+
+gEnHeishiGradient2Tex:
+  type: TEXTURE
+  offset: 0x5F80
+  symbol: gEnHeishiGradient2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5C40
+
+gEnHeishiHandDL:
+  type: GFX
+  offset: 0xB520
+  symbol: gEnHeishiHandDL
+
+gEnHeishiHandTex:
+  type: TEXTURE
+  offset: 0x6BC0
+  symbol: gEnHeishiHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5C40
+
+gEnHeishiHeadDL:
+  type: GFX
+  offset: 0xA030
+  symbol: gEnHeishiHeadDL
+
+gEnHeishiIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x5C30
+  symbol: gEnHeishiIdleAnim
+
+gEnHeishiKingGuardArmorTex:
+  type: TEXTURE
+  offset: 0x0280
+  symbol: gEnHeishiKingGuardArmorTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0000
+
+gEnHeishiKingGuardChestArmorTex:
+  type: TEXTURE
+  offset: 0x0340
+  symbol: gEnHeishiKingGuardChestArmorTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x0000
+
+gEnHeishiKingGuardHandTex:
+  type: TEXTURE
+  offset: 0x0C40
+  symbol: gEnHeishiKingGuardHandTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0000
+
+gEnHeishiKingGuardPantsTex:
+  type: TEXTURE
+  offset: 0x0C80
+  symbol: gEnHeishiKingGuardPantsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0000
+
+gEnHeishiKingGuardShoulderGuardTex:
+  type: TEXTURE
+  offset: 0x02C0
+  symbol: gEnHeishiKingGuardShoulderGuardTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0000
+
+gEnHeishiKingGuardTLUT:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gEnHeishiKingGuardTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEnHeishiKingGuardTex_200:
+  type: TEXTURE
+  offset: 0x0200
+  symbol: gEnHeishiKingGuardTex_200
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0000
+
+gEnHeishiKingGuardTex_240:
+  type: TEXTURE
+  offset: 0x0240
+  symbol: gEnHeishiKingGuardTex_240
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0000
+
+gEnHeishiKingGuardTex_B40:
+  type: TEXTURE
+  offset: 0x0B40
+  symbol: gEnHeishiKingGuardTex_B40
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0000
+
+gEnHeishiLeftArmDL:
+  type: GFX
+  offset: 0xB730
+  symbol: gEnHeishiLeftArmDL
+
+gEnHeishiLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0xBA40
+  symbol: gEnHeishiLeftArmLimb
+  limb_type: Standard
+
+gEnHeishiLeftFootDL:
+  type: GFX
+  offset: 0xB158
+  symbol: gEnHeishiLeftFootDL
+
+gEnHeishiLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xB9F8
+  symbol: gEnHeishiLeftFootLimb
+  limb_type: Standard
+
+gEnHeishiLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xBA4C
+  symbol: gEnHeishiLeftHandLimb
+  limb_type: Standard
+
+gEnHeishiLeftShinDL:
+  type: GFX
+  offset: 0xB240
+  symbol: gEnHeishiLeftShinDL
+
+gEnHeishiLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xB9EC
+  symbol: gEnHeishiLeftShinLimb
+  limb_type: Standard
+
+gEnHeishiLeftThighDL:
+  type: GFX
+  offset: 0xB3D0
+  symbol: gEnHeishiLeftThighDL
+
+gEnHeishiLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xB9E0
+  symbol: gEnHeishiLeftThighLimb
+  limb_type: Standard
+
+gEnHeishiLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xBA34
+  symbol: gEnHeishiLeftUpperArmLimb
+  limb_type: Standard
+
+gEnHeishiLeg1DL:
+  type: GFX
+  offset: 0xA930
+  symbol: gEnHeishiLeg1DL
+
+gEnHeishiLegTex:
+  type: TEXTURE
+  offset: 0x66C0
+  symbol: gEnHeishiLegTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5C40
+
+gEnHeishiLowerRightArmDL:
+  type: GFX
+  offset: 0xAEC0
+  symbol: gEnHeishiLowerRightArmDL
+
+gEnHeishiMouthTex:
+  type: TEXTURE
+  offset: 0x5E40
+  symbol: gEnHeishiMouthTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5C40
+
+gEnHeishiRightArmLimb:
+  type: OOT:LIMB
+  offset: 0xBA64
+  symbol: gEnHeishiRightArmLimb
+  limb_type: Standard
+
+gEnHeishiRightFootDL:
+  type: GFX
+  offset: 0xA848
+  symbol: gEnHeishiRightFootDL
+
+gEnHeishiRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xBA1C
+  symbol: gEnHeishiRightFootLimb
+  limb_type: Standard
+
+gEnHeishiRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xBA70
+  symbol: gEnHeishiRightHandLimb
+  limb_type: Standard
+
+gEnHeishiRightHeadLimb:
+  type: OOT:LIMB
+  offset: 0xBA7C
+  symbol: gEnHeishiRightHeadLimb
+  limb_type: Standard
+
+gEnHeishiRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xBA10
+  symbol: gEnHeishiRightShinLimb
+  limb_type: Standard
+
+gEnHeishiRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xBA04
+  symbol: gEnHeishiRightThighLimb
+  limb_type: Standard
+
+gEnHeishiRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xBA58
+  symbol: gEnHeishiRightUpperArmLimb
+  limb_type: Standard
+
+gEnHeishiRootLimb:
+  type: OOT:LIMB
+  offset: 0xB9C8
+  symbol: gEnHeishiRootLimb
+  limb_type: Standard
+
+gEnHeishiSkel:
+  type: OOT:SKELETON
+  offset: 0xBAC8
+  symbol: gEnHeishiSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gEnHeishiSlamSpearAnim:
+  type: OOT:ANIMATION
+  offset: 0x5500
+  symbol: gEnHeishiSlamSpearAnim
+
+gEnHeishiSpearDL:
+  type: GFX
+  offset: 0xAC10
+  symbol: gEnHeishiSpearDL
+
+gEnHeishiTex_0067C0:
+  type: TEXTURE
+  offset: 0x67C0
+  symbol: gEnHeishiTex_0067C0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5C40
+
+gEnHeishiTorsoArmorDL:
+  type: GFX
+  offset: 0xA440
+  symbol: gEnHeishiTorsoArmorDL
+
+gEnHeishiTorsoDL:
+  type: GFX
+  offset: 0xA6F8
+  symbol: gEnHeishiTorsoDL
+
+gEnHeishiTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xB9D4
+  symbol: gEnHeishiTorsoLimb
+  limb_type: Standard
+
+gEnHeishiUniform1Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gEnHeishiUniform1Tex
+  format: I4
+  width: 16
+  height: 16
+
+gEnHeishiUniform2Tex:
+  type: TEXTURE
+  offset: 0x6080
+  symbol: gEnHeishiUniform2Tex
+  format: I4
+  width: 16
+  height: 8
+
+gEnHeishiUniformGoldTriforceTex:
+  type: TEXTURE
+  offset: 0x62C0
+  symbol: gEnHeishiUniformGoldTriforceTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5C40
+
+gEnHeishiUniformGreyTriforceTex:
+  type: TEXTURE
+  offset: 0x60C0
+  symbol: gEnHeishiUniformGreyTriforceTex
+  format: I4
+  width: 32
+  height: 32
+
+gEnHeishiUpperArmDL:
+  type: GFX
+  offset: 0xB050
+  symbol: gEnHeishiUpperArmDL
+
+gEnHeishiUpperLeftArmDL:
+  type: GFX
+  offset: 0xB8C0
+  symbol: gEnHeishiUpperLeftArmDL
+
+gEnHeishiUpperLeg1DL:
+  type: GFX
+  offset: 0xAAC0
+  symbol: gEnHeishiUpperLeg1DL
+
+gEnHeishiWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x5880
+  symbol: gEnHeishiWalkAnim
+
+gHeishiKingGuardDL:
+  type: GFX
+  offset: 0x2C10
+  symbol: gHeishiKingGuardDL
+
+gHeishiTLUT:
+  type: TEXTURE
+  offset: 0x5C40
+  symbol: gHeishiTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_sdVtx_000D80:
+  type: OOT:ARRAY
+  offset: 0x000D80
+  symbol: object_sdVtx_000D80
+  count: 489
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_006CC0:
+  type: OOT:ARRAY
+  offset: 0x006CC0
+  symbol: object_sdVtx_006CC0
+  count: 147
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_0075F0:
+  type: OOT:ARRAY
+  offset: 0x0075F0
+  symbol: object_sdVtx_0075F0
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_007E70:
+  type: OOT:ARRAY
+  offset: 0x007E70
+  symbol: object_sdVtx_007E70
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_0080E0:
+  type: OOT:ARRAY
+  offset: 0x0080E0
+  symbol: object_sdVtx_0080E0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_0082C0:
+  type: OOT:ARRAY
+  offset: 0x0082C0
+  symbol: object_sdVtx_0082C0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_008480:
+  type: OOT:ARRAY
+  offset: 0x008480
+  symbol: object_sdVtx_008480
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_0086C0:
+  type: OOT:ARRAY
+  offset: 0x0086C0
+  symbol: object_sdVtx_0086C0
+  count: 94
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_008CA0:
+  type: OOT:ARRAY
+  offset: 0x008CA0
+  symbol: object_sdVtx_008CA0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_008EA0:
+  type: OOT:ARRAY
+  offset: 0x008EA0
+  symbol: object_sdVtx_008EA0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_009150:
+  type: OOT:ARRAY
+  offset: 0x009150
+  symbol: object_sdVtx_009150
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_009330:
+  type: OOT:ARRAY
+  offset: 0x009330
+  symbol: object_sdVtx_009330
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_0094F0:
+  type: OOT:ARRAY
+  offset: 0x0094F0
+  symbol: object_sdVtx_0094F0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_009730:
+  type: OOT:ARRAY
+  offset: 0x009730
+  symbol: object_sdVtx_009730
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_009B30:
+  type: OOT:ARRAY
+  offset: 0x009B30
+  symbol: object_sdVtx_009B30
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdVtx_009D30:
+  type: OOT:ARRAY
+  offset: 0x009D30
+  symbol: object_sdVtx_009D30
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEnHeishiSkelLimbs:
+  type: BLOB
+  offset: 0xBA88
+  symbol: gEnHeishiSkelLimbs
+  size: 0

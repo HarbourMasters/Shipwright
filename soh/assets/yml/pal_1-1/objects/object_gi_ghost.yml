@@ -1,0 +1,81 @@
+:config:
+  segments:
+    - [ 6, 0x0126B080 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x0126B080 ]
+    - [ 9, 0x0126B080 ]
+    - [ 10, 0x0126B080 ]
+    - [ 11, 0x0126B080 ]
+    - [ 12, 0x0126B080 ]
+    - [ 13, 0x0126B080 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gGiBigPoeColorDL:
+  type: GFX
+  offset: 0x0970
+  symbol: gGiBigPoeColorDL
+
+gGiGhostContainerContentsDL:
+  type: GFX
+  offset: 0x0CF0
+  symbol: gGiGhostContainerContentsDL
+
+gGiGhostContainerGlassDL:
+  type: GFX
+  offset: 0x0BE0
+  symbol: gGiGhostContainerGlassDL
+
+gGiGhostContainerLidDL:
+  type: GFX
+  offset: 0x0990
+  symbol: gGiGhostContainerLidDL
+
+gGiPoeColorDL:
+  type: GFX
+  offset: 0x0950
+  symbol: gGiPoeColorDL
+
+object_gi_ghostTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_ghostTex_000000
+  format: I8
+  width: 16
+  height: 32
+
+object_gi_ghostTex_000200:
+  type: TEXTURE
+  offset: 0x200
+  symbol: object_gi_ghostTex_000200
+  format: I8
+  width: 16
+  height: 32
+
+
+object_gi_ghostVtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_ghostVtx_000400
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_ghostVtx_000780:
+  type: OOT:ARRAY
+  offset: 0x000780
+  symbol: object_gi_ghostVtx_000780
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_ghostVtx_000910:
+  type: OOT:ARRAY
+  offset: 0x000910
+  symbol: object_gi_ghostVtx_000910
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

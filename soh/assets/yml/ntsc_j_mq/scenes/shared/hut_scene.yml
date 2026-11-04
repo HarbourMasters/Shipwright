@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01D53280 ]
+
+hut_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: hut_scene
+
+
+hut_sceneCollisionHeader_0004DC:
+  type: OOT:COLLISION
+  offset: 0x0004DC
+  symbol: hut_sceneCollisionHeader_0004DC

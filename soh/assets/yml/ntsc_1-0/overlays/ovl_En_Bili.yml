@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 128, 0x00B7B040 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x00B7B040 ]
+    - [ 9, 0x00B7B040 ]
+    - [ 10, 0x00B7B040 ]
+    - [ 11, 0x00B7B040 ]
+    - [ 12, 0x00B7B040 ]
+    - [ 13, 0x00B7B040 ]
+  virtual: [ 0x808C0080, 0x00B7B040 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+D_809C16F0:
+  type: GFX
+  offset: 0x1E40
+  symbol: D_809C16F0
+
+D_809C1700:
+  type: GFX
+  offset: 0x1E50
+  symbol: D_809C1700
+

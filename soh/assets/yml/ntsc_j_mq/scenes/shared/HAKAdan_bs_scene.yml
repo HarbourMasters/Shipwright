@@ -1,0 +1,46 @@
+:config:
+  segments:
+    - [ 2, 0x01DC6D40 ]
+
+HAKAdan_bs_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: HAKAdan_bs_scene
+
+HAKAdan_bs_sceneTex_001380:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: HAKAdan_bs_sceneTex_001380
+  format: I4
+  width: 32
+  height: 32
+
+HAKAdan_bs_sceneTex_001580:
+  type: TEXTURE
+  offset: 0x1580
+  symbol: HAKAdan_bs_sceneTex_001580
+  format: RGBA16
+  width: 32
+  height: 8
+
+HAKAdan_bs_sceneTex_001780:
+  type: TEXTURE
+  offset: 0x1780
+  symbol: HAKAdan_bs_sceneTex_001780
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdan_bs_sceneTex_001F80:
+  type: TEXTURE
+  offset: 0x1F80
+  symbol: HAKAdan_bs_sceneTex_001F80
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HAKAdan_bs_sceneCollisionHeader_00134C:
+  type: OOT:COLLISION
+  offset: 0x00134C
+  symbol: HAKAdan_bs_sceneCollisionHeader_00134C

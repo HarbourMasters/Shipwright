@@ -1,0 +1,249 @@
+:config:
+  segments:
+    - [ 3, 0x01D9C0B0 ]
+    - [ 2, 0x01D9BCD0 ]
+  directory: scenes/shared/tent_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/tent_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+tent_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: tent_room_0
+
+
+tent_room_0Vtx_0000E0:
+  type: OOT:ARRAY
+  offset: 0x0000E0
+  symbol: tent_room_0Vtx_0000E0
+  count: 333
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_0015B0:
+  type: OOT:ARRAY
+  offset: 0x0015B0
+  symbol: tent_room_0Vtx_0015B0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_0016F0:
+  type: OOT:ARRAY
+  offset: 0x0016F0
+  symbol: tent_room_0Vtx_0016F0
+  count: 302
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_0029D0:
+  type: OOT:ARRAY
+  offset: 0x0029D0
+  symbol: tent_room_0Vtx_0029D0
+  count: 417
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_0043E0:
+  type: OOT:ARRAY
+  offset: 0x0043E0
+  symbol: tent_room_0Vtx_0043E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_004460:
+  type: OOT:ARRAY
+  offset: 0x004460
+  symbol: tent_room_0Vtx_004460
+  count: 344
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_0059E0:
+  type: OOT:ARRAY
+  offset: 0x0059E0
+  symbol: tent_room_0Vtx_0059E0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_005AE0:
+  type: OOT:ARRAY
+  offset: 0x005AE0
+  symbol: tent_room_0Vtx_005AE0
+  count: 1035
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_009B90:
+  type: OOT:ARRAY
+  offset: 0x009B90
+  symbol: tent_room_0Vtx_009B90
+  count: 182
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00A6F0:
+  type: OOT:ARRAY
+  offset: 0x00A6F0
+  symbol: tent_room_0Vtx_00A6F0
+  count: 183
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B260:
+  type: OOT:ARRAY
+  offset: 0x00B260
+  symbol: tent_room_0Vtx_00B260
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B2E0:
+  type: OOT:ARRAY
+  offset: 0x00B2E0
+  symbol: tent_room_0Vtx_00B2E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B360:
+  type: OOT:ARRAY
+  offset: 0x00B360
+  symbol: tent_room_0Vtx_00B360
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B3E0:
+  type: OOT:ARRAY
+  offset: 0x00B3E0
+  symbol: tent_room_0Vtx_00B3E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B460:
+  type: OOT:ARRAY
+  offset: 0x00B460
+  symbol: tent_room_0Vtx_00B460
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B4E0:
+  type: OOT:ARRAY
+  offset: 0x00B4E0
+  symbol: tent_room_0Vtx_00B4E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B560:
+  type: OOT:ARRAY
+  offset: 0x00B560
+  symbol: tent_room_0Vtx_00B560
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B5E0:
+  type: OOT:ARRAY
+  offset: 0x00B5E0
+  symbol: tent_room_0Vtx_00B5E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B660:
+  type: OOT:ARRAY
+  offset: 0x00B660
+  symbol: tent_room_0Vtx_00B660
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0Vtx_00B6E0:
+  type: OOT:ARRAY
+  offset: 0x00B6E0
+  symbol: tent_room_0Vtx_00B6E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+tent_room_0DL_00B760:
+  type: GFX
+  offset: 0x00B760
+  symbol: tent_room_0DL_00B760
+
+tent_room_0DL_00BB50:
+  type: GFX
+  offset: 0x00BB50
+  symbol: tent_room_0DL_00BB50
+
+tent_room_0DL_00BBF0:
+  type: GFX
+  offset: 0x00BBF0
+  symbol: tent_room_0DL_00BBF0
+
+tent_room_0DL_00BF90:
+  type: GFX
+  offset: 0x00BF90
+  symbol: tent_room_0DL_00BF90
+
+tent_room_0DL_00C578:
+  type: GFX
+  offset: 0x00C578
+  symbol: tent_room_0DL_00C578
+
+tent_room_0DL_00C608:
+  type: GFX
+  offset: 0x00C608
+  symbol: tent_room_0DL_00C608
+
+tent_room_0DL_00CB50:
+  type: GFX
+  offset: 0x00CB50
+  symbol: tent_room_0DL_00CB50
+
+tent_room_0DL_00CBE8:
+  type: GFX
+  offset: 0x00CBE8
+  symbol: tent_room_0DL_00CBE8
+
+tent_room_0DL_00D998:
+  type: GFX
+  offset: 0x00D998
+  symbol: tent_room_0DL_00D998
+
+tent_room_0DL_00DBE8:
+  type: GFX
+  offset: 0x00DBE8
+  symbol: tent_room_0DL_00DBE8
+
+tent_room_0DL_00DE30:
+  type: GFX
+  offset: 0x00DE30
+  symbol: tent_room_0DL_00DE30

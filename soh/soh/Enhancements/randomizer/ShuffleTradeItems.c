@@ -1,3 +1,4 @@
+#include "ShuffleTradeItems.h"
 #include "functions.h"
 #include "variables.h"
 #include "macros.h"

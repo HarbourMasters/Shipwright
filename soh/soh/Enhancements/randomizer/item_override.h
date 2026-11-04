@@ -15,10 +15,13 @@ class ItemOverride {
     RandomizerGet& RefLooksLike();
     Text& GetTrickName();
     void SetTrickName(Text trickName);
+    Text& GetTrickArticle();
+    void SetTrickArticle(Text trickArticle);
 
   private:
     RandomizerCheck mLocation;
     RandomizerGet mLooksLike;
     Text mTrickName;
+    Text mTrickArticle;
 };
 } // namespace Rando

@@ -1,5 +1,9 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
@@ -33,14 +37,33 @@ void EnCow_MoveForRandomizer(EnCow* enCow, PlayState* play) {
     }
 }
 
+static CheckIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
+    CheckIdentity cowIdentity;
+
+    cowIdentity.randomizerInf = RAND_INF_MAX;
+    cowIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = 0x00;
+    // Only need to pass params if in a scene with two cows
+    if (sceneNum == SCENE_GROTTOS || sceneNum == SCENE_STABLE || sceneNum == SCENE_LON_LON_BUILDINGS) {
+        actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+    }
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_COW, sceneNum, actorParams);
+
+    IdentifyCheck(&cowIdentity, location);
+
+    return cowIdentity;
+}
+
 void RegisterShuffleCows() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_COWS);
 
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_COW, shouldRegister, {
         EnCow* enCow = va_arg(args, EnCow*);
-        CheckIdentity cowIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCow(
-            gPlayState->sceneNum, static_cast<int32_t>(enCow->actor.world.pos.x),
-            static_cast<int32_t>(enCow->actor.world.pos.z));
+        CheckIdentity cowIdentity = IdentifyCow(gPlayState->sceneNum, static_cast<int32_t>(enCow->actor.world.pos.x),
+                                                static_cast<int32_t>(enCow->actor.world.pos.z));
         // Has this cow already rewarded an item?
         if (!Flags_GetRandomizerInf(cowIdentity.randomizerInf)) {
             Flags_SetRandomizerInf(cowIdentity.randomizerInf);

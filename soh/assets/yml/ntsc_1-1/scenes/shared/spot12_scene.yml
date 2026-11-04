@@ -1,0 +1,143 @@
+:config:
+  segments:
+    - [ 2, 0x01803FD0 ]
+
+  external_files:
+    - ntsc_1-1/scenes/shared/spot12_sceneSet_0059B0.yml
+    - ntsc_1-1/scenes/shared/spot12_sceneSet_005CB0.yml
+    - ntsc_1-1/scenes/shared/spot12_sceneSet_005FB0.yml
+    - ntsc_1-1/scenes/shared/spot12_sceneSet_0061D0.yml
+    - ntsc_1-1/scenes/shared/spot12_sceneSet_0062C0.yml
+spot12_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot12_scene
+
+gGerudoFortressFirstCaptureCs:
+  type: OOT:CUTSCENE
+  offset: 0x55C0
+  symbol: gGerudoFortressFirstCaptureCs
+
+gGerudoFortressIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x6490
+  symbol: gGerudoFortressIntroCs
+
+gSpot12_009678Tex:
+  type: TEXTURE
+  offset: 0x9678
+  symbol: gSpot12_009678Tex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gSpot12_00DE78Tex:
+  type: TEXTURE
+  offset: 0xDE78
+  symbol: gSpot12_00DE78Tex
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot12_sceneTLUT_006650:
+  type: TEXTURE
+  offset: 0x6650
+  symbol: spot12_sceneTLUT_006650
+  format: RGBA16
+  width: 4
+  height: 4
+
+spot12_sceneTex_006678:
+  type: TEXTURE
+  offset: 0x6678
+  symbol: spot12_sceneTex_006678
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot12_sceneTex_007678:
+  type: TEXTURE
+  offset: 0x7678
+  symbol: spot12_sceneTex_007678
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot12_sceneTex_008678:
+  type: TEXTURE
+  offset: 0x8678
+  symbol: spot12_sceneTex_008678
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot12_sceneTex_008E78:
+  type: TEXTURE
+  offset: 0x8E78
+  symbol: spot12_sceneTex_008E78
+  format: CI4
+  width: 32
+  height: 128
+  tlut: 0x6650
+
+spot12_sceneTex_00A678:
+  type: TEXTURE
+  offset: 0xA678
+  symbol: spot12_sceneTex_00A678
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot12_sceneTex_00B678:
+  type: TEXTURE
+  offset: 0xB678
+  symbol: spot12_sceneTex_00B678
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot12_sceneTex_00BE78:
+  type: TEXTURE
+  offset: 0xBE78
+  symbol: spot12_sceneTex_00BE78
+  format: RGBA16
+  width: 64
+  height: 16
+
+spot12_sceneTex_00C678:
+  type: TEXTURE
+  offset: 0xC678
+  symbol: spot12_sceneTex_00C678
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot12_sceneTex_00CE78:
+  type: TEXTURE
+  offset: 0xCE78
+  symbol: spot12_sceneTex_00CE78
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot12_sceneTex_00D678:
+  type: TEXTURE
+  offset: 0xD678
+  symbol: spot12_sceneTex_00D678
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot12_sceneTex_00EE78:
+  type: TEXTURE
+  offset: 0xEE78
+  symbol: spot12_sceneTex_00EE78
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+spot12_sceneCollisionHeader_005030:
+  type: OOT:COLLISION
+  offset: 0x005030
+  symbol: spot12_sceneCollisionHeader_005030

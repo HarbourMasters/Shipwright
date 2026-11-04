@@ -1,0 +1,836 @@
+:config:
+  segments:
+    - [ 6, 0x00E68680 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x00E68680 ]
+    - [ 9, 0x00E68680 ]
+    - [ 10, 0x00E68680 ]
+    - [ 11, 0x00E68680 ]
+    - [ 12, 0x00E68680 ]
+    - [ 13, 0x00E68680 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gFireTempleBigFireWallDL:
+  type: GFX
+  offset: 0xDB20
+  symbol: gFireTempleBigFireWallDL
+
+gFireTempleBigVerticalFlame0Tex:
+  type: TEXTURE
+  offset: 0x12120
+  symbol: gFireTempleBigVerticalFlame0Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame1Tex:
+  type: TEXTURE
+  offset: 0x128A0
+  symbol: gFireTempleBigVerticalFlame1Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame2Tex:
+  type: TEXTURE
+  offset: 0x13020
+  symbol: gFireTempleBigVerticalFlame2Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame3Tex:
+  type: TEXTURE
+  offset: 0x137A0
+  symbol: gFireTempleBigVerticalFlame3Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame4Tex:
+  type: TEXTURE
+  offset: 0x13F20
+  symbol: gFireTempleBigVerticalFlame4Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame5Tex:
+  type: TEXTURE
+  offset: 0x146A0
+  symbol: gFireTempleBigVerticalFlame5Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame6Tex:
+  type: TEXTURE
+  offset: 0x14E20
+  symbol: gFireTempleBigVerticalFlame6Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame7Tex:
+  type: TEXTURE
+  offset: 0x155A0
+  symbol: gFireTempleBigVerticalFlame7Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlameDL:
+  type: GFX
+  offset: 0xCA10
+  symbol: gFireTempleBigVerticalFlameDL
+
+gFireTempleBombableDoorFrameDL:
+  type: GFX
+  offset: 0xF890
+  symbol: gFireTempleBombableDoorFrameDL
+
+gFireTempleBombableWallCol:
+  type: OOT:COLLISION
+  offset: 0xD878
+  symbol: gFireTempleBombableWallCol
+
+gFireTempleBombableWallDL:
+  type: GFX
+  offset: 0xC038
+  symbol: gFireTempleBombableWallDL
+
+gFireTempleCrackedStoneFloorCol:
+  type: OOT:COLLISION
+  offset: 0xD800
+  symbol: gFireTempleCrackedStoneFloorCol
+
+gFireTempleCrackedStoneFloorDL:
+  type: GFX
+  offset: 0xB9C0
+  symbol: gFireTempleCrackedStoneFloorDL
+
+gFireTempleDoorBackDL:
+  type: GFX
+  offset: 0x11F20
+  symbol: gFireTempleDoorBackDL
+
+gFireTempleDoorFrontDL:
+  type: GFX
+  offset: 0x10CB0
+  symbol: gFireTempleDoorFrontDL
+
+gFireTempleDoorKillerTex:
+  type: TEXTURE
+  offset: 0xE5A0
+  symbol: gFireTempleDoorKillerTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gFireTempleDoorWithHandleLeftDL:
+  type: GFX
+  offset: 0xF998
+  symbol: gFireTempleDoorWithHandleLeftDL
+
+gFireTempleDoorWithHandleRightDL:
+  type: GFX
+  offset: 0xF938
+  symbol: gFireTempleDoorWithHandleRightDL
+
+gFireTempleFireball0Tex:
+  type: TEXTURE
+  offset: 0x15D20
+  symbol: gFireTempleFireball0Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFireTempleFireball1Tex:
+  type: TEXTURE
+  offset: 0x16120
+  symbol: gFireTempleFireball1Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFireTempleFireball2Tex:
+  type: TEXTURE
+  offset: 0x16520
+  symbol: gFireTempleFireball2Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFireTempleFireball3Tex:
+  type: TEXTURE
+  offset: 0x16920
+  symbol: gFireTempleFireball3Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFireTempleFireball4Tex:
+  type: TEXTURE
+  offset: 0x16D20
+  symbol: gFireTempleFireball4Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFireTempleFireball5Tex:
+  type: TEXTURE
+  offset: 0x17120
+  symbol: gFireTempleFireball5Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFireTempleFireball6Tex:
+  type: TEXTURE
+  offset: 0x17520
+  symbol: gFireTempleFireball6Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFireTempleFireball7Tex:
+  type: TEXTURE
+  offset: 0x17920
+  symbol: gFireTempleFireball7Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFireTempleFireballDL:
+  type: GFX
+  offset: 0xDC30
+  symbol: gFireTempleFireballDL
+
+gFireTempleFireballUpperHalfDL:
+  type: GFX
+  offset: 0xDA80
+  symbol: gFireTempleFireballUpperHalfDL
+
+gFireTempleFlareDancerPlatformCol:
+  type: OOT:COLLISION
+  offset: 0xE568
+  symbol: gFireTempleFlareDancerPlatformCol
+
+gFireTempleFlareDancerPlatformDL:
+  type: GFX
+  offset: 0xA7E0
+  symbol: gFireTempleFlareDancerPlatformDL
+
+gFireTempleHammerableTotemBodyDL:
+  type: GFX
+  offset: 0xBBF0
+  symbol: gFireTempleHammerableTotemBodyDL
+
+gFireTempleHammerableTotemCol:
+  type: OOT:COLLISION
+  offset: 0xDA10
+  symbol: gFireTempleHammerableTotemCol
+
+gFireTempleHammerableTotemHeadDL:
+  type: GFX
+  offset: 0xBDF0
+  symbol: gFireTempleHammerableTotemHeadDL
+
+gFireTempleHookshotElevatorCol:
+  type: OOT:COLLISION
+  offset: 0xE1E8
+  symbol: gFireTempleHookshotElevatorCol
+
+gFireTempleHookshotElevatorDL:
+  type: GFX
+  offset: 0xB630
+  symbol: gFireTempleHookshotElevatorDL
+
+gFireTempleLargeBombableWallCol:
+  type: OOT:COLLISION
+  offset: 0xD8F8
+  symbol: gFireTempleLargeBombableWallCol
+
+gFireTempleLargeBombableWallDL:
+  type: GFX
+  offset: 0xB900
+  symbol: gFireTempleLargeBombableWallDL
+
+gFireTempleMetalFence2Col:
+  type: OOT:COLLISION
+  offset: 0xE430
+  symbol: gFireTempleMetalFence2Col
+
+gFireTempleMetalFence2DL:
+  type: GFX
+  offset: 0xBB58
+  symbol: gFireTempleMetalFence2DL
+
+gFireTempleMetalFenceCol:
+  type: OOT:COLLISION
+  offset: 0xE380
+  symbol: gFireTempleMetalFenceCol
+
+gFireTempleMetalFenceDL:
+  type: GFX
+  offset: 0xBFA8
+  symbol: gFireTempleMetalFenceDL
+
+gFireTempleMetalFenceWithSlantCol:
+  type: OOT:COLLISION
+  offset: 0xE2CC
+  symbol: gFireTempleMetalFenceWithSlantCol
+
+gFireTempleMetalFenceWithSlantDL:
+  type: GFX
+  offset: 0xC798
+  symbol: gFireTempleMetalFenceWithSlantDL
+
+gFireTemplePillarInsertedInGroundCol:
+  type: OOT:COLLISION
+  offset: 0xD188
+  symbol: gFireTemplePillarInsertedInGroundCol
+
+gFireTemplePillarInsertedInGroundDL:
+  type: GFX
+  offset: 0xC838
+  symbol: gFireTemplePillarInsertedInGroundDL
+
+gFireTempleSpinningFlamethrowerCol:
+  type: OOT:COLLISION
+  offset: 0xD5C0
+  symbol: gFireTempleSpinningFlamethrowerCol
+
+gFireTempleSpinningFlamethrowerDL:
+  type: GFX
+  offset: 0xAD00
+  symbol: gFireTempleSpinningFlamethrowerDL
+
+gFireTempleStationaryFlamethrowerShortCol:
+  type: OOT:COLLISION
+  offset: 0xCC90
+  symbol: gFireTempleStationaryFlamethrowerShortCol
+
+gFireTempleStationaryFlamethrowerShortDL:
+  type: GFX
+  offset: 0xB0F8
+  symbol: gFireTempleStationaryFlamethrowerShortDL
+
+gFireTempleStationaryFlamethrowerTallCol:
+  type: OOT:COLLISION
+  offset: 0xCDA0
+  symbol: gFireTempleStationaryFlamethrowerTallCol
+
+gFireTempleStationaryFlamethrowerTallDL:
+  type: GFX
+  offset: 0xABC8
+  symbol: gFireTempleStationaryFlamethrowerTallDL
+
+gFireTempleStoneBlock1Col:
+  type: OOT:COLLISION
+  offset: 0xCB80
+  symbol: gFireTempleStoneBlock1Col
+
+gFireTempleStoneBlock1DL:
+  type: GFX
+  offset: 0xC100
+  symbol: gFireTempleStoneBlock1DL
+
+gFireTempleStoneBlock2Col:
+  type: OOT:COLLISION
+  offset: 0xDF78
+  symbol: gFireTempleStoneBlock2Col
+
+gFireTempleStoneBlock2DL:
+  type: GFX
+  offset: 0xC1F0
+  symbol: gFireTempleStoneBlock2DL
+
+gFireTempleStonePlatform1Col:
+  type: OOT:COLLISION
+  offset: 0x120E8
+  symbol: gFireTempleStonePlatform1Col
+
+gFireTempleStonePlatform1DL:
+  type: GFX
+  offset: 0xC338
+  symbol: gFireTempleStonePlatform1DL
+
+gFireTempleStonePlatform2Col:
+  type: OOT:COLLISION
+  offset: 0xFAE8
+  symbol: gFireTempleStonePlatform2Col
+
+gFireTempleStonePlatform2DL:
+  type: GFX
+  offset: 0xC470
+  symbol: gFireTempleStonePlatform2DL
+
+gFireTempleStoneStep1Col:
+  type: OOT:COLLISION
+  offset: 0xDE44
+  symbol: gFireTempleStoneStep1Col
+
+gFireTempleStoneStep1DL:
+  type: GFX
+  offset: 0xA668
+  symbol: gFireTempleStoneStep1DL
+
+gFireTempleStoneStep2Col:
+  type: OOT:COLLISION
+  offset: 0xDD1C
+  symbol: gFireTempleStoneStep2Col
+
+gFireTempleStoneStep2DL:
+  type: GFX
+  offset: 0xA548
+  symbol: gFireTempleStoneStep2DL
+
+gFireTempleTallestPillarAboveRoomBeforeBossCol:
+  type: OOT:COLLISION
+  offset: 0xD054
+  symbol: gFireTempleTallestPillarAboveRoomBeforeBossCol
+
+gFireTempleTallestPillarAboveRoomBeforeBossDL:
+  type: GFX
+  offset: 0xA240
+  symbol: gFireTempleTallestPillarAboveRoomBeforeBossDL
+
+object_hidan_objectsTLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_hidan_objectsTLUT_000000
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hidan_objectsTLUT_000020:
+  type: TEXTURE
+  offset: 0x20
+  symbol: object_hidan_objectsTLUT_000020
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hidan_objectsTex_000040:
+  type: TEXTURE
+  offset: 0x40
+  symbol: object_hidan_objectsTex_000040
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x0
+
+object_hidan_objectsTex_000240:
+  type: TEXTURE
+  offset: 0x240
+  symbol: object_hidan_objectsTex_000240
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hidan_objectsTex_000A40:
+  type: TEXTURE
+  offset: 0xA40
+  symbol: object_hidan_objectsTex_000A40
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_hidan_objectsTex_001A40:
+  type: TEXTURE
+  offset: 0x1A40
+  symbol: object_hidan_objectsTex_001A40
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_hidan_objectsTex_002A40:
+  type: TEXTURE
+  offset: 0x2A40
+  symbol: object_hidan_objectsTex_002A40
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_hidan_objectsTex_003A40:
+  type: TEXTURE
+  offset: 0x3A40
+  symbol: object_hidan_objectsTex_003A40
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hidan_objectsTex_004240:
+  type: TEXTURE
+  offset: 0x4240
+  symbol: object_hidan_objectsTex_004240
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_hidan_objectsTex_004A40:
+  type: TEXTURE
+  offset: 0x4A40
+  symbol: object_hidan_objectsTex_004A40
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hidan_objectsTex_005240:
+  type: TEXTURE
+  offset: 0x5240
+  symbol: object_hidan_objectsTex_005240
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x0
+
+object_hidan_objectsTex_005640:
+  type: TEXTURE
+  offset: 0x5640
+  symbol: object_hidan_objectsTex_005640
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x0
+
+object_hidan_objectsTex_005A40:
+  type: TEXTURE
+  offset: 0x5A40
+  symbol: object_hidan_objectsTex_005A40
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x20
+
+object_hidan_objectsTex_005E40:
+  type: TEXTURE
+  offset: 0x5E40
+  symbol: object_hidan_objectsTex_005E40
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hidan_objectsTex_006640:
+  type: TEXTURE
+  offset: 0x6640
+  symbol: object_hidan_objectsTex_006640
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x0
+
+object_hidan_objectsTex_006A40:
+  type: TEXTURE
+  offset: 0x6A40
+  symbol: object_hidan_objectsTex_006A40
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x0
+
+object_hidan_objectsTex_006C40:
+  type: TEXTURE
+  offset: 0x6C40
+  symbol: object_hidan_objectsTex_006C40
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x0
+
+object_hidan_objectsTex_006E40:
+  type: TEXTURE
+  offset: 0x6E40
+  symbol: object_hidan_objectsTex_006E40
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hidan_objectsTex_00FB20:
+  type: TEXTURE
+  offset: 0xFB20
+  symbol: object_hidan_objectsTex_00FB20
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_hidan_objectsTex_010D90:
+  type: TEXTURE
+  offset: 0x10D90
+  symbol: object_hidan_objectsTex_010D90
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_hidan_objectsVtx_007640:
+  type: OOT:ARRAY
+  offset: 0x007640
+  symbol: object_hidan_objectsVtx_007640
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_007B80:
+  type: OOT:ARRAY
+  offset: 0x007B80
+  symbol: object_hidan_objectsVtx_007B80
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_007C20:
+  type: OOT:ARRAY
+  offset: 0x007C20
+  symbol: object_hidan_objectsVtx_007C20
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_007D70:
+  type: OOT:ARRAY
+  offset: 0x007D70
+  symbol: object_hidan_objectsVtx_007D70
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_008090:
+  type: OOT:ARRAY
+  offset: 0x008090
+  symbol: object_hidan_objectsVtx_008090
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_0082B0:
+  type: OOT:ARRAY
+  offset: 0x0082B0
+  symbol: object_hidan_objectsVtx_0082B0
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_008880:
+  type: OOT:ARRAY
+  offset: 0x008880
+  symbol: object_hidan_objectsVtx_008880
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_008D50:
+  type: OOT:ARRAY
+  offset: 0x008D50
+  symbol: object_hidan_objectsVtx_008D50
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009070:
+  type: OOT:ARRAY
+  offset: 0x009070
+  symbol: object_hidan_objectsVtx_009070
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_0090B0:
+  type: OOT:ARRAY
+  offset: 0x0090B0
+  symbol: object_hidan_objectsVtx_0090B0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009270:
+  type: OOT:ARRAY
+  offset: 0x009270
+  symbol: object_hidan_objectsVtx_009270
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_0092C0:
+  type: OOT:ARRAY
+  offset: 0x0092C0
+  symbol: object_hidan_objectsVtx_0092C0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009500:
+  type: OOT:ARRAY
+  offset: 0x009500
+  symbol: object_hidan_objectsVtx_009500
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009740:
+  type: OOT:ARRAY
+  offset: 0x009740
+  symbol: object_hidan_objectsVtx_009740
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009780:
+  type: OOT:ARRAY
+  offset: 0x009780
+  symbol: object_hidan_objectsVtx_009780
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_0097E0:
+  type: OOT:ARRAY
+  offset: 0x0097E0
+  symbol: object_hidan_objectsVtx_0097E0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009930:
+  type: OOT:ARRAY
+  offset: 0x009930
+  symbol: object_hidan_objectsVtx_009930
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009AD0:
+  type: OOT:ARRAY
+  offset: 0x009AD0
+  symbol: object_hidan_objectsVtx_009AD0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009C20:
+  type: OOT:ARRAY
+  offset: 0x009C20
+  symbol: object_hidan_objectsVtx_009C20
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009E90:
+  type: OOT:ARRAY
+  offset: 0x009E90
+  symbol: object_hidan_objectsVtx_009E90
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_009F20:
+  type: OOT:ARRAY
+  offset: 0x009F20
+  symbol: object_hidan_objectsVtx_009F20
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_00C9D0:
+  type: OOT:ARRAY
+  offset: 0x00C9D0
+  symbol: object_hidan_objectsVtx_00C9D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_00DA40:
+  type: OOT:ARRAY
+  offset: 0x00DA40
+  symbol: object_hidan_objectsVtx_00DA40
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_00DAE0:
+  type: OOT:ARRAY
+  offset: 0x00DAE0
+  symbol: object_hidan_objectsVtx_00DAE0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_00DBF0:
+  type: OOT:ARRAY
+  offset: 0x00DBF0
+  symbol: object_hidan_objectsVtx_00DBF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_00F5A0:
+  type: OOT:ARRAY
+  offset: 0x00F5A0
+  symbol: object_hidan_objectsVtx_00F5A0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_00F6A0:
+  type: OOT:ARRAY
+  offset: 0x00F6A0
+  symbol: object_hidan_objectsVtx_00F6A0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_00F7A0:
+  type: OOT:ARRAY
+  offset: 0x00F7A0
+  symbol: object_hidan_objectsVtx_00F7A0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_010B20:
+  type: OOT:ARRAY
+  offset: 0x010B20
+  symbol: object_hidan_objectsVtx_010B20
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hidan_objectsVtx_011D90:
+  type: OOT:ARRAY
+  offset: 0x011D90
+  symbol: object_hidan_objectsVtx_011D90
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

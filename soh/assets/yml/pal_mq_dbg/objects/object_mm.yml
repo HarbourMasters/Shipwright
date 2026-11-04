@@ -1,0 +1,454 @@
+:config:
+  segments:
+    - [ 6, 0x017CB000 ]
+
+gRunningManExcitedAnim:
+  type: OOT:ANIMATION
+  offset: 0x73A0
+  symbol: gRunningManExcitedAnim
+
+gRunningManHappyAnim:
+  type: OOT:ANIMATION
+  offset: 0x8060
+  symbol: gRunningManHappyAnim
+
+gRunningManMouthClosedTex:
+  type: TEXTURE
+  offset: 0xC30
+  symbol: gRunningManMouthClosedTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x730
+
+gRunningManMouthOpenTex:
+  type: TEXTURE
+  offset: 0xE30
+  symbol: gRunningManMouthOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x730
+
+gRunningManRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x0718
+  symbol: gRunningManRunAnim
+
+gRunningManSitStandAnim:
+  type: OOT:ANIMATION
+  offset: 0x6940
+  symbol: gRunningManSitStandAnim
+
+gRunningManSitWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x6C50
+  symbol: gRunningManSitWaitAnim
+
+gRunningManSkel:
+  type: OOT:SKELETON
+  offset: 0x5E18
+  symbol: gRunningManSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gRunningManSprintAnim:
+  type: OOT:ANIMATION
+  offset: 0x0468
+  symbol: gRunningManSprintAnim
+
+gRunningManTLUT:
+  type: TEXTURE
+  offset: 0x730
+  symbol: gRunningManTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mmTex_000930:
+  type: TEXTURE
+  offset: 0x930
+  symbol: object_mmTex_000930
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x730
+
+object_mmTex_000970:
+  type: TEXTURE
+  offset: 0x970
+  symbol: object_mmTex_000970
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x730
+
+object_mmTex_0009B0:
+  type: TEXTURE
+  offset: 0x9B0
+  symbol: object_mmTex_0009B0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x730
+
+object_mmTex_0009F0:
+  type: TEXTURE
+  offset: 0x9F0
+  symbol: object_mmTex_0009F0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x730
+
+object_mmTex_000A30:
+  type: TEXTURE
+  offset: 0xA30
+  symbol: object_mmTex_000A30
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x730
+
+object_mmTex_000B30:
+  type: TEXTURE
+  offset: 0xB30
+  symbol: object_mmTex_000B30
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x730
+
+object_mmTex_001030:
+  type: TEXTURE
+  offset: 0x1030
+  symbol: object_mmTex_001030
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x730
+
+object_mmTex_001130:
+  type: TEXTURE
+  offset: 0x1130
+  symbol: object_mmTex_001130
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x730
+
+object_mmTex_001330:
+  type: TEXTURE
+  offset: 0x1330
+  symbol: object_mmTex_001330
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x730
+
+
+object_mmVtx_001430:
+  type: OOT:ARRAY
+  offset: 0x001430
+  symbol: object_mmVtx_001430
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_001E10:
+  type: OOT:ARRAY
+  offset: 0x001E10
+  symbol: object_mmVtx_001E10
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_0020D0:
+  type: OOT:ARRAY
+  offset: 0x0020D0
+  symbol: object_mmVtx_0020D0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_002310:
+  type: OOT:ARRAY
+  offset: 0x002310
+  symbol: object_mmVtx_002310
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_0024B0:
+  type: OOT:ARRAY
+  offset: 0x0024B0
+  symbol: object_mmVtx_0024B0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_002770:
+  type: OOT:ARRAY
+  offset: 0x002770
+  symbol: object_mmVtx_002770
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_0029B0:
+  type: OOT:ARRAY
+  offset: 0x0029B0
+  symbol: object_mmVtx_0029B0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_002B50:
+  type: OOT:ARRAY
+  offset: 0x002B50
+  symbol: object_mmVtx_002B50
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_002FD0:
+  type: OOT:ARRAY
+  offset: 0x002FD0
+  symbol: object_mmVtx_002FD0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_003230:
+  type: OOT:ARRAY
+  offset: 0x003230
+  symbol: object_mmVtx_003230
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_003520:
+  type: OOT:ARRAY
+  offset: 0x003520
+  symbol: object_mmVtx_003520
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_003770:
+  type: OOT:ARRAY
+  offset: 0x003770
+  symbol: object_mmVtx_003770
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_0039D0:
+  type: OOT:ARRAY
+  offset: 0x0039D0
+  symbol: object_mmVtx_0039D0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_003CC0:
+  type: OOT:ARRAY
+  offset: 0x003CC0
+  symbol: object_mmVtx_003CC0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mmVtx_003F10:
+  type: OOT:ARRAY
+  offset: 0x003F10
+  symbol: object_mmVtx_003F10
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gRunningManSkelLimbsLimb_005D7CDL_004010:
+  type: GFX
+  offset: 0x004010
+  symbol: gRunningManSkelLimbsLimb_005D7CDL_004010
+
+gRunningManSkelLimbsLimb_005DD0DL_004348:
+  type: GFX
+  offset: 0x004348
+  symbol: gRunningManSkelLimbsLimb_005DD0DL_004348
+
+gRunningManSkelLimbsLimb_005DACDL_004A68:
+  type: GFX
+  offset: 0x004A68
+  symbol: gRunningManSkelLimbsLimb_005DACDL_004A68
+
+gRunningManSkelLimbsLimb_005DB8DL_004B98:
+  type: GFX
+  offset: 0x004B98
+  symbol: gRunningManSkelLimbsLimb_005DB8DL_004B98
+
+gRunningManSkelLimbsLimb_005DC4DL_004CC8:
+  type: GFX
+  offset: 0x004CC8
+  symbol: gRunningManSkelLimbsLimb_005DC4DL_004CC8
+
+gRunningManSkelLimbsLimb_005D88DL_004EC8:
+  type: GFX
+  offset: 0x004EC8
+  symbol: gRunningManSkelLimbsLimb_005D88DL_004EC8
+
+gRunningManSkelLimbsLimb_005D94DL_004FF8:
+  type: GFX
+  offset: 0x004FF8
+  symbol: gRunningManSkelLimbsLimb_005D94DL_004FF8
+
+gRunningManSkelLimbsLimb_005DA0DL_005128:
+  type: GFX
+  offset: 0x005128
+  symbol: gRunningManSkelLimbsLimb_005DA0DL_005128
+
+gRunningManSkelLimbsLimb_005D28DL_005328:
+  type: GFX
+  offset: 0x005328
+  symbol: gRunningManSkelLimbsLimb_005D28DL_005328
+
+gRunningManSkelLimbsLimb_005D58DL_0053C0:
+  type: GFX
+  offset: 0x0053C0
+  symbol: gRunningManSkelLimbsLimb_005D58DL_0053C0
+
+gRunningManSkelLimbsLimb_005D64DL_005620:
+  type: GFX
+  offset: 0x005620
+  symbol: gRunningManSkelLimbsLimb_005D64DL_005620
+
+gRunningManSkelLimbsLimb_005D70DL_005788:
+  type: GFX
+  offset: 0x005788
+  symbol: gRunningManSkelLimbsLimb_005D70DL_005788
+
+gRunningManSkelLimbsLimb_005D34DL_0058B8:
+  type: GFX
+  offset: 0x0058B8
+  symbol: gRunningManSkelLimbsLimb_005D34DL_0058B8
+
+gRunningManSkelLimbsLimb_005D40DL_005A90:
+  type: GFX
+  offset: 0x005A90
+  symbol: gRunningManSkelLimbsLimb_005D40DL_005A90
+
+gRunningManSkelLimbsLimb_005D4CDL_005BF8:
+  type: GFX
+  offset: 0x005BF8
+  symbol: gRunningManSkelLimbsLimb_005D4CDL_005BF8
+
+gRunningManSkelLimbsLimb_005D28:
+  type: OOT:LIMB
+  offset: 0x005D28
+  symbol: gRunningManSkelLimbsLimb_005D28
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D34:
+  type: OOT:LIMB
+  offset: 0x005D34
+  symbol: gRunningManSkelLimbsLimb_005D34
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D40:
+  type: OOT:LIMB
+  offset: 0x005D40
+  symbol: gRunningManSkelLimbsLimb_005D40
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D4C:
+  type: OOT:LIMB
+  offset: 0x005D4C
+  symbol: gRunningManSkelLimbsLimb_005D4C
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D58:
+  type: OOT:LIMB
+  offset: 0x005D58
+  symbol: gRunningManSkelLimbsLimb_005D58
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D64:
+  type: OOT:LIMB
+  offset: 0x005D64
+  symbol: gRunningManSkelLimbsLimb_005D64
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D70:
+  type: OOT:LIMB
+  offset: 0x005D70
+  symbol: gRunningManSkelLimbsLimb_005D70
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D7C:
+  type: OOT:LIMB
+  offset: 0x005D7C
+  symbol: gRunningManSkelLimbsLimb_005D7C
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D88:
+  type: OOT:LIMB
+  offset: 0x005D88
+  symbol: gRunningManSkelLimbsLimb_005D88
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005D94:
+  type: OOT:LIMB
+  offset: 0x005D94
+  symbol: gRunningManSkelLimbsLimb_005D94
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005DA0:
+  type: OOT:LIMB
+  offset: 0x005DA0
+  symbol: gRunningManSkelLimbsLimb_005DA0
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005DAC:
+  type: OOT:LIMB
+  offset: 0x005DAC
+  symbol: gRunningManSkelLimbsLimb_005DAC
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005DB8:
+  type: OOT:LIMB
+  offset: 0x005DB8
+  symbol: gRunningManSkelLimbsLimb_005DB8
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005DC4:
+  type: OOT:LIMB
+  offset: 0x005DC4
+  symbol: gRunningManSkelLimbsLimb_005DC4
+  limb_type: Standard
+
+gRunningManSkelLimbsLimb_005DD0:
+  type: OOT:LIMB
+  offset: 0x005DD0
+  symbol: gRunningManSkelLimbsLimb_005DD0
+  limb_type: Standard
+
+gRunningManSkelLimbs:
+  type: BLOB
+  offset: 0x5DDC
+  symbol: gRunningManSkelLimbs
+  size: 0

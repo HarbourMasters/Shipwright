@@ -1,0 +1,79 @@
+:config:
+  segments:
+    - [ 128, 0x00D04760 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00D04760 ]
+    - [ 9, 0x00D04760 ]
+    - [ 10, 0x00D04760 ]
+    - [ 11, 0x00D04760 ]
+    - [ 12, 0x00D04760 ]
+    - [ 13, 0x00D04760 ]
+  virtual: [ 0x80B40EC0, 0x00D04760 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+sNintendoLeftTex:
+  type: TEXTURE
+  offset: 0x20A0
+  symbol: sNintendoLeftTex
+  format: IA8
+  width: 64
+  height: 48
+
+sNintendoRightTex:
+  type: TEXTURE
+  offset: 0x2CA0
+  symbol: sNintendoRightTex
+  format: IA8
+  width: 64
+  height: 48
+
+sOcarinaOfTimeTex:
+  type: TEXTURE
+  offset: 0x1220
+  symbol: sOcarinaOfTimeTex
+  format: IA8
+  width: 112
+  height: 16
+
+sPresentedByNintendoDL:
+  type: GFX
+  offset: 0x3F60
+  symbol: sPresentedByNintendoDL
+
+sPresentedByTex:
+  type: TEXTURE
+  offset: 0x38A0
+  symbol: sPresentedByTex
+  format: IA8
+  width: 96
+  height: 16
+
+sTheEndTex:
+  type: TEXTURE
+  offset: 0x1920
+  symbol: sTheEndTex
+  format: IA8
+  width: 80
+  height: 24
+
+sTheLegendOfZeldaTex:
+  type: TEXTURE
+  offset: 0x6E0
+  symbol: sTheLegendOfZeldaTex
+  format: IA8
+  width: 120
+  height: 24
+
+sTriforceDL:
+  type: GFX
+  offset: 0x3F00
+  symbol: sTriforceDL
+
+sTriforceVtx:
+  type: OOT:ARRAY
+  offset: 0x3EA0
+  symbol: sTriforceVtx
+  count: 6
+  array_type: VTX
+

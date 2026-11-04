@@ -1,0 +1,33 @@
+:config:
+  segments:
+    - [ 3, 0x01BCC0B0 ]
+    - [ 2, 0x01BCBE20 ]
+  directory: scenes/shared/entra_n_scene
+  external_files:
+    - ntsc_1-1/scenes/shared/entra_n_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+
+entra_n_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: entra_n_room_0
+
+
+entra_n_room_0Vtx_0000A0:
+  type: OOT:ARRAY
+  offset: 0x0000A0
+  symbol: entra_n_room_0Vtx_0000A0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+entra_n_room_0DL_0002A0:
+  type: GFX
+  offset: 0x0002A0
+  symbol: entra_n_room_0DL_0002A0
+
+entra_n_room_0DL_000348:
+  type: GFX
+  offset: 0x000348
+  symbol: entra_n_room_0DL_000348

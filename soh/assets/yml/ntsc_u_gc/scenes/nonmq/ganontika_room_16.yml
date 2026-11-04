@@ -1,0 +1,74 @@
+:config:
+  segments:
+    - [ 3, 0x01A657C0 ]
+    - [ 2, 0x01A096F0 ]
+  directory: scenes/nonmq/ganontika_scene
+  external_files:
+    - ntsc_u_gc/scenes/nonmq/ganontika_scene.yml
+    - ntsc_u_gc/code/sys_matrix.yml
+
+ganontika_room_16:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganontika_room_16
+
+ganontika_room_16Tex_001630:
+  type: TEXTURE
+  offset: 0x1620
+  symbol: ganontika_room_16Tex_001630
+  format: RGBA16
+  width: 64
+  height: 32
+
+ganontika_room_16Tex_002630:
+  type: TEXTURE
+  offset: 0x2620
+  symbol: ganontika_room_16Tex_002630
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ganontika_scene
+  external_tlut_offset: 0x1F370
+
+
+ganontika_room_16Vtx_0000E0:
+  type: OOT:ARRAY
+  offset: 0x0000E0
+  symbol: ganontika_room_16Vtx_0000E0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_16DL_0006E0:
+  type: GFX
+  offset: 0x0006E0
+  symbol: ganontika_room_16DL_0006E0
+
+ganontika_room_16Vtx_000D50:
+  type: OOT:ARRAY
+  offset: 0x000D50
+  symbol: ganontika_room_16Vtx_000D50
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_16DL_000E70:
+  type: GFX
+  offset: 0x000E70
+  symbol: ganontika_room_16DL_000E70
+
+ganontika_room_16Vtx_000F48:
+  type: OOT:ARRAY
+  offset: 0x000F48
+  symbol: ganontika_room_16Vtx_000F48
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_16DL_001278:
+  type: GFX
+  offset: 0x001278
+  symbol: ganontika_room_16DL_001278

@@ -18,7 +18,7 @@ typedef struct EnHeishi2 {
     /* 0x0260 */ Vec3s unk_260;
     /* 0x0266 */ char unk_266[0x06];
     /* 0x026C */ Vec3s unk_26C; // padding inbetween these
-    /* 0x0274 */ Vec3f unk_274; 
+    /* 0x0274 */ Vec3f unk_274;
     /* 0x0280 */ Vec3f subCamEye; // camera related
     /* 0x028C */ Vec3f subCamAt; // camera related
     /* 0x0298 */ Vec3f subCamAtInit; // camera related

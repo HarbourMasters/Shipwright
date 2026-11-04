@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01EDEB30 ]
+  directory: scenes/shared/hakaana_ouke_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/hakaana_ouke_scene.yml
+
+hakaana_ouke_sceneSet_002390:
+  type: OOT:SCENE
+  offset: 0x2390
+  symbol: hakaana_ouke_sceneSet_002390
+  base_name: hakaana_ouke_scene

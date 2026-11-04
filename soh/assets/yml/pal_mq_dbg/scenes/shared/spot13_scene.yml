@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [ 2, 0x029FA000 ]
+
+spot13_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot13_scene
+
+spot13_sceneTex_003A30:
+  type: TEXTURE
+  offset: 0x3A30
+  symbol: spot13_sceneTex_003A30
+  format: RGBA16
+  width: 32
+  height: 16
+
+spot13_sceneTex_003E30:
+  type: TEXTURE
+  offset: 0x3E30
+  symbol: spot13_sceneTex_003E30
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot13_sceneTex_004E30:
+  type: TEXTURE
+  offset: 0x4E30
+  symbol: spot13_sceneTex_004E30
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+spot13_sceneCollisionHeader_003A00:
+  type: OOT:COLLISION
+  offset: 0x003A00
+  symbol: spot13_sceneCollisionHeader_003A00

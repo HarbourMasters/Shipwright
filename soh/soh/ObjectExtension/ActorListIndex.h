@@ -1,5 +1,4 @@
-#ifndef ACTOR_LIST_INDEX_H
-#define ACTOR_LIST_INDEX_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -12,5 +11,3 @@ void SetActorListIndex(const Actor* actor, int16_t index);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // ACTOR_LIST_INDEX_H

@@ -1,0 +1,87 @@
+:config:
+  segments:
+    - [ 6, 0x0119A0E0 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x0119A0E0 ]
+    - [ 9, 0x0119A0E0 ]
+    - [ 10, 0x0119A0E0 ]
+    - [ 11, 0x0119A0E0 ]
+    - [ 12, 0x0119A0E0 ]
+    - [ 13, 0x0119A0E0 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+object_lightswitch_DL_000260:
+  type: GFX
+  offset: 0x260
+  symbol: object_lightswitch_DL_000260
+
+object_lightswitch_DL_000398:
+  type: GFX
+  offset: 0x398
+  symbol: object_lightswitch_DL_000398
+
+object_lightswitch_DL_000408:
+  type: GFX
+  offset: 0x408
+  symbol: object_lightswitch_DL_000408
+
+object_lightswitch_Tex_000420:
+  type: TEXTURE
+  offset: 0x420
+  symbol: object_lightswitch_Tex_000420
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_lightswitch_Tex_000C20:
+  type: TEXTURE
+  offset: 0xC20
+  symbol: object_lightswitch_Tex_000C20
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_lightswitch_Tex_001420:
+  type: TEXTURE
+  offset: 0x1420
+  symbol: object_lightswitch_Tex_001420
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_lightswitch_Tex_001C20:
+  type: TEXTURE
+  offset: 0x1C20
+  symbol: object_lightswitch_Tex_001C20
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_lightswitchVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_lightswitchVtx_000000
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lightswitchVtx_0001E0:
+  type: OOT:ARRAY
+  offset: 0x0001E0
+  symbol: object_lightswitchVtx_0001E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lightswitchVtx_000220:
+  type: OOT:ARRAY
+  offset: 0x000220
+  symbol: object_lightswitchVtx_000220
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

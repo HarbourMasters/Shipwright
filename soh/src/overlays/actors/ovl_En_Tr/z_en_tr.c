@@ -7,7 +7,6 @@
 #include "z_en_tr.h"
 #include "objects/object_tr/object_tr.h"
 #include <assert.h>
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -122,17 +121,14 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnTr_Destroy(Actor* thisx, PlayState* play) {
-    EnTr* this = (EnTr*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTr_CrySpellcast(EnTr* this, PlayState* play) {
     if (this->timer == 11) {
         // Both cry in the title screen cutscene, but only Kotake in the in-game cutscene
-        if ((this->actor.params != TR_KOUME) || (gSaveContext.sceneSetupIndex == 6)) {
-            Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_VOICE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        if ((this->actor.params != TR_KOUME) || (gSaveContext.sceneLayer == 6)) {
+            Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_SHOOT_VOICE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
 
@@ -141,7 +137,7 @@ void EnTr_CrySpellcast(EnTr* this, PlayState* play) {
     } else if (this->actor.child != NULL) {
         this->actor.child = NULL;
     }
-    func_8002F974(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
 }
 
 void EnTr_DoNothing(EnTr* this, PlayState* play) {
@@ -176,7 +172,7 @@ void EnTr_ChooseAction2(EnTr* this, PlayState* play) {
                     EnTr_UpdateRotation(this, play, this->actionIndex);
                     break;
             }
-            func_8002F974(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
         }
     }
 }
@@ -206,7 +202,7 @@ void EnTr_FlyKidnapCutscene(EnTr* this, PlayState* play) {
             }
 
             if (play->csCtx.frames < 670) {
-                func_8002F974(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
+                Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
             }
         }
     }
@@ -295,7 +291,7 @@ void EnTr_Reappear(EnTr* this, PlayState* play) {
     if (this->timer > 0) {
         this->timer--;
     }
-    func_8002F974(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
 }
 
 void EnTr_WaitToReappear(EnTr* this, PlayState* play) {

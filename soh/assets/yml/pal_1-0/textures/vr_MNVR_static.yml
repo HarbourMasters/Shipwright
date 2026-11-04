@@ -1,0 +1,44 @@
+:config:
+  segments:
+    - [ 128, 0x013A8770 ]
+
+gMarketNight2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gMarketNight2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_MNVR_pal_static
+  external_tlut_offset: 0x200
+
+gMarketNight3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gMarketNight3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_MNVR_pal_static
+  external_tlut_offset: 0x400
+
+gMarketNight4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gMarketNight4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_MNVR_pal_static
+  external_tlut_offset: 0x600
+
+gMarketNightBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMarketNightBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_MNVR_pal_static
+  external_tlut_offset: 0x000
+

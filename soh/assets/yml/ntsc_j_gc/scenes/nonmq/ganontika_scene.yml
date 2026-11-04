@@ -1,0 +1,136 @@
+:config:
+  segments:
+    - [ 2, 0x01A09430 ]
+
+ganontika_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ganontika_scene
+
+gFireBarrierCs:
+  type: OOT:CUTSCENE
+  offset: 0x1E3D0
+  symbol: gFireBarrierCs
+
+gFireTrialSageCs:
+  type: OOT:CUTSCENE
+  offset: 0x1BC70
+  symbol: gFireTrialSageCs
+
+gForestBarrierCs:
+  type: OOT:CUTSCENE
+  offset: 0x1E780
+  symbol: gForestBarrierCs
+
+gForestTrialSageCs:
+  type: OOT:CUTSCENE
+  offset: 0x19ED0
+  symbol: gForestTrialSageCs
+
+gGanontikaPath_00674:
+  type: OOT:PATH
+  offset: 0x674
+  symbol: gGanontikaPath_00674
+  num_paths: 3
+
+gLightBarrierCs:
+  type: OOT:CUTSCENE
+  offset: 0x1DF80
+  symbol: gLightBarrierCs
+
+gLightTrialSageCs:
+  type: OOT:CUTSCENE
+  offset: 0x1C6A0
+  symbol: gLightTrialSageCs
+
+gShadowBarrierCs:
+  type: OOT:CUTSCENE
+  offset: 0x21370
+  symbol: gShadowBarrierCs
+
+gShadowTrialSageCs:
+  type: OOT:CUTSCENE
+  offset: 0x1B2A0
+  symbol: gShadowTrialSageCs
+
+gSpiritBarrierCs:
+  type: OOT:CUTSCENE
+  offset: 0x1EB30
+  symbol: gSpiritBarrierCs
+
+gSpiritTrialSageCs:
+  type: OOT:CUTSCENE
+  offset: 0x1D070
+  symbol: gSpiritTrialSageCs
+
+gTowerBarrierCs:
+  type: OOT:CUTSCENE
+  offset: 0x1DA40
+  symbol: gTowerBarrierCs
+
+gWaterBarrierCs:
+  type: OOT:CUTSCENE
+  offset: 0x1EF60
+  symbol: gWaterBarrierCs
+
+gWaterTrialSageCs:
+  type: OOT:CUTSCENE
+  offset: 0x1A8D0
+  symbol: gWaterTrialSageCs
+
+ganontika_sceneTLUT_01F380:
+  type: TEXTURE
+  offset: 0x1F370
+  symbol: ganontika_sceneTLUT_01F380
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganontika_sceneTex_01F580:
+  type: TEXTURE
+  offset: 0x1F570
+  symbol: ganontika_sceneTex_01F580
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganontika_sceneTex_01F780:
+  type: TEXTURE
+  offset: 0x1F770
+  symbol: ganontika_sceneTex_01F780
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1F370
+
+ganontika_sceneTex_01FF80:
+  type: TEXTURE
+  offset: 0x1FF70
+  symbol: ganontika_sceneTex_01FF80
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1F370
+
+ganontika_sceneTex_020380:
+  type: TEXTURE
+  offset: 0x20370
+  symbol: ganontika_sceneTex_020380
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x1F370
+
+ganontika_sceneTex_020B80:
+  type: TEXTURE
+  offset: 0x20B70
+  symbol: ganontika_sceneTex_020B80
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+ganontika_sceneCollisionHeader_019E9C:
+  type: OOT:COLLISION
+  offset: 0x019E9C
+  symbol: ganontika_sceneCollisionHeader_019E9C

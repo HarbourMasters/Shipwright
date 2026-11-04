@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01CCABA0 ]
+
+shop1_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: shop1_scene
+
+
+shop1_sceneCollisionHeader_0002B8:
+  type: OOT:COLLISION
+  offset: 0x0002B8
+  symbol: shop1_sceneCollisionHeader_0002B8

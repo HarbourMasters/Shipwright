@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x011B9F40 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x011B9F40 ]
+    - [ 9, 0x011B9F40 ]
+    - [ 10, 0x011B9F40 ]
+    - [ 11, 0x011B9F40 ]
+    - [ 12, 0x011B9F40 ]
+    - [ 13, 0x011B9F40 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGiOddMushroomDL:
+  type: GFX
+  offset: 0x09D0
+  symbol: gGiOddMushroomDL
+
+
+object_gi_mushroomVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mushroomVtx_000000
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

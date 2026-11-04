@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x012FBA60 ]
+
+gLostWoodsTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gLostWoodsTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gLostWoodsTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gLostWoodsTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gLostWoodsTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gLostWoodsTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

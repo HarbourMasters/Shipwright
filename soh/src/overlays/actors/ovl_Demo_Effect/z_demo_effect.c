@@ -706,7 +706,7 @@ void DemoEffect_InitTimeWarp(DemoEffect* this, PlayState* play) {
         } else {
             Actor_SetScale(&this->actor, 84 * 0.001f);
         }
-    } else if (gSaveContext.sceneSetupIndex == 5 || gSaveContext.sceneSetupIndex == 4 ||
+    } else if (gSaveContext.sceneLayer == 5 || gSaveContext.sceneLayer == 4 ||
                (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_4 &&
                 !((Flags_GetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT))))) {
         SkelCurve_SetAnim(&this->skelCurve, &gTimeWarpAnim, 1.0f, 59.0f, 59.0f, 0.0f);
@@ -786,7 +786,7 @@ void DemoEffect_UpdateTimeWarpReturnFromChamberOfSages(DemoEffect* this, PlaySta
         DemoEffect_TimewarpShrink(shrinkProgress * 5.0f);
     }
 
-    func_8002F948(&this->actor, NA_SE_EV_TIMETRIP_LIGHT - SFX_FLAG);
+    Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_TIMETRIP_LIGHT - SFX_FLAG);
 }
 
 /**
@@ -810,7 +810,7 @@ void DemoEffect_UpdateTimeWarpTimeblock(DemoEffect* this, PlayState* play) {
         this->actor.scale.x = scale;
         this->actor.scale.z = scale;
         DemoEffect_TimewarpShrink(shrinkProgress);
-        func_8002F948(&this->actor, NA_SE_EV_TIMETRIP_LIGHT - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_TIMETRIP_LIGHT - SFX_FLAG);
         return;
     }
 
@@ -823,7 +823,7 @@ void DemoEffect_UpdateTimeWarpTimeblock(DemoEffect* this, PlayState* play) {
  * This is an Update Func that is only ran for one frame.
  */
 void DemoEffect_InitTimeWarpTimeblock(DemoEffect* this, PlayState* play) {
-    func_8002F948(&this->actor, NA_SE_EV_TIMETRIP_LIGHT - SFX_FLAG);
+    Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_TIMETRIP_LIGHT - SFX_FLAG);
 
     if (SkelCurve_Update(play, &this->skelCurve)) {
         SkelCurve_SetAnim(&this->skelCurve, &gTimeWarpAnim, 1.0f, 60.0f, 59.0f, 0.0f);
@@ -863,7 +863,7 @@ void DemoEffect_UpdateTriforceSpot(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0 && gSaveContext.sceneSetupIndex == 6 &&
+        if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0 && gSaveContext.sceneLayer == 6 &&
             play->csCtx.frames == 143) {
             Audio_PlayActorSound2(&this->actor, NA_SE_IT_DM_RING_EXPLOSION);
         }
@@ -1079,11 +1079,11 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
                 break;
         }
 
-        if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneSetupIndex == 6 && play->csCtx.frames == 197) {
+        if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneLayer == 6 && play->csCtx.frames == 197) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_WHITE_OUT);
         }
 
-        if (play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL && gSaveContext.sceneSetupIndex == 5) {
+        if (play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL && gSaveContext.sceneLayer == 5) {
             if (!DemoEffect_CheckCsAction(this, play, 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1092,7 +1092,7 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (play->sceneNum == SCENE_ZORAS_FOUNTAIN && gSaveContext.sceneSetupIndex == 4) {
+        if (play->sceneNum == SCENE_ZORAS_FOUNTAIN && gSaveContext.sceneLayer == 4) {
             if (!DemoEffect_CheckCsAction(this, play, 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1101,7 +1101,7 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (play->sceneNum == SCENE_TEMPLE_OF_TIME && gSaveContext.sceneSetupIndex == 14) {
+        if (play->sceneNum == SCENE_TEMPLE_OF_TIME && gSaveContext.sceneLayer == 14) {
 
             if (play->csCtx.npcActions[this->csActionId]->action == 2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
@@ -1158,7 +1158,7 @@ void DemoEffect_UpdateGodLgtDin(DemoEffect* this, PlayState* play) {
         }
 
         if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0) {
-            switch (gSaveContext.sceneSetupIndex) {
+            switch (gSaveContext.sceneLayer) {
                 case 4:
                     if (play->csCtx.frames == 288) {
                         Audio_PlayActorSound2(&this->actor, NA_SE_IT_DM_FLYING_GOD_PASS);
@@ -1213,7 +1213,7 @@ void DemoEffect_UpdateGodLgtNayru(DemoEffect* this, PlayState* play) {
         }
 
         if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0) {
-            switch (gSaveContext.sceneSetupIndex) {
+            switch (gSaveContext.sceneLayer) {
                 case 4:
                     if (play->csCtx.frames == 298) {
                         Audio_PlayActorSound2(&this->actor, NA_SE_IT_DM_FLYING_GOD_PASS);
@@ -1234,7 +1234,7 @@ void DemoEffect_UpdateGodLgtNayru(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT && gSaveContext.sceneSetupIndex == 4) {
+        if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT && gSaveContext.sceneLayer == 4) {
             if (play->csCtx.frames == 72) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_IT_DM_FLYING_GOD_DASH);
             }
@@ -1273,7 +1273,7 @@ void DemoEffect_UpdateGodLgtFarore(DemoEffect* this, PlayState* play) {
         }
 
         if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0) {
-            switch (gSaveContext.sceneSetupIndex) {
+            switch (gSaveContext.sceneLayer) {
                 case 4:
                     if (play->csCtx.frames == 315) {
                         Audio_PlayActorSound2(&this->actor, NA_SE_IT_DM_FLYING_GOD_PASS);
@@ -1529,10 +1529,10 @@ void DemoEffect_JewelSparkle(DemoEffect* this, PlayState* play, s32 spawnerCount
 void DemoEffect_PlayJewelSfx(DemoEffect* this, PlayState* play) {
     if (!DemoEffect_CheckCsAction(this, play, 1)) {
         if (this->actor.params == sSfxJewelId[0]) {
-            func_8002F974(&this->actor, NA_SE_EV_SPIRIT_STONE - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_SPIRIT_STONE - SFX_FLAG);
         } else if (sSfxJewelId[0] == 0) {
             sSfxJewelId[0] = this->actor.params;
-            func_8002F974(&this->actor, NA_SE_EV_SPIRIT_STONE - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_SPIRIT_STONE - SFX_FLAG);
         }
     }
 }
@@ -1859,7 +1859,7 @@ void DemoEffect_DrawGodLgt(Actor* thisx, PlayState* play) {
 
     if (!DemoEffect_CheckCsAction(this, play, 2)) {
         if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0) {
-            if (gSaveContext.sceneSetupIndex == 4) {
+            if (gSaveContext.sceneLayer == 4) {
                 if (play->csCtx.frames <= 680) {
                     Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_GOD_FLYING - SFX_FLAG);
                 }
@@ -2179,8 +2179,7 @@ void DemoEffect_DrawTimeWarp(Actor* thisx, PlayState* play) {
     u8 effectType = (this->actor.params & 0x00FF);
 
     if (effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE || effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL ||
-        Flags_GetEnv(play, 1) || gSaveContext.sceneSetupIndex >= 4 ||
-        gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_4) {
+        Flags_GetEnv(play, 1) || gSaveContext.sceneLayer >= 4 || gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_4) {
         OPEN_DISPS(gfxCtx);
         POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 25);
         Matrix_Scale(2.0f, 2.0f, 2.0f, MTXMODE_APPLY);

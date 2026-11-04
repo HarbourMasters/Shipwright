@@ -1,15 +1,21 @@
 #include "UIWidgets.hpp"
+
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
-#include <libultraship/libultraship.h>
 #include <string>
-#include <math.h>
 #include <unordered_map>
 #include <libultraship/libultra/types.h>
-#include <spdlog/fmt/fmt.h>
+#include <ship/window/Window.h>
+#include <ship/Context.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 
 namespace UIWidgets {
+
+void CVarChanged(const char* cvarName) {
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ShipInit::Init(cvarName);
+}
 
 // Automatically adds newlines to break up text longer than a specified number of characters
 // Manually included newlines will still be respected and reset the line length
@@ -18,7 +24,7 @@ std::string WrappedText(const char* text, unsigned int charactersPerLine) {
     std::string newText(text);
     const size_t tipLength = newText.length();
     int lastSpace = -1;
-    int currentLineLength = 0;
+    unsigned int currentLineLength = 0;
     for (unsigned int currentCharacter = 0; currentCharacter < tipLength; currentCharacter++) {
         if (newText[currentCharacter] == '\n') {
             currentLineLength = 0;
@@ -264,7 +270,7 @@ void InsertHelpHoverText(const char* text) {
     }
 }
 
-void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash) {
+void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash, float wrap_width) {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
 
@@ -279,7 +285,8 @@ void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_te
     }
 
     if (text != text_display_end) {
-        window->DrawList->AddText(g.Font, g.FontSize, pos, ImGui::GetColorU32(ImGuiCol_Text), text, text_display_end);
+        window->DrawList->AddText(g.Font, g.FontSize, pos, ImGui::GetColorU32(ImGuiCol_Text), text, text_display_end,
+                                  wrap_width);
         if (g.LogEnabled)
             ImGui::LogRenderedText(&pos, text, text_display_end);
     }
@@ -306,9 +313,11 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
     const ImGuiID id = window->GetID(label);
-    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
     const float square_sz = ImGui::GetFrameHeight();
     ImVec2 pos = window->DC.CursorPos;
+    const float labelWrapWidth =
+        ImGui::CalcWrapWidthForPos(pos + ImVec2(above ? 0 : (style.ItemInnerSpacing.x * 2.0f) + square_sz, 0), 0.0f);
+    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true, labelWrapWidth);
 
     if (right) {
         float labelOffsetX = (above ? 0 : (style.ItemInnerSpacing.x * 2.0f) + square_sz);
@@ -367,7 +376,7 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
         const float pad = ImMax(1.0f, IM_TRUNC(square_sz / 6.0f));
         ImGui::RenderCheckMark(window->DrawList, check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad * 2.0f);
     }
-    RenderText(labelPos, label, ImGui::FindRenderedTextEnd(label), true);
+    RenderText(labelPos, label, ImGui::FindRenderedTextEnd(label), true, labelWrapWidth);
     PopStyleCheckbox();
     ImGui::EndDisabled();
     if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
@@ -384,7 +393,7 @@ bool CVarCheckbox(const char* label, const char* cvarName, const CheckboxOptions
     bool value = (bool)CVarGetInteger(cvarName, options.defaultValue);
     if (Checkbox(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -522,6 +531,8 @@ void PopStyleSlider() {
 
 bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& options) {
     bool dirty = false;
+    std::string visibleLabelStr = std::string(label).substr(0, std::string(label).find("#"));
+    const char* visibleLabel = visibleLabelStr.c_str();
     std::string invisibleLabelStr = "##" + std::string(label);
     const char* invisibleLabel = invisibleLabelStr.c_str();
     ImGui::PushID(label);
@@ -530,11 +541,11 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     PushStyleSlider(options.color);
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.labelPosition == LabelPositions::Near || options.labelPosition == LabelPositions::Far) {
-        width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
+        width = width - (ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().FramePadding.x);
     }
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignments::Right) {
-        ImGui::Text(label, *value);
+        ImGui::Text(visibleLabel, *value);
         if (options.labelPosition == LabelPositions::Above) {
             ImGui::NewLine();
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
@@ -545,7 +556,7 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
         }
     } else if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Above) {
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     if (options.showButtons) {
@@ -590,11 +601,11 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Near) {
             ImGui::SameLine();
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
-            ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x +
+            ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(visibleLabel).x +
                             ImGui::GetStyle().ItemSpacing.x);
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     PopStyleSlider();
@@ -615,7 +626,7 @@ bool CVarSliderInt(const char* label, const char* cvarName, const IntSliderOptio
     int32_t value = CVarGetInteger(cvarName, options.defaultValue);
     if (SliderInt(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -654,6 +665,8 @@ void ClampFloat(float* value, float min, float max, float step) {
 
 bool SliderFloat(const char* label, float* value, const FloatSliderOptions& options) {
     bool dirty = false;
+    std::string visibleLabelStr = std::string(label).substr(0, std::string(label).find("#"));
+    const char* visibleLabel = visibleLabelStr.c_str();
     std::string invisibleLabelStr = "##" + std::string(label);
     const char* invisibleLabel = invisibleLabelStr.c_str();
     float valueToDisplay = options.isPercentage ? *value * 100.0f : *value;
@@ -663,14 +676,14 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
     ImGui::BeginGroup();
     ImGui::BeginDisabled(options.disabled);
     PushStyleSlider(options.color);
-    float labelSpacing = ImGui::CalcTextSize(label).x + ImGui::GetStyle().ItemSpacing.x;
+    float labelSpacing = ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().ItemSpacing.x;
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.labelPosition == LabelPositions::Near || options.labelPosition == LabelPositions::Far) {
-        width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
+        width = width - (ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().FramePadding.x);
     }
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignments::Right) {
-        ImGui::Text(label, *value);
+        ImGui::Text(visibleLabel, *value);
         if (options.labelPosition == LabelPositions::Above) {
             ImGui::NewLine();
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
@@ -683,7 +696,7 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
         }
     } else if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Above) {
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     if (options.showButtons) {
@@ -722,10 +735,10 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
     if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Near) {
             ImGui::SameLine();
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - labelSpacing);
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     PopStyleSlider();
@@ -746,7 +759,7 @@ bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderO
     float value = CVarGetFloat(cvarName, options.defaultValue);
     if (SliderFloat(label, &value, options)) {
         CVarSetFloat(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -822,7 +835,7 @@ bool CVarInputString(const char* label, const char* cvarName, const InputOptions
     std::string value = CVarGetString(cvarName, options.defaultValue.c_str());
     if (InputString(label, &value, options)) {
         CVarSetString(cvarName, value.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -874,7 +887,7 @@ bool CVarInputInt(const char* label, const char* cvarName, const InputOptions& o
     int32_t value = CVarGetInteger(cvarName, defaultValue);
     if (InputInt(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -919,7 +932,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
             CVarClear((std::string(cvarName) + ".A").c_str());
             CVarClear((std::string(cvarName) + ".Type").c_str());
             CVarClearBlock(valueCVar.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     if (showRandom) {
@@ -930,13 +943,13 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
                                   .Color(themeColor)
                                   .Size(UIWidgets::Sizes::Inline))) {
             colorVec = GetRandomValue();
-            color.r = fmin(fmax(colorVec.x * 255, 0), 255);
-            color.g = fmin(fmax(colorVec.y * 255, 0), 255);
-            color.b = fmin(fmax(colorVec.z * 255, 0), 255);
+            color.r = static_cast<u8>(fmin(fmax(colorVec.x * 255, 0), 255));
+            color.g = static_cast<u8>(fmin(fmax(colorVec.y * 255, 0), 255));
+            color.b = static_cast<u8>(fmin(fmax(colorVec.z * 255, 0), 255));
             CVarSetColor(valueCVar.c_str(), color);
             CVarSetInteger(rainbowCVar.c_str(), 0); // On click disable rainbow mode.
             ShipInit::Init(rainbowCVar.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     if (showRainbow) {
@@ -964,7 +977,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
         color.b = (uint8_t)(colorVec.z * 255.0f);
         color.a = (uint8_t)(colorVec.w * 255.0f);
         CVarSetColor(valueCVar.c_str(), color);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(valueCVar.c_str());
         changed = true;
     }
@@ -980,10 +993,12 @@ bool RadioButton(const char* label, bool active, const RadioButtonsOptions& opti
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
     const ImGuiID id = window->GetID(label);
-    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
 
     const float square_sz = ImGui::GetFrameHeight();
     const ImVec2 pos = window->DC.CursorPos;
+    const float labelWrapWidth =
+        ImGui::CalcWrapWidthForPos(pos + ImVec2(square_sz + style.ItemInnerSpacing.x, 0), 0.0f);
+    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true, labelWrapWidth);
     const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
     const ImRect total_bb(
         pos, pos + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f),
@@ -1025,7 +1040,7 @@ bool RadioButton(const char* label, bool active, const RadioButtonsOptions& opti
     if (g.LogEnabled)
         ImGui::LogRenderedText(&label_pos, active ? "(x)" : "( )");
     if (label_size.x > 0.0f)
-        RenderText(label_pos, label, ImGui::FindRenderedTextEnd(label), true);
+        RenderText(label_pos, label, ImGui::FindRenderedTextEnd(label), true, labelWrapWidth);
 
     IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
     return pressed;
@@ -1039,7 +1054,7 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const R
     PushStyleCheckbox(options.color);
     if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
         CVarSetInteger(cvarName, id);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ret = true;
     }
     ImGui::SameLine();
@@ -1063,7 +1078,7 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags, Colors color) {
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1073,6 +1088,12 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags, Colors color) {
         }
         ImGui::PopStyleVar();
         PopStyleCheckbox();
+        // Show tooltip with bit number
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s Bit %d", name.c_str(), flagIndex);
+            ImGui::EndTooltip();
+        }
         ImGui::PopID();
     }
     ImGui::PopID();
@@ -1089,7 +1110,7 @@ void DrawFlagArray16(const std::string& name, uint16_t& flags, Colors color) {
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1099,6 +1120,12 @@ void DrawFlagArray16(const std::string& name, uint16_t& flags, Colors color) {
         }
         ImGui::PopStyleVar();
         PopStyleCheckbox();
+        // Show tooltip with bit number
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s Bit %d", name.c_str(), flagIndex);
+            ImGui::EndTooltip();
+        }
         ImGui::PopID();
     }
     ImGui::PopID();
@@ -1115,7 +1142,7 @@ void DrawFlagArray8(const std::string& name, uint8_t& flags, Colors color) {
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1125,6 +1152,12 @@ void DrawFlagArray8(const std::string& name, uint8_t& flags, Colors color) {
         }
         ImGui::PopStyleVar();
         PopStyleCheckbox();
+        // Show tooltip with bit number
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s Bit %d", name.c_str(), flagIndex);
+            ImGui::EndTooltip();
+        }
         ImGui::PopID();
     }
     ImGui::PopID();
@@ -1141,7 +1174,7 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color) {
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1151,6 +1184,12 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color) {
         }
         ImGui::PopStyleVar();
         PopStyleCheckbox();
+        // Show tooltip with bit number
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s Bit %d", name.c_str(), flagIndex);
+            ImGui::EndTooltip();
+        }
         ImGui::PopID();
     }
     ImGui::PopID();
@@ -1246,13 +1285,182 @@ bool CVarBtnSelector(const char* label, const char* cvarName, const BtnSelectorO
     int32_t value = CVarGetInteger(cvarName, options.defaultValue);
     if (BtnSelector(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
 
     return dirty;
 }
+
+// Internal state stored per layout instance
+struct CardLayoutState {
+    std::vector<float> columnWidths;
+    std::vector<float> columnHeights;
+    std::vector<float> columnXPositions;
+    int currentCardColumn;
+    float startY;
+    int columnsPerRow;
+    float spacing;
+    bool autoItemWidth;
+    ImGuiChildFlags childFlags;
+    bool syncLastColumnToMax;
+};
+
+static CardLayoutState* gCurrentCardLayout = nullptr;
+
+void BeginCardLayout(const CardLayoutOptions& options) {
+    CardLayoutState* state = new CardLayoutState();
+
+    float availWidth = ImGui::GetContentRegionAvail().x;
+    int columnsPerRow = ImClamp(options.columnsPerRow, 1, options.columnsPerRow);
+    if (options.minColumnWidth > 0.0f) {
+        float denom = options.minColumnWidth + options.spacing;
+        if (denom > 0.0f) {
+            int widthLimitedColumns = static_cast<int>(ImFloor((availWidth + options.spacing) / denom));
+            columnsPerRow = ImClamp(widthLimitedColumns, 1, options.columnsPerRow);
+        }
+    }
+    columnsPerRow = ImMax(columnsPerRow, 1);
+
+    // Per-column fixed widths calculation
+    std::vector<float> columnWidths;
+    columnWidths.resize(columnsPerRow);
+
+    float totalFixedWidth = 0.0f;
+    int autoSizedColumns = 0;
+
+    // First pass: calculate fixed widths and count auto-sized columns
+    for (int i = 0; i < columnsPerRow; i++) {
+        if (static_cast<size_t>(i) < options.fixedColumnWidths.size() && options.fixedColumnWidths[i] > 0.0f) {
+            columnWidths[i] = options.fixedColumnWidths[i];
+            totalFixedWidth += columnWidths[i];
+        } else {
+            autoSizedColumns++;
+        }
+    }
+
+    // Calculate spacing: (columns - 1) * spacing
+    float totalSpacing = options.spacing * (columnsPerRow - 1);
+    float remainingWidth = availWidth - totalFixedWidth - totalSpacing;
+
+    // Distribute remaining width to auto-sized columns
+    float autoWidth = (autoSizedColumns > 0) ? (remainingWidth / static_cast<float>(autoSizedColumns)) : 0.0f;
+
+    // Second pass: assign auto-width to columns that need it
+    for (int i = 0; i < columnsPerRow; i++) {
+        if (static_cast<size_t>(i) >= options.fixedColumnWidths.size() || options.fixedColumnWidths[i] <= 0.0f) {
+            columnWidths[i] = autoWidth;
+        }
+    }
+
+    // Initialize column widths with individual values
+    state->columnWidths = columnWidths;
+    state->columnHeights.resize(columnsPerRow, 0.0f);
+    state->columnXPositions.resize(columnsPerRow);
+
+    // Calculate X positions for each column (accounting for varying widths)
+    float currentX = ImGui::GetCursorPosX();
+    for (int i = 0; i < columnsPerRow; i++) {
+        state->columnXPositions[i] = currentX;
+        currentX += columnWidths[i] + options.spacing;
+    }
+
+    state->startY = ImGui::GetCursorPosY();
+    state->currentCardColumn = 0;
+    state->columnsPerRow = columnsPerRow;
+    state->spacing = options.spacing;
+    state->autoItemWidth = options.autoItemWidth;
+    state->childFlags = options.childFlags;
+    state->syncLastColumnToMax = options.syncLastColumnToMax;
+
+    gCurrentCardLayout = state;
+}
+
+void BeginCard(const char* id, int32_t forceColumn) {
+    CardLayoutState* state = gCurrentCardLayout;
+    if (!state)
+        return;
+
+    int targetCol;
+    if (forceColumn >= 0 && forceColumn < state->columnsPerRow) {
+        // Force to specific column
+        targetCol = forceColumn;
+    } else {
+        // Find shortest column
+        int shortestCol = 0;
+        float shortestHeight = state->columnHeights[0];
+        for (int i = 1; i < state->columnsPerRow; i++) {
+            if (state->columnHeights[i] < shortestHeight) {
+                shortestHeight = state->columnHeights[i];
+                shortestCol = i;
+            }
+        }
+        targetCol = shortestCol;
+    }
+    state->currentCardColumn = targetCol;
+
+    // Position cursor at this column's current height
+    ImGui::SetCursorPosX(state->columnXPositions[state->currentCardColumn]);
+    ImGui::SetCursorPosY(state->startY + state->columnHeights[state->currentCardColumn]);
+
+    ImGui::BeginChild(id, ImVec2(state->columnWidths[state->currentCardColumn], 0), state->childFlags);
+
+    // Auto-push item width to fill card
+    if (state->autoItemWidth) {
+        ImGui::PushItemWidth(-FLT_MIN);
+    }
+}
+
+void EndCard() {
+    CardLayoutState* state = gCurrentCardLayout;
+    if (!state)
+        return;
+
+    // Auto-pop item width
+    if (state->autoItemWidth) {
+        ImGui::PopItemWidth();
+    }
+
+    ImGui::EndChild();
+
+    // Get the height of the card we just rendered
+    ImVec2 itemSize = ImGui::GetItemRectSize();
+
+    // Update this column's height (add card height + spacing)
+    state->columnHeights[state->currentCardColumn] += itemSize.y + state->spacing;
+
+    // Sync last column to max height of other columns (keeps it empty)
+    if (state->syncLastColumnToMax && state->columnHeights.size() >= 2) {
+        int lastCol = (int)state->columnHeights.size() - 1;
+        float maxOtherHeight = 0.0f;
+        for (int i = 0; i < lastCol; i++) {
+            maxOtherHeight = ImMax(maxOtherHeight, state->columnHeights[i]);
+        }
+        state->columnHeights[lastCol] = maxOtherHeight;
+    }
+}
+
+void EndCardLayout() {
+    if (!gCurrentCardLayout) {
+        return;
+    }
+
+    CardLayoutState* state = gCurrentCardLayout;
+    float maxHeight = 0.0f;
+    for (float height : state->columnHeights) {
+        maxHeight = ImMax(maxHeight, height);
+    }
+    if (maxHeight > 0.0f) {
+        maxHeight -= state->spacing;
+        ImGui::SetCursorPosY(state->startY + maxHeight);
+        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    }
+
+    delete state;
+    gCurrentCardLayout = nullptr;
+}
+
 } // namespace UIWidgets
 
 ImVec4 GetRandomValue(uint64_t* state) {
@@ -1264,7 +1472,8 @@ ImVec4 GetRandomValue(uint64_t* state) {
 }
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec) {
-    Color_RGBA8 color = { vec.x * 255, vec.y * 255, vec.z * 255, vec.w * 255 };
+    Color_RGBA8 color = { static_cast<u8>(vec.x * 255), static_cast<u8>(vec.y * 255), static_cast<u8>(vec.z * 255),
+                          static_cast<u8>(vec.w * 255) };
     return color;
 }
 

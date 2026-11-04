@@ -1,0 +1,31 @@
+:config:
+  segments:
+    - [ 3, 0x02D03000 ]
+    - [ 2, 0x02D00000 ]
+  directory: scenes/shared/sasatest_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/sasatest_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+    - pal_mq_dbg/scenes/shared/sasatest_room_0Set_0001C0.yml
+    - pal_mq_dbg/scenes/shared/sasatest_room_0Set_000270.yml
+    - pal_mq_dbg/scenes/shared/sasatest_room_0Set_000310.yml
+
+sasatest_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: sasatest_room_0
+
+
+sasatest_room_0Vtx_000370:
+  type: OOT:ARRAY
+  offset: 0x000370
+  symbol: sasatest_room_0Vtx_000370
+  count: 289
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+sasatest_room_0DL_001580:
+  type: GFX
+  offset: 0x001580
+  symbol: sasatest_room_0DL_001580

@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01DA5330 ]
+  directory: scenes/shared/nakaniwa_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/nakaniwa_scene.yml
+
+nakaniwa_sceneSet_003720:
+  type: OOT:SCENE
+  offset: 0x3720
+  symbol: nakaniwa_sceneSet_003720
+  base_name: nakaniwa_scene

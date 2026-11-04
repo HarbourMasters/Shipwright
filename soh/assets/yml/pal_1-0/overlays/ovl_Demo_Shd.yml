@@ -1,0 +1,63 @@
+:config:
+  segments:
+    - [ 128, 0x00C82EB0 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00C82EB0 ]
+    - [ 9, 0x00C82EB0 ]
+    - [ 10, 0x00C82EB0 ]
+    - [ 11, 0x00C82EB0 ]
+    - [ 12, 0x00C82EB0 ]
+    - [ 13, 0x00C82EB0 ]
+  virtual: [ 0x80A73660, 0x00C82EB0 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+D_809932D0:
+  type: GFX
+  offset: 0x2060
+  symbol: D_809932D0
+
+D_80993390:
+  type: GFX
+  offset: 0x2120
+  symbol: D_80993390
+
+D_809934B8:
+  type: GFX
+  offset: 0x2248
+  symbol: D_809934B8
+
+ovl_Demo_ShdTex_000450:
+  type: TEXTURE
+  offset: 0x410
+  symbol: ovl_Demo_ShdTex_000450
+  format: I8
+  width: 16
+  height: 128
+
+ovl_Demo_ShdTex_000C50:
+  type: TEXTURE
+  offset: 0xC10
+  symbol: ovl_Demo_ShdTex_000C50
+  format: I8
+  width: 32
+  height: 64
+
+
+ovl_Demo_ShdVtx_001410:
+  type: OOT:ARRAY
+  offset: 0x001410
+  symbol: ovl_Demo_ShdVtx_001410
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Demo_ShdVtx_0019E0:
+  type: OOT:ARRAY
+  offset: 0x0019E0
+  symbol: ovl_Demo_ShdVtx_0019E0
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

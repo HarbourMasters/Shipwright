@@ -1,0 +1,97 @@
+:config:
+  segments:
+    - [ 6, 0x00FF6E50 ]
+    - [ 5, 0x00D5AD20 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x00FF6E50 ]
+    - [ 9, 0x00FF6E50 ]
+    - [ 10, 0x00FF6E50 ]
+    - [ 11, 0x00FF6E50 ]
+    - [ 12, 0x00FF6E50 ]
+    - [ 13, 0x00FF6E50 ]
+  external_files:
+    - pal_gc/objects/gameplay_dangeon_keep.yml
+    - pal_gc/objects/gameplay_keep.yml
+
+gGoldenTorch1Tex:
+  type: TEXTURE
+  offset: 0xC90
+  symbol: gGoldenTorch1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGoldenTorch2Tex:
+  type: TEXTURE
+  offset: 0x1490
+  symbol: gGoldenTorch2Tex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoldenTorchDL:
+  type: GFX
+  offset: 0x3A0
+  symbol: gGoldenTorchDL
+
+gTimedTorchDL:
+  type: GFX
+  offset: 0xB90
+  symbol: gTimedTorchDL
+
+gTimedTorchTex:
+  type: TEXTURE
+  offset: 0x2C90
+  symbol: gTimedTorchTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTorchFlameGuardTex:
+  type: TEXTURE
+  offset: 0x2490
+  symbol: gTorchFlameGuardTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodenTorchDL:
+  type: GFX
+  offset: 0x870
+  symbol: gWoodenTorchDL
+
+gWoodenTorchTex:
+  type: TEXTURE
+  offset: 0x3490
+  symbol: gWoodenTorchTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+object_syokudaiVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_syokudaiVtx_000000
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syokudaiVtx_000570:
+  type: OOT:ARRAY
+  offset: 0x000570
+  symbol: object_syokudaiVtx_000570
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syokudaiVtx_0009D0:
+  type: OOT:ARRAY
+  offset: 0x0009D0
+  symbol: object_syokudaiVtx_0009D0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

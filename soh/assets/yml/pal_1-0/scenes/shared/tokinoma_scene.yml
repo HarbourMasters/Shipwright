@@ -1,0 +1,113 @@
+:config:
+  segments:
+    - [ 2, 0x019E1FE0 ]
+
+  external_files:
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00C1C0.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00C370.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00C470.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00C5A0.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00C750.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00C850.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00C950.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00CA50.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00CB50.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00CC60.yml
+    - pal_1-0/scenes/shared/tokinoma_sceneSet_00CD30.yml
+tokinoma_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: tokinoma_scene
+
+gTempleOfTimeFirstAdultCs:
+  type: OOT:CUTSCENE
+  offset: 0x4700
+  symbol: gTempleOfTimeFirstAdultCs
+
+gTempleOfTimeIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0xCE20
+  symbol: gTempleOfTimeIntroCs
+
+gTempleOfTimePreludeCs:
+  type: OOT:CUTSCENE
+  offset: 0x6D34
+  symbol: gTempleOfTimePreludeCs
+
+tokinoma_sceneTex_00CFA0:
+  type: TEXTURE
+  offset: 0xCFC0
+  symbol: tokinoma_sceneTex_00CFA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_sceneTex_00D7A0:
+  type: TEXTURE
+  offset: 0xD7C0
+  symbol: tokinoma_sceneTex_00D7A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_sceneTex_00DFA0:
+  type: TEXTURE
+  offset: 0xDFC0
+  symbol: tokinoma_sceneTex_00DFA0
+  format: RGBA16
+  width: 32
+  height: 64
+
+tokinoma_sceneTex_00EFA0:
+  type: TEXTURE
+  offset: 0xEFC0
+  symbol: tokinoma_sceneTex_00EFA0
+  format: RGBA16
+  width: 32
+  height: 64
+
+tokinoma_sceneTex_00FFA0:
+  type: TEXTURE
+  offset: 0xFFC0
+  symbol: tokinoma_sceneTex_00FFA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_sceneTex_0107A0:
+  type: TEXTURE
+  offset: 0x107C0
+  symbol: tokinoma_sceneTex_0107A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_sceneTex_010FA0:
+  type: TEXTURE
+  offset: 0x10FC0
+  symbol: tokinoma_sceneTex_010FA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_sceneTex_0117A0:
+  type: TEXTURE
+  offset: 0x117C0
+  symbol: tokinoma_sceneTex_0117A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+tokinoma_sceneTex_011FA0:
+  type: TEXTURE
+  offset: 0x11FC0
+  symbol: tokinoma_sceneTex_011FA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+tokinoma_sceneCollisionHeader_0032F8:
+  type: OOT:COLLISION
+  offset: 0x0032F8
+  symbol: tokinoma_sceneCollisionHeader_0032F8

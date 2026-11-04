@@ -1,0 +1,64 @@
+:config:
+  segments:
+    - [ 6, 0x01025250 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x01025250 ]
+    - [ 9, 0x01025250 ]
+    - [ 10, 0x01025250 ]
+    - [ 11, 0x01025250 ]
+    - [ 12, 0x01025250 ]
+    - [ 13, 0x01025250 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gTimeWarpAnim:
+  type: OOT:CURVE_ANIMATION
+  offset: 0x0050
+  symbol: gTimeWarpAnim
+  skel_offset: 0x12E8
+
+gTimeWarpDL:
+  type: GFX
+  offset: 0x01B0
+  symbol: gTimeWarpDL
+
+gTimeWarpSkel:
+  type: OOT:SKELETON
+  offset: 0x12E8
+  symbol: gTimeWarpSkel
+  limb_type: Curve
+  skel_type: Curve
+
+gTimeWarpTex:
+  type: TEXTURE
+  offset: 0x02C8
+  symbol: gTimeWarpTex
+  format: I8
+  width: 64
+  height: 64
+
+gTimeWarpVtx:
+  type: OOT:ARRAY
+  offset: 0x0060
+  symbol: gTimeWarpVtx
+  count: 21
+  array_type: VTX
+
+
+gTimeWarpSkelLimbsLimb_0012C8:
+  type: OOT:LIMB
+  offset: 0x0012C8
+  symbol: gTimeWarpSkelLimbsLimb_0012C8
+  limb_type: Curve
+
+gTimeWarpSkelLimbsLimb_0012D4:
+  type: OOT:LIMB
+  offset: 0x0012D4
+  symbol: gTimeWarpSkelLimbsLimb_0012D4
+  limb_type: Curve
+
+gTimeWarpSkelLimbs:
+  type: BLOB
+  offset: 0x12E0
+  symbol: gTimeWarpSkelLimbs
+  size: 0

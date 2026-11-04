@@ -1,0 +1,1209 @@
+:config:
+  segments:
+    - [ 6, 0x01067410 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x01067410 ]
+    - [ 9, 0x01067410 ]
+    - [ 10, 0x01067410 ]
+    - [ 11, 0x01067410 ]
+    - [ 12, 0x01067410 ]
+    - [ 13, 0x01067410 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gIngoAdultEraArmHairTex:
+  type: TEXTURE
+  offset: 0xE498
+  symbol: gIngoAdultEraArmHairTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0xC298
+
+gIngoAdultEraChestDL:
+  type: GFX
+  offset: 0x11758
+  symbol: gIngoAdultEraChestDL
+
+gIngoAdultEraCollar2Tex:
+  type: TEXTURE
+  offset: 0xE898
+  symbol: gIngoAdultEraCollar2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC298
+
+gIngoAdultEraCollarTex:
+  type: TEXTURE
+  offset: 0xE798
+  symbol: gIngoAdultEraCollarTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC298
+
+gIngoAdultEraEarTex:
+  type: TEXTURE
+  offset: 0xC718
+  symbol: gIngoAdultEraEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xC298
+
+gIngoAdultEraEyebrowEdgeTex:
+  type: TEXTURE
+  offset: 0xC498
+  symbol: gIngoAdultEraEyebrowEdgeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIngoAdultEraFaceHairTex:
+  type: TEXTURE
+  offset: 0xC698
+  symbol: gIngoAdultEraFaceHairTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xC298
+
+gIngoAdultEraFingersTex:
+  type: TEXTURE
+  offset: 0xE398
+  symbol: gIngoAdultEraFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC298
+
+gIngoAdultEraGradient2Tex:
+  type: TEXTURE
+  offset: 0xCB58
+  symbol: gIngoAdultEraGradient2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xC298
+
+gIngoAdultEraGradientTex:
+  type: TEXTURE
+  offset: 0xC6D8
+  symbol: gIngoAdultEraGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xC298
+
+gIngoAdultEraHairTex:
+  type: TEXTURE
+  offset: 0xC958
+  symbol: gIngoAdultEraHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC298
+
+gIngoAdultEraHeadDL:
+  type: GFX
+  offset: 0x11AD8
+  symbol: gIngoAdultEraHeadDL
+
+gIngoAdultEraLeftArmDL:
+  type: GFX
+  offset: 0x12BF0
+  symbol: gIngoAdultEraLeftArmDL
+
+gIngoAdultEraLeftEyebrowDL:
+  type: GFX
+  offset: 0x12350
+  symbol: gIngoAdultEraLeftEyebrowDL
+
+gIngoAdultEraLeftFootDL:
+  type: GFX
+  offset: 0x13910
+  symbol: gIngoAdultEraLeftFootDL
+
+gIngoAdultEraLeftHandDL:
+  type: GFX
+  offset: 0x12D20
+  symbol: gIngoAdultEraLeftHandDL
+
+gIngoAdultEraLeftLegDL:
+  type: GFX
+  offset: 0x137C0
+  symbol: gIngoAdultEraLeftLegDL
+
+gIngoAdultEraLeftShoulderDL:
+  type: GFX
+  offset: 0x12AC0
+  symbol: gIngoAdultEraLeftShoulderDL
+
+gIngoAdultEraLeftThighDL:
+  type: GFX
+  offset: 0x13688
+  symbol: gIngoAdultEraLeftThighDL
+
+gIngoAdultEraMustacheDL:
+  type: GFX
+  offset: 0x12120
+  symbol: gIngoAdultEraMustacheDL
+
+gIngoAdultEraPantsTex:
+  type: TEXTURE
+  offset: 0xEAD8
+  symbol: gIngoAdultEraPantsTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xC298
+
+gIngoAdultEraRightArmDL:
+  type: GFX
+  offset: 0x125B0
+  symbol: gIngoAdultEraRightArmDL
+
+gIngoAdultEraRightEyebrowDL:
+  type: GFX
+  offset: 0x12220
+  symbol: gIngoAdultEraRightEyebrowDL
+
+gIngoAdultEraRightFootDL:
+  type: GFX
+  offset: 0x13540
+  symbol: gIngoAdultEraRightFootDL
+
+gIngoAdultEraRightHandDL:
+  type: GFX
+  offset: 0x126E0
+  symbol: gIngoAdultEraRightHandDL
+
+gIngoAdultEraRightLegDL:
+  type: GFX
+  offset: 0x133F0
+  symbol: gIngoAdultEraRightLegDL
+
+gIngoAdultEraRightShoulderDL:
+  type: GFX
+  offset: 0x12480
+  symbol: gIngoAdultEraRightShoulderDL
+
+gIngoAdultEraRightThighDL:
+  type: GFX
+  offset: 0x132B8
+  symbol: gIngoAdultEraRightThighDL
+
+gIngoAdultEraShirtTex:
+  type: TEXTURE
+  offset: 0xE998
+  symbol: gIngoAdultEraShirtTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC298
+
+gIngoAdultEraShoesTex:
+  type: TEXTURE
+  offset: 0xEA98
+  symbol: gIngoAdultEraShoesTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xC298
+
+gIngoAdultEraSideburnsTex:
+  type: TEXTURE
+  offset: 0xCA58
+  symbol: gIngoAdultEraSideburnsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC298
+
+gIngoAdultEraSleeveTex:
+  type: TEXTURE
+  offset: 0xE698
+  symbol: gIngoAdultEraSleeveTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC298
+
+gIngoAdultEraTLUT:
+  type: TEXTURE
+  offset: 0xC298
+  symbol: gIngoAdultEraTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIngoAdultEraTorsoDL:
+  type: GFX
+  offset: 0x13100
+  symbol: gIngoAdultEraTorsoDL
+
+gIngoArmHairTex:
+  type: TEXTURE
+  offset: 0x2990
+  symbol: gIngoArmHairTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x1CD0
+
+gIngoBasketInsideTex:
+  type: TEXTURE
+  offset: 0x40D0
+  symbol: gIngoBasketInsideTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gIngoBasketTex:
+  type: TEXTURE
+  offset: 0x3DD0
+  symbol: gIngoBasketTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gIngoBeardTex:
+  type: TEXTURE
+  offset: 0x3ED0
+  symbol: gIngoBeardTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x3408
+
+gIngoBlob_0020D0:
+  type: BLOB
+  offset: 0x20D0
+  size: 0x80
+  symbol: gIngoBlob_0020D0
+
+gIngoBlob_003150:
+  type: BLOB
+  offset: 0x3150
+  size: 0x80
+  symbol: gIngoBlob_003150
+
+gIngoBootSideTex:
+  type: TEXTURE
+  offset: 0x41D0
+  symbol: gIngoBootSideTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x3408
+
+gIngoBootTopTex:
+  type: TEXTURE
+  offset: 0x4250
+  symbol: gIngoBootTopTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3408
+
+gIngoBrownTex:
+  type: TEXTURE
+  offset: 0x3550
+  symbol: gIngoBrownTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3408
+
+gIngoChestLimb:
+  type: OOT:LIMB
+  offset: 0x13AB8
+  symbol: gIngoChestLimb
+  limb_type: Standard
+
+gIngoChildEraBasketDL:
+  type: GFX
+  offset: 0x7A20
+  symbol: gIngoChildEraBasketDL
+
+gIngoChildEraChestDL:
+  type: GFX
+  offset: 0xA0D8
+  symbol: gIngoChildEraChestDL
+
+gIngoChildEraHeadDL:
+  type: GFX
+  offset: 0x6730
+  symbol: gIngoChildEraHeadDL
+
+gIngoChildEraLeftArmDL:
+  type: GFX
+  offset: 0xAEC8
+  symbol: gIngoChildEraLeftArmDL
+
+gIngoChildEraLeftEyebrowDL:
+  type: GFX
+  offset: 0x74C0
+  symbol: gIngoChildEraLeftEyebrowDL
+
+gIngoChildEraLeftFootDL:
+  type: GFX
+  offset: 0x76E0
+  symbol: gIngoChildEraLeftFootDL
+
+gIngoChildEraLeftHandDL:
+  type: GFX
+  offset: 0xB178
+  symbol: gIngoChildEraLeftHandDL
+
+gIngoChildEraLeftLegDL:
+  type: GFX
+  offset: 0xC0C8
+  symbol: gIngoChildEraLeftLegDL
+
+gIngoChildEraLeftShoulderDL:
+  type: GFX
+  offset: 0xACA0
+  symbol: gIngoChildEraLeftShoulderDL
+
+gIngoChildEraLeftThighDL:
+  type: GFX
+  offset: 0xBD80
+  symbol: gIngoChildEraLeftThighDL
+
+gIngoChildEraMustacheDL:
+  type: GFX
+  offset: 0x75E8
+  symbol: gIngoChildEraMustacheDL
+
+gIngoChildEraPitchForkDL:
+  type: GFX
+  offset: 0x7BF8
+  symbol: gIngoChildEraPitchForkDL
+
+gIngoChildEraRightArmDL:
+  type: GFX
+  offset: 0xA630
+  symbol: gIngoChildEraRightArmDL
+
+gIngoChildEraRightEyebrowDL:
+  type: GFX
+  offset: 0x7398
+  symbol: gIngoChildEraRightEyebrowDL
+
+gIngoChildEraRightFootDL:
+  type: GFX
+  offset: 0x7880
+  symbol: gIngoChildEraRightFootDL
+
+gIngoChildEraRightHandDL:
+  type: GFX
+  offset: 0xA8E0
+  symbol: gIngoChildEraRightHandDL
+
+gIngoChildEraRightLegDL:
+  type: GFX
+  offset: 0xBB28
+  symbol: gIngoChildEraRightLegDL
+
+gIngoChildEraRightShoulderDL:
+  type: GFX
+  offset: 0xA408
+  symbol: gIngoChildEraRightShoulderDL
+
+gIngoChildEraRightThighDL:
+  type: GFX
+  offset: 0xB7E0
+  symbol: gIngoChildEraRightThighDL
+
+gIngoChildEraTorsoDL:
+  type: GFX
+  offset: 0xB5B8
+  symbol: gIngoChildEraTorsoDL
+
+gIngoClothStainTex:
+  type: TEXTURE
+  offset: 0x3110
+  symbol: gIngoClothStainTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1CD0
+
+gIngoClothTex:
+  type: TEXTURE
+  offset: 0x30D0
+  symbol: gIngoClothTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1CD0
+
+gIngoEarTex:
+  type: TEXTURE
+  offset: 0x3510
+  symbol: gIngoEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3408
+
+gIngoEyeClosed2Tex:
+  type: TEXTURE
+  offset: 0x4390
+  symbol: gIngoEyeClosed2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3210
+
+gIngoEyeClosedTex:
+  type: TEXTURE
+  offset: 0x4BD0
+  symbol: gIngoEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3210
+
+gIngoEyeHalfTex:
+  type: TEXTURE
+  offset: 0x47D0
+  symbol: gIngoEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3210
+
+gIngoEyeOpenTex:
+  type: TEXTURE
+  offset: 0x3590
+  symbol: gIngoEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3210
+
+gIngoEyebrowEdgeTex:
+  type: TEXTURE
+  offset: 0x3990
+  symbol: gIngoEyebrowEdgeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIngoFingersTex:
+  type: TEXTURE
+  offset: 0x2B90
+  symbol: gIngoFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1CD0
+
+gIngoHairTex:
+  type: TEXTURE
+  offset: 0x3B90
+  symbol: gIngoHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3408
+
+gIngoHeadGradient2Tex:
+  type: TEXTURE
+  offset: 0x34D0
+  symbol: gIngoHeadGradient2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3210
+
+gIngoHeadGradientTex:
+  type: TEXTURE
+  offset: 0x4790
+  symbol: gIngoHeadGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3408
+
+gIngoHeadLimb:
+  type: OOT:LIMB
+  offset: 0x13B0C
+  symbol: gIngoHeadLimb
+  limb_type: Standard
+
+gIngoHeadTLUT:
+  type: TEXTURE
+  offset: 0x3210
+  symbol: gIngoHeadTLUT
+  format: RGBA16
+  width: 252
+  height: 1
+
+gIngoLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x13AD0
+  symbol: gIngoLeftArmLimb
+  limb_type: Standard
+
+gIngoLeftEyebrowLimb:
+  type: OOT:LIMB
+  offset: 0x13B18
+  symbol: gIngoLeftEyebrowLimb
+  limb_type: Standard
+
+gIngoLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x13A7C
+  symbol: gIngoLeftFootLimb
+  limb_type: Standard
+
+gIngoLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x13ADC
+  symbol: gIngoLeftHandLimb
+  limb_type: Standard
+
+gIngoLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x13A70
+  symbol: gIngoLeftLegLimb
+  limb_type: Standard
+
+gIngoLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x13AC4
+  symbol: gIngoLeftShoulderLimb
+  limb_type: Standard
+
+gIngoLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x13A64
+  symbol: gIngoLeftThighLimb
+  limb_type: Standard
+
+gIngoMustacheLimb:
+  type: OOT:LIMB
+  offset: 0x13B30
+  symbol: gIngoMustacheLimb
+  limb_type: Standard
+
+gIngoPitchforkTex:
+  type: TEXTURE
+  offset: 0x3D90
+  symbol: gIngoPitchforkTex
+  format: I8
+  width: 8
+  height: 8
+
+gIngoPocketTex:
+  type: TEXTURE
+  offset: 0x31D0
+  symbol: gIngoPocketTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1CD0
+
+gIngoRedTex:
+  type: TEXTURE
+  offset: 0x4350
+  symbol: gIngoRedTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3210
+
+gIngoRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x13AF4
+  symbol: gIngoRightArmLimb
+  limb_type: Standard
+
+gIngoRightEyebrowLimb:
+  type: OOT:LIMB
+  offset: 0x13B24
+  symbol: gIngoRightEyebrowLimb
+  limb_type: Standard
+
+gIngoRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x13AA0
+  symbol: gIngoRightFootLimb
+  limb_type: Standard
+
+gIngoRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x13B00
+  symbol: gIngoRightHandLimb
+  limb_type: Standard
+
+gIngoRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x13A94
+  symbol: gIngoRightLegLimb
+  limb_type: Standard
+
+gIngoRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x13AE8
+  symbol: gIngoRightShoulderLimb
+  limb_type: Standard
+
+gIngoRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x13A88
+  symbol: gIngoRightThighLimb
+  limb_type: Standard
+
+gIngoRootLimb:
+  type: OOT:LIMB
+  offset: 0x13A58
+  symbol: gIngoRootLimb
+  limb_type: Standard
+
+gIngoShirtButtonsTex:
+  type: TEXTURE
+  offset: 0x2CD0
+  symbol: gIngoShirtButtonsTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1CD0
+
+gIngoShirtSleeveTex:
+  type: TEXTURE
+  offset: 0x2C90
+  symbol: gIngoShirtSleeveTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1CD0
+
+gIngoSideburnsTex:
+  type: TEXTURE
+  offset: 0x3C90
+  symbol: gIngoSideburnsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3408
+
+gIngoSkel:
+  type: OOT:SKELETON
+  offset: 0x13B88
+  symbol: gIngoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gIngoSkinGradientTLUT:
+  type: TEXTURE
+  offset: 0x1ED0
+  symbol: gIngoSkinGradientTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIngoSkinGradientTex:
+  type: TEXTURE
+  offset: 0x2950
+  symbol: gIngoSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1ED0
+
+gIngoTLUT:
+  type: TEXTURE
+  offset: 0x1CD0
+  symbol: gIngoTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIngoTLUT2:
+  type: TEXTURE
+  offset: 0x3408
+  symbol: gIngoTLUT2
+  format: RGBA16
+  width: 100
+  height: 1
+
+gIngoTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x13AAC
+  symbol: gIngoTorsoLimb
+  limb_type: Standard
+
+gIngoUnusedEyeClosedTex:
+  type: TEXTURE
+  offset: 0xDB98
+  symbol: gIngoUnusedEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gIngoUnusedEyeHalfTex:
+  type: TEXTURE
+  offset: 0xD398
+  symbol: gIngoUnusedEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gIngoUnusedEyeOpenTex:
+  type: TEXTURE
+  offset: 0xCB98
+  symbol: gIngoUnusedEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gIngoUnusedEyeTex:
+  type: TEXTURE
+  offset: 0x2150
+  symbol: gIngoUnusedEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_in_Anim_0003B4:
+  type: OOT:ANIMATION
+  offset: 0x3B4
+  symbol: object_in_Anim_0003B4
+
+object_in_Anim_000CB0:
+  type: OOT:ANIMATION
+  offset: 0xCB0
+  symbol: object_in_Anim_000CB0
+
+object_in_Anim_001BE0:
+  type: OOT:ANIMATION
+  offset: 0x1BE0
+  symbol: object_in_Anim_001BE0
+
+object_in_Anim_001CC0:
+  type: OOT:ANIMATION
+  offset: 0x1CC0
+  symbol: object_in_Anim_001CC0
+
+object_in_Anim_013C6C:
+  type: OOT:ANIMATION
+  offset: 0x13C6C
+  symbol: object_in_Anim_013C6C
+
+object_in_Anim_013D60:
+  type: OOT:ANIMATION
+  offset: 0x13D60
+  symbol: object_in_Anim_013D60
+
+object_in_Anim_01431C:
+  type: OOT:ANIMATION
+  offset: 0x1431C
+  symbol: object_in_Anim_01431C
+
+object_in_Anim_014CA8:
+  type: OOT:ANIMATION
+  offset: 0x14CA8
+  symbol: object_in_Anim_014CA8
+
+object_in_Anim_0151C8:
+  type: OOT:ANIMATION
+  offset: 0x151C8
+  symbol: object_in_Anim_0151C8
+
+object_in_Anim_015814:
+  type: OOT:ANIMATION
+  offset: 0x15814
+  symbol: object_in_Anim_015814
+
+object_in_Anim_015DF0:
+  type: OOT:ANIMATION
+  offset: 0x15DF0
+  symbol: object_in_Anim_015DF0
+
+object_in_Anim_01646C:
+  type: OOT:ANIMATION
+  offset: 0x1646C
+  symbol: object_in_Anim_01646C
+
+object_in_Anim_016B3C:
+  type: OOT:ANIMATION
+  offset: 0x16B3C
+  symbol: object_in_Anim_016B3C
+
+object_in_Anim_0175D0:
+  type: OOT:ANIMATION
+  offset: 0x175D0
+  symbol: object_in_Anim_0175D0
+
+object_in_Anim_017B58:
+  type: OOT:ANIMATION
+  offset: 0x17B58
+  symbol: object_in_Anim_017B58
+
+object_in_Anim_018C38:
+  type: OOT:ANIMATION
+  offset: 0x18C38
+  symbol: object_in_Anim_018C38
+
+object_in_Tex_00C758:
+  type: TEXTURE
+  offset: 0xC758
+  symbol: object_in_Tex_00C758
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0xC298
+
+
+object_inVtx_004FD0:
+  type: OOT:ARRAY
+  offset: 0x004FD0
+  symbol: object_inVtx_004FD0
+  count: 152
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_005950:
+  type: OOT:ARRAY
+  offset: 0x005950
+  symbol: object_inVtx_005950
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0059C0:
+  type: OOT:ARRAY
+  offset: 0x0059C0
+  symbol: object_inVtx_0059C0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_005A30:
+  type: OOT:ARRAY
+  offset: 0x005A30
+  symbol: object_inVtx_005A30
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_005AD0:
+  type: OOT:ARRAY
+  offset: 0x005AD0
+  symbol: object_inVtx_005AD0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_005D70:
+  type: OOT:ARRAY
+  offset: 0x005D70
+  symbol: object_inVtx_005D70
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_006010:
+  type: OOT:ARRAY
+  offset: 0x006010
+  symbol: object_inVtx_006010
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0063E0:
+  type: OOT:ARRAY
+  offset: 0x0063E0
+  symbol: object_inVtx_0063E0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_007F98:
+  type: OOT:ARRAY
+  offset: 0x007F98
+  symbol: object_inVtx_007F98
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0083F8:
+  type: OOT:ARRAY
+  offset: 0x0083F8
+  symbol: object_inVtx_0083F8
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_008608:
+  type: OOT:ARRAY
+  offset: 0x008608
+  symbol: object_inVtx_008608
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0087E8:
+  type: OOT:ARRAY
+  offset: 0x0087E8
+  symbol: object_inVtx_0087E8
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_008C48:
+  type: OOT:ARRAY
+  offset: 0x008C48
+  symbol: object_inVtx_008C48
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_008E58:
+  type: OOT:ARRAY
+  offset: 0x008E58
+  symbol: object_inVtx_008E58
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_009038:
+  type: OOT:ARRAY
+  offset: 0x009038
+  symbol: object_inVtx_009038
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_009518:
+  type: OOT:ARRAY
+  offset: 0x009518
+  symbol: object_inVtx_009518
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_009758:
+  type: OOT:ARRAY
+  offset: 0x009758
+  symbol: object_inVtx_009758
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0099C8:
+  type: OOT:ARRAY
+  offset: 0x0099C8
+  symbol: object_inVtx_0099C8
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_009C08:
+  type: OOT:ARRAY
+  offset: 0x009C08
+  symbol: object_inVtx_009C08
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_009E78:
+  type: OOT:ARRAY
+  offset: 0x009E78
+  symbol: object_inVtx_009E78
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_00EB18:
+  type: OOT:ARRAY
+  offset: 0x00EB18
+  symbol: object_inVtx_00EB18
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_00EB88:
+  type: OOT:ARRAY
+  offset: 0x00EB88
+  symbol: object_inVtx_00EB88
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_00EBF8:
+  type: OOT:ARRAY
+  offset: 0x00EBF8
+  symbol: object_inVtx_00EBF8
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_00EC98:
+  type: OOT:ARRAY
+  offset: 0x00EC98
+  symbol: object_inVtx_00EC98
+  count: 137
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_00F528:
+  type: OOT:ARRAY
+  offset: 0x00F528
+  symbol: object_inVtx_00F528
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_00F988:
+  type: OOT:ARRAY
+  offset: 0x00F988
+  symbol: object_inVtx_00F988
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_00FB38:
+  type: OOT:ARRAY
+  offset: 0x00FB38
+  symbol: object_inVtx_00FB38
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_00FCE8:
+  type: OOT:ARRAY
+  offset: 0x00FCE8
+  symbol: object_inVtx_00FCE8
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_010148:
+  type: OOT:ARRAY
+  offset: 0x010148
+  symbol: object_inVtx_010148
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0102F8:
+  type: OOT:ARRAY
+  offset: 0x0102F8
+  symbol: object_inVtx_0102F8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0104A8:
+  type: OOT:ARRAY
+  offset: 0x0104A8
+  symbol: object_inVtx_0104A8
+  count: 99
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_010AD8:
+  type: OOT:ARRAY
+  offset: 0x010AD8
+  symbol: object_inVtx_010AD8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_010CA8:
+  type: OOT:ARRAY
+  offset: 0x010CA8
+  symbol: object_inVtx_010CA8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_010E58:
+  type: OOT:ARRAY
+  offset: 0x010E58
+  symbol: object_inVtx_010E58
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_011028:
+  type: OOT:ARRAY
+  offset: 0x011028
+  symbol: object_inVtx_011028
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0111F8:
+  type: OOT:ARRAY
+  offset: 0x0111F8
+  symbol: object_inVtx_0111F8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_0113A8:
+  type: OOT:ARRAY
+  offset: 0x0113A8
+  symbol: object_inVtx_0113A8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inVtx_011578:
+  type: OOT:ARRAY
+  offset: 0x011578
+  symbol: object_inVtx_011578
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gIngoSkelLimbs:
+  type: BLOB
+  offset: 0x13B3C
+  symbol: gIngoSkelLimbs
+  size: 0

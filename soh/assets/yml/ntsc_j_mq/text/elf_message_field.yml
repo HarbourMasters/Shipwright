@@ -1,0 +1,10 @@
+:config:
+  segments:
+    - [ 128, 0x01684B20 ]
+
+elf_message_field:
+  type: BLOB
+  offset: 0x0
+  size: 0x70
+  symbol: elf_message_field
+

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 #include <vector>
 #include <stdint.h>

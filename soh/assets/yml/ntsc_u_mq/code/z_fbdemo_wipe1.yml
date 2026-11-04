@@ -1,0 +1,19 @@
+:config:
+  segments:
+    - [ 128, 0x00A62500 ]
+
+sTransWipeTex:
+  type: TEXTURE
+  offset: 0xEAE30
+  symbol: sTransWipeTex
+  format: I4
+  width: 64
+  height: 64
+
+sTransWipeVtx:
+  type: OOT:ARRAY
+  offset: 0xEACA0
+  symbol: sTransWipeVtx
+  count: 25
+  array_type: VTX
+

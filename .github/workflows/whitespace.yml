@@ -1,0 +1,13 @@
+name: whitespace
+on: [pull_request]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  whitespace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check for tabs and trailing whitespace in C/C++ sources
+        run: ./scripts/check-whitespace.sh

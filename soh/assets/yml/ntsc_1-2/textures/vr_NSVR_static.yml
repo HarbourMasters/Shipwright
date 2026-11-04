@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 128, 0x01619120 ]
+
+gBombchuShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gBombchuShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_NSVR_pal_static
+  external_tlut_offset: 0x200
+
+gBombchuShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBombchuShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_NSVR_pal_static
+  external_tlut_offset: 0x000
+

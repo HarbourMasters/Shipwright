@@ -1,0 +1,461 @@
+:config:
+  segments:
+    - [ 6, 0x01106C10 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x01106C10 ]
+    - [ 9, 0x01106C10 ]
+    - [ 10, 0x01106C10 ]
+    - [ 11, 0x01106C10 ]
+    - [ 12, 0x01106C10 ]
+    - [ 13, 0x01106C10 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gRoofMan1TLUT:
+  type: TEXTURE
+  offset: 0x00108
+  symbol: gRoofMan1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRoofMan2TLUT:
+  type: TEXTURE
+  offset: 0x1088
+  symbol: gRoofMan2TLUT
+  format: RGBA16
+  width: 21
+  height: 8
+
+gRoofManEarTex:
+  type: TEXTURE
+  offset: 0x01318
+  symbol: gRoofManEarTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1088
+
+gRoofManEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1D18
+  symbol: gRoofManEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRoofManEyeHalfTex:
+  type: TEXTURE
+  offset: 0x1518
+  symbol: gRoofManEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRoofManEyeOpenTex:
+  type: TEXTURE
+  offset: 0x408
+  symbol: gRoofManEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRoofManForearmGradientTex:
+  type: TEXTURE
+  offset: 0x00D08
+  symbol: gRoofManForearmGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x00108
+
+gRoofManGettingUpAfterKnockbackAnim:
+  type: OOT:ANIMATION
+  offset: 0x70F0
+  symbol: gRoofManGettingUpAfterKnockbackAnim
+
+gRoofManHairTex:
+  type: TEXTURE
+  offset: 0x01418
+  symbol: gRoofManHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1088
+
+gRoofManHandBackTex:
+  type: TEXTURE
+  offset: 0x00C08
+  symbol: gRoofManHandBackTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x00108
+
+gRoofManHeadDL:
+  type: GFX
+  offset: 0x2CD8
+  symbol: gRoofManHeadDL
+
+gRoofManHeadLimb:
+  type: OOT:LIMB
+  offset: 0xA8
+  symbol: gRoofManHeadLimb
+  limb_type: Standard
+
+gRoofManIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x76EC
+  symbol: gRoofManIdleAnim
+
+gRoofManKnockbackAnim:
+  type: OOT:ANIMATION
+  offset: 0x67B8
+  symbol: gRoofManKnockbackAnim
+
+gRoofManLeftFootDL:
+  type: GFX
+  offset: 0x5B80
+  symbol: gRoofManLeftFootDL
+
+gRoofManLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x24
+  symbol: gRoofManLeftFootLimb
+  limb_type: Standard
+
+gRoofManLeftForearmDL:
+  type: GFX
+  offset: 0x5058
+  symbol: gRoofManLeftForearmDL
+
+gRoofManLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x6C
+  symbol: gRoofManLeftForearmLimb
+  limb_type: Standard
+
+gRoofManLeftHandDL:
+  type: GFX
+  offset: 0x4EC0
+  symbol: gRoofManLeftHandDL
+
+gRoofManLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x78
+  symbol: gRoofManLeftHandLimb
+  limb_type: Standard
+
+gRoofManLeftLegDL:
+  type: GFX
+  offset: 0x5D58
+  symbol: gRoofManLeftLegDL
+
+gRoofManLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x18
+  symbol: gRoofManLeftLegLimb
+  limb_type: Standard
+
+gRoofManLeftThighDL:
+  type: GFX
+  offset: 0x60A0
+  symbol: gRoofManLeftThighDL
+
+gRoofManLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xC
+  symbol: gRoofManLeftThighLimb
+  limb_type: Standard
+
+gRoofManLeftUpperArmDL:
+  type: GFX
+  offset: 0x51C8
+  symbol: gRoofManLeftUpperArmDL
+
+gRoofManLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x60
+  symbol: gRoofManLeftUpperArmLimb
+  limb_type: Standard
+
+gRoofManRightFootDL:
+  type: GFX
+  offset: 0x5610
+  symbol: gRoofManRightFootDL
+
+gRoofManRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x48
+  symbol: gRoofManRightFootLimb
+  limb_type: Standard
+
+gRoofManRightForearmDL:
+  type: GFX
+  offset: 0x4C00
+  symbol: gRoofManRightForearmDL
+
+gRoofManRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x90
+  symbol: gRoofManRightForearmLimb
+  limb_type: Standard
+
+gRoofManRightHandDL:
+  type: GFX
+  offset: 0x4A68
+  symbol: gRoofManRightHandDL
+
+gRoofManRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x9C
+  symbol: gRoofManRightHandLimb
+  limb_type: Standard
+
+gRoofManRightLegDL:
+  type: GFX
+  offset: 0x57F0
+  symbol: gRoofManRightLegDL
+
+gRoofManRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x3C
+  symbol: gRoofManRightLegLimb
+  limb_type: Standard
+
+gRoofManRightThighDL:
+  type: GFX
+  offset: 0x5A58
+  symbol: gRoofManRightThighDL
+
+gRoofManRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x30
+  symbol: gRoofManRightThighLimb
+  limb_type: Standard
+
+gRoofManRightUpperArmDL:
+  type: GFX
+  offset: 0x4D70
+  symbol: gRoofManRightUpperArmDL
+
+gRoofManRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x84
+  symbol: gRoofManRightUpperArmLimb
+  limb_type: Standard
+
+gRoofManRootLimb:
+  type: OOT:LIMB
+  offset: 0x0
+  symbol: gRoofManRootLimb
+  limb_type: Standard
+
+gRoofManSandalBuckleTex:
+  type: TEXTURE
+  offset: 0x00D88
+  symbol: gRoofManSandalBuckleTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x00108
+
+gRoofManSkel:
+  type: OOT:SKELETON
+  offset: 0xF0
+  symbol: gRoofManSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gRoofManSkinGradientTex:
+  type: TEXTURE
+  offset: 0x012D8
+  symbol: gRoofManSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1088
+
+gRoofManThighGradientTex:
+  type: TEXTURE
+  offset: 0x00D48
+  symbol: gRoofManThighGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x00108
+
+gRoofManTorsoDL:
+  type: GFX
+  offset: 0x5318
+  symbol: gRoofManTorsoDL
+
+gRoofManTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x54
+  symbol: gRoofManTorsoLimb
+  limb_type: Standard
+
+gRoofManTrouserPatternTex:
+  type: TEXTURE
+  offset: 0x00E88
+  symbol: gRoofManTrouserPatternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRoofManWaistDL:
+  type: GFX
+  offset: 0x61C8
+  symbol: gRoofManWaistDL
+
+object_aniTex_0011D8:
+  type: TEXTURE
+  offset: 0x11D8
+  symbol: object_aniTex_0011D8
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1088
+
+
+gRoofManSkelLimbs:
+  type: BLOB
+  offset: 0xB4
+  symbol: gRoofManSkelLimbs
+  size: 0
+
+object_aniVtx_002518:
+  type: OOT:ARRAY
+  offset: 0x002518
+  symbol: object_aniVtx_002518
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_002FA8:
+  type: OOT:ARRAY
+  offset: 0x002FA8
+  symbol: object_aniVtx_002FA8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_0031A8:
+  type: OOT:ARRAY
+  offset: 0x0031A8
+  symbol: object_aniVtx_0031A8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_003348:
+  type: OOT:ARRAY
+  offset: 0x003348
+  symbol: object_aniVtx_003348
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_0034E8:
+  type: OOT:ARRAY
+  offset: 0x0034E8
+  symbol: object_aniVtx_0034E8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_0036E8:
+  type: OOT:ARRAY
+  offset: 0x0036E8
+  symbol: object_aniVtx_0036E8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_003888:
+  type: OOT:ARRAY
+  offset: 0x003888
+  symbol: object_aniVtx_003888
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_003A28:
+  type: OOT:ARRAY
+  offset: 0x003A28
+  symbol: object_aniVtx_003A28
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_003F28:
+  type: OOT:ARRAY
+  offset: 0x003F28
+  symbol: object_aniVtx_003F28
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_004028:
+  type: OOT:ARRAY
+  offset: 0x004028
+  symbol: object_aniVtx_004028
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_0042B8:
+  type: OOT:ARRAY
+  offset: 0x0042B8
+  symbol: object_aniVtx_0042B8
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_004428:
+  type: OOT:ARRAY
+  offset: 0x004428
+  symbol: object_aniVtx_004428
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_004528:
+  type: OOT:ARRAY
+  offset: 0x004528
+  symbol: object_aniVtx_004528
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_0047F8:
+  type: OOT:ARRAY
+  offset: 0x0047F8
+  symbol: object_aniVtx_0047F8
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_004968:
+  type: OOT:ARRAY
+  offset: 0x004968
+  symbol: object_aniVtx_004968
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

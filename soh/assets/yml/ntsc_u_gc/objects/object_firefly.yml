@@ -1,0 +1,427 @@
+:config:
+  segments:
+    - [ 6, 0x00DD0E60 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00DD0E60 ]
+    - [ 9, 0x00DD0E60 ]
+    - [ 10, 0x00DD0E60 ]
+    - [ 11, 0x00DD0E60 ]
+    - [ 12, 0x00DD0E60 ]
+    - [ 13, 0x00DD0E60 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gFireKeeseBodyTex:
+  type: TEXTURE
+  offset: 0x210
+  symbol: gFireKeeseBodyTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gFireKeeseEarTex:
+  type: TEXTURE
+  offset: 0x310
+  symbol: gFireKeeseEarTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gFireKeeseEyeTex:
+  type: TEXTURE
+  offset: 0x290
+  symbol: gFireKeeseEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gFireKeeseTalonTex:
+  type: TEXTURE
+  offset: 0x410
+  symbol: gFireKeeseTalonTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gFireKeeseWingTex:
+  type: TEXTURE
+  offset: 0x510
+  symbol: gFireKeeseWingTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+gKeeseBodyTex:
+  type: TEXTURE
+  offset: 0x590
+  symbol: gKeeseBodyTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKeeseEarTex:
+  type: TEXTURE
+  offset: 0x790
+  symbol: gKeeseEarTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gKeeseEyeTex:
+  type: TEXTURE
+  offset: 0x190
+  symbol: gKeeseEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKeeseEyesDL:
+  type: GFX
+  offset: 0x1678
+  symbol: gKeeseEyesDL
+
+gKeeseFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x17C
+  symbol: gKeeseFlyAnim
+
+gKeeseSkeleton:
+  type: OOT:SKELETON
+  offset: 0x18B8
+  symbol: gKeeseSkeleton
+  limb_type: Standard
+  skel_type: Normal
+
+gKeeseTalonTex:
+  type: TEXTURE
+  offset: 0x610
+  symbol: gKeeseTalonTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gKeeseWingTex:
+  type: TEXTURE
+  offset: 0x710
+  symbol: gKeeseWingTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+
+object_fireflyVtx_000890:
+  type: OOT:ARRAY
+  offset: 0x000890
+  symbol: object_fireflyVtx_000890
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000A30:
+  type: OOT:ARRAY
+  offset: 0x000A30
+  symbol: object_fireflyVtx_000A30
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000B40:
+  type: OOT:ARRAY
+  offset: 0x000B40
+  symbol: object_fireflyVtx_000B40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000B70:
+  type: OOT:ARRAY
+  offset: 0x000B70
+  symbol: object_fireflyVtx_000B70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000BB0:
+  type: OOT:ARRAY
+  offset: 0x000BB0
+  symbol: object_fireflyVtx_000BB0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000BE0:
+  type: OOT:ARRAY
+  offset: 0x000BE0
+  symbol: object_fireflyVtx_000BE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000C10:
+  type: OOT:ARRAY
+  offset: 0x000C10
+  symbol: object_fireflyVtx_000C10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000C40:
+  type: OOT:ARRAY
+  offset: 0x000C40
+  symbol: object_fireflyVtx_000C40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000C70:
+  type: OOT:ARRAY
+  offset: 0x000C70
+  symbol: object_fireflyVtx_000C70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000CA0:
+  type: OOT:ARRAY
+  offset: 0x000CA0
+  symbol: object_fireflyVtx_000CA0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000CD0:
+  type: OOT:ARRAY
+  offset: 0x000CD0
+  symbol: object_fireflyVtx_000CD0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gKeeseSkeletonLimbsLimb_001840DL_000D30:
+  type: GFX
+  offset: 0x000D30
+  symbol: gKeeseSkeletonLimbsLimb_001840DL_000D30
+
+gKeeseSkeletonLimbsLimb_001774DL_000F40:
+  type: GFX
+  offset: 0x000F40
+  symbol: gKeeseSkeletonLimbsLimb_001774DL_000F40
+
+gKeeseSkeletonLimbsLimb_001768DL_001038:
+  type: GFX
+  offset: 0x001038
+  symbol: gKeeseSkeletonLimbsLimb_001768DL_001038
+
+gKeeseSkeletonLimbsLimb_001744DL_001100:
+  type: GFX
+  offset: 0x001100
+  symbol: gKeeseSkeletonLimbsLimb_001744DL_001100
+
+gKeeseSkeletonLimbsLimb_00181CDL_0011C8:
+  type: GFX
+  offset: 0x0011C8
+  symbol: gKeeseSkeletonLimbsLimb_00181CDL_0011C8
+
+gKeeseSkeletonLimbsLimb_001810DL_001290:
+  type: GFX
+  offset: 0x001290
+  symbol: gKeeseSkeletonLimbsLimb_001810DL_001290
+
+gKeeseSkeletonLimbsLimb_001804DL_001358:
+  type: GFX
+  offset: 0x001358
+  symbol: gKeeseSkeletonLimbsLimb_001804DL_001358
+
+gKeeseSkeletonLimbsLimb_0017B0DL_001420:
+  type: GFX
+  offset: 0x001420
+  symbol: gKeeseSkeletonLimbsLimb_0017B0DL_001420
+
+gKeeseSkeletonLimbsLimb_0017BCDL_0014E8:
+  type: GFX
+  offset: 0x0014E8
+  symbol: gKeeseSkeletonLimbsLimb_0017BCDL_0014E8
+
+gKeeseSkeletonLimbsLimb_0017C8DL_0015B0:
+  type: GFX
+  offset: 0x0015B0
+  symbol: gKeeseSkeletonLimbsLimb_0017C8DL_0015B0
+
+gKeeseSkeletonLimbsLimb_001708:
+  type: OOT:LIMB
+  offset: 0x001708
+  symbol: gKeeseSkeletonLimbsLimb_001708
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001714:
+  type: OOT:LIMB
+  offset: 0x001714
+  symbol: gKeeseSkeletonLimbsLimb_001714
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001720:
+  type: OOT:LIMB
+  offset: 0x001720
+  symbol: gKeeseSkeletonLimbsLimb_001720
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_00172C:
+  type: OOT:LIMB
+  offset: 0x00172C
+  symbol: gKeeseSkeletonLimbsLimb_00172C
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001738:
+  type: OOT:LIMB
+  offset: 0x001738
+  symbol: gKeeseSkeletonLimbsLimb_001738
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001744:
+  type: OOT:LIMB
+  offset: 0x001744
+  symbol: gKeeseSkeletonLimbsLimb_001744
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001750:
+  type: OOT:LIMB
+  offset: 0x001750
+  symbol: gKeeseSkeletonLimbsLimb_001750
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_00175C:
+  type: OOT:LIMB
+  offset: 0x00175C
+  symbol: gKeeseSkeletonLimbsLimb_00175C
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001768:
+  type: OOT:LIMB
+  offset: 0x001768
+  symbol: gKeeseSkeletonLimbsLimb_001768
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001774:
+  type: OOT:LIMB
+  offset: 0x001774
+  symbol: gKeeseSkeletonLimbsLimb_001774
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001780:
+  type: OOT:LIMB
+  offset: 0x001780
+  symbol: gKeeseSkeletonLimbsLimb_001780
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_00178C:
+  type: OOT:LIMB
+  offset: 0x00178C
+  symbol: gKeeseSkeletonLimbsLimb_00178C
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001798:
+  type: OOT:LIMB
+  offset: 0x001798
+  symbol: gKeeseSkeletonLimbsLimb_001798
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_0017A4:
+  type: OOT:LIMB
+  offset: 0x0017A4
+  symbol: gKeeseSkeletonLimbsLimb_0017A4
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_0017B0:
+  type: OOT:LIMB
+  offset: 0x0017B0
+  symbol: gKeeseSkeletonLimbsLimb_0017B0
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_0017BC:
+  type: OOT:LIMB
+  offset: 0x0017BC
+  symbol: gKeeseSkeletonLimbsLimb_0017BC
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_0017C8:
+  type: OOT:LIMB
+  offset: 0x0017C8
+  symbol: gKeeseSkeletonLimbsLimb_0017C8
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_0017D4:
+  type: OOT:LIMB
+  offset: 0x0017D4
+  symbol: gKeeseSkeletonLimbsLimb_0017D4
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_0017E0:
+  type: OOT:LIMB
+  offset: 0x0017E0
+  symbol: gKeeseSkeletonLimbsLimb_0017E0
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_0017EC:
+  type: OOT:LIMB
+  offset: 0x0017EC
+  symbol: gKeeseSkeletonLimbsLimb_0017EC
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_0017F8:
+  type: OOT:LIMB
+  offset: 0x0017F8
+  symbol: gKeeseSkeletonLimbsLimb_0017F8
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001804:
+  type: OOT:LIMB
+  offset: 0x001804
+  symbol: gKeeseSkeletonLimbsLimb_001804
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001810:
+  type: OOT:LIMB
+  offset: 0x001810
+  symbol: gKeeseSkeletonLimbsLimb_001810
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_00181C:
+  type: OOT:LIMB
+  offset: 0x00181C
+  symbol: gKeeseSkeletonLimbsLimb_00181C
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001828:
+  type: OOT:LIMB
+  offset: 0x001828
+  symbol: gKeeseSkeletonLimbsLimb_001828
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001834:
+  type: OOT:LIMB
+  offset: 0x001834
+  symbol: gKeeseSkeletonLimbsLimb_001834
+  limb_type: Standard
+
+gKeeseSkeletonLimbsLimb_001840:
+  type: OOT:LIMB
+  offset: 0x001840
+  symbol: gKeeseSkeletonLimbsLimb_001840
+  limb_type: Standard
+
+gKeeseSkeletonLimbs:
+  type: BLOB
+  offset: 0x184C
+  symbol: gKeeseSkeletonLimbs
+  size: 0

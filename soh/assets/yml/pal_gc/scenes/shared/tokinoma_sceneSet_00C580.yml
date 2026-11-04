@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01C4B2F0 ]
+  directory: scenes/shared/tokinoma_scene
+  external_files:
+    - pal_gc/scenes/shared/tokinoma_scene.yml
+
+tokinoma_sceneSet_00C580:
+  type: OOT:SCENE
+  offset: 0xC580
+  symbol: tokinoma_sceneSet_00C580
+  base_name: tokinoma_scene

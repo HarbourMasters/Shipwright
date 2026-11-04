@@ -1,0 +1,65 @@
+:config:
+  segments:
+    - [ 6, 0x00F0C8C0 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00F0C8C0 ]
+    - [ 9, 0x00F0C8C0 ]
+    - [ 10, 0x00F0C8C0 ]
+    - [ 11, 0x00F0C8C0 ]
+    - [ 12, 0x00F0C8C0 ]
+    - [ 13, 0x00F0C8C0 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gFloorTileEnemyBottomTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gFloorTileEnemyBottomTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFloorTileEnemyDL:
+  type: GFX
+  offset: 0x970
+  symbol: gFloorTileEnemyDL
+
+gFloorTileEnemyFragmentDL:
+  type: GFX
+  offset: 0xA60
+  symbol: gFloorTileEnemyFragmentDL
+
+gFloorTileEnemyFragmentTex:
+  type: TEXTURE
+  offset: 0x12F0
+  symbol: gFloorTileEnemyFragmentTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFloorTileEnemyTopTex:
+  type: TEXTURE
+  offset: 0xAF0
+  symbol: gFloorTileEnemyTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_yukabyunVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_yukabyunVtx_000800
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yukabyunVtx_000A30:
+  type: OOT:ARRAY
+  offset: 0x000A30
+  symbol: object_yukabyunVtx_000A30
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

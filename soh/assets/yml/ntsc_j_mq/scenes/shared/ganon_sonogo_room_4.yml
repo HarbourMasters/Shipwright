@@ -1,0 +1,146 @@
+:config:
+  segments:
+    - [ 3, 0x01F41510 ]
+    - [ 2, 0x01F2F320 ]
+  directory: scenes/shared/ganon_sonogo_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/ganon_sonogo_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+ganon_sonogo_room_4:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganon_sonogo_room_4
+
+ganon_sonogo_room_4TLUT_004840:
+  type: TEXTURE
+  offset: 0x4840
+  symbol: ganon_sonogo_room_4TLUT_004840
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_sonogo_room_4TLUT_004910:
+  type: TEXTURE
+  offset: 0x4910
+  symbol: ganon_sonogo_room_4TLUT_004910
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_sonogo_room_4TLUT_004B18:
+  type: TEXTURE
+  offset: 0x4B18
+  symbol: ganon_sonogo_room_4TLUT_004B18
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_sonogo_room_4Tex_004BA8:
+  type: TEXTURE
+  offset: 0x4BA8
+  symbol: ganon_sonogo_room_4Tex_004BA8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x4840
+
+ganon_sonogo_room_4Tex_0053A8:
+  type: TEXTURE
+  offset: 0x53A8
+  symbol: ganon_sonogo_room_4Tex_0053A8
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4B18
+
+ganon_sonogo_room_4Tex_0054A8:
+  type: TEXTURE
+  offset: 0x54A8
+  symbol: ganon_sonogo_room_4Tex_0054A8
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4B18
+
+ganon_sonogo_room_4Tex_0054E8:
+  type: TEXTURE
+  offset: 0x54E8
+  symbol: ganon_sonogo_room_4Tex_0054E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganon_sonogo_room_4Tex_005CE8:
+  type: TEXTURE
+  offset: 0x5CE8
+  symbol: ganon_sonogo_room_4Tex_005CE8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x4910
+
+ganon_sonogo_room_4Tex_0064E8:
+  type: TEXTURE
+  offset: 0x64E8
+  symbol: ganon_sonogo_room_4Tex_0064E8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4B18
+
+ganon_sonogo_room_4Tex_0068E8:
+  type: TEXTURE
+  offset: 0x68E8
+  symbol: ganon_sonogo_room_4Tex_0068E8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ganon_sonogo_scene
+  external_tlut_offset: 0x6508
+
+ganon_sonogo_room_4Tex_006CE8:
+  type: TEXTURE
+  offset: 0x6CE8
+  symbol: ganon_sonogo_room_4Tex_006CE8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganon_sonogo_room_4Tex_0074E8:
+  type: TEXTURE
+  offset: 0x74E8
+  symbol: ganon_sonogo_room_4Tex_0074E8
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ganon_sonogo_scene
+  external_tlut_offset: 0x6508
+
+ganon_sonogo_room_4Tex_007CE8:
+  type: TEXTURE
+  offset: 0x7CE8
+  symbol: ganon_sonogo_room_4Tex_007CE8
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+ganon_sonogo_room_4Vtx_000210:
+  type: OOT:ARRAY
+  offset: 0x000210
+  symbol: ganon_sonogo_room_4Vtx_000210
+  count: 563
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_sonogo_room_4DL_002540:
+  type: GFX
+  offset: 0x002540
+  symbol: ganon_sonogo_room_4DL_002540
+
+ganon_sonogo_room_4DL_004830:
+  type: GFX
+  offset: 0x004830
+  symbol: ganon_sonogo_room_4DL_004830

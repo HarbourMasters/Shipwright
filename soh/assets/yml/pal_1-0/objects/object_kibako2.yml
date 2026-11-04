@@ -1,0 +1,89 @@
+:config:
+  segments:
+    - [ 6, 0x01264570 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x01264570 ]
+    - [ 9, 0x01264570 ]
+    - [ 10, 0x01264570 ]
+    - [ 11, 0x01264570 ]
+    - [ 12, 0x01264570 ]
+    - [ 13, 0x01264570 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gLargeCrate1TLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gLargeCrate1TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gLargeCrate2TLUT:
+  type: TEXTURE
+  offset: 0xBA0
+  symbol: gLargeCrate2TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gLargeCrateCol:
+  type: OOT:COLLISION
+  offset: 0xB70
+  symbol: gLargeCrateCol
+
+gLargeCrateDL:
+  type: GFX
+  offset: 0x960
+  symbol: gLargeCrateDL
+
+gLargeCrateFragment1Tex:
+  type: TEXTURE
+  offset: 0x420
+  symbol: gLargeCrateFragment1Tex
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x0
+
+gLargeCrateFragment2Tex:
+  type: TEXTURE
+  offset: 0xBC0
+  symbol: gLargeCrateFragment2Tex
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0xBA0
+
+gLargeCrateFragmentDL:
+  type: GFX
+  offset: 0x1000
+  symbol: gLargeCrateFragmentDL
+
+gLargeCrateTex:
+  type: TEXTURE
+  offset: 0x20
+  symbol: gLargeCrateTex
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x0
+
+
+object_kibako2Vtx_000820:
+  type: OOT:ARRAY
+  offset: 0x000820
+  symbol: object_kibako2Vtx_000820
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kibako2Vtx_000FC0:
+  type: OOT:ARRAY
+  offset: 0x000FC0
+  symbol: object_kibako2Vtx_000FC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

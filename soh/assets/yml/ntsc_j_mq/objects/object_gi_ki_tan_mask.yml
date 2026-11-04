@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x011ACE50 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x011ACE50 ]
+    - [ 9, 0x011ACE50 ]
+    - [ 10, 0x011ACE50 ]
+    - [ 11, 0x011ACE50 ]
+    - [ 12, 0x011ACE50 ]
+    - [ 13, 0x011ACE50 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGiKeatonMaskDL:
+  type: GFX
+  offset: 0x0AC0
+  symbol: gGiKeatonMaskDL
+
+gGiKeatonMaskEyesDL:
+  type: GFX
+  offset: 0x0D50
+  symbol: gGiKeatonMaskEyesDL
+
+object_gi_ki_tan_maskTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_ki_tan_maskTex_000000
+  format: IA8
+  width: 8
+  height: 32
+
+
+object_gi_ki_tan_maskVtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: object_gi_ki_tan_maskVtx_000100
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_ki_tan_maskVtx_000A40:
+  type: OOT:ARRAY
+  offset: 0x000A40
+  symbol: object_gi_ki_tan_maskVtx_000A40
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01BF1BA0 ]
+  directory: scenes/shared/hiral_demo_scene
+  external_files:
+    - pal_1-0/scenes/shared/hiral_demo_scene.yml
+
+hiral_demo_sceneSet_003A70:
+  type: OOT:SCENE
+  offset: 0x3A70
+  symbol: hiral_demo_sceneSet_003A70
+  base_name: hiral_demo_scene

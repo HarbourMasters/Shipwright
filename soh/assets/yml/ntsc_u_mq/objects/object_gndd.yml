@@ -1,0 +1,808 @@
+:config:
+  segments:
+    - [ 6, 0x00FBEE20 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x00FBEE20 ]
+    - [ 9, 0x00FBEE20 ]
+    - [ 10, 0x00FBEE20 ]
+    - [ 11, 0x00FBEE20 ]
+    - [ 12, 0x00FBEE20 ]
+    - [ 13, 0x00FBEE20 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gYoungGanondorfArmsCrossedAnim:
+  type: OOT:ANIMATION
+  offset: 0x4260
+  symbol: gYoungGanondorfArmsCrossedAnim
+
+gYoungGanondorfBlackLeatherTex:
+  type: TEXTURE
+  offset: 0x10078
+  symbol: gYoungGanondorfBlackLeatherTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfBodysuitTex:
+  type: TEXTURE
+  offset: 0x10878
+  symbol: gYoungGanondorfBodysuitTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gYoungGanondorfChestAndKnifeJewelTex:
+  type: TEXTURE
+  offset: 0x10978
+  symbol: gYoungGanondorfChestAndKnifeJewelTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfChinDL:
+  type: GFX
+  offset: 0x6B78
+  symbol: gYoungGanondorfChinDL
+
+gYoungGanondorfChinLimb:
+  type: OOT:LIMB
+  offset: 0x118FC
+  symbol: gYoungGanondorfChinLimb
+  limb_type: Standard
+
+gYoungGanondorfEarTex:
+  type: TEXTURE
+  offset: 0xFB78
+  symbol: gYoungGanondorfEarTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gYoungGanondorfEyeClosedTex:
+  type: TEXTURE
+  offset: 0xF578
+  symbol: gYoungGanondorfEyeClosedTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xECB8
+
+gYoungGanondorfEyeHalfTex:
+  type: TEXTURE
+  offset: 0xF378
+  symbol: gYoungGanondorfEyeHalfTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xECB8
+
+gYoungGanondorfEyeLookingDownTex:
+  type: TEXTURE
+  offset: 0xF778
+  symbol: gYoungGanondorfEyeLookingDownTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xECB8
+
+gYoungGanondorfEyeOpenTex:
+  type: TEXTURE
+  offset: 0xF178
+  symbol: gYoungGanondorfEyeOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xECB8
+
+gYoungGanondorfEyeTLUT:
+  type: TEXTURE
+  offset: 0xECB8
+  symbol: gYoungGanondorfEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfEyebrowTex:
+  type: TEXTURE
+  offset: 0xFD78
+  symbol: gYoungGanondorfEyebrowTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gYoungGanondorfFingerTex:
+  type: TEXTURE
+  offset: 0x11678
+  symbol: gYoungGanondorfFingerTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gYoungGanondorfFingerUndersideTex:
+  type: TEXTURE
+  offset: 0x11818
+  symbol: gYoungGanondorfFingerUndersideTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gYoungGanondorfFingernailTex:
+  type: TEXTURE
+  offset: 0x11858
+  symbol: gYoungGanondorfFingernailTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gYoungGanondorfGerudoFabricTex:
+  type: TEXTURE
+  offset: 0x10B78
+  symbol: gYoungGanondorfGerudoFabricTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfGerudoFabricWithSunTex:
+  type: TEXTURE
+  offset: 0x10278
+  symbol: gYoungGanondorfGerudoFabricWithSunTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gYoungGanondorfHairFringeTex:
+  type: TEXTURE
+  offset: 0x10D78
+  symbol: gYoungGanondorfHairFringeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfHandSideTex:
+  type: TEXTURE
+  offset: 0x115F8
+  symbol: gYoungGanondorfHandSideTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gYoungGanondorfHeadDL:
+  type: GFX
+  offset: 0x61C0
+  symbol: gYoungGanondorfHeadDL
+
+gYoungGanondorfHeadLimb:
+  type: OOT:LIMB
+  offset: 0x11920
+  symbol: gYoungGanondorfHeadLimb
+  limb_type: Standard
+
+gYoungGanondorfHorsebackIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x2928
+  symbol: gYoungGanondorfHorsebackIdleAnim
+
+gYoungGanondorfHorsebackLookSidewaysLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x14F4
+  symbol: gYoungGanondorfHorsebackLookSidewaysLoopAnim
+
+gYoungGanondorfHorsebackLookSidewaysStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xF54
+  symbol: gYoungGanondorfHorsebackLookSidewaysStartAnim
+
+gYoungGanondorfHorsebackMagicChargeUpLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xBC8
+  symbol: gYoungGanondorfHorsebackMagicChargeUpLoopAnim
+
+gYoungGanondorfHorsebackMagicChargeUpStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x8A0
+  symbol: gYoungGanondorfHorsebackMagicChargeUpStartAnim
+
+gYoungGanondorfHorsebackRearAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D28
+  symbol: gYoungGanondorfHorsebackRearAnim
+
+gYoungGanondorfHorsebackRideAnim:
+  type: OOT:ANIMATION
+  offset: 0x5B4
+  symbol: gYoungGanondorfHorsebackRideAnim
+
+gYoungGanondorfInnerMouthTex:
+  type: TEXTURE
+  offset: 0xEEB8
+  symbol: gYoungGanondorfInnerMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gYoungGanondorfJawDL:
+  type: GFX
+  offset: 0x6D90
+  symbol: gYoungGanondorfJawDL
+
+gYoungGanondorfJawLimb:
+  type: OOT:LIMB
+  offset: 0x118F0
+  symbol: gYoungGanondorfJawLimb
+  limb_type: Standard
+
+gYoungGanondorfJawTex:
+  type: TEXTURE
+  offset: 0xFE78
+  symbol: gYoungGanondorfJawTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfJewelDL:
+  type: GFX
+  offset: 0xB410
+  symbol: gYoungGanondorfJewelDL
+
+gYoungGanondorfJewelLimb:
+  type: OOT:LIMB
+  offset: 0x118D8
+  symbol: gYoungGanondorfJewelLimb
+  limb_type: Standard
+
+gYoungGanondorfJewelTex:
+  type: TEXTURE
+  offset: 0x10F78
+  symbol: gYoungGanondorfJewelTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gYoungGanondorfKneelLookSidewaysAnim:
+  type: OOT:ANIMATION
+  offset: 0x3428
+  symbol: gYoungGanondorfKneelLookSidewaysAnim
+
+gYoungGanondorfKneelLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D84
+  symbol: gYoungGanondorfKneelLoopAnim
+
+gYoungGanondorfKneelStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x3284
+  symbol: gYoungGanondorfKneelStartAnim
+
+gYoungGanondorfKnifeDL:
+  type: GFX
+  offset: 0xB4B0
+  symbol: gYoungGanondorfKnifeDL
+
+gYoungGanondorfKnifeLimb:
+  type: OOT:LIMB
+  offset: 0x1195C
+  symbol: gYoungGanondorfKnifeLimb
+  limb_type: Standard
+
+gYoungGanondorfLaughLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x48B0
+  symbol: gYoungGanondorfLaughLoopAnim
+
+gYoungGanondorfLaughStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x4534
+  symbol: gYoungGanondorfLaughStartAnim
+
+gYoungGanondorfLeatherTex:
+  type: TEXTURE
+  offset: 0x10678
+  symbol: gYoungGanondorfLeatherTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfLeftFootDL:
+  type: GFX
+  offset: 0xC968
+  symbol: gYoungGanondorfLeftFootDL
+
+gYoungGanondorfLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x11950
+  symbol: gYoungGanondorfLeftFootLimb
+  limb_type: Standard
+
+gYoungGanondorfLeftForearmDL:
+  type: GFX
+  offset: 0xBC08
+  symbol: gYoungGanondorfLeftForearmDL
+
+gYoungGanondorfLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x1189C
+  symbol: gYoungGanondorfLeftForearmLimb
+  limb_type: Standard
+
+gYoungGanondorfLeftHandDL:
+  type: GFX
+  offset: 0xC138
+  symbol: gYoungGanondorfLeftHandDL
+
+gYoungGanondorfLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x118A8
+  symbol: gYoungGanondorfLeftHandLimb
+  limb_type: Standard
+
+gYoungGanondorfLeftShinDL:
+  type: GFX
+  offset: 0xD080
+  symbol: gYoungGanondorfLeftShinDL
+
+gYoungGanondorfLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x11944
+  symbol: gYoungGanondorfLeftShinLimb
+  limb_type: Standard
+
+gYoungGanondorfLeftThighDL:
+  type: GFX
+  offset: 0xCE88
+  symbol: gYoungGanondorfLeftThighDL
+
+gYoungGanondorfLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x11938
+  symbol: gYoungGanondorfLeftThighLimb
+  limb_type: Standard
+
+gYoungGanondorfLeftUpperArmDL:
+  type: GFX
+  offset: 0xB918
+  symbol: gYoungGanondorfLeftUpperArmDL
+
+gYoungGanondorfLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x11890
+  symbol: gYoungGanondorfLeftUpperArmLimb
+  limb_type: Standard
+
+gYoungGanondorfLeftUpperLipDL:
+  type: GFX
+  offset: 0x6FC8
+  symbol: gYoungGanondorfLeftUpperLipDL
+
+gYoungGanondorfLeftUpperLipLimb:
+  type: OOT:LIMB
+  offset: 0x118E4
+  symbol: gYoungGanondorfLeftUpperLipLimb
+  limb_type: Standard
+
+gYoungGanondorfNeckTex:
+  type: TEXTURE
+  offset: 0x108F8
+  symbol: gYoungGanondorfNeckTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gYoungGanondorfNoseBridgeTex:
+  type: TEXTURE
+  offset: 0xFCF8
+  symbol: gYoungGanondorfNoseBridgeTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+gYoungGanondorfNoseTex:
+  type: TEXTURE
+  offset: 0xFC78
+  symbol: gYoungGanondorfNoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gYoungGanondorfOpenLeftHandDL:
+  type: GFX
+  offset: 0xE1A8
+  symbol: gYoungGanondorfOpenLeftHandDL
+
+gYoungGanondorfOuterMouthTex:
+  type: TEXTURE
+  offset: 0xF138
+  symbol: gYoungGanondorfOuterMouthTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gYoungGanondorfPalmMaskTex:
+  type: TEXTURE
+  offset: 0x11718
+  symbol: gYoungGanondorfPalmMaskTex
+  format: I8
+  width: 16
+  height: 16
+
+gYoungGanondorfPauldronTex:
+  type: TEXTURE
+  offset: 0x11378
+  symbol: gYoungGanondorfPauldronTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfPelvisDL:
+  type: GFX
+  offset: 0xA6A8
+  symbol: gYoungGanondorfPelvisDL
+
+gYoungGanondorfPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x1192C
+  symbol: gYoungGanondorfPelvisLimb
+  limb_type: Standard
+
+gYoungGanondorfRightFootDL:
+  type: GFX
+  offset: 0xCBF8
+  symbol: gYoungGanondorfRightFootDL
+
+gYoungGanondorfRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x11980
+  symbol: gYoungGanondorfRightFootLimb
+  limb_type: Standard
+
+gYoungGanondorfRightForearmDL:
+  type: GFX
+  offset: 0xBEA0
+  symbol: gYoungGanondorfRightForearmDL
+
+gYoungGanondorfRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x118C0
+  symbol: gYoungGanondorfRightForearmLimb
+  limb_type: Standard
+
+gYoungGanondorfRightHandDL:
+  type: GFX
+  offset: 0xC550
+  symbol: gYoungGanondorfRightHandDL
+
+gYoungGanondorfRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x118CC
+  symbol: gYoungGanondorfRightHandLimb
+  limb_type: Standard
+
+gYoungGanondorfRightShinDL:
+  type: GFX
+  offset: 0xD470
+  symbol: gYoungGanondorfRightShinDL
+
+gYoungGanondorfRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x11974
+  symbol: gYoungGanondorfRightShinLimb
+  limb_type: Standard
+
+gYoungGanondorfRightThighDL:
+  type: GFX
+  offset: 0xD278
+  symbol: gYoungGanondorfRightThighDL
+
+gYoungGanondorfRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x11968
+  symbol: gYoungGanondorfRightThighLimb
+  limb_type: Standard
+
+gYoungGanondorfRightUpperArmDL:
+  type: GFX
+  offset: 0xBA90
+  symbol: gYoungGanondorfRightUpperArmDL
+
+gYoungGanondorfRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x118B4
+  symbol: gYoungGanondorfRightUpperArmLimb
+  limb_type: Standard
+
+gYoungGanondorfRightUpperLipDL:
+  type: GFX
+  offset: 0x69F8
+  symbol: gYoungGanondorfRightUpperLipDL
+
+gYoungGanondorfRightUpperLipLimb:
+  type: OOT:LIMB
+  offset: 0x11908
+  symbol: gYoungGanondorfRightUpperLipLimb
+  limb_type: Standard
+
+gYoungGanondorfRootLimb:
+  type: OOT:LIMB
+  offset: 0x11878
+  symbol: gYoungGanondorfRootLimb
+  limb_type: Standard
+
+gYoungGanondorfSideburnTex:
+  type: TEXTURE
+  offset: 0xEF38
+  symbol: gYoungGanondorfSideburnTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfSkel:
+  type: OOT:SKELETON
+  offset: 0x119E8
+  symbol: gYoungGanondorfSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gYoungGanondorfTeethDL:
+  type: GFX
+  offset: 0xD668
+  symbol: gYoungGanondorfTeethDL
+
+gYoungGanondorfTeethLimb:
+  type: OOT:LIMB
+  offset: 0x11914
+  symbol: gYoungGanondorfTeethLimb
+  limb_type: Standard
+
+gYoungGanondorfTeethTex:
+  type: TEXTURE
+  offset: 0x116F8
+  symbol: gYoungGanondorfTeethTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gYoungGanondorfThumbTex:
+  type: TEXTURE
+  offset: 0x11578
+  symbol: gYoungGanondorfThumbTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gYoungGanondorfTorsoDL:
+  type: GFX
+  offset: 0xAB10
+  symbol: gYoungGanondorfTorsoDL
+
+gYoungGanondorfTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x11884
+  symbol: gYoungGanondorfTorsoLimb
+  limb_type: Standard
+
+gYoungGanondorfUpperLipTex:
+  type: TEXTURE
+  offset: 0xF978
+  symbol: gYoungGanondorfUpperLipTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYoungGanondorfWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x50A8
+  symbol: gYoungGanondorfWalkAnim
+
+
+object_gnddVtx_0050C0:
+  type: OOT:ARRAY
+  offset: 0x0050C0
+  symbol: object_gnddVtx_0050C0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_005370:
+  type: OOT:ARRAY
+  offset: 0x005370
+  symbol: object_gnddVtx_005370
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_005550:
+  type: OOT:ARRAY
+  offset: 0x005550
+  symbol: object_gnddVtx_005550
+  count: 161
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_005F60:
+  type: OOT:ARRAY
+  offset: 0x005F60
+  symbol: object_gnddVtx_005F60
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_006090:
+  type: OOT:ARRAY
+  offset: 0x006090
+  symbol: object_gnddVtx_006090
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_0070F8:
+  type: OOT:ARRAY
+  offset: 0x0070F8
+  symbol: object_gnddVtx_0070F8
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_0077D8:
+  type: OOT:ARRAY
+  offset: 0x0077D8
+  symbol: object_gnddVtx_0077D8
+  count: 180
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_008318:
+  type: OOT:ARRAY
+  offset: 0x008318
+  symbol: object_gnddVtx_008318
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_008388:
+  type: OOT:ARRAY
+  offset: 0x008388
+  symbol: object_gnddVtx_008388
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_008688:
+  type: OOT:ARRAY
+  offset: 0x008688
+  symbol: object_gnddVtx_008688
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_008928:
+  type: OOT:ARRAY
+  offset: 0x008928
+  symbol: object_gnddVtx_008928
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_008BC8:
+  type: OOT:ARRAY
+  offset: 0x008BC8
+  symbol: object_gnddVtx_008BC8
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_008E88:
+  type: OOT:ARRAY
+  offset: 0x008E88
+  symbol: object_gnddVtx_008E88
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_009148:
+  type: OOT:ARRAY
+  offset: 0x009148
+  symbol: object_gnddVtx_009148
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_009498:
+  type: OOT:ARRAY
+  offset: 0x009498
+  symbol: object_gnddVtx_009498
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_0097E8:
+  type: OOT:ARRAY
+  offset: 0x0097E8
+  symbol: object_gnddVtx_0097E8
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_009AA8:
+  type: OOT:ARRAY
+  offset: 0x009AA8
+  symbol: object_gnddVtx_009AA8
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_009D68:
+  type: OOT:ARRAY
+  offset: 0x009D68
+  symbol: object_gnddVtx_009D68
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_009F18:
+  type: OOT:ARRAY
+  offset: 0x009F18
+  symbol: object_gnddVtx_009F18
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_00A1A8:
+  type: OOT:ARRAY
+  offset: 0x00A1A8
+  symbol: object_gnddVtx_00A1A8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_00A358:
+  type: OOT:ARRAY
+  offset: 0x00A358
+  symbol: object_gnddVtx_00A358
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_00A5E8:
+  type: OOT:ARRAY
+  offset: 0x00A5E8
+  symbol: object_gnddVtx_00A5E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gnddVtx_00D708:
+  type: OOT:ARRAY
+  offset: 0x00D708
+  symbol: object_gnddVtx_00D708
+  count: 170
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gYoungGanondorfSkelLimbs:
+  type: BLOB
+  offset: 0x1198C
+  symbol: gYoungGanondorfSkelLimbs
+  size: 0

@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x0110D430 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x0110D430 ]
+    - [ 9, 0x0110D430 ]
+    - [ 10, 0x0110D430 ]
+    - [ 11, 0x0110D430 ]
+    - [ 12, 0x0110D430 ]
+    - [ 13, 0x0110D430 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gGiBowDL:
+  type: GFX
+  offset: 0x0990
+  symbol: gGiBowDL
+
+
+object_gi_bowVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bowVtx_000000
+  count: 153
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

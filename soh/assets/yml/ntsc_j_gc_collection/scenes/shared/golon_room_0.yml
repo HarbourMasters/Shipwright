@@ -1,0 +1,33 @@
+:config:
+  segments:
+    - [ 3, 0x01D72E10 ]
+    - [ 2, 0x01D72BC0 ]
+  directory: scenes/shared/golon_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/shared/golon_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+
+golon_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: golon_room_0
+
+
+golon_room_0Vtx_0000B0:
+  type: OOT:ARRAY
+  offset: 0x0000B0
+  symbol: golon_room_0Vtx_0000B0
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+golon_room_0DL_000830:
+  type: GFX
+  offset: 0x000830
+  symbol: golon_room_0DL_000830
+
+golon_room_0DL_0009B0:
+  type: GFX
+  offset: 0x0009B0
+  symbol: golon_room_0DL_0009B0

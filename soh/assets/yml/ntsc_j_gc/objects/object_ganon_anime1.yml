@@ -1,0 +1,129 @@
+:config:
+  segments:
+    - [ 6, 0x01279FF0 ]
+
+gGanondorfBigMagicChargeHoldAnim:
+  type: OOT:ANIMATION
+  offset: 0x1FF8
+  symbol: gGanondorfBigMagicChargeHoldAnim
+
+gGanondorfBigMagicChargeStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x1B0C
+  symbol: gGanondorfBigMagicChargeStartAnim
+
+gGanondorfBigMagicHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x8128
+  symbol: gGanondorfBigMagicHitAnim
+
+gGanondorfBigMagicThrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x0FE8
+  symbol: gGanondorfBigMagicThrowAnim
+
+gGanondorfBigMagicThrowEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x1440
+  symbol: gGanondorfBigMagicThrowEndAnim
+
+gGanondorfBigMagicWindupAnim:
+  type: OOT:ANIMATION
+  offset: 0x0540
+  symbol: gGanondorfBigMagicWindupAnim
+
+gGanondorfBlockAnim:
+  type: OOT:ANIMATION
+  offset: 0x9D5C
+  symbol: gGanondorfBlockAnim
+
+gGanondorfBlockReleaseAnim:
+  type: OOT:ANIMATION
+  offset: 0xA598
+  symbol: gGanondorfBlockReleaseAnim
+
+gGanondorfChargeLightBallAnim:
+  type: OOT:ANIMATION
+  offset: 0xAA24
+  symbol: gGanondorfChargeLightBallAnim
+
+gGanondorfDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x96B0
+  symbol: gGanondorfDamageAnim
+
+gGanondorfDownedAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D40
+  symbol: gGanondorfDownedAnim
+
+gGanondorfFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x9A14
+  symbol: gGanondorfFloatAnim
+
+gGanondorfGetUp1Anim:
+  type: OOT:ANIMATION
+  offset: 0x58C4
+  symbol: gGanondorfGetUp1Anim
+
+gGanondorfGetUp2Anim:
+  type: OOT:ANIMATION
+  offset: 0x6028
+  symbol: gGanondorfGetUp2Anim
+
+gGanondorfGetUp3Anim:
+  type: OOT:ANIMATION
+  offset: 0x8A88
+  symbol: gGanondorfGetUp3Anim
+
+gGanondorfLandAnim:
+  type: OOT:ANIMATION
+  offset: 0x63CC
+  symbol: gGanondorfLandAnim
+
+gGanondorfLightArrowHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x4884
+  symbol: gGanondorfLightArrowHitAnim
+
+gGanondorfLightArrowWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x8F44
+  symbol: gGanondorfLightArrowWaitAnim
+
+gGanondorfLightEnergyHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x4DA8
+  symbol: gGanondorfLightEnergyHitAnim
+
+gGanondorfPoundAnim:
+  type: OOT:ANIMATION
+  offset: 0x2D2C
+  symbol: gGanondorfPoundAnim
+
+gGanondorfPoundEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x343C
+  symbol: gGanondorfPoundEndAnim
+
+gGanondorfThrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x738C
+  symbol: gGanondorfThrowAnim
+
+gGanondorfVolleyLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0xB4AC
+  symbol: gGanondorfVolleyLeftAnim
+
+gGanondorfVolleyRightAnim:
+  type: OOT:ANIMATION
+  offset: 0xBC28
+  symbol: gGanondorfVolleyRightAnim
+
+gGanondorfVulnerableAnim:
+  type: OOT:ANIMATION
+  offset: 0x69A0
+  symbol: gGanondorfVulnerableAnim
+

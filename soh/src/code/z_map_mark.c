@@ -4,6 +4,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 typedef struct {
     /* 0x00 */ void* texture;
@@ -55,7 +56,10 @@ static MapMarkInfo sMapMarkInfoTable[] = {
 //     gMapMarkDataTableVanilla,
 // };
 
-MapMarkData** sLoadedMarkDataTable;
+static MapMarkData** sLoadedMarkDataTable;
+
+#define MAP_MARK_SHIP_SAVESTATE_FIELDS(F) F(sLoadedMarkDataTable)
+SHIP_SAVESTATE_DEFINE(MapMark, MAP_MARK_SHIP_SAVESTATE_FIELDS)
 
 void MapMark_Init(PlayState* play) {
     // MapMarkDataOverlay* overlay = &sMapMarkDataOvl;

@@ -1,0 +1,54 @@
+:config:
+  segments:
+    - [ 128, 0x01345000 ]
+
+gDaySkybox1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDaySkybox1Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_fine1_pal_static
+  external_tlut_offset: 0x000
+
+gDaySkybox2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gDaySkybox2Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_fine1_pal_static
+  external_tlut_offset: 0x000
+
+gDaySkybox3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gDaySkybox3Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_fine1_pal_static
+  external_tlut_offset: 0x000
+
+gDaySkybox4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gDaySkybox4Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_fine1_pal_static
+  external_tlut_offset: 0x000
+
+gDaySkybox5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gDaySkybox5Tex
+  format: CI8
+  width: 128
+  height: 128
+  external_tlut: vr_fine1_pal_static
+  external_tlut_offset: 0x000
+

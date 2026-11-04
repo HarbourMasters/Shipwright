@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x018BC000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x018BC000 ]
+    - [ 9, 0x018BC000 ]
+    - [ 10, 0x018BC000 ]
+    - [ 11, 0x018BC000 ]
+    - [ 12, 0x018BC000 ]
+    - [ 13, 0x018BC000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGiSkulltulaTokenDL:
+  type: GFX
+  offset: 0x0330
+  symbol: gGiSkulltulaTokenDL
+
+gGiSkulltulaTokenFlameDL:
+  type: GFX
+  offset: 0x0438
+  symbol: gGiSkulltulaTokenFlameDL
+
+
+object_gi_sutaruVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_sutaruVtx_000000
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_sutaruVtx_000190:
+  type: OOT:ARRAY
+  offset: 0x000190
+  symbol: object_gi_sutaruVtx_000190
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

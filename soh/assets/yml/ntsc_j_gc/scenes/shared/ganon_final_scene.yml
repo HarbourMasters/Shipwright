@@ -1,0 +1,220 @@
+:config:
+  segments:
+    - [ 2, 0x01E33990 ]
+
+ganon_final_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ganon_final_scene
+
+gGanonFinalPath_001F4:
+  type: OOT:PATH
+  offset: 0x1F4
+  symbol: gGanonFinalPath_001F4
+  num_paths: 4
+
+ganon_final_sceneTex_002380:
+  type: TEXTURE
+  offset: 0x2380
+  symbol: ganon_final_sceneTex_002380
+  format: IA8
+  width: 32
+  height: 32
+
+ganon_final_sceneTex_002780:
+  type: TEXTURE
+  offset: 0x2780
+  symbol: ganon_final_sceneTex_002780
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_final_sceneTex_002980:
+  type: TEXTURE
+  offset: 0x2980
+  symbol: ganon_final_sceneTex_002980
+  format: I8
+  width: 64
+  height: 16
+
+ganon_final_sceneTex_002D80:
+  type: TEXTURE
+  offset: 0x2D80
+  symbol: ganon_final_sceneTex_002D80
+  format: I4
+  width: 64
+  height: 128
+
+ganon_final_sceneTex_003D80:
+  type: TEXTURE
+  offset: 0x3D80
+  symbol: ganon_final_sceneTex_003D80
+  format: I8
+  width: 32
+  height: 64
+
+ganon_final_sceneTex_004580:
+  type: TEXTURE
+  offset: 0x4580
+  symbol: ganon_final_sceneTex_004580
+  format: I8
+  width: 32
+  height: 64
+
+ganon_final_sceneTex_004D80:
+  type: TEXTURE
+  offset: 0x4D80
+  symbol: ganon_final_sceneTex_004D80
+  format: I8
+  width: 64
+  height: 64
+
+ganon_final_sceneTex_005D80:
+  type: TEXTURE
+  offset: 0x5D80
+  symbol: ganon_final_sceneTex_005D80
+  format: I4
+  width: 64
+  height: 128
+
+ganon_final_sceneTex_006D80:
+  type: TEXTURE
+  offset: 0x6D80
+  symbol: ganon_final_sceneTex_006D80
+  format: IA8
+  width: 64
+  height: 32
+
+ganon_final_sceneTex_007580:
+  type: TEXTURE
+  offset: 0x7580
+  symbol: ganon_final_sceneTex_007580
+  format: I4
+  width: 64
+  height: 128
+
+ganon_final_sceneTex_008580:
+  type: TEXTURE
+  offset: 0x8580
+  symbol: ganon_final_sceneTex_008580
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganon_final_sceneTex_009580:
+  type: TEXTURE
+  offset: 0x9580
+  symbol: ganon_final_sceneTex_009580
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganon_final_sceneTex_00A580:
+  type: TEXTURE
+  offset: 0xA580
+  symbol: ganon_final_sceneTex_00A580
+  format: IA4
+  width: 128
+  height: 32
+
+ganon_final_sceneTex_00AD80:
+  type: TEXTURE
+  offset: 0xAD80
+  symbol: ganon_final_sceneTex_00AD80
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganon_final_sceneTex_00BD80:
+  type: TEXTURE
+  offset: 0xBD80
+  symbol: ganon_final_sceneTex_00BD80
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganon_final_sceneTex_00CD80:
+  type: TEXTURE
+  offset: 0xCD80
+  symbol: ganon_final_sceneTex_00CD80
+  format: I8
+  width: 16
+  height: 16
+
+ganon_final_sceneTex_00CE80:
+  type: TEXTURE
+  offset: 0xCE80
+  symbol: ganon_final_sceneTex_00CE80
+  format: IA8
+  width: 64
+  height: 64
+
+ganon_final_sceneTex_00DE80:
+  type: TEXTURE
+  offset: 0xDE80
+  symbol: ganon_final_sceneTex_00DE80
+  format: I4
+  width: 64
+  height: 16
+
+ganon_final_sceneTex_00E080:
+  type: TEXTURE
+  offset: 0xE080
+  symbol: ganon_final_sceneTex_00E080
+  format: IA8
+  width: 16
+  height: 16
+
+ganon_final_sceneTex_00E180:
+  type: TEXTURE
+  offset: 0xE180
+  symbol: ganon_final_sceneTex_00E180
+  format: I4
+  width: 128
+  height: 64
+
+ganon_final_sceneTex_00F180:
+  type: TEXTURE
+  offset: 0xF180
+  symbol: ganon_final_sceneTex_00F180
+  format: I8
+  width: 32
+  height: 32
+
+ganon_final_sceneTex_00F580:
+  type: TEXTURE
+  offset: 0xF580
+  symbol: ganon_final_sceneTex_00F580
+  format: I8
+  width: 128
+  height: 32
+
+ganon_final_sceneTex_010580:
+  type: TEXTURE
+  offset: 0x10580
+  symbol: ganon_final_sceneTex_010580
+  format: I8
+  width: 32
+  height: 32
+
+ganon_final_sceneTex_010980:
+  type: TEXTURE
+  offset: 0x10980
+  symbol: ganon_final_sceneTex_010980
+  format: RGBA16
+  width: 16
+  height: 64
+
+ganon_final_sceneTex_011180:
+  type: TEXTURE
+  offset: 0x11180
+  symbol: ganon_final_sceneTex_011180
+  format: I8
+  width: 16
+  height: 256
+
+
+ganon_final_sceneCollisionHeader_002354:
+  type: OOT:COLLISION
+  offset: 0x002354
+  symbol: ganon_final_sceneCollisionHeader_002354

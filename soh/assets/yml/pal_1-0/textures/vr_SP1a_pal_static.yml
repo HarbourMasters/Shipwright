@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x0150EE70 ]
+
+gBazaarBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gBazaarBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBazaarBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBazaarBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

@@ -1,0 +1,210 @@
+:config:
+  segments:
+    - [ 3, 0x0188DB90 ]
+    - [ 2, 0x0182E840 ]
+  directory: scenes/nonmq/MIZUsin_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/nonmq/MIZUsin_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+
+MIZUsin_room_20:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: MIZUsin_room_20
+
+MIZUsin_room_20Tex_003040:
+  type: TEXTURE
+  offset: 0x2F40
+  symbol: MIZUsin_room_20Tex_003040
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_20Tex_003840:
+  type: TEXTURE
+  offset: 0x3740
+  symbol: MIZUsin_room_20Tex_003840
+  format: I4
+  width: 64
+  height: 64
+
+MIZUsin_room_20Tex_004040:
+  type: TEXTURE
+  offset: 0x3F40
+  symbol: MIZUsin_room_20Tex_004040
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_20Tex_004840:
+  type: TEXTURE
+  offset: 0x4740
+  symbol: MIZUsin_room_20Tex_004840
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_20Tex_005040:
+  type: TEXTURE
+  offset: 0x4F40
+  symbol: MIZUsin_room_20Tex_005040
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_20Tex_005840:
+  type: TEXTURE
+  offset: 0x5740
+  symbol: MIZUsin_room_20Tex_005840
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_20Tex_006040:
+  type: TEXTURE
+  offset: 0x5F40
+  symbol: MIZUsin_room_20Tex_006040
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+MIZUsin_room_20Vtx_000160:
+  type: OOT:ARRAY
+  offset: 0x000160
+  symbol: MIZUsin_room_20Vtx_000160
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_0005E0:
+  type: GFX
+  offset: 0x0005E0
+  symbol: MIZUsin_room_20DL_0005E0
+
+MIZUsin_room_20Vtx_000850:
+  type: OOT:ARRAY
+  offset: 0x000850
+  symbol: MIZUsin_room_20Vtx_000850
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_000AA0:
+  type: GFX
+  offset: 0x000AA0
+  symbol: MIZUsin_room_20DL_000AA0
+
+MIZUsin_room_20Vtx_000BE8:
+  type: OOT:ARRAY
+  offset: 0x000BE8
+  symbol: MIZUsin_room_20Vtx_000BE8
+  count: 189
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_0017B8:
+  type: GFX
+  offset: 0x0017B8
+  symbol: MIZUsin_room_20DL_0017B8
+
+MIZUsin_room_20Vtx_001A88:
+  type: OOT:ARRAY
+  offset: 0x001A88
+  symbol: MIZUsin_room_20Vtx_001A88
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_001C48:
+  type: GFX
+  offset: 0x001C48
+  symbol: MIZUsin_room_20DL_001C48
+
+MIZUsin_room_20Vtx_001D68:
+  type: OOT:ARRAY
+  offset: 0x001D68
+  symbol: MIZUsin_room_20Vtx_001D68
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_0021D8:
+  type: GFX
+  offset: 0x0021D8
+  symbol: MIZUsin_room_20DL_0021D8
+
+MIZUsin_room_20Vtx_002350:
+  type: OOT:ARRAY
+  offset: 0x002350
+  symbol: MIZUsin_room_20Vtx_002350
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_0025D0:
+  type: GFX
+  offset: 0x0025D0
+  symbol: MIZUsin_room_20DL_0025D0
+
+MIZUsin_room_20Vtx_002700:
+  type: OOT:ARRAY
+  offset: 0x002700
+  symbol: MIZUsin_room_20Vtx_002700
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_002880:
+  type: GFX
+  offset: 0x002880
+  symbol: MIZUsin_room_20DL_002880
+
+MIZUsin_room_20Vtx_002970:
+  type: OOT:ARRAY
+  offset: 0x002970
+  symbol: MIZUsin_room_20Vtx_002970
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_002A30:
+  type: GFX
+  offset: 0x002A30
+  symbol: MIZUsin_room_20DL_002A30
+
+MIZUsin_room_20Vtx_002AE8:
+  type: OOT:ARRAY
+  offset: 0x002AE8
+  symbol: MIZUsin_room_20Vtx_002AE8
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_002BB8:
+  type: GFX
+  offset: 0x002BB8
+  symbol: MIZUsin_room_20DL_002BB8
+
+MIZUsin_room_20Vtx_002CB8:
+  type: OOT:ARRAY
+  offset: 0x002CB8
+  symbol: MIZUsin_room_20Vtx_002CB8
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_20DL_002DD8:
+  type: GFX
+  offset: 0x002DD8
+  symbol: MIZUsin_room_20DL_002DD8

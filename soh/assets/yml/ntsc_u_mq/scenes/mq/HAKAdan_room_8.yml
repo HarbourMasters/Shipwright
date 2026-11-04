@@ -1,0 +1,110 @@
+:config:
+  segments:
+    - [ 3, 0x0193F870 ]
+    - [ 2, 0x0191D560 ]
+  directory: scenes/mq/HAKAdan_scene
+  external_files:
+    - ntsc_u_mq/scenes/mq/HAKAdan_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+HAKAdan_room_8:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdan_room_8
+
+HAKAdan_room_8Tex_003098:
+  type: TEXTURE
+  offset: 0x3098
+  symbol: HAKAdan_room_8Tex_003098
+  format: RGBA16
+  width: 32
+  height: 8
+
+HAKAdan_room_8Tex_003298:
+  type: TEXTURE
+  offset: 0x3298
+  symbol: HAKAdan_room_8Tex_003298
+  format: IA4
+  width: 128
+  height: 64
+
+HAKAdan_room_8Tex_004298:
+  type: TEXTURE
+  offset: 0x4298
+  symbol: HAKAdan_room_8Tex_004298
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdan_room_8Tex_004A98:
+  type: TEXTURE
+  offset: 0x4A98
+  symbol: HAKAdan_room_8Tex_004A98
+  format: I4
+  width: 32
+  height: 32
+
+HAKAdan_room_8Tex_004C98:
+  type: TEXTURE
+  offset: 0x4C98
+  symbol: HAKAdan_room_8Tex_004C98
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+HAKAdan_room_8Vtx_000120:
+  type: OOT:ARRAY
+  offset: 0x000120
+  symbol: HAKAdan_room_8Vtx_000120
+  count: 213
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_8DL_000E70:
+  type: GFX
+  offset: 0x000E70
+  symbol: HAKAdan_room_8DL_000E70
+
+HAKAdan_room_8Vtx_0011C8:
+  type: OOT:ARRAY
+  offset: 0x0011C8
+  symbol: HAKAdan_room_8Vtx_0011C8
+  count: 178
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_8DL_001CE8:
+  type: GFX
+  offset: 0x001CE8
+  symbol: HAKAdan_room_8DL_001CE8
+
+HAKAdan_room_8Vtx_001FE8:
+  type: OOT:ARRAY
+  offset: 0x001FE8
+  symbol: HAKAdan_room_8Vtx_001FE8
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_8DL_002418:
+  type: GFX
+  offset: 0x002418
+  symbol: HAKAdan_room_8DL_002418
+
+HAKAdan_room_8Vtx_0025E8:
+  type: OOT:ARRAY
+  offset: 0x0025E8
+  symbol: HAKAdan_room_8Vtx_0025E8
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_8DL_002CC8:
+  type: GFX
+  offset: 0x002CC8
+  symbol: HAKAdan_room_8DL_002CC8

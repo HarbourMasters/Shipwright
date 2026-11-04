@@ -1,0 +1,236 @@
+:config:
+  segments:
+    - [ 6, 0x00F088E0 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00F088E0 ]
+    - [ 9, 0x00F088E0 ]
+    - [ 10, 0x00F088E0 ]
+    - [ 11, 0x00F088E0 ]
+    - [ 12, 0x00F088E0 ]
+    - [ 13, 0x00F088E0 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gDoorTokiCol:
+  type: OOT:COLLISION
+  offset: 0x7888
+  symbol: gDoorTokiCol
+
+object_toki_objects_Blob_0065C0:
+  type: BLOB
+  offset: 0x65C0
+  size: 0xA00
+  symbol: object_toki_objects_Blob_0065C0
+
+object_toki_objects_DL_000880:
+  type: GFX
+  offset: 0x880
+  symbol: object_toki_objects_DL_000880
+
+object_toki_objects_DL_0009C0:
+  type: GFX
+  offset: 0x9C0
+  symbol: object_toki_objects_DL_0009C0
+
+object_toki_objects_DL_001BD0:
+  type: GFX
+  offset: 0x1BD0
+  symbol: object_toki_objects_DL_001BD0
+
+object_toki_objects_DL_0028E0:
+  type: GFX
+  offset: 0x28E0
+  symbol: object_toki_objects_DL_0028E0
+
+object_toki_objects_DL_007440:
+  type: GFX
+  offset: 0x7440
+  symbol: object_toki_objects_DL_007440
+
+object_toki_objects_DL_007578:
+  type: GFX
+  offset: 0x7578
+  symbol: object_toki_objects_DL_007578
+
+object_toki_objects_DL_007E20:
+  type: GFX
+  offset: 0x7E20
+  symbol: object_toki_objects_DL_007E20
+
+object_toki_objects_DL_007EE0:
+  type: GFX
+  offset: 0x7EE0
+  symbol: object_toki_objects_DL_007EE0
+
+object_toki_objects_DL_008190:
+  type: GFX
+  offset: 0x8190
+  symbol: object_toki_objects_DL_008190
+
+object_toki_objects_DL_008390:
+  type: GFX
+  offset: 0x8390
+  symbol: object_toki_objects_DL_008390
+
+object_toki_objects_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_toki_objects_Tex_000000
+  format: I8
+  width: 32
+  height: 64
+
+object_toki_objects_Tex_000A30:
+  type: TEXTURE
+  offset: 0xA30
+  symbol: object_toki_objects_Tex_000A30
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_toki_objects_Tex_000C30:
+  type: TEXTURE
+  offset: 0xC30
+  symbol: object_toki_objects_Tex_000C30
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_toki_objects_Tex_002DC0:
+  type: TEXTURE
+  offset: 0x2DC0
+  symbol: object_toki_objects_Tex_002DC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_toki_objects_Tex_0035C0:
+  type: TEXTURE
+  offset: 0x35C0
+  symbol: object_toki_objects_Tex_0035C0
+  format: IA8
+  width: 64
+  height: 32
+
+object_toki_objects_Tex_003DC0:
+  type: TEXTURE
+  offset: 0x3DC0
+  symbol: object_toki_objects_Tex_003DC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_toki_objects_Tex_0045C0:
+  type: TEXTURE
+  offset: 0x45C0
+  symbol: object_toki_objects_Tex_0045C0
+  format: I4
+  width: 64
+  height: 128
+
+object_toki_objects_Tex_0055C0:
+  type: TEXTURE
+  offset: 0x55C0
+  symbol: object_toki_objects_Tex_0055C0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_toki_objects_Tex_006FC0:
+  type: TEXTURE
+  offset: 0x6FC0
+  symbol: object_toki_objects_Tex_006FC0
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_toki_objectsVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_toki_objectsVtx_000800
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_000930:
+  type: OOT:ARRAY
+  offset: 0x000930
+  symbol: object_toki_objectsVtx_000930
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_001430:
+  type: OOT:ARRAY
+  offset: 0x001430
+  symbol: object_toki_objectsVtx_001430
+  count: 122
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_001FA0:
+  type: OOT:ARRAY
+  offset: 0x001FA0
+  symbol: object_toki_objectsVtx_001FA0
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_0071C0:
+  type: OOT:ARRAY
+  offset: 0x0071C0
+  symbol: object_toki_objectsVtx_0071C0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_007300:
+  type: OOT:ARRAY
+  offset: 0x007300
+  symbol: object_toki_objectsVtx_007300
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_0078C0:
+  type: OOT:ARRAY
+  offset: 0x0078C0
+  symbol: object_toki_objectsVtx_0078C0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_007A40:
+  type: OOT:ARRAY
+  offset: 0x007A40
+  symbol: object_toki_objectsVtx_007A40
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_008010:
+  type: OOT:ARRAY
+  offset: 0x008010
+  symbol: object_toki_objectsVtx_008010
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toki_objectsVtx_008250:
+  type: OOT:ARRAY
+  offset: 0x008250
+  symbol: object_toki_objectsVtx_008250
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

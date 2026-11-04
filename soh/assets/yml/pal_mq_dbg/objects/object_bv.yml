@@ -1,0 +1,1935 @@
+:config:
+  segments:
+    - [ 6, 0x0139A000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0139A000 ]
+    - [ 9, 0x0139A000 ]
+    - [ 10, 0x0139A000 ]
+    - [ 11, 0x0139A000 ]
+    - [ 12, 0x0139A000 ]
+    - [ 13, 0x0139A000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gBarinadeAnim_015D10:
+  type: OOT:ANIMATION
+  offset: 0x15D10
+  symbol: gBarinadeAnim_015D10
+
+gBarinadeAnim_015F10:
+  type: OOT:ANIMATION
+  offset: 0x15F10
+  symbol: gBarinadeAnim_015F10
+
+gBarinadeAnim_018A00:
+  type: OOT:ANIMATION
+  offset: 0x18A00
+  symbol: gBarinadeAnim_018A00
+
+gBarinadeBariAnim:
+  type: OOT:ANIMATION
+  offset: 0x24
+  symbol: gBarinadeBariAnim
+
+gBarinadeBariSkel:
+  type: OOT:SKELETON
+  offset: 0x4E70
+  symbol: gBarinadeBariSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBarinadeBodyAnim:
+  type: OOT:ANIMATION
+  offset: 0x5184
+  symbol: gBarinadeBodyAnim
+
+gBarinadeBodySkel:
+  type: OOT:SKELETON
+  offset: 0x15B18
+  symbol: gBarinadeBodySkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBarinadeCutSupportSkel:
+  type: OOT:SKELETON
+  offset: 0x17FC8
+  symbol: gBarinadeCutSupportSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBarinadeDL_000FA0:
+  type: GFX
+  offset: 0xFA0
+  symbol: gBarinadeDL_000FA0
+
+gBarinadeDL_008BB8:
+  type: GFX
+  offset: 0x8BB8
+  symbol: gBarinadeDL_008BB8
+
+gBarinadeDL_008D70:
+  type: GFX
+  offset: 0x8D70
+  symbol: gBarinadeDL_008D70
+
+gBarinadeDL_008E88:
+  type: GFX
+  offset: 0x8E88
+  symbol: gBarinadeDL_008E88
+
+gBarinadeDL_008EF0:
+  type: GFX
+  offset: 0x8EF0
+  symbol: gBarinadeDL_008EF0
+
+gBarinadeDL_008F08:
+  type: GFX
+  offset: 0x8F08
+  symbol: gBarinadeDL_008F08
+
+gBarinadeDL_008F70:
+  type: GFX
+  offset: 0x8F70
+  symbol: gBarinadeDL_008F70
+
+gBarinadeDL_009388:
+  type: GFX
+  offset: 0x9388
+  symbol: gBarinadeDL_009388
+
+gBarinadeDL_0093A0:
+  type: GFX
+  offset: 0x93A0
+  symbol: gBarinadeDL_0093A0
+
+gBarinadeDL_009430:
+  type: GFX
+  offset: 0x9430
+  symbol: gBarinadeDL_009430
+
+gBarinadeDL_009468:
+  type: GFX
+  offset: 0x9468
+  symbol: gBarinadeDL_009468
+
+gBarinadeDL_0094F8:
+  type: GFX
+  offset: 0x94F8
+  symbol: gBarinadeDL_0094F8
+
+gBarinadeDL_0095B0:
+  type: GFX
+  offset: 0x95B0
+  symbol: gBarinadeDL_0095B0
+
+gBarinadeDL_011738:
+  type: GFX
+  offset: 0x11738
+  symbol: gBarinadeDL_011738
+
+gBarinadeDL_011768:
+  type: GFX
+  offset: 0x11768
+  symbol: gBarinadeDL_011768
+
+gBarinadeDL_0128B8:
+  type: GFX
+  offset: 0x128B8
+  symbol: gBarinadeDL_0128B8
+
+gBarinadeDL_012948:
+  type: GFX
+  offset: 0x12948
+  symbol: gBarinadeDL_012948
+
+gBarinadeDL_012BA0:
+  type: GFX
+  offset: 0x12BA0
+  symbol: gBarinadeDL_012BA0
+
+gBarinadeDL_012C50:
+  type: GFX
+  offset: 0x12C50
+  symbol: gBarinadeDL_012C50
+
+gBarinadeDL_0135B0:
+  type: GFX
+  offset: 0x135B0
+  symbol: gBarinadeDL_0135B0
+
+gBarinadeDL_013638:
+  type: GFX
+  offset: 0x13638
+  symbol: gBarinadeDL_013638
+
+gBarinadeDL_0156A0:
+  type: GFX
+  offset: 0x156A0
+  symbol: gBarinadeDL_0156A0
+
+gBarinadeDL_015710:
+  type: GFX
+  offset: 0x15710
+  symbol: gBarinadeDL_015710
+
+gBarinadeDoorPiece1DL:
+  type: GFX
+  offset: 0x1A3E8
+  symbol: gBarinadeDoorPiece1DL
+
+gBarinadeDoorPiece2DL:
+  type: GFX
+  offset: 0x1AEE8
+  symbol: gBarinadeDoorPiece2DL
+
+gBarinadeDoorPiece3DL:
+  type: GFX
+  offset: 0x1B9E8
+  symbol: gBarinadeDoorPiece3DL
+
+gBarinadeDoorPiece4DL:
+  type: GFX
+  offset: 0x1C4E8
+  symbol: gBarinadeDoorPiece4DL
+
+gBarinadeDoorPiece5DL:
+  type: GFX
+  offset: 0x1CFE8
+  symbol: gBarinadeDoorPiece5DL
+
+gBarinadeDoorPiece6DL:
+  type: GFX
+  offset: 0x1DAE8
+  symbol: gBarinadeDoorPiece6DL
+
+gBarinadeDoorPiece7DL:
+  type: GFX
+  offset: 0x1E5E8
+  symbol: gBarinadeDoorPiece7DL
+
+gBarinadeDoorPiece8DL:
+  type: GFX
+  offset: 0x1F0E8
+  symbol: gBarinadeDoorPiece8DL
+
+gBarinadeSparkBall1Tex:
+  type: TEXTURE
+  offset: 0x96F8
+  symbol: gBarinadeSparkBall1Tex
+  format: I8
+  width: 64
+  height: 64
+
+gBarinadeSparkBall2Tex:
+  type: TEXTURE
+  offset: 0xA6F8
+  symbol: gBarinadeSparkBall2Tex
+  format: I8
+  width: 64
+  height: 64
+
+gBarinadeSparkBall3Tex:
+  type: TEXTURE
+  offset: 0xB6F8
+  symbol: gBarinadeSparkBall3Tex
+  format: I8
+  width: 64
+  height: 64
+
+gBarinadeSparkBall4Tex:
+  type: TEXTURE
+  offset: 0xC6F8
+  symbol: gBarinadeSparkBall4Tex
+  format: I8
+  width: 64
+  height: 64
+
+gBarinadeSparkBall5Tex:
+  type: TEXTURE
+  offset: 0xD6F8
+  symbol: gBarinadeSparkBall5Tex
+  format: I8
+  width: 64
+  height: 64
+
+gBarinadeSparkBall6Tex:
+  type: TEXTURE
+  offset: 0xE6F8
+  symbol: gBarinadeSparkBall6Tex
+  format: I8
+  width: 64
+  height: 64
+
+gBarinadeSparkBall7Tex:
+  type: TEXTURE
+  offset: 0xF6F8
+  symbol: gBarinadeSparkBall7Tex
+  format: I8
+  width: 64
+  height: 64
+
+gBarinadeSparkBall8Tex:
+  type: TEXTURE
+  offset: 0x106F8
+  symbol: gBarinadeSparkBall8Tex
+  format: I8
+  width: 64
+  height: 64
+
+gBarinadeStumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x18150
+  symbol: gBarinadeStumpAnim
+
+gBarinadeStumpSkel:
+  type: OOT:SKELETON
+  offset: 0x18870
+  symbol: gBarinadeStumpSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBarinadeSupportAttachedAnim:
+  type: OOT:ANIMATION
+  offset: 0x166A8
+  symbol: gBarinadeSupportAttachedAnim
+
+gBarinadeSupportCutAnim:
+  type: OOT:ANIMATION
+  offset: 0x17694
+  symbol: gBarinadeSupportCutAnim
+
+gBarinadeSupportDamage1Anim:
+  type: OOT:ANIMATION
+  offset: 0x162AC
+  symbol: gBarinadeSupportDamage1Anim
+
+gBarinadeSupportDamage2Anim:
+  type: OOT:ANIMATION
+  offset: 0x164B0
+  symbol: gBarinadeSupportDamage2Anim
+
+gBarinadeSupportDetachedAnim:
+  type: OOT:ANIMATION
+  offset: 0x177F4
+  symbol: gBarinadeSupportDetachedAnim
+
+gBarinadeSupportSkel:
+  type: OOT:SKELETON
+  offset: 0x17498
+  symbol: gBarinadeSupportSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBarinadeTitleCardTex:
+  type: TEXTURE
+  offset: 0x1230
+  symbol: gBarinadeTitleCardTex
+  format: IA8
+  width: 128
+  height: 120
+
+gBarinadeZapperDamage1Anim:
+  type: OOT:ANIMATION
+  offset: 0x18A68
+  symbol: gBarinadeZapperDamage1Anim
+
+gBarinadeZapperDamage2Anim:
+  type: OOT:ANIMATION
+  offset: 0x18B90
+  symbol: gBarinadeZapperDamage2Anim
+
+gBarinadeZapperIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x18D18
+  symbol: gBarinadeZapperIdleAnim
+
+gBarinadeZapperSkel:
+  type: OOT:SKELETON
+  offset: 0x199A0
+  symbol: gBarinadeZapperSkel
+  limb_type: Standard
+  skel_type: Flex
+
+object_bvTLUT_0199B0:
+  type: TEXTURE
+  offset: 0x199B0
+  symbol: object_bvTLUT_0199B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTLUT_01A4B0:
+  type: TEXTURE
+  offset: 0x1A4B0
+  symbol: object_bvTLUT_01A4B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTLUT_01AFB0:
+  type: TEXTURE
+  offset: 0x1AFB0
+  symbol: object_bvTLUT_01AFB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTLUT_01BAB0:
+  type: TEXTURE
+  offset: 0x1BAB0
+  symbol: object_bvTLUT_01BAB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTLUT_01C5B0:
+  type: TEXTURE
+  offset: 0x1C5B0
+  symbol: object_bvTLUT_01C5B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTLUT_01D0B0:
+  type: TEXTURE
+  offset: 0x1D0B0
+  symbol: object_bvTLUT_01D0B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTLUT_01DBB0:
+  type: TEXTURE
+  offset: 0x1DBB0
+  symbol: object_bvTLUT_01DBB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTLUT_01E6B0:
+  type: TEXTURE
+  offset: 0x1E6B0
+  symbol: object_bvTLUT_01E6B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTex_000040:
+  type: TEXTURE
+  offset: 0x40
+  symbol: object_bvTex_000040
+  format: IA16
+  width: 16
+  height: 64
+
+object_bvTex_000840:
+  type: TEXTURE
+  offset: 0x840
+  symbol: object_bvTex_000840
+  format: IA16
+  width: 16
+  height: 16
+
+object_bvTex_000A40:
+  type: TEXTURE
+  offset: 0xA40
+  symbol: object_bvTex_000A40
+  format: I8
+  width: 16
+  height: 32
+
+object_bvTex_0051A0:
+  type: TEXTURE
+  offset: 0x51A0
+  symbol: object_bvTex_0051A0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_bvTex_0052A0:
+  type: TEXTURE
+  offset: 0x52A0
+  symbol: object_bvTex_0052A0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_bvTex_0053A0:
+  type: TEXTURE
+  offset: 0x53A0
+  symbol: object_bvTex_0053A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTex_0055A0:
+  type: TEXTURE
+  offset: 0x55A0
+  symbol: object_bvTex_0055A0
+  format: IA16
+  width: 16
+  height: 32
+
+object_bvTex_0059A0:
+  type: TEXTURE
+  offset: 0x59A0
+  symbol: object_bvTex_0059A0
+  format: IA16
+  width: 16
+  height: 32
+
+object_bvTex_005DA0:
+  type: TEXTURE
+  offset: 0x5DA0
+  symbol: object_bvTex_005DA0
+  format: IA16
+  width: 16
+  height: 64
+
+object_bvTex_0065A0:
+  type: TEXTURE
+  offset: 0x65A0
+  symbol: object_bvTex_0065A0
+  format: I8
+  width: 16
+  height: 32
+
+object_bvTex_008F88:
+  type: TEXTURE
+  offset: 0x8F88
+  symbol: object_bvTex_008F88
+  format: I8
+  width: 32
+  height: 32
+
+object_bvTex_0117B8:
+  type: TEXTURE
+  offset: 0x117B8
+  symbol: object_bvTex_0117B8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTex_0119B8:
+  type: TEXTURE
+  offset: 0x119B8
+  symbol: object_bvTex_0119B8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTex_011BB8:
+  type: TEXTURE
+  offset: 0x11BB8
+  symbol: object_bvTex_011BB8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTex_012CE0:
+  type: TEXTURE
+  offset: 0x12CE0
+  symbol: object_bvTex_012CE0
+  format: I8
+  width: 64
+  height: 32
+
+object_bvTex_013660:
+  type: TEXTURE
+  offset: 0x13660
+  symbol: object_bvTex_013660
+  format: IA16
+  width: 64
+  height: 64
+
+object_bvTex_0170D8:
+  type: TEXTURE
+  offset: 0x170D8
+  symbol: object_bvTex_0170D8
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_bvTex_0171D8:
+  type: TEXTURE
+  offset: 0x171D8
+  symbol: object_bvTex_0171D8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTex_018770:
+  type: TEXTURE
+  offset: 0x18770
+  symbol: object_bvTex_018770
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_bvTex_018D30:
+  type: TEXTURE
+  offset: 0x18D30
+  symbol: object_bvTex_018D30
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_bvTex_018E30:
+  type: TEXTURE
+  offset: 0x18E30
+  symbol: object_bvTex_018E30
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bvTex_019BB8:
+  type: TEXTURE
+  offset: 0x19BB8
+  symbol: object_bvTex_019BB8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x199B0
+
+object_bvTex_01A6B8:
+  type: TEXTURE
+  offset: 0x1A6B8
+  symbol: object_bvTex_01A6B8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1A4B0
+
+object_bvTex_01B1B8:
+  type: TEXTURE
+  offset: 0x1B1B8
+  symbol: object_bvTex_01B1B8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1AFB0
+
+object_bvTex_01BCB8:
+  type: TEXTURE
+  offset: 0x1BCB8
+  symbol: object_bvTex_01BCB8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1BAB0
+
+object_bvTex_01C7B8:
+  type: TEXTURE
+  offset: 0x1C7B8
+  symbol: object_bvTex_01C7B8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1C5B0
+
+object_bvTex_01D2B8:
+  type: TEXTURE
+  offset: 0x1D2B8
+  symbol: object_bvTex_01D2B8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1D0B0
+
+object_bvTex_01DDB8:
+  type: TEXTURE
+  offset: 0x1DDB8
+  symbol: object_bvTex_01DDB8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1DBB0
+
+object_bvTex_01E8B8:
+  type: TEXTURE
+  offset: 0x1E8B8
+  symbol: object_bvTex_01E8B8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1E6B0
+
+
+object_bvVtx_000C40:
+  type: OOT:ARRAY
+  offset: 0x000C40
+  symbol: object_bvVtx_000C40
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_000D00:
+  type: OOT:ARRAY
+  offset: 0x000D00
+  symbol: object_bvVtx_000D00
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_000DE0:
+  type: OOT:ARRAY
+  offset: 0x000DE0
+  symbol: object_bvVtx_000DE0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBarinadeBariSkelLimbsLimb_004E48DL_001070:
+  type: GFX
+  offset: 0x001070
+  symbol: gBarinadeBariSkelLimbsLimb_004E48DL_001070
+
+gBarinadeBariSkelLimbsLimb_004E54DL_001158:
+  type: GFX
+  offset: 0x001158
+  symbol: gBarinadeBariSkelLimbsLimb_004E54DL_001158
+
+gBarinadeBariSkelLimbsLimb_004E30:
+  type: OOT:LIMB
+  offset: 0x004E30
+  symbol: gBarinadeBariSkelLimbsLimb_004E30
+  limb_type: Standard
+
+gBarinadeBariSkelLimbsLimb_004E3C:
+  type: OOT:LIMB
+  offset: 0x004E3C
+  symbol: gBarinadeBariSkelLimbsLimb_004E3C
+  limb_type: Standard
+
+gBarinadeBariSkelLimbsLimb_004E48:
+  type: OOT:LIMB
+  offset: 0x004E48
+  symbol: gBarinadeBariSkelLimbsLimb_004E48
+  limb_type: Standard
+
+gBarinadeBariSkelLimbsLimb_004E54:
+  type: OOT:LIMB
+  offset: 0x004E54
+  symbol: gBarinadeBariSkelLimbsLimb_004E54
+  limb_type: Standard
+
+gBarinadeBariSkelLimbs:
+  type: BLOB
+  offset: 0x4E60
+  symbol: gBarinadeBariSkelLimbs
+  size: 0
+
+object_bvVtx_0067A0:
+  type: OOT:ARRAY
+  offset: 0x0067A0
+  symbol: object_bvVtx_0067A0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_006830:
+  type: OOT:ARRAY
+  offset: 0x006830
+  symbol: object_bvVtx_006830
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_006DD0:
+  type: OOT:ARRAY
+  offset: 0x006DD0
+  symbol: object_bvVtx_006DD0
+  count: 174
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0078B0:
+  type: OOT:ARRAY
+  offset: 0x0078B0
+  symbol: object_bvVtx_0078B0
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007BC0:
+  type: OOT:ARRAY
+  offset: 0x007BC0
+  symbol: object_bvVtx_007BC0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007CC0:
+  type: OOT:ARRAY
+  offset: 0x007CC0
+  symbol: object_bvVtx_007CC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007D00:
+  type: OOT:ARRAY
+  offset: 0x007D00
+  symbol: object_bvVtx_007D00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007D40:
+  type: OOT:ARRAY
+  offset: 0x007D40
+  symbol: object_bvVtx_007D40
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007D80:
+  type: OOT:ARRAY
+  offset: 0x007D80
+  symbol: object_bvVtx_007D80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007DC0:
+  type: OOT:ARRAY
+  offset: 0x007DC0
+  symbol: object_bvVtx_007DC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007E00:
+  type: OOT:ARRAY
+  offset: 0x007E00
+  symbol: object_bvVtx_007E00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007E40:
+  type: OOT:ARRAY
+  offset: 0x007E40
+  symbol: object_bvVtx_007E40
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007E80:
+  type: OOT:ARRAY
+  offset: 0x007E80
+  symbol: object_bvVtx_007E80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007EC0:
+  type: OOT:ARRAY
+  offset: 0x007EC0
+  symbol: object_bvVtx_007EC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_007F00:
+  type: OOT:ARRAY
+  offset: 0x007F00
+  symbol: object_bvVtx_007F00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBarinadeBodySkelLimbsLimb_01583CDL_007F40:
+  type: GFX
+  offset: 0x007F40
+  symbol: gBarinadeBodySkelLimbsLimb_01583CDL_007F40
+
+gBarinadeBodySkelLimbsLimb_015770DL_007FD8:
+  type: GFX
+  offset: 0x007FD8
+  symbol: gBarinadeBodySkelLimbsLimb_015770DL_007FD8
+
+gBarinadeBodySkelLimbsLimb_01580CDL_0080B0:
+  type: GFX
+  offset: 0x0080B0
+  symbol: gBarinadeBodySkelLimbsLimb_01580CDL_0080B0
+
+gBarinadeBodySkelLimbsLimb_015A04DL_0082A8:
+  type: GFX
+  offset: 0x0082A8
+  symbol: gBarinadeBodySkelLimbsLimb_015A04DL_0082A8
+
+gBarinadeBodySkelLimbsLimb_015854DL_008388:
+  type: GFX
+  offset: 0x008388
+  symbol: gBarinadeBodySkelLimbsLimb_015854DL_008388
+
+gBarinadeBodySkelLimbsLimb_015878DL_008458:
+  type: GFX
+  offset: 0x008458
+  symbol: gBarinadeBodySkelLimbsLimb_015878DL_008458
+
+gBarinadeBodySkelLimbsLimb_015890DL_0084E8:
+  type: GFX
+  offset: 0x0084E8
+  symbol: gBarinadeBodySkelLimbsLimb_015890DL_0084E8
+
+gBarinadeBodySkelLimbsLimb_0158C0DL_008578:
+  type: GFX
+  offset: 0x008578
+  symbol: gBarinadeBodySkelLimbsLimb_0158C0DL_008578
+
+gBarinadeBodySkelLimbsLimb_0158D8DL_008608:
+  type: GFX
+  offset: 0x008608
+  symbol: gBarinadeBodySkelLimbsLimb_0158D8DL_008608
+
+gBarinadeBodySkelLimbsLimb_015908DL_008698:
+  type: GFX
+  offset: 0x008698
+  symbol: gBarinadeBodySkelLimbsLimb_015908DL_008698
+
+gBarinadeBodySkelLimbsLimb_015920DL_008728:
+  type: GFX
+  offset: 0x008728
+  symbol: gBarinadeBodySkelLimbsLimb_015920DL_008728
+
+gBarinadeBodySkelLimbsLimb_015950DL_0087B8:
+  type: GFX
+  offset: 0x0087B8
+  symbol: gBarinadeBodySkelLimbsLimb_015950DL_0087B8
+
+gBarinadeBodySkelLimbsLimb_015968DL_008848:
+  type: GFX
+  offset: 0x008848
+  symbol: gBarinadeBodySkelLimbsLimb_015968DL_008848
+
+gBarinadeBodySkelLimbsLimb_015998DL_0088D8:
+  type: GFX
+  offset: 0x0088D8
+  symbol: gBarinadeBodySkelLimbsLimb_015998DL_0088D8
+
+gBarinadeBodySkelLimbsLimb_0159B0DL_008968:
+  type: GFX
+  offset: 0x008968
+  symbol: gBarinadeBodySkelLimbsLimb_0159B0DL_008968
+
+object_bvVtx_0089F8:
+  type: OOT:ARRAY
+  offset: 0x0089F8
+  symbol: object_bvVtx_0089F8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_008CB0:
+  type: OOT:ARRAY
+  offset: 0x008CB0
+  symbol: object_bvVtx_008CB0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_008E48:
+  type: OOT:ARRAY
+  offset: 0x008E48
+  symbol: object_bvVtx_008E48
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0093F0:
+  type: OOT:ARRAY
+  offset: 0x0093F0
+  symbol: object_bvVtx_0093F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0094B8:
+  type: OOT:ARRAY
+  offset: 0x0094B8
+  symbol: object_bvVtx_0094B8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0116F8:
+  type: OOT:ARRAY
+  offset: 0x0116F8
+  symbol: object_bvVtx_0116F8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_011DB8:
+  type: OOT:ARRAY
+  offset: 0x011DB8
+  symbol: object_bvVtx_011DB8
+  count: 176
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_012A80:
+  type: OOT:ARRAY
+  offset: 0x012A80
+  symbol: object_bvVtx_012A80
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0134E0:
+  type: OOT:ARRAY
+  offset: 0x0134E0
+  symbol: object_bvVtx_0134E0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_015660:
+  type: OOT:ARRAY
+  offset: 0x015660
+  symbol: object_bvVtx_015660
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBarinadeBodySkelLimbsLimb_015728:
+  type: OOT:LIMB
+  offset: 0x015728
+  symbol: gBarinadeBodySkelLimbsLimb_015728
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015734:
+  type: OOT:LIMB
+  offset: 0x015734
+  symbol: gBarinadeBodySkelLimbsLimb_015734
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015740:
+  type: OOT:LIMB
+  offset: 0x015740
+  symbol: gBarinadeBodySkelLimbsLimb_015740
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01574C:
+  type: OOT:LIMB
+  offset: 0x01574C
+  symbol: gBarinadeBodySkelLimbsLimb_01574C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015758:
+  type: OOT:LIMB
+  offset: 0x015758
+  symbol: gBarinadeBodySkelLimbsLimb_015758
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015764:
+  type: OOT:LIMB
+  offset: 0x015764
+  symbol: gBarinadeBodySkelLimbsLimb_015764
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015770:
+  type: OOT:LIMB
+  offset: 0x015770
+  symbol: gBarinadeBodySkelLimbsLimb_015770
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01577C:
+  type: OOT:LIMB
+  offset: 0x01577C
+  symbol: gBarinadeBodySkelLimbsLimb_01577C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015788:
+  type: OOT:LIMB
+  offset: 0x015788
+  symbol: gBarinadeBodySkelLimbsLimb_015788
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015794:
+  type: OOT:LIMB
+  offset: 0x015794
+  symbol: gBarinadeBodySkelLimbsLimb_015794
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0157A0:
+  type: OOT:LIMB
+  offset: 0x0157A0
+  symbol: gBarinadeBodySkelLimbsLimb_0157A0
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0157AC:
+  type: OOT:LIMB
+  offset: 0x0157AC
+  symbol: gBarinadeBodySkelLimbsLimb_0157AC
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0157B8:
+  type: OOT:LIMB
+  offset: 0x0157B8
+  symbol: gBarinadeBodySkelLimbsLimb_0157B8
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0157C4:
+  type: OOT:LIMB
+  offset: 0x0157C4
+  symbol: gBarinadeBodySkelLimbsLimb_0157C4
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0157D0:
+  type: OOT:LIMB
+  offset: 0x0157D0
+  symbol: gBarinadeBodySkelLimbsLimb_0157D0
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0157DC:
+  type: OOT:LIMB
+  offset: 0x0157DC
+  symbol: gBarinadeBodySkelLimbsLimb_0157DC
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0157E8:
+  type: OOT:LIMB
+  offset: 0x0157E8
+  symbol: gBarinadeBodySkelLimbsLimb_0157E8
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0157F4:
+  type: OOT:LIMB
+  offset: 0x0157F4
+  symbol: gBarinadeBodySkelLimbsLimb_0157F4
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015800:
+  type: OOT:LIMB
+  offset: 0x015800
+  symbol: gBarinadeBodySkelLimbsLimb_015800
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01580C:
+  type: OOT:LIMB
+  offset: 0x01580C
+  symbol: gBarinadeBodySkelLimbsLimb_01580C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015818:
+  type: OOT:LIMB
+  offset: 0x015818
+  symbol: gBarinadeBodySkelLimbsLimb_015818
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015824:
+  type: OOT:LIMB
+  offset: 0x015824
+  symbol: gBarinadeBodySkelLimbsLimb_015824
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015830:
+  type: OOT:LIMB
+  offset: 0x015830
+  symbol: gBarinadeBodySkelLimbsLimb_015830
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01583C:
+  type: OOT:LIMB
+  offset: 0x01583C
+  symbol: gBarinadeBodySkelLimbsLimb_01583C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015848:
+  type: OOT:LIMB
+  offset: 0x015848
+  symbol: gBarinadeBodySkelLimbsLimb_015848
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015854:
+  type: OOT:LIMB
+  offset: 0x015854
+  symbol: gBarinadeBodySkelLimbsLimb_015854
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015860:
+  type: OOT:LIMB
+  offset: 0x015860
+  symbol: gBarinadeBodySkelLimbsLimb_015860
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01586C:
+  type: OOT:LIMB
+  offset: 0x01586C
+  symbol: gBarinadeBodySkelLimbsLimb_01586C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015878:
+  type: OOT:LIMB
+  offset: 0x015878
+  symbol: gBarinadeBodySkelLimbsLimb_015878
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015884:
+  type: OOT:LIMB
+  offset: 0x015884
+  symbol: gBarinadeBodySkelLimbsLimb_015884
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015890:
+  type: OOT:LIMB
+  offset: 0x015890
+  symbol: gBarinadeBodySkelLimbsLimb_015890
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01589C:
+  type: OOT:LIMB
+  offset: 0x01589C
+  symbol: gBarinadeBodySkelLimbsLimb_01589C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0158A8:
+  type: OOT:LIMB
+  offset: 0x0158A8
+  symbol: gBarinadeBodySkelLimbsLimb_0158A8
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0158B4:
+  type: OOT:LIMB
+  offset: 0x0158B4
+  symbol: gBarinadeBodySkelLimbsLimb_0158B4
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0158C0:
+  type: OOT:LIMB
+  offset: 0x0158C0
+  symbol: gBarinadeBodySkelLimbsLimb_0158C0
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0158CC:
+  type: OOT:LIMB
+  offset: 0x0158CC
+  symbol: gBarinadeBodySkelLimbsLimb_0158CC
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0158D8:
+  type: OOT:LIMB
+  offset: 0x0158D8
+  symbol: gBarinadeBodySkelLimbsLimb_0158D8
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0158E4:
+  type: OOT:LIMB
+  offset: 0x0158E4
+  symbol: gBarinadeBodySkelLimbsLimb_0158E4
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0158F0:
+  type: OOT:LIMB
+  offset: 0x0158F0
+  symbol: gBarinadeBodySkelLimbsLimb_0158F0
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0158FC:
+  type: OOT:LIMB
+  offset: 0x0158FC
+  symbol: gBarinadeBodySkelLimbsLimb_0158FC
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015908:
+  type: OOT:LIMB
+  offset: 0x015908
+  symbol: gBarinadeBodySkelLimbsLimb_015908
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015914:
+  type: OOT:LIMB
+  offset: 0x015914
+  symbol: gBarinadeBodySkelLimbsLimb_015914
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015920:
+  type: OOT:LIMB
+  offset: 0x015920
+  symbol: gBarinadeBodySkelLimbsLimb_015920
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01592C:
+  type: OOT:LIMB
+  offset: 0x01592C
+  symbol: gBarinadeBodySkelLimbsLimb_01592C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015938:
+  type: OOT:LIMB
+  offset: 0x015938
+  symbol: gBarinadeBodySkelLimbsLimb_015938
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015944:
+  type: OOT:LIMB
+  offset: 0x015944
+  symbol: gBarinadeBodySkelLimbsLimb_015944
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015950:
+  type: OOT:LIMB
+  offset: 0x015950
+  symbol: gBarinadeBodySkelLimbsLimb_015950
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01595C:
+  type: OOT:LIMB
+  offset: 0x01595C
+  symbol: gBarinadeBodySkelLimbsLimb_01595C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015968:
+  type: OOT:LIMB
+  offset: 0x015968
+  symbol: gBarinadeBodySkelLimbsLimb_015968
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015974:
+  type: OOT:LIMB
+  offset: 0x015974
+  symbol: gBarinadeBodySkelLimbsLimb_015974
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015980:
+  type: OOT:LIMB
+  offset: 0x015980
+  symbol: gBarinadeBodySkelLimbsLimb_015980
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_01598C:
+  type: OOT:LIMB
+  offset: 0x01598C
+  symbol: gBarinadeBodySkelLimbsLimb_01598C
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015998:
+  type: OOT:LIMB
+  offset: 0x015998
+  symbol: gBarinadeBodySkelLimbsLimb_015998
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0159A4:
+  type: OOT:LIMB
+  offset: 0x0159A4
+  symbol: gBarinadeBodySkelLimbsLimb_0159A4
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0159B0:
+  type: OOT:LIMB
+  offset: 0x0159B0
+  symbol: gBarinadeBodySkelLimbsLimb_0159B0
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0159BC:
+  type: OOT:LIMB
+  offset: 0x0159BC
+  symbol: gBarinadeBodySkelLimbsLimb_0159BC
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0159C8:
+  type: OOT:LIMB
+  offset: 0x0159C8
+  symbol: gBarinadeBodySkelLimbsLimb_0159C8
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0159D4:
+  type: OOT:LIMB
+  offset: 0x0159D4
+  symbol: gBarinadeBodySkelLimbsLimb_0159D4
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0159E0:
+  type: OOT:LIMB
+  offset: 0x0159E0
+  symbol: gBarinadeBodySkelLimbsLimb_0159E0
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0159EC:
+  type: OOT:LIMB
+  offset: 0x0159EC
+  symbol: gBarinadeBodySkelLimbsLimb_0159EC
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_0159F8:
+  type: OOT:LIMB
+  offset: 0x0159F8
+  symbol: gBarinadeBodySkelLimbsLimb_0159F8
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015A04:
+  type: OOT:LIMB
+  offset: 0x015A04
+  symbol: gBarinadeBodySkelLimbsLimb_015A04
+  limb_type: Standard
+
+gBarinadeBodySkelLimbsLimb_015A10:
+  type: OOT:LIMB
+  offset: 0x015A10
+  symbol: gBarinadeBodySkelLimbsLimb_015A10
+  limb_type: Standard
+
+gBarinadeBodySkelLimbs:
+  type: BLOB
+  offset: 0x15A1C
+  symbol: gBarinadeBodySkelLimbs
+  size: 0
+
+object_bvVtx_0166C0:
+  type: OOT:ARRAY
+  offset: 0x0166C0
+  symbol: object_bvVtx_0166C0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0167E0:
+  type: OOT:ARRAY
+  offset: 0x0167E0
+  symbol: object_bvVtx_0167E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0168A0:
+  type: OOT:ARRAY
+  offset: 0x0168A0
+  symbol: object_bvVtx_0168A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_016960:
+  type: OOT:ARRAY
+  offset: 0x016960
+  symbol: object_bvVtx_016960
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_016A20:
+  type: OOT:ARRAY
+  offset: 0x016A20
+  symbol: object_bvVtx_016A20
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBarinadeSupportSkelLimbsLimb_01745CDL_016BA0:
+  type: GFX
+  offset: 0x016BA0
+  symbol: gBarinadeSupportSkelLimbsLimb_01745CDL_016BA0
+
+gBarinadeSupportSkelLimbsLimb_017450DL_016CC8:
+  type: GFX
+  offset: 0x016CC8
+  symbol: gBarinadeSupportSkelLimbsLimb_017450DL_016CC8
+
+gBarinadeSupportSkelLimbsLimb_017444DL_016DC8:
+  type: GFX
+  offset: 0x016DC8
+  symbol: gBarinadeSupportSkelLimbsLimb_017444DL_016DC8
+
+gBarinadeSupportSkelLimbsLimb_017438DL_016EC8:
+  type: GFX
+  offset: 0x016EC8
+  symbol: gBarinadeSupportSkelLimbsLimb_017438DL_016EC8
+
+gBarinadeSupportSkelLimbsLimb_01742CDL_016FC8:
+  type: GFX
+  offset: 0x016FC8
+  symbol: gBarinadeSupportSkelLimbsLimb_01742CDL_016FC8
+
+gBarinadeSupportSkelLimbsLimb_0173D8:
+  type: OOT:LIMB
+  offset: 0x0173D8
+  symbol: gBarinadeSupportSkelLimbsLimb_0173D8
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_0173E4:
+  type: OOT:LIMB
+  offset: 0x0173E4
+  symbol: gBarinadeSupportSkelLimbsLimb_0173E4
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_0173F0:
+  type: OOT:LIMB
+  offset: 0x0173F0
+  symbol: gBarinadeSupportSkelLimbsLimb_0173F0
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_0173FC:
+  type: OOT:LIMB
+  offset: 0x0173FC
+  symbol: gBarinadeSupportSkelLimbsLimb_0173FC
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_017408:
+  type: OOT:LIMB
+  offset: 0x017408
+  symbol: gBarinadeSupportSkelLimbsLimb_017408
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_017414:
+  type: OOT:LIMB
+  offset: 0x017414
+  symbol: gBarinadeSupportSkelLimbsLimb_017414
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_017420:
+  type: OOT:LIMB
+  offset: 0x017420
+  symbol: gBarinadeSupportSkelLimbsLimb_017420
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_01742C:
+  type: OOT:LIMB
+  offset: 0x01742C
+  symbol: gBarinadeSupportSkelLimbsLimb_01742C
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_017438:
+  type: OOT:LIMB
+  offset: 0x017438
+  symbol: gBarinadeSupportSkelLimbsLimb_017438
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_017444:
+  type: OOT:LIMB
+  offset: 0x017444
+  symbol: gBarinadeSupportSkelLimbsLimb_017444
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_017450:
+  type: OOT:LIMB
+  offset: 0x017450
+  symbol: gBarinadeSupportSkelLimbsLimb_017450
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbsLimb_01745C:
+  type: OOT:LIMB
+  offset: 0x01745C
+  symbol: gBarinadeSupportSkelLimbsLimb_01745C
+  limb_type: Standard
+
+gBarinadeSupportSkelLimbs:
+  type: BLOB
+  offset: 0x17468
+  symbol: gBarinadeSupportSkelLimbs
+  size: 0
+
+object_bvVtx_017810:
+  type: OOT:ARRAY
+  offset: 0x017810
+  symbol: object_bvVtx_017810
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_017950:
+  type: OOT:ARRAY
+  offset: 0x017950
+  symbol: object_bvVtx_017950
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_017A10:
+  type: OOT:ARRAY
+  offset: 0x017A10
+  symbol: object_bvVtx_017A10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBarinadeCutSupportSkelLimbsLimb_017F94DL_017B90:
+  type: GFX
+  offset: 0x017B90
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F94DL_017B90
+
+gBarinadeCutSupportSkelLimbsLimb_017F88DL_017CB8:
+  type: GFX
+  offset: 0x017CB8
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F88DL_017CB8
+
+gBarinadeCutSupportSkelLimbsLimb_017F7CDL_017DB8:
+  type: GFX
+  offset: 0x017DB8
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F7CDL_017DB8
+
+gBarinadeCutSupportSkelLimbsLimb_017F28:
+  type: OOT:LIMB
+  offset: 0x017F28
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F28
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F34:
+  type: OOT:LIMB
+  offset: 0x017F34
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F34
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F40:
+  type: OOT:LIMB
+  offset: 0x017F40
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F40
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F4C:
+  type: OOT:LIMB
+  offset: 0x017F4C
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F4C
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F58:
+  type: OOT:LIMB
+  offset: 0x017F58
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F58
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F64:
+  type: OOT:LIMB
+  offset: 0x017F64
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F64
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F70:
+  type: OOT:LIMB
+  offset: 0x017F70
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F70
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F7C:
+  type: OOT:LIMB
+  offset: 0x017F7C
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F7C
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F88:
+  type: OOT:LIMB
+  offset: 0x017F88
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F88
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbsLimb_017F94:
+  type: OOT:LIMB
+  offset: 0x017F94
+  symbol: gBarinadeCutSupportSkelLimbsLimb_017F94
+  limb_type: Standard
+
+gBarinadeCutSupportSkelLimbs:
+  type: BLOB
+  offset: 0x17FA0
+  symbol: gBarinadeCutSupportSkelLimbs
+  size: 0
+
+object_bvVtx_018160:
+  type: OOT:ARRAY
+  offset: 0x018160
+  symbol: object_bvVtx_018160
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0182A0:
+  type: OOT:ARRAY
+  offset: 0x0182A0
+  symbol: object_bvVtx_0182A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_018360:
+  type: OOT:ARRAY
+  offset: 0x018360
+  symbol: object_bvVtx_018360
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBarinadeStumpSkelLimbsLimb_018844DL_018410:
+  type: GFX
+  offset: 0x018410
+  symbol: gBarinadeStumpSkelLimbsLimb_018844DL_018410
+
+gBarinadeStumpSkelLimbsLimb_018838DL_0184D0:
+  type: GFX
+  offset: 0x0184D0
+  symbol: gBarinadeStumpSkelLimbsLimb_018838DL_0184D0
+
+gBarinadeStumpSkelLimbsLimb_01882CDL_0185E8:
+  type: GFX
+  offset: 0x0185E8
+  symbol: gBarinadeStumpSkelLimbsLimb_01882CDL_0185E8
+
+gBarinadeStumpSkelLimbsLimb_0187F0:
+  type: OOT:LIMB
+  offset: 0x0187F0
+  symbol: gBarinadeStumpSkelLimbsLimb_0187F0
+  limb_type: Standard
+
+gBarinadeStumpSkelLimbsLimb_0187FC:
+  type: OOT:LIMB
+  offset: 0x0187FC
+  symbol: gBarinadeStumpSkelLimbsLimb_0187FC
+  limb_type: Standard
+
+gBarinadeStumpSkelLimbsLimb_018808:
+  type: OOT:LIMB
+  offset: 0x018808
+  symbol: gBarinadeStumpSkelLimbsLimb_018808
+  limb_type: Standard
+
+gBarinadeStumpSkelLimbsLimb_018814:
+  type: OOT:LIMB
+  offset: 0x018814
+  symbol: gBarinadeStumpSkelLimbsLimb_018814
+  limb_type: Standard
+
+gBarinadeStumpSkelLimbsLimb_018820:
+  type: OOT:LIMB
+  offset: 0x018820
+  symbol: gBarinadeStumpSkelLimbsLimb_018820
+  limb_type: Standard
+
+gBarinadeStumpSkelLimbsLimb_01882C:
+  type: OOT:LIMB
+  offset: 0x01882C
+  symbol: gBarinadeStumpSkelLimbsLimb_01882C
+  limb_type: Standard
+
+gBarinadeStumpSkelLimbsLimb_018838:
+  type: OOT:LIMB
+  offset: 0x018838
+  symbol: gBarinadeStumpSkelLimbsLimb_018838
+  limb_type: Standard
+
+gBarinadeStumpSkelLimbsLimb_018844:
+  type: OOT:LIMB
+  offset: 0x018844
+  symbol: gBarinadeStumpSkelLimbsLimb_018844
+  limb_type: Standard
+
+gBarinadeStumpSkelLimbs:
+  type: BLOB
+  offset: 0x18850
+  symbol: gBarinadeStumpSkelLimbs
+  size: 0
+
+object_bvVtx_019030:
+  type: OOT:ARRAY
+  offset: 0x019030
+  symbol: object_bvVtx_019030
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_019160:
+  type: OOT:ARRAY
+  offset: 0x019160
+  symbol: object_bvVtx_019160
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_019220:
+  type: OOT:ARRAY
+  offset: 0x019220
+  symbol: object_bvVtx_019220
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_0192E0:
+  type: OOT:ARRAY
+  offset: 0x0192E0
+  symbol: object_bvVtx_0192E0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBarinadeZapperSkelLimbsLimb_019948DL_0194A0:
+  type: GFX
+  offset: 0x0194A0
+  symbol: gBarinadeZapperSkelLimbsLimb_019948DL_0194A0
+
+gBarinadeZapperSkelLimbsLimb_019954DL_0195C8:
+  type: GFX
+  offset: 0x0195C8
+  symbol: gBarinadeZapperSkelLimbsLimb_019954DL_0195C8
+
+gBarinadeZapperSkelLimbsLimb_01996CDL_0196C8:
+  type: GFX
+  offset: 0x0196C8
+  symbol: gBarinadeZapperSkelLimbsLimb_01996CDL_0196C8
+
+gBarinadeZapperSkelLimbsLimb_019978DL_0197C8:
+  type: GFX
+  offset: 0x0197C8
+  symbol: gBarinadeZapperSkelLimbsLimb_019978DL_0197C8
+
+gBarinadeZapperSkelLimbsLimb_019930:
+  type: OOT:LIMB
+  offset: 0x019930
+  symbol: gBarinadeZapperSkelLimbsLimb_019930
+  limb_type: Standard
+
+gBarinadeZapperSkelLimbsLimb_01993C:
+  type: OOT:LIMB
+  offset: 0x01993C
+  symbol: gBarinadeZapperSkelLimbsLimb_01993C
+  limb_type: Standard
+
+gBarinadeZapperSkelLimbsLimb_019948:
+  type: OOT:LIMB
+  offset: 0x019948
+  symbol: gBarinadeZapperSkelLimbsLimb_019948
+  limb_type: Standard
+
+gBarinadeZapperSkelLimbsLimb_019954:
+  type: OOT:LIMB
+  offset: 0x019954
+  symbol: gBarinadeZapperSkelLimbsLimb_019954
+  limb_type: Standard
+
+gBarinadeZapperSkelLimbsLimb_019960:
+  type: OOT:LIMB
+  offset: 0x019960
+  symbol: gBarinadeZapperSkelLimbsLimb_019960
+  limb_type: Standard
+
+gBarinadeZapperSkelLimbsLimb_01996C:
+  type: OOT:LIMB
+  offset: 0x01996C
+  symbol: gBarinadeZapperSkelLimbsLimb_01996C
+  limb_type: Standard
+
+gBarinadeZapperSkelLimbsLimb_019978:
+  type: OOT:LIMB
+  offset: 0x019978
+  symbol: gBarinadeZapperSkelLimbsLimb_019978
+  limb_type: Standard
+
+gBarinadeZapperSkelLimbs:
+  type: BLOB
+  offset: 0x19984
+  symbol: gBarinadeZapperSkelLimbs
+  size: 0
+
+object_bvVtx_01A3B8:
+  type: OOT:ARRAY
+  offset: 0x01A3B8
+  symbol: object_bvVtx_01A3B8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_01AEB8:
+  type: OOT:ARRAY
+  offset: 0x01AEB8
+  symbol: object_bvVtx_01AEB8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_01B9B8:
+  type: OOT:ARRAY
+  offset: 0x01B9B8
+  symbol: object_bvVtx_01B9B8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_01C4B8:
+  type: OOT:ARRAY
+  offset: 0x01C4B8
+  symbol: object_bvVtx_01C4B8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_01CFB8:
+  type: OOT:ARRAY
+  offset: 0x01CFB8
+  symbol: object_bvVtx_01CFB8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_01DAB8:
+  type: OOT:ARRAY
+  offset: 0x01DAB8
+  symbol: object_bvVtx_01DAB8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_01E5B8:
+  type: OOT:ARRAY
+  offset: 0x01E5B8
+  symbol: object_bvVtx_01E5B8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bvVtx_01F0B8:
+  type: OOT:ARRAY
+  offset: 0x01F0B8
+  symbol: object_bvVtx_01F0B8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -9,7 +9,6 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -164,8 +163,6 @@ void EnVm_Destroy(Actor* thisx, PlayState* play) {
     EnVm* this = (EnVm*)thisx;
 
     Collider_DestroyCylinder(play, &this->colliderCylinder);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnVm_SetupWait(EnVm* this) {

@@ -1,0 +1,353 @@
+:config:
+  segments:
+    - [ 6, 0x01267870 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x01267870 ]
+    - [ 9, 0x01267870 ]
+    - [ 10, 0x01267870 ]
+    - [ 11, 0x01267870 ]
+    - [ 12, 0x01267870 ]
+    - [ 13, 0x01267870 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gDntStageDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x6CC
+  symbol: gDntStageDanceAnim
+
+gDntStageEyeHalfTex:
+  type: TEXTURE
+  offset: 0x25D0
+  symbol: gDntStageEyeHalfTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDntStageEyeOpenTex:
+  type: TEXTURE
+  offset: 0x27D0
+  symbol: gDntStageEyeOpenTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDntStageEyeShutTex:
+  type: TEXTURE
+  offset: 0x2750
+  symbol: gDntStageEyeShutTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDntStageFlowerDL:
+  type: GFX
+  offset: 0x1B00
+  symbol: gDntStageFlowerDL
+
+gDntStageHideAnim:
+  type: OOT:ANIMATION
+  offset: 0x430
+  symbol: gDntStageHideAnim
+
+gDntStageNutDL:
+  type: GFX
+  offset: 0x1890
+  symbol: gDntStageNutDL
+
+gDntStageSkel:
+  type: OOT:SKELETON
+  offset: 0x2AF0
+  symbol: gDntStageSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gDntStageSpitAnim:
+  type: OOT:ANIMATION
+  offset: 0x31C
+  symbol: gDntStageSpitAnim
+
+gDntStageUnburrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x894
+  symbol: gDntStageUnburrowAnim
+
+gDntStageUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xB70
+  symbol: gDntStageUpAnim
+
+gDntStageWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x2CB8
+  symbol: gDntStageWaitAnim
+
+gDntStageWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2E1C
+  symbol: gDntStageWalkAnim
+
+object_dnkTex_001BD0:
+  type: TEXTURE
+  offset: 0x1BD0
+  symbol: object_dnkTex_001BD0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dnkTex_0023D0:
+  type: TEXTURE
+  offset: 0x23D0
+  symbol: object_dnkTex_0023D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dnkTex_002650:
+  type: TEXTURE
+  offset: 0x2650
+  symbol: object_dnkTex_002650
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_dnkTex_0026D0:
+  type: TEXTURE
+  offset: 0x26D0
+  symbol: object_dnkTex_0026D0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_dnkTex_002850:
+  type: TEXTURE
+  offset: 0x2850
+  symbol: object_dnkTex_002850
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_dnkVtx_000B80:
+  type: OOT:ARRAY
+  offset: 0x000B80
+  symbol: object_dnkVtx_000B80
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_000BE0:
+  type: OOT:ARRAY
+  offset: 0x000BE0
+  symbol: object_dnkVtx_000BE0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_000C80:
+  type: OOT:ARRAY
+  offset: 0x000C80
+  symbol: object_dnkVtx_000C80
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_000D70:
+  type: OOT:ARRAY
+  offset: 0x000D70
+  symbol: object_dnkVtx_000D70
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_000F30:
+  type: OOT:ARRAY
+  offset: 0x000F30
+  symbol: object_dnkVtx_000F30
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_000F90:
+  type: OOT:ARRAY
+  offset: 0x000F90
+  symbol: object_dnkVtx_000F90
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_000FF0:
+  type: OOT:ARRAY
+  offset: 0x000FF0
+  symbol: object_dnkVtx_000FF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001030:
+  type: OOT:ARRAY
+  offset: 0x001030
+  symbol: object_dnkVtx_001030
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001070:
+  type: OOT:ARRAY
+  offset: 0x001070
+  symbol: object_dnkVtx_001070
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_0010E0:
+  type: OOT:ARRAY
+  offset: 0x0010E0
+  symbol: object_dnkVtx_0010E0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDntStageSkelLimbsLimb_002AA4DL_001150:
+  type: GFX
+  offset: 0x001150
+  symbol: gDntStageSkelLimbsLimb_002AA4DL_001150
+
+gDntStageSkelLimbsLimb_002A50DL_0011E0:
+  type: GFX
+  offset: 0x0011E0
+  symbol: gDntStageSkelLimbsLimb_002A50DL_0011E0
+
+gDntStageSkelLimbsLimb_002A98DL_001298:
+  type: GFX
+  offset: 0x001298
+  symbol: gDntStageSkelLimbsLimb_002A98DL_001298
+
+gDntStageSkelLimbsLimb_002A5CDL_0013B0:
+  type: GFX
+  offset: 0x0013B0
+  symbol: gDntStageSkelLimbsLimb_002A5CDL_0013B0
+
+gDntStageSkelLimbsLimb_002A80DL_0014B0:
+  type: GFX
+  offset: 0x0014B0
+  symbol: gDntStageSkelLimbsLimb_002A80DL_0014B0
+
+gDntStageSkelLimbsLimb_002A8CDL_001548:
+  type: GFX
+  offset: 0x001548
+  symbol: gDntStageSkelLimbsLimb_002A8CDL_001548
+
+gDntStageSkelLimbsLimb_002A68DL_0015E0:
+  type: GFX
+  offset: 0x0015E0
+  symbol: gDntStageSkelLimbsLimb_002A68DL_0015E0
+
+gDntStageSkelLimbsLimb_002A74DL_001670:
+  type: GFX
+  offset: 0x001670
+  symbol: gDntStageSkelLimbsLimb_002A74DL_001670
+
+gDntStageSkelLimbsLimb_002AB0DL_001700:
+  type: GFX
+  offset: 0x001700
+  symbol: gDntStageSkelLimbsLimb_002AB0DL_001700
+
+gDntStageSkelLimbsLimb_002ABCDL_0017B0:
+  type: GFX
+  offset: 0x0017B0
+  symbol: gDntStageSkelLimbsLimb_002ABCDL_0017B0
+
+object_dnkVtx_001860:
+  type: OOT:ARRAY
+  offset: 0x001860
+  symbol: object_dnkVtx_001860
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001920:
+  type: OOT:ARRAY
+  offset: 0x001920
+  symbol: object_dnkVtx_001920
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDntStageSkelLimbsLimb_002A50:
+  type: OOT:LIMB
+  offset: 0x002A50
+  symbol: gDntStageSkelLimbsLimb_002A50
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002A5C:
+  type: OOT:LIMB
+  offset: 0x002A5C
+  symbol: gDntStageSkelLimbsLimb_002A5C
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002A68:
+  type: OOT:LIMB
+  offset: 0x002A68
+  symbol: gDntStageSkelLimbsLimb_002A68
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002A74:
+  type: OOT:LIMB
+  offset: 0x002A74
+  symbol: gDntStageSkelLimbsLimb_002A74
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002A80:
+  type: OOT:LIMB
+  offset: 0x002A80
+  symbol: gDntStageSkelLimbsLimb_002A80
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002A8C:
+  type: OOT:LIMB
+  offset: 0x002A8C
+  symbol: gDntStageSkelLimbsLimb_002A8C
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002A98:
+  type: OOT:LIMB
+  offset: 0x002A98
+  symbol: gDntStageSkelLimbsLimb_002A98
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002AA4:
+  type: OOT:LIMB
+  offset: 0x002AA4
+  symbol: gDntStageSkelLimbsLimb_002AA4
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002AB0:
+  type: OOT:LIMB
+  offset: 0x002AB0
+  symbol: gDntStageSkelLimbsLimb_002AB0
+  limb_type: Standard
+
+gDntStageSkelLimbsLimb_002ABC:
+  type: OOT:LIMB
+  offset: 0x002ABC
+  symbol: gDntStageSkelLimbsLimb_002ABC
+  limb_type: Standard
+
+gDntStageSkelLimbs:
+  type: BLOB
+  offset: 0x2AC8
+  symbol: gDntStageSkelLimbs
+  size: 0

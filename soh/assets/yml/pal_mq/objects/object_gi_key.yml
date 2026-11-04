@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x01010980 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x01010980 ]
+    - [ 9, 0x01010980 ]
+    - [ 10, 0x01010980 ]
+    - [ 11, 0x01010980 ]
+    - [ 12, 0x01010980 ]
+    - [ 13, 0x01010980 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gGiSmallKeyDL:
+  type: GFX
+  offset: 0x0800
+  symbol: gGiSmallKeyDL
+
+
+object_gi_keyVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_keyVtx_000000
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

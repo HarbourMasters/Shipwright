@@ -1,0 +1,111 @@
+:config:
+  segments:
+    - [ 6, 0x01055180 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x01055180 ]
+    - [ 9, 0x01055180 ]
+    - [ 10, 0x01055180 ]
+    - [ 11, 0x01055180 ]
+    - [ 12, 0x01055180 ]
+    - [ 13, 0x01055180 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gGiFireMedallionFaceDL:
+  type: GFX
+  offset: 0x1AF0
+  symbol: gGiFireMedallionFaceDL
+
+gGiForestMedallionFaceDL:
+  type: GFX
+  offset: 0x0CB0
+  symbol: gGiForestMedallionFaceDL
+
+gGiLightMedallionFaceDL:
+  type: GFX
+  offset: 0x5220
+  symbol: gGiLightMedallionFaceDL
+
+gGiMedallionDL:
+  type: GFX
+  offset: 0x0E18
+  symbol: gGiMedallionDL
+
+gGiShadowMedallionFaceDL:
+  type: GFX
+  offset: 0x4330
+  symbol: gGiShadowMedallionFaceDL
+
+gGiSpiritMedallionFaceDL:
+  type: GFX
+  offset: 0x3610
+  symbol: gGiSpiritMedallionFaceDL
+
+gGiWaterMedallionFaceDL:
+  type: GFX
+  offset: 0x2830
+  symbol: gGiWaterMedallionFaceDL
+
+
+object_gi_medalVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_medalVtx_000000
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_medalVtx_000370:
+  type: OOT:ARRAY
+  offset: 0x000370
+  symbol: object_gi_medalVtx_000370
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_medalVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_gi_medalVtx_001000
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_medalVtx_001C10:
+  type: OOT:ARRAY
+  offset: 0x001C10
+  symbol: object_gi_medalVtx_001C10
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_medalVtx_0029A0:
+  type: OOT:ARRAY
+  offset: 0x0029A0
+  symbol: object_gi_medalVtx_0029A0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_medalVtx_003770:
+  type: OOT:ARRAY
+  offset: 0x003770
+  symbol: object_gi_medalVtx_003770
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_medalVtx_004460:
+  type: OOT:ARRAY
+  offset: 0x004460
+  symbol: object_gi_medalVtx_004460
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

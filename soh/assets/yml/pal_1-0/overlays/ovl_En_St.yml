@@ -1,0 +1,26 @@
+:config:
+  segments:
+    - [ 128, 0x00B73C40 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00B73C40 ]
+    - [ 9, 0x00B73C40 ]
+    - [ 10, 0x00B73C40 ]
+    - [ 11, 0x00B73C40 ]
+    - [ 12, 0x00B73C40 ]
+    - [ 13, 0x00B73C40 ]
+  virtual: [ 0x808C4D80, 0x00B73C40 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+sSkulltulaUnusedDL:
+  type: GFX
+  offset: 0x26E0
+  symbol: sSkulltulaUnusedDL
+
+sSkulltulaUnusedVtx:
+  type: OOT:ARRAY
+  offset: 0x26A0
+  symbol: sSkulltulaUnusedVtx
+  count: 4
+  array_type: VTX
+

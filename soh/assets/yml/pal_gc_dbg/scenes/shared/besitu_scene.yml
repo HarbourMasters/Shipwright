@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x03538000 ]
+
+besitu_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: besitu_scene
+
+
+besitu_sceneCollisionHeader_000478:
+  type: OOT:COLLISION
+  offset: 0x000478
+  symbol: besitu_sceneCollisionHeader_000478

@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 2, 0x01DBCBB0 ]
+
+ddan_boss_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ddan_boss_scene
+
+ddan_boss_sceneTLUT_000E50:
+  type: TEXTURE
+  offset: 0xE50
+  symbol: ddan_boss_sceneTLUT_000E50
+  format: RGBA16
+  width: 16
+  height: 16
+
+ddan_boss_sceneTex_001058:
+  type: TEXTURE
+  offset: 0x1058
+  symbol: ddan_boss_sceneTex_001058
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0xE50
+
+ddan_boss_sceneTex_001858:
+  type: TEXTURE
+  offset: 0x1858
+  symbol: ddan_boss_sceneTex_001858
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0xE50
+
+ddan_boss_sceneTex_002058:
+  type: TEXTURE
+  offset: 0x2058
+  symbol: ddan_boss_sceneTex_002058
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0xE50
+
+
+ddan_boss_sceneCollisionHeader_000E20:
+  type: OOT:COLLISION
+  offset: 0x000E20
+  symbol: ddan_boss_sceneCollisionHeader_000E20

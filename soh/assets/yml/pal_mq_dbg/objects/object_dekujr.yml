@@ -1,0 +1,97 @@
+:config:
+  segments:
+    - [ 6, 0x015A7000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x015A7000 ]
+    - [ 9, 0x015A7000 ]
+    - [ 10, 0x015A7000 ]
+    - [ 11, 0x015A7000 ]
+    - [ 12, 0x015A7000 ]
+    - [ 13, 0x015A7000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+object_dekujr_DL_0030D0:
+  type: GFX
+  offset: 0x30D0
+  symbol: object_dekujr_DL_0030D0
+
+object_dekujr_DL_0032D8:
+  type: GFX
+  offset: 0x32D8
+  symbol: object_dekujr_DL_0032D8
+
+object_dekujr_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_dekujr_Tex_000000
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dekujr_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_dekujr_Tex_000800
+  format: I4
+  width: 64
+  height: 64
+
+object_dekujr_Tex_001000:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: object_dekujr_Tex_001000
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_dekujr_Tex_001400:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: object_dekujr_Tex_001400
+  format: IA8
+  width: 32
+  height: 16
+
+object_dekujr_Tex_001600:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: object_dekujr_Tex_001600
+  format: IA8
+  width: 8
+  height: 8
+
+object_dekujr_Tex_001640:
+  type: TEXTURE
+  offset: 0x1640
+  symbol: object_dekujr_Tex_001640
+  format: IA8
+  width: 64
+  height: 64
+
+object_dekujr_Tex_002640:
+  type: TEXTURE
+  offset: 0x2640
+  symbol: object_dekujr_Tex_002640
+  format: IA16
+  width: 32
+  height: 16
+
+
+object_dekujrVtx_002A40:
+  type: OOT:ARRAY
+  offset: 0x002A40
+  symbol: object_dekujrVtx_002A40
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekujrVtx_002EF0:
+  type: OOT:ARRAY
+  offset: 0x002EF0
+  symbol: object_dekujrVtx_002EF0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -115,12 +115,12 @@ void BgYdanHasi_MoveWater(BgYdanHasi* this, PlayState* play) {
             Flags_UnsetSwitch(play, this->type);
             this->actionFunc = BgYdanHasi_InitWater;
         }
-        func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     } else {
         if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y - 47.0f, 0.5f)) {
             this->actionFunc = BgYdanHasi_DecWaterTimer;
         }
-        func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     }
     waterBox = &play->colCtx.colHeader->waterBoxes[1];
     waterBox->ySurface = this->dyna.actor.world.pos.y;
@@ -131,7 +131,7 @@ void BgYdanHasi_DecWaterTimer(BgYdanHasi* this, PlayState* play) {
         this->timer--;
     }
 
-    func_8002F994(&this->dyna.actor, this->timer);
+    Actor_PlaySfx_FlaggedTimer(&this->dyna.actor, this->timer);
     if (this->timer == 0) {
         this->actionFunc = BgYdanHasi_MoveWater;
     }
@@ -142,7 +142,7 @@ void BgYdanHasi_SetupThreeBlocks(BgYdanHasi* this, PlayState* play) {
         this->timer = 260;
         this->dyna.actor.draw = BgYdanHasi_Draw;
         this->actionFunc = BgYdanHasi_UpdateThreeBlocks;
-        OnePointCutscene_Init(play, 3040, 30, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3040, 30, &this->dyna.actor, CAM_ID_MAIN);
     }
 }
 
@@ -157,13 +157,13 @@ void BgYdanHasi_UpdateThreeBlocks(BgYdanHasi* this, PlayState* play) {
             this->dyna.actor.draw = NULL;
             this->actionFunc = BgYdanHasi_SetupThreeBlocks;
         } else {
-            func_8002F948(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
+            Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
         }
     } else if (!Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 120.0f, 3.0f)) {
-        func_8002F948(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
 
     } else {
-        func_8002F994(&this->dyna.actor, this->timer);
+        Actor_PlaySfx_FlaggedTimer(&this->dyna.actor, this->timer);
     }
 }
 

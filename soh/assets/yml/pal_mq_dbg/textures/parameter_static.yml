@@ -1,0 +1,452 @@
+:config:
+  segments:
+    - [ 2, 0x01AEC000 ]
+
+gAmmoDigit0Tex:
+  type: TEXTURE
+  offset: 0x35C0
+  symbol: gAmmoDigit0Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit1Tex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gAmmoDigit1Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit2Tex:
+  type: TEXTURE
+  offset: 0x3640
+  symbol: gAmmoDigit2Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit3Tex:
+  type: TEXTURE
+  offset: 0x3680
+  symbol: gAmmoDigit3Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit4Tex:
+  type: TEXTURE
+  offset: 0x36C0
+  symbol: gAmmoDigit4Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit5Tex:
+  type: TEXTURE
+  offset: 0x3700
+  symbol: gAmmoDigit5Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit6Tex:
+  type: TEXTURE
+  offset: 0x3740
+  symbol: gAmmoDigit6Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit7Tex:
+  type: TEXTURE
+  offset: 0x3780
+  symbol: gAmmoDigit7Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit8Tex:
+  type: TEXTURE
+  offset: 0x37C0
+  symbol: gAmmoDigit8Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gAmmoDigit9Tex:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: gAmmoDigit9Tex
+  format: IA8
+  width: 8
+  height: 8
+
+gArcheryScoreIconTex:
+  type: TEXTURE
+  offset: 0x2600
+  symbol: gArcheryScoreIconTex
+  format: RGBA16
+  width: 24
+  height: 16
+
+gButtonBackgroundTex:
+  type: TEXTURE
+  offset: 0xA00
+  symbol: gButtonBackgroundTex
+  format: IA8
+  width: 32
+  height: 32
+
+gCarrotIconTex:
+  type: TEXTURE
+  offset: 0x2100
+  symbol: gCarrotIconTex
+  format: RGBA32
+  width: 16
+  height: 16
+
+gClockIconTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gClockIconTex
+  format: IA8
+  width: 16
+  height: 16
+
+gCounterColonTex:
+  type: TEXTURE
+  offset: 0x3540
+  symbol: gCounterColonTex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit0Tex:
+  type: TEXTURE
+  offset: 0x3040
+  symbol: gCounterDigit0Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit1Tex:
+  type: TEXTURE
+  offset: 0x30C0
+  symbol: gCounterDigit1Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit2Tex:
+  type: TEXTURE
+  offset: 0x3140
+  symbol: gCounterDigit2Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit3Tex:
+  type: TEXTURE
+  offset: 0x31C0
+  symbol: gCounterDigit3Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit4Tex:
+  type: TEXTURE
+  offset: 0x3240
+  symbol: gCounterDigit4Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit5Tex:
+  type: TEXTURE
+  offset: 0x32C0
+  symbol: gCounterDigit5Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit6Tex:
+  type: TEXTURE
+  offset: 0x3340
+  symbol: gCounterDigit6Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit7Tex:
+  type: TEXTURE
+  offset: 0x33C0
+  symbol: gCounterDigit7Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit8Tex:
+  type: TEXTURE
+  offset: 0x3440
+  symbol: gCounterDigit8Tex
+  format: I8
+  width: 8
+  height: 16
+
+gCounterDigit9Tex:
+  type: TEXTURE
+  offset: 0x34C0
+  symbol: gCounterDigit9Tex
+  format: I8
+  width: 8
+  height: 16
+
+gDefenseHeartEmptyTex:
+  type: TEXTURE
+  offset: 0x500
+  symbol: gDefenseHeartEmptyTex
+  format: IA8
+  width: 16
+  height: 16
+
+gDefenseHeartFullTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gDefenseHeartFullTex
+  format: IA8
+  width: 16
+  height: 16
+
+gDefenseHeartHalfTex:
+  type: TEXTURE
+  offset: 0x700
+  symbol: gDefenseHeartHalfTex
+  format: IA8
+  width: 16
+  height: 16
+
+gDefenseHeartQuarterTex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gDefenseHeartQuarterTex
+  format: IA8
+  width: 16
+  height: 16
+
+gDefenseHeartThreeQuarterTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gDefenseHeartThreeQuarterTex
+  format: IA8
+  width: 16
+  height: 16
+
+gEmptyCDownArrowTex:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: gEmptyCDownArrowTex
+  format: IA8
+  width: 32
+  height: 32
+
+gEmptyCLeftArrowTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gEmptyCLeftArrowTex
+  format: IA8
+  width: 32
+  height: 32
+
+gEmptyCRightArrowTex:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: gEmptyCRightArrowTex
+  format: IA8
+  width: 32
+  height: 32
+
+gEquippedItemOutlineTex:
+  type: TEXTURE
+  offset: 0xE00
+  symbol: gEquippedItemOutlineTex
+  format: IA8
+  width: 32
+  height: 32
+
+gHeartEmptyTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHeartEmptyTex
+  format: IA8
+  width: 16
+  height: 16
+
+gHeartFullTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gHeartFullTex
+  format: IA8
+  width: 16
+  height: 16
+
+gHeartHalfTex:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gHeartHalfTex
+  format: IA8
+  width: 16
+  height: 16
+
+gHeartQuarterTex:
+  type: TEXTURE
+  offset: 0x100
+  symbol: gHeartQuarterTex
+  format: IA8
+  width: 16
+  height: 16
+
+gHeartThreeQuarterTex:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gHeartThreeQuarterTex
+  format: IA8
+  width: 16
+  height: 16
+
+gMagicMeterEndTex:
+  type: TEXTURE
+  offset: 0x38C0
+  symbol: gMagicMeterEndTex
+  format: IA8
+  width: 8
+  height: 16
+
+gMagicMeterFillTex:
+  type: TEXTURE
+  offset: 0x3AC0
+  symbol: gMagicMeterFillTex
+  format: IA8
+  width: 8
+  height: 8
+
+gMagicMeterMidTex:
+  type: TEXTURE
+  offset: 0x3940
+  symbol: gMagicMeterMidTex
+  format: IA8
+  width: 24
+  height: 16
+
+gMapBossIconTex:
+  type: TEXTURE
+  offset: 0x2900
+  symbol: gMapBossIconTex
+  format: IA8
+  width: 8
+  height: 8
+
+gMapChestIconTex:
+  type: TEXTURE
+  offset: 0x2580
+  symbol: gMapChestIconTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gMapDungeonEntranceIconTex:
+  type: TEXTURE
+  offset: 0x2500
+  symbol: gMapDungeonEntranceIconTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gNaviCUpENGTex:
+  type: TEXTURE
+  offset: 0x2FC0
+  symbol: gNaviCUpENGTex
+  format: IA4
+  width: 32
+  height: 8
+
+gNaviCUpJPTex:
+  type: TEXTURE
+  offset: 0x2F40
+  symbol: gNaviCUpJPTex
+  format: IA4
+  width: 32
+  height: 8
+
+gOcarinaBtnIconATex:
+  type: TEXTURE
+  offset: 0x2940
+  symbol: gOcarinaBtnIconATex
+  format: IA8
+  width: 16
+  height: 16
+
+gOcarinaBtnIconCDownTex:
+  type: TEXTURE
+  offset: 0x2A40
+  symbol: gOcarinaBtnIconCDownTex
+  format: IA8
+  width: 16
+  height: 16
+
+gOcarinaBtnIconCLeftTex:
+  type: TEXTURE
+  offset: 0x2C40
+  symbol: gOcarinaBtnIconCLeftTex
+  format: IA8
+  width: 16
+  height: 16
+
+gOcarinaBtnIconCRightTex:
+  type: TEXTURE
+  offset: 0x2B40
+  symbol: gOcarinaBtnIconCRightTex
+  format: IA8
+  width: 16
+  height: 16
+
+gOcarinaBtnIconCUpTex:
+  type: TEXTURE
+  offset: 0x2D40
+  symbol: gOcarinaBtnIconCUpTex
+  format: IA8
+  width: 16
+  height: 16
+
+gOcarinaTrebleClefTex:
+  type: TEXTURE
+  offset: 0x2E40
+  symbol: gOcarinaTrebleClefTex
+  format: I4
+  width: 16
+  height: 32
+
+gRupeeCounterIconTex:
+  type: TEXTURE
+  offset: 0x1F00
+  symbol: gRupeeCounterIconTex
+  format: IA8
+  width: 16
+  height: 16
+
+gSmallKeyCounterIconTex:
+  type: TEXTURE
+  offset: 0x1E00
+  symbol: gSmallKeyCounterIconTex
+  format: IA8
+  width: 16
+  height: 16
+
+gUnusedAmmoDigitHalfTex:
+  type: TEXTURE
+  offset: 0x3840
+  symbol: gUnusedAmmoDigitHalfTex
+  format: IA8
+  width: 16
+  height: 8
+

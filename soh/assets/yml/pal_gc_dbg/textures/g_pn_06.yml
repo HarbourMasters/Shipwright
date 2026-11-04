@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x019FD000 ]
+
+gDekuTreeTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDekuTreeTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gDekuTreeTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gDekuTreeTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gDekuTreeTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gDekuTreeTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

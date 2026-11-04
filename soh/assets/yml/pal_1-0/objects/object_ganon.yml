@@ -1,0 +1,820 @@
+:config:
+  segments:
+    - [ 6, 0x010ECDE0 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x010ECDE0 ]
+    - [ 9, 0x010ECDE0 ]
+    - [ 10, 0x010ECDE0 ]
+    - [ 11, 0x010ECDE0 ]
+    - [ 12, 0x010ECDE0 ]
+    - [ 13, 0x010ECDE0 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gGanondorfBlackLeatherTex:
+  type: TEXTURE
+  offset: 0xA020
+  symbol: gGanondorfBlackLeatherTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfBodysuitTex:
+  type: TEXTURE
+  offset: 0x8D30
+  symbol: gGanondorfBodysuitTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGanondorfCapeFasteningTex:
+  type: TEXTURE
+  offset: 0x8FB0
+  symbol: gGanondorfCapeFasteningTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfChestJewelTex:
+  type: TEXTURE
+  offset: 0x9E20
+  symbol: gGanondorfChestJewelTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfCrazedEyeTex:
+  type: TEXTURE
+  offset: 0xA4E0
+  symbol: gGanondorfCrazedEyeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gGanondorfEarTex:
+  type: TEXTURE
+  offset: 0x8630
+  symbol: gGanondorfEarTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGanondorfEmptyEyeTex:
+  type: TEXTURE
+  offset: 0xA8E0
+  symbol: gGanondorfEmptyEyeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gGanondorfEndingFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x11348
+  symbol: gGanondorfEndingFloatAnim
+
+gGanondorfEyeOrbitTex:
+  type: TEXTURE
+  offset: 0x8730
+  symbol: gGanondorfEyeOrbitTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x7B10
+
+gGanondorfEyebrowTex:
+  type: TEXTURE
+  offset: 0x83F0
+  symbol: gGanondorfEyebrowTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x7D10
+
+gGanondorfEyesDL:
+  type: GFX
+  offset: 0xBE90
+  symbol: gGanondorfEyesDL
+
+gGanondorfFingerTex:
+  type: TEXTURE
+  offset: 0xA4A0
+  symbol: gGanondorfFingerTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x95B0
+
+gGanondorfGauntletAndPauldronTex:
+  type: TEXTURE
+  offset: 0xA260
+  symbol: gGanondorfGauntletAndPauldronTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfGerudoFabricTex:
+  type: TEXTURE
+  offset: 0x8930
+  symbol: gGanondorfGerudoFabricTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfGerudoFabricWithSunTex:
+  type: TEXTURE
+  offset: 0x91B0
+  symbol: gGanondorfGerudoFabricWithSunTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gGanondorfHairFringeTex:
+  type: TEXTURE
+  offset: 0x8470
+  symbol: gGanondorfHairFringeTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7D10
+
+gGanondorfHairTLUT:
+  type: TEXTURE
+  offset: 0x7D10
+  symbol: gGanondorfHairTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfHairTex:
+  type: TEXTURE
+  offset: 0x82D0
+  symbol: gGanondorfHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7D10
+
+gGanondorfHandSideTex:
+  type: TEXTURE
+  offset: 0xA460
+  symbol: gGanondorfHandSideTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x95B0
+
+gGanondorfHandTLUT:
+  type: TEXTURE
+  offset: 0x95B0
+  symbol: gGanondorfHandTLUT
+  format: RGBA16
+  width: 56
+  height: 1
+
+gGanondorfHeadDL:
+  type: GFX
+  offset: 0x54D8
+  symbol: gGanondorfHeadDL
+
+gGanondorfHeadLimb:
+  type: OOT:LIMB
+  offset: 0x11424
+  symbol: gGanondorfHeadLimb
+  limb_type: Standard
+
+gGanondorfInnerMouthTex:
+  type: TEXTURE
+  offset: 0x7F10
+  symbol: gGanondorfInnerMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGanondorfJawDL:
+  type: GFX
+  offset: 0x6460
+  symbol: gGanondorfJawDL
+
+gGanondorfJawLimb:
+  type: OOT:LIMB
+  offset: 0x113F4
+  symbol: gGanondorfJawLimb
+  limb_type: Standard
+
+gGanondorfJawTex:
+  type: TEXTURE
+  offset: 0x7F90
+  symbol: gGanondorfJawTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7B10
+
+gGanondorfJewelDL:
+  type: GFX
+  offset: 0xBF40
+  symbol: gGanondorfJewelDL
+
+gGanondorfJewelLimb:
+  type: OOT:LIMB
+  offset: 0x113D0
+  symbol: gGanondorfJewelLimb
+  limb_type: Standard
+
+gGanondorfJewelTex:
+  type: TEXTURE
+  offset: 0x9620
+  symbol: gGanondorfJewelTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gGanondorfLeatherTex:
+  type: TEXTURE
+  offset: 0x8DB0
+  symbol: gGanondorfLeatherTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfLeftFootDL:
+  type: GFX
+  offset: 0x5270
+  symbol: gGanondorfLeftFootDL
+
+gGanondorfLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x11454
+  symbol: gGanondorfLeftFootLimb
+  limb_type: Standard
+
+gGanondorfLeftForearmDL:
+  type: GFX
+  offset: 0x7518
+  symbol: gGanondorfLeftForearmDL
+
+gGanondorfLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x11388
+  symbol: gGanondorfLeftForearmLimb
+  limb_type: Standard
+
+gGanondorfLeftHandDL:
+  type: GFX
+  offset: 0xC048
+  symbol: gGanondorfLeftHandDL
+
+gGanondorfLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x11394
+  symbol: gGanondorfLeftHandLimb
+  limb_type: Standard
+
+gGanondorfLeftShinDL:
+  type: GFX
+  offset: 0x5070
+  symbol: gGanondorfLeftShinDL
+
+gGanondorfLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x11448
+  symbol: gGanondorfLeftShinLimb
+  limb_type: Standard
+
+gGanondorfLeftShoulderDL:
+  type: GFX
+  offset: 0x7908
+  symbol: gGanondorfLeftShoulderDL
+
+gGanondorfLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x11370
+  symbol: gGanondorfLeftShoulderLimb
+  limb_type: Standard
+
+gGanondorfLeftThighDL:
+  type: GFX
+  offset: 0x5388
+  symbol: gGanondorfLeftThighDL
+
+gGanondorfLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1143C
+  symbol: gGanondorfLeftThighLimb
+  limb_type: Standard
+
+gGanondorfLeftUpperArmDL:
+  type: GFX
+  offset: 0x7640
+  symbol: gGanondorfLeftUpperArmDL
+
+gGanondorfLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x1137C
+  symbol: gGanondorfLeftUpperArmLimb
+  limb_type: Standard
+
+gGanondorfLeftUpperLipDL:
+  type: GFX
+  offset: 0x6A28
+  symbol: gGanondorfLeftUpperLipDL
+
+gGanondorfLeftUpperLipLimb:
+  type: OOT:LIMB
+  offset: 0x113DC
+  symbol: gGanondorfLeftUpperLipLimb
+  limb_type: Standard
+
+gGanondorfLowerHairEndDL:
+  type: GFX
+  offset: 0x6198
+  symbol: gGanondorfLowerHairEndDL
+
+gGanondorfLowerHairEndLimb:
+  type: OOT:LIMB
+  offset: 0x1140C
+  symbol: gGanondorfLowerHairEndLimb
+  limb_type: Standard
+
+gGanondorfMouthDL:
+  type: GFX
+  offset: 0x66E8
+  symbol: gGanondorfMouthDL
+
+gGanondorfMouthLimb:
+  type: OOT:LIMB
+  offset: 0x113E8
+  symbol: gGanondorfMouthLimb
+  limb_type: Standard
+
+gGanondorfNormalEyeTex:
+  type: TEXTURE
+  offset: 0x9A20
+  symbol: gGanondorfNormalEyeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gGanondorfNoseBridgeTex:
+  type: TEXTURE
+  offset: 0x8570
+  symbol: gGanondorfNoseBridgeTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+gGanondorfNoseTex:
+  type: TEXTURE
+  offset: 0x85F0
+  symbol: gGanondorfNoseTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x7B10
+
+gGanondorfOuterMouthTex:
+  type: TEXTURE
+  offset: 0x8190
+  symbol: gGanondorfOuterMouthTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gGanondorfPelvisDL:
+  type: GFX
+  offset: 0x49C0
+  symbol: gGanondorfPelvisDL
+
+gGanondorfPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x11430
+  symbol: gGanondorfPelvisLimb
+  limb_type: Standard
+
+gGanondorfRedFabricTex:
+  type: TEXTURE
+  offset: 0x8B30
+  symbol: gGanondorfRedFabricTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfRightFootDL:
+  type: GFX
+  offset: 0x4E08
+  symbol: gGanondorfRightFootDL
+
+gGanondorfRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x11478
+  symbol: gGanondorfRightFootLimb
+  limb_type: Standard
+
+gGanondorfRightForearmDL:
+  type: GFX
+  offset: 0x6F20
+  symbol: gGanondorfRightForearmDL
+
+gGanondorfRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x113B8
+  symbol: gGanondorfRightForearmLimb
+  limb_type: Standard
+
+gGanondorfRightHandClosedDL:
+  type: GFX
+  offset: 0xC518
+  symbol: gGanondorfRightHandClosedDL
+
+gGanondorfRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x113C4
+  symbol: gGanondorfRightHandLimb
+  limb_type: Standard
+
+gGanondorfRightHandOpenDL:
+  type: GFX
+  offset: 0xC9E8
+  symbol: gGanondorfRightHandOpenDL
+
+gGanondorfRightShinDL:
+  type: GFX
+  offset: 0x4C08
+  symbol: gGanondorfRightShinDL
+
+gGanondorfRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1146C
+  symbol: gGanondorfRightShinLimb
+  limb_type: Standard
+
+gGanondorfRightShoulderDL:
+  type: GFX
+  offset: 0x7310
+  symbol: gGanondorfRightShoulderDL
+
+gGanondorfRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x113A0
+  symbol: gGanondorfRightShoulderLimb
+  limb_type: Standard
+
+gGanondorfRightThighDL:
+  type: GFX
+  offset: 0x4F20
+  symbol: gGanondorfRightThighDL
+
+gGanondorfRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x11460
+  symbol: gGanondorfRightThighLimb
+  limb_type: Standard
+
+gGanondorfRightUpperArmDL:
+  type: GFX
+  offset: 0x7048
+  symbol: gGanondorfRightUpperArmDL
+
+gGanondorfRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x113AC
+  symbol: gGanondorfRightUpperArmLimb
+  limb_type: Standard
+
+gGanondorfRightUpperLipDL:
+  type: GFX
+  offset: 0x6030
+  symbol: gGanondorfRightUpperLipDL
+
+gGanondorfRightUpperLipLimb:
+  type: OOT:LIMB
+  offset: 0x11418
+  symbol: gGanondorfRightUpperLipLimb
+  limb_type: Standard
+
+gGanondorfRootLimb:
+  type: OOT:LIMB
+  offset: 0x11358
+  symbol: gGanondorfRootLimb
+  limb_type: Standard
+
+gGanondorfSideburnTex:
+  type: TEXTURE
+  offset: 0x8090
+  symbol: gGanondorfSideburnTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7D10
+
+gGanondorfSkel:
+  type: OOT:SKELETON
+  offset: 0x114E8
+  symbol: gGanondorfSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGanondorfSkinTLUT:
+  type: TEXTURE
+  offset: 0x7B10
+  symbol: gGanondorfSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanondorfTeethTex:
+  type: TEXTURE
+  offset: 0x83D0
+  symbol: gGanondorfTeethTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGanondorfThumbTex:
+  type: TEXTURE
+  offset: 0xA220
+  symbol: gGanondorfThumbTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x95B0
+
+gGanondorfTitleCardTex:
+  type: TEXTURE
+  offset: 0xCF00
+  symbol: gGanondorfTitleCardTex
+  format: IA8
+  width: 128
+  height: 120
+
+gGanondorfTorsoDL:
+  type: GFX
+  offset: 0x6B90
+  symbol: gGanondorfTorsoDL
+
+gGanondorfTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x11364
+  symbol: gGanondorfTorsoLimb
+  limb_type: Standard
+
+gGanondorfUpperHairEndDL:
+  type: GFX
+  offset: 0x62F0
+  symbol: gGanondorfUpperHairEndDL
+
+gGanondorfUpperHairEndLimb:
+  type: OOT:LIMB
+  offset: 0x11400
+  symbol: gGanondorfUpperHairEndLimb
+  limb_type: Standard
+
+gGanondorfUpperLipTex:
+  type: TEXTURE
+  offset: 0x81D0
+  symbol: gGanondorfUpperLipTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7B10
+
+
+object_ganonVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_ganonVtx_000000
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_0002B0:
+  type: OOT:ARRAY
+  offset: 0x0002B0
+  symbol: object_ganonVtx_0002B0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_000530:
+  type: OOT:ARRAY
+  offset: 0x000530
+  symbol: object_ganonVtx_000530
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_000660:
+  type: OOT:ARRAY
+  offset: 0x000660
+  symbol: object_ganonVtx_000660
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_000790:
+  type: OOT:ARRAY
+  offset: 0x000790
+  symbol: object_ganonVtx_000790
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_000A20:
+  type: OOT:ARRAY
+  offset: 0x000A20
+  symbol: object_ganonVtx_000A20
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_000D30:
+  type: OOT:ARRAY
+  offset: 0x000D30
+  symbol: object_ganonVtx_000D30
+  count: 196
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_001970:
+  type: OOT:ARRAY
+  offset: 0x001970
+  symbol: object_ganonVtx_001970
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_001B10:
+  type: OOT:ARRAY
+  offset: 0x001B10
+  symbol: object_ganonVtx_001B10
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_001F80:
+  type: OOT:ARRAY
+  offset: 0x001F80
+  symbol: object_ganonVtx_001F80
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_0021B0:
+  type: OOT:ARRAY
+  offset: 0x0021B0
+  symbol: object_ganonVtx_0021B0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_002350:
+  type: OOT:ARRAY
+  offset: 0x002350
+  symbol: object_ganonVtx_002350
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_0027C0:
+  type: OOT:ARRAY
+  offset: 0x0027C0
+  symbol: object_ganonVtx_0027C0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_0029F0:
+  type: OOT:ARRAY
+  offset: 0x0029F0
+  symbol: object_ganonVtx_0029F0
+  count: 118
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_003150:
+  type: OOT:ARRAY
+  offset: 0x003150
+  symbol: object_ganonVtx_003150
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_0033D0:
+  type: OOT:ARRAY
+  offset: 0x0033D0
+  symbol: object_ganonVtx_0033D0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_003720:
+  type: OOT:ARRAY
+  offset: 0x003720
+  symbol: object_ganonVtx_003720
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_003AD0:
+  type: OOT:ARRAY
+  offset: 0x003AD0
+  symbol: object_ganonVtx_003AD0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_003D50:
+  type: OOT:ARRAY
+  offset: 0x003D50
+  symbol: object_ganonVtx_003D50
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_0040A0:
+  type: OOT:ARRAY
+  offset: 0x0040A0
+  symbol: object_ganonVtx_0040A0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_004450:
+  type: OOT:ARRAY
+  offset: 0x004450
+  symbol: object_ganonVtx_004450
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_00ACE0:
+  type: OOT:ARRAY
+  offset: 0x00ACE0
+  symbol: object_ganonVtx_00ACE0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_00AD80:
+  type: OOT:ARRAY
+  offset: 0x00AD80
+  symbol: object_ganonVtx_00AD80
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_00AEC0:
+  type: OOT:ARRAY
+  offset: 0x00AEC0
+  symbol: object_ganonVtx_00AEC0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_00B230:
+  type: OOT:ARRAY
+  offset: 0x00B230
+  symbol: object_ganonVtx_00B230
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganonVtx_00B5A0:
+  type: OOT:ARRAY
+  offset: 0x00B5A0
+  symbol: object_ganonVtx_00B5A0
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGanondorfSkelLimbs:
+  type: BLOB
+  offset: 0x11484
+  symbol: gGanondorfSkelLimbs
+  size: 0

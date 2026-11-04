@@ -1,0 +1,441 @@
+:config:
+  segments:
+    - [ 6, 0x00EEB6B0 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00EEB6B0 ]
+    - [ 9, 0x00EEB6B0 ]
+    - [ 10, 0x00EEB6B0 ]
+    - [ 11, 0x00EEB6B0 ]
+    - [ 12, 0x00EEB6B0 ]
+    - [ 13, 0x00EEB6B0 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gBariInnerHoodDL:
+  type: GFX
+  offset: 0x2610
+  symbol: gBariInnerHoodDL
+
+gBariInnerHoodLimb:
+  type: OOT:LIMB
+  offset: 0x47C0
+  symbol: gBariInnerHoodLimb
+  limb_type: Standard
+
+gBariInnerHoodTex:
+  type: TEXTURE
+  offset: 0x3E88
+  symbol: gBariInnerHoodTex
+  format: IA16
+  width: 32
+  height: 32
+
+gBariLeftArmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x46E8
+  symbol: gBariLeftArmBaseLimb
+  limb_type: Standard
+
+gBariLeftClawBodyBaseLimb:
+  type: OOT:LIMB
+  offset: 0x470C
+  symbol: gBariLeftClawBodyBaseLimb
+  limb_type: Standard
+
+gBariLeftClawBodyDL:
+  type: GFX
+  offset: 0x2E90
+  symbol: gBariLeftClawBodyDL
+
+gBariLeftClawBodyLimb:
+  type: OOT:LIMB
+  offset: 0x4730
+  symbol: gBariLeftClawBodyLimb
+  limb_type: Standard
+
+gBariLeftClawTipBaseLimb:
+  type: OOT:LIMB
+  offset: 0x4718
+  symbol: gBariLeftClawTipBaseLimb
+  limb_type: Standard
+
+gBariLeftClawTipDL:
+  type: GFX
+  offset: 0x2DF8
+  symbol: gBariLeftClawTipDL
+
+gBariLeftClawTipLimb:
+  type: OOT:LIMB
+  offset: 0x4724
+  symbol: gBariLeftClawTipLimb
+  limb_type: Standard
+
+gBariLeftForearmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x4700
+  symbol: gBariLeftForearmBaseLimb
+  limb_type: Standard
+
+gBariLeftForearmDL:
+  type: GFX
+  offset: 0x2F30
+  symbol: gBariLeftForearmDL
+
+gBariLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x473C
+  symbol: gBariLeftForearmLimb
+  limb_type: Standard
+
+gBariLeftMandibleBaseBaseLimb:
+  type: OOT:LIMB
+  offset: 0x46C4
+  symbol: gBariLeftMandibleBaseBaseLimb
+  limb_type: Standard
+
+gBariLeftMandibleBaseLimb:
+  type: OOT:LIMB
+  offset: 0x46D0
+  symbol: gBariLeftMandibleBaseLimb
+  limb_type: Standard
+
+gBariLeftMandibleDL:
+  type: GFX
+  offset: 0x2A28
+  symbol: gBariLeftMandibleDL
+
+gBariLeftMandibleLimb:
+  type: OOT:LIMB
+  offset: 0x46DC
+  symbol: gBariLeftMandibleLimb
+  limb_type: Standard
+
+gBariLeftUpperArmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x46F4
+  symbol: gBariLeftUpperArmBaseLimb
+  limb_type: Standard
+
+gBariLeftUpperArmDL:
+  type: GFX
+  offset: 0x3060
+  symbol: gBariLeftUpperArmDL
+
+gBariLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x4748
+  symbol: gBariLeftUpperArmLimb
+  limb_type: Standard
+
+gBariLurkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x14AC
+  symbol: gBariLurkingAnim
+
+gBariMandibleClawTex:
+  type: TEXTURE
+  offset: 0x3908
+  symbol: gBariMandibleClawTex
+  format: IA16
+  width: 8
+  height: 8
+
+gBariMovingArmsDownAnim:
+  type: OOT:ANIMATION
+  offset: 0xB34
+  symbol: gBariMovingArmsDownAnim
+
+gBariNucleusBaseLimb:
+  type: OOT:LIMB
+  offset: 0x4688
+  symbol: gBariNucleusBaseLimb
+  limb_type: Standard
+
+gBariNucleusDL:
+  type: GFX
+  offset: 0x2740
+  symbol: gBariNucleusDL
+
+gBariNucleusLimb:
+  type: OOT:LIMB
+  offset: 0x4694
+  symbol: gBariNucleusLimb
+  limb_type: Standard
+
+gBariNucleusTex:
+  type: TEXTURE
+  offset: 0x3108
+  symbol: gBariNucleusTex
+  format: IA16
+  width: 32
+  height: 32
+
+gBariOuterHoodBottomTex:
+  type: TEXTURE
+  offset: 0x3D88
+  symbol: gBariOuterHoodBottomTex
+  format: IA16
+  width: 8
+  height: 16
+
+gBariOuterHoodDL:
+  type: GFX
+  offset: 0x27D8
+  symbol: gBariOuterHoodDL
+
+gBariOuterHoodForearmTex:
+  type: TEXTURE
+  offset: 0x3988
+  symbol: gBariOuterHoodForearmTex
+  format: IA16
+  width: 16
+  height: 32
+
+gBariOuterHoodLimb:
+  type: OOT:LIMB
+  offset: 0x47CC
+  symbol: gBariOuterHoodLimb
+  limb_type: Standard
+
+gBariRetaliatingAnim:
+  type: OOT:ANIMATION
+  offset: 0x854
+  symbol: gBariRetaliatingAnim
+
+gBariRightArmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x4754
+  symbol: gBariRightArmBaseLimb
+  limb_type: Standard
+
+gBariRightClawBodyBaseLimb:
+  type: OOT:LIMB
+  offset: 0x4778
+  symbol: gBariRightClawBodyBaseLimb
+  limb_type: Standard
+
+gBariRightClawBodyDL:
+  type: GFX
+  offset: 0x2B80
+  symbol: gBariRightClawBodyDL
+
+gBariRightClawBodyLimb:
+  type: OOT:LIMB
+  offset: 0x479C
+  symbol: gBariRightClawBodyLimb
+  limb_type: Standard
+
+gBariRightClawTipBaseLimb:
+  type: OOT:LIMB
+  offset: 0x4784
+  symbol: gBariRightClawTipBaseLimb
+  limb_type: Standard
+
+gBariRightClawTipDL:
+  type: GFX
+  offset: 0x2AE8
+  symbol: gBariRightClawTipDL
+
+gBariRightClawTipLimb:
+  type: OOT:LIMB
+  offset: 0x4790
+  symbol: gBariRightClawTipLimb
+  limb_type: Standard
+
+gBariRightForearmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x476C
+  symbol: gBariRightForearmBaseLimb
+  limb_type: Standard
+
+gBariRightForearmDL:
+  type: GFX
+  offset: 0x2C20
+  symbol: gBariRightForearmDL
+
+gBariRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x47A8
+  symbol: gBariRightForearmLimb
+  limb_type: Standard
+
+gBariRightMandibleBaseBaseLimb:
+  type: OOT:LIMB
+  offset: 0x46A0
+  symbol: gBariRightMandibleBaseBaseLimb
+  limb_type: Standard
+
+gBariRightMandibleBaseLimb:
+  type: OOT:LIMB
+  offset: 0x46AC
+  symbol: gBariRightMandibleBaseLimb
+  limb_type: Standard
+
+gBariRightMandibleDL:
+  type: GFX
+  offset: 0x2968
+  symbol: gBariRightMandibleDL
+
+gBariRightMandibleLimb:
+  type: OOT:LIMB
+  offset: 0x46B8
+  symbol: gBariRightMandibleLimb
+  limb_type: Standard
+
+gBariRightUpperArmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x4760
+  symbol: gBariRightUpperArmBaseLimb
+  limb_type: Standard
+
+gBariRightUpperArmDL:
+  type: GFX
+  offset: 0x2D50
+  symbol: gBariRightUpperArmDL
+
+gBariRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x47B4
+  symbol: gBariRightUpperArmLimb
+  limb_type: Standard
+
+gBariSkel:
+  type: OOT:SKELETON
+  offset: 0x4848
+  symbol: gBariSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBariUnusedAnim_000D9C:
+  type: OOT:ANIMATION
+  offset: 0xD9C
+  symbol: gBariUnusedAnim_000D9C
+
+gBariWaitingAnim:
+  type: OOT:ANIMATION
+  offset: 0x710
+  symbol: gBariWaitingAnim
+
+
+object_valiVtx_0014C0:
+  type: OOT:ARRAY
+  offset: 0x0014C0
+  symbol: object_valiVtx_0014C0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_001810:
+  type: OOT:ARRAY
+  offset: 0x001810
+  symbol: object_valiVtx_001810
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_001850:
+  type: OOT:ARRAY
+  offset: 0x001850
+  symbol: object_valiVtx_001850
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_001B30:
+  type: OOT:ARRAY
+  offset: 0x001B30
+  symbol: object_valiVtx_001B30
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_001C50:
+  type: OOT:ARRAY
+  offset: 0x001C50
+  symbol: object_valiVtx_001C50
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_001D70:
+  type: OOT:ARRAY
+  offset: 0x001D70
+  symbol: object_valiVtx_001D70
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_001E30:
+  type: OOT:ARRAY
+  offset: 0x001E30
+  symbol: object_valiVtx_001E30
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_001F50:
+  type: OOT:ARRAY
+  offset: 0x001F50
+  symbol: object_valiVtx_001F50
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_002080:
+  type: OOT:ARRAY
+  offset: 0x002080
+  symbol: object_valiVtx_002080
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_0021C0:
+  type: OOT:ARRAY
+  offset: 0x0021C0
+  symbol: object_valiVtx_0021C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_002280:
+  type: OOT:ARRAY
+  offset: 0x002280
+  symbol: object_valiVtx_002280
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_0023A0:
+  type: OOT:ARRAY
+  offset: 0x0023A0
+  symbol: object_valiVtx_0023A0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_valiVtx_0024D0:
+  type: OOT:ARRAY
+  offset: 0x0024D0
+  symbol: object_valiVtx_0024D0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBariSkelLimbs:
+  type: BLOB
+  offset: 0x47D8
+  symbol: gBariSkelLimbs
+  size: 0

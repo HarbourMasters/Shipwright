@@ -1,17 +1,31 @@
 #include "ShipUtils.h"
-#include <libultraship/libultraship.h>
+#include <algorithm>
+#include <cassert>
 #include <random>
 #include "soh_assets.h"
+#include <libultraship/bridge/consolevariablebridge.h>
+#include "spdlog/common.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern "C" {
 #include "z64.h"
-#include "functions.h"
 #include "macros.h"
+#include "functions.h"
 
 extern float OTRGetAspectRatio();
 
 extern f32 sFontWidths[144];
 extern const char* fontTbl[140];
+extern int gMapLoading;
+}
+
+extern std::string Ship_FormatTimeDisplay(uint32_t value) {
+    uint32_t sec = value / 10;
+    uint32_t hh = sec / 3600;
+    uint32_t mm = (sec - hh * 3600) / 60;
+    uint32_t ss = sec - hh * 3600 - mm * 60;
+    uint32_t ds = value % 10;
+    return spdlog::fmt_lib::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
 constexpr f32 fourByThree = 4.0f / 3.0f;
@@ -19,15 +33,14 @@ constexpr f32 fourByThree = 4.0f / 3.0f;
 // Gets the additional ratio of the screen compared to the original 4:3 ratio, clamping to 1 if smaller
 extern "C" f32 Ship_GetExtendedAspectRatioMultiplier() {
     f32 currentRatio = OTRGetAspectRatio();
-    return MAX(currentRatio / fourByThree, 1.0f);
+    return std::max(currentRatio / fourByThree, 1.0f);
 }
 
 // Enables Extended Culling options on specific actors by applying an inverse ratio of the draw distance slider
 // to the projected Z value of the actor. This tricks distance checks without having to replace hardcoded values.
 // Requires that Ship_ExtendedCullingActorRestoreProjectedPos is called within the same function scope.
 extern "C" void Ship_ExtendedCullingActorAdjustProjectedZ(Actor* actor) {
-    s32 multiplier = CVarGetInteger("gEnhancements.Graphics.IncreaseActorDrawDistance", 1);
-    multiplier = MAX(multiplier, 1);
+    s32 multiplier = std::max(CVarGetInteger("gEnhancements.Graphics.IncreaseActorDrawDistance", 1), 1);
     if (multiplier > 1) {
         actor->projectedPos.z /= multiplier;
     }
@@ -48,6 +61,16 @@ extern "C" void Ship_ExtendedCullingActorAdjustProjectedX(Actor* actor) {
 //    f32 invW = 0.0f;
 //    Actor_GetProjectedPos(play, &actor->world.pos, &actor->projectedPos, &invW);
 //}
+
+// Vanilla fails to spawn an actor whose object isn't loaded
+// SoH instead gives it gameplay_keep's slot, except while the room's actors are loading
+extern "C" s32 Ship_GetActorSpawnObjectIndex(PlayState* play, s16 objectId, s16 actorId) {
+    s32 objBankIndex = Object_GetIndex(&play->objectCtx, objectId);
+    if (objBankIndex < 0 && GameInteractor_Should(VB_SPAWN_ACTOR_WITHOUT_OBJECT, !gMapLoading, actorId)) {
+        return 0;
+    }
+    return objBankIndex;
+}
 
 extern "C" bool Ship_IsCStringEmpty(const char* str) {
     return str == NULL || str[0] == '\0';

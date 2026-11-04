@@ -1,0 +1,54 @@
+:config:
+  segments:
+    - [ 128, 0x0134BF90 ]
+
+gSunsetOvercastSkybox1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSunsetOvercastSkybox1Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_cloud2_pal_static
+  external_tlut_offset: 0x000
+
+gSunsetOvercastSkybox2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gSunsetOvercastSkybox2Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_cloud2_pal_static
+  external_tlut_offset: 0x000
+
+gSunsetOvercastSkybox3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gSunsetOvercastSkybox3Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_cloud2_pal_static
+  external_tlut_offset: 0x000
+
+gSunsetOvercastSkybox4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gSunsetOvercastSkybox4Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_cloud2_pal_static
+  external_tlut_offset: 0x000
+
+gSunsetOvercastSkybox5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gSunsetOvercastSkybox5Tex
+  format: CI8
+  width: 128
+  height: 128
+  external_tlut: vr_cloud2_pal_static
+  external_tlut_offset: 0x000
+

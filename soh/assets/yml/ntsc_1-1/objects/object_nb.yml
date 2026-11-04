@@ -1,0 +1,810 @@
+:config:
+  segments:
+    - [ 6, 0x01047A00 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x01047A00 ]
+    - [ 9, 0x01047A00 ]
+    - [ 10, 0x01047A00 ]
+    - [ 11, 0x01047A00 ]
+    - [ 12, 0x01047A00 ]
+    - [ 13, 0x01047A00 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gNabooru1TLUT:
+  type: TEXTURE
+  offset: 0x096B0
+  symbol: gNabooru1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNabooru2TLUT:
+  type: TEXTURE
+  offset: 0x0AE70
+  symbol: gNabooru2TLUT
+  format: RGBA16
+  width: 4
+  height: 59
+
+gNabooru3TLUT:
+  type: TEXTURE
+  offset: 0x0B048
+  symbol: gNabooru3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNabooruAnkleBraceletTex:
+  type: TEXTURE
+  offset: 0x0A130
+  symbol: gNabooruAnkleBraceletTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x096B0
+
+gNabooruArmsRaisedGivingMedallionAnim:
+  type: OOT:ANIMATION
+  offset: 0x02B4C
+  symbol: gNabooruArmsRaisedGivingMedallionAnim
+
+gNabooruBeltJewelTex:
+  type: TEXTURE
+  offset: 0x0A570
+  symbol: gNabooruBeltJewelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x096B0
+
+gNabooruBeltTex:
+  type: TEXTURE
+  offset: 0x0A670
+  symbol: gNabooruBeltTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNabooruBlankDL:
+  type: GFX
+  offset: 0x125A0
+  symbol: gNabooruBlankDL
+
+gNabooruBlankLimb:
+  type: OOT:LIMB
+  offset: 0x1815C
+  symbol: gNabooruBlankLimb
+  limb_type: Standard
+
+gNabooruCleavageTex:
+  type: TEXTURE
+  offset: 0x09EF0
+  symbol: gNabooruCleavageTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x096B0
+
+gNabooruClothesButtonsTex:
+  type: TEXTURE
+  offset: 0x098B0
+  symbol: gNabooruClothesButtonsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x096B0
+
+gNabooruCollapseFromStandingToKneelingTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x08BD0
+  symbol: gNabooruCollapseFromStandingToKneelingTransitionAnim
+
+gNabooruEarTex:
+  type: TEXTURE
+  offset: 0x0BA28
+  symbol: gNabooruEarTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0AE70
+
+gNabooruEarringsNecklaceArmletTex:
+  type: TEXTURE
+  offset: 0x0BEA8
+  symbol: gNabooruEarringsNecklaceArmletTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNabooruEyeClosedTex:
+  type: TEXTURE
+  offset: 0x0D4E8
+  symbol: gNabooruEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0B048
+
+gNabooruEyeHalfTex:
+  type: TEXTURE
+  offset: 0x0D0E8
+  symbol: gNabooruEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0B048
+
+gNabooruEyeOpenTex:
+  type: TEXTURE
+  offset: 0x0B428
+  symbol: gNabooruEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0B048
+
+gNabooruEyeWideTex:
+  type: TEXTURE
+  offset: 0x0D8E8
+  symbol: gNabooruEyeWideTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0B048
+
+gNabooruFingersBackSideTex:
+  type: TEXTURE
+  offset: 0x0BAA8
+  symbol: gNabooruFingersBackSideTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0AE70
+
+gNabooruFingersPalmSideTex:
+  type: TEXTURE
+  offset: 0x0CCE8
+  symbol: gNabooruFingersPalmSideTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0AE70
+
+gNabooruForeheadJewelSettingBottomTex:
+  type: TEXTURE
+  offset: 0x0B2A8
+  symbol: gNabooruForeheadJewelSettingBottomTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0AE70
+
+gNabooruForeheadJewelSettingSideTex:
+  type: TEXTURE
+  offset: 0x0B328
+  symbol: gNabooruForeheadJewelSettingSideTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0AE70
+
+gNabooruForeheadJewelSettingTopTex:
+  type: TEXTURE
+  offset: 0x0B288
+  symbol: gNabooruForeheadJewelSettingTopTex
+  format: CI8
+  width: 8
+  height: 4
+  tlut: 0x0AE70
+
+gNabooruForeheadJewelTex:
+  type: TEXTURE
+  offset: 0x0B928
+  symbol: gNabooruForeheadJewelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0AE70
+
+gNabooruGloveHandBackTex:
+  type: TEXTURE
+  offset: 0x0CAA8
+  symbol: gNabooruGloveHandBackTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0AE70
+
+gNabooruGloveHandPalmTex:
+  type: TEXTURE
+  offset: 0x0CBA8
+  symbol: gNabooruGloveHandPalmTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0AE70
+
+gNabooruHairTex:
+  type: TEXTURE
+  offset: 0x0B828
+  symbol: gNabooruHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0AE70
+
+gNabooruHeadLimb:
+  type: OOT:LIMB
+  offset: 0x18150
+  symbol: gNabooruHeadLimb
+  limb_type: Standard
+
+gNabooruHeadMouthClosedDL:
+  type: GFX
+  offset: 0x114A8
+  symbol: gNabooruHeadMouthClosedDL
+
+gNabooruHeadMouthOpenDL:
+  type: GFX
+  offset: 0x13158
+  symbol: gNabooruHeadMouthOpenDL
+
+gNabooruKneeingAtCrawlspaceAnim:
+  type: OOT:ANIMATION
+  offset: 0x06E78
+  symbol: gNabooruKneeingAtCrawlspaceAnim
+
+gNabooruKneeingToRunningToHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x06320
+  symbol: gNabooruKneeingToRunningToHitAnim
+
+gNabooruLeftFootDL:
+  type: GFX
+  offset: 0x12F50
+  symbol: gNabooruLeftFootDL
+
+gNabooruLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x180CC
+  symbol: gNabooruLeftFootLimb
+  limb_type: Standard
+
+gNabooruLeftForearmDL:
+  type: GFX
+  offset: 0x174A0
+  symbol: gNabooruLeftForearmDL
+
+gNabooruLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x18114
+  symbol: gNabooruLeftForearmLimb
+  limb_type: Standard
+
+gNabooruLeftHandDL:
+  type: GFX
+  offset: 0x126B8
+  symbol: gNabooruLeftHandDL
+
+gNabooruLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x18120
+  symbol: gNabooruLeftHandLimb
+  limb_type: Standard
+
+gNabooruLeftShinDL:
+  type: GFX
+  offset: 0x17D80
+  symbol: gNabooruLeftShinDL
+
+gNabooruLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x180C0
+  symbol: gNabooruLeftShinLimb
+  limb_type: Standard
+
+gNabooruLeftThighDL:
+  type: GFX
+  offset: 0x17B40
+  symbol: gNabooruLeftThighDL
+
+gNabooruLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x180B4
+  symbol: gNabooruLeftThighLimb
+  limb_type: Standard
+
+gNabooruLeftUpperArmDL:
+  type: GFX
+  offset: 0x172D8
+  symbol: gNabooruLeftUpperArmDL
+
+gNabooruLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x18108
+  symbol: gNabooruLeftUpperArmLimb
+  limb_type: Standard
+
+gNabooruLipsTex:
+  type: TEXTURE
+  offset: 0x0DCE8
+  symbol: gNabooruLipsTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gNabooruNavelTex:
+  type: TEXTURE
+  offset: 0x099F0
+  symbol: gNabooruNavelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x096B0
+
+gNabooruOnAllFoursAnim:
+  type: OOT:ANIMATION
+  offset: 0x046A8
+  symbol: gNabooruOnAllFoursAnim
+
+gNabooruOnAllFoursToOnOneKneeLookingRightTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x03954
+  symbol: gNabooruOnAllFoursToOnOneKneeLookingRightTransitionAnim
+
+gNabooruOnOneKneeLookingLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0x035A8
+  symbol: gNabooruOnOneKneeLookingLeftAnim
+
+gNabooruOnOneKneeLookingRightAnim:
+  type: OOT:ANIMATION
+  offset: 0x04030
+  symbol: gNabooruOnOneKneeLookingRightAnim
+
+gNabooruOnOneKneeTurningHeadRightToLeftTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x02DBC
+  symbol: gNabooruOnOneKneeTurningHeadRightToLeftTransitionAnim
+
+gNabooruPendantJewelTex:
+  type: TEXTURE
+  offset: 0x09AF0
+  symbol: gNabooruPendantJewelTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x096B0
+
+gNabooruPonytailCuffJewelTex:
+  type: TEXTURE
+  offset: 0x0C6A8
+  symbol: gNabooruPonytailCuffJewelTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0AE70
+
+gNabooruPonytailDL:
+  type: GFX
+  offset: 0x125A8
+  symbol: gNabooruPonytailDL
+
+gNabooruPonytailLimb:
+  type: OOT:LIMB
+  offset: 0x18168
+  symbol: gNabooruPonytailLimb
+  limb_type: Standard
+
+gNabooruPuttingHandsTogetherCastingMagicAnim:
+  type: OOT:ANIMATION
+  offset: 0x00410
+  symbol: gNabooruPuttingHandsTogetherCastingMagicAnim
+
+gNabooruRaisingArmsGivingMedallionAnim:
+  type: OOT:ANIMATION
+  offset: 0x0274C
+  symbol: gNabooruRaisingArmsGivingMedallionAnim
+
+gNabooruRightFootDL:
+  type: GFX
+  offset: 0x12D48
+  symbol: gNabooruRightFootDL
+
+gNabooruRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x180F0
+  symbol: gNabooruRightFootLimb
+  limb_type: Standard
+
+gNabooruRightForearmDL:
+  type: GFX
+  offset: 0x17120
+  symbol: gNabooruRightForearmDL
+
+gNabooruRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x18138
+  symbol: gNabooruRightForearmLimb
+  limb_type: Standard
+
+gNabooruRightHandDL:
+  type: GFX
+  offset: 0x12A00
+  symbol: gNabooruRightHandDL
+
+gNabooruRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x18144
+  symbol: gNabooruRightHandLimb
+  limb_type: Standard
+
+gNabooruRightShinDL:
+  type: GFX
+  offset: 0x17818
+  symbol: gNabooruRightShinDL
+
+gNabooruRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x180E4
+  symbol: gNabooruRightShinLimb
+  limb_type: Standard
+
+gNabooruRightThighDL:
+  type: GFX
+  offset: 0x17658
+  symbol: gNabooruRightThighDL
+
+gNabooruRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x180D8
+  symbol: gNabooruRightThighLimb
+  limb_type: Standard
+
+gNabooruRightUpperArmDL:
+  type: GFX
+  offset: 0x16FE0
+  symbol: gNabooruRightUpperArmDL
+
+gNabooruRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x1812C
+  symbol: gNabooruRightUpperArmLimb
+  limb_type: Standard
+
+gNabooruRootLimb:
+  type: OOT:LIMB
+  offset: 0x180A8
+  symbol: gNabooruRootLimb
+  limb_type: Standard
+
+gNabooruShoeSoleTex:
+  type: TEXTURE
+  offset: 0x0CC28
+  symbol: gNabooruShoeSoleTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0AE70
+
+gNabooruShoeUpperMouthTex:
+  type: TEXTURE
+  offset: 0x0CBE8
+  symbol: gNabooruShoeUpperMouthTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0AE70
+
+gNabooruSittingCrossLeggedAnim:
+  type: OOT:ANIMATION
+  offset: 0x00BC0
+  symbol: gNabooruSittingCrossLeggedAnim
+
+gNabooruSittingCrossLeggedLookingUpRightAnim:
+  type: OOT:ANIMATION
+  offset: 0x05614
+  symbol: gNabooruSittingCrossLeggedLookingUpRightAnim
+
+gNabooruSittingCrossLeggedTurningToLookUpRightTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x05CA4
+  symbol: gNabooruSittingCrossLeggedTurningToLookUpRightTransitionAnim
+
+gNabooruSkel:
+  type: OOT:SKELETON
+  offset: 0x181C8
+  symbol: gNabooruSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gNabooruSkinGradient1Tex:
+  type: TEXTURE
+  offset: 0x099B0
+  symbol: gNabooruSkinGradient1Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x096B0
+
+gNabooruSkinGradient2Tex:
+  type: TEXTURE
+  offset: 0x0B248
+  symbol: gNabooruSkinGradient2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0AE70
+
+gNabooruStandingHandsOnHipsAnim:
+  type: OOT:ANIMATION
+  offset: 0x04BB4
+  symbol: gNabooruStandingHandsOnHipsAnim
+
+gNabooruStandingHandsOnHipsChamberOfSagesAnim:
+  type: OOT:ANIMATION
+  offset: 0x09694
+  symbol: gNabooruStandingHandsOnHipsChamberOfSagesAnim
+
+gNabooruStandingToWalkingTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x04E60
+  symbol: gNabooruStandingToWalkingTransitionAnim
+
+gNabooruSuckedByVortexAnim:
+  type: OOT:ANIMATION
+  offset: 0x01350
+  symbol: gNabooruSuckedByVortexAnim
+
+gNabooruTopFabricPatternTex:
+  type: TEXTURE
+  offset: 0x09F30
+  symbol: gNabooruTopFabricPatternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNabooruTopOfFootTex:
+  type: TEXTURE
+  offset: 0x0CC68
+  symbol: gNabooruTopOfFootTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0AE70
+
+gNabooruTorsoDL:
+  type: GFX
+  offset: 0x16848
+  symbol: gNabooruTorsoDL
+
+gNabooruTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x180FC
+  symbol: gNabooruTorsoLimb
+  limb_type: Standard
+
+gNabooruTrappedInVortexPushingGroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x01E7C
+  symbol: gNabooruTrappedInVortexPushingGroundAnim
+
+gNabooruTrappedInVortexRaisingArmAnim:
+  type: OOT:ANIMATION
+  offset: 0x01104
+  symbol: gNabooruTrappedInVortexRaisingArmAnim
+
+gNabooruTrouserCuffPatternTex:
+  type: TEXTURE
+  offset: 0x0A370
+  symbol: gNabooruTrouserCuffPatternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNabooruTrousersFabricTex:
+  type: TEXTURE
+  offset: 0x0A270
+  symbol: gNabooruTrousersFabricTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x096B0
+
+gNabooruTrousersShadowTex:
+  type: TEXTURE
+  offset: 0x0A230
+  symbol: gNabooruTrousersShadowTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x096B0
+
+gNabooruUnusedKneelingAtCrawlspaceToStandingTransitionAnim:
+  type: OOT:ANIMATION
+  offset: 0x0676C
+  symbol: gNabooruUnusedKneelingAtCrawlspaceToStandingTransitionAnim
+
+gNabooruUnusedVtx_00EFF8:
+  type: OOT:ARRAY
+  offset: 0x0EFF8
+  symbol: gNabooruUnusedVtx_00EFF8
+  count: 31
+  array_type: VTX
+
+gNabooruWaistDL:
+  type: GFX
+  offset: 0x16490
+  symbol: gNabooruWaistDL
+
+gNabooruWaistLimb:
+  type: OOT:LIMB
+  offset: 0x18174
+  symbol: gNabooruWaistLimb
+  limb_type: Standard
+
+gNabooruWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x09238
+  symbol: gNabooruWalkingAnim
+
+
+object_nbVtx_00DD68:
+  type: OOT:ARRAY
+  offset: 0x00DD68
+  symbol: object_nbVtx_00DD68
+  count: 297
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_00F1E8:
+  type: OOT:ARRAY
+  offset: 0x00F1E8
+  symbol: object_nbVtx_00F1E8
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_00F4F8:
+  type: OOT:ARRAY
+  offset: 0x00F4F8
+  symbol: object_nbVtx_00F4F8
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_00F8F8:
+  type: OOT:ARRAY
+  offset: 0x00F8F8
+  symbol: object_nbVtx_00F8F8
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_00FCF8:
+  type: OOT:ARRAY
+  offset: 0x00FCF8
+  symbol: object_nbVtx_00FCF8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_00FEF8:
+  type: OOT:ARRAY
+  offset: 0x00FEF8
+  symbol: object_nbVtx_00FEF8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_0100F8:
+  type: OOT:ARRAY
+  offset: 0x0100F8
+  symbol: object_nbVtx_0100F8
+  count: 315
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_0142F0:
+  type: OOT:ARRAY
+  offset: 0x0142F0
+  symbol: object_nbVtx_0142F0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_0144F0:
+  type: OOT:ARRAY
+  offset: 0x0144F0
+  symbol: object_nbVtx_0144F0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_0146B0:
+  type: OOT:ARRAY
+  offset: 0x0146B0
+  symbol: object_nbVtx_0146B0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_0148B0:
+  type: OOT:ARRAY
+  offset: 0x0148B0
+  symbol: object_nbVtx_0148B0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_014B70:
+  type: OOT:ARRAY
+  offset: 0x014B70
+  symbol: object_nbVtx_014B70
+  count: 129
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_015380:
+  type: OOT:ARRAY
+  offset: 0x015380
+  symbol: object_nbVtx_015380
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_015820:
+  type: OOT:ARRAY
+  offset: 0x015820
+  symbol: object_nbVtx_015820
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_015A40:
+  type: OOT:ARRAY
+  offset: 0x015A40
+  symbol: object_nbVtx_015A40
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_015EE0:
+  type: OOT:ARRAY
+  offset: 0x015EE0
+  symbol: object_nbVtx_015EE0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_0160F0:
+  type: OOT:ARRAY
+  offset: 0x0160F0
+  symbol: object_nbVtx_0160F0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gNabooruSkelLimbs:
+  type: BLOB
+  offset: 0x18180
+  symbol: gNabooruSkelLimbs
+  size: 0

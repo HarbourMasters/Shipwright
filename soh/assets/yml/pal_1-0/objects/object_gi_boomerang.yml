@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x01104920 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x01104920 ]
+    - [ 9, 0x01104920 ]
+    - [ 10, 0x01104920 ]
+    - [ 11, 0x01104920 ]
+    - [ 12, 0x01104920 ]
+    - [ 13, 0x01104920 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gGiBoomerangDL:
+  type: GFX
+  offset: 0x0A30
+  symbol: gGiBoomerangDL
+
+
+object_gi_boomerangVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_boomerangVtx_000000
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

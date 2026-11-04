@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 128, 0x015AB7A0 ]
+
+gKokiriShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gKokiriShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_KSVR_pal_static
+  external_tlut_offset: 0x200
+
+gKokiriShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKokiriShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_KSVR_pal_static
+  external_tlut_offset: 0x000
+

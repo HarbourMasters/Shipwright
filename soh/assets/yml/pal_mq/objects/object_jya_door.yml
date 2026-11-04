@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x012588F0 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x012588F0 ]
+    - [ 9, 0x012588F0 ]
+    - [ 10, 0x012588F0 ]
+    - [ 11, 0x012588F0 ]
+    - [ 12, 0x012588F0 ]
+    - [ 13, 0x012588F0 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gJyaDoorMetalBarsDL:
+  type: GFX
+  offset: 0x01F0
+  symbol: gJyaDoorMetalBarsDL
+
+gSpiritDoorDL:
+  type: GFX
+  offset: 0x0100
+  symbol: gSpiritDoorDL
+
+gSpiritDoorMetalBarsTex:
+  type: TEXTURE
+  offset: 0x1280
+  symbol: gSpiritDoorMetalBarsTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gSpiritDoorTex:
+  type: TEXTURE
+  offset: 0x0280
+  symbol: gSpiritDoorTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_jya_doorVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_jya_doorVtx_000000
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_doorVtx_0001B0:
+  type: OOT:ARRAY
+  offset: 0x0001B0
+  symbol: object_jya_doorVtx_0001B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

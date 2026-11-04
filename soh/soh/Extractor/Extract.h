@@ -1,5 +1,4 @@
-#ifndef EXTRACT_H
-#define EXTRACT_H
+#pragma once
 
 #include <atomic>
 #include <stdint.h>
@@ -27,13 +26,15 @@ enum class RomSearchMode {
 };
 
 class Extractor {
-    std::unique_ptr<unsigned char[]> mRomData = std::make_unique<unsigned char[]>(MB64);
+    std::vector<uint8_t> mRomData;
+    uint32_t mRomVerCrc = 0;
     std::string mCurrentRomPath;
     std::string mSearchPath;
     size_t mCurRomSize = 0;
 
     bool GetRomPathFromBox();
 
+    bool ReadRom();
     uint32_t GetRomVerCrc() const;
     size_t GetCurRomSize() const;
     bool ValidateAndFixRom();
@@ -41,7 +42,7 @@ class Extractor {
 
     bool ValidateRom(bool skipCrcBox = false);
     bool ValidateNotCompressed() const;
-    const char* GetZapdVerStr() const;
+    const char* GetTorchVersionDir() const;
 
     void SetRomInfo(const std::string& path);
 
@@ -63,9 +64,7 @@ class Extractor {
     void GetRoms(std::vector<std::string>& roms);
     bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
-    bool CallZapd(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
-                  std::atomic<size_t>* totalExtract);
-    const char* GetZapdStr();
+    bool CallTorch(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
+                   std::atomic<size_t>* totalExtract);
     std::string Mkdtemp();
 };
-#endif

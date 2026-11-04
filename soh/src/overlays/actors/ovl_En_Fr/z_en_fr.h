@@ -18,7 +18,7 @@ typedef enum {
 } FrogType;
 
 typedef enum {
-    /* 00 */ FROG_ZL, 
+    /* 00 */ FROG_ZL,
     /* 01 */ FROG_EPONA,
     /* 02 */ FROG_SARIA,
     /* 03 */ FROG_SUNS,
@@ -37,19 +37,19 @@ typedef struct {
 typedef struct EnFr {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;   // Frog Skeleton
-    /* 0x0190 */ Vec3s jointTable[24];                                   
+    /* 0x0190 */ Vec3s jointTable[24];
     /* 0x0220 */ Vec3s morphTable[24];
     /* 0x02B0 */ SkelAnime skelAnimeButterfly;  // Butterfly Skeleton above Frog during Frog Song
-    /* 0x02F4 */ Vec3s jointTableButterfly[8]; 
+    /* 0x02F4 */ Vec3s jointTableButterfly[8];
     /* 0x0324 */ Vec3s morphTableButterfly[8];
     /* 0x0354 */ EnFrActionFunc actionFunc;
-    /* 0x0358 */ LightNode* lightNode; // Frogs light up during the Frog Song, specifically the frog with the next note. 
+    /* 0x0358 */ LightNode* lightNode; // Frogs light up during the Frog Song, specifically the frog with the next note.
     /* 0x035C */ LightInfo lightInfo;
-    /* 0x036A */ s8 objBankIndex; 
+    /* 0x036A */ s8 objBankIndex;
     /* 0x036C */ s32 jumpCounter; // cyclic clock used to time celebratory frog jumps every 4 frames when child song is played.
     /* 0x0370 */ s32 blinkTimer; // blinking timer
     /* 0x0374 */ EnFrBlinkFunc blinkFunc; // unique case of using a function pointer for blinking
-    /* 0x0378 */ u8 eyeTexIndex; // index for blinking graphics 
+    /* 0x0378 */ u8 eyeTexIndex; // index for blinking graphics
     /* 0x0379 */ u8 isJumpingUp; // Conditional for jumping up from the log back onto the log
     /* 0x037A */ u8 isBelowWaterSurfaceCurrent;   // Used for diving effects
     /* 0x037B */ u8 isBelowWaterSurfacePrevious;
@@ -60,7 +60,7 @@ typedef struct EnFr {
     /* 0x0380 */ u8 ocarinaNoteIndex; // Related to unk_381
     /* 0x0381 */ u8 ocarinaNote; // Ocarina Note to Play for Frogs 2
     /* 0x0382 */ u8 songIndex; // Song index 1-7 (6 songs + custom HP Song): 5 = sos, 6 = all songs
-    /* 0x0383 */ u8 isJumpingToFrogSong; // Conditional: 
+    /* 0x0383 */ u8 isJumpingToFrogSong; // Conditional:
     /* 0x0384 */ char unk_384[0x02];
     /* 0x0386 */ s16 frogSongTimer; // timer #2 for frogs 2 HP
     /* 0x0388 */ s32 reward; // Prize for completing a song

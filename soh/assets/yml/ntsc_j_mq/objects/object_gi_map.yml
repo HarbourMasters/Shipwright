@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x01090900 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x01090900 ]
+    - [ 9, 0x01090900 ]
+    - [ 10, 0x01090900 ]
+    - [ 11, 0x01090900 ]
+    - [ 12, 0x01090900 ]
+    - [ 13, 0x01090900 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGiDungeonMapDL:
+  type: GFX
+  offset: 0x03C0
+  symbol: gGiDungeonMapDL
+
+gGiStoneOfAgonyDL:
+  type: GFX
+  offset: 0x0B70
+  symbol: gGiStoneOfAgonyDL
+
+object_gi_mapTex_000D60:
+  type: TEXTURE
+  offset: 0xD60
+  symbol: object_gi_mapTex_000D60
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_mapVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mapVtx_000000
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mapVtx_0005C0:
+  type: OOT:ARRAY
+  offset: 0x0005C0
+  symbol: object_gi_mapVtx_0005C0
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

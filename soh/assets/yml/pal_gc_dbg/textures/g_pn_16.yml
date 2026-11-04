@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A1B000 ]
+
+gTempleOfTimeTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gTempleOfTimeTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gTempleOfTimeTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gTempleOfTimeTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gTempleOfTimeTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gTempleOfTimeTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

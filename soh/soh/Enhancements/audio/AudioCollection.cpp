@@ -4,10 +4,11 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/Notification/Notification.h"
 #include <vector>
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <libultraship/libultra/types.h>
+#include <ship/Context.h>
 #include <ship/utils/StringHelper.h>
-#include <libultraship/bridge.h>
-#include <libultraship/classes.h>
-#include <soh/OTRGlobals.h>
+#include <ship/window/Window.h>
 #include <locale>
 #include <filesystem>
 
@@ -113,7 +114,7 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_BGM_KOTAKE_KOUME,                 "Kotake & Koume's Theme",                   "NA_BGM_KOTAKE_KOUME",            SEQ_BGM_EVENT,    true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_ESCAPE,                       "Escape from Ganon's Castle",               "NA_BGM_ESCAPE",                  SEQ_BGM_EVENT,    true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_TIMED_MINI_GAME,              "Mini-Game",                                "NA_BGM_TIMED_MINI_GAME",         SEQ_BGM_EVENT,    true,     true),
-        
+
         // SEQ_INSTRUMENT
         SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 1,               "Ocarina",                                  "OCARINA_INSTRUMENT_DEFAULT",     SEQ_INSTRUMENT,   true,     true),
         SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 2,               "Malon",                                    "OCARINA_INSTRUMENT_MALON",       SEQ_INSTRUMENT,   true,     true),
@@ -388,7 +389,8 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
     const auto& sequenceInfo = sequenceMap.at(seqId);
     const std::string cvarKey = GetCvarKey(sequenceInfo.sfxKey);
     int replacementSeq = CVarGetInteger(cvarKey.c_str(), seqId);
-    if (!sequenceMap.contains(replacementSeq)) {
+    // NA_BGM_DISABLED means the music was set to "None". No sequence has that id, so nothing plays.
+    if (replacementSeq != NA_BGM_DISABLED && !sequenceMap.contains(replacementSeq)) {
         replacementSeq = seqId;
     }
     return static_cast<uint16_t>(replacementSeq);
@@ -399,7 +401,7 @@ void AudioCollection::RemoveFromShufflePool(SequenceInfo* seqInfo) {
     excludedSequences.insert(seqInfo);
     includedSequences.erase(seqInfo);
     CVarSetInteger(cvarKey.c_str(), 1);
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
@@ -407,7 +409,7 @@ void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
     includedSequences.insert(seqInfo);
     excludedSequences.erase(seqInfo);
     CVarClear(cvarKey.c_str());
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 void AudioCollection::InitializeShufflePool() {

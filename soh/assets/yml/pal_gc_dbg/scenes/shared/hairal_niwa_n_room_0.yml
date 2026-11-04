@@ -1,0 +1,94 @@
+:config:
+  segments:
+    - [ 3, 0x0343D000 ]
+    - [ 2, 0x03433000 ]
+  directory: scenes/shared/hairal_niwa_n_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/hairal_niwa_n_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+hairal_niwa_n_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: hairal_niwa_n_room_0
+
+
+hairal_niwa_n_room_0Vtx_000090:
+  type: OOT:ARRAY
+  offset: 0x000090
+  symbol: hairal_niwa_n_room_0Vtx_000090
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hairal_niwa_n_room_0DL_000290:
+  type: GFX
+  offset: 0x000290
+  symbol: hairal_niwa_n_room_0DL_000290
+
+hairal_niwa_n_room_0Vtx_000458:
+  type: OOT:ARRAY
+  offset: 0x000458
+  symbol: hairal_niwa_n_room_0Vtx_000458
+  count: 387
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hairal_niwa_n_room_0DL_001C88:
+  type: GFX
+  offset: 0x001C88
+  symbol: hairal_niwa_n_room_0DL_001C88
+
+hairal_niwa_n_room_0Vtx_002398:
+  type: OOT:ARRAY
+  offset: 0x002398
+  symbol: hairal_niwa_n_room_0Vtx_002398
+  count: 137
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hairal_niwa_n_room_0DL_002C28:
+  type: GFX
+  offset: 0x002C28
+  symbol: hairal_niwa_n_room_0DL_002C28
+
+hairal_niwa_n_room_0DL_002FE8:
+  type: GFX
+  offset: 0x002FE8
+  symbol: hairal_niwa_n_room_0DL_002FE8
+
+hairal_niwa_n_room_0Vtx_003010:
+  type: OOT:ARRAY
+  offset: 0x003010
+  symbol: hairal_niwa_n_room_0Vtx_003010
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hairal_niwa_n_room_0DL_003190:
+  type: GFX
+  offset: 0x003190
+  symbol: hairal_niwa_n_room_0DL_003190
+
+hairal_niwa_n_room_0Vtx_0032F8:
+  type: OOT:ARRAY
+  offset: 0x0032F8
+  symbol: hairal_niwa_n_room_0Vtx_0032F8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hairal_niwa_n_room_0DL_0034F8:
+  type: GFX
+  offset: 0x0034F8
+  symbol: hairal_niwa_n_room_0DL_0034F8
+
+hairal_niwa_n_room_0DL_003608:
+  type: GFX
+  offset: 0x003608
+  symbol: hairal_niwa_n_room_0DL_003608

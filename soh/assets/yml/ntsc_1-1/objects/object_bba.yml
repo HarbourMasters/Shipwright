@@ -1,0 +1,414 @@
+:config:
+  segments:
+    - [ 6, 0x01167D00 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x01167D00 ]
+    - [ 9, 0x01167D00 ]
+    - [ 10, 0x01167D00 ]
+    - [ 11, 0x01167D00 ]
+    - [ 12, 0x01167D00 ]
+    - [ 13, 0x01167D00 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+object_bba_DL_002948:
+  type: GFX
+  offset: 0x2948
+  symbol: object_bba_DL_002948
+
+object_bba_DL_003298:
+  type: GFX
+  offset: 0x3298
+  symbol: object_bba_DL_003298
+
+object_bba_DL_0033A8:
+  type: GFX
+  offset: 0x33A8
+  symbol: object_bba_DL_0033A8
+
+object_bba_DL_0034C8:
+  type: GFX
+  offset: 0x34C8
+  symbol: object_bba_DL_0034C8
+
+object_bba_DL_0035F0:
+  type: GFX
+  offset: 0x35F0
+  symbol: object_bba_DL_0035F0
+
+object_bba_DL_003700:
+  type: GFX
+  offset: 0x3700
+  symbol: object_bba_DL_003700
+
+object_bba_DL_003820:
+  type: GFX
+  offset: 0x3820
+  symbol: object_bba_DL_003820
+
+object_bba_DL_003948:
+  type: GFX
+  offset: 0x3948
+  symbol: object_bba_DL_003948
+
+object_bba_DL_003C80:
+  type: GFX
+  offset: 0x3C80
+  symbol: object_bba_DL_003C80
+
+object_bba_DL_003D50:
+  type: GFX
+  offset: 0x3D50
+  symbol: object_bba_DL_003D50
+
+object_bba_DL_003E20:
+  type: GFX
+  offset: 0x3E20
+  symbol: object_bba_DL_003E20
+
+object_bba_DL_003EF0:
+  type: GFX
+  offset: 0x3EF0
+  symbol: object_bba_DL_003EF0
+
+object_bba_DL_003FC0:
+  type: GFX
+  offset: 0x3FC0
+  symbol: object_bba_DL_003FC0
+
+object_bba_DL_004090:
+  type: GFX
+  offset: 0x4090
+  symbol: object_bba_DL_004090
+
+object_bba_DL_004160:
+  type: GFX
+  offset: 0x4160
+  symbol: object_bba_DL_004160
+
+object_bba_Limb_000000:
+  type: OOT:LIMB
+  offset: 0x0
+  symbol: object_bba_Limb_000000
+  limb_type: Standard
+
+object_bba_Limb_00000C:
+  type: OOT:LIMB
+  offset: 0xC
+  symbol: object_bba_Limb_00000C
+  limb_type: Standard
+
+object_bba_Limb_000018:
+  type: OOT:LIMB
+  offset: 0x18
+  symbol: object_bba_Limb_000018
+  limb_type: Standard
+
+object_bba_Limb_000024:
+  type: OOT:LIMB
+  offset: 0x24
+  symbol: object_bba_Limb_000024
+  limb_type: Standard
+
+object_bba_Limb_000030:
+  type: OOT:LIMB
+  offset: 0x30
+  symbol: object_bba_Limb_000030
+  limb_type: Standard
+
+object_bba_Limb_00003C:
+  type: OOT:LIMB
+  offset: 0x3C
+  symbol: object_bba_Limb_00003C
+  limb_type: Standard
+
+object_bba_Limb_000048:
+  type: OOT:LIMB
+  offset: 0x48
+  symbol: object_bba_Limb_000048
+  limb_type: Standard
+
+object_bba_Limb_000054:
+  type: OOT:LIMB
+  offset: 0x54
+  symbol: object_bba_Limb_000054
+  limb_type: Standard
+
+object_bba_Limb_000060:
+  type: OOT:LIMB
+  offset: 0x60
+  symbol: object_bba_Limb_000060
+  limb_type: Standard
+
+object_bba_Limb_00006C:
+  type: OOT:LIMB
+  offset: 0x6C
+  symbol: object_bba_Limb_00006C
+  limb_type: Standard
+
+object_bba_Limb_000078:
+  type: OOT:LIMB
+  offset: 0x78
+  symbol: object_bba_Limb_000078
+  limb_type: Standard
+
+object_bba_Limb_000084:
+  type: OOT:LIMB
+  offset: 0x84
+  symbol: object_bba_Limb_000084
+  limb_type: Standard
+
+object_bba_Limb_000090:
+  type: OOT:LIMB
+  offset: 0x90
+  symbol: object_bba_Limb_000090
+  limb_type: Standard
+
+object_bba_Limb_00009C:
+  type: OOT:LIMB
+  offset: 0x9C
+  symbol: object_bba_Limb_00009C
+  limb_type: Standard
+
+object_bba_Limb_0000A8:
+  type: OOT:LIMB
+  offset: 0xA8
+  symbol: object_bba_Limb_0000A8
+  limb_type: Standard
+
+object_bba_Skel_0000F0:
+  type: OOT:SKELETON
+  offset: 0xF0
+  symbol: object_bba_Skel_0000F0
+  limb_type: Standard
+  skel_type: Flex
+
+object_bba_TLUT_000108:
+  type: TEXTURE
+  offset: 0x108
+  symbol: object_bba_TLUT_000108
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bba_Tex_000308:
+  type: TEXTURE
+  offset: 0x308
+  symbol: object_bba_Tex_000308
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x108
+
+object_bba_Tex_000348:
+  type: TEXTURE
+  offset: 0x348
+  symbol: object_bba_Tex_000348
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x108
+
+object_bba_Tex_000388:
+  type: TEXTURE
+  offset: 0x388
+  symbol: object_bba_Tex_000388
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x108
+
+object_bba_Tex_000488:
+  type: TEXTURE
+  offset: 0x488
+  symbol: object_bba_Tex_000488
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x108
+
+object_bba_Tex_0004C8:
+  type: TEXTURE
+  offset: 0x4C8
+  symbol: object_bba_Tex_0004C8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_bba_Tex_000CC8:
+  type: TEXTURE
+  offset: 0xCC8
+  symbol: object_bba_Tex_000CC8
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x108
+
+object_bba_Tex_000DC8:
+  type: TEXTURE
+  offset: 0xDC8
+  symbol: object_bba_Tex_000DC8
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x108
+
+object_bba_Tex_000E08:
+  type: TEXTURE
+  offset: 0xE08
+  symbol: object_bba_Tex_000E08
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x108
+
+object_bba_Tex_000F08:
+  type: TEXTURE
+  offset: 0xF08
+  symbol: object_bba_Tex_000F08
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x108
+
+
+object_bba_Skel_0000F0Limbs:
+  type: BLOB
+  offset: 0xB4
+  symbol: object_bba_Skel_0000F0Limbs
+  size: 0
+
+object_bbaVtx_001008:
+  type: OOT:ARRAY
+  offset: 0x001008
+  symbol: object_bbaVtx_001008
+  count: 160
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_001A08:
+  type: OOT:ARRAY
+  offset: 0x001A08
+  symbol: object_bbaVtx_001A08
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_001B78:
+  type: OOT:ARRAY
+  offset: 0x001B78
+  symbol: object_bbaVtx_001B78
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_001CA8:
+  type: OOT:ARRAY
+  offset: 0x001CA8
+  symbol: object_bbaVtx_001CA8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_001E28:
+  type: OOT:ARRAY
+  offset: 0x001E28
+  symbol: object_bbaVtx_001E28
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_001F98:
+  type: OOT:ARRAY
+  offset: 0x001F98
+  symbol: object_bbaVtx_001F98
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_0020C8:
+  type: OOT:ARRAY
+  offset: 0x0020C8
+  symbol: object_bbaVtx_0020C8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002248:
+  type: OOT:ARRAY
+  offset: 0x002248
+  symbol: object_bbaVtx_002248
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_0026A8:
+  type: OOT:ARRAY
+  offset: 0x0026A8
+  symbol: object_bbaVtx_0026A8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_0026D8:
+  type: OOT:ARRAY
+  offset: 0x0026D8
+  symbol: object_bbaVtx_0026D8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002708:
+  type: OOT:ARRAY
+  offset: 0x002708
+  symbol: object_bbaVtx_002708
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002738:
+  type: OOT:ARRAY
+  offset: 0x002738
+  symbol: object_bbaVtx_002738
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002768:
+  type: OOT:ARRAY
+  offset: 0x002768
+  symbol: object_bbaVtx_002768
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002798:
+  type: OOT:ARRAY
+  offset: 0x002798
+  symbol: object_bbaVtx_002798
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_0027C8:
+  type: OOT:ARRAY
+  offset: 0x0027C8
+  symbol: object_bbaVtx_0027C8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,86 @@
+:config:
+  segments:
+    - [ 3, 0x017E06B0 ]
+    - [ 2, 0x017C07A0 ]
+  directory: scenes/mq/HIDAN_scene
+  external_files:
+    - ntsc_u_mq/scenes/mq/HIDAN_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+HIDAN_room_3:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HIDAN_room_3
+
+HIDAN_room_3Tex_001AC8:
+  type: TEXTURE
+  offset: 0x1AC8
+  symbol: HIDAN_room_3Tex_001AC8
+  format: CI4
+  width: 32
+  height: 64
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x189B0
+
+HIDAN_room_3Tex_001EC8:
+  type: TEXTURE
+  offset: 0x1EC8
+  symbol: HIDAN_room_3Tex_001EC8
+  format: CI4
+  width: 64
+  height: 32
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18990
+
+HIDAN_room_3Tex_0022C8:
+  type: TEXTURE
+  offset: 0x22C8
+  symbol: HIDAN_room_3Tex_0022C8
+  format: CI4
+  width: 32
+  height: 32
+  external_tlut: HIDAN_scene
+  external_tlut_offset: 0x18990
+
+
+HIDAN_room_3Vtx_0000C0:
+  type: OOT:ARRAY
+  offset: 0x0000C0
+  symbol: HIDAN_room_3Vtx_0000C0
+  count: 140
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_3DL_000980:
+  type: GFX
+  offset: 0x000980
+  symbol: HIDAN_room_3DL_000980
+
+HIDAN_room_3Vtx_001080:
+  type: OOT:ARRAY
+  offset: 0x001080
+  symbol: HIDAN_room_3Vtx_001080
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_3DL_0014A0:
+  type: GFX
+  offset: 0x0014A0
+  symbol: HIDAN_room_3DL_0014A0
+
+HIDAN_room_3Vtx_0015F0:
+  type: OOT:ARRAY
+  offset: 0x0015F0
+  symbol: HIDAN_room_3Vtx_0015F0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HIDAN_room_3DL_001840:
+  type: GFX
+  offset: 0x001840
+  symbol: HIDAN_room_3DL_001840

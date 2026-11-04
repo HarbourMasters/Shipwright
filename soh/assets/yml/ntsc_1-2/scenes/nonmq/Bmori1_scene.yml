@@ -1,0 +1,91 @@
+:config:
+  segments:
+    - [ 2, 0x0191BF40 ]
+
+Bmori1_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: Bmori1_scene
+
+Bmori1_sceneTLUT_014080:
+  type: TEXTURE
+  offset: 0x14080
+  symbol: Bmori1_sceneTLUT_014080
+  format: RGBA16
+  width: 16
+  height: 16
+
+Bmori1_sceneTLUT_014288:
+  type: TEXTURE
+  offset: 0x14288
+  symbol: Bmori1_sceneTLUT_014288
+  format: RGBA16
+  width: 16
+  height: 16
+
+Bmori1_sceneTex_014490:
+  type: TEXTURE
+  offset: 0x14490
+  symbol: Bmori1_sceneTex_014490
+  format: CI8
+  width: 32
+  height: 8
+  tlut: 0x14288
+
+Bmori1_sceneTex_015590:
+  type: TEXTURE
+  offset: 0x15590
+  symbol: Bmori1_sceneTex_015590
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x14288
+
+Bmori1_sceneTex_015690:
+  type: TEXTURE
+  offset: 0x15690
+  symbol: Bmori1_sceneTex_015690
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x14080
+
+Bmori1_sceneTex_015A90:
+  type: TEXTURE
+  offset: 0x15A90
+  symbol: Bmori1_sceneTex_015A90
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x14288
+
+Bmori1_sceneTex_015B90:
+  type: TEXTURE
+  offset: 0x15B90
+  symbol: Bmori1_sceneTex_015B90
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x14288
+
+gForestTempleDayEntranceTex:
+  type: TEXTURE
+  offset: 0x14D90
+  symbol: gForestTempleDayEntranceTex
+  format: IA16
+  width: 8
+  height: 128
+
+gForestTempleNightEntranceTex:
+  type: TEXTURE
+  offset: 0x14590
+  symbol: gForestTempleNightEntranceTex
+  format: IA16
+  width: 8
+  height: 128
+
+
+Bmori1_sceneCollisionHeader_014054:
+  type: OOT:COLLISION
+  offset: 0x014054
+  symbol: Bmori1_sceneCollisionHeader_014054

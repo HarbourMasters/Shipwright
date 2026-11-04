@@ -1,0 +1,151 @@
+:config:
+  segments:
+    - [ 3, 0x01949390 ]
+    - [ 2, 0x0191AFD0 ]
+  directory: scenes/nonmq/HAKAdan_scene
+  external_files:
+    - ntsc_u_gc/scenes/nonmq/HAKAdan_scene.yml
+    - ntsc_u_gc/code/sys_matrix.yml
+
+HAKAdan_room_11:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdan_room_11
+
+HAKAdan_room_11Tex_001E60:
+  type: TEXTURE
+  offset: 0x1D40
+  symbol: HAKAdan_room_11Tex_001E60
+  format: I4
+  width: 64
+  height: 64
+
+HAKAdan_room_11Tex_002660:
+  type: TEXTURE
+  offset: 0x2540
+  symbol: HAKAdan_room_11Tex_002660
+  format: RGBA16
+  width: 32
+  height: 16
+
+HAKAdan_room_11Tex_002A60:
+  type: TEXTURE
+  offset: 0x2940
+  symbol: HAKAdan_room_11Tex_002A60
+  format: RGBA16
+  width: 32
+  height: 8
+
+HAKAdan_room_11Tex_002C60:
+  type: TEXTURE
+  offset: 0x2B40
+  symbol: HAKAdan_room_11Tex_002C60
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdan_room_11Tex_003460:
+  type: TEXTURE
+  offset: 0x3340
+  symbol: HAKAdan_room_11Tex_003460
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdan_room_11Tex_003C60:
+  type: TEXTURE
+  offset: 0x3B40
+  symbol: HAKAdan_room_11Tex_003C60
+  format: I4
+  width: 32
+  height: 32
+
+
+HAKAdan_room_11Vtx_000110:
+  type: OOT:ARRAY
+  offset: 0x000110
+  symbol: HAKAdan_room_11Vtx_000110
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_11DL_000790:
+  type: GFX
+  offset: 0x000790
+  symbol: HAKAdan_room_11DL_000790
+
+HAKAdan_room_11Vtx_000A70:
+  type: OOT:ARRAY
+  offset: 0x000A70
+  symbol: HAKAdan_room_11Vtx_000A70
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_11DL_000E10:
+  type: GFX
+  offset: 0x000E10
+  symbol: HAKAdan_room_11DL_000E10
+
+HAKAdan_room_11Vtx_000FB0:
+  type: OOT:ARRAY
+  offset: 0x000FB0
+  symbol: HAKAdan_room_11Vtx_000FB0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_11DL_0012B0:
+  type: GFX
+  offset: 0x0012B0
+  symbol: HAKAdan_room_11DL_0012B0
+
+HAKAdan_room_11Vtx_0013F8:
+  type: OOT:ARRAY
+  offset: 0x0013F8
+  symbol: HAKAdan_room_11Vtx_0013F8
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_11DL_001808:
+  type: GFX
+  offset: 0x001808
+  symbol: HAKAdan_room_11DL_001808
+
+HAKAdan_room_11Vtx_001988:
+  type: OOT:ARRAY
+  offset: 0x001988
+  symbol: HAKAdan_room_11Vtx_001988
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_11DL_001A58:
+  type: GFX
+  offset: 0x001A58
+  symbol: HAKAdan_room_11DL_001A58
+
+HAKAdan_room_11Vtx_001B68:
+  type: OOT:ARRAY
+  offset: 0x001B68
+  symbol: HAKAdan_room_11Vtx_001B68
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_11DL_001C38:
+  type: GFX
+  offset: 0x001C38
+  symbol: HAKAdan_room_11DL_001C38
+
+HAKAdan_room_11DL_001D08:
+  type: GFX
+  offset: 0x001D08
+  symbol: HAKAdan_room_11DL_001D08

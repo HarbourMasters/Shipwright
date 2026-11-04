@@ -1,0 +1,145 @@
+:config:
+  segments:
+    - [ 2, 0x02F38000 ]
+
+  external_files:
+    - pal_gc_dbg/scenes/shared/daiyousei_izumi_sceneSet_0044A0.yml
+    - pal_gc_dbg/scenes/shared/daiyousei_izumi_sceneSet_0045C0.yml
+    - pal_gc_dbg/scenes/shared/daiyousei_izumi_sceneSet_0046E0.yml
+daiyousei_izumi_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: daiyousei_izumi_scene
+
+daiyousei_izumi_sceneTex_004800:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: daiyousei_izumi_sceneTex_004800
+  format: I8
+  width: 32
+  height: 64
+
+daiyousei_izumi_sceneTex_005000:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: daiyousei_izumi_sceneTex_005000
+  format: RGBA16
+  width: 32
+  height: 32
+
+daiyousei_izumi_sceneTex_005800:
+  type: TEXTURE
+  offset: 0x5800
+  symbol: daiyousei_izumi_sceneTex_005800
+  format: RGBA16
+  width: 32
+  height: 32
+
+daiyousei_izumi_sceneTex_006000:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: daiyousei_izumi_sceneTex_006000
+  format: IA4
+  width: 64
+  height: 128
+
+daiyousei_izumi_sceneTex_007000:
+  type: TEXTURE
+  offset: 0x7000
+  symbol: daiyousei_izumi_sceneTex_007000
+  format: RGBA16
+  width: 32
+  height: 64
+
+daiyousei_izumi_sceneTex_008000:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: daiyousei_izumi_sceneTex_008000
+  format: RGBA16
+  width: 32
+  height: 64
+
+daiyousei_izumi_sceneTex_009000:
+  type: TEXTURE
+  offset: 0x9000
+  symbol: daiyousei_izumi_sceneTex_009000
+  format: RGBA16
+  width: 32
+  height: 64
+
+daiyousei_izumi_sceneTex_00A000:
+  type: TEXTURE
+  offset: 0xA000
+  symbol: daiyousei_izumi_sceneTex_00A000
+  format: I8
+  width: 32
+  height: 64
+
+daiyousei_izumi_sceneTex_00A800:
+  type: TEXTURE
+  offset: 0xA800
+  symbol: daiyousei_izumi_sceneTex_00A800
+  format: RGBA16
+  width: 32
+  height: 32
+
+daiyousei_izumi_sceneTex_00B000:
+  type: TEXTURE
+  offset: 0xB000
+  symbol: daiyousei_izumi_sceneTex_00B000
+  format: I8
+  width: 32
+  height: 128
+
+daiyousei_izumi_sceneTex_00C000:
+  type: TEXTURE
+  offset: 0xC000
+  symbol: daiyousei_izumi_sceneTex_00C000
+  format: RGBA16
+  width: 32
+  height: 32
+
+daiyousei_izumi_sceneTex_00C800:
+  type: TEXTURE
+  offset: 0xC800
+  symbol: daiyousei_izumi_sceneTex_00C800
+  format: IA8
+  width: 64
+  height: 32
+
+daiyousei_izumi_sceneTex_00D000:
+  type: TEXTURE
+  offset: 0xD000
+  symbol: daiyousei_izumi_sceneTex_00D000
+  format: RGBA16
+  width: 32
+  height: 32
+
+daiyousei_izumi_sceneTex_00D800:
+  type: TEXTURE
+  offset: 0xD800
+  symbol: daiyousei_izumi_sceneTex_00D800
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatFairyDoubleDefenseCs:
+  type: OOT:CUTSCENE
+  offset: 0x25D0
+  symbol: gGreatFairyDoubleDefenseCs
+
+gGreatFairyDoubleMagicCs:
+  type: OOT:CUTSCENE
+  offset: 0x13E0
+  symbol: gGreatFairyDoubleMagicCs
+
+gGreatFairyMagicCs:
+  type: OOT:CUTSCENE
+  offset: 0x0130
+  symbol: gGreatFairyMagicCs
+
+
+daiyousei_izumi_sceneCollisionHeader_0043A4:
+  type: OOT:COLLISION
+  offset: 0x0043A4
+  symbol: daiyousei_izumi_sceneCollisionHeader_0043A4

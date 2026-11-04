@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01B26F20 ]
+  directory: scenes/shared/spot07_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/spot07_scene.yml
+
+spot07_sceneSet_003A40:
+  type: OOT:SCENE
+  offset: 0x3A40
+  symbol: spot07_sceneSet_003A40
+  base_name: spot07_scene

@@ -1,0 +1,194 @@
+:config:
+  segments:
+    - [ 3, 0x01EE1880 ]
+    - [ 2, 0x01EDEB30 ]
+  directory: scenes/shared/hakaana_ouke_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/hakaana_ouke_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+    - ntsc_j_mq/scenes/shared/hakaana_ouke_room_0Set_000130.yml
+    - ntsc_j_mq/scenes/shared/hakaana_ouke_room_0Set_0001B0.yml
+
+hakaana_ouke_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: hakaana_ouke_room_0
+
+hakaana_ouke_room_0Tex_004F30:
+  type: TEXTURE
+  offset: 0x4F30
+  symbol: hakaana_ouke_room_0Tex_004F30
+  format: RGBA16
+  width: 16
+  height: 64
+
+hakaana_ouke_room_0Tex_005730:
+  type: TEXTURE
+  offset: 0x5730
+  symbol: hakaana_ouke_room_0Tex_005730
+  format: RGBA16
+  width: 32
+  height: 64
+
+hakaana_ouke_room_0Tex_006730:
+  type: TEXTURE
+  offset: 0x6730
+  symbol: hakaana_ouke_room_0Tex_006730
+  format: I4
+  width: 128
+  height: 32
+
+hakaana_ouke_room_0Tex_006F30:
+  type: TEXTURE
+  offset: 0x6F30
+  symbol: hakaana_ouke_room_0Tex_006F30
+  format: I4
+  width: 64
+  height: 64
+
+hakaana_ouke_room_0Tex_007FF8:
+  type: TEXTURE
+  offset: 0x7FF8
+  symbol: hakaana_ouke_room_0Tex_007FF8
+  format: IA4
+  width: 32
+  height: 256
+
+hakaana_ouke_room_0Tex_008FF8:
+  type: TEXTURE
+  offset: 0x8FF8
+  symbol: hakaana_ouke_room_0Tex_008FF8
+  format: IA8
+  width: 8
+  height: 256
+
+hakaana_ouke_room_0Tex_0097F8:
+  type: TEXTURE
+  offset: 0x97F8
+  symbol: hakaana_ouke_room_0Tex_0097F8
+  format: IA16
+  width: 128
+  height: 16
+
+
+hakaana_ouke_room_0Vtx_000230:
+  type: OOT:ARRAY
+  offset: 0x000230
+  symbol: hakaana_ouke_room_0Vtx_000230
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana_ouke_room_0DL_000700:
+  type: GFX
+  offset: 0x000700
+  symbol: hakaana_ouke_room_0DL_000700
+
+hakaana_ouke_room_0Vtx_0008B8:
+  type: OOT:ARRAY
+  offset: 0x0008B8
+  symbol: hakaana_ouke_room_0Vtx_0008B8
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana_ouke_room_0DL_001298:
+  type: GFX
+  offset: 0x001298
+  symbol: hakaana_ouke_room_0DL_001298
+
+hakaana_ouke_room_0Vtx_0016B0:
+  type: OOT:ARRAY
+  offset: 0x0016B0
+  symbol: hakaana_ouke_room_0Vtx_0016B0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana_ouke_room_0DL_001780:
+  type: GFX
+  offset: 0x001780
+  symbol: hakaana_ouke_room_0DL_001780
+
+hakaana_ouke_room_0Vtx_001808:
+  type: OOT:ARRAY
+  offset: 0x001808
+  symbol: hakaana_ouke_room_0Vtx_001808
+  count: 503
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana_ouke_room_0DL_003778:
+  type: GFX
+  offset: 0x003778
+  symbol: hakaana_ouke_room_0DL_003778
+
+hakaana_ouke_room_0Vtx_0048B8:
+  type: OOT:ARRAY
+  offset: 0x0048B8
+  symbol: hakaana_ouke_room_0Vtx_0048B8
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana_ouke_room_0DL_004CB8:
+  type: GFX
+  offset: 0x004CB8
+  symbol: hakaana_ouke_room_0DL_004CB8
+
+hakaana_ouke_room_0DL_004F00:
+  type: GFX
+  offset: 0x004F00
+  symbol: hakaana_ouke_room_0DL_004F00
+
+hakaana_ouke_room_0Vtx_007730:
+  type: OOT:ARRAY
+  offset: 0x007730
+  symbol: hakaana_ouke_room_0Vtx_007730
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana_ouke_room_0DL_0078B0:
+  type: GFX
+  offset: 0x0078B0
+  symbol: hakaana_ouke_room_0DL_0078B0
+
+hakaana_ouke_room_0Vtx_007988:
+  type: OOT:ARRAY
+  offset: 0x007988
+  symbol: hakaana_ouke_room_0Vtx_007988
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana_ouke_room_0DL_007BB8:
+  type: GFX
+  offset: 0x007BB8
+  symbol: hakaana_ouke_room_0DL_007BB8
+
+hakaana_ouke_room_0Vtx_007CD8:
+  type: OOT:ARRAY
+  offset: 0x007CD8
+  symbol: hakaana_ouke_room_0Vtx_007CD8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakaana_ouke_room_0DL_007ED8:
+  type: GFX
+  offset: 0x007ED8
+  symbol: hakaana_ouke_room_0DL_007ED8
+
+hakaana_ouke_room_0DL_007FD8:
+  type: GFX
+  offset: 0x007FD8
+  symbol: hakaana_ouke_room_0DL_007FD8

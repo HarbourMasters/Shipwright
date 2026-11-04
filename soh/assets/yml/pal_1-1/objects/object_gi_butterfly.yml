@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x0126A950 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x0126A950 ]
+    - [ 9, 0x0126A950 ]
+    - [ 10, 0x0126A950 ]
+    - [ 11, 0x0126A950 ]
+    - [ 12, 0x0126A950 ]
+    - [ 13, 0x0126A950 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gGiButterflyContainerDL:
+  type: GFX
+  offset: 0x0830
+  symbol: gGiButterflyContainerDL
+
+gGiButterflyGlassDL:
+  type: GFX
+  offset: 0x0A70
+  symbol: gGiButterflyGlassDL
+
+object_gi_butterflyTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_butterflyTex_000000
+  format: IA4
+  width: 24
+  height: 48
+
+
+object_gi_butterflyVtx_000240:
+  type: OOT:ARRAY
+  offset: 0x000240
+  symbol: object_gi_butterflyVtx_000240
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_butterflyVtx_000650:
+  type: OOT:ARRAY
+  offset: 0x000650
+  symbol: object_gi_butterflyVtx_000650
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

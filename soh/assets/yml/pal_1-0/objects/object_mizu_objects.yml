@@ -1,0 +1,440 @@
+:config:
+  segments:
+    - [ 6, 0x00EED4A0 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00EED4A0 ]
+    - [ 9, 0x00EED4A0 ]
+    - [ 10, 0x00EED4A0 ]
+    - [ 11, 0x00EED4A0 ]
+    - [ 12, 0x00EED4A0 ]
+    - [ 13, 0x00EED4A0 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gObjectMizuObjectsBwallCol_001C58:
+  type: OOT:COLLISION
+  offset: 0x1C58
+  symbol: gObjectMizuObjectsBwallCol_001C58
+
+gObjectMizuObjectsBwallCol_001DE8:
+  type: OOT:COLLISION
+  offset: 0x1DE8
+  symbol: gObjectMizuObjectsBwallCol_001DE8
+
+gObjectMizuObjectsBwallCol_0025A4:
+  type: OOT:COLLISION
+  offset: 0x25A4
+  symbol: gObjectMizuObjectsBwallCol_0025A4
+
+gObjectMizuObjectsBwallDL_001770:
+  type: GFX
+  offset: 0x1770
+  symbol: gObjectMizuObjectsBwallDL_001770
+
+gObjectMizuObjectsBwallDL_001A30:
+  type: GFX
+  offset: 0x1A30
+  symbol: gObjectMizuObjectsBwallDL_001A30
+
+gObjectMizuObjectsBwallDL_001CD0:
+  type: GFX
+  offset: 0x1CD0
+  symbol: gObjectMizuObjectsBwallDL_001CD0
+
+gObjectMizuObjectsBwallDL_002090:
+  type: GFX
+  offset: 0x2090
+  symbol: gObjectMizuObjectsBwallDL_002090
+
+gObjectMizuObjectsBwallDL_002390:
+  type: GFX
+  offset: 0x2390
+  symbol: gObjectMizuObjectsBwallDL_002390
+
+gObjectMizuObjectsDoorShutterDL_005D90:
+  type: GFX
+  offset: 0x5D90
+  symbol: gObjectMizuObjectsDoorShutterDL_005D90
+
+gObjectMizuObjectsDoorShutterDL_007000:
+  type: GFX
+  offset: 0x7000
+  symbol: gObjectMizuObjectsDoorShutterDL_007000
+
+gObjectMizuObjectsMovebgCol_0003F0:
+  type: OOT:COLLISION
+  offset: 0x03F0
+  symbol: gObjectMizuObjectsMovebgCol_0003F0
+
+gObjectMizuObjectsMovebgCol_000998:
+  type: OOT:COLLISION
+  offset: 0x0998
+  symbol: gObjectMizuObjectsMovebgCol_000998
+
+gObjectMizuObjectsMovebgCol_000ED0:
+  type: OOT:COLLISION
+  offset: 0x0ED0
+  symbol: gObjectMizuObjectsMovebgCol_000ED0
+
+gObjectMizuObjectsMovebgCol_0015F8:
+  type: OOT:COLLISION
+  offset: 0x15F8
+  symbol: gObjectMizuObjectsMovebgCol_0015F8
+
+gObjectMizuObjectsMovebgCol_003590:
+  type: OOT:COLLISION
+  offset: 0x3590
+  symbol: gObjectMizuObjectsMovebgCol_003590
+
+gObjectMizuObjectsMovebgDL_000190:
+  type: GFX
+  offset: 0x0190
+  symbol: gObjectMizuObjectsMovebgDL_000190
+
+gObjectMizuObjectsMovebgDL_000680:
+  type: GFX
+  offset: 0x0680
+  symbol: gObjectMizuObjectsMovebgDL_000680
+
+gObjectMizuObjectsMovebgDL_000C20:
+  type: GFX
+  offset: 0x0C20
+  symbol: gObjectMizuObjectsMovebgDL_000C20
+
+gObjectMizuObjectsMovebgDL_0011F0:
+  type: GFX
+  offset: 0x11F0
+  symbol: gObjectMizuObjectsMovebgDL_0011F0
+
+gObjectMizuObjectsMovebgDL_002E10:
+  type: GFX
+  offset: 0x2E10
+  symbol: gObjectMizuObjectsMovebgDL_002E10
+
+gObjectMizuObjectsShutterCol_007250:
+  type: OOT:COLLISION
+  offset: 0x7250
+  symbol: gObjectMizuObjectsShutterCol_007250
+
+gObjectMizuObjectsShutterCol_0073F0:
+  type: OOT:COLLISION
+  offset: 0x73F0
+  symbol: gObjectMizuObjectsShutterCol_0073F0
+
+gObjectMizuObjectsShutterDL_007130:
+  type: GFX
+  offset: 0x7130
+  symbol: gObjectMizuObjectsShutterDL_007130
+
+gObjectMizuObjectsShutterDL_0072D0:
+  type: GFX
+  offset: 0x72D0
+  symbol: gObjectMizuObjectsShutterDL_0072D0
+
+gObjectMizuObjectsUzuCol_0074EC:
+  type: OOT:COLLISION
+  offset: 0x74EC
+  symbol: gObjectMizuObjectsUzuCol_0074EC
+
+gObjectMizuObjectsWaterDL_004B20:
+  type: GFX
+  offset: 0x4B20
+  symbol: gObjectMizuObjectsWaterDL_004B20
+
+gWaterTempleDoorDL_0048B0:
+  type: GFX
+  offset: 0x48B0
+  symbol: gWaterTempleDoorDL_0048B0
+
+gWaterTempleDoorLeftDL:
+  type: GFX
+  offset: 0x4958
+  symbol: gWaterTempleDoorLeftDL
+
+gWaterTempleDoorRightDL:
+  type: GFX
+  offset: 0x4A10
+  symbol: gWaterTempleDoorRightDL
+
+object_mizu_objectsTex_004C00:
+  type: TEXTURE
+  offset: 0x4C00
+  symbol: object_mizu_objectsTex_004C00
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_mizu_objectsTex_005E70:
+  type: TEXTURE
+  offset: 0x5E70
+  symbol: object_mizu_objectsTex_005E70
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_mizu_objectsTex_007520:
+  type: TEXTURE
+  offset: 0x7520
+  symbol: object_mizu_objectsTex_007520
+  format: IA16
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_007D20:
+  type: TEXTURE
+  offset: 0x7D20
+  symbol: object_mizu_objectsTex_007D20
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_008520:
+  type: TEXTURE
+  offset: 0x8520
+  symbol: object_mizu_objectsTex_008520
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_008D20:
+  type: TEXTURE
+  offset: 0x8D20
+  symbol: object_mizu_objectsTex_008D20
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_009520:
+  type: TEXTURE
+  offset: 0x9520
+  symbol: object_mizu_objectsTex_009520
+  format: I4
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_009720:
+  type: TEXTURE
+  offset: 0x9720
+  symbol: object_mizu_objectsTex_009720
+  format: I4
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_009920:
+  type: TEXTURE
+  offset: 0x9920
+  symbol: object_mizu_objectsTex_009920
+  format: I4
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_009B20:
+  type: TEXTURE
+  offset: 0x9B20
+  symbol: object_mizu_objectsTex_009B20
+  format: I4
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_009D20:
+  type: TEXTURE
+  offset: 0x9D20
+  symbol: object_mizu_objectsTex_009D20
+  format: I4
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_009F20:
+  type: TEXTURE
+  offset: 0x9F20
+  symbol: object_mizu_objectsTex_009F20
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_mizu_objectsTex_00A720:
+  type: TEXTURE
+  offset: 0xA720
+  symbol: object_mizu_objectsTex_00A720
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_mizu_objectsTex_00AB20:
+  type: TEXTURE
+  offset: 0xAB20
+  symbol: object_mizu_objectsTex_00AB20
+  format: I4
+  width: 64
+  height: 64
+
+object_mizu_objects_Tex_0035C0:
+  type: TEXTURE
+  offset: 0x35C0
+  symbol: object_mizu_objects_Tex_0035C0
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_mizu_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_mizu_objectsVtx_000000
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_000420:
+  type: OOT:ARRAY
+  offset: 0x000420
+  symbol: object_mizu_objectsVtx_000420
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_0009D0:
+  type: OOT:ARRAY
+  offset: 0x0009D0
+  symbol: object_mizu_objectsVtx_0009D0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_000F00:
+  type: OOT:ARRAY
+  offset: 0x000F00
+  symbol: object_mizu_objectsVtx_000F00
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_001630:
+  type: OOT:ARRAY
+  offset: 0x001630
+  symbol: object_mizu_objectsVtx_001630
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_0018F0:
+  type: OOT:ARRAY
+  offset: 0x0018F0
+  symbol: object_mizu_objectsVtx_0018F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_001C90:
+  type: OOT:ARRAY
+  offset: 0x001C90
+  symbol: object_mizu_objectsVtx_001C90
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_001E20:
+  type: OOT:ARRAY
+  offset: 0x001E20
+  symbol: object_mizu_objectsVtx_001E20
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_0021C0:
+  type: OOT:ARRAY
+  offset: 0x0021C0
+  symbol: object_mizu_objectsVtx_0021C0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_0025D0:
+  type: OOT:ARRAY
+  offset: 0x0025D0
+  symbol: object_mizu_objectsVtx_0025D0
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_0045C0:
+  type: OOT:ARRAY
+  offset: 0x0045C0
+  symbol: object_mizu_objectsVtx_0045C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_0046C0:
+  type: OOT:ARRAY
+  offset: 0x0046C0
+  symbol: object_mizu_objectsVtx_0046C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_0047C0:
+  type: OOT:ARRAY
+  offset: 0x0047C0
+  symbol: object_mizu_objectsVtx_0047C0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_004AD0:
+  type: OOT:ARRAY
+  offset: 0x004AD0
+  symbol: object_mizu_objectsVtx_004AD0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_005C00:
+  type: OOT:ARRAY
+  offset: 0x005C00
+  symbol: object_mizu_objectsVtx_005C00
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_006E70:
+  type: OOT:ARRAY
+  offset: 0x006E70
+  symbol: object_mizu_objectsVtx_006E70
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_0070E0:
+  type: OOT:ARRAY
+  offset: 0x0070E0
+  symbol: object_mizu_objectsVtx_0070E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mizu_objectsVtx_007280:
+  type: OOT:ARRAY
+  offset: 0x007280
+  symbol: object_mizu_objectsVtx_007280
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

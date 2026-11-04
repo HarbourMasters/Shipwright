@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 128, 0x016883A0 ]
+
+gMaskShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gMaskShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_FCVR_pal_static
+  external_tlut_offset: 0x200
+
+gMaskShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMaskShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_FCVR_pal_static
+  external_tlut_offset: 0x0
+

@@ -1,0 +1,238 @@
+:config:
+  segments:
+    - [ 2, 0x01ED23B0 ]
+
+bowling_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: bowling_scene
+
+bowling_sceneTex_001AA0:
+  type: TEXTURE
+  offset: 0x1AA0
+  symbol: bowling_sceneTex_001AA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+bowling_sceneTex_0022A0:
+  type: TEXTURE
+  offset: 0x22A0
+  symbol: bowling_sceneTex_0022A0
+  format: I4
+  width: 16
+  height: 16
+
+bowling_sceneTex_002320:
+  type: TEXTURE
+  offset: 0x2320
+  symbol: bowling_sceneTex_002320
+  format: RGBA16
+  width: 16
+  height: 32
+
+bowling_sceneTex_002720:
+  type: TEXTURE
+  offset: 0x2720
+  symbol: bowling_sceneTex_002720
+  format: RGBA16
+  width: 32
+  height: 32
+
+bowling_sceneTex_002F20:
+  type: TEXTURE
+  offset: 0x2F20
+  symbol: bowling_sceneTex_002F20
+  format: RGBA16
+  width: 32
+  height: 32
+
+bowling_sceneTex_003720:
+  type: TEXTURE
+  offset: 0x3720
+  symbol: bowling_sceneTex_003720
+  format: I4
+  width: 64
+  height: 128
+
+bowling_sceneTex_004720:
+  type: TEXTURE
+  offset: 0x4720
+  symbol: bowling_sceneTex_004720
+  format: IA4
+  width: 64
+  height: 64
+
+bowling_sceneTex_004F20:
+  type: TEXTURE
+  offset: 0x4F20
+  symbol: bowling_sceneTex_004F20
+  format: RGBA16
+  width: 16
+  height: 16
+
+bowling_sceneTex_005120:
+  type: TEXTURE
+  offset: 0x5120
+  symbol: bowling_sceneTex_005120
+  format: RGBA16
+  width: 16
+  height: 16
+
+bowling_sceneTex_005320:
+  type: TEXTURE
+  offset: 0x5320
+  symbol: bowling_sceneTex_005320
+  format: RGBA16
+  width: 16
+  height: 16
+
+bowling_sceneTex_005520:
+  type: TEXTURE
+  offset: 0x5520
+  symbol: bowling_sceneTex_005520
+  format: RGBA16
+  width: 16
+  height: 32
+
+bowling_sceneTex_005920:
+  type: TEXTURE
+  offset: 0x5920
+  symbol: bowling_sceneTex_005920
+  format: RGBA16
+  width: 32
+  height: 32
+
+bowling_sceneTex_006120:
+  type: TEXTURE
+  offset: 0x6120
+  symbol: bowling_sceneTex_006120
+  format: RGBA16
+  width: 64
+  height: 32
+
+bowling_sceneTex_007120:
+  type: TEXTURE
+  offset: 0x7120
+  symbol: bowling_sceneTex_007120
+  format: IA8
+  width: 128
+  height: 32
+
+bowling_sceneTex_008120:
+  type: TEXTURE
+  offset: 0x8120
+  symbol: bowling_sceneTex_008120
+  format: RGBA16
+  width: 32
+  height: 32
+
+bowling_sceneTex_008920:
+  type: TEXTURE
+  offset: 0x8920
+  symbol: bowling_sceneTex_008920
+  format: RGBA16
+  width: 32
+  height: 32
+
+bowling_sceneTex_009120:
+  type: TEXTURE
+  offset: 0x9120
+  symbol: bowling_sceneTex_009120
+  format: RGBA16
+  width: 32
+  height: 64
+
+bowling_sceneTex_00A120:
+  type: TEXTURE
+  offset: 0xA120
+  symbol: bowling_sceneTex_00A120
+  format: RGBA16
+  width: 32
+  height: 32
+
+bowling_sceneTex_00A920:
+  type: TEXTURE
+  offset: 0xA920
+  symbol: bowling_sceneTex_00A920
+  format: I8
+  width: 32
+  height: 16
+
+bowling_sceneTex_00AB20:
+  type: TEXTURE
+  offset: 0xAB20
+  symbol: bowling_sceneTex_00AB20
+  format: IA8
+  width: 32
+  height: 16
+
+bowling_sceneTex_00AD20:
+  type: TEXTURE
+  offset: 0xAD20
+  symbol: bowling_sceneTex_00AD20
+  format: I4
+  width: 32
+  height: 32
+
+bowling_sceneTex_00AF20:
+  type: TEXTURE
+  offset: 0xAF20
+  symbol: bowling_sceneTex_00AF20
+  format: IA8
+  width: 64
+  height: 32
+
+bowling_sceneTex_00B720:
+  type: TEXTURE
+  offset: 0xB720
+  symbol: bowling_sceneTex_00B720
+  format: IA8
+  width: 32
+  height: 32
+
+bowling_sceneTex_00BB20:
+  type: TEXTURE
+  offset: 0xBB20
+  symbol: bowling_sceneTex_00BB20
+  format: IA8
+  width: 32
+  height: 32
+
+bowling_sceneTex_00BF20:
+  type: TEXTURE
+  offset: 0xBF20
+  symbol: bowling_sceneTex_00BF20
+  format: RGBA16
+  width: 32
+  height: 32
+
+bowling_sceneTex_00C720:
+  type: TEXTURE
+  offset: 0xC720
+  symbol: bowling_sceneTex_00C720
+  format: IA8
+  width: 64
+  height: 64
+
+bowling_sceneTex_00D720:
+  type: TEXTURE
+  offset: 0xD720
+  symbol: bowling_sceneTex_00D720
+  format: I8
+  width: 32
+  height: 32
+
+bowling_sceneTex_00DB20:
+  type: TEXTURE
+  offset: 0xDB20
+  symbol: bowling_sceneTex_00DB20
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+bowling_sceneCollisionHeader_001A74:
+  type: OOT:COLLISION
+  offset: 0x001A74
+  symbol: bowling_sceneCollisionHeader_001A74

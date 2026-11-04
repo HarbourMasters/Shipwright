@@ -1,0 +1,76 @@
+:config:
+  segments:
+    - [ 128, 0x00D0C340 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x00D0C340 ]
+    - [ 9, 0x00D0C340 ]
+    - [ 10, 0x00D0C340 ]
+    - [ 11, 0x00D0C340 ]
+    - [ 12, 0x00D0C340 ]
+    - [ 13, 0x00D0C340 ]
+  virtual: [ 0x80B64120, 0x00D0C340 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+sAnim:
+  type: OOT:CURVE_ANIMATION
+  offset: 0x1B70
+  symbol: sAnim
+  skel_offset: 0x1BB0
+
+sCylinderVtx:
+  type: OOT:ARRAY
+  offset: 0x6A0
+  symbol: sCylinderVtx
+  count: 36
+  array_type: VTX
+
+sInnerCylinderDL:
+  type: GFX
+  offset: 0x18E0
+  symbol: sInnerCylinderDL
+
+sInnerCylinderLimb:
+  type: OOT:LIMB
+  offset: 0x1B8C
+  symbol: sInnerCylinderLimb
+  limb_type: Curve
+
+sOuterCylinderDL:
+  type: GFX
+  offset: 0x19E8
+  symbol: sOuterCylinderDL
+
+sOuterCylinderLimb:
+  type: OOT:LIMB
+  offset: 0x1B98
+  symbol: sOuterCylinderLimb
+  limb_type: Curve
+
+sRootLimb:
+  type: OOT:LIMB
+  offset: 0x1B80
+  symbol: sRootLimb
+  limb_type: Curve
+
+sSkel:
+  type: OOT:SKELETON
+  offset: 0x1BB0
+  symbol: sSkel
+  limb_type: Curve
+  skel_type: Curve
+
+sTex:
+  type: TEXTURE
+  offset: 0x8E0
+  symbol: sTex
+  format: I8
+  width: 64
+  height: 64
+
+
+sSkelLimbs:
+  type: BLOB
+  offset: 0x1BA4
+  symbol: sSkelLimbs
+  size: 0

@@ -1,0 +1,1203 @@
+:config:
+  segments:
+    - [ 128, 0x00A58A00 ]
+    - [ 1, 0x0000D8C0 ]
+    - [ 2, 0x00039680 ]
+    - [ 3, 0x00089100 ]
+
+audio:
+  type: OOT:AUDIO
+  offset: 0x00
+  symbol: audio
+  sound_font_table_offset: 0xFFEA0
+  sequence_table_offset: 0x1002D0
+  sample_bank_table_offset: 0x1009C0
+  sequence_font_table_offset: 0x100110
+  sequences:
+    - 000_Sound_Effects
+    - 001_Ambient_Effects
+    - 002_Hyrule_Field_Program
+    - 003_Hyrule_Field_Intro
+    - 004_Hyrule_Field_Segment_1
+    - 005_Hyrule_Field_Segment_2
+    - 006_Hyrule_Field_Segment_3
+    - 007_Hyrule_Field_Segment_4
+    - 008_Hyrule_Field_Segment_5
+    - 009_Hyrule_Field_Segment_6
+    - 010_Hyrule_Field_Segment_7
+    - 011_Hyrule_Field_Segment_8
+    - 012_Hyrule_Field_Segment_9
+    - 013_Hyrule_Field_Segment_10
+    - 014_Hyrule_Field_Segment_11
+    - 015_Hyrule_Field_Enemy_Intro
+    - 016_Hyrule_Field_Enemy_1
+    - 017_Hyrule_Field_Enemy_2
+    - 018_Hyrule_Field_Enemy_3
+    - 019_Hyrule_Field_Enemy_4
+    - 020_Hyrule_Field_Idle_1
+    - 021_Hyrule_Field_Idle_2
+    - 022_Hyrule_Field_Idle_3
+    - 023_Hyrule_Field_Idle_4
+    - 024_Dodongos_Cavern
+    - 025_Kakariko_Village_Adult
+    - 026_Battle
+    - 027_Boss_Battle
+    - 028_Inside_the_Deku_Tree
+    - 029_Market
+    - 030_Title_Theme
+    - 031_House
+    - 032_Game_Over
+    - 033_Boss_Defeated
+    - 034_Got_Key_Item
+    - 035_Ganondorf_Sting
+    - 036_Got_Heart_Container
+    - 037_Prelude_of_Light
+    - 038_Inside_Jabu_Jabus_Belly
+    - 039_Kakariko_Village_Child
+    - 040_Fairy_Fountain
+    - 041_Zeldas_Theme
+    - 042_Fire_Temple
+    - 043_Anticipating_Treasure
+    - 044_Forest_Temple
+    - 045_Hyrule_Castle_Courtyard
+    - 046_Ganondorf_Theme_Organ
+    - 047_Lon_Lon_Ranch
+    - 048_Goron_City
+    - 049_Hyrule_Field_Morning
+    - 050_Got_Spiritual_Stone
+    - 051_Bolero_of_Fire
+    - 052_Minuet_of_Forest
+    - 053_Serenade_of_Water
+    - 054_Requiem_of_Spirit
+    - 055_Nocturne_of_Shadow
+    - 056_Mini_Boss_Battle
+    - 057_Got_Item
+    - 058_Temple_of_Time
+    - 059_Rescued_Epona
+    - 060_Kokiri_Forest
+    - 061_Got_Fairy_Ocarina
+    - 062_Lost_Woods
+    - 063_Spirit_Temple
+    - 064_Horse_Minigame
+    - 065_Horse_Minigame_Goal
+    - 066_Ingos_Theme
+    - 067_Got_Medallion
+    - 068_Sarias_Song
+    - 069_Eponas_Song
+    - 070_Zeldas_Lullaby
+    - 071_Suns_Song
+    - 072_Song_of_Time
+    - 073_Song_of_Storms
+    - 074_Navi_in_Flight
+    - 075_Deku_Tree_Theme
+    - 076_Windmill
+    - 077_Legends_of_Hyrule
+    - 078_Game_Shops
+    - 079_Sheiks_Theme
+    - 080_Zoras_Domain
+    - 081_Zelda_Sting
+    - 082_Zeldas_Theme_Ending
+    - 083_Got_Master_Sword
+    - 084_Ganondorfs_Theme
+    - 085_Shop
+    - 086_Chamber_of_Sages
+    - 087_File_Select
+    - 088_Ice_Cavern
+    - 089_Opening_the_Door_of_Time
+    - 090_Kaepora_Gaeboras_Theme
+    - 091_Shadow_Temple
+    - 092_Water_Temple
+    - 093_The_Sages_Bridge
+    - 094_Seal_of_the_Six_Sages
+    - 095_Gerudo_Valley
+    - 096_Potion_Shop
+    - 097_Koume_and_Kotakes_Theme
+    - 098_Escape_from_Ganons_Castle
+    - 099_Ganondorfs_Castle
+    - 100_Ganondorf_Battle
+    - 101_Ganon_Battle
+    - 102_Ending_Credits_1
+    - 103_Ending_Credits_2
+    - 104_Ending_Credits_3
+    - 105_Ending_Credits_4
+    - 106_Ending_Credits_5
+    - 107_Dodongo_and_Volvagia_Battle
+    - 108_Timed_Minigame
+    - 109_Cutscene_Effects
+  samples:
+    - bank: 0
+      entries:
+        - name: Bird Chirp 1
+          offset: 0x0
+        - name: Insect Chirrup
+          offset: 0x5B0
+          sample_rate: 16000
+        - name: Bird Chirp 2
+          offset: 0x780
+        - name: Crickets
+          offset: 0xC70
+        - name: Loud Bird Chirp
+          offset: 0x1730
+        - name: Crow Caws
+          offset: 0x1ED0
+        - name: Bird Call
+          offset: 0x2D10
+        - name: Bird Screech
+          offset: 0x4250
+        - name: Bird Song (Unused)
+          offset: 0x5480
+        - name: Owl Hoot
+          offset: 0x77D0
+        - name: Hawk Screech
+          offset: 0x97E0
+        - name: Small Bird Chirps
+          offset: 0xB660
+        - name: Rushing Water
+          offset: 0xBC80
+        - name: Howling Wind
+          offset: 0xE4B0
+        - name: Rainfall
+          offset: 0x11D80
+        - name: Low Thunder
+          offset: 0x1C4A0
+        - name: Lightning
+          offset: 0x27DA0
+        - name: Howling Wind (Short)
+          offset: 0x33800
+        - name: Cucco Crows
+          offset: 0x393F0
+        - name: Cawing Bird
+          offset: 0x3D090
+        - name: Step - Ground
+          offset: 0x3E360
+        - name: Step - Sand
+          offset: 0x3ECE0
+        - name: Step - Rock
+          offset: 0x3F770
+        - name: Step - Jabu Jabu
+          offset: 0x40000
+        - name: Step - Water
+          offset: 0x40AA0
+        - name: Step - Carpet
+          offset: 0x414F0
+          sample_rate: 8000
+        - name: Step - Thick Carpet
+          offset: 0x41A20
+        - name: Step - Tall Grass
+          offset: 0x41CD0
+        - name: Synth Pad Sting
+          offset: 0x439A0
+        - name: Small Splash
+          offset: 0x46810
+        - name: Crunchy Drop
+          offset: 0x48840
+        - name: Sliding Block
+          offset: 0x4A6A0
+        - name: Step - Wood
+          offset: 0x4A510
+        - name: Boots Sliding
+          offset: 0x4F790
+        - name: Heavy Slide
+          offset: 0x53210
+        - name: High Static
+          offset: 0x55BA0
+        - name: Distorted Static
+          offset: 0x57D10
+        - name: Heavy Static
+          offset: 0x5B590
+        - name: Large Water Splash
+          offset: 0x5CBA0
+        - name: Swimming
+          offset: 0x60240
+        - name: Stone Doof
+          offset: 0x61B90
+        - name: Step - Wooden Bridge
+          offset: 0x63350
+        - name: Step - Fire
+          offset: 0x63B70
+        - name: Iron Boots 2
+          offset: 0x64600
+        - name: Step - Ice
+          offset: 0x64F70
+        - name: Crackling Fire (Keese)
+          offset: 0x65580
+        - name: Metal Clink
+          offset: 0x67FA0
+        - name: Whish
+          offset: 0x68CC0
+        - name: Sheathe Sword
+          offset: 0x69130
+          sample_rate: 16000
+        - name: Draw Sword
+          offset: 0x6A040
+          sample_rate: 17640
+        - name: Air Swish
+          offset: 0x6BA00
+          sample_rate: 15435
+        - name: Air Whistle
+          offset: 0x6C3C0
+        - name: Bow Pulled Taut
+          offset: 0x6D5B0
+        - name: Sword Striking Metal Shield
+          offset: 0x71C70
+        - name: Moving Metal Chain
+          offset: 0x732A0
+        - name: Hissing Fuse
+          offset: 0x74790
+        - name: Heavy Thump
+          offset: 0x77010
+        - name: Egg Hatching
+          offset: 0x77BA0
+        - name: Arrow Thunk in Wood
+          offset: 0x7AFD0
+        - name: Air Whoosh
+          offset: 0x7D290
+        - name: Broken Wood
+          offset: 0x7F3F0
+        - name: Whip Snap
+          offset: 0x7FC90
+        - name: Buzzing Synth
+          offset: 0x80E00
+        - name: Soft Thump
+          offset: 0x82000
+        - name: Sword Strike
+          offset: 0x82ED0
+          sample_rate: 10000
+        - name: Eye of Truth
+          offset: 0x84380
+        - name: Popping Cork
+          offset: 0x87030
+        - name: Bowstring Twang
+          offset: 0x87440
+          sample_rate: 19200
+        - name: Bombchu Motor
+          offset: 0x88620
+          sample_rate: 22050
+        - name: Rupee
+          offset: 0x88A50
+          sample_rate: 32000
+        - name: Opening Wooden Door
+          offset: 0x8A4B0
+        - name: Closing Wooden Door
+          offset: 0x8E160
+        - name: Explosion 1
+          offset: 0x8F6F0
+        - name: Gallop
+          offset: 0x93DB0
+        - name: Horse Neigh
+          offset: 0x94B10
+        - name: Flowing Creek
+          offset: 0x98B00
+        - name: Rushing Waterfall
+          offset: 0x9D5F0
+        - name: Mechanically Shifting Stone
+          offset: 0xA0260
+        - name: Rolling Boulder
+          offset: 0xA14A0
+          sample_rate: 8000
+        - name: Bubbling Lava
+          offset: 0xA2590
+        - name: Retracting Metal Chain
+          offset: 0xA9EF0
+        - name: Relaxed Cucco Clucks
+          offset: 0xAB9E0
+        - name: Stone Strike
+          offset: 0xADBA0
+          sample_rate: 10000
+        - name: Horse Snort
+          offset: 0xAF0A0
+          sample_rate: 12000
+        - name: Water Splish
+          offset: 0xB0960
+        - name: Wooden Strike
+          offset: 0xB3600
+        - name: Flying Fairy
+          offset: 0xB3B10
+        - name: Settled Stone Block
+          offset: 0xB4B90
+        - name: Creaking Door
+          offset: 0xB5A80
+        - name: Creaking Wood
+          offset: 0xB8690
+        - name: Ignition
+          offset: 0xBA0D0
+        - name: Warp Circle Ambience
+          offset: 0xBBB00
+        - name: Fairy Magic
+          offset: 0xC42B0
+        - name: Water Drips
+          offset: 0xC5140
+        - name: Underwater Bubbles
+          offset: 0xC88C0
+        - name: Fire Crackling
+          offset: 0xCAF60
+        - name: Heavy Platform Rotating
+          offset: 0xD16F0
+          sample_rate: 8000
+        - name: Light Rock Slam
+          offset: 0xD2110
+        - name: Flapping Cloak
+          offset: 0xD3DC0
+        - name: People Chattering
+          offset: 0xD57A0
+        - name: Cloth Ripping
+          offset: 0xDE0A0
+        - name: Mechanical Ramp-Up
+          offset: 0xE01F0
+        - name: Crystal Synth (Low)
+          offset: 0xE2510
+        - name: Shimmering Treasure
+          offset: 0xE44A0
+        - name: Gunshot
+          offset: 0xE4B00
+        - name: Wolf Howl
+          offset: 0xE5B70
+        - name: Frog Ribbit
+          offset: 0xEA760
+        - name: Dog Yip
+          offset: 0xEAFC0
+        - name: Metal Door
+          offset: 0xEB5B0
+        - name: Cow Moo
+          offset: 0xECF40
+        - name: Dialogue Continue (Harp)
+          offset: 0xEEB80
+        - name: Dong (Failed Learning)
+          offset: 0xF2FE0
+        - name: Whistle
+          offset: 0xF5350
+        - name: Clanging Bells
+          offset: 0xF5A90
+        - name: Person Whistling
+          offset: 0xF72A0
+        - name: Ocarina_Looped
+          offset: 0xFAD40
+        - name: Accordion
+          offset: 0xFDFC0
+        - name: Harp 1
+          offset: 0x1026F0
+        - name: Malon
+          offset: 0x106C20
+        - name: Flute
+          offset: 0x108690
+        - name: Tambo Drum
+          offset: 0x10CD20
+        - name: Small Cymbal
+          offset: 0x10EFF0
+        - name: Z Target
+          offset: 0x111520
+        - name: Enemy Target Lock-On
+          offset: 0x1129E0
+        - name: Adult Link - Spur Horse 1
+          offset: 0x114D70
+        - name: Adult Link - Spur Horse 2
+          offset: 0x1165E0
+        - name: Adult Link - Attack 1
+          offset: 0x1176B0
+        - name: Adult Link - Attack 2
+          offset: 0x118910
+        - name: Adult Link - Attack 3
+          offset: 0x119870
+        - name: Adult Link - Attack 4
+          offset: 0x11A270
+        - name: Adult Link - Hup
+          offset: 0x11B0E0
+        - name: Adult Link - Gasp 1
+          offset: 0x11B790
+        - name: Adult Link - Strong Attack 1
+          offset: 0x11BE20
+        - name: Adult Link - Strong Attack 2
+          offset: 0x11D6D0
+        - name: Adult Link - Dangling Grunt
+          offset: 0x11EE50
+        - name: Adult Link - Dangling Gasp 1
+          offset: 0x11FB00
+        - name: Adult Link - Climb Edge
+          offset: 0x120D60
+        - name: Adult Link - Dangling Gasp 2
+          offset: 0x121BF0
+        - name: Adult Link - Hurt 1
+          offset: 0x122C10
+        - name: Adult Link - Hurt 2
+          offset: 0x1243F0
+        - name: Adult Link - Hurt 3
+          offset: 0x125A90
+        - name: Adult Link - Hurt 4
+          offset: 0x126ED0
+        - name: Adult Link - Knocked Back
+          offset: 0x128DA0
+        - name: Adult Link - Hurt 5
+          offset: 0x12AC80
+        - name: Adult Link - Falling 1
+          offset: 0x12CD30
+        - name: Adult Link - Falling 2
+          offset: 0x133AB0
+        - name: Adult Link - Gasp 2
+          offset: 0x139D70
+        - name: Adult Link - Gasp 3
+          offset: 0x13AF50
+        - name: Adult Link - Pant 1
+          offset: 0x13C040
+        - name: Adult Link - Pant 2
+          offset: 0x13D3B0
+        - name: Adult Link - Glug
+          offset: 0x13E870
+        - name: Adult Link - Refreshed
+          offset: 0x13F6B0
+        - name: Adult Link - Lift (Unused)
+          offset: 0x140FC0
+        - name: Adult Link - Cast Attacking Magic
+          offset: 0x141960
+        - name: Adult Link - Painful Landing
+          offset: 0x143690
+        - name: Adult Link - Dramatic Gasp
+          offset: 0x146490
+        - name: Adult Link - Hurt (Unused)
+          offset: 0x1478F0
+        - name: Adult Link - Choking
+          offset: 0x148390
+        - name: Adult Link - Gasping (Unused)
+          offset: 0x1493C0
+        - name: Adult Link - Small Gasp (Unused)
+          offset: 0x14B440
+        - name: Adult Link - Unsettled Moan
+          offset: 0x14C250
+        - name: Adult Link - Sneezes
+          offset: 0x151520
+        - name: Adult Link - Sigh 1
+          offset: 0x15A6A0
+        - name: Adult Link - Sigh 2
+          offset: 0x15BE50
+        - name: Adult Link - Sigh 3
+          offset: 0x15DCB0
+        - name: Adult Link - Stretch Start
+          offset: 0x15F4B0
+        - name: Adult Link - Stretching
+          offset: 0x1617F0
+        - name: Adult Link - Finished Stretching
+          offset: 0x163280
+        - name: Child Link - Attack 1
+          offset: 0x166790
+        - name: Child Link - Attack 2
+          offset: 0x167800
+        - name: Child Link - Attack 3
+          offset: 0x168650
+        - name: Child Link - Attack 4
+          offset: 0x1698E0
+        - name: Child Link - Hup 1
+          offset: 0x16A450
+        - name: Child Link - Hup 2
+          offset: 0x16AEA0
+        - name: Child Link - Strong Attack 1
+          offset: 0x16B3E0
+        - name: Child Link - Strong Attack 2
+          offset: 0x16CE20
+        - name: Child Link - Dangling Gasp 1
+          offset: 0x16EEA0
+        - name: Child Link - Dangling Gasp 2
+          offset: 0x16FE60
+        - name: Child Link - Sigh 1
+          offset: 0x170E80
+        - name: Child Link - Sigh 2
+          offset: 0x171DA0
+        - name: Child Link - Hurt 1
+          offset: 0x173320
+        - name: Child Link - Hurt 2
+          offset: 0x174240
+        - name: Child Link - Hurt 3
+          offset: 0x175140
+        - name: Child Link - Hurt 4
+          offset: 0x175C30
+        - name: Child Link - Knocked Back
+          offset: 0x177480
+        - name: Child Link - Hurt 5
+          offset: 0x178D40
+        - name: Child Link - Falling 1
+          offset: 0x1795F0
+        - name: Child Link - Falling 2
+          offset: 0x17E6C0
+        - name: Child Link - Gasp 1
+          offset: 0x182EC0
+        - name: Child Link - Gasp 2
+          offset: 0x1844E0
+        - name: Child Link - Wheeze
+          offset: 0x185BA0
+        - name: Child Link - Exhausted Panting
+          offset: 0x188170
+        - name: Child Link - Glug
+          offset: 0x18A560
+        - name: Child Link - Refreshed
+          offset: 0x18B650
+        - name: Child Link - Charge Up (Unused)
+          offset: 0x18D090
+        - name: Child Link - Cast Attack Spell
+          offset: 0x18E480
+        - name: Child Link - Painful Landing
+          offset: 0x190200
+        - name: Child Link - Dramatic Gasp
+          offset: 0x193410
+        - name: Child Link - Dying Gasp
+          offset: 0x196950
+        - name: Child Link - Strangled (Unused)
+          offset: 0x1971A0
+        - name: Child Link - Gasp 3
+          offset: 0x197500
+        - name: Child Link - Shivers
+          offset: 0x198F30
+        - name: Child Link - Sneeze
+          offset: 0x19F6D0
+        - name: Child Link - Grunt
+          offset: 0x1A1670
+        - name: Child Link - Moans From Heat
+          offset: 0x1A2580
+        - name: Child Link - Awakening Grunt
+          offset: 0x1A71E0
+        - name: Child Link - Wiping Off Sweat
+          offset: 0x1A79C0
+        - name: Child Link - Yawn Starts
+          offset: 0x1AF2E0
+        - name: Child Link - Yawn and Stretch
+          offset: 0x1AFEE0
+        - name: Child Link - Stretch Refreshingly
+          offset: 0x1B3F50
+        - name: Navi - Watch Out!
+          offset: 0x1B6530
+        - name: Navi - Look!
+          offset: 0x1B7B40
+        - name: Navi - Hey!
+          offset: 0x1B8DB0
+        - name: Navi - Listen!
+          offset: 0x1B9D70
+        - name: Navi - Hello!
+          offset: 0x1BB410
+        - name: Talon Snoring
+          offset: 0x1BC380
+        - name: Talon Startled
+          offset: 0x1BFA40
+        - name: Talon Distressed
+          offset: 0x1C0F80
+        - name: Talon Fearful
+          offset: 0x1C2510
+        - name: Great Fairy Laughter
+          offset: 0x1C6870
+        - name: Great Fairy Titters
+          offset: 0x1CC560
+        - name: Ingo Yowls
+          offset: 0x1CF9C0
+        - name: Ingo Exclaims
+          offset: 0x1D25C0
+        - name: Ingo - Hyeaaaaugh
+          offset: 0x1D58F0
+        - name: Ingo - Hyah!
+          offset: 0x1D74B0
+        - name: Girl Gasps
+          offset: 0x1D8420
+        - name: Girl Screams 1
+          offset: 0x1D9880
+        - name: Girl Inquiring 1
+          offset: 0x1DDA40
+        - name: Girl Hurt
+          offset: 0x1DE3C0
+        - name: Girl Startled 1
+          offset: 0x1DF040
+        - name: Girl Screams 2
+          offset: 0x1E0140
+        - name: Girl Delighted
+          offset: 0x1E3160
+        - name: Girl Surprised 1
+          offset: 0x1E48E0
+        - name: Girl Surprised 2
+          offset: 0x1E55F0
+        - name: Girl Discombobulated (Unused)
+          offset: 0x1E6000
+        - name: Woman Yells
+          offset: 0x1E7E90
+        - name: Woman Yells, Startled
+          offset: 0x1E9960
+        - name: Woman Grunts
+          offset: 0x1EB6B0
+        - name: Woman Hup
+          offset: 0x1EC2B0
+        - name: Girl Sighs
+          offset: 0x1EC990
+        - name: Girl Startled 2
+          offset: 0x1EE390
+        - name: Girl Inquiring 2
+          offset: 0x1EF1B0
+        - name: Girl Disappointed
+          offset: 0x1EFCE0
+        - name: Girl Laughing
+          offset: 0x1F1600
+        - name: Girl Startled 3
+          offset: 0x1F3020
+        - name: Girl Grunts in Effort
+          offset: 0x1F4010
+        - name: Girl Screams 3
+          offset: 0x1F4EB0
+        - name: Girl Screams 4
+          offset: 0x1F5E50
+        - name: Girl Sighs Contentedly
+          offset: 0x1F7220
+        - name: Girl Surprised 3
+          offset: 0x1F9490
+        - name: Girl Scared
+          offset: 0x1FA230
+        - name: Skulltula Screaming
+          offset: 0x1FB850
+        - name: Skulltula Grunts Angrily
+          offset: 0x1FEA30
+        - name: King Zora Scoots
+          offset: 0x1FFD80
+        - name: Flamethrower
+          offset: 0x200840
+        - name: Dodongo Roar
+          offset: 0x206D10
+        - name: Heavy Rumbling
+          offset: 0x209E40
+        - name: Clattering Spear
+          offset: 0x20B580
+          sample_rate: 10000
+        - name: Ganon's Electrical Charge
+          offset: 0x20BDA0
+        - name: Dramatic Swoosh
+          offset: 0x20C9E0
+        - name: Broken Pottery
+          offset: 0x20DE70
+          sample_rate: 12000
+        - name: Shattered Glass
+          offset: 0x20F440
+        - name: Heavy Gunshot
+          offset: 0x2115A0
+        - name: Dodongo Inhale
+          offset: 0x212040
+        - name: Gulp
+          offset: 0x2147A0
+        - name: Rustling Thicket
+          offset: 0x214E10
+        - name: Cracking Egg
+          offset: 0x215810
+        - name: Resounding Smash
+          offset: 0x216210
+        - name: Cloaking Poe
+          offset: 0x216D00
+        - name: Chittering Keese
+          offset: 0x2187D0
+        - name: Rustling Large Wings
+          offset: 0x2193E0
+        - name: Guay Hurt
+          offset: 0x219F10
+        - name: Scritch
+          offset: 0x21A810
+        - name: Gruff Voice
+          offset: 0x21AA80
+        - name: Lizalfos Triumphant Cry
+          offset: 0x21ACF0
+        - name: Lizalfos Foot Patter
+          offset: 0x21B150
+        - name: Lizalfos Laughter
+          offset: 0x21B370
+        - name: Deku Scrub Collapses
+          offset: 0x21BBC0
+        - name: Broken Small Pottery
+          offset: 0x21C330
+        - name: Monstrous Growl
+          offset: 0x21CF00
+        - name: Moaning Phantom Ganon
+          offset: 0x21DDB0
+        - name: Phantom Ganon Laughing
+          offset: 0x220770
+        - name: Gerudo Scimitar Slash
+          offset: 0x2222F0
+        - name: Deku Baba Chomp
+          offset: 0x222BA0
+        - name: Deku Baba Lunge
+          offset: 0x2230B0
+          sample_rate: 20000
+        - name: Buzzing
+          offset: 0x223C90
+        - name: Electric Burst
+          offset: 0x224FD0
+        - name: Ganondorf Hovering
+          offset: 0x228A70
+        - name: Magical Charge-Up
+          offset: 0x22C380
+        - name: Echoing Thunderburst
+          offset: 0x22DD50
+        - name: Phantom Ganon in Agony
+          offset: 0x233280
+        - name: Phantom Ganon Attacks
+          offset: 0x236F80
+        - name: Phantom Ganon Groans (Unused)
+          offset: 0x237BA0
+        - name: Thunder and Groan
+          offset: 0x23AD60
+        - name: Goron and Redead Moan
+          offset: 0x23D490
+        - name: Phantom Ganon Growls
+          offset: 0x240600
+        - name: Goron Inquiring
+          offset: 0x241690
+        - name: Goron Recognizes
+          offset: 0x241C20
+        - name: Goron Yawns
+          offset: 0x243440
+        - name: Witch Cackles 1
+          offset: 0x244DD0
+        - name: Witch Cackles 2
+          offset: 0x247290
+        - name: Witch Hurt
+          offset: 0x249810
+        - name: Witch Attacks
+          offset: 0x24AB70
+        - name: Witch Inquires
+          offset: 0x24BBE0
+        - name: Witch Yells a Curse
+          offset: 0x24C2C0
+        - name: Witch Arguing
+          offset: 0x24E060
+        - name: Witch Surprised
+          offset: 0x24F440
+        - name: Twinrova Gasps
+          offset: 0x24FED0
+        - name: Twinrova Thrown Off
+          offset: 0x250E20
+        - name: Twinrova Laughs
+          offset: 0x2516D0
+        - name: Witch Howls
+          offset: 0x252B10
+        - name: Woman Chuckles
+          offset: 0x255720
+        - name: Witch Charges (Unused)
+          offset: 0x2564A0
+        - name: Iron Knuckle Attacks
+          offset: 0x258360
+        - name: Finger Snap
+          offset: 0x2581C0
+        - name: Iron Knuckle Grunt (Unused)
+          offset: 0x259120
+        - name: Iron Knuckle Charges
+          offset: 0x259BF0
+        - name: Iron Knuckle Dies
+          offset: 0x25AAC0
+        - name: Iron Knuckle Grunts
+          offset: 0x25C140
+        - name: Iron Knuckle Murmurs (Unused)
+          offset: 0x25CD60
+        - name: Muted Timpani
+          offset: 0x25DB50
+        - name: Chanting
+          offset: 0x25E9E0
+        - name: Gerudo Attacks
+          offset: 0x25FC50
+        - name: Gerudo Breathes
+          offset: 0x260420
+        - name: Gerudo Hurt
+          offset: 0x261790
+        - name: Gerudo Vanquished
+          offset: 0x262170
+        - name: Enemy Struck
+          offset: 0x263270
+        - name: Ganondorf Laughing
+          offset: 0x264B60
+        - name: Ganondorf Attacks
+          offset: 0x26A060
+        - name: Ganondorf Heavy Attack
+          offset: 0x26AAD0
+        - name: Ganondorf Rebuffs
+          offset: 0x26B960
+        - name: Ganondorf Strikes the Ground
+          offset: 0x26BEF0
+        - name: Ganondorf Hurt 1
+          offset: 0x26CE70
+        - name: Ganondorf Hurt 2
+          offset: 0x26DF40
+        - name: Ganondorf Breathes (Unused)
+          offset: 0x26FC60
+        - name: Ganondorf Recovers
+          offset: 0x270E40
+        - name: Ganondorf Gurgling Yell (Unused)
+          offset: 0x271A70
+        - name: Ganondorf Dying Breath
+          offset: 0x273860
+        - name: Ganondorf Vomits
+          offset: 0x274EA0
+        - name: Ganondorf Yells in Defiance
+          offset: 0x2765B0
+        - name: Ganondorf's Final Attack (Unused)
+          offset: 0x27C0A0
+        - name: Ganondorf's Final Attack 2 (Unused)
+          offset: 0x27E260
+        - name: Ganondorf Chuckles
+          offset: 0x280C70
+        - name: Redead Scream
+          offset: 0x283440
+        - name: Monstrous Roaring
+          offset: 0x2869C0
+        - name: Larval Sound Base
+          offset: 0x28BF50
+        - name: Dinosaur Cry
+          offset: 0x28CE90
+        - name: Phantom Ganon's Laughter
+          offset: 0x2938F0
+        - name: Iron Boots 1
+          offset: 0x29B480
+        - name: Metal Clink (Copy)
+          offset: 0x29EB20
+    - bank: 1
+      entries:
+        - name: Ocarina_Bank1
+          offset: 0xFAD40
+        - name: Accordion
+          offset: 0xFDFC0
+        - name: Harp 1
+          offset: 0x1026F0
+        - name: Malon
+          offset: 0x106C20
+        - name: Flute
+          offset: 0x108690
+        - name: Ghostly Wind
+          offset: 0x29FE30
+        - name: Ghostly Echoes
+          offset: 0x2A4D40
+        - name: Echoing Drums
+          offset: 0x2A8500
+          sample_rate: 32000
+        - name: Vocal Oohs
+          offset: 0x2AF020
+        - name: Vocal Eees
+          offset: 0x2B43B0
+        - name: Rattling Scream
+          offset: 0x2B9E60
+        - name: Harpsichord
+          offset: 0x2C8510
+          sample_rate: 75000
+        - name: Piano
+          offset: 0x2CFEE0
+        - name: Piano (Soft)
+          offset: 0x2D96A0
+        - name: Vocal Aahs
+          offset: 0x2DFF40
+          sample_rate: 16518
+        - name: Resonant Vocal Aahs
+          offset: 0x2E7410
+          sample_rate: 11680
+        - name: Harp 2
+          offset: 0x2EF650
+        - name: Glockenspiel
+          offset: 0x2F3300
+          sample_rate: 16951
+        - name: Mechanical Rumbling
+          offset: 0x2F8690
+        - name: Trumpet
+          offset: 0x2F9A90
+        - name: Trombone
+          offset: 0x2FD270
+          sample_rate: 21357
+        - name: Tuba
+          offset: 0x301EC0
+          sample_rate: 101593
+        - name: Bass Drum 1
+          offset: 0x304E30
+        - name: Snare Drum 1
+          offset: 0x309BD0
+        - name: Snare Drum 2
+          offset: 0x30C360
+          sample_rate: 33902
+        - name: Cymbal
+          offset: 0x30EAF0
+        - name: Timpani
+          offset: 0x317260
+          sample_rate: 16000
+        - name: Strings (Low)
+          offset: 0x31F640
+          sample_rate: 128000
+        - name: Strings 1
+          offset: 0x324660
+          sample_rate: 40317
+        - name: Strings 2
+          offset: 0x328D10
+          sample_rate: 20158
+        - name: Fiddle
+          offset: 0x32CA00
+          sample_rate: 20158
+        - name: Acoustic Guitar 1
+          offset: 0x32ECB0
+          sample_rate: 40317
+        - name: Acoustic Guitar 2
+          offset: 0x332D10
+          sample_rate: 13454
+        - name: Tom Drum
+          offset: 0x335740
+          sample_rate: 20000
+        - name: Drum Sidestick
+          offset: 0x337A10
+        - name: Finger Cymbals
+          offset: 0x338450
+        - name: Oboe
+          offset: 0x33A980
+          sample_rate: 12699
+        - name: Bassoon
+          offset: 0x33BC30
+          sample_rate: 76109
+        - name: Harp 3
+          offset: 0x33D130
+          sample_rate: 67805
+        - name: Pizzicato Violin
+          offset: 0x3403F0
+          sample_rate: 17959
+        - name: Church Organ
+          offset: 0x343870
+        - name: Electric Organ
+          offset: 0x34D670
+        - name: Horn
+          offset: 0x351810
+        - name: Bass Guitar
+          offset: 0x359170
+          sample_rate: 76195
+        - name: Clap
+          offset: 0x35C900
+          sample_rate: 24000
+        - name: Resonant Bass Marimba
+          offset: 0x35D100
+          sample_rate: 18541
+        - name: Haunting Wind
+          offset: 0x364580
+        - name: Off Hi-Hat
+          offset: 0x36FE80
+          sample_rate: 26000
+        - name: Drum and Sitar
+          offset: 0x374C20
+          sample_rate: 20000
+        - name: Percussive Resonance
+          offset: 0x378360
+          sample_rate: 23973
+        - name: Clarinet
+          offset: 0x37A6B0
+        - name: Harpsichord (High)
+          offset: 0x37B2A0
+          sample_rate: 42714
+        - name: Marimba 1
+          offset: 0x382830
+          sample_rate: 28508
+        - name: Marimba 2
+          offset: 0x384ED0
+          sample_rate: 14254
+        - name: Crystal Synth
+          offset: 0x387060
+          sample_rate: 26939
+        - name: Sitar
+          offset: 0x38F000
+          sample_rate: 57017
+        - name: Koto
+          offset: 0x3926D0
+          sample_rate: 28508
+        - name: Some Manner of Drum
+          offset: 0x396F80
+          sample_rate: 32000
+        - name: Another Type of Drum
+          offset: 0x397FA0
+          sample_rate: 32000
+        - name: Quick Drum
+          offset: 0x399790
+          sample_rate: 32000
+        - name: Gong
+          offset: 0x39A6B0
+          sample_rate: 32000
+        - name: Windchimes
+          offset: 0x3A4BE0
+        - name: Goron Drum
+          offset: 0x3AA6E0
+        - name: Melodic Wooden Clacking
+          offset: 0x3ACC20
+          sample_rate: 32000
+        - name: Vocal Ohs
+          offset: 0x3AE1C0
+        - name: Flute and Voice
+          offset: 0x3B45D0
+          sample_rate: 32000
+        - name: Off-Kilter Flute
+          offset: 0x3B5490
+          sample_rate: 32000
+        - name: Voice
+          offset: 0x3B63F0
+          sample_rate: 32000
+        - name: Drum 1
+          offset: 0x3B71F0
+          sample_rate: 32000
+        - name: Drum 2
+          offset: 0x3B94B0
+          sample_rate: 32000
+        - name: Slap Bass
+          offset: 0x3BBC80
+          sample_rate: 32000
+        - name: Shaker
+          offset: 0x3BE750
+        - name: Cowbell
+          offset: 0x3BF6A0
+          sample_rate: 32000
+        - name: Guitar (Low)
+          offset: 0x3C0360
+          sample_rate: 19000
+        - name: Guitar
+          offset: 0x3C2B40
+        - name: Guitar (High)
+          offset: 0x3C4D00
+          sample_rate: 10690
+        - name: Viola
+          offset: 0x3C6BD0
+          sample_rate: 19027
+        - name: Church Bell
+          offset: 0x3CAC50
+        - name: Goron Oh (High)
+          offset: 0x3CF8A0
+        - name: Goron Oh
+          offset: 0x3D0140
+        - name: Banjo (Low)
+          offset: 0x3D0C00
+          sample_rate: 57017
+        - name: Banjo
+          offset: 0x3D3A40
+          sample_rate: 38054
+        - name: Islamic Chant
+          offset: 0x3D62E0
+        - name: Steel Drum
+          offset: 0x3E3F50
+        - name: Steel Drum (High)
+          offset: 0x3E8BB0
+          sample_rate: 14254
+    - bank: 2
+      entries:
+        - name: Warm Pad
+          offset: 0x0
+    - bank: 3
+      entries:
+        - name: Low Rumbling
+          offset: 0x0
+        - name: Drum Sidestick
+          offset: 0xA590
+        - name: Low Drum
+          offset: 0x8BC0
+        - name: Sweep Pad
+          offset: 0xB3B0
+        - name: Organic Gurgling
+          offset: 0x16480
+    - bank: 4
+      entries:
+        - name: Vocal Ohs
+          offset: 0x0
+        - name: Flute and Voice
+          offset: 0x6410
+        - name: Off-Kilter Flute
+          offset: 0x72D0
+        - name: Voice
+          offset: 0x8230
+        - name: Melodic Wooden Clacking
+          offset: 0x9030
+    - bank: 5
+      entries:
+        - name: Goron Drum
+          offset: 0x0
+        - name: Bass Slap
+          offset: 0x2540
+        - name: Goron Ooh
+          offset: 0x4800
+        - name: Goron Ooh (High)
+          offset: 0x72D0
+        - name: Tom Drum
+          offset: 0x7B70
+        - name: Resonant Bass Marimba
+          offset: 0x8630
+    - bank: 6
+      entries:
+        - name: Warm Synth Pad
+          offset: 0x0
+        - name: Egyptian Flute
+          offset: 0xB0D0
+        - name: Tom Drum
+          offset: 0xE120
+        - name: Vocal Synth
+          offset: 0x103E0
+        - name: Gong
+          offset: 0x12EB0
+        - name: Bass Slap
+          offset: 0x1D3E0
+        - name: Windchimes
+          offset: 0x22EE0
+  fonts:
+    - name: 00_Sound_Effects_1
+      index: 0
+    - name: 01_Sound_Effects_2
+      index: 1
+    - name: 02_Ambient_Sounds
+      index: 2
+    - name: 03_Orchestra
+      index: 3
+    - name: 04_Deku_Tree
+      index: 4
+    - name: 05_Market
+      index: 5
+    - name: 06_Title_Theme
+      index: 6
+    - name: 07_Jabu_Jabu
+      index: 7
+    - name: 08_Child_Kakariko_Village
+      index: 8
+    - name: 09_Fairy_Fountain
+      index: 9
+    - name: 10_Fire_Temple
+      index: 10
+    - name: 11_Dodongos_Cavern
+      index: 11
+    - name: 12_Forest_Temple
+      index: 12
+    - name: 13_Lon_Lon_Ranch
+      index: 13
+    - name: 14_Goron_City
+      index: 14
+    - name: 15_Kokiri_Forest
+      index: 15
+    - name: 16_Spirit_Temple
+      index: 16
+    - name: 17_Horse_Race
+      index: 17
+    - name: 18_Warp_Songs
+      index: 18
+    - name: 19_Legends_of_Hyrule
+      index: 19
+    - name: 20_Minigames
+      index: 20
+    - name: 21_Zoras_Domain
+      index: 21
+    - name: 22_Shops
+      index: 22
+    - name: 23_Ice_Cavern
+      index: 23
+    - name: 24_Shadow_Temple
+      index: 24
+    - name: 25_Water_Temple
+      index: 25
+    - name: 26_Unused
+      index: 26
+    - name: 27_Gerudo_Valley
+      index: 27
+    - name: 28_Lakeside_Laboratory
+      index: 28
+    - name: 29_Kotake_and_Koumes_Theme
+      index: 29
+    - name: 30_Ganons_Castle_Organ
+      index: 30
+    - name: 31_Ganons_Castle
+      index: 31
+    - name: 32_Ganondorfs_Battle
+      index: 32
+    - name: 33_Ending_1
+      index: 33
+    - name: 34_Ending_2
+      index: 34
+    - name: 35_Game_Over
+      index: 35
+    - name: 36_Kaepora_Gaeboras_Theme
+      index: 36
+    - name: 37_Unused_Deku_Tree
+      index: 37
+

@@ -919,7 +919,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
             func_80064520(play, &play->csCtx);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
             this->deathCamera = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             osSyncPrintf("7\n");
             Play_ChangeCameraStatus(play, this->deathCamera, CAM_STAT_ACTIVE);
             osSyncPrintf("8\n");

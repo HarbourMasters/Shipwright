@@ -1,0 +1,100 @@
+:config:
+  segments:
+    - [ 3, 0x01EDD970 ]
+    - [ 2, 0x01EC38B0 ]
+  directory: scenes/nonmq/HAKAdanCH_scene
+  external_files:
+    - pal_1-1/scenes/nonmq/HAKAdanCH_scene.yml
+    - pal_1-1/code/sys_matrix.yml
+
+HAKAdanCH_room_5:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdanCH_room_5
+
+HAKAdanCH_room_5Tex_001190:
+  type: TEXTURE
+  offset: 0x1160
+  symbol: HAKAdanCH_room_5Tex_001190
+  format: RGBA16
+  width: 32
+  height: 64
+
+HAKAdanCH_room_5Tex_002190:
+  type: TEXTURE
+  offset: 0x2160
+  symbol: HAKAdanCH_room_5Tex_002190
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HAKAdanCH_room_5Vtx_000120:
+  type: OOT:ARRAY
+  offset: 0x000120
+  symbol: HAKAdanCH_room_5Vtx_000120
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_5DL_000240:
+  type: GFX
+  offset: 0x000240
+  symbol: HAKAdanCH_room_5DL_000240
+
+HAKAdanCH_room_5Vtx_000320:
+  type: OOT:ARRAY
+  offset: 0x000320
+  symbol: HAKAdanCH_room_5Vtx_000320
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_5DL_0003F0:
+  type: GFX
+  offset: 0x0003F0
+  symbol: HAKAdanCH_room_5DL_0003F0
+
+HAKAdanCH_room_5Vtx_0004E8:
+  type: OOT:ARRAY
+  offset: 0x0004E8
+  symbol: HAKAdanCH_room_5Vtx_0004E8
+  count: 112
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_5DL_000BE8:
+  type: GFX
+  offset: 0x000BE8
+  symbol: HAKAdanCH_room_5DL_000BE8
+
+HAKAdanCH_room_5Vtx_000DE0:
+  type: OOT:ARRAY
+  offset: 0x000DE0
+  symbol: HAKAdanCH_room_5Vtx_000DE0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_5DL_000EE0:
+  type: GFX
+  offset: 0x000EE0
+  symbol: HAKAdanCH_room_5DL_000EE0
+
+HAKAdanCH_room_5Vtx_000FA0:
+  type: OOT:ARRAY
+  offset: 0x000FA0
+  symbol: HAKAdanCH_room_5Vtx_000FA0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_5DL_001070:
+  type: GFX
+  offset: 0x001070
+  symbol: HAKAdanCH_room_5DL_001070

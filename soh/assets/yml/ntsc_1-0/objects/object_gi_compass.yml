@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x0105D570 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x0105D570 ]
+    - [ 9, 0x0105D570 ]
+    - [ 10, 0x0105D570 ]
+    - [ 11, 0x0105D570 ]
+    - [ 12, 0x0105D570 ]
+    - [ 13, 0x0105D570 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gGiCompassDL:
+  type: GFX
+  offset: 0x0960
+  symbol: gGiCompassDL
+
+gGiCompassGlassDL:
+  type: GFX
+  offset: 0x0C50
+  symbol: gGiCompassGlassDL
+
+
+object_gi_compassVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_compassVtx_000000
+  count: 138
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_compassVtx_0008A0:
+  type: OOT:ARRAY
+  offset: 0x0008A0
+  symbol: object_gi_compassVtx_0008A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

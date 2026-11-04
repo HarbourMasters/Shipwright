@@ -1,0 +1,87 @@
+:config:
+  segments:
+    - [ 6, 0x00F59C90 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x00F59C90 ]
+    - [ 9, 0x00F59C90 ]
+    - [ 10, 0x00F59C90 ]
+    - [ 11, 0x00F59C90 ]
+    - [ 12, 0x00F59C90 ]
+    - [ 13, 0x00F59C90 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gLandmineBillboardDL:
+  type: GFX
+  offset: 0x1630
+  symbol: gLandmineBillboardDL
+
+gLandmineBillboardTex:
+  type: TEXTURE
+  offset: 0x1BD8
+  symbol: gLandmineBillboardTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSlidingBladeTrapBoltsTex:
+  type: TEXTURE
+  offset: 0x0400
+  symbol: gSlidingBladeTrapBoltsTex
+  format: I8
+  width: 32
+  height: 32
+
+gSlidingBladeTrapDL:
+  type: GFX
+  offset: 0x1400
+  symbol: gSlidingBladeTrapDL
+
+gSlidingBladeTrapGradientTex:
+  type: TEXTURE
+  offset: 0x0800
+  symbol: gSlidingBladeTrapGradientTex
+  format: I8
+  width: 32
+  height: 32
+
+gSlidingBladeTrapTex_0000:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gSlidingBladeTrapTex_0000
+  format: I8
+  width: 32
+  height: 32
+
+gUnusedSpikeDL:
+  type: GFX
+  offset: 0x1710
+  symbol: gUnusedSpikeDL
+
+
+object_trapVtx_000C00:
+  type: OOT:ARRAY
+  offset: 0x000C00
+  symbol: object_trapVtx_000C00
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trapVtx_0016C8:
+  type: OOT:ARRAY
+  offset: 0x0016C8
+  symbol: object_trapVtx_0016C8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trapVtx_001878:
+  type: OOT:ARRAY
+  offset: 0x001878
+  symbol: object_trapVtx_001878
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

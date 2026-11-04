@@ -1,7 +1,6 @@
 #include "z_demo_ik.h"
 #include "vt.h"
 #include "objects/object_ik/object_ik.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -25,9 +24,6 @@ void DemoIk_Type1Draw(DemoIk* this, PlayState* play);
 void DemoIk_Type2Draw(DemoIk* this, PlayState* play);
 
 void DemoIk_Destroy(Actor* thisx, PlayState* play) {
-    DemoIk* this = (DemoIk*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void DemoIk_BgCheck(DemoIk* this, PlayState* play) {
@@ -94,20 +90,20 @@ void DemoIk_Type1PlaySound(DemoIk* this) {
     switch (this->actor.params) {
         case 0:
             if (Animation_OnFrame(&this->skelAnime, 5.0f)) {
-                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND1_DEMO, &this->actor.projectedPos, 4,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND1_DEMO, &this->actor.projectedPos, 4,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
         case 1:
             if (Animation_OnFrame(&this->skelAnime, 10.0f)) {
-                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND3_DEMO, &this->actor.projectedPos, 4,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND3_DEMO, &this->actor.projectedPos, 4,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
         case 2:
             if (Animation_OnFrame(&this->skelAnime, 9.0f)) {
-                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND2_DEMO, &this->actor.projectedPos, 4,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND2_DEMO, &this->actor.projectedPos, 4,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
     }
@@ -326,8 +322,8 @@ void DemoIk_Type2Init(DemoIk* this, PlayState* play) {
 
 void DemoIk_Type2PlaySoundOnFrame(DemoIk* this, f32 frame) {
     if (Animation_OnFrame(&this->skelAnime, frame)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_OFF_DEMO, &this->actor.projectedPos, 4,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_ARMOR_OFF_DEMO, &this->actor.projectedPos, 4,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 

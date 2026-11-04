@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 2, 0x01E925F0 ]
+
+shrine_n_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: shrine_n_scene
+
+gShrinePath_00100:
+  type: OOT:PATH
+  offset: 0x100
+  symbol: gShrinePath_00100
+  num_paths: 2
+
+
+shrine_n_sceneCollisionHeader_0014D4:
+  type: OOT:COLLISION
+  offset: 0x0014D4
+  symbol: shrine_n_sceneCollisionHeader_0014D4

@@ -1,0 +1,151 @@
+:config:
+  segments:
+    - [ 3, 0x01F61A50 ]
+    - [ 2, 0x01F5A530 ]
+  directory: scenes/shared/ganon_demo_scene
+  external_files:
+    - pal_1-0/scenes/shared/ganon_demo_scene.yml
+    - pal_1-0/code/sys_matrix.yml
+    - pal_1-0/scenes/shared/ganon_demo_room_0Set_000230.yml
+
+ganon_demo_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganon_demo_room_0
+
+
+ganon_demo_room_0Vtx_000530:
+  type: OOT:ARRAY
+  offset: 0x000530
+  symbol: ganon_demo_room_0Vtx_000530
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_0008B0:
+  type: GFX
+  offset: 0x0008B0
+  symbol: ganon_demo_room_0DL_0008B0
+
+ganon_demo_room_0Vtx_0009C0:
+  type: OOT:ARRAY
+  offset: 0x0009C0
+  symbol: ganon_demo_room_0Vtx_0009C0
+  count: 145
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_0012D0:
+  type: GFX
+  offset: 0x0012D0
+  symbol: ganon_demo_room_0DL_0012D0
+
+ganon_demo_room_0Vtx_001568:
+  type: OOT:ARRAY
+  offset: 0x001568
+  symbol: ganon_demo_room_0Vtx_001568
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_001778:
+  type: GFX
+  offset: 0x001778
+  symbol: ganon_demo_room_0DL_001778
+
+ganon_demo_room_0Vtx_001878:
+  type: OOT:ARRAY
+  offset: 0x001878
+  symbol: ganon_demo_room_0Vtx_001878
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_001D78:
+  type: GFX
+  offset: 0x001D78
+  symbol: ganon_demo_room_0DL_001D78
+
+ganon_demo_room_0Vtx_001ED0:
+  type: OOT:ARRAY
+  offset: 0x001ED0
+  symbol: ganon_demo_room_0Vtx_001ED0
+  count: 99
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_002500:
+  type: GFX
+  offset: 0x002500
+  symbol: ganon_demo_room_0DL_002500
+
+ganon_demo_room_0Vtx_002678:
+  type: OOT:ARRAY
+  offset: 0x002678
+  symbol: ganon_demo_room_0Vtx_002678
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_002A38:
+  type: GFX
+  offset: 0x002A38
+  symbol: ganon_demo_room_0DL_002A38
+
+ganon_demo_room_0Vtx_002B78:
+  type: OOT:ARRAY
+  offset: 0x002B78
+  symbol: ganon_demo_room_0Vtx_002B78
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_003018:
+  type: GFX
+  offset: 0x003018
+  symbol: ganon_demo_room_0DL_003018
+
+ganon_demo_room_0Vtx_003170:
+  type: OOT:ARRAY
+  offset: 0x003170
+  symbol: ganon_demo_room_0Vtx_003170
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_0039F0:
+  type: GFX
+  offset: 0x0039F0
+  symbol: ganon_demo_room_0DL_0039F0
+
+ganon_demo_room_0DL_003D58:
+  type: GFX
+  offset: 0x003D58
+  symbol: ganon_demo_room_0DL_003D58
+
+ganon_demo_room_0Vtx_003DA0:
+  type: OOT:ARRAY
+  offset: 0x003DA0
+  symbol: ganon_demo_room_0Vtx_003DA0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_demo_room_0DL_004040:
+  type: GFX
+  offset: 0x004040
+  symbol: ganon_demo_room_0DL_004040
+
+ganon_demo_room_0DL_004140:
+  type: GFX
+  offset: 0x004140
+  symbol: ganon_demo_room_0DL_004140

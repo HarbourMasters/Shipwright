@@ -1,0 +1,90 @@
+:config:
+  segments:
+    - [ 2, 0x01D57BF0 ]
+
+ganon_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ganon_scene
+
+ganon_sceneTLUT_00E7D0:
+  type: TEXTURE
+  offset: 0xE7D0
+  symbol: ganon_sceneTLUT_00E7D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_sceneTLUT_00E9D8:
+  type: TEXTURE
+  offset: 0xE9D8
+  symbol: ganon_sceneTLUT_00E9D8
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_sceneTLUT_00EBE0:
+  type: TEXTURE
+  offset: 0xEBE0
+  symbol: ganon_sceneTLUT_00EBE0
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_sceneTLUT_00EDA0:
+  type: TEXTURE
+  offset: 0xEDA0
+  symbol: ganon_sceneTLUT_00EDA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_sceneTex_00EFA8:
+  type: TEXTURE
+  offset: 0xEFA8
+  symbol: ganon_sceneTex_00EFA8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE7D0
+
+ganon_sceneTex_00F3A8:
+  type: TEXTURE
+  offset: 0xF3A8
+  symbol: ganon_sceneTex_00F3A8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xEDA0
+
+ganon_sceneTex_00F7A8:
+  type: TEXTURE
+  offset: 0xF7A8
+  symbol: ganon_sceneTex_00F7A8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE7D0
+
+ganon_sceneTex_00FBA8:
+  type: TEXTURE
+  offset: 0xFBA8
+  symbol: ganon_sceneTex_00FBA8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE7D0
+
+ganon_sceneTex_00FFA8:
+  type: TEXTURE
+  offset: 0xFFA8
+  symbol: ganon_sceneTex_00FFA8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+ganon_sceneCollisionHeader_00E7A0:
+  type: OOT:COLLISION
+  offset: 0x00E7A0
+  symbol: ganon_sceneCollisionHeader_00E7A0

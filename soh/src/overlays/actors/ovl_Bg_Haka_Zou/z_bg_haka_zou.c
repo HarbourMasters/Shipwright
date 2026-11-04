@@ -274,7 +274,7 @@ void BgHakaZou_WaitForHit(BgHakaZou* this, PlayState* play) {
         if (this->dyna.actor.params == STA_GIANT_BIRD_STATUE) {
             this->timer = 20;
             this->actionFunc = BgHakaZou_BirdStatueAnim_Explode;
-            OnePointCutscene_Init(play, 3400, 999, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3400, 999, &this->dyna.actor, CAM_ID_MAIN);
         } else if (this->dyna.actor.params == 2) {
             BgHakaZou_SpawnRubbleParticles(this, play);
             this->dyna.actor.draw = NULL;
