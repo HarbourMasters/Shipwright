@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <spdlog/spdlog.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 
@@ -416,7 +417,8 @@ void GameInteractor::RawAction::EmulateRandomButtonPress(uint32_t chancePercenta
 }
 
 void GameInteractor::RawAction::AddOrTakeAmmo(int16_t amount, int16_t item) {
-    Inventory_ChangeAmmo(item, amount);
+    // Don't take more than the player has, negative counts crash when drawn
+    Inventory_ChangeAmmo(item, std::max<int16_t>(amount, -AMMO(item)));
 }
 
 void GameInteractor::RawAction::SetRandomWind(bool active) {
