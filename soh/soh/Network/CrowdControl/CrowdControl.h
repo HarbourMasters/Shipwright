@@ -2,9 +2,10 @@
 
 #ifdef __cplusplus
 
-#include <thread>
+#include <chrono>
 #include <memory>
 #include <mutex>
+#include <queue>
 #include <vector>
 
 #include "soh/Network/Network.h"
@@ -63,12 +64,24 @@ class CrowdControl : public Network {
         EffectResult lastExecutionResult;
     } Effect;
 
-    std::thread ccThreadProcess;
-
+    // Only touched on the game thread
     std::vector<std::unique_ptr<Effect>> activeEffects;
-    std::mutex activeEffectsMutex;
+    std::chrono::steady_clock::time_point lastActiveEffectsTick;
+    // Timed effects left over from a disable, retried each frame until removal succeeds
+    std::vector<std::unique_ptr<Effect>> effectsPendingRemoval;
+
+    // Payloads received on the network thread, executed on the game thread
+    std::queue<nlohmann::json> incomingPayloadQueue;
+    std::mutex incomingPayloadQueueMutex;
+    // Payloads emitted on the game thread, sent on the network thread
+    std::queue<nlohmann::json> outgoingPayloadQueue;
+    std::mutex outgoingPayloadQueueMutex;
 
     void HandleRemoteData(nlohmann::json payload);
+    void ProcessIncomingPayload(nlohmann::json payload);
+    void ClearPayloadQueues();
+    bool TryRemoveEffect(Effect* effect);
+    void ProcessPendingRemovals();
     void ProcessActiveEffects();
 
     void EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status);
@@ -82,8 +95,9 @@ class CrowdControl : public Network {
     void Enable();
     void Disable();
     void OnIncomingJson(nlohmann::json payload);
-    void OnConnected();
-    void OnDisconnected();
+    void ProcessOutgoingPackets();
+    void OnGameFrameUpdate();
+    bool NeedsFrameUpdate();
 };
 
 #endif // __cplusplus
