@@ -40,7 +40,7 @@ extern "C" void SOH_MidiTranslator_ProcessNote(Note* note, NoteSubEu* noteSubEu,
     engineNote.noteIndex = noteIndex;
     engineNote.seqPlayer = static_cast<uint8_t>(seqPlayer - gAudioContext.seqPlayers);
     engineNote.seqChannel = SeqChannelIndex(channel);
-    engineNote.fontId = playbackState.fontId;
+    engineNote.fontId = static_cast<uint8_t>(playbackState.fontId);
     engineNote.instOrWave = layer->instOrWave == static_cast<int16_t>(0xFF) ? channel->instOrWave : layer->instOrWave;
     engineNote.semitone = layer->semitone;
     engineNote.freqScale = subAttrs->frequency;
