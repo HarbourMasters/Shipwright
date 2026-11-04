@@ -515,7 +515,7 @@ extern "C" s32 OTRRoom_RequestNewRoom(PlayState* play, RoomContext* roomCtx, s32
         //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
         auto roomData = std::static_pointer_cast<SOH::Scene>(
-            ResourceMgr_GetResourceByNameHandlingMQ(play->roomList[roomNum].fileName));
+            ResourceMgr_LoadResourcePumpingAudio(play->roomList[roomNum].fileName));
         roomCtx->status = 1;
         roomCtx->roomToLoad = roomData.get();
 

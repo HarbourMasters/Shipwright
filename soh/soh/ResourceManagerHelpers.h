@@ -18,6 +18,7 @@ class IResource;
 } // namespace Ship
 
 std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const char* path);
+std::shared_ptr<Ship::IResource> ResourceMgr_LoadResourcePumpingAudio(const char* path);
 
 extern "C" {
 #endif // __cplusplus
