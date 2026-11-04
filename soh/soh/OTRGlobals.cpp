@@ -8,6 +8,8 @@
 #include <vector>
 #include <chrono>
 #include <optional>
+#include <array>
+#include <span>
 #include <spdlog/common.h>
 #include <imgui.h>
 
@@ -16,6 +18,7 @@
 #include <libultraship/bridge/audiobridge.h>
 #include <libultraship/bridge/gfxdebuggerbridge.h>
 #include <libultraship/bridge/windowbridge.h>
+#include <ship/audio/Audio.h>
 #include <ship/Context.h>
 #include <ship/resource/File.h>
 #include <ship/window/Window.h>
@@ -878,7 +881,10 @@ void OTRGlobals::Initialize() {
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
-    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
+    context->InitAudio({ .SampleRate = 32000,
+                         .SampleLength = 1024,
+                         // Deeper buffering would delay every sound; SOH_Audio_Pump covers long loads.
+                         .DesiredBuffered = 2400 });
 
     // The menu is set up before audio is initialized, so its list of available audio backends has to be
     // populated here rather than in Menu::InitElement (where the window backends are handled).
@@ -1066,44 +1072,192 @@ int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
+OTRAudioState audio;
+
+// AudioMgr_ThreadEntry(&gAudioMgr);
+//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
+//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
+#define SAMPLES_HIGH 544
+#define SAMPLES_LOW 528
+
+#define NUM_AUDIO_CHANNELS 2
+
+// Production is paced by backend fill rather than by frames, so the dithering
+// has to be exact or tempo drifts.
+static int32_t sSampleDebtThirds;
+
+static std::vector<s16> sResetRingOut;
+static size_t sResetRingOutPos = 0;
+static bool sResetRingOutCoversReset = false;
+
+// The reset cuts whatever still sounds. The console reached it late enough for sound effects
+// to have played out; the port gets there in a fraction of the time, so render that ahead from
+// the old state, which the reset wipes anyway, and play it over the reset.
+extern "C" void SOH_Audio_RenderResetRingOut() {
+    constexpr int32_t kInaudiblePeak = 33; // -60 dBFS
+    constexpr size_t kMaxFrames = 90;
+    constexpr size_t kQuietFramesToStop = 8;
+    constexpr size_t kFadeOutFrames = 320;
+
+    for (s32 i = 0; i < gAudioContext.audioBufferParameters.numSequencePlayers; i++) {
+        if (i != SEQ_PLAYER_SFX) {
+            AudioSeq_SequencePlayerDisableAsFinished(&gAudioContext.seqPlayers[i]);
+        }
+    }
+
+    std::vector<s16> ringOut;
+    std::array<s16, SAMPLES_HIGH * NUM_AUDIO_CHANNELS> frame{};
+    int32_t debtThirds = sSampleDebtThirds;
+    size_t quietFrames = 0;
+    for (size_t i = 0; i < kMaxFrames; i++) {
+        const u32 numSamples = debtThirds > 0 ? SAMPLES_HIGH : SAMPLES_LOW;
+        debtThirds += 1600 - 3 * static_cast<int32_t>(numSamples);
+
+        s32 writtenCmds;
+        AudioSynth_Update(gAudioContext.curAbiCmdBuf, &writtenCmds, frame.data(), static_cast<s32>(numSamples));
+        const auto rendered = std::span(frame).first(numSamples * NUM_AUDIO_CHANNELS);
+        ringOut.insert(ringOut.end(), rendered.begin(), rendered.end());
+
+        int32_t peak = 0;
+        for (const s16 sample : rendered) {
+            peak = std::max(peak, std::abs(static_cast<int32_t>(sample)));
+        }
+        quietFrames = peak < kInaudiblePeak ? quietFrames + 1 : 0;
+        if (quietFrames == kQuietFramesToStop) {
+            break;
+        }
+    }
+
+    const size_t fadeFrames = std::min(kFadeOutFrames, ringOut.size() / NUM_AUDIO_CHANNELS);
+    const size_t fadeStart = ringOut.size() - fadeFrames * NUM_AUDIO_CHANNELS;
+    for (size_t i = fadeStart; i < ringOut.size(); i++) {
+        const size_t framesLeft = (ringOut.size() - i + 1) / NUM_AUDIO_CHANNELS;
+        ringOut.at(i) =
+            static_cast<s16>(ringOut.at(i) * static_cast<int32_t>(framesLeft) / static_cast<int32_t>(fadeFrames + 1));
+    }
+
+    const size_t pending = sResetRingOut.size() - sResetRingOutPos;
+    ringOut.resize(std::max(ringOut.size(), pending), 0);
+    for (size_t i = 0; i < pending; i++) {
+        ringOut.at(i) = static_cast<s16>(
+            std::clamp<int32_t>(ringOut.at(i) + sResetRingOut.at(sResetRingOutPos + i), INT16_MIN, INT16_MAX));
+    }
+    sResetRingOut = std::move(ringOut);
+    sResetRingOutPos = 0;
+    sResetRingOutCoversReset = true;
+}
+
+static void MixResetRingOut(std::span<s16> output) {
+    if (sResetRingOutCoversReset) {
+        // The engine is playing the old state from after the ring-out; it was heard already.
+        std::fill(output.begin(), output.end(), 0);
+        sResetRingOutCoversReset = gAudioContext.resetStatus != 0;
+    }
+
+    const size_t count = std::min(output.size(), sResetRingOut.size() - sResetRingOutPos);
+    for (size_t i = 0; i < count; i++) {
+        output[i] = static_cast<s16>(
+            std::clamp<int32_t>(output[i] + sResetRingOut.at(sResetRingOutPos + i), INT16_MIN, INT16_MAX));
+    }
+    sResetRingOutPos += count;
+    if (sResetRingOutPos == sResetRingOut.size()) {
+        sResetRingOut.clear();
+        sResetRingOutPos = 0;
+    }
+}
+
+static void OTRAudio_ProduceUpdate() {
+    u32 num_audio_samples = sSampleDebtThirds > 0 ? SAMPLES_HIGH : SAMPLES_LOW;
+    sSampleDebtThirds += (1600 - 3 * static_cast<int32_t>(num_audio_samples));
+
+    static thread_local s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS];
+
+    AudioMgr_CreateNextAudioBuffer(audio_buffer, num_audio_samples);
+    MixResetRingOut(std::span(audio_buffer, num_audio_samples * NUM_AUDIO_CHANNELS));
+    AudioPlayer_Play(reinterpret_cast<u8*>(audio_buffer), num_audio_samples * NUM_AUDIO_CHANNELS * sizeof(int16_t));
+}
+
+static bool BackendHasRoom() {
+    return AudioPlayer_Buffered() + SAMPLES_HIGH <= AudioPlayer_GetDesiredBuffered();
+}
+
+// The null backend never drains, so a game-thread pump paces it by wall clock.
+static bool AudioNoDrain() {
+    auto audioBackend = Ship::Context::GetRawInstance()->GetAudio();
+    return audioBackend != nullptr && audioBackend->GetCurrentAudioBackend() == Ship::AudioBackend::NUL;
+}
+
 void OTRAudio_Thread() {
+    // The engine runs only while game logic is stopped (frame window, input poll),
+    // as on console. The timeout keeps a long present from starving it.
+    constexpr auto kSelfPumpInterval = std::chrono::milliseconds(5);
+
     while (audio.running) {
         {
             std::unique_lock<std::mutex> Lock(audio.mutex);
-            while (!audio.processing && audio.running) {
-                audio.cv_to_thread.wait(Lock);
-            }
+            audio.cv_to_thread.wait_for(Lock, kSelfPumpInterval, [&] {
+                return !audio.running || (audio.in_frame && (BackendHasRoom() || !audio.produced_in_window));
+            });
 
             if (!audio.running) {
                 break;
             }
         }
-        std::unique_lock<std::mutex> Lock(audio.mutex);
-// AudioMgr_ThreadEntry(&gAudioMgr);
-//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-#define SAMPLES_HIGH 560
-#define SAMPLES_LOW 528
 
-#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
-#define NUM_AUDIO_CHANNELS 2
+        while (audio.running) {
+            std::unique_lock<std::mutex> Lock(audio.mutex);
 
-        int samples_left = AudioPlayer_Buffered();
-        u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+            // Producer guard (banteg/Shipwright#6594), but never skip a whole window: the
+            // game posts a command batch every frame into a 4-slot queue, and a dropped
+            // batch can hold the reset command the game then waits on forever (#7290).
+            if (!audio.in_frame || (!BackendHasRoom() && audio.produced_in_window)) {
+                break;
+            }
 
-        // 3 is the maximum authentic frame divisor.
-        s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
-                                           num_audio_samples);
+            OTRAudio_ProduceUpdate();
+            audio.produced_in_window = true;
+            audio.primed = true;
         }
-
-        AudioPlayer_Play((u8*)audio_buffer,
-                         num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
-
-        audio.processing = false;
-        audio.cv_from_thread.notify_one();
     }
+}
+
+// Called on the game thread while game logic is blocked, e.g. by a cold scene
+// load, so the engine cannot race it and the ring does not drain to silence.
+extern "C" void SOH_Audio_Pump() {
+    if (!audio.running) {
+        return;
+    }
+
+    std::unique_lock<std::mutex> Lock(audio.mutex);
+    if (!audio.primed) {
+        return;
+    }
+
+    while (BackendHasRoom()) {
+        OTRAudio_ProduceUpdate();
+    }
+    if (AudioNoDrain()) {
+        auto now = std::chrono::steady_clock::now();
+        if (now - audio.last_drainless_update >= std::chrono::milliseconds(15)) {
+            OTRAudio_ProduceUpdate();
+            audio.last_drainless_update = now;
+        }
+    }
+}
+
+// The input poll pumps SDL events, which block for ~300 ms on a minimize or
+// restore. Game logic is stopped there, so the engine may run as in a frame.
+extern "C" void SOH_Audio_BeginInputPoll() {
+    {
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        audio.in_frame = true;
+    }
+    audio.cv_to_thread.notify_one();
+}
+
+extern "C" void SOH_Audio_EndInputPoll() {
+    std::unique_lock<std::mutex> Lock(audio.mutex);
+    audio.in_frame = false;
 }
 
 void OTRAudio_Init() {
@@ -1826,7 +1980,8 @@ void RunCommands(Gfx* Commands, int time, int step, int denom, int count) {
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
-        audio.processing = true;
+        audio.in_frame = true;
+        audio.produced_in_window = false;
     }
 
     audio.cv_to_thread.notify_one();
@@ -1877,9 +2032,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
-        while (audio.processing) {
-            audio.cv_from_thread.wait(Lock);
-        }
+        audio.in_frame = false;
     }
 
     bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);

@@ -2709,8 +2709,11 @@ void FileChoose_LoadGame(GameState* thisx) {
     u16 swordEquipValue;
     s32 pad;
 
-    Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    // Still playing from the confirm on the port, which gets here in half the console's time.
+    if (!Audio_IsSfxPlaying(NA_SE_SY_FSEL_DECIDE_L)) {
+        Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    }
     gSaveContext.fileNum = this->buttonIndex;
     gSaveContext.gameMode = GAMEMODE_NORMAL;
     Randomizer_WaitForGeneration();

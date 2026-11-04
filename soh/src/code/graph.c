@@ -433,6 +433,8 @@ uint64_t GetPerfCounter();
 extern AudioMgr gAudioMgr;
 
 extern void ProcessSaveStateRequests(void);
+extern void SOH_Audio_BeginInputPoll(void);
+extern void SOH_Audio_EndInputPoll(void);
 
 static void RunFrame() {
     u32 size;
@@ -475,7 +477,9 @@ static void RunFrame() {
 
             Graph_StartFrame();
 
+            SOH_Audio_BeginInputPoll();
             PadMgr_ThreadEntry(&gPadMgr);
+            SOH_Audio_EndInputPoll();
 
             Graph_Update(&runFrameContext.gfxCtx, gGameState);
             // ticksB = GetPerfCounter();

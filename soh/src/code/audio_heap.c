@@ -9,6 +9,7 @@ void AudioHeap_UnapplySampleCache(SampleCacheEntry* entry, SoundFontSample* samp
 void AudioHeap_DiscardSampleCaches(void);
 void AudioHeap_DiscardSampleBank(s32 sampleBankId);
 void AudioHeap_DiscardSampleBanks(void);
+extern void SOH_Audio_RenderResetRingOut(void);
 
 f32 func_800DDE20(f32 arg0) {
     return 256.0f * gAudioContext.audioBufferParameters.unkUpdatesPerFrameScaled / arg0;
@@ -738,6 +739,7 @@ s32 AudioHeap_ResetStep(void) {
 
     switch (gAudioContext.resetStatus) {
         case 5:
+            SOH_Audio_RenderResetRingOut();
             for (i = 0; i < gAudioContext.audioBufferParameters.numSequencePlayers; i++) {
                 AudioSeq_SequencePlayerDisableAsFinished(&gAudioContext.seqPlayers[i]);
             }
