@@ -15,6 +15,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "spdlog/spdlog.h"
 
 std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
@@ -25,6 +26,7 @@ static std::set<std::string> selectedEnabledModFiles;
 static int lastSelectedModIndex = -1;
 static bool boxSelectingMods = false;
 static ImVec2 boxSelectStart;
+static bool sModsFolderMissing = false;
 
 struct ModRowBounds {
     std::string file;
@@ -53,6 +55,7 @@ static WidgetInfo tabHotkeyWidget;
 #define CVAR_ENABLED_MODS_NAME CVAR_SETTING("EnabledMods")
 #define CVAR_ENABLED_MODS_DEFAULT ""
 #define CVAR_ENABLED_MODS_VALUE CVarGetString(CVAR_ENABLED_MODS_NAME, CVAR_ENABLED_MODS_DEFAULT)
+#define CVAR_DISABLED_MODS_NAME CVAR_SETTING("DisabledMods")
 
 // "|" was chosen as the separator due to
 // it being an invalid character in NTFS
@@ -66,10 +69,10 @@ static WidgetInfo tabHotkeyWidget;
 // - any private use character
 #define SEPARATOR "|"
 
-void SetEnabledModsCVarValue() {
+std::string JoinModList(const std::vector<std::string>& mods) {
     std::string s = "";
 
-    for (auto& modPath : enabledModFiles) {
+    for (auto& modPath : mods) {
         s += modPath + SEPARATOR;
     }
 
@@ -77,8 +80,12 @@ void SetEnabledModsCVarValue() {
     if (s.length() != 0) {
         s.pop_back();
     }
+    return s;
+}
 
-    CVarSetString(CVAR_ENABLED_MODS_NAME, s.c_str());
+void SetEnabledModsCVarValue() {
+    CVarSetString(CVAR_ENABLED_MODS_NAME, JoinModList(enabledModFiles).c_str());
+    CVarSetString(CVAR_DISABLED_MODS_NAME, JoinModList(disabledModFiles).c_str());
     Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
@@ -183,6 +190,13 @@ std::vector<std::string> GetEnabledModsFromCVar() {
     return StringHelper::Split(enabledModsCVarValue, SEPARATOR);
 }
 
+std::vector<std::string> GetDisabledModsFromCVar() {
+    std::string disabledModsCVarValue = CVarGetString(CVAR_DISABLED_MODS_NAME, "");
+    if (disabledModsCVarValue.empty())
+        return {};
+    return StringHelper::Split(disabledModsCVarValue, SEPARATOR);
+}
+
 std::vector<std::string>& GetModFiles(bool enabled) {
     return enabled ? enabledModFiles : disabledModFiles;
 }
@@ -213,9 +227,9 @@ void UpdateModFiles(bool init = false, bool reset = false) {
     if (init || reset) {
         enabledModFiles.clear();
         enabledModFiles = GetEnabledModsFromCVar();
+        disabledModFiles = GetDisabledModsFromCVar();
         ClearSelectedMods();
     }
-    disabledModFiles.clear();
     unsupportedFiles.clear();
     filePaths.clear();
     bool changed = false;
@@ -223,6 +237,7 @@ void UpdateModFiles(bool init = false, bool reset = false) {
     std::map<std::string, std::string> tempMods;
     std::vector<std::filesystem::path> ootrsFiles;
     if (modsPath.length() > 0 && std::filesystem::exists(modsPath)) {
+        SPDLOG_INFO("Scanning mods folder {}", modsPath);
         std::vector<std::filesystem::path> enabledFiles;
         if (std::filesystem::is_directory(modsPath)) {
             for (const std::filesystem::directory_entry& p : std::filesystem::recursive_directory_iterator(
@@ -240,8 +255,9 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                 if (!IsValidExtension(extension)) {
                     continue;
                 }
-                bool enabled = SohUtils::Contains(filename, enabledModFiles);
-                if (!enabled) {
+                bool listed =
+                    SohUtils::Contains(filename, enabledModFiles) || SohUtils::Contains(filename, disabledModFiles);
+                if (!listed) {
                     tempMods.emplace(p.path().lexically_normal().generic_string(), filename);
                 }
                 filePaths.emplace(filename, p.path());
@@ -253,14 +269,18 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                 }
                 tempMods.clear();
             }
+            // Nothing loads from a disabled entry, so one whose file is gone just leaves the list.
+            if (std::erase_if(disabledModFiles, [](const std::string& mod) { return !filePaths.contains(mod); }) > 0) {
+                changed = true;
+            }
             if (init) {
                 std::vector<std::string> enabledTemp(enabledModFiles);
                 for (std::string mod : enabledTemp) {
                     if (filePaths.contains(mod)) {
                         GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
+                        SPDLOG_INFO("Enabled mod {}", filePaths.at(mod).generic_string());
                     } else {
-                        enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
-                        changed = true;
+                        SPDLOG_WARN("Enabled mod \"{}\" not found in {}", mod, modsPath);
                     }
                 }
                 std::sort(ootrsFiles.begin(), ootrsFiles.end());
@@ -270,6 +290,9 @@ void UpdateModFiles(bool init = false, bool reset = false) {
         if (changed) {
             SetEnabledModsCVarValue();
         }
+    } else {
+        SPDLOG_WARN("Mods folder \"{}\" does not exist; custom music and other mods cannot load from it", modsPath);
+        sModsFolderMissing = true;
     }
 }
 
@@ -277,7 +300,8 @@ extern "C" void gfx_texture_cache_clear();
 
 void EnableMod(std::string file) {
     disabledModFiles.erase(std::find(disabledModFiles.begin(), disabledModFiles.end(), file));
-    enabledModFiles.insert(enabledModFiles.begin(), file);
+    // The end is the top of the menu, where a newly found mod lands too.
+    enabledModFiles.push_back(file);
 
     // TODO: runtime changes
     // GetArchiveManager()->AddArchive(file);
@@ -345,6 +369,7 @@ void DrawMods(bool enabled) {
     bool madeAnyChange = false;
     int switchFromIndex = -1;
     int switchToIndex = -1;
+    std::string toggledFile;
 
     if (enabled) {
         UpdateBoxSelection();
@@ -356,19 +381,19 @@ void DrawMods(bool enabled) {
         if (enabled) {
             ImGui::BeginGroup();
         }
-        // if (UIWidgets::StateButton((file + "_left_right").c_str(), enabled ? ICON_FA_ARROW_RIGHT :
-        // ICON_FA_ARROW_LEFT,
-        //                            ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
-        //     if (enabled) {
-        //         DisableMod(file);
-        //     } else {
-        //         EnableMod(file);
-        //     }
-        // }
+        const bool missing = !filePaths.contains(file);
+        if (UIWidgets::StateButton((file + "_left_right").c_str(),
+                                   missing ? ICON_FA_TIMES : (enabled ? ICON_FA_ARROW_RIGHT : ICON_FA_ARROW_LEFT),
+                                   ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
+            toggledFile = file;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("%s", missing ? "Remove from the list" : (enabled ? "Disable" : "Enable"));
+        }
 
         // it's not relevant to reorder disabled mods
         if (enabled) {
-            // ImGui::SameLine();
+            ImGui::SameLine();
             if (i == selectedModFiles.size() - 1) {
                 ImGui::BeginDisabled();
             }
@@ -398,14 +423,32 @@ void DrawMods(bool enabled) {
         }
 
         ImGui::SameLine();
-        std::string displayName = filePaths.at(file).filename().generic_string();
+        std::string displayName = missing ? file : filePaths.at(file).filename().generic_string();
         if (enabled) {
             ImGui::PushID(file.c_str());
             float selectableWidth =
                 ImGui::CalcTextSize(displayName.c_str()).x + ImGui::GetStyle().FramePadding.x * 2.0f;
+            if (missing) {
+                ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Red));
+                ImGui::PushStyleColor(ImGuiCol_TextSelectedBg, UIWidgets::ColorValues.at(UIWidgets::Colors::DarkRed));
+            }
             if (ImGui::Selectable(displayName.c_str(), selectedEnabledModFiles.contains(file), 0,
                                   ImVec2(selectableWidth, 0.0f)))
                 HandleModSelection(i, file);
+            if (missing) {
+                ImGui::PopStyleColor();
+                ImGui::PopStyleColor();
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::BeginTooltip();
+                if (missing) {
+                    ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Red),
+                                       "Mod file not found: expected in mods folder.");
+                } else {
+                    ImGui::Text("Loaded from: %s", filePaths.at(file).generic_string().c_str());
+                }
+                ImGui::EndTooltip();
+            }
             ImGui::PopID();
         } else {
             ImGui::Text("%s", displayName.c_str());
@@ -437,6 +480,18 @@ void DrawMods(bool enabled) {
         std::iter_swap(selectedModFiles.begin() + switchFromIndex, selectedModFiles.begin() + switchToIndex);
         ClearSelectedMods();
         AfterModChange();
+    }
+
+    if (toggledFile.empty()) {
+        return;
+    }
+    if (!enabled) {
+        EnableMod(toggledFile);
+    } else if (filePaths.contains(toggledFile)) {
+        DisableMod(toggledFile);
+    } else {
+        enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), toggledFile));
+        ClearSelectedMods();
     }
 }
 
@@ -480,6 +535,17 @@ void ModMenuWindow::DrawElement() {
         "below them.");
 
     DrawCustomMusicSummary();
+    if (sModsFolderMissing) {
+        ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Red),
+                           "No mods folder found; custom mods cannot load.");
+    }
+    const auto missingCount = std::count_if(enabledModFiles.begin(), enabledModFiles.end(),
+                                            [](const std::string& mod) { return !filePaths.contains(mod); });
+    if (missingCount > 0 && !sModsFolderMissing) {
+        ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Red),
+                           "%d enabled mod(s) not found in the mods folder: put the file back, or Edit and remove it.",
+                           static_cast<int>(missingCount));
+    }
 
     // if (UIWidgets::Button(
     //         "Update", UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Currently editing..." }
@@ -533,7 +599,7 @@ void ModMenuWindow::DrawElement() {
     ImGui::BeginDisabled(!editing);
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Enabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-        // ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
         ImGui::TableHeadersRow();
         ImGui::PopItemFlag();
@@ -547,13 +613,13 @@ void ModMenuWindow::DrawElement() {
             ImGui::EndChild();
         }
 
-        /*ImGui::TableNextColumn();
+        ImGui::TableNextColumn();
 
         if (ImGui::BeginChild("Disabled Mods", ImVec2(0, -8))) {
             DrawMods(false);
 
             ImGui::EndChild();
-        }*/
+        }
 
         ImGui::EndTable();
     }
