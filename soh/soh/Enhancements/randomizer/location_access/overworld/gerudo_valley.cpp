@@ -63,7 +63,8 @@ void RegionTable_Init_GerudoValley() {
     }, {
         //Exits
         ENTRANCE(RR_GV_UPPER_STREAM_WATER, true),
-        ENTRANCE(RR_GV_WATERFALL_ALCOVE,   (logic->CanUse(RG_LONGSHOT) && (logic->HasItem(RG_CLIMB) || ctx->GetTrickOption(RT_HOOKSHOT_LADDERS))) || logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN)),
+        ENTRANCE(RR_GV_WATERFALL_ALCOVE,   (logic->CanUse(RG_LONGSHOT) && (logic->HasItem(RG_CLIMB) || ctx->GetTrickOption(RT_HOOKSHOT_LADDERS))) ||
+                                               (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN))),
     });
 
     areaTable[RR_GV_UPPER_STREAM_WATER] = Region("GV Upper Stream Water", SCENE_GERUDO_VALLEY, {}, {}, {
