@@ -54,7 +54,12 @@ static void UseTunicBoots(Player* player, PlayState* play, Input* input) {
         if (item >= ITEM_BOOTS_KOKIRI) {
             u16 bootsValue = item - ITEM_BOOTS_KOKIRI + 1;
             if (item == ITEM_BOOTS_KOKIRI && CVAR_CYCLE_KOKIRI_VALUE) {
-                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, GetNextWearableEquipValue(EQUIP_TYPE_BOOTS));
+                u16 nextBoots = GetNextWearableEquipValue(EQUIP_TYPE_BOOTS);
+                // Nothing else to switch to, so don't re-equip or play the sound
+                if (nextBoots == CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS)) {
+                    return;
+                }
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, nextBoots);
             } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
                 Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
             } else {
@@ -66,7 +71,12 @@ static void UseTunicBoots(Player* player, PlayState* play, Input* input) {
         } else if (item >= ITEM_TUNIC_KOKIRI) {
             u16 tunicValue = item - ITEM_TUNIC_KOKIRI + 1;
             if (item == ITEM_TUNIC_KOKIRI && CVAR_CYCLE_KOKIRI_VALUE) {
-                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, GetNextWearableEquipValue(EQUIP_TYPE_TUNIC));
+                u16 nextTunic = GetNextWearableEquipValue(EQUIP_TYPE_TUNIC);
+                // Nothing else to switch to, so don't re-equip or play the sound
+                if (nextTunic == CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
+                    return;
+                }
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, nextTunic);
             } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
                 Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
             } else {
