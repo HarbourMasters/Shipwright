@@ -84,17 +84,16 @@ void RegisterRocsFeather() {
 
     COND_VB_SHOULD(VB_DRAW_CUSTOM_ITEM_NAME, shouldRegister, {
         u32 namedItem = va_arg(args, u32);
+        const char** textureName = va_arg(args, const char**);
         if (namedItem == ITEM_ROCS_FEATHER) {
             *should = true;
-            const char* textureName = gRocsFeatherItemNameENGTex;
+            *textureName = gRocsFeatherItemNameENGTex;
 
             if (gSaveContext.language == LANGUAGE_GER) {
-                textureName = gRocsFeatherItemNameGERTex;
+                *textureName = gRocsFeatherItemNameGERTex;
             } else if (gSaveContext.language == LANGUAGE_FRA) {
-                textureName = gRocsFeatherItemNameFRATex;
+                *textureName = gRocsFeatherItemNameFRATex;
             }
-
-            memcpy(gPlayState->pauseCtx.nameSegment, textureName, strlen(textureName) + 1);
         }
     });
 }

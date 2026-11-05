@@ -40,6 +40,7 @@ extern u8 gAreaGsFlags[];
                           itemIndex)
 
 void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx);
+const char* KaleidoScope_GetItemNameTexture(u16 item);
 s32 KaleidoScope_UpdateQuestStatusPoint(PauseContext* pauseCtx, s32 point);
 void KaleidoScope_DrawDebugEditor(PlayState* play);
 void KaleidoScope_DrawPlayerWork(PlayState* play);

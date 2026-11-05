@@ -900,6 +900,7 @@ void Horse_SetupInCutscene(PlayState* play, Player* player);
 void Horse_InitPlayerHorse(PlayState* play, Player* player);
 void Horse_RotateToPoint(Actor* actor, Vec3f* arg1, s16 arg2);
 s32 Jpeg_Decode(void* data, void* zbuffer, void* workBuff, u32 workSize);
+s32 KaleidoSetup_CanOpen(PlayState* play);
 void KaleidoSetup_Update(PlayState* play);
 void KaleidoSetup_Init(PlayState* play);
 void KaleidoSetup_Destroy(PlayState* play);

@@ -2435,6 +2435,33 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+// SOH [Enhancements] The name texture the pause menu shows for an item, including custom items. Also used by the
+// radial item menu, which needs item names while the pause menu (and its name segment) isn't loaded.
+const char* KaleidoScope_GetItemNameTexture(u16 item) {
+    const char* textureName = NULL;
+
+    if (GameInteractor_Should(VB_DRAW_CUSTOM_ITEM_NAME, false, item, &textureName) && textureName != NULL) {
+        return textureName;
+    }
+
+    // #region SOH [NTSC] - There's a lot of OOB/Incorrect accesses that can occur so make sure the index selects
+    // something valid
+    u16 index = item % 123;
+    // #endregion
+
+    if (gSaveContext.language >= LANGUAGE_GER) {
+        index += 123;
+    }
+    if (gSaveContext.language >= LANGUAGE_FRA) {
+        index += 123;
+    }
+    if (gSaveContext.language >= LANGUAGE_JPN) {
+        index += 123;
+    }
+
+    return iconNameTextures[index];
+}
+
 void KaleidoScope_UpdateNamePanel(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     u16 sp2A;
@@ -2477,29 +2504,10 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
                 const char* textureName = mapNameTextures[sp2A];
                 memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             } else {
-                // #region SOH [NTSC] - There's a lot of OOB/Incorrect accesses that can occur so make sure sp2A selects
-                // something valid
-                sp2A %= 123;
-                // #endregion
                 osSyncPrintf("zoom_name=%d\n", pauseCtx->namedItem);
 
-                if (gSaveContext.language >= LANGUAGE_GER) {
-                    sp2A += 123;
-                }
-                if (gSaveContext.language >= LANGUAGE_FRA) {
-                    sp2A += 123;
-                }
-                if (gSaveContext.language >= LANGUAGE_JPN) {
-                    sp2A += 123;
-                }
-
-                osSyncPrintf("J_N=%d  point=%d\n", gSaveContext.language, sp2A);
-
-                const char* textureName = iconNameTextures[sp2A];
-
-                if (!GameInteractor_Should(VB_DRAW_CUSTOM_ITEM_NAME, false, pauseCtx->namedItem)) {
-                    memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
-                }
+                const char* textureName = KaleidoScope_GetItemNameTexture(pauseCtx->namedItem);
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             }
 
             pauseCtx->nameDisplayTimer = 0;
