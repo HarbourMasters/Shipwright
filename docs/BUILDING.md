@@ -279,48 +279,6 @@ cmake --build build-cmake --target clean
 cmake --build build-cmake --target ExtractAssetHeaders
 ```
 
-## Switch
-1. Requires that your build machine is setup with the tools necessary for your platform above
-2. Requires that you have the switch build tools installed
-3. Clone the Ship of Harkinian repository
-4. Place one or more [compatible](#compatible-roms) roms in the `roms` directory with namings of your choice
-
-```bash
-cd Shipwright
-# Setup cmake project for your host machine
-cmake -H. -Bbuild-cmake -GNinja
-# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
-cmake --build build-cmake --target ExtractAssets
-# Setup cmake project for building for Switch
-cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
-# Build project and generate nro
-cmake --build build-switch --target soh_nro
-
-# Now you can run the executable in ./build-switch/soh/soh.nro
-# To develop the project open the repository in VSCode (or your preferred editor)
-```
-
-## Wii U
-1. Requires that your build machine is setup with the tools necessary for your platform above
-2. Requires that you have the Wii U build tools installed
-3. Clone the Ship of Harkinian repository
-4. Place one or more [compatible](#compatible-roms) roms in the `roms` directory with namings of your choice
-
-```bash
-cd Shipwright
-# Setup cmake project for your host machine
-cmake -H. -Bbuild-cmake -GNinja
-# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
-cmake --build build-cmake --target ExtractAssets
-# Setup cmake project for building for Wii U
-cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
-# Build project and generate rpx
-cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb)
-
-# Now you can run the executable in ./build-wiiu/soh/soh.rpx or the Wii U Homebrew Bundle in ./build-wiiu/soh/soh.wuhb
-# To develop the project open the repository in VSCode (or your preferred editor)
-```
-
 # Compatible Roms
 See [`supportedHashes.json`](supportedHashes.json)
 
