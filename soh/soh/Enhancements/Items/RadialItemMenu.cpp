@@ -13,6 +13,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "textures/item_name_static/item_name_static.h"
 #include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 extern PlayState* gPlayState;
 int16_t OTRGetRectDimensionFromLeftEdge(float v);
@@ -38,6 +39,247 @@ int16_t OTRGetRectDimensionFromRightEdge(float v);
 #define RADIAL_STICK_DEADZONE 45
 // How far (in radians) the stick has to move past the edge of the highlighted item's slice before the highlight moves
 #define RADIAL_STICK_HYSTERESIS (M_PI / 36.0f)
+#define RADIAL_ITEM_NAME_COUNT (ITEM_CLAIM_CHECK + 1)
+
+// Same layout as kaleido's iconNameTextures, trimmed to the items that can sit in an inventory slot
+static const char* sItemNameTextures[][RADIAL_ITEM_NAME_COUNT] = {
+    {
+        // LANGUAGE_ENG
+        gDekuStickItemNameENGTex,
+        gDekuNutItemNameENGTex,
+        gBombItemNameENGTex,
+        gFairyBowItemNameENGTex,
+        gFireArrowItemNameENGTex,
+        gDinsFireItemNameENGTex,
+        gFairySlingshotItemNameENGTex,
+        gFairyOcarinaItemNameENGTex,
+        gOcarinaOfTimeItemNameENGTex,
+        gBombchuItemNameENGTex,
+        gHookshotItemNameENGTex,
+        gLongshotItemNameENGTex,
+        gIceArrowItemNameENGTex,
+        gFaroresWindItemNameENGTex,
+        gBoomerangItemNameENGTex,
+        gLensItemNameENGTex,
+        gMagicBeansItemNameENGTex,
+        gMegatonHammerItemNameENGTex,
+        gLightArrowItemNameENGTex,
+        gNayrusLoveItemNameENGTex,
+        gEmptyBottleItemNameENGTex,
+        gRedPotionItemNameENGTex,
+        gGreenPotionItemNameENGTex,
+        gBluePotionItemNameENGTex,
+        gBottledFairyItemNameENGTex,
+        gFishItemNameENGTex,
+        gFullMilkItemNameENGTex,
+        gRutosLetterItemNameENGTex,
+        gBlueFireItemNameENGTex,
+        gBugItemNameENGTex,
+        gBigPoeItemNameENGTex,
+        gHalfMilkItemNameENGTex,
+        gPoeItemNameENGTex,
+        gWeirdEggItemNameENGTex,
+        gCuccoItemNameENGTex,
+        gZeldasLetterItemNameENGTex,
+        gKeatonMaskItemNameENGTex,
+        gSkullMaskItemNameENGTex,
+        gSpookyMaskItemNameENGTex,
+        gBunnyHoodItemNameENGTex,
+        gGoronMaskItemNameENGTex,
+        gZoraMaskItemNameENGTex,
+        gGerudoMaskItemNameENGTex,
+        gMaskofTruthItemNameENGTex,
+        gSOLDOUTItemNameENGTex,
+        gPocketEggItemNameENGTex,
+        gPocketCuccoItemNameENGTex,
+        gCojiroItemNameENGTex,
+        gOddMushroomItemNameENGTex,
+        gOddPotionItemNameENGTex,
+        gPoachersSawItemNameENGTex,
+        gBrokenGoronsSwordItemNameENGTex,
+        gPrescriptionItemNameENGTex,
+        gEyeBallFrogItemNameENGTex,
+        gEyeDropsItemNameENGTex,
+        gClaimCheckItemNameENGTex,
+    },
+    {
+        // LANGUAGE_GER
+        gDekuStickItemNameGERTex,
+        gDekuNutItemNameGERTex,
+        gBombItemNameItemNameGERTex,
+        gFairyBowItemNameGERTex,
+        gFireArrowItemNameUnk2GERTex,
+        gDinsFireItemNameGERTex,
+        gFairySlingshotItemNameGERTex,
+        gFairyOcarinaItemNameGERTex,
+        gOcarinaOfTimeItemNameGERTex,
+        gBombchuItemNameGERTex,
+        gHookshotItemNameGERTex,
+        gLongshotItemNameGERTex,
+        gIceArrowItemNameGERTex,
+        gFaroresWindItemNameGERTex,
+        gBoomerangItemNameGERTex,
+        gLensItemNameGERTex,
+        gMagicBeansItemNameGERTex,
+        gMegatonHammerItemNameGERTex,
+        gLightArrowItemNameGERTex,
+        gNayrusLoveItemNameGERTex,
+        gEmptyBottleItemNameGERTex,
+        gRedPotionItemNameGERTex,
+        gGreenPotionItemNameGERTex,
+        gBluePotionItemNameGERTex,
+        gBottledFairyItemNameGERTex,
+        gFishItemNameGERTex,
+        gFullMilkItemNameGERTex,
+        gRutosLetterItemNameGERTex,
+        gBlueFireItemNameGERTex,
+        gBugItemNameGERTex,
+        gBigPoeItemNameGERTex,
+        gHalfMilkItemNameGERTex,
+        gPoeItemNameGERTex,
+        gWeirdEggItemNameGERTex,
+        gCuccoItemNameGERTex,
+        gZeldasLetterItemNameGERTex,
+        gKeatonMaskItemNameGERTex,
+        gSkullMaskItemNameGERTex,
+        gSpookyMaskItemNameGERTex,
+        gBunnyHoodItemNameGERTex,
+        gGoronMaskItemNameGERTex,
+        gZoraMaskItemNameGERTex,
+        gGerudoMaskItemNameGERTex,
+        gMaskofTruthItemNameGERTex,
+        gSOLDOUTItemNameGERTex,
+        gPocketEggItemNameGERTex,
+        gPocketCuccoItemNameGERTex,
+        gCojiroItemNameGERTex,
+        gOddMushroomItemNameGERTex,
+        gOddPotionItemNameGERTex,
+        gPoachersSawItemNameGERTex,
+        gBrokenGoronsSwordItemNameGERTex,
+        gPrescriptionItemNameGERTex,
+        gEyeBallFrogItemNameGERTex,
+        gEyeDropsItemNameGERTex,
+        gClaimCheckItemNameGERTex,
+    },
+    {
+        // LANGUAGE_FRA
+        gDekuStickItemNameFRATex,
+        gDekuNutItemNameFRATex,
+        gBombItemNameFRATex,
+        gFairyBowItemNameFRATex,
+        gFireArrowItemNameFRATex,
+        gDinsFireItemNameFRATex,
+        gFairySlingshotItemNameFRATex,
+        gFairyOcarinaItemNameFRATex,
+        gOcarinaOfTimeItemNameFRATex,
+        gBombchuItemNameFRATex,
+        gHookshotItemNameFRATex,
+        gLongshotItemNameFRATex,
+        gIceArrowItemNameFRATex,
+        gFaroresWindItemNameFRATex,
+        gBoomerangItemNameFRATex,
+        gLensItemNameFRATex,
+        gMagicBeansItemNameFRATex,
+        gMegatonHammerItemNameFRATex,
+        gLightArrowItemNameFRATex,
+        gNayrusLoveItemNameFRATex,
+        gEmptyBottleItemNameFRATex,
+        gRedPotionItemNameFRATex,
+        gGreenPotionItemNameFRATex,
+        gBluePotionItemNameFRATex,
+        gBottledFairyItemNameFRATex,
+        gFishItemNameFRATex,
+        gFullMilkItemNameFRATex,
+        gRutosLetterItemNameFRATex,
+        gBlueFireItemNameFRATex,
+        gBugItemNameFRATex,
+        gBigPoeItemNameFRATex,
+        gHalfMilkItemNameFRATex,
+        gPoeItemNameFRATex,
+        gWeirdEggItemNameFRATex,
+        gCuccoItemNameFRATex,
+        gZeldasLetterItemNameFRATex,
+        gKeatonMaskItemNameFRATex,
+        gSkullMaskItemNameFRATex,
+        gSpookyMaskItemNameFRATex,
+        gBunnyHoodItemNameFRATex,
+        gGoronMaskItemNameFRATex,
+        gZoraMaskItemNameFRATex,
+        gGerudoMaskItemNameFRATex,
+        gMaskofTruthItemNameFRATex,
+        gSOLDOUTItemNameFRATex,
+        gPocketEggItemNameFRATex,
+        gPocketCuccoItemNameFRATex,
+        gCojiroItemNameFRATex,
+        gOddMushroomItemNameFRATex,
+        gOddPotionItemNameFRATex,
+        gPoachersSawItemNameFRATex,
+        gBrokenGoronsSwordItemNameFRATex,
+        gPrescriptionItemNameFRATex,
+        gEyeBallFrogItemNameFRATex,
+        gEyeDropsItemNameFRATex,
+        gClaimCheckItemNameFRATex,
+    },
+    {
+        // LANGUAGE_JPN
+        gDekuStickItemNameJPNTex,
+        gDekuNutItemNameJPNTex,
+        gBombItemNameJPNTex,
+        gFairyBowItemNameJPNTex,
+        gFireArrowItemNameJPNTex,
+        gDinsFireItemNameJPNTex,
+        gFairySlingshotItemNameJPNTex,
+        gFairyOcarinaItemNameJPNTex,
+        gOcarinaOfTimeItemNameJPNTex,
+        gBombchuItemNameJPNTex,
+        gHookshotItemNameJPNTex,
+        gLongshotItemNameJPNTex,
+        gIceArrowItemNameJPNTex,
+        gFaroresWindItemNameJPNTex,
+        gBoomerangItemNameJPNTex,
+        gLensItemNameJPNTex,
+        gMagicBeansItemNameJPNTex,
+        gMegatonHammerItemNameJPNTex,
+        gLightArrowItemNameJPNTex,
+        gNayrusLoveItemNameJPNTex,
+        gEmptyBottleItemNameJPNTex,
+        gRedPotionItemNameJPNTex,
+        gGreenPotionItemNameJPNTex,
+        gBluePotionItemNameJPNTex,
+        gBottledFairyItemNameJPNTex,
+        gFishItemNameJPNTex,
+        gFullMilkItemNameJPNTex,
+        gRutosLetterItemNameJPNTex,
+        gBlueFireItemNameJPNTex,
+        gBugItemNameJPNTex,
+        gBigPoeItemNameJPNTex,
+        gHalfMilkItemNameJPNTex,
+        gPoeItemNameJPNTex,
+        gWeirdEggItemNameJPNTex,
+        gCuccoItemNameJPNTex,
+        gZeldasLetterItemNameJPNTex,
+        gKeatonMaskItemNameJPNTex,
+        gSkullMaskItemNameJPNTex,
+        gSpookyMaskItemNameJPNTex,
+        gBunnyHoodItemNameJPNTex,
+        gGoronMaskItemNameJPNTex,
+        gZoraMaskItemNameJPNTex,
+        gGerudoMaskItemNameJPNTex,
+        gMaskofTruthItemNameJPNTex,
+        gSOLDOUTItemNameJPNTex,
+        gPocketEggItemNameJPNTex,
+        gPocketCuccoItemNameJPNTex,
+        gCojiroItemNameJPNTex,
+        gOddMushroomItemNameJPNTex,
+        gOddPotionItemNameJPNTex,
+        gPoachersSawItemNameJPNTex,
+        gBrokenGoronsSwordItemNameJPNTex,
+        gPrescriptionItemNameJPNTex,
+        gEyeBallFrogItemNameJPNTex,
+        gEyeDropsItemNameJPNTex,
+        gClaimCheckItemNameJPNTex,
+    },
+};
 
 static const u16 sEquipButtons[] = {
     BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT,
@@ -95,10 +337,16 @@ static void PlaySfx(u16 sfxId) {
                          &gSfxDefaultReverb);
 }
 
-// The menu stands in for the pause menu, so it can open whenever the pause menu could (see Play_Update)
+// The menu stands in for the pause menu, so it opens under the same conditions: Play_Update only calls
+// KaleidoSetup_Update during normal gameplay with no message box open, and KaleidoSetup_Update checks the rest
 static bool CanShowMenu(PlayState* play) {
-    return gSaveContext.gameMode == GAMEMODE_NORMAL && play->msgCtx.msgMode == MSGMODE_NONE && gTrnsnUnkState != 3 &&
-           R_PAUSE_MENU_MODE == 0 && KaleidoSetup_CanOpen(play);
+    return gSaveContext.gameMode == GAMEMODE_NORMAL && play->msgCtx.msgMode == MSGMODE_NONE &&
+           play->gameOverCtx.state == GAMEOVER_INACTIVE && gTrnsnUnkState != 3 && play->pauseCtx.state == 0 &&
+           play->pauseCtx.debugState == 0 && play->transitionTrigger == TRANS_TRIGGER_OFF &&
+           play->transitionMode == TRANS_MODE_OFF && gSaveContext.cutsceneIndex < 0xFFF0 &&
+           gSaveContext.nextCutsceneIndex < 0xFFF0 && !Play_InCsMode(play) && play->shootingGalleryStatus <= 1 &&
+           gSaveContext.magicState != MAGIC_STATE_STEP_CAPACITY && gSaveContext.magicState != MAGIC_STATE_FILL &&
+           (play->sceneNum != SCENE_BOMBCHU_BOWLING_ALLEY || !Flags_GetSwitch(play, 0x38));
 }
 
 static void RadialItemMenu_Open(PlayState* play) {
@@ -328,10 +576,33 @@ static Gfx* DrawTextureIA8(Gfx* gfx, const void* texture, f32 x, f32 y, f32 size
     return gfx;
 }
 
-static Gfx* DrawItemName(Gfx* gfx, u8 item, f32 x, f32 y) {
-    gDPLoadTextureBlock_4b(gfx++, KaleidoScope_GetItemNameTexture(item), G_IM_FMT_IA, 128, 16, 0,
-                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                           G_TX_NOLOD);
+// The name texture the pause menu would show for an item
+static const char* GetItemNameTexture(PlayState* play, u8 item) {
+    // Custom items (e.g. Roc's Feather) provide their name through VB_DRAW_CUSTOM_ITEM_NAME, which copies it into the
+    // pause menu's name segment. That only exists while the pause menu is open, so lend the hook a buffer instead.
+    static char sCustomItemName[256];
+    u8* nameSegment = play->pauseCtx.nameSegment;
+    play->pauseCtx.nameSegment = (u8*)sCustomItemName;
+    bool isCustomItem = GameInteractor_Should(VB_DRAW_CUSTOM_ITEM_NAME, false, item);
+    play->pauseCtx.nameSegment = nameSegment;
+
+    if (isCustomItem) {
+        return sCustomItemName;
+    }
+    if (item >= RADIAL_ITEM_NAME_COUNT) {
+        return nullptr;
+    }
+    return sItemNameTextures[CLAMP(gSaveContext.language, LANGUAGE_ENG, LANGUAGE_JPN)][item];
+}
+
+static Gfx* DrawItemName(Gfx* gfx, PlayState* play, u8 item, f32 x, f32 y) {
+    const char* texture = GetItemNameTexture(play, item);
+    if (texture == nullptr) {
+        return gfx;
+    }
+
+    gDPLoadTextureBlock_4b(gfx++, texture, G_IM_FMT_IA, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPWideTextureRectangle(gfx++, (s32)(x * 4.0f), (s32)(y * 4.0f), (s32)((x + 128.0f) * 4.0f),
                             (s32)((y + 16.0f) * 4.0f), G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     return gfx;
@@ -429,8 +700,8 @@ static void RadialItemMenu_Draw() {
     if (sCursorSlot >= 0 && SlotIsEquippable(sCursorSlot)) {
         gDPPipeSync(OVERLAY_DISP++);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, alpha);
-        OVERLAY_DISP =
-            DrawItemName(OVERLAY_DISP, gSaveContext.inventory.items[sCursorSlot], centerX - 64.0f, centerY - 2.0f);
+        OVERLAY_DISP = DrawItemName(OVERLAY_DISP, play, gSaveContext.inventory.items[sCursorSlot], centerX - 64.0f,
+                                    centerY - 2.0f);
     }
 
     // Item icons

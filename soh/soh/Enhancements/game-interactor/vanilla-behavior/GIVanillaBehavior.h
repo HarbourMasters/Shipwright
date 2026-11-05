@@ -3721,11 +3721,10 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // false
+    // true
     // ```
     // #### `args`
-    // - `uint16_t` (item - promoted from `u16`)
-    // - `const char**` (set to the item's name texture when returning true)
+    // - `*int16_t` // pauseCtx->namedItem
     VB_DRAW_CUSTOM_ITEM_NAME,
 
     // #### `result`
