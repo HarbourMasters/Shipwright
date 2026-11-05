@@ -752,7 +752,9 @@ static void RegisterRadialItemMenu() {
     }
 
     COND_HOOK(OnGameStateMainStart, CVAR_RADIAL_MENU_VALUE, RadialItemMenu_OnGameStateMainStart);
-    COND_HOOK(OnPlayDrawOverlayEnd, CVAR_RADIAL_MENU_VALUE, RadialItemMenu_Draw);
+    // OnGameFrameUpdate runs after the HUD has been drawn but before the frame's display lists are closed, so drawing
+    // from it puts the wheel on top of the HUD
+    COND_HOOK(OnGameFrameUpdate, CVAR_RADIAL_MENU_VALUE, RadialItemMenu_Draw);
     COND_HOOK(OnPlayDestroy, CVAR_RADIAL_MENU_VALUE, []() {
         sOpen = false;
         sFrozeGame = false;
