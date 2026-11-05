@@ -3,13 +3,13 @@
 #ifdef __cplusplus
 
 #include <libultraship/libultra/types.h>
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 
 #include "AudioCollection.h"
 
-class AudioEditor final : public Ship::GuiWindow {
+class AudioEditor final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
     void DrawElement() override;
     void InitElement() override;

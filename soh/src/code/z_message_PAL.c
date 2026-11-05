@@ -1,4 +1,7 @@
 #include "global.h"
+#include "soh/Enhancements/Lang/GameLanguage.h"
+#include "soh/Enhancements/Lang/MessageLanguage.h"
+#include "soh/Enhancements/custom-message/GameMessageGlyphs.h"
 #include "message_data_static.h"
 #include "vt.h"
 
@@ -17,7 +20,6 @@
 #include "soh/Enhancements/savestate_serialize.h"
 
 // #region SOH [NTSC] - Allows custom messages to work on japanese
-static bool sDisplayNextMessageAsEnglish = false;
 static u8 sLastLanguage = LANGUAGE_ENG;
 static u16 sTextBoxNum = 0;
 // #endregion
@@ -224,21 +226,22 @@ void Message_HandleChoiceSelection(PlayState* play, u8 numChoices) {
     } else if (ABS(input->rel.stick_y) < 30) {
         sAnalogStickHeld = false;
     }
-    msgCtx->textPosX = R_TEXT_CHOICE_XPOS;
+    msgCtx->textPosX = GameMessage_GetChoiceX(msgCtx->choiceIndex, R_TEXT_CHOICE_XPOS);
     msgCtx->textPosY =
         (numChoices == 1) ? R_TEXT_CHOICE_YPOS(msgCtx->choiceIndex + 1) : R_TEXT_CHOICE_YPOS(msgCtx->choiceIndex);
 }
 
-void Message_DrawTextChar(PlayState* play, void* textureImage, Gfx** p) {
+static void Message_DrawTextCharScaled(PlayState* play, void* textureImage, Gfx** p, f32 glyphScale) {
     MessageContext* msgCtx = &play->msgCtx;
     Gfx* gfx = *p;
     s16 x = msgCtx->textPosX;
     s16 y = msgCtx->textPosY;
+    f32 scale = (R_TEXT_CHAR_SCALE / 100.0f) * glyphScale;
 
     gDPPipeSync(gfx++);
 
-    sCharTexSize = (R_TEXT_CHAR_SCALE / 100.0f) * 16.0f;
-    sCharTexScale = 1024.0f / (R_TEXT_CHAR_SCALE / 100.0f);
+    sCharTexSize = scale * 16.0f;
+    sCharTexScale = 1024.0f / scale;
 
     gDPLoadTextureBlock_4b(gfx++, textureImage, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -258,6 +261,10 @@ void Message_DrawTextChar(PlayState* play, void* textureImage, Gfx** p) {
     gSPTextureRectangle(gfx++, x << 2, y << 2, (x + sCharTexSize) << 2, (y + sCharTexSize) << 2, G_TX_RENDERTILE, 0, 0,
                         sCharTexScale, sCharTexScale);
     *p = gfx;
+}
+
+void Message_DrawTextChar(PlayState* play, void* textureImage, Gfx** p) {
+    Message_DrawTextCharScaled(play, textureImage, p, 1.0f);
 }
 
 // resizes textboxes when opening them
@@ -345,9 +352,9 @@ void Message_FindMessage(PlayState* play, u16 textId) {
     Font* font;
     const char* seg;
 
-    if (gSaveContext.language == LANGUAGE_GER)
+    if (GameLanguage_Get() == LANGUAGE_GER)
         messageTableEntry = sGerMessageEntryTablePtr;
-    else if (gSaveContext.language == LANGUAGE_FRA)
+    else if (GameLanguage_Get() == LANGUAGE_FRA)
         messageTableEntry = sFraMessageEntryTablePtr;
 
     // If PAL languages are not present in the OTR file, default to English
@@ -692,101 +699,7 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
 }
 
 f32 sFontWidths[144] = {
-    8.0f,  // ' '
-    8.0f,  // '!'
-    6.0f,  // '"'
-    9.0f,  // '#'
-    9.0f,  // '$'
-    14.0f, // '%'
-    12.0f, // '&'
-    3.0f,  // '''
-    7.0f,  // '('
-    7.0f,  // ')'
-    7.0f,  // '*'
-    9.0f,  // '+'
-    4.0f,  // ','
-    6.0f,  // '-'
-    4.0f,  // '.'
-    9.0f,  // '/'
-    10.0f, // '0'
-    5.0f,  // '1'
-    9.0f,  // '2'
-    9.0f,  // '3'
-    10.0f, // '4'
-    9.0f,  // '5'
-    9.0f,  // '6'
-    9.0f,  // '7'
-    9.0f,  // '8'
-    9.0f,  // '9'
-    6.0f,  // ':'
-    6.0f,  // ';'
-    9.0f,  // '<'
-    11.0f, // '='
-    9.0f,  // '>'
-    11.0f, // '?'
-    13.0f, // '@'
-    12.0f, // 'A'
-    9.0f,  // 'B'
-    11.0f, // 'C'
-    11.0f, // 'D'
-    8.0f,  // 'E'
-    8.0f,  // 'F'
-    12.0f, // 'G'
-    10.0f, // 'H'
-    4.0f,  // 'I'
-    8.0f,  // 'J'
-    10.0f, // 'K'
-    8.0f,  // 'L'
-    13.0f, // 'M'
-    11.0f, // 'N'
-    13.0f, // 'O'
-    9.0f,  // 'P'
-    13.0f, // 'Q'
-    10.0f, // 'R'
-    10.0f, // 'S'
-    9.0f,  // 'T'
-    10.0f, // 'U'
-    11.0f, // 'V'
-    15.0f, // 'W'
-    11.0f, // 'X'
-    10.0f, // 'Y'
-    10.0f, // 'Z'
-    7.0f,  // '['
-    10.0f, // '\'
-    7.0f,  // ']'
-    10.0f, // '^'
-    9.0f,  // '_'
-    5.0f,  // '`'
-    8.0f,  // 'a'
-    9.0f,  // 'b'
-    8.0f,  // 'c'
-    9.0f,  // 'd'
-    9.0f,  // 'e'
-    6.0f,  // 'f'
-    9.0f,  // 'g'
-    8.0f,  // 'h'
-    4.0f,  // 'i'
-    6.0f,  // 'j'
-    8.0f,  // 'k'
-    4.0f,  // 'l'
-    12.0f, // 'm'
-    9.0f,  // 'n'
-    9.0f,  // 'o'
-    9.0f,  // 'p'
-    9.0f,  // 'q'
-    7.0f,  // 'r'
-    8.0f,  // 's'
-    7.0f,  // 't'
-    8.0f,  // 'u'
-    9.0f,  // 'v'
-    12.0f, // 'w'
-    8.0f,  // 'x'
-    9.0f,  // 'y'
-    8.0f,  // 'z'
-    7.0f,  // '{'
-    5.0f,  // '|'
-    7.0f,  // '}'
-    10.0f, // '~'
+#include "soh/Enhancements/custom-message/NativeMessageAsciiWidths.inc"
     10.0f, // '‾'
     12.0f, // 'À'
     6.0f,  // 'î'
@@ -1288,7 +1201,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
     Font* font = &play->msgCtx.font;
     Gfx* gfx = *gfxP;
 
-    play->msgCtx.textPosX = R_TEXT_INIT_XPOS;
+    play->msgCtx.textPosX = GameMessage_GetLineStart(0, R_TEXT_INIT_XPOS);
 
     if (!sTextIsCredits) {
         msgCtx->textPosY = R_TEXT_INIT_YPOS;
@@ -1313,13 +1226,18 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
         switch (character) {
             case MESSAGE_NEWLINE:
                 msgCtx->textPosX = R_TEXT_INIT_XPOS;
-                if (msgCtx->choiceNum == 1 || msgCtx->choiceNum == 3) {
+                if (MessageLanguage_UsesJapaneseLayout() && msgCtx->choiceNum == 2) {
+                    msgCtx->textPosX += 32;
+                } else if (msgCtx->choiceNum == 1 ||
+                           (!MessageLanguage_UsesJapaneseLayout() && msgCtx->choiceNum == 3)) {
                     msgCtx->textPosX += 32;
                 }
-                if (msgCtx->choiceNum == 2 && msgCtx->textPosY != R_TEXT_INIT_YPOS) {
+                if (!MessageLanguage_UsesJapaneseLayout() && msgCtx->choiceNum == 2 &&
+                    msgCtx->textPosY != R_TEXT_INIT_YPOS) {
                     msgCtx->textPosX += 32;
                 }
                 msgCtx->textPosY += R_TEXT_LINE_SPACING;
+                msgCtx->textPosX = GameMessage_GetLineStart(i + 1, msgCtx->textPosX);
                 break;
             case MESSAGE_COLOR:
                 Message_SetTextColor(msgCtx, msgCtx->msgBufDecoded[++i] & 0xF);
@@ -1566,7 +1484,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 return;
             // #region SOH [NTSC] - support multiple file name languages
             case MESSAGE_NAME:
-                if (ResourceMgr_GetGameRegion(0) == GAME_REGION_NTSC &&
+                if ((MessageLanguage_UsesUnicode() || ResourceMgr_GetGameRegion(0) == GAME_REGION_NTSC) &&
                     gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
                     if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING && i + 1 == msgCtx->textDrawPos &&
                         msgCtx->textDelayTimer == msgCtx->textDelay) {
@@ -1587,10 +1505,13 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                     Audio_PlaySfxGeneral(0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                          &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
-                Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
+                msgCtx->textPosX += GameMessage_GetDrawOffset(i);
+                Message_DrawTextCharScaled(play, &font->charTexBuf[charTexIdx], &gfx, GameMessage_GetDrawScale(i));
+                msgCtx->textPosX -= GameMessage_GetDrawOffset(i);
                 charTexIdx += FONT_CHAR_TEX_SIZE;
 
-                msgCtx->textPosX += (s32)(sFontWidths[character - ' '] * (R_TEXT_CHAR_SCALE / 100.0f));
+                msgCtx->textPosX +=
+                    (s32)GameMessage_GetScaledAdvance(i, sFontWidths[character - ' '], R_TEXT_CHAR_SCALE / 100.0f);
                 break;
         }
     }
@@ -1610,7 +1531,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
     static s16 sIconItem24XOffsets[] = { 72, 72, 72, 50 };
     MessageContext* msgCtx = &play->msgCtx;
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
-    u8 language = sDisplayNextMessageAsEnglish ? LANGUAGE_ENG : gSaveContext.language;
+    u8 language = MessageLanguage_UsesUnicode() ? LANGUAGE_JPN : MessageLanguage_Get();
 
     if (itemId == ITEM_DUNGEON_MAP) {
         interfaceCtx->mapPalette[30] = 0xFF;
@@ -1653,8 +1574,26 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
         }
     }
 
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL &&
-        (gSaveContext.language != LANGUAGE_JPN || sDisplayNextMessageAsEnglish)) {
+    // Added UTF-8 messages use the byte decoder even in Japanese. Preserve a
+    // Japanese save name as native full-width glyphs instead of entering the
+    // PAL conversion below, which deliberately removes kana for legacy text.
+    if (MessageLanguage_UsesUnicode() && gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
+        for (i = 0; i < playerNameLen; i++) {
+            const char* texture = Font_GetNameCharTexture(gSaveContext.playerName[i]);
+            memset(&font->charTexBuf[*charTexIdxPtr], 0, FONT_CHAR_TEX_SIZE);
+            if (texture != NULL) {
+                memcpy(&font->charTexBuf[*charTexIdxPtr], texture, strlen(texture) + 1);
+            } else {
+                Font_LoadChar(font, '?' - ' ', *charTexIdxPtr);
+            }
+            msgCtx->msgBufDecoded[(*decodedBufPosPtr)++] = MESSAGE_NAME;
+            *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+        }
+        (*decodedBufPosPtr)--;
+        return true;
+    }
+
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && !MessageLanguage_IsJapanese()) {
         if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
             for (i = 0; i < playerNameLen; i++) {
                 curChar2 = gSaveContext.playerName[i];
@@ -1749,7 +1688,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
     } else { // GAME_REGION_NTSC
 
         if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
-            if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+            if (MessageLanguage_IsJapanese()) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
                     u8* fontBuf = &font->fontBuf[(curChar2 * 32) << 2];
@@ -1777,7 +1716,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 }
             }
         } else if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_ENG) {
-            if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+            if (MessageLanguage_IsJapanese()) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
                     u8* fontBuf = &font->fontBuf[(curChar2 * 32) << 2];
@@ -1819,7 +1758,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 }
             }
         } else if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
-            if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+            if (MessageLanguage_IsJapanese()) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
 
@@ -2189,10 +2128,11 @@ void Message_DecodeJPN(PlayState* play) {
                 }
             }
         } else if (curChar == MESSAGE_ITEM_ICON_JPN) {
-            msgCtx->msgBufDecodedWide[++decodedBufPos] = font->msgBufWide[msgCtx->msgBufPos + 1];
-            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] < ITEM_CUSTOM,
-                                      sDisplayNextMessageAsEnglish)) {
-                Message_LoadItemIcon(play, font->msgBufWide[msgCtx->msgBufPos + 1], R_TEXTBOX_Y + 10);
+            // msgBufPos counts 16-bit words on this path, including later pages.
+            const u16 itemId = font->msgBufWide[msgCtx->msgBufPos + 1];
+            msgCtx->msgBufDecodedWide[++decodedBufPos] = itemId;
+            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, itemId < ITEM_CUSTOM, MessageLanguage_IsEnglishFallback())) {
+                Message_LoadItemIcon(play, itemId, R_TEXTBOX_Y + 10);
             }
         } else if (curChar == MESSAGE_BACKGROUND_JPN) {
             msgCtx->textboxBackgroundIdx = font->msgBufWide[msgCtx->msgBufPos + 1] * 2;
@@ -2273,7 +2213,8 @@ void Message_Decode(PlayState* play) {
 
     // #region SOH [NTSC] - Originally this is all in one function, but for ease of reading, the JP decoding will be
     // separated out
-    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+    GameMessage_BeginPage();
+    if (MessageLanguage_IsJapanese() && !sTextIsCredits) {
         Message_DecodeJPN(play);
         return;
     }
@@ -2281,6 +2222,17 @@ void Message_Decode(PlayState* play) {
 
     while (true) {
         phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos];
+        if (MessageLanguage_UsesUnicode() && (u8)temp_s2 >= 0x80) {
+            size_t consumed =
+                GameMessage_DecodeGlyph(font->msgBuf + msgCtx->msgBufPos, font->msgLength - msgCtx->msgBufPos,
+                                        font->charTexBuf + charTexIdx, decodedBufPos);
+            if (consumed > 0) {
+                msgCtx->msgBufDecoded[decodedBufPos++] = '?';
+                charTexIdx += FONT_CHAR_TEX_SIZE;
+                msgCtx->msgBufPos += consumed;
+                continue;
+            }
+        }
 
         // Don't require input for credits textboxes in randomizer
         if (CVarGetInteger(CVAR_ENHANCEMENT("NoInputForCredits"), 0) &&
@@ -2311,6 +2263,15 @@ void Message_Decode(PlayState* play) {
                     R_TEXT_INIT_YPOS = (u16)(R_TEXTBOX_Y + 20);
                 } else if (numLines == 2) {
                     R_TEXT_INIT_YPOS = (u16)(R_TEXTBOX_Y + 16);
+                }
+            }
+            if (MessageLanguage_UsesJapaneseLayout() && !sTextIsCredits) {
+                R_TEXT_INIT_YPOS = R_TEXTBOX_Y + 6;
+                if (msgCtx->textBoxType != TEXTBOX_TYPE_NONE_BOTTOM) {
+                    if (numLines == 0)
+                        R_TEXT_INIT_YPOS = R_TEXTBOX_Y + 22;
+                    else if (numLines == 1)
+                        R_TEXT_INIT_YPOS = R_TEXTBOX_Y + 14;
                 }
             }
             if (phi_s1 == MESSAGE_TEXTID) {
@@ -2620,12 +2581,12 @@ void Message_Decode(PlayState* play) {
             }
             decodedBufPos--;
         } else if (temp_s2 == MESSAGE_ITEM_ICON) {
-            msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[msgCtx->msgBufPos + 1];
+            const u8 itemId = (u8)font->msgBuf[msgCtx->msgBufPos + 1];
+            msgCtx->msgBufDecoded[++decodedBufPos] = itemId;
             osSyncPrintf("ITEM_NO=(%d) (%d)\n", msgCtx->msgBufDecoded[decodedBufPos],
                          font->msgBuf[msgCtx->msgBufPos + 1]);
-            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] < ITEM_CUSTOM,
-                                      sDisplayNextMessageAsEnglish)) {
-                Message_LoadItemIcon(play, font->msgBuf[msgCtx->msgBufPos + 1], R_TEXTBOX_Y + 10);
+            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, itemId < ITEM_CUSTOM, MessageLanguage_IsEnglishFallback())) {
+                Message_LoadItemIcon(play, itemId, R_TEXTBOX_Y + 10);
             }
         } else if (temp_s2 == MESSAGE_BACKGROUND) {
             msgCtx->textboxBackgroundIdx = font->msgBuf[msgCtx->msgBufPos + 1] * 2;
@@ -2668,6 +2629,8 @@ void Message_Decode(PlayState* play) {
                 msgCtx->choiceNum = 2;
             } else if (temp_s2 == MESSAGE_THREE_CHOICE) {
                 msgCtx->choiceNum = 3;
+                if (MessageLanguage_UsesJapaneseLayout())
+                    R_TEXT_INIT_XPOS += 32;
             } else if (temp_s2 != ' ') {
                 Font_LoadChar(font, temp_s2 - ' ', charTexIdx);
                 charTexIdx += FONT_CHAR_TEX_SIZE;
@@ -2676,9 +2639,20 @@ void Message_Decode(PlayState* play) {
         decodedBufPos++;
         msgCtx->msgBufPos++;
     }
+    if (MessageLanguage_UsesUnicode() && MessageLanguage_UsesJapaneseLayout() && !sTextIsCredits) {
+        GameMessage_AlignPage(msgCtx->msgBufDecoded, msgCtx->decodedTextLen + 1, sFontWidths, ARRAY_COUNT(sFontWidths),
+                              R_TEXT_CHAR_SCALE / 100.0f, CVarGetInteger(CVAR_ENHANCEMENT("TextSpacing"), 6),
+                              R_TEXT_INIT_XPOS - (msgCtx->choiceNum == 3 ? 32 : 0));
+    }
 }
 
 extern const char* msgStaticTbl[];
+
+static void Message_SetUnicodeLayout(void) {
+    R_TEXT_CHAR_SCALE = 88;
+    R_TEXT_LINE_SPACING = MessageLanguage_Get() == LANGUAGE_JPN ? 18 : 14;
+    R_TEXT_INIT_XPOS = 50;
+}
 
 void Message_OpenText(PlayState* play, u16 textId) {
     lusprintf(__FILE__, __LINE__, 2, "Display Text - textId: %#x", textId);
@@ -2688,9 +2662,12 @@ void Message_OpenText(PlayState* play, u16 textId) {
     s16 textBoxType;
 
     bool loadFromMessageTable = true;
+    MessageLanguage_Begin(GameLanguage_Get());
     GameInteractor_ExecuteOnOpenText(&textId, &loadFromMessageTable);
-
-    sDisplayNextMessageAsEnglish = false;
+    if (loadFromMessageTable) {
+        // Ignore metadata from a hook whose custom buffer was not selected.
+        MessageLanguage_Begin(GameLanguage_Get());
+    }
 
     if (msgCtx->msgMode == MSGMODE_NONE) {
         gSaveContext.prevHudVisibilityMode = gSaveContext.hudVisibilityMode;
@@ -2718,7 +2695,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
         R_TEXT_LINE_SPACING = 6;
         R_TEXT_INIT_XPOS = 20;
         YREG(1) = 48;
-    } else if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+    } else if (MessageLanguage_UsesUnicode()) {
+        Message_SetUnicodeLayout();
+    } else if (MessageLanguage_IsJapanese()) {
         R_TEXT_CHAR_SCALE = 88;
         R_TEXT_LINE_SPACING = 18;
         R_TEXT_INIT_XPOS = 50;
@@ -2750,7 +2729,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     msgCtx->textId = textId;
 
     // #region SOH [NTSC] - allow for switching languages mid textbox
-    sLastLanguage = gSaveContext.language;
+    sLastLanguage = GameLanguage_Get();
     sTextBoxNum = 0;
     // #endregion
 
@@ -2763,8 +2742,8 @@ void Message_OpenText(PlayState* play, u16 textId) {
 
     if (!loadFromMessageTable) {
         osSyncPrintf("Found custom message");
-        if (gSaveContext.language == LANGUAGE_JPN) {
-            sDisplayNextMessageAsEnglish = true;
+        MessageLanguage_UseLegacyFallback();
+        if (MessageLanguage_IsEnglishFallback()) {
             if (!sTextIsCredits) {
                 R_TEXT_CHAR_SCALE = 75;
                 R_TEXT_LINE_SPACING = 12;
@@ -2792,17 +2771,20 @@ void Message_OpenText(PlayState* play, u16 textId) {
                 textId == 0x4D)) {
         // NTSC TODO: Translate EquipNow Message
         Message_FindMessage(play, textId);
-        if (gSaveContext.language == LANGUAGE_JPN) {
-            sDisplayNextMessageAsEnglish = true;
+        MessageLanguage_Set(GameLanguage_GetLegacyText());
+        if (MessageLanguage_IsEnglishFallback()) {
             if (!sTextIsCredits) {
                 R_TEXT_CHAR_SCALE = 75;
                 R_TEXT_LINE_SPACING = 12;
                 R_TEXT_INIT_XPOS = 65;
             }
         }
-        msgCtx->msgLength = font->msgLength = GetEquipNowMessage(font->msgBuf, font->msgOffset, sizeof(font->msgBuf));
+        msgCtx->msgLength = font->msgLength =
+            GetEquipNowMessage(font->msgBuf, (char*)font->msgOffset, sizeof(font->msgBuf));
+        if (MessageLanguage_UsesUnicode())
+            Message_SetUnicodeLayout();
     } else {
-        if (gSaveContext.language == LANGUAGE_JPN) {
+        if (MessageLanguage_IsJapanese()) {
             Message_FindMessageJPN(play, textId);
         } else {
             Message_FindMessage(play, textId);
@@ -3289,7 +3271,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
 
     if (msgCtx->msgLength != 0) {
         // #region SOH [NTSC] - allow switching languages mid text
-        if (gSaveContext.language != sLastLanguage) {
+        if (GameLanguage_Get() != sLastLanguage) {
             u16 drawPos = msgCtx->textDrawPos;
             u16 choiceNum = msgCtx->choiceNum;
             u16 textUnskippable = msgCtx->textUnskippable;
@@ -3344,7 +3326,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         Font_LoadCharWide(&play->msgCtx.font, 0x8140, j);
                         j += FONT_CHAR_TEX_SIZE;
                     }
-                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+                    if (MessageLanguage_IsJapanese() && !sTextIsCredits) {
                         Message_DrawTextJPN(play, &gfx);
                     } else {
                         Message_DrawText(play, &gfx);
@@ -3353,7 +3335,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 break;
             case MSGMODE_TEXT_DISPLAYING:
             case MSGMODE_TEXT_DELAYED_BREAK:
-                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese() && !sTextIsCredits) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3361,7 +3343,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 break;
             case MSGMODE_TEXT_AWAIT_INPUT:
             case MSGMODE_TEXT_AWAIT_NEXT:
-                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese() && !sTextIsCredits) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3408,7 +3390,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 }
                 if (msgCtx->ocarinaAction != OCARINA_ACTION_FREE_PLAY &&
                     msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP) {
-                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+                    if (MessageLanguage_IsJapanese() && !sTextIsCredits) {
                         Message_DrawTextJPN(play, &gfx);
                     } else {
                         Message_DrawText(play, &gfx);
@@ -3511,7 +3493,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 }
                 if (msgCtx->ocarinaAction != OCARINA_ACTION_FREE_PLAY &&
                     msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP) {
-                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+                    if (MessageLanguage_IsJapanese() && !sTextIsCredits) {
                         Message_DrawTextJPN(play, &gfx);
                     } else {
                         Message_DrawText(play, &gfx);
@@ -3573,7 +3555,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         play->msgCtx.ocarinaMode = OCARINA_MODE_03;
                     }
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3581,7 +3563,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 break;
             case MSGMODE_OCARINA_FAIL:
             case MSGMODE_SONG_PLAYBACK_FAIL:
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3649,7 +3631,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
-                    if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                    if (MessageLanguage_IsJapanese()) {
                         Message_DrawTextJPN(play, &gfx);
                     } else {
                         Message_DrawText(play, &gfx);
@@ -3697,7 +3679,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     sOcarinaButtonIndexBufPos = 0;
                     msgCtx->msgMode = MSGMODE_SONG_DEMONSTRATION;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3717,7 +3699,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->stateTimer = 1;
                 }
 
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3728,7 +3710,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 if (msgCtx->stateTimer == 0) {
                     msgCtx->msgMode = MSGMODE_SONG_PLAYED_ACT_BEGIN;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3739,7 +3721,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 Message_ResetOcarinaNoteState();
                 msgCtx->msgMode = MSGMODE_SONG_PLAYED_ACT;
                 msgCtx->stateTimer = 2;
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3822,7 +3804,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     }
                 }
             case MSGMODE_SONG_DEMONSTRATION_DONE:
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3860,14 +3842,14 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->stateTimer = 10;
                     msgCtx->msgMode = MSGMODE_SONG_PLAYBACK_FAIL;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
                 }
                 break;
             case MSGMODE_OCARINA_AWAIT_INPUT:
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3886,7 +3868,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 sOcarinaButtonIndexBufLen = 0;
                 Message_ResetOcarinaNoteState();
                 msgCtx->msgMode = MSGMODE_SCARECROW_LONG_RECORDING_ONGOING;
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3940,7 +3922,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     osSyncPrintf(VT_RST);
                     osSyncPrintf("\n====================================================================\n");
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3980,7 +3962,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 AudioOcarina_SetRecordingState(OCARINA_RECORD_SCARECROW_SPAWN);
                 AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_DEFAULT);
                 msgCtx->msgMode = MSGMODE_SCARECROW_RECORDING_ONGOING;
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -4020,7 +4002,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     Message_CloseTextbox(play);
                     msgCtx->msgMode = MSGMODE_SCARECROW_RECORDING_FAILED;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -4102,7 +4084,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->msgMode = MSGMODE_MEMORY_GAME_ROUND_SUCCESS;
                     msgCtx->stateTimer = 30;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -4128,7 +4110,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         play->msgCtx.ocarinaMode = OCARINA_MODE_0F;
                     }
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese()) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -4162,7 +4144,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
             case MSGMODE_FROGS_WAITING:
                 break;
             case MSGMODE_TEXT_DONE:
-                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_IsJapanese() && !sTextIsCredits) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -4194,9 +4176,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 }
                 break;
             case MSGMODE_TEXT_CLOSING:
-                if (sDisplayNextMessageAsEnglish) {
-                    sDisplayNextMessageAsEnglish = false;
-                }
+                // The next Message_OpenText initializes the next buffer's language.
                 /* fallthrough */
             case MSGMODE_PAUSED:
                 break;
@@ -4507,7 +4487,7 @@ void Message_Update(PlayState* play) {
 
                 R_TEXTBOX_X_TARGET = sTextboxXPositions[var];
                 R_TEXTBOX_END_YPOS = sTextboxEndIconYOffset[var] + R_TEXTBOX_Y_TARGET;
-                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+                if (MessageLanguage_UsesJapaneseLayout() && !sTextIsCredits) {
                     R_TEXT_CHOICE_YPOS(0) = R_TEXTBOX_Y_TARGET + 7;
                     R_TEXT_CHOICE_YPOS(1) = R_TEXTBOX_Y_TARGET + 25;
                     R_TEXT_CHOICE_YPOS(2) = R_TEXTBOX_Y_TARGET + 43;
@@ -4607,7 +4587,7 @@ void Message_Update(PlayState* play) {
                     if (msgCtx->textboxEndType == TEXTBOX_ENDTYPE_HAS_NEXT) {
                         Audio_PlaySfxGeneral(NA_SE_SY_MESSAGE_PASS, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                        if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+                        if (MessageLanguage_IsJapanese() && !sTextIsCredits) {
                             Message_ContinueTextbox(play, msgCtx->msgBufDecodedWide[msgCtx->textDrawPos]);
                         } else {
                             Message_ContinueTextbox(play, sNextTextId);

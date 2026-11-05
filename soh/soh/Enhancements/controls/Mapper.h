@@ -15,7 +15,7 @@
 
 #include <SDL2/SDL.h>
 #include <imgui.h>
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 
 namespace Mapper {
 enum AxisBinding {
@@ -119,9 +119,9 @@ bool LoadUserMappings();
 bool SaveUserMapping(const std::string& mapping);
 bool DeleteUserMapping(const std::string& guid);
 
-class MapperWindow final : public Ship::GuiWindow {
+class MapperWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
     ~MapperWindow();
 
   protected:

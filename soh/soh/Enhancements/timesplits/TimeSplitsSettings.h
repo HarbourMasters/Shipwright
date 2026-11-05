@@ -5,11 +5,12 @@
 #include <libultraship/libultraship.h>
 
 #ifdef __cplusplus
+#include "soh/SohGui/LocalizedWindow.h"
 namespace TimeSplits {
 
-class TimesplitsSettingsWindow : public Ship::GuiWindow {
+class TimesplitsSettingsWindow : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
     void InitElement() override;
     void DrawElement() override;

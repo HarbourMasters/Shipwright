@@ -5,6 +5,7 @@
 #include <string>
 #include "UIWidgets.hpp"
 #include "SohGui.hpp"
+#include "soh/Enhancements/Lang/Lang.h"
 
 extern "C" PlayState* gPlayState;
 struct SohModal {
@@ -14,6 +15,7 @@ struct SohModal {
     std::string button2_;
     std::function<void()> button1callback_;
     std::function<void()> button2callback_;
+    std::string translationKey_;
 };
 std::vector<SohModal> modals;
 
@@ -31,6 +33,17 @@ void SohModalWindow::Draw() {
 void SohModalWindow::DrawElement() {
     if (modals.size() > 0) {
         SohModal curModal = modals.at(0);
+        if (!curModal.translationKey_.empty()) {
+            const auto& key = curModal.translationKey_;
+            curModal.title_ = Lang::TranslateOrFallback(key + ".title", Lang::UIVariant(key, curModal.title_.c_str())) +
+                              "###" + modals.at(0).title_;
+            curModal.message_ =
+                Lang::TranslateOrFallback(key + ".message", Lang::UIVariant(key, curModal.message_.c_str()));
+            curModal.button1_ =
+                Lang::TranslateOrFallback(key + ".button1", Lang::UIVariant(key, curModal.button1_.c_str()));
+            curModal.button2_ =
+                Lang::TranslateOrFallback(key + ".button2", Lang::UIVariant(key, curModal.button2_.c_str()));
+        }
         if (!ImGui::IsPopupOpen(curModal.title_.c_str())) {
             ImGui::OpenPopup(curModal.title_.c_str());
         }
@@ -72,8 +85,9 @@ void SohModalWindow::DrawElement() {
 }
 
 void SohModalWindow::RegisterPopup(std::string title, std::string message, std::string button1, std::string button2,
-                                   std::function<void()> button1callback, std::function<void()> button2callback) {
-    modals.push_back({ title, message, button1, button2, button1callback, button2callback });
+                                   std::function<void()> button1callback, std::function<void()> button2callback,
+                                   std::string translationKey) {
+    modals.push_back({ title, message, button1, button2, button1callback, button2callback, translationKey });
 }
 
 size_t SohModalWindow::PopupsQueued() {

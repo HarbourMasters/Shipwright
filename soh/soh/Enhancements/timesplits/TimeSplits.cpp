@@ -1,3 +1,5 @@
+#include "soh/SohGui/LocalizedWindow.h"
+#include "soh/Enhancements/Lang/Lang.h"
 #include "TimeSplits.h"
 #include <libultraship/libultraship.h>
 #include "fast/Fast3dGui.h"
@@ -157,7 +159,7 @@ void DrawSplitsList(bool isMain) {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, ImVec2(10, 0));
 
     if (isMain) {
-        ImGui::Begin("Timesplits", nullptr,
+        ImGui::Begin(SohGui::LocalizedWindowTitle("ui.text.enhancements.timesplits.timesplits", "Timesplits"), nullptr,
                      ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoDocking |
                          ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse |
                          ImGuiWindowFlags_NoScrollbar);
@@ -166,13 +168,15 @@ void DrawSplitsList(bool isMain) {
     if (ImGui::BeginChild("SplitChild", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar)) {
         if (ImGui::BeginTable("Splits", 5,
                               ImGuiTableFlags_ScrollY | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
-            ImGui::TableSetupColumn("Item Image",
-                                    ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel,
-                                    (28.0f * columnSizeMultiplier));
-            ImGui::TableSetupColumn("Item Name");
-            ImGui::TableSetupColumn("Current Time");
+            ImGui::TableSetupColumn(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplits.item_image", "Item Image"),
+                ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, (28.0f * columnSizeMultiplier));
+            ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.timesplits.timesplits.item_name", "Item Name"));
+            ImGui::TableSetupColumn(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplits.current_time", "Current Time"));
             ImGui::TableSetupColumn("+/-");
-            ImGui::TableSetupColumn("Previous Best ");
+            ImGui::TableSetupColumn(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplits.previous_best", "Previous Best "));
             if (tableColumnFlags != ImGuiTableColumnFlags_None) {
                 ImGui::TableSetupScrollFreeze(0, 1);
                 ImGui::TableHeadersRow();
@@ -198,7 +202,8 @@ void DrawSplitsList(bool isMain) {
 
                 // Item Name Column
                 ImGui::TableNextColumn();
-                TableCellCenteredText(COLOR_WHITE, splitList[i].splitName.c_str());
+                TableCellCenteredText(COLOR_WHITE, Lang::UIVariant("ui.text.enhancements.timesplits.timesplitssettings",
+                                                                   splitList[i].splitName.c_str()));
 
                 // Current Time Column
                 ImGui::TableNextColumn();
@@ -221,7 +226,9 @@ void DrawSplitsList(bool isMain) {
                               Ship_FormatTimeDisplay(
                                   GetComparisonTimeTextDisplay(splitList[i], comparisonList[i]).timeDisplay)
                                   .c_str())
-                        : ImGui::TextColored(COLOR_GREY, "No Data");
+                        : ImGui::TextColored(
+                              COLOR_GREY, "%s",
+                              Lang::UIString("ui.text.enhancements.timesplits.timesplits.no_data", "No Data"));
                 }
 
                 // Previous Best Column

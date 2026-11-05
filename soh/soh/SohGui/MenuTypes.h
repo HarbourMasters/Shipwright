@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <variant>
 
 #include "UIWidgetOptions.hpp"
@@ -22,6 +23,9 @@ typedef enum {
 } DisableOption;
 
 struct WidgetInfo;
+namespace SohGui {
+struct WidgetSearchCache;
+}
 struct disabledInfo;
 using VoidFunc = std::function<void()>;
 using DisableInfoFunc = std::function<bool(disabledInfo&)>;
@@ -98,8 +102,12 @@ using OptionsVariant = std::variant<UIWidgets::ButtonOptions, UIWidgets::Checkbo
 // `isHidden` just prevents the widget from being drawn under whatever circumstances you specify in the `preFunc`
 // `sameLine` allows for specifying that the widget should be on the same line as the previous widget
 struct WidgetInfo {
-    std::string name; // Used by all widgets
-    const char* cVar; // Used by all widgets except
+    std::string name;           // Used by all widgets
+    const char* cVar = nullptr; // Used by all widgets except
+    std::string translationKey;
+    // Presentation-only cache, owned with the widget rather than a global
+    // registry keyed by addresses that may move when menu vectors grow.
+    mutable std::shared_ptr<const SohGui::WidgetSearchCache> localizedSearch;
     WidgetType type;
     std::shared_ptr<UIWidgets::WidgetOptions> options;
     std::variant<bool*, int32_t*, float*> valuePointer;
@@ -113,9 +121,23 @@ struct WidgetInfo {
     bool sameLine = false;
     bool raceDisable = true;
     bool hideInSearch = false;
+    // PreFunc formats a localized template with current values before rendering.
+    bool dynamicName = false;
+    WidgetInfo& DynamicName() {
+        dynamicName = true;
+        return *this;
+    }
 
     WidgetInfo& CVar(const char* cVar_) {
         cVar = cVar_;
+        if (translationKey.empty() && cVar != nullptr) {
+            translationKey = std::string("ui.widgets.") + cVar;
+        }
+        return *this;
+    }
+
+    WidgetInfo& Translation(const std::string& key) {
+        translationKey = key;
         return *this;
     }
 

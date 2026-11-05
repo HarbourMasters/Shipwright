@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -23,9 +24,7 @@ void BuildNightGuardMessage(uint16_t* textId, bool* loadFromMessageTable) {
         return;
     }
 
-    CustomMessage msg = CustomMessage("You look bored. Wanna go out for a walk?\x1B%gYes&No%w",
-                                      "Du siehst gelangweilt aus. Willst Du einen Spaziergang machen?\x1B%gJa&Nein%w",
-                                      "Tu as l'air de t'ennuyer. Tu veux aller faire un tour?\x1B%gOui&Non%w");
+    CustomMessage msg = CustomMessages::CreateMessage("enhancements.market_sneak.build_night_guard_message.0");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;

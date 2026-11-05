@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <ship/Context.h>
 
@@ -42,12 +43,14 @@ void SohMenu::AddMenuDevTools() {
 
     AddWidget(path, "Popout Menu", WIDGET_CVAR_CHECKBOX)
         .CVar("gSettings.Menu.Popout")
-        .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
+        .Options(CheckboxOptions().Tooltip(Lang::UIString("ui.widgets.gSettings.Menu.Popout.description",
+                                                          "Changes the menu display from overlay to windowed.")));
     AddWidget(path, "Debug Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugEnabled"))
-        .Options(
-            CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
-                                      "with L + D-pad Right, and open the debug menu with L on the pause screen."));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gDeveloperTools.DebugEnabled.description",
+                           "Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
+                           "with L + D-pad Right, and open the debug menu with L on the pause screen.")));
     AddWidget(path, "Map Select Button Combination:", WIDGET_CVAR_BTN_SELECTOR)
         .CVar("gDeveloperTools.MapSelectBtn")
         .Options(BtnSelectorOptions().DefaultValue(BTN_R | BTN_L | BTN_Z))
@@ -59,33 +62,42 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
-        .Options(CheckboxOptions().Tooltip("Enables the registry editor."));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gDeveloperTools.RegEditEnabled.description", "Enables the registry editor.")));
     AddWidget(path, "Debug Save File Mode", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
         .Options(ComboboxOptions()
-                     .Tooltip("Changes the behavior of debug file select creation (creating a save file on slot 1 "
-                              "with debug mode on):\n"
-                              "- Off: The debug save file will be a normal savefile.\n"
-                              "- Vanilla: The debug save file will be the debug save file from the original game.\n"
-                              "- Maxed: The debug save file will be a save file with all of the items & upgrades.")
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gDeveloperTools.DebugSaveFileMode.description",
+                         "Changes the behavior of debug file select creation (creating a save file on slot 1 "
+                         "with debug mode on):\n"
+                         "- Off: The debug save file will be a normal savefile.\n"
+                         "- Vanilla: The debug save file will be the debug save file from the original game.\n"
+                         "- Maxed: The debug save file will be a save file with all of the items & upgrades."))
                      .ComboMap(debugSaveFileModes)
                      .DefaultIndex(1));
     AddWidget(path, "OoT Skulltula Debug", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
-        .Options(CheckboxOptions().Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various "
-                                           "map icons (boss key, compass, map screen locations, etc.) will set the GS "
-                                           "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT!"));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gDeveloperTools.SkulltulaDebugEnabled.description",
+                           "Enables Skulltula Debug, when moving the cursor in the menu above various "
+                           "map icons (boss key, compass, map screen locations, etc.) will set the GS "
+                           "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT!")));
     AddWidget(path, "Resource logging", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("ResourceLogging"))
-        .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format."));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gDeveloperTools.ResourceLogging.description",
+                           "Logs some resources as XML when they're loaded in binary format.")));
 
     AddWidget(path, "Frame Advance", WIDGET_CHECKBOX)
+        .Translation("ui.panels.sohmenudevtools.frame_advance")
         .Options(CheckboxOptions().Tooltip(
-            "This allows you to advance through the game one frame at a time on command. "
-            "To advance a frame, hold Z and tap R on the second controller. Holding Z "
-            "and R will advance a frame every half second. You can also use the buttons below."))
+            Lang::UIString("ui.panels.sohmenudevtools.frame_advance.description",
+                           "This allows you to advance through the game one frame at a time on command. "
+                           "To advance a frame, hold Z and tap R on the second controller. Holding Z "
+                           "and R will advance a frame every half second. You can also use the buttons below.")))
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NULL_PLAY_STATE).active ||
                             mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active;
@@ -96,14 +108,21 @@ void SohMenu::AddMenuDevTools() {
             }
         });
     AddWidget(path, "Advance 1", WIDGET_BUTTON)
-        .Options(ButtonOptions().Tooltip("Advance 1 frame.").Size(Sizes::Inline))
+        .Translation("ui.panels.sohmenudevtools.advance_1")
+        .Options(ButtonOptions()
+                     .Tooltip(Lang::UIString("ui.panels.sohmenudevtools.advance_1.description", "Advance 1 frame."))
+                     .Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) { CVarSetInteger(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"), 1); })
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_FRAME_ADVANCE_OFF).active ||
                             mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active;
         });
     AddWidget(path, "Advance (Hold)", WIDGET_BUTTON)
-        .Options(ButtonOptions().Tooltip("Advance frames while the button is held.").Size(Sizes::Inline))
+        .Translation("ui.panels.sohmenudevtools.advance_hold")
+        .Options(ButtonOptions()
+                     .Tooltip(Lang::UIString("ui.panels.sohmenudevtools.advance_hold.description",
+                                             "Advance frames while the button is held."))
+                     .Size(Sizes::Inline))
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_FRAME_ADVANCE_OFF).active ||
                             mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active;
@@ -117,8 +136,9 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Log Level", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("LogLevel"))
         .Options(ComboboxOptions()
-                     .Tooltip("The log level determines which messages are printed to the console."
-                              " This does not affect the log file output")
+                     .Tooltip(Lang::UIString("ui.widgets.gDeveloperTools.LogLevel.description",
+                                             "The log level determines which messages are printed to the console."
+                                             " This does not affect the log file output"))
                      .ComboMap(logLevels)
                      .DefaultIndex(defaultLogLevel))
         .Callback([](WidgetInfo& info) {
@@ -127,19 +147,24 @@ void SohMenu::AddMenuDevTools() {
         });
 
     path.column = SECTION_COLUMN_2;
-    AddWidget(path, "Warping", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Warping", WIDGET_SEPARATOR_TEXT).Translation("ui.panels.sohmenudevtools.warping");
     AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
-        .Options(
-            CheckboxOptions()
-                .Tooltip("Optimized Debug Warp Screen, with the added ability to choose entrances and time of day.")
-                .DefaultValue(true));
+        .Options(CheckboxOptions()
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gDeveloperTools.BetterDebugWarpScreen.description",
+                         "Optimized Debug Warp Screen, with the added ability to choose entrances and time of day."))
+                     .DefaultValue(true));
     AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
         .Options(CheckboxOptions()
-                     .Tooltip("Translate the Debug Warp Screen based on the game language.")
+                     .Tooltip(Lang::UIString("ui.widgets.gDeveloperTools.DebugWarpScreenTranslation.description",
+                                             "Translate the Debug Warp Screen based on the game language."))
                      .DefaultValue(true));
-    AddWidget(path, "Warp Points", WIDGET_CUSTOM).CustomFunction(WarpPointsWidget).HideInSearch(true);
+    AddWidget(path, "Warp Points", WIDGET_CUSTOM)
+        .Translation("ui.panels.sohmenudevtools.warp_points")
+        .CustomFunction(WarpPointsWidget)
+        .HideInSearch(true);
 
     // Stats
     path.sidebarName = "Stats";
@@ -149,7 +174,8 @@ void SohMenu::AddMenuDevTools() {
         .RaceDisable(false)
         .WindowName("Stats##Soh")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Stats Window."));
+        .Options(WindowButtonOptions().Tooltip(
+            Lang::UIString("ui.widgets.gOpenWindows.SohStats.description", "Enables the separate Stats Window.")));
 
     // Console
     path.sidebarName = "Console";
@@ -158,7 +184,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("SohConsole"))
         .WindowName("Console##SoH")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Console Window."));
+        .Options(WindowButtonOptions().Tooltip(
+            Lang::UIString("ui.widgets.gOpenWindows.SohConsole.description", "Enables the separate Console Window.")));
 
     // Save Editor
     path.sidebarName = "Save Editor";
@@ -167,7 +194,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("SaveEditor"))
         .WindowName("Save Editor")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Save Editor Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.SaveEditor.description",
+                                                              "Enables the separate Save Editor Window.")));
 
     // Hook Debugger
     path.sidebarName = "Hook Debugger";
@@ -176,7 +204,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("HookDebugger"))
         .WindowName("Hook Debugger")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Hook Debugger Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.HookDebugger.description",
+                                                              "Enables the separate Hook Debugger Window.")));
 
     // Collision Viewer
     path.sidebarName = "Collision Viewer";
@@ -185,7 +214,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("CollisionViewer"))
         .WindowName("Collision Viewer")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Collision Viewer Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.CollisionViewer.description",
+                                                              "Enables the separate Collision Viewer Window.")));
 
     // Actor Viewer
     path.sidebarName = "Actor Viewer";
@@ -194,7 +224,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("ActorViewer"))
         .WindowName("Actor Viewer")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Actor Viewer Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.ActorViewer.description",
+                                                              "Enables the separate Actor Viewer Window.")));
 
     // Display List Viewer
     path.sidebarName = "DList Viewer";
@@ -203,7 +234,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("DisplayListViewer"))
         .WindowName("Display List Viewer")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Display List Viewer Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.DisplayListViewer.description",
+                                                              "Enables the separate Display List Viewer Window.")));
 
     // Value Viewer
     path.sidebarName = "Value Viewer";
@@ -212,7 +244,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("ValueViewer"))
         .WindowName("Value Viewer")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Value Viewer Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.ValueViewer.description",
+                                                              "Enables the separate Value Viewer Window.")));
 
     // Message Viewer
     path.sidebarName = "Message Viewer";
@@ -221,7 +254,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("MessageViewer"))
         .WindowName("Message Viewer")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Message Viewer Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.MessageViewer.description",
+                                                              "Enables the separate Message Viewer Window.")));
 
     // Gfx Debugger
     path.sidebarName = "Gfx Debugger";
@@ -230,7 +264,8 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_WINDOW("SohGfxDebugger"))
         .WindowName("GfxDebugger##SoH")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.SohGfxDebugger.description",
+                                                              "Enables the separate Gfx Debugger Window.")));
 }
 
 } // namespace SohGui

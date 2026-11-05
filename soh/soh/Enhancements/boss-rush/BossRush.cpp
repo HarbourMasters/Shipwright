@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/GameLanguage.h"
 #include <algorithm>
 #include <array>
 #include <string>
@@ -255,7 +256,7 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
 }
 
 void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseContext) {
-    uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
+    uint8_t language = GameLanguage_GetLegacyText();
     uint8_t listOffset = fileChooseContext->bossRushOffset;
     int16_t textAlpha = fileChooseContext->bossRushUIAlpha;
 
@@ -771,7 +772,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         // Show "No" twice because the player can't continue.
         case VB_RENDER_YES_ON_CONTINUE_PROMPT: {
             Gfx** disp = va_arg(args, Gfx**);
-            *disp = KaleidoScope_QuadTextureIA8(*disp, sSavePromptNoChoiceTexs[gSaveContext.language], 48, 16, 12);
+            *disp = KaleidoScope_QuadTextureIA8(*disp, sSavePromptNoChoiceTexs[GameLanguage_Get()], 48, 16, 12);
             *should = false;
             break;
         }

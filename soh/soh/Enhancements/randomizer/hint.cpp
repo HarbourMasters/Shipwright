@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include "hint.h"
 #include "string"
 #include "SeedContext.h"
@@ -54,6 +55,17 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_) {
             }
         } else if (json_.contains("message")) {
             messages.push_back(CustomMessage(json_["message"].get<std::string>()));
+        }
+    }
+
+    if (hintType == HINT_TYPE_MESSAGE && json_.contains("localizedMessages") &&
+        json_["localizedMessages"].is_object()) {
+        for (const auto& [locale, variants] : json_["localizedMessages"].items()) {
+            if (!variants.is_array())
+                continue;
+            for (size_t index = 0; index < messages.size() && index < variants.size(); ++index)
+                if (variants[index].is_string())
+                    messages[index].SetForLocale(locale, variants[index].get<std::string>());
         }
     }
 
@@ -258,7 +270,7 @@ const HintText Hint::GetHintText(size_t id) const {
             if (locations.size() > 0) {
                 return *StaticData::GetLocation(locations[0])->GetHint();
             } else {
-                return CustomMessage("ERROR: ITEM HINT WITH NO LOCATIONS OR HINT KEY");
+                return CustomMessages::CreateMessage("randomizer.messages.hint.names_chosen.0");
             }
         case HINT_TYPE_ITEM_AREA:
             if (locations.size() > 0) {
@@ -268,10 +280,11 @@ const HintText Hint::GetHintText(size_t id) const {
                     return StaticData::hintTextTable[RHT_CAN_BE_FOUND_AT];
                 }
             } else {
-                return CustomMessage("ERROR: ITEM AREA HINT WITH NO LOCATION"); // RANDOTODO get isDungeon from area?
+                return CustomMessages::CreateMessage(
+                    "randomizer.messages.hint.names_chosen.1"); // RANDOTODO get isDungeon from area?
             }
         default:
-            return CustomMessage("ERROR: NO HINTKEY PROVIDED AND HINT TYPE HAS NO DEFAULT");
+            return CustomMessages::CreateMessage("randomizer.messages.hint.names_chosen.2");
     }
 }
 
@@ -375,15 +388,31 @@ oJson Hint::toJSON() {
     auto ctx = Rando::Context::GetInstance();
     nlohmann::ordered_json log = {};
     if (enabled) {
-        log["type"] = StaticData::hintTypeNames[hintType].GetForCurrentLanguage(MF_CLEAN);
+        log["type"] = StaticData::hintTypeNames[hintType].GetEnglish(MF_CLEAN);
 
-        std::vector<std::string> hintMessages = GetAllMessageStrings(MF_CLEAN);
+        std::vector<std::string> hintMessages;
+        for (size_t index = 0; index < GetNumberOfMessages(); ++index)
+            hintMessages.push_back(GetHintMessage(MF_CLEAN, index).GetEnglish(MF_RAW));
         if (hintMessages.size() == 1) {
             log["message"] = hintMessages[0];
         } else if (hintMessages.size() > 1) {
             log["messages"] = hintMessages;
         }
 
+        if (hintType == HINT_TYPE_MESSAGE) {
+            std::map<std::string, std::vector<std::string>> variants;
+            for (const auto& message : messages) {
+                for (const auto& [locale, unused] : message.GetLocales()) {
+                    if (variants.contains(locale))
+                        continue;
+                    auto& texts = variants[locale];
+                    for (const auto& variant : messages)
+                        texts.push_back(variant.GetForLocale(locale, MF_RAW));
+                }
+            }
+            if (!variants.empty())
+                log["localizedMessages"] = variants;
+        }
         if (distribution != "") {
             log["distribution"] = distribution;
         }
@@ -433,16 +462,14 @@ oJson Hint::toJSON() {
             }
         }
         if (areas.size() == 1) {
-            log["area"] =
-                StaticData::hintTextTable[StaticData::areaNames[areas[0]]].GetClear().GetForCurrentLanguage(MF_CLEAN);
+            log["area"] = StaticData::hintTextTable[StaticData::areaNames[areas[0]]].GetClear().GetEnglish(MF_CLEAN);
         } else if (areas.size() > 0 && !(StaticData::staticHintInfoMap.contains(ownKey) &&
                                          StaticData::staticHintInfoMap[ownKey].targetChecks.size() > 0)) {
             // If we got locations from defaults, areas are derived from them and don't need logging
             std::vector<std::string> areaStrings = {};
             for (size_t c = 0; c < areas.size(); c++) {
                 areaStrings.push_back(
-                    StaticData::hintTextTable[StaticData::areaNames[areas[c]]].GetClear().GetForCurrentLanguage(
-                        MF_CLEAN));
+                    StaticData::hintTextTable[StaticData::areaNames[areas[c]]].GetClear().GetEnglish(MF_CLEAN));
             }
             log["areas"] = areaStrings;
         }
@@ -458,11 +485,11 @@ oJson Hint::toJSON() {
         }
 
         if (trials.size() == 1) {
-            log["trial"] = ctx->GetTrial(trials[0])->GetName().GetForCurrentLanguage(MF_CLEAN);
+            log["trial"] = ctx->GetTrial(trials[0])->GetName().GetEnglish(MF_CLEAN);
         } else if (trials.size() > 0) {
             std::vector<std::string> trialStrings = {};
             for (size_t c = 0; c < trials.size(); c++) {
-                trialStrings.push_back(ctx->GetTrial(trials[c])->GetName().GetForCurrentLanguage(MF_CLEAN));
+                trialStrings.push_back(ctx->GetTrial(trials[c])->GetName().GetEnglish(MF_CLEAN));
             }
             log["trials"] = trialStrings;
         }
@@ -505,7 +532,7 @@ void Hint::logHint(oJson& jsonData) {
     if (enabled &&
         (!(staticHint && (hintType == HINT_TYPE_ITEM) && ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_CLEAR)))) {
         // skip if not enabled or if a static hint with no possible variance
-        jsonData[logMap][Rando::StaticData::hintNames[ownKey].GetForCurrentLanguage(MF_CLEAN)] = toJSON();
+        jsonData[logMap][Rando::StaticData::hintNames[ownKey].GetEnglish(MF_CLEAN)] = toJSON();
     }
 }
 

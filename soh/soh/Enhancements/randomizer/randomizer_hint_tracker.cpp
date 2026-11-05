@@ -1,3 +1,6 @@
+#include "TrackerLocalization.h"
+#include "randomizerEnumStrings.h"
+#include "soh/Enhancements/Lang/Lang.h"
 #include <algorithm>
 #include <cctype>
 #include <map>
@@ -50,9 +53,9 @@ static RandomizerCheckArea currentArea = RCAREA_INVALID;
 static bool doAreaScroll = false;
 
 // Formatted hint text is cached per hint; invalidated on file load/init and
-// when the game language changes. Only touched from the draw thread.
+// when the UI language or catalog changes. Only touched from the draw thread.
 static std::unordered_map<RandomizerHint, std::string> hintTextCache;
-static uint8_t cachedLanguage = 0xFF;
+static uint64_t cachedNameRevision = 0;
 
 static WidgetInfo backgroundColorWidget;
 static WidgetInfo windowTypeWidget;
@@ -221,7 +224,7 @@ static const std::string& GetJoinedHintText(RandomizerHint hintKey) {
         msg.Replace(" kaufen ", "");
         msg.Replace(" kaufen", "");
         msg.Replace("@", playerName);
-        std::string part = msg.GetForCurrentLanguage(MF_CLEAN);
+        std::string part = msg.GetForUILanguage(MF_CLEAN);
         // Variants of a hint often share the same wording give or take
         // punctuation (e.g. Saria's in-person and ocarina messages); show
         // each distinct wording once.
@@ -289,7 +292,10 @@ static std::string ItemCategoryRankName(int rank) {
         &lesserItemsLabel,     // ITEM_CATEGORY_LESSER
         &junkItemsLabel,       // ITEM_CATEGORY_JUNK
     };
-    return rankLabels[rank]->GetForCurrentLanguage(MF_CLEAN);
+    static constexpr const char* keys[] = { "majorItemsLabel",      "bossKeysLabel", "smallKeysLabel",
+                                            "skulltulaTokensLabel", "heartsLabel",   "lesserItemsLabel",
+                                            "junkItemsLabel" };
+    return TrackerLocalization::Name("hints.labels", keys[rank], rankLabels[rank]->GetForUILanguage(MF_CLEAN));
 }
 
 static void DrawHintEntry(const HintEntry& entry) {
@@ -328,14 +334,15 @@ static void DrawHintEntry(const HintEntry& entry) {
 // Draws a tree node header labeled "<name> (read/total)" — or just
 // "<name> (read)" when the total would spoil how many hints of a kind exist —
 // with an identity that stays stable as the counts change.
-static bool DrawGroupHeader(const std::string& name, size_t read, size_t total, uint8_t nextTreeState, bool showTotal) {
+static bool DrawGroupHeader(const std::string& name, size_t read, size_t total, uint8_t nextTreeState, bool showTotal,
+                            size_t groupId, bool journalView) {
     if (nextTreeState) {
         ImGui::SetNextItemOpen(nextTreeState == 2, ImGuiCond_Always);
     } else {
         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     }
-    std::string label =
-        name + " (" + std::to_string(read) + (showTotal ? "/" + std::to_string(total) : "") + ")###HintTracker" + name;
+    std::string label = name + " (" + std::to_string(read) + (showTotal ? "/" + std::to_string(total) : "") +
+                        ")###HintTracker" + std::to_string(journalView) + "_" + std::to_string(groupId);
     return ImGui::TreeNodeEx(label.c_str());
 }
 
@@ -348,7 +355,13 @@ static HintTrackerViewMode DrawViewTabs() {
     static bool tabRestored = false;
     auto drawTab = [&](const CustomMessage& label, const char* id, HintTrackerViewMode mode, const char* tooltip) {
         ImGuiTabItemFlags flags = (!tabRestored && viewMode == mode) ? ImGuiTabItemFlags_SetSelected : 0;
-        if (ImGui::BeginTabItem((label.GetForCurrentLanguage(MF_CLEAN) + id).c_str(), nullptr, flags)) {
+        if (ImGui::BeginTabItem(
+                (TrackerLocalization::Name("hints.labels",
+                                           mode == HINT_TRACKER_VIEW_JOURNAL ? "journalTabLabel" : "locationsTabLabel",
+                                           label.GetForUILanguage(MF_CLEAN)) +
+                 id)
+                    .c_str(),
+                nullptr, flags)) {
             if (viewMode != mode && tabRestored) {
                 viewMode = mode;
                 CVarSetInteger(CVAR_TRACKER_HINT("ViewMode"), mode);
@@ -390,12 +403,13 @@ static void DrawHintList() {
     bool showTotals = CVarGetInteger(CVAR_TRACKER_HINT("HintTotalsVisible"), 1);
 
     if (showExpandCollapse) {
-        if (Button("Collapse All",
-                   ButtonOptions({ { .tooltip = "Collapse all areas" } }).Color(THEME_COLOR).Size(Sizes::Inline))) {
+        if (Button(
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.collapse_all", "Collapse All"),
+                ButtonOptions({ { .tooltip = "Collapse all areas" } }).Color(THEME_COLOR).Size(Sizes::Inline))) {
             nextTreeState = 1;
         }
         ImGui::SameLine();
-        if (Button("Expand All",
+        if (Button(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.expand_all", "Expand All"),
                    ButtonOptions({ { .tooltip = "Expand all areas" } }).Color(THEME_COLOR).Size(Sizes::Inline))) {
             nextTreeState = 2;
         }
@@ -404,7 +418,7 @@ static void DrawHintList() {
         if (showExpandCollapse) {
             ImGui::SameLine();
         }
-        if (Button("Clear",
+        if (Button(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.clear", "Clear"),
                    ButtonOptions({ { .tooltip = "Clear the search field" } }).Color(THEME_COLOR).Size(Sizes::Inline))) {
             hintSearch.Clear();
         }
@@ -420,12 +434,13 @@ static void DrawHintList() {
         hintSearch.Clear();
     }
 
-    if (gSaveContext.language != cachedLanguage) {
+    if (cachedNameRevision != TrackerLocalization::Revision()) {
         hintTextCache.clear();
-        cachedLanguage = gSaveContext.language;
+        cachedNameRevision = TrackerLocalization::Revision();
     }
 
-    const std::string otherHintsName = otherHintsLabel.GetForCurrentLanguage(MF_CLEAN);
+    const std::string otherHintsName =
+        TrackerLocalization::Name("hints.labels", "otherHintsLabel", otherHintsLabel.GetForUILanguage(MF_CLEAN));
     bool journalView = viewMode == HINT_TRACKER_VIEW_JOURNAL;
 
     struct HintGroup {
@@ -474,7 +489,7 @@ static void DrawHintList() {
                     if (!hintName.empty()) {
                         hintName += ", ";
                     }
-                    hintName += hint->GetAreaName(static_cast<uint8_t>(slot)).GetForCurrentLanguage(MF_CLEAN);
+                    hintName += hint->GetAreaName(static_cast<uint8_t>(slot)).GetForUILanguage(MF_CLEAN);
                 }
                 compact = !hintName.empty();
                 if (compact) {
@@ -508,7 +523,8 @@ static void DrawHintList() {
             }
         }
         if (hintName.empty()) {
-            hintName = Rando::StaticData::hintNames[hintKey].GetForCurrentLanguage(MF_CLEAN);
+            hintName = TrackerLocalization::Name("hints.locations", EnumToString(hintKey),
+                                                 Rando::StaticData::hintNames[hintKey].GetForUILanguage(MF_CLEAN));
         }
         HintGroup& group = groups[effectiveKey];
         if (group.name.empty()) {
@@ -522,7 +538,8 @@ static void DrawHintList() {
         // "Hide found" only removes fully-collected hints from the journal view
         // (found is never set in the locations view).
         bool hideFound = found && CVarGetInteger(CVAR_TRACKER_HINT("HideFound"), 0);
-        if (!hideFound && (hintSearch.PassFilter(hintName.c_str()) || hintSearch.PassFilter(effectiveName.c_str()))) {
+        if (!hideFound && (hintSearch.PassFilter(hintName.c_str()) || hintSearch.PassFilter(effectiveName.c_str()) ||
+                           hintSearch.PassFilter(Rando::StaticData::hintNames[hintKey].GetEnglish(MF_CLEAN).c_str()))) {
             group.entries.push_back({ hintKey, hintName, compact, sortRank, nameColor, found });
         }
     };
@@ -548,13 +565,14 @@ static void DrawHintList() {
     };
     auto typeGroupName = [](HintType type) {
         if (type == HINT_TYPE_ITEM || type == HINT_TYPE_ITEM_AREA) {
-            return itemsLabel.GetForCurrentLanguage(MF_CLEAN);
+            return TrackerLocalization::Name("hints.labels", "itemsLabel", itemsLabel.GetForUILanguage(MF_CLEAN));
         }
         // Upstream calls the junk hint type "Message"; "Junk" is clearer here.
         if (type == HINT_TYPE_HINT_KEY) {
-            return junkLabel.GetForCurrentLanguage(MF_CLEAN);
+            return TrackerLocalization::Name("hints.labels", "junkLabel", junkLabel.GetForUILanguage(MF_CLEAN));
         }
-        return Rando::StaticData::hintTypeNames[type].GetForCurrentLanguage(MF_CLEAN);
+        return TrackerLocalization::Name("hints.types", EnumToString(type),
+                                         Rando::StaticData::hintTypeNames[type].GetForUILanguage(MF_CLEAN));
     };
 
     std::set<RandomizerHint> stoneHintKeys;
@@ -568,7 +586,9 @@ static void DrawHintList() {
             addHint(hintKey, typeGroupKey(type), typeGroupName(type), RCAREA_INVALID);
         } else {
             RandomizerCheckArea area = Rando::StaticData::GetLocation(rc)->GetArea();
-            addHint(hintKey, area, RandomizerCheckObjects::GetRCAreaName(area), area);
+            addHint(hintKey, area,
+                    TrackerLocalization::Name("areas", EnumToString(area), RandomizerCheckObjects::GetRCAreaName(area)),
+                    area);
         }
     }
 
@@ -589,15 +609,22 @@ static void DrawHintList() {
     }
 
     if (showTotals) {
-        ImGui::Text("%zu / %zu %s", readCount, totalHints, hintsReadLabel.GetForCurrentLanguage(MF_CLEAN).c_str());
+        ImGui::Text(
+            "%zu / %zu %s", readCount, totalHints,
+            TrackerLocalization::Name("hints.labels", "hintsReadLabel", hintsReadLabel.GetForUILanguage(MF_CLEAN))
+                .c_str());
     }
 
     if (totalHints == 0) {
-        ImGui::TextWrapped("%s", noHintsMessage.GetForCurrentLanguage(MF_CLEAN).c_str());
+        ImGui::TextWrapped(
+            "%s", TrackerLocalization::Name("hints.labels", "noHintsMessage", noHintsMessage.GetForUILanguage(MF_CLEAN))
+                      .c_str());
         return;
     }
     if (journalView && readCount == 0) {
-        ImGui::TextWrapped("%s", journalEmptyMessage.GetForCurrentLanguage(MF_CLEAN).c_str());
+        ImGui::TextWrapped("%s", TrackerLocalization::Name("hints.labels", "journalEmptyMessage",
+                                                           journalEmptyMessage.GetForUILanguage(MF_CLEAN))
+                                     .c_str());
         return;
     }
 
@@ -617,7 +644,8 @@ static void DrawHintList() {
             }
             return left.name < right.name;
         });
-        bool groupOpen = DrawGroupHeader(group.name, group.read, group.total, nextTreeState, !journalView);
+        bool groupOpen =
+            DrawGroupHeader(group.name, group.read, group.total, nextTreeState, !journalView, groupKey, journalView);
         if (group.area != RCAREA_INVALID && group.area == currentArea && doAreaScroll) {
             ImGui::SetScrollHereY(0.0f);
             doAreaScroll = false;
@@ -671,9 +699,13 @@ void HintTrackerWindow::DrawElement() {
             CVarGetInteger(CVAR_TRACKER_HINT("Draggable"), 1))) {
         ImGui::SetWindowFontScale(CVarGetFloat(CVAR_TRACKER_HINT("FontSize"), 1.0f));
         if (!GameInteractor::IsSaveLoaded()) {
-            ImGui::TextUnformatted(waitingMessage.GetForCurrentLanguage(MF_CLEAN).c_str());
+            ImGui::TextUnformatted(
+                TrackerLocalization::Name("hints.labels", "waitingMessage", waitingMessage.GetForUILanguage(MF_CLEAN))
+                    .c_str());
         } else if (!IS_RANDO) {
-            ImGui::TextWrapped("%s", randoOnlyMessage.GetForCurrentLanguage(MF_CLEAN).c_str());
+            ImGui::TextWrapped("%s", TrackerLocalization::Name("hints.labels", "randoOnlyMessage",
+                                                               randoOnlyMessage.GetForUILanguage(MF_CLEAN))
+                                         .c_str());
         } else {
             DrawHintList();
         }
@@ -702,8 +734,11 @@ void HintTrackerSettingsWindow::DrawElement() {
         ImGui::PopStyleVar();
         return;
     }
-    ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-    ImGui::TableSetupColumn("Colors", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    ImGui::TableSetupColumn(
+        Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.general_settings_2", "General settings"),
+        ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.colors", "Colors"),
+                            ImGuiTableColumnFlags_WidthStretch, 200.0f);
     ImGui::TableHeadersRow();
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
@@ -712,47 +747,62 @@ void HintTrackerSettingsWindow::DrawElement() {
 
     SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
-    CVarSliderFloat("Font Size", CVAR_TRACKER_HINT("FontSize"),
-                    FloatSliderOptions()
-                        .Tooltip("Sets the font size used in the hint tracker.")
-                        .Format("%.1f")
-                        .Step(0.1f)
-                        .Min(0.3f)
-                        .Max(2.0f)
-                        .Color(THEME_COLOR)
-                        .DefaultValue(1.0f));
+    CVarSliderFloat(
+        Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.font_size", "Font Size"),
+        CVAR_TRACKER_HINT("FontSize"),
+        FloatSliderOptions()
+            .Tooltip(Lang::UIString(
+                "ui.text.enhancements.randomizer.randomizer_hint_tracker.sets_the_font_size_used_in_the_hint_tracker",
+                "Sets the font size used in the hint tracker."))
+            .Format("%.1f")
+            .Step(0.1f)
+            .Min(0.3f)
+            .Max(2.0f)
+            .Color(THEME_COLOR)
+            .DefaultValue(1.0f));
 
     if (CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         SohGui::GetSohMenu()->MenuDrawItem(draggableWidget, THEME_COLOR);
         SohGui::GetSohMenu()->MenuDrawItem(showOnlyPausedWidget, THEME_COLOR);
-        CVarCombobox("Display Mode", CVAR_TRACKER_HINT("DisplayType"), showMode,
-                     ComboboxOptions()
-                         .LabelPosition(LabelPositions::Far)
-                         .ComponentAlignment(ComponentAlignments::Right)
-                         .Color(THEME_COLOR)
-                         .DefaultIndex(0));
+        CVarCombobox(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.display_mode", "Display Mode"),
+            CVAR_TRACKER_HINT("DisplayType"), showMode,
+            UIWidgets::ComboboxOptions(ComboboxOptions()
+                                           .LabelPosition(LabelPositions::Far)
+                                           .ComponentAlignment(ComponentAlignments::Right)
+                                           .Color(THEME_COLOR)
+                                           .DefaultIndex(0))
+                .TranslationScope("ui.text.enhancements.randomizer.randomizer_hint_tracker"));
         if (CVarGetInteger(CVAR_TRACKER_HINT("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
-            CVarCombobox("Combo Button 1", CVAR_TRACKER_HINT("ComboButton1"), buttonStrings,
-                         ComboboxOptions()
-                             .LabelPosition(LabelPositions::Far)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .Color(THEME_COLOR)
-                             .DefaultIndex(TRACKER_COMBO_BUTTON_L));
-            CVarCombobox("Combo Button 2", CVAR_TRACKER_HINT("ComboButton2"), buttonStrings,
-                         ComboboxOptions()
-                             .LabelPosition(LabelPositions::Far)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .Color(THEME_COLOR)
-                             .DefaultIndex(TRACKER_COMBO_BUTTON_R));
+            CVarCombobox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.combo_button_1",
+                                       "Combo Button 1"),
+                         CVAR_TRACKER_HINT("ComboButton1"), buttonStrings,
+                         UIWidgets::ComboboxOptions(ComboboxOptions()
+                                                        .LabelPosition(LabelPositions::Far)
+                                                        .ComponentAlignment(ComponentAlignments::Right)
+                                                        .Color(THEME_COLOR)
+                                                        .DefaultIndex(TRACKER_COMBO_BUTTON_L))
+                             .TranslationScope("ui.text.enhancements.randomizer.randomizer_hint_tracker"));
+            CVarCombobox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_hint_tracker.combo_button_2",
+                                       "Combo Button 2"),
+                         CVAR_TRACKER_HINT("ComboButton2"), buttonStrings,
+                         UIWidgets::ComboboxOptions(ComboboxOptions()
+                                                        .LabelPosition(LabelPositions::Far)
+                                                        .ComponentAlignment(ComponentAlignments::Right)
+                                                        .Color(THEME_COLOR)
+                                                        .DefaultIndex(TRACKER_COMBO_BUTTON_R))
+                             .TranslationScope("ui.text.enhancements.randomizer.randomizer_hint_tracker"));
         }
     }
 
-    ImGui::SeparatorText("Tracker Header Visibility");
+    ImGui::SeparatorText(
+        Lang::UIString("ui.text.enhancements.randomizer.randomizer_hint_tracker.tracker_header_visibility",
+                       "Tracker Header Visibility"));
     SohGui::GetSohMenu()->MenuDrawItem(expandCollapseWidget, THEME_COLOR);
     SohGui::GetSohMenu()->MenuDrawItem(searchInputWidget, THEME_COLOR);
     SohGui::GetSohMenu()->MenuDrawItem(hintTotalsWidget, THEME_COLOR);
 
-    ImGui::SeparatorText("Journal");
+    ImGui::SeparatorText(Lang::UIString("ui.text.enhancements.randomizer.randomizer_hint_tracker.journal", "Journal"));
     SohGui::GetSohMenu()->MenuDrawItem(hideFoundWidget, THEME_COLOR);
 
     ImGui::TableNextColumn();
@@ -836,8 +886,10 @@ void RegisterHintTrackerWidgets() {
     hideFoundWidget = { .name = "Hide Found Items##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     hideFoundWidget.CVar(CVAR_TRACKER_HINT("HideFound"))
         .Options(CheckboxOptions()
-                     .Tooltip("Removes hints whose item you have already collected from the Journal, instead of "
-                              "dimming them and sorting them to the bottom.")
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gTrackers.HintTracker.HideFound.description",
+                         "Removes hints whose item you have already collected from the Journal, instead of "
+                         "dimming them and sorting them to the bottom."))
                      .Color(THEME_COLOR)
                      .DefaultValue(false));
     SohGui::GetSohMenu()->AddSearchWidget({ hideFoundWidget, "Randomizer", "Hint Tracker", "General Settings" });

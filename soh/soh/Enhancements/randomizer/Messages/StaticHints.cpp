@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 // RANDOTODO: Consider breaking this up into the different actors
 // That speak these hints, like 2Ship does with ActorBehavior
 
@@ -60,13 +61,9 @@ void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
             if (RAND_GET_OPTION(RSK_OOT_HINT) && !RAND_GET_ITEM_LOC(RC_SONG_FROM_OCARINA_OF_TIME)->HasObtained()) {
                 msg = ReadHintMessage(RH_OOT_HINT, MF_RAW);
             } else if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
-                msg = CustomMessage(
-                    "@, meet me at %gGanon's Castle%w once you obtain the %rkey to his lair%w.",
-                    "@, wir treffen uns bei %gGanons Schloß%w, sobald Du den %rSchlüssel zu seinem Verlies%w hast.",
-                    "Retrouve-moi au %gChâteau de Ganon%w une fois que tu auras obtenu la %rclé de son repaire%w.");
+                msg = CustomMessages::CreateMessage("randomizer.messages.static_hints.build_sheik_message.0");
             } else {
-                msg = CustomMessage("The time has come. Prepare yourself.", "Die Zeit ist gekommen.&Mach Dich bereit.",
-                                    "Le moment est venu @.&Tu ferais bien de te préparer.");
+                msg = CustomMessages::CreateMessage("randomizer.messages.static_hints.build_sheik_message.1");
             }
             break;
         case SCENE_INSIDE_GANONS_CASTLE:
@@ -75,29 +72,12 @@ void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
             } else if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) &&
                          INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CUR_CAPACITY(UPG_QUIVER) >= 30 &&
                          gSaveContext.isMagicAcquired)) {
-                msg = CustomMessage(
-                    "You are still ill-equipped to face %rGanondorf%w."
-                    "^Seek out the %cMaster Sword%w, %rsomething to hold your arrows%w, and %gmagic%w to summon the "
-                    "%ylight%w.",
-                    "Du bist noch nicht gewappnet um Dich %rGanondorf%w stellen zu können.^"
-                    "Begib Dich auf die Suche nach dem %cMaster-Schwert%w, %retwas um Deinen Pfeilen einen Sinn zu "
-                    "geben%w,^sowie %gdie Magie%w, um das %yLicht%w herauf beschwören zu können.",
-                    "@, tu n'es toujours pas prêt à affronter %rGanondorf%w.^"
-                    "Cherche l'%cÉpée de Légende%w, %rquelque chose pour ranger tes flèches%w et de la %gmagie%w pour "
-                    "invoquer la %ylumière%w.");
+                msg = CustomMessages::CreateMessage("randomizer.messages.static_hints.build_sheik_message.2");
             } else if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER) &&
                        RAND_GET_OPTION(RSK_TRIAL_COUNT)) {
-                msg = CustomMessage(
-                    "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still "
-                    "stands.^Complete the remaining %gtrials%w to destroy it.",
-                    "Du magst das haben, was Du brauchst um %rden bösen König%w zu besiegen, aber die %cBarriere%w "
-                    "steht noch.^Absolviere die verbleibenden %gPrüfungen%w um sie zu zerstören.",
-                    "@, tu as peut-être ce qu'il te faut pour vaincre %rle Malin%w, mais les barrières sont toujours "
-                    "actives.^Termine les épreuves restantes pour les détruire.");
+                msg = CustomMessages::CreateMessage("randomizer.messages.static_hints.build_sheik_message.3");
             } else {
-                msg = CustomMessage("If you're ready, then proceed.^Good luck.",
-                                    "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
-                                    "Si tu es prêt, tu peux y aller.^Bonne chance.");
+                msg = CustomMessages::CreateMessage("randomizer.messages.static_hints.build_sheik_message.4");
             }
             break;
     }
@@ -141,14 +121,8 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
         return;
     }
     Rando::Item& item = Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(rc)->GetPlacedRandomizerGet());
-    CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y[[d]] Spiders of the "
-                                      "Curse%w and I will give you [[color]][[1]]%w!",
-                                      /*german*/
-                                      "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y[[d]] Skulltulas%w "
-                                      "zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
-                                      /*french*/
-                                      "Yeaaarrgh! Je suis maudit!^Détruit encore %y[[d]] Araignées de la Malédiction%w "
-                                      "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
+    CustomMessage msg =
+        CustomMessages::CreateMessage("randomizer.messages.static_hints.build_skulltula_people_message.0");
     msg.InsertNumber(count);
     msg.Replace("[[color]]", item.GetColor());
     msg.InsertNames({ item.GetHint().GetHintMessage() });
@@ -158,14 +132,8 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y100 Spiders of the "
-                                      "Curse%w and I will give you [[color]][[1]]%w!",
-                                      /*german*/
-                                      "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y100 Skulltulas%w "
-                                      "zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
-                                      /*french*/
-                                      "Yeaaarrgh! Je suis maudit!^Détruit encore %y100 Araignées de la Malédiction%w "
-                                      "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
+    CustomMessage msg =
+        CustomMessages::CreateMessage("randomizer.messages.static_hints.build100_skulls_hint_message.0");
     Rando::Item& item =
         Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet());
     msg.Replace("[[color]]", item.GetColor());
@@ -191,10 +159,7 @@ void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 static void BuildWarpMessage(RandomizerHint rh, bool* loadFromMessageTable) {
     if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
-        CustomMessage msg = CustomMessage(
-            "Warp to&%ra mysterious place?%w&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
-            "Zu&%reinem mysteriösen Ort%w?&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
-            "Se téléporter vers&%run endroit mystérieux%w?&" + CustomMessage::TWO_WAY_CHOICE() + "%rOK!&Non%w");
+        CustomMessage msg = CustomMessages::CreateMessage("randomizer.messages.static_hints.build_warp_message.0");
         msg.AutoFormat();
         msg.LoadIntoFont();
     } else {
@@ -244,19 +209,13 @@ void BuildFishingPoleHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     if (Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND)) {
         return;
     }
-    CustomMessage msg = CustomMessage(
-        "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
-        "Entschuldigung, aber der Teich ist zu.&Ich habe meine gute %rAngelrute%w verloren.&Ohne kann ich nicht "
-        "fischen!",
-        "Désolé, mais l'étang est fermé.&J'ai perdu ma bonne %rCanne à Pêche%w...&Impossible de pêcher sans elle!");
+    CustomMessage msg =
+        CustomMessages::CreateMessage("randomizer.messages.static_hints.build_fishing_pole_hint_message.0");
     if (RAND_GET_OPTION(RSK_FISHING_POLE_HINT)) {
         msg = msg + ReadHintMessage(RH_FISHING_POLE);
     }
     if (*textId == TEXT_FISHING_POND_START_MET) {
-        msg = CustomMessage("Hey, mister! I remember you!&It's been a long time!^",
-                            "Hallo, mein Herr! Ich erinnere mich an Sie!&Lang ist's her!",
-                            "Hé, monsieur! Je me souviens de toi!&Ça fait longtemps!") +
-              msg;
+        msg = CustomMessages::CreateMessage("randomizer.messages.static_hints.build_fishing_pole_hint_message.1") + msg;
     }
     msg.AutoFormat();
     msg.LoadIntoFont();

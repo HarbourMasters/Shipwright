@@ -1,3 +1,6 @@
+#include "TrackerLocalization.h"
+#include "randomizerEnumStrings.h"
+#include "soh/Enhancements/Lang/Lang.h"
 #include <array>
 #include <string>
 #include <sstream>
@@ -197,6 +200,8 @@ std::unordered_map<RandomizerCheck, std::string> checkNameOverrides;
 
 bool ShouldShowCheck(RandomizerCheck rc);
 bool UpdateFilters();
+static const std::string& TrackerAreaName(RandomizerCheckArea area);
+static const std::string& TrackerCheckName(RandomizerCheck check);
 bool CompareChecks(RandomizerCheck, RandomizerCheck);
 bool CheckByArea(RandomizerCheckArea);
 void DrawLocation(RandomizerCheck);
@@ -1239,6 +1244,12 @@ void SetAreaSpoiled(RandomizerCheckArea rcArea) {
 void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAgeTime startingAgeTime);
 
 void CheckTrackerWindow::DrawElement() {
+    static uint64_t nameRevision = 0;
+    const auto currentNameRevision = TrackerLocalization::Revision();
+    if (nameRevision != currentNameRevision && initialized && GameInteractor::IsSaveLoaded()) {
+        UpdateFilters();
+        nameRevision = currentNameRevision;
+    }
     Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"), Color_Bg_Default);
     Color_Area_Incomplete_Main = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor.Value"), Color_Main_Default);
     Color_Area_Incomplete_Extra =
@@ -1309,7 +1320,9 @@ void CheckTrackerWindow::DrawElement() {
             static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW)),
             CVarGetInteger(CVAR_TRACKER_CHECK("Draggable"), 1), ImGuiWindowFlags_NoScrollbar)) {
         if (!GameInteractor::IsSaveLoaded() || !initialized) {
-            ImGui::Text("Waiting for file load..."); // TODO Language
+            ImGui::TextUnformatted(
+                Lang::UIString("ui.text.enhancements.randomizer.randomizer_check_tracker.waiting_for_file_load",
+                               "Waiting for file load...")); // TODO Language
             Trackers::EndFloatWindows();
             return;
         }
@@ -1338,7 +1351,9 @@ void CheckTrackerWindow::DrawElement() {
         ImGui::TableNextColumn();
         if (CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) &&
             UIWidgets::CVarCheckbox(
-                "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"),
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.show_hidden_items",
+                              "Show Hidden Items"),
+                CVAR_TRACKER_CHECK("ShowHidden"),
                 UIWidgets::CheckboxOptions(
                     { { .tooltip =
                             "When active, items will show hidden checks by default when updated to this state." } })
@@ -1349,7 +1364,9 @@ void CheckTrackerWindow::DrawElement() {
         }
         if (enableAvailableChecks && CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) {
             if (UIWidgets::CVarCheckbox(
-                    "Only Show Available Checks", CVAR_TRACKER_CHECK("OnlyShowAvailable"),
+                    Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.only_show_available_checks",
+                                  "Only Show Available Checks"),
+                    CVAR_TRACKER_CHECK("OnlyShowAvailable"),
                     UIWidgets::CheckboxOptions({ { .tooltip = "When active, unavailable checks will be hidden." } })
                         .Color(THEME_COLOR))) {
                 doAreaScroll = true;
@@ -1357,16 +1374,19 @@ void CheckTrackerWindow::DrawElement() {
             }
         }
         if (CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0)) {
-            if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions()
-                                                    .Color(THEME_COLOR)
-                                                    .Size({ ImGui::GetContentRegionAvail().x / 2 - 6, 0 }))) {
+            if (UIWidgets::Button(
+                    Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.expand_all", "Expand All"),
+                    UIWidgets::ButtonOptions()
+                        .Color(THEME_COLOR)
+                        .Size({ ImGui::GetContentRegionAvail().x / 2 - 6, 0 }))) {
                 optCollapseAll = false;
                 optExpandAll = true;
                 doAreaScroll = true;
             }
             ImGui::SameLine();
             if (UIWidgets::Button(
-                    "Collapse All",
+                    Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.collapse_all",
+                                  "Collapse All"),
                     UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x - 6, 0 }))) {
                 optExpandAll = false;
                 optCollapseAll = true;
@@ -1391,19 +1411,24 @@ void CheckTrackerWindow::DrawElement() {
             }
             if (checkSearchText.length() < 1) {
                 ImGui::SameLine(20.0f);
-                ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Search...");
+                ImGui::TextColored(
+                    ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "%s",
+                    Lang::UIString("ui.text.enhancements.randomizer.randomizer_check_tracker.search", "Search..."));
             }
         }
         UIWidgets::PopStyleCombobox();
 
         if (CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1)) {
-            std::ostringstream totalChecksSS;
-            totalChecksSS << "";
             if (enableAvailableChecks) {
-                totalChecksSS << totalChecksAvailable << " Available / ";
+                ImGui::Text(TrackerLocalization::Name("status", "check_totals_available",
+                                                      "%u Available / %u Checked / %u Total")
+                                .c_str(),
+                            static_cast<unsigned>(totalChecksAvailable), static_cast<unsigned>(totalChecksGotten),
+                            static_cast<unsigned>(totalChecks));
+            } else {
+                ImGui::Text(TrackerLocalization::Name("status", "check_totals", "%u Checked / %u Total").c_str(),
+                            static_cast<unsigned>(totalChecksGotten), static_cast<unsigned>(totalChecks));
             }
-            totalChecksSS << totalChecksGotten << " Checked / " << totalChecks << " Total";
-            ImGui::Text("%s", totalChecksSS.str().c_str());
         }
 
         bool headerPresent =
@@ -1482,7 +1507,7 @@ void CheckTrackerWindow::DrawElement() {
                         collapseLogic = false;
                     }
                 }
-                stemp = RandomizerCheckObjects::GetRCAreaName(rcArea) + "##TreeNode";
+                stemp = TrackerAreaName(rcArea) + "###CheckArea" + std::to_string(rcArea);
                 ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(mainColor.r / 255.0f, mainColor.g / 255.0f,
                                                             mainColor.b / 255.0f, mainColor.a / 255.0f));
                 if (doingCollapseOrExpand) {
@@ -1500,28 +1525,28 @@ void CheckTrackerWindow::DrawElement() {
 
                 if (isThisAreaSpoiled) {
                     std::ostringstream areaTotalsSS;
-                    std::ostringstream areaTotalsTooltipSS;
 
                     areaTotalsSS << "(";
                     if (enableAvailableChecks) {
                         areaTotalsSS << static_cast<uint16_t>(areaChecksAvailable[rcArea]) << " / ";
-                        areaTotalsTooltipSS << "Available / ";
                     }
                     areaTotalsSS << static_cast<uint16_t>(areaChecksGotten[rcArea]) << " / "
                                  << static_cast<uint16_t>(areaCheckTotals[rcArea]) << ")";
-                    areaTotalsTooltipSS << "Checked / Total";
 
                     if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
                         if (OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(DungeonSceneLookupByArea(rcArea))
                                 ->IsMQ()) {
-                            areaTotalsSS << " - MQ";
+                            areaTotalsSS << " - " << TrackerLocalization::Name("status", "mq", "MQ");
                         } else {
-                            areaTotalsSS << " - Vanilla";
+                            areaTotalsSS << " - " << TrackerLocalization::Name("status", "vanilla", "Vanilla");
                         }
                     }
 
                     ImGui::Text("%s", areaTotalsSS.str().c_str());
-                    UIWidgets::Tooltip(areaTotalsTooltipSS.str().c_str());
+                    UIWidgets::Tooltip(TrackerLocalization::Name(
+                                           "status", enableAvailableChecks ? "area_totals_available" : "area_totals",
+                                           enableAvailableChecks ? "Available / Checked / Total" : "Checked / Total")
+                                           .c_str());
                 } else {
                     ImGui::Text("???");
                 }
@@ -1552,9 +1577,19 @@ void CheckTrackerWindow::DrawElement() {
     Trackers::EndFloatWindows();
 }
 
+static const std::string& TrackerAreaName(RandomizerCheckArea area) {
+    return TrackerLocalization::Name("areas", EnumToString(area), RandomizerCheckObjects::GetRCAreaName(area));
+}
+
+static const std::string& TrackerCheckName(RandomizerCheck check) {
+    return TrackerLocalization::Name("checks", EnumToString(check),
+                                     Rando::StaticData::GetLocation(check)->GetShortName(), "name");
+}
+
 bool UpdateFilters() {
     for (auto& [rcArea, checks] : checksByArea) {
-        filterAreasHidden[rcArea] = !checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str());
+        filterAreasHidden[rcArea] = !checkSearch.PassFilter(TrackerAreaName(rcArea).c_str()) &&
+                                    !checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str());
         for (auto check : checks) {
             if (ShouldShowCheck(check)) {
                 filterAreasHidden[rcArea] = false;
@@ -1573,18 +1608,20 @@ bool ShouldShowCheck(RandomizerCheck check) {
     std::string search = (Rando::StaticData::GetLocation(check)->GetShortName() + " " +
                           Rando::StaticData::GetLocation(check)->GetName() + " " +
                           RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()));
+    search += " " + TrackerCheckName(check) + " " + TrackerAreaName(Rando::StaticData::GetLocation(check)->GetArea());
     if (itemLoc->HasObtained() || itemLoc->GetCheckStatus() == RCSHOW_SCUMMED ||
         (!mystery &&
          (itemLoc->GetCheckStatus() == RCSHOW_IDENTIFIED || itemLoc->GetCheckStatus() == RCSHOW_SEEN_OR_HINTED) &&
          itemLoc->GetPlacedRandomizerGet() != RG_ICE_TRAP)) {
-        search += " " + itemLoc->GetPlacedItemName().GetForLanguage(gSaveContext.language);
+        search += " " + TrackerLocalization::Name("items.randomizer", EnumToString(itemLoc->GetPlacedRandomizerGet()),
+                                                  itemLoc->GetPlacedItem().GetNameForUI());
     } else if (itemLoc->GetCheckStatus() == RCSHOW_IDENTIFIED && !mystery) {
         search +=
-            OTRGlobals::Instance->gRandoContext->overrides[check].GetTrickName().GetForLanguage(gSaveContext.language);
+            OTRGlobals::Instance->gRandoContext->overrides[check].GetTrickName().GetForLocale(Lang::GetUILanguage());
     } else if (itemLoc->GetCheckStatus() == RCSHOW_SEEN_OR_HINTED && !mystery) {
         search += Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[check].LooksLike())
                       .GetName()
-                      .GetForLanguage(gSaveContext.language);
+                      .GetForLocale(Lang::GetUILanguage());
     }
     return (IsVisibleInCheckTracker(check) &&
             (checkSearch.Filters.Size == 0 || checkSearch.PassFilter(search.c_str())));
@@ -2206,9 +2243,10 @@ void DrawLocation(RandomizerCheck rc) {
 
     // Main Text
     if (checkNameOverrides.contains(loc->GetRandomizerCheck())) {
-        txt = checkNameOverrides[loc->GetRandomizerCheck()];
+        txt = TrackerLocalization::Name("checks", EnumToString(rc), checkNameOverrides[loc->GetRandomizerCheck()],
+                                        "age_unified_name");
     } else {
-        txt = loc->GetShortName();
+        txt = TrackerCheckName(rc);
     }
 
     if (lastLocationChecked == loc->GetRandomizerCheck()) {
@@ -2278,15 +2316,13 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_COLLECTED:
             case RCSHOW_SCUMMED:
                 if (IS_RANDO) {
-                    txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
+                    txt = TrackerLocalization::Name("items.randomizer", EnumToString(itemLoc->GetPlacedRandomizerGet()),
+                                                    itemLoc->GetPlacedItem().GetNameForUI());
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
-                        if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER ||
-                            gSaveContext.language == LANGUAGE_JPN) {
-                            txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().english;
-                        } else if (gSaveContext.language == LANGUAGE_FRA) {
-                            txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().french;
-                        }
+                        txt = TrackerLocalization::Name(
+                            "items.randomizer", EnumToString(loc->GetVanillaItem()),
+                            Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetNameForUI());
                     }
                 }
                 break;
@@ -2305,16 +2341,18 @@ void DrawLocation(RandomizerCheck rc) {
 
                     if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && revealItemName) {
                         if (status == RCSHOW_IDENTIFIED) {
-                            txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(
-                                gSaveContext.language);
+                            txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLocale(
+                                Lang::GetUILanguage());
                         } else {
                             txt = Rando::StaticData::RetrieveItem(
                                       OTRGlobals::Instance->gRandoContext->overrides[rc].LooksLike())
                                       .GetName()
-                                      .GetForLanguage(gSaveContext.language);
+                                      .GetForLocale(Lang::GetUILanguage());
                         }
                     } else if (revealItemName) {
-                        txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
+                        txt = TrackerLocalization::Name("items.randomizer",
+                                                        EnumToString(itemLoc->GetPlacedRandomizerGet()),
+                                                        itemLoc->GetPlacedItem().GetNameForUI());
                     }
                     if (itemLoc->CanBePurchased() && IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED) {
                         auto price = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice();
@@ -2323,19 +2361,16 @@ void DrawLocation(RandomizerCheck rc) {
                     }
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
-                        if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER ||
-                            gSaveContext.language == LANGUAGE_JPN) {
-                            txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().english;
-                        } else if (gSaveContext.language == LANGUAGE_FRA) {
-                            txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().french;
-                        }
+                        txt = TrackerLocalization::Name(
+                            "items.randomizer", EnumToString(loc->GetVanillaItem()),
+                            Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetNameForUI());
                     }
                 }
                 break;
         }
     }
     if (txt == "" && skipped) {
-        txt = "Skipped"; // TODO language
+        txt = TrackerLocalization::Name("status", "skipped", "Skipped");
     }
 
     if (txt != "") {
@@ -2408,7 +2443,8 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
             label += "##Hidden";
             ImGui::PushID(label.c_str());
             UIWidgets::CVarCheckbox(
-                "Hidden", cvarHideName,
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.hidden", "Hidden"),
+                cvarHideName,
                 UIWidgets::CheckboxOptions(
                     { { .tooltip = "When active, checks will hide by default when updated to this state. Can "
                                    "be overridden with the \"Show Hidden Items\" option." } })
@@ -2536,8 +2572,14 @@ void CheckTrackerWindow::Draw() {
 void CheckTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-        ImGui::TableSetupColumn("Section settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.general_settings_2",
+                          "General settings"),
+            ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.section_settings",
+                          "Section settings"),
+            ImGuiTableColumnFlags_WidthStretch, 200.0f);
         ImGui::TableHeadersRow();
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
@@ -2545,41 +2587,60 @@ void CheckTrackerSettingsWindow::DrawElement() {
 
         SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
-        UIWidgets::CVarSliderFloat("Font Size", CVAR_TRACKER_CHECK("FontSize"),
-                                   UIWidgets::FloatSliderOptions()
-                                       .Tooltip("Sets the font size used in the check tracker.")
-                                       .Format("%.1f")
-                                       .Step(0.1f)
-                                       .Min(0.3f)
-                                       .Max(2.0f)
-                                       .Color(THEME_COLOR)
-                                       .DefaultValue(1.0f));
+        UIWidgets::CVarSliderFloat(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.font_size", "Font Size"),
+            CVAR_TRACKER_CHECK("FontSize"),
+            UIWidgets::FloatSliderOptions()
+                .Tooltip(Lang::UIString("ui.text.enhancements.randomizer.randomizer_check_tracker.sets_the_font_size_"
+                                        "used_in_the_check_tracker",
+                                        "Sets the font size used in the check tracker."))
+                .Format("%.1f")
+                .Step(0.1f)
+                .Min(0.3f)
+                .Max(2.0f)
+                .Color(THEME_COLOR)
+                .DefaultValue(1.0f));
 
         if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-            UIWidgets::CVarCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"),
-                                    UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-            UIWidgets::CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"),
-                                    UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-            UIWidgets::CVarCombobox("Display Mode", CVAR_TRACKER_CHECK("DisplayType"), showMode,
-                                    UIWidgets::ComboboxOptions()
-                                        .LabelPosition(UIWidgets::LabelPositions::Far)
-                                        .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
-                                        .Color(THEME_COLOR)
-                                        .DefaultIndex(0));
+            UIWidgets::CVarCheckbox(
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.enable_dragging",
+                              "Enable Dragging"),
+                CVAR_TRACKER_CHECK("Draggable"), UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+            UIWidgets::CVarCheckbox(
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.only_enable_while_paused",
+                              "Only Enable While Paused"),
+                CVAR_TRACKER_CHECK("ShowOnlyPaused"), UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+            UIWidgets::CVarCombobox(
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.display_mode", "Display Mode"),
+                CVAR_TRACKER_CHECK("DisplayType"), showMode,
+                UIWidgets::ComboboxOptions(UIWidgets::ComboboxOptions()
+                                               .LabelPosition(UIWidgets::LabelPositions::Far)
+                                               .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
+                                               .Color(THEME_COLOR)
+                                               .DefaultIndex(0))
+                    .TranslationScope("ui.text.enhancements.randomizer.randomizer_check_tracker"));
             if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) ==
                 TRACKER_DISPLAY_COMBO_BUTTON) {
-                UIWidgets::CVarCombobox("Combo Button 1", CVAR_TRACKER_CHECK("ComboButton1"), buttonStrings,
-                                        UIWidgets::ComboboxOptions()
-                                            .LabelPosition(UIWidgets::LabelPositions::Far)
-                                            .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
-                                            .Color(THEME_COLOR)
-                                            .DefaultIndex(TRACKER_COMBO_BUTTON_L));
-                UIWidgets::CVarCombobox("Combo Button 2", CVAR_TRACKER_CHECK("ComboButton2"), buttonStrings,
-                                        UIWidgets::ComboboxOptions()
-                                            .LabelPosition(UIWidgets::LabelPositions::Far)
-                                            .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
-                                            .Color(THEME_COLOR)
-                                            .DefaultIndex(TRACKER_COMBO_BUTTON_L));
+                UIWidgets::CVarCombobox(
+                    Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.combo_button_1",
+                                  "Combo Button 1"),
+                    CVAR_TRACKER_CHECK("ComboButton1"), buttonStrings,
+                    UIWidgets::ComboboxOptions(UIWidgets::ComboboxOptions()
+                                                   .LabelPosition(UIWidgets::LabelPositions::Far)
+                                                   .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
+                                                   .Color(THEME_COLOR)
+                                                   .DefaultIndex(TRACKER_COMBO_BUTTON_L))
+                        .TranslationScope("ui.text.enhancements.randomizer.randomizer_check_tracker"));
+                UIWidgets::CVarCombobox(
+                    Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.combo_button_2",
+                                  "Combo Button 2"),
+                    CVAR_TRACKER_CHECK("ComboButton2"), buttonStrings,
+                    UIWidgets::ComboboxOptions(UIWidgets::ComboboxOptions()
+                                                   .LabelPosition(UIWidgets::LabelPositions::Far)
+                                                   .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
+                                                   .Color(THEME_COLOR)
+                                                   .DefaultIndex(TRACKER_COMBO_BUTTON_L))
+                        .TranslationScope("ui.text.enhancements.randomizer.randomizer_check_tracker"));
             }
         }
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
@@ -2598,23 +2659,42 @@ void CheckTrackerSettingsWindow::DrawElement() {
 
         // Filtering settings
         UIWidgets::CVarCheckbox(
-            "Filter Empty Areas", CVAR_TRACKER_CHECK("HideFilteredAreas"),
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.filter_empty_areas",
+                          "Filter Empty Areas"),
+            CVAR_TRACKER_CHECK("HideFilteredAreas"),
             UIWidgets::CheckboxOptions()
-                .Tooltip("If enabled, will hide area headers that have no locations matching filter")
+                .Tooltip(Lang::UIString("ui.text.enhancements.randomizer.randomizer_check_tracker.if_enabled_will_hide_"
+                                        "area_headers_that_have_no_locations_matching_filter",
+                                        "If enabled, will hide area headers that have no locations matching filter"))
                 .Color(THEME_COLOR)
                 .DefaultValue(true));
 
-        ImGui::SeparatorText("Tracker Header Visibility");
-        UIWidgets::CVarCheckbox("Hidden Items Toggle", CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
-        UIWidgets::CVarCheckbox("Available Checks Toggle", CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
-        UIWidgets::CVarCheckbox("Expand/Collapse Buttons", CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(false));
-        UIWidgets::CVarCheckbox("Search Input", CVAR_TRACKER_CHECK("SearchInputVisible"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
-        UIWidgets::CVarCheckbox("Check Totals", CVAR_TRACKER_CHECK("CheckTotalsVisible"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+        ImGui::SeparatorText(
+            Lang::UIString("ui.text.enhancements.randomizer.randomizer_check_tracker.tracker_header_visibility",
+                           "Tracker Header Visibility"));
+        UIWidgets::CVarCheckbox(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.hidden_items_toggle",
+                          "Hidden Items Toggle"),
+            CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"),
+            UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+        UIWidgets::CVarCheckbox(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.available_checks_toggle",
+                          "Available Checks Toggle"),
+            CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"),
+            UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+        UIWidgets::CVarCheckbox(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.expand_collapse_buttons",
+                          "Expand/Collapse Buttons"),
+            CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"),
+            UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(false));
+        UIWidgets::CVarCheckbox(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.search_input", "Search Input"),
+            CVAR_TRACKER_CHECK("SearchInputVisible"),
+            UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+        UIWidgets::CVarCheckbox(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_check_tracker.check_totals", "Check Totals"),
+            CVAR_TRACKER_CHECK("CheckTotalsVisible"),
+            UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
 
         ImGui::TableNextColumn();
 
@@ -2705,16 +2785,18 @@ void RegisterCheckTrackerWidgets() {
     dungeonSpoilerWidget.CVar(CVAR_TRACKER_CHECK("MQSpoilers"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. "
-                              "Otherwise, Vanilla/MQ dungeon locations must be unlocked."));
+                     .Tooltip(Lang::UIString("ui.widgets.gTrackers.CheckTracker.MQSpoilers.description",
+                                             "If enabled, Vanilla/MQ dungeons will show on the tracker immediately. "
+                                             "Otherwise, Vanilla/MQ dungeon locations must be unlocked.")));
     SohGui::GetSohMenu()->AddSearchWidget({ dungeonSpoilerWidget, "Randomizer", "Check Tracker", "General Settings" });
 
     hideUnshuffledShopWidget = { .name = "Hide Unshuffled Shop Item Checks", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     hideUnshuffledShopWidget.CVar(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"))
-        .Options(
-            CheckboxOptions()
-                .Color(THEME_COLOR)
-                .Tooltip("If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles."))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gTrackers.CheckTracker.HideUnshuffledShopChecks.description",
+                         "If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles.")))
         .Callback([&](WidgetInfo& info) {
             hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 0);
             UpdateFilters();
@@ -2726,7 +2808,9 @@ void RegisterCheckTrackerWidgets() {
     showGSWidget.CVar(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings."))
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gTrackers.CheckTracker.AlwaysShowGSLocs.description",
+                         "If enabled, will show GS locations in the tracker regardless of tokensanity settings.")))
         .Callback([&](WidgetInfo& info) {
             alwaysShowGS = !alwaysShowGS;
             UpdateFilters();
@@ -2737,15 +2821,17 @@ void RegisterCheckTrackerWidgets() {
     showLogicWidget.CVar(CVAR_TRACKER_CHECK("ShowLogic"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("If enabled, will show a check's logic when hovering over it."));
+                     .Tooltip(Lang::UIString("ui.widgets.gTrackers.CheckTracker.ShowLogic.description",
+                                             "If enabled, will show a check's logic when hovering over it.")));
     SohGui::GetSohMenu()->AddSearchWidget({ showLogicWidget, "Randomizer", "Check Tracker", "General Settings" });
 
     checkAvailabilityWidget = { .name = "Enable Available Checks", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     checkAvailabilityWidget.CVar(CVAR_TRACKER_CHECK("EnableAvailableChecks"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("If enabled, will show the checks that are available to be collected "
-                              "with your current progress."))
+                     .Tooltip(Lang::UIString("ui.widgets.gTrackers.CheckTracker.EnableAvailableChecks.description",
+                                             "If enabled, will show the checks that are available to be collected "
+                                             "with your current progress.")))
         .Callback([&](WidgetInfo& info) {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
             RecalculateAvailableChecks();

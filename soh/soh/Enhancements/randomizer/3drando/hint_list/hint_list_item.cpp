@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include "../../static_data.h"
 #include "../hints.hpp"
 #include "../../../custom-message/CustomMessageManager.h"
@@ -7,2175 +8,2175 @@ namespace Rando {
 void StaticData::HintTable_Init_Item() {
     // clang-format off
 
-    hintTextTable[RHT_KOKIRI_SWORD] = HintText(CustomMessage("the Kokiri Sword", /*german*/"das Kokiri-Schwert", /*french*/"l'Épée Kokiri"),
+    hintTextTable[RHT_KOKIRI_SWORD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_SWORD.clear"),
                                                // /*spanish*/la Espada Kokiri
                                                {
-                                               CustomMessage("a sword", /*german*/"ein Schwert", /*french*/"une épée")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_SWORD.ambiguous.0")
                                                 // /*spanish*/una espada
                                                }, {
-                                               CustomMessage("a butter knife", /*german*/"ein Buttermesser", /*french*/"un couteau à beurre"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_SWORD.obscure.0"),
                                                 // /*spanish*/un ágil puñal
-                                               CustomMessage("a starter slasher", /*german*/"ein Schlitzer für Anfänger", /*french*/"une arme de débutant"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_SWORD.obscure.1"),
                                                 // /*spanish*/una hoja de principiantes
-                                               CustomMessage("a switchblade", /*german*/"ein Taschenmesser", /*french*/"un canif")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_SWORD.obscure.2")});
                                                 // /*spanish*/una navaja
 
-    hintTextTable[RHT_MASTER_SWORD] = HintText(CustomMessage("the Master Sword", /*german*/"das Master-Schwert", /*french*/"l'Épée de Légende"),
+    hintTextTable[RHT_MASTER_SWORD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASTER_SWORD.clear"),
                                                // /*spanish*/la Espada Maestra
                                                {
-                                               CustomMessage("a sword", /*german*/"ein Schwert", /*french*/"une épée")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_MASTER_SWORD.ambiguous.0")
                                                 // /*spanish*/una espada
                                                }, {
-                                               CustomMessage("evil's bane", /*german*/"der Ruin des Bösen", /*french*/"le fléau du mal"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_MASTER_SWORD.obscure.0"),
                                                 // /*spanish*/la destructora del mal
-                                               CustomMessage("a seven year limbo", /*german*/"eine siebenjährige Erwartung", /*french*/"une stase de sept ans")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_MASTER_SWORD.obscure.1")});
                                                 // /*spanish*/unos siete años de espera
 
-    hintTextTable[RHT_GIANTS_KNIFE] = HintText(CustomMessage("the Giant's Knife", /*german*/"das Langschwert", /*french*/"la Lame des Géants"),
+    hintTextTable[RHT_GIANTS_KNIFE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GIANTS_KNIFE.clear"),
                                                // /*spanish*/la daga gigante
                                                {
-                                               CustomMessage("a sword", /*german*/"ein Schwert", /*french*/"une épée")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_GIANTS_KNIFE.ambiguous.0")
                                                 // /*spanish*/una espada
                                                }, {
-                                               CustomMessage("a fragile blade", /*german*/"eine fragile Klinge", /*french*/"une lame fragile"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_GIANTS_KNIFE.obscure.0"),
                                                 // /*spanish*/una frágil hoja
-                                               CustomMessage("a breakable cleaver", /*german*/"ein brüchiger Spalter", /*french*/"un espadon de verre")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_GIANTS_KNIFE.obscure.1")});
                                                 // /*spanish*/un rompible acero
 
-    hintTextTable[RHT_BIGGORON_SWORD] = HintText(CustomMessage("the Biggoron Sword", /*german*/"das Biggoron-Schwert", /*french*/"l'Épée de Biggoron"),
+    hintTextTable[RHT_BIGGORON_SWORD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BIGGORON_SWORD.clear"),
                                                  // /*spanish*/la Espada de Biggoron
                                                  {
-                                                 CustomMessage("a sword", /*german*/"ein Schwert", /*french*/"une épée")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_BIGGORON_SWORD.ambiguous.0")
                                                   // /*spanish*/una espada
                                                  }, {
-                                                 CustomMessage("the biggest blade", /*german*/"die größte Klinge", /*french*/"une lame gigantesque"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_BIGGORON_SWORD.obscure.0"),
                                                   // /*spanish*/el mayor mandoble
-                                                 CustomMessage("a colossal cleaver", /*german*/"ein kolossaler Spalter", /*french*/"un espadon colossal")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_BIGGORON_SWORD.obscure.1")});
                                                   // /*spanish*/un estoque colosal
 
-    hintTextTable[RHT_DEKU_SHIELD] = HintText(CustomMessage("a Deku Shield", /*german*/"ein Deku-Schild", /*french*/"un Bouclier Mojo"),
+    hintTextTable[RHT_DEKU_SHIELD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SHIELD.clear"),
                                               // /*spanish*/un escudo deku
                                               {
-                                              CustomMessage("a shield", /*german*/"ein Schild", /*french*/"un bouclier")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SHIELD.ambiguous.0")
                                                // /*spanish*/un escudo
                                               }, {
-                                              CustomMessage("a wooden ward", /*german*/"ein hölzerner Schutz", /*french*/"un écu d'écorce"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SHIELD.obscure.0"),
                                                // /*spanish*/una protección del bosque
-                                              CustomMessage("a burnable barrier", /*german*/"eine brennbare Barriere", /*french*/"une protection inflammable")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SHIELD.obscure.1")});
                                                // /*spanish*/una barrera quemable
 
-    hintTextTable[RHT_HYLIAN_SHIELD] = HintText(CustomMessage("a Hylian Shield", /*german*/"ein Hylia-Schild", /*french*/"un Bouclier Hylien"),
+    hintTextTable[RHT_HYLIAN_SHIELD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_HYLIAN_SHIELD.clear"),
                                                 // /*spanish*/un escudo hyliano
                                                 {
-                                                CustomMessage("a shield", /*german*/"ein Schild", /*french*/"un bouclier")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_HYLIAN_SHIELD.ambiguous.0")
                                                  // /*spanish*/un escudo
                                                 }, {
-                                                CustomMessage("a steel safeguard", /*german*/"ein eiserner Schutz", /*french*/"une carapace d'acier"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_HYLIAN_SHIELD.obscure.0"),
                                                  // /*spanish*/una protección de acero
-                                                CustomMessage("Like Like's metal meal", /*german*/"Raubschleims Metallmahlzeit", /*french*/"un amuse-gueule de Pudding")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_HYLIAN_SHIELD.obscure.1")});
                                                  // /*spanish*/un alimento de Like Like
 
-    hintTextTable[RHT_MIRROR_SHIELD] = HintText(CustomMessage("the Mirror Shield", /*german*/"der Spiegel-Schild", /*french*/"le Bouclier Miroir"),
+    hintTextTable[RHT_MIRROR_SHIELD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MIRROR_SHIELD.clear"),
                                                 // /*spanish*/el escudo espejo
                                                 {
-                                                CustomMessage("a shield", /*german*/"ein Schild", /*french*/"un bouclier")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_MIRROR_SHIELD.ambiguous.0")
                                                  // /*spanish*/un escudo
                                                 }, {
-                                                CustomMessage("a reflective rampart", /*german*/"ein reflektierender Schutzwall", /*french*/"un capteur de lumière"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_MIRROR_SHIELD.obscure.0"),
                                                  // /*spanish*/una muralla reflectora
-                                                CustomMessage("Medusa's weakness", /*german*/"Medusas Schwäche", /*french*/"la faiblesse de Méduse"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_MIRROR_SHIELD.obscure.1"),
                                                  // /*spanish*/la debilidad de Medusa
-                                                CustomMessage("a silvered surface", /*german*/"eine silberne Oberfläche", /*french*/"une surface argentée")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_MIRROR_SHIELD.obscure.2")});
                                                  // /*spanish*/una superficie plateada
 
-    hintTextTable[RHT_GORON_TUNIC] = HintText(CustomMessage("a Goron Tunic", /*german*/"eine Goronen-Rüstung", /*french*/"une Tunique Goron"),
+    hintTextTable[RHT_GORON_TUNIC] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_TUNIC.clear"),
                                               // /*spanish*/un sayo goron
                                               {
-                                              CustomMessage("a tunic", /*german*/"eine Rüstung", /*french*/"une tunique")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_TUNIC.ambiguous.0")
                                                // /*spanish*/un sayo
                                               }, {
-                                              CustomMessage("ruby robes", /*german*/"Rubinroben€", /*french*/"un pigment rouge"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_TUNIC.obscure.0"),
                                                // /*spanish*/una vestimenta rubí
-                                              CustomMessage("fireproof fabric", /*german*/"feuerfestes Gewebe", /*french*/"un trésor anti-flamme"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_TUNIC.obscure.1"),
                                                // /*spanish*/una ignífuga prenda
-                                              CustomMessage("cooking clothes", /*german*/"eine Kochschürze", /*french*/"une tenue de cuisine")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_TUNIC.obscure.2")});
                                                // /*spanish*/unos abrasantes ropajes
 
-    hintTextTable[RHT_ZORA_TUNIC] = HintText(CustomMessage("a Zora Tunic", /*german*/"eine Zora-Rüstung", /*french*/"une Tunique Zora"),
+    hintTextTable[RHT_ZORA_TUNIC] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_TUNIC.clear"),
                                              // /*spanish*/un sayo zora
                                              {
-                                             CustomMessage("a tunic", /*german*/"eine Rüstung", /*french*/"une tunique"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_TUNIC.ambiguous.0"),
                                               // /*spanish*/un sayo
-                                             CustomMessage("something expensive", /*german*/"etwas Teures", /*french*/"une chose dispendieuse")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_TUNIC.ambiguous.1")
                                               // /*spanish*/algo caro
                                              }, {
-                                             CustomMessage("a sapphire suit", /*german*/"ein Saphiranzug", /*french*/"un pigment bleuté"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_TUNIC.obscure.0"),
                                               // /*spanish*/una vestidura zafiro
-                                             CustomMessage("scuba gear", /*german*/"eine Taucherausrüstung", /*french*/"un habit de plongée"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_TUNIC.obscure.1"),
                                               // /*spanish*/un traje impermeable
-                                             CustomMessage("a swimsuit", /*german*/"ein Badeanzug", /*french*/"un costume de baignade")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_TUNIC.obscure.2")});
                                               // /*spanish*/unos ropajes sumergibles
 
-    hintTextTable[RHT_IRON_BOOTS] = HintText(CustomMessage("the Iron Boots", /*german*/"die Eisenstiefel€", /*french*/"une paire de Bottes de plomb"),
+    hintTextTable[RHT_IRON_BOOTS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_IRON_BOOTS.clear"),
                                              // /*spanish*/las botas de hierro
                                              {
-                                             CustomMessage("some boots", /*german*/"ein Paar Stiefel€", /*french*/"une paire de bottes"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_IRON_BOOTS.ambiguous.0"),
                                               // /*spanish*/un par de botas
-                                             CustomMessage("a feature of the Water Temple", /*german*/"ein Merkmal des Wassertempels", /*french*/"une particularité du Temple de l'Eau"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_IRON_BOOTS.ambiguous.1"),
                                               // /*spanish*/algo particular del Templo del Agua
-                                             CustomMessage("something heavy", /*german*/"etwas Schweres", /*french*/"une chose pesante")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_IRON_BOOTS.ambiguous.2")
                                               // /*spanish*/algo de lo más pesado
                                              }, {
-                                             CustomMessage("sink shoes", /*german*/"Sinkschuhe€", /*french*/"un boulet de fer"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_IRON_BOOTS.obscure.0"),
                                               // /*spanish*/un calzado de las profundidades
-                                             CustomMessage("clank cleats", /*german*/"scheppernde Stollen€", /*french*/"une paire de talons bruyants")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_IRON_BOOTS.obscure.1")});
                                               // /*spanish*/unas suelas férreas
 
-    hintTextTable[RHT_HOVER_BOOTS] = HintText(CustomMessage("the Hover Boots", /*german*/"die Gleitstiefel€", /*french*/"une paire de Bottes des airs"),
+    hintTextTable[RHT_HOVER_BOOTS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_HOVER_BOOTS.clear"),
                                               // /*spanish*/las botas voladoras
                                               {
-                                              CustomMessage("some boots", /*german*/"ein Paar Stiefel€", /*french*/"une paire de bottes")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_HOVER_BOOTS.ambiguous.0")
                                                // /*spanish*/un par de botas
                                               }, {
-                                              CustomMessage("butter boots", /*german*/"Butterstiefel€", /*french*/"une paire de patins de beurre"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_HOVER_BOOTS.obscure.0"),
                                                // /*spanish*/unas suelas resvaladizas
-                                              CustomMessage("sacred slippers", /*german*/"heilige Pantoffeln€", /*french*/"une paire de pantoufles sacrées"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_HOVER_BOOTS.obscure.1"),
                                                // /*spanish*/unos escurridizos botines
-                                              CustomMessage("spacewalkers", /*german*/"Weltraumstiefel€", /*french*/"une paire de bottes spatiales")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_HOVER_BOOTS.obscure.2")});
                                                // /*spanish*/un calzado antigravitatorio
 
-    hintTextTable[RHT_ZELDAS_LETTER] = HintText(CustomMessage("Zelda's Letter", /*german*/"Zeldas Brief", /*french*/"la Lettre de Zelda"),
+    hintTextTable[RHT_ZELDAS_LETTER] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LETTER.clear"),
                                                 // /*spanish*/la carta de Zelda
                                                 {}, {
-                                                CustomMessage("an autograph", /*german*/"ein Autogramm", /*french*/"un autographe"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LETTER.obscure.0"),
                                                  // /*spanish*/un autógrafo
-                                                CustomMessage("royal stationery", /*german*/"königliches Briefpapier", /*french*/"du papier royal"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LETTER.obscure.1"),
                                                  // /*spanish*/un escrito real
-                                                CustomMessage("royal snail mail", /*german*/"königliche Schneckenpost", /*french*/"une enveloppe royale")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LETTER.obscure.2")});
                                                  // /*spanish*/correo de la realeza
 
-    hintTextTable[RHT_WEIRD_EGG] = HintText(CustomMessage("the Weird Egg", /*german*/"ein seltsames Ei", /*french*/"l'Oeuf Curieux"),
+    hintTextTable[RHT_WEIRD_EGG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_WEIRD_EGG.clear"),
                                             // /*spanish*/el huevo extraño
                                             {
-                                            CustomMessage("an egg", /*german*/"ein Ei", /*french*/"un oeuf")
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_WEIRD_EGG.ambiguous.0")
                                              // /*spanish*/un huevo
                                             }, {
-                                            CustomMessage("a chicken dilemma", /*german*/"ein Hühnerdilemma", /*french*/"un drôle d'ovale")});
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_WEIRD_EGG.obscure.0")});
                                              // /*spanish*/el dilema de la gallina
 
-    hintTextTable[RHT_BOOMERANG] = HintText(CustomMessage("the Boomerang", /*german*/"der Bumerang", /*french*/"le Boomerang"),
+    hintTextTable[RHT_BOOMERANG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOOMERANG.clear"),
                                             // /*spanish*/el bumerán
                                             {
-                                            CustomMessage("something that can grab things", /*german*/"etwas zum Greifen", /*french*/"une chose qui peut attraper"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOOMERANG.ambiguous.0"),
                                              // /*spanish*/algo que pueda agarrar cosas
-                                            CustomMessage("something that can stun", /*german*/"etwas zum Betäuben", /*french*/"une chose qui peut paralyser")
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOOMERANG.ambiguous.1")
                                              // /*spanish*/algo que pueda paralizar
                                             }, {
-                                            CustomMessage("a banana", /*german*/"eine Banane", /*french*/"une banane"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOOMERANG.obscure.0"),
                                              // /*spanish*/un plátano
-                                            CustomMessage("a stun stick", /*german*/"ein Betäubungswerkzeug", /*french*/"un bâton étourdissant"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOOMERANG.obscure.1"),
                                              // /*spanish*/un palo aturdidor
-                                            CustomMessage("a yellow angle", /*german*/"ein gelber Winkel", /*french*/"un angle jaune")});
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOOMERANG.obscure.2")});
                                              // /*spanish*/un ángulo amarillo
 
-    hintTextTable[RHT_LENS_OF_TRUTH] = HintText(CustomMessage("the Lens of Truth", /*german*/"das Auge der Wahrheit", /*french*/"le Monocle de Vérité"),
+    hintTextTable[RHT_LENS_OF_TRUTH] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_LENS_OF_TRUTH.clear"),
                                                 // /*spanish*/la Lupa de la Verdad
                                                 {
-                                                CustomMessage("a secret-finding tool", /*german*/"ein geheimnisfindendes Werkzeug", /*french*/"un cherche-secrets")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_LENS_OF_TRUTH.ambiguous.0")
                                                  // /*spanish*/un instrumento para hallar objetos
                                                 }, {
-                                                CustomMessage("a lie detector", /*german*/"ein Lügendetektor", /*french*/"un détecteur de mensonges"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_LENS_OF_TRUTH.obscure.0"),
                                                  // /*spanish*/el detector de ilusiones
-                                                CustomMessage("a ghost tracker", /*german*/"ein Geisterfinder", /*french*/"un trouve-fantôme"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_LENS_OF_TRUTH.obscure.1"),
                                                  // /*spanish*/el rastreador paranormal
-                                                CustomMessage("true sight", /*german*/"wahre Sicht", /*french*/"le troisième il"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_LENS_OF_TRUTH.obscure.2"),
                                                  // /*spanish*/el ojo que todo ve
-                                                CustomMessage("a detective's tool", /*german*/"ein Detektivwerkzeug", /*french*/"un trésor Sheikah")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_LENS_OF_TRUTH.obscure.3")});
                                                  // /*spanish*/la revelación verdadera
 
-    hintTextTable[RHT_MEGATON_HAMMER] = HintText(CustomMessage("the Megaton Hammer", /*german*/"der Stahlhammer", /*french*/"la Masse des Titans"),
+    hintTextTable[RHT_MEGATON_HAMMER] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MEGATON_HAMMER.clear"),
                                                  // /*spanish*/el martillo Megatón
                                                  {
-                                                 CustomMessage("something that can remove boulders", /*german*/"etwas zum Geröll entfernen", /*french*/"une chose qui enlève les rochers")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_MEGATON_HAMMER.ambiguous.0")
                                                   // /*spanish*/algo que pueda quitar rocas
                                                  }, {
-                                                 CustomMessage("the dragon smasher", /*german*/"der Drachenschläger", /*french*/"le tueur de dragons"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_MEGATON_HAMMER.obscure.0"),
                                                   // /*spanish*/un destructor de dragones
-                                                 CustomMessage("the metal mallet", /*german*/"ein stählerner Schlägel", /*french*/"un outil de construction"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_MEGATON_HAMMER.obscure.1"),
                                                   // /*spanish*/un mazo de metal
-                                                 CustomMessage("the heavy hitter", /*german*/"ein schwerer Schläger", /*french*/"un poids lourd")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_MEGATON_HAMMER.obscure.2")});
                                                   // /*spanish*/un machacador
 
-    hintTextTable[RHT_STONE_OF_AGONY] = HintText(CustomMessage("the Stone of Agony", /*german*/"der Stein des Wissens", /*french*/"la Pierre de Souffrance"),
+    hintTextTable[RHT_STONE_OF_AGONY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_STONE_OF_AGONY.clear"),
                                                  // /*spanish*/la Piedra de la Agonía
                                                  {
-                                                 CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_STONE_OF_AGONY.ambiguous.0"),
                                                   // /*spanish*/un obsequio de la Casa Skulltula
-                                                 CustomMessage("a secret-finding tool", /*german*/"ein geheimnisfindendes Werkzeug", /*french*/"un cherche-secrets")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_STONE_OF_AGONY.ambiguous.1")
                                                   // /*spanish*/un instrumento para hallar objetos
                                                  }, {
-                                                 CustomMessage("the shake stone", /*german*/"der Schüttelstein", /*french*/"le fragment vibrant"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_STONE_OF_AGONY.obscure.0"),
                                                   // /*spanish*/el fragmento tintineante
-                                                 CustomMessage("a gray alarm", /*german*/"ein grauer Alarm", /*french*/"une alerte bleue")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_STONE_OF_AGONY.obscure.1")});
                                                   // /*spanish*/una azul alarma
 
-    hintTextTable[RHT_DINS_FIRE] = HintText(CustomMessage("Din's Fire", /*german*/"Dins Feuerinferno", /*french*/"le Feu de Din"),
+    hintTextTable[RHT_DINS_FIRE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DINS_FIRE.clear"),
                                             // /*spanish*/el Fuego de Din
                                             {
-                                            CustomMessage("a Great Fairy's power", /*german*/"eine Kraft einer großen Fee", /*french*/"le pouvoir d'une grande fée")
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_DINS_FIRE.ambiguous.0")
                                              // /*spanish*/el poder de una Gran Hada
                                             }, {
-                                            CustomMessage("an inferno", /*german*/"ein Inferno", /*french*/"un brasier"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_DINS_FIRE.obscure.0"),
                                              // /*spanish*/un incendio
-                                            CustomMessage("a heat wave", /*german*/"eine Hitzewelle", /*french*/"une vague de chaleur"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_DINS_FIRE.obscure.1"),
                                              // /*spanish*/una onda de calor
-                                            CustomMessage("a red ball", /*german*/"ein roter Ball", /*french*/"une explosion de flammes")});
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_DINS_FIRE.obscure.2")});
                                              // /*spanish*/una roja esfera
 
-    hintTextTable[RHT_FARORES_WIND] = HintText(CustomMessage("Farore's Wind", /*german*/"Farores Donnersturm", /*french*/"le Vent de Farore"),
+    hintTextTable[RHT_FARORES_WIND] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FARORES_WIND.clear"),
                                                // /*spanish*/el Viento de Farore
                                                {
-                                               CustomMessage("a Great Fairy's power", /*german*/"eine Kraft einer großen Fee", /*french*/"le pouvoir d'une grande fée")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_FARORES_WIND.ambiguous.0")
                                                 // /*spanish*/el poder de una Gran Hada
                                                }, {
-                                               CustomMessage("teleportation", /*german*/"ein Teleportierer", /*french*/"la téléportation"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_FARORES_WIND.obscure.0"),
                                                 // /*spanish*/un teletransportador
-                                               CustomMessage("a relocation rune", /*german*/"eine Umzugsrune", /*french*/"une rune de relocation"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_FARORES_WIND.obscure.1"),
                                                 // /*spanish*/una runa de transporte
-                                               CustomMessage("a green ball", /*german*/"ein grüner Ball", /*french*/"une boule verte")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_FARORES_WIND.obscure.2")});
                                                 // /*spanish*/una verde esfera
 
-    hintTextTable[RHT_NAYRUS_LOVE] = HintText(CustomMessage("Nayru's Love", /*german*/"Nayrus Umarmung", /*french*/"l'Amour de Nayru"),
+    hintTextTable[RHT_NAYRUS_LOVE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_NAYRUS_LOVE.clear"),
                                               // /*spanish*/el Amor de Nayru
                                               {
-                                              CustomMessage("a Great Fairy's power", /*german*/"eine Kraft einer großen Fee", /*french*/"le pouvoir d'une grande fée")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_NAYRUS_LOVE.ambiguous.0")
                                                // /*spanish*/el poder de una Gran Hada
                                               }, {
-                                              CustomMessage("a safe space", /*german*/"ein sicherer Raum", /*french*/"une bulle de cristal"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_NAYRUS_LOVE.obscure.0"),
                                                // /*spanish*/una seguridad temporal
-                                              CustomMessage("an impregnable aura", /*german*/"eine undurchdringliche Aura", /*french*/"un aura impénétrable"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_NAYRUS_LOVE.obscure.1"),
                                                // /*spanish*/un aura impenetrable
-                                              CustomMessage("a blue barrier", /*german*/"eine blaue Barriere", /*french*/"une toison bleu")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_NAYRUS_LOVE.obscure.2")});
                                                // /*spanish*/una barrera azul
 
-    hintTextTable[RHT_FIRE_ARROWS] = HintText(CustomMessage("the Fire Arrows", /*german*/"die Feuer-Pfeile€", /*french*/"les Flèches de Feu"),
+    hintTextTable[RHT_FIRE_ARROWS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_ARROWS.clear"),
                                               // /*spanish*/la flecha de fuego
                                               {
-                                              CustomMessage("a magic arrow", /*german*/"magische Pfeile€", /*french*/"une flèche magique")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_ARROWS.ambiguous.0")
                                                // /*spanish*/una flecha mágica
                                               }, {
-                                              CustomMessage("the furnace firearm", /*german*/"die Ofenwaffe", /*french*/"une fusée solaire"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_ARROWS.obscure.0"),
                                                // /*spanish*/el ardiente aguijón
-                                              CustomMessage("the burning bolts", /*german*/"die Brennstifte€", /*french*/"un obus enflammé"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_ARROWS.obscure.1"),
                                                // /*spanish*/las puntas ígneas
-                                              CustomMessage("a magma missile", /*german*/"eine vulkanische Rakete", /*french*/"un missile volcanique")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_ARROWS.obscure.2")});
                                                // /*spanish*/el misil abrasador
 
-    hintTextTable[RHT_ICE_ARROWS] = HintText(CustomMessage("the Ice Arrows", /*german*/"die Eis-Pfeile€", /*french*/"les Flèches de Glace"),
+    hintTextTable[RHT_ICE_ARROWS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_ARROWS.clear"),
                                              // /*spanish*/la flecha de hielo
                                              {
-                                             CustomMessage("a magic arrow", /*german*/"magische Pfeile€", /*french*/"une flèche magique"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_ARROWS.ambiguous.0"),
                                               // /*spanish*/una flecha mágica
-                                             CustomMessage("something that can stun", /*german*/"etwas zum Betäuben", /*french*/"une chose qui peut paralyser")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_ARROWS.ambiguous.1")
                                               // /*spanish*/algo que pueda paralizar
                                              }, {
-                                             CustomMessage("the refrigerator rocket", /*german*/"die Kühlschrankraketen€", /*french*/"un missile pétrifiant"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_ARROWS.obscure.0"),
                                               // /*spanish*/el misil congelador
-                                             CustomMessage("the frostbite bolts", /*german*/"die Froststifte€", /*french*/"un froid mordant"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_ARROWS.obscure.1"),
                                               // /*spanish*/las puntas gélidas
-                                             CustomMessage("an iceberg maker", /*german*/"ein Eisbergmacher", /*french*/"une aiguille glaciale")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_ARROWS.obscure.2")});
                                               // /*spanish*/el control de escarcha
 
-    hintTextTable[RHT_LIGHT_ARROWS] = HintText(CustomMessage("the Light Arrows", /*german*/"die Licht-Pfeile€", /*french*/"les Flèches de Lumière"),
+    hintTextTable[RHT_LIGHT_ARROWS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_ARROWS.clear"),
                                                // /*spanish*/la flecha de luz
                                                {
-                                               CustomMessage("a magic arrow", /*german*/"magische Pfeile€", /*french*/"une flèche magique")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_ARROWS.ambiguous.0")
                                                 // /*spanish*/una flecha mágica
                                                }, {
-                                               CustomMessage("the shining shot", /*german*/"der strahlende Schuss", /*french*/"l'arme brillante"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_ARROWS.obscure.0"),
                                                 // /*spanish*/el haz de luz
-                                               CustomMessage("the luminous launcher", /*german*/"die Scheinwerfer€", /*french*/"un jet de lumière"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_ARROWS.obscure.1"),
                                                 // /*spanish*/el disparo luminoso
-                                               CustomMessage("Ganondorf's bane", /*german*/"Ganondorfs Verderben", /*french*/"le fléau de Ganondorf"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_ARROWS.obscure.2"),
                                                 // /*spanish*/la perdición de Ganondorf
-                                               CustomMessage("the lighting bolts", /*german*/"die Lichtstifte€", /*french*/"l'éclair sacré")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_ARROWS.obscure.3")});
                                                 // /*spanish*/las puntas resplandecientes
 
-    hintTextTable[RHT_GERUDO_MEMBERSHIP_CARD] = HintText(CustomMessage("the Gerudo Membership Card", /*german*/"der Gerudo-Pass", /*french*/"la Carte Gerudo"),
+    hintTextTable[RHT_GERUDO_MEMBERSHIP_CARD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_MEMBERSHIP_CARD.clear"),
                                                          // /*spanish*/el pase de socio gerudo
                                                          {
-                                                         CustomMessage("a token of recognition", /*german*/"ein Zeichen der Anerkennung", /*french*/"une preuve de reconnaissance")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_MEMBERSHIP_CARD.ambiguous.0")
                                                           // /*spanish*/una prueba de reconocimiento
                                                          }, {
-                                                         CustomMessage("a girl club membership", /*german*/"eine Mitgliedskarte", /*french*/"une carte de membre"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_MEMBERSHIP_CARD.obscure.0"),
                                                           // /*spanish*/una fémina membresía
-                                                         CustomMessage("a desert tribe's pass", /*german*/"ein Pass eines Wüstenstammes", /*french*/"un laissez-passer")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_MEMBERSHIP_CARD.obscure.1")});
                                                           // /*spanish*/el vale del desierto
 
-    hintTextTable[RHT_MAGIC_BEAN] = HintText(CustomMessage("a Magic Bean", /*german*/"eine Wundererbse", /*french*/"un Haricot Magique"),
+    hintTextTable[RHT_MAGIC_BEAN] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MAGIC_BEAN.clear"),
                                              // /*spanish*/una judía mágica
                                              {
-                                             CustomMessage("something sometimes buried", /*german*/"etwas gelegentlich Vergrabenes", /*french*/"une chose parfois enterrée")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_MAGIC_BEAN.ambiguous.0")
                                               // /*spanish*/algo a veces enterrado
                                              }, {
-                                             CustomMessage("a wizardly legume", /*german*/"eine zauberhafte Hülse", /*french*/"un légume ensorcelé")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_MAGIC_BEAN.obscure.0")});
                                               // /*spanish*/una legumbre hechizada
 
-    hintTextTable[RHT_MAGIC_BEAN_PACK] = HintText(CustomMessage("Magic Beans", /*german*/"Wundererbsen-Packung", /*french*/"un Paquet de Haricots Magiques"),
+    hintTextTable[RHT_MAGIC_BEAN_PACK] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MAGIC_BEAN_PACK.clear"),
                                                   // /*spanish*/unas judías mágicas
                                                   {
-                                                  CustomMessage("something sometimes buried", /*german*/"etwas gelegentlich Vergrabenes", /*french*/"une chose parfois enterrée")
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_MAGIC_BEAN_PACK.ambiguous.0")
                                                    // /*spanish*/algo a veces enterrado
                                                   }, {
-                                                  CustomMessage("wizardly legumes", /*german*/"zauberhafte Hülsen", /*french*/"un paquet de légumes ensorcelés")});
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_MAGIC_BEAN_PACK.obscure.0")});
                                                    // /*spanish*/unas legumbres hechizadas
 
-    hintTextTable[RHT_DOUBLE_DEFENSE] = HintText(CustomMessage("Double Defense", /*german*/"Doppelte Verteidigung", /*french*/"la Double Défence"),
+    hintTextTable[RHT_DOUBLE_DEFENSE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DOUBLE_DEFENSE.clear"),
                                                  // /*spanish*/la doble defensa
                                                  {
-                                                 CustomMessage("a Great Fairy's power", /*german*/"eine Kraft einer großen Fee", /*french*/"le pouvoir d'une grande fée"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_DOUBLE_DEFENSE.ambiguous.0"),
                                                   // /*spanish*/el poder de una Gran Hada
-                                                 CustomMessage("something heart-shaped", /*german*/"etwas Herzförmiges", /*french*/"une chose en forme de coeur")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_DOUBLE_DEFENSE.ambiguous.1")
                                                   // /*spanish*/algo con forma de corazón
                                                  }, {
-                                                 CustomMessage("a white outline", /*german*/"ein weißes Profil", /*french*/"un rebord blanc"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_DOUBLE_DEFENSE.obscure.0"),
                                                   // /*spanish*/un contorno blanco
-                                                 CustomMessage("damage decrease", /*german*/"Schadensverringerung", /*french*/"une protection supplémentaire"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_DOUBLE_DEFENSE.obscure.1"),
                                                   // /*spanish*/una reducción de daño
-                                                 CustomMessage("strengthened love", /*german*/"gestärkte Liebe", /*french*/"un amour coriace")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_DOUBLE_DEFENSE.obscure.2")});
                                                   // /*spanish*/un amor fortalecido
 
-    hintTextTable[RHT_GOLD_SKULLTULA_TOKEN] = HintText(CustomMessage("a Gold Skulltula Token", /*german*/"ein Skulltula-Symbol", /*french*/"un Symbole de Skulltula d'or"),
+    hintTextTable[RHT_GOLD_SKULLTULA_TOKEN] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GOLD_SKULLTULA_TOKEN.clear"),
                                                        // /*spanish*/un símbolo de skulltula dorada
                                                        {
-                                                       CustomMessage("a token of recognition", /*german*/"ein Zeichen der Anerkennung", /*french*/"une preuve de reconnaissance"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_GOLD_SKULLTULA_TOKEN.ambiguous.0"),
                                                         // /*spanish*/una prueba de reconocimiento
-                                                       CustomMessage("something sometimes buried", /*german*/"etwas gelegentlich Vergrabenes", /*french*/"une chose parfois enterrée")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_GOLD_SKULLTULA_TOKEN.ambiguous.1")
                                                         // /*spanish*/algo a veces enterrado
                                                        }, {
-                                                       CustomMessage("proof of destruction", /*german*/"Nachweis der Zerstörung", /*french*/"un certificat d'élimination"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_GOLD_SKULLTULA_TOKEN.obscure.0"),
                                                         // /*spanish*/una prueba de la destrucción
-                                                       CustomMessage("an arachnid chip", /*german*/"ein spinnenartiges Symbol", /*french*/"un symbole cranien"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_GOLD_SKULLTULA_TOKEN.obscure.1"),
                                                         // /*spanish*/una figura arácnida
-                                                       CustomMessage("spider remains", /*german*/"Spinnenüberreste€", /*french*/"une dépouille dorée"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_GOLD_SKULLTULA_TOKEN.obscure.2"),
                                                         // /*spanish*/unos restos dorados
-                                                       CustomMessage("one percent of a curse", /*german*/"ein Prozent eines Fluches", /*french*/"un centième de malédiction")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_GOLD_SKULLTULA_TOKEN.obscure.3")});
                                                         // /*spanish*/una centésima de una maldición
 
-    hintTextTable[RHT_POCKET_EGG] = HintText(CustomMessage("the Pocket Egg", /*german*/"das Ei", /*french*/"l'Oeuf de Poche"),
+    hintTextTable[RHT_POCKET_EGG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_EGG.clear"),
                                              // /*spanish*/el huevo de bolsillo
                                              {
-                                             CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_EGG.ambiguous.0"),
                                               // /*spanish*/un objeto de una misión secundaria
-                                             CustomMessage("an egg", /*german*/"ein Ei", /*french*/"un oeuf")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_EGG.ambiguous.1")
                                               // /*spanish*/un huevo
                                              }, {
-                                             CustomMessage("a Cucco container", /*german*/"ein Hühnerbehälter", /*french*/"un réservoir à Cocotte"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_EGG.obscure.0"),
                                               // /*spanish*/cuco contenido
-                                             CustomMessage("a Cucco, eventually", /*german*/"schlussendlich ein Huhn", /*french*/"un poussin éventuel"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_EGG.obscure.1"),
                                               // /*spanish*/un futuro cuco
-                                             CustomMessage("a fowl youth", /*german*/"ein junges Geflügel", /*french*/"une omelette crue")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_EGG.obscure.2")});
                                               // /*spanish*/una dulce juventud
 
-    hintTextTable[RHT_POCKET_CUCCO] = HintText(CustomMessage("the Pocket Cucco", /*german*/"Kiki", /*french*/"la Cocotte de Poche"),
+    hintTextTable[RHT_POCKET_CUCCO] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_CUCCO.clear"),
                                                // /*spanish*/el cuco de bolsillo
                                                {
-                                               CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_CUCCO.ambiguous.0")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a little clucker", /*german*/"ein kleiner Gackerer", /*french*/"un petit glousseur")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_POCKET_CUCCO.obscure.0")});
                                                 // /*spanish*/un pollito chiquito
 
-    hintTextTable[RHT_COJIRO] = HintText(CustomMessage("Cojiro", /*german*/"Henni", /*french*/"le p'tit poulet"),
+    hintTextTable[RHT_COJIRO] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_COJIRO.clear"),
                                          // /*spanish*/a Cojiro
                                          {
-                                         CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                         CustomMessages::CreateMessage("randomizer.hints.RHT_COJIRO.ambiguous.0")
                                           // /*spanish*/un objeto de una misión secundaria
                                          }, {
-                                         CustomMessage("a cerulean capon", /*german*/"ein himmelsblauer Hahn", /*french*/"un paon azur")});
+                                         CustomMessages::CreateMessage("randomizer.hints.RHT_COJIRO.obscure.0")});
                                           // /*spanish*/un cerúleo capón
 
-    hintTextTable[RHT_ODD_MUSHROOM] = HintText(CustomMessage("an Odd Mushroom", /*german*/"ein Schimmelpilz", /*french*/"un Champignon Suspect"),
+    hintTextTable[RHT_ODD_MUSHROOM] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ODD_MUSHROOM.clear"),
                                                // /*spanish*/un champiñón extraño
                                                {
-                                               CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_ODD_MUSHROOM.ambiguous.0")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a powder ingredient", /*german*/"eine Puderzutat", /*french*/"un ingrédient à poudre")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_ODD_MUSHROOM.obscure.0")});
                                                 // /*spanish*/un oloroso ingrediente
 
-    hintTextTable[RHT_ODD_POTION] = HintText(CustomMessage("an Odd Potion", /*german*/"ein Modertrank", /*french*/"une Mixture Suspecte"),
+    hintTextTable[RHT_ODD_POTION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ODD_POTION.clear"),
                                              // /*spanish*/una medicina rara
                                              {
-                                             CustomMessage("something that contains medicine", /*german*/"etwas das Medizin enthält", /*french*/"une chose médicamenteuse"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ODD_POTION.ambiguous.0"),
                                               // /*spanish*/algo que contenga medicina
-                                             CustomMessage("something with a strange smell", /*german*/"etwas seltsam Riechendes", /*french*/"une chose qui sent bizarre"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ODD_POTION.ambiguous.1"),
                                               // /*spanish*/algo con un olor extraño
-                                             CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ODD_POTION.ambiguous.2")
                                               // /*spanish*/un objeto de una misión secundaria
                                              }, {
-                                             CustomMessage("Granny's goodies", /*german*/"Omas Leckereien€", /*french*/"la confiserie de mamie")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_ODD_POTION.obscure.0")});
                                               // /*spanish*/la especialidad de la abuela
 
-    hintTextTable[RHT_POACHERS_SAW] = HintText(CustomMessage("the Poacher's Saw", /*german*/"eine Säge", /*french*/"la Scie du Chasseur"),
+    hintTextTable[RHT_POACHERS_SAW] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_POACHERS_SAW.clear"),
                                                // /*spanish*/la sierra del furtivo
                                                {
-                                               CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_POACHERS_SAW.ambiguous.0")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a tree killer", /*german*/"ein Baumtöter", /*french*/"un coupeur d'arbres")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_POACHERS_SAW.obscure.0")});
                                                 // /*spanish*/un destructor de árboles
 
-    hintTextTable[RHT_BROKEN_SWORD] = HintText(CustomMessage("the Broken Goron's Sword", /*german*/"das Zerbr. Goronen-Schwert", /*french*/"l'Épée Brisée de Goron"),
+    hintTextTable[RHT_BROKEN_SWORD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BROKEN_SWORD.clear"),
                                                // /*spanish*/la espada goron rota
                                                {
-                                               CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_BROKEN_SWORD.ambiguous.0"),
                                                 // /*spanish*/un objeto de una misión secundaria
-                                               CustomMessage("a sword", /*german*/"ein Schwert", /*french*/"une épée")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_BROKEN_SWORD.ambiguous.1")
                                                 // /*spanish*/una espada
                                                }, {
-                                               CustomMessage("a shattered slicer", /*german*/"ein zersplitterter Schneider", /*french*/"une arme cassée")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_BROKEN_SWORD.obscure.0")});
                                                 // /*spanish*/una rebanadora rota
 
-    hintTextTable[RHT_PRESCRIPTION] = HintText(CustomMessage("the Prescription", /*german*/"ein Rezept", /*french*/"une Ordonnance"),
+    hintTextTable[RHT_PRESCRIPTION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PRESCRIPTION.clear"),
                                                // /*spanish*/la receta
                                                {
-                                               CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_PRESCRIPTION.ambiguous.0")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a pill pamphlet", /*german*/"eine Pillenbroschüre", /*french*/"un document urgent"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_PRESCRIPTION.obscure.0"),
                                                 // /*spanish*/un instructivo medicinal
-                                               CustomMessage("a doctor's note", /*german*/"ein ärztliches Attest", /*french*/"un papier médical")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_PRESCRIPTION.obscure.1")});
                                                 // /*spanish*/unas notas del doctor
 
-    hintTextTable[RHT_EYEBALL_FROG] = HintText(CustomMessage("the Eyeball Frog", /*german*/"ein Glotzfrosch", /*french*/"le Crapaud-qui-louche"),
+    hintTextTable[RHT_EYEBALL_FROG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_EYEBALL_FROG.clear"),
                                                // /*spanish*/la rana de ojos saltones
                                                {
-                                               CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_EYEBALL_FROG.ambiguous.0")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a perceiving polliwog", /*german*/"eine wahrnehmende Kaulquappe", /*french*/"un amphibien")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_EYEBALL_FROG.obscure.0")});
                                                 // /*spanish*/un variopinto batracio
 
-    hintTextTable[RHT_EYEDROPS] = HintText(CustomMessage("the Eyedrops", /*german*/"Augentropfen", /*french*/"une phiole de Super-Gouttes"),
+    hintTextTable[RHT_EYEDROPS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_EYEDROPS.clear"),
                                            // /*spanish*/las supergotas oculares
                                            {
-                                           CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_EYEDROPS.ambiguous.0")
                                             // /*spanish*/un objeto de una misión secundaria
                                            }, {
-                                           CustomMessage("a vision vial", /*german*/"eine Sichtphiole", /*french*/"une solution oculaire")});
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_EYEDROPS.obscure.0")});
                                             // /*spanish*/un remedio para la vista
 
-    hintTextTable[RHT_CLAIM_CHECK] = HintText(CustomMessage("the Claim Check", /*german*/"ein Zertifikat", /*french*/"un Certificat"),
+    hintTextTable[RHT_CLAIM_CHECK] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_CLAIM_CHECK.clear"),
                                               // /*spanish*/el recibo
                                               {
-                                              CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_CLAIM_CHECK.ambiguous.0")
                                                // /*spanish*/un objeto de una misión secundaria
                                               }, {
-                                              CustomMessage("a three day wait", /*german*/"eine dreitägige Erwartung", /*french*/"un rendez-vous dans trois jours")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_CLAIM_CHECK.obscure.0")});
                                                // /*spanish*/unos tres días de espera
 
-    hintTextTable[RHT_PROGRESSIVE_HOOKSHOT] = HintText(CustomMessage("a Hookshot", /*german*/"ein Fanghaken", /*french*/"un Grappin"),
+    hintTextTable[RHT_PROGRESSIVE_HOOKSHOT] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_HOOKSHOT.clear"),
                                                        // /*spanish*/un gancho
                                                        {
-                                                       CustomMessage("something that can grab things", /*german*/"etwas zum Greifen", /*french*/"une chose qui peut attraper"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_HOOKSHOT.ambiguous.0"),
                                                         // /*spanish*/algo que pueda agarrar cosas
-                                                       CustomMessage("something that can stun", /*german*/"etwas zum Betäuben", /*french*/"une chose qui peut paralyser")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_HOOKSHOT.ambiguous.1")
                                                         // /*spanish*/algo que pueda paralizar
                                                        }, {
-                                                       CustomMessage("Dampé's keepsake", /*german*/"Boris' Andenken", /*french*/"l'héritage d'Igor"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_HOOKSHOT.obscure.0"),
                                                         // /*spanish*/un recuerdo de Dampé
-                                                       CustomMessage("the Grapple Beam", /*german*/"der Grapple Beam", /*french*/"le rayon grippeur"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_HOOKSHOT.obscure.1"),
                                                         // /*spanish*/una garra metálica
-                                                       CustomMessage("the BOING! chain", /*german*/"die BOING!-Kette", /*french*/"la chaîne de BOING!")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_HOOKSHOT.obscure.2")});
                                                         // /*spanish*/una cadena retráctil
 
-    hintTextTable[RHT_PROGRESSIVE_STRENGTH] = HintText(CustomMessage("a Strength Upgrade", /*german*/"eine Kraftsteigerung", /*french*/"une Amélioration de Force"),
+    hintTextTable[RHT_PROGRESSIVE_STRENGTH] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STRENGTH.clear"),
                                                        // /*spanish*/un aumento de fuerza
                                                        {
-                                                       CustomMessage("something that can remove boulders", /*german*/"etwas zum Geröll entfernen", /*french*/"une chose qui enlève les rochers")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STRENGTH.ambiguous.0")
                                                         // /*spanish*/algo que pueda quitar rocas
                                                        }, {
-                                                       CustomMessage("power gloves", /*german*/"Krafthandschuhe€", /*french*/"une paire de gants de travail"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STRENGTH.obscure.0"),
                                                         // /*spanish*/unos poderosos guanteletes
-                                                       CustomMessage("metal mittens", /*german*/"Metall-Fäustlinge€", /*french*/"une paire de mitaines"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STRENGTH.obscure.1"),
                                                         // /*spanish*/unas manoplas metálicas
-                                                       CustomMessage("the heavy lifty", /*german*/"der Schwerlastheber", /*french*/"la puissance de dix hommes")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STRENGTH.obscure.2")});
                                                         // /*spanish*/un levantamiento pesado
 
-    hintTextTable[RHT_PROGRESSIVE_BOMB_BAG] = HintText(CustomMessage("a Bomb Bag", /*german*/"eine Bombentasche", /*french*/"un Sac de Bombes"),
+    hintTextTable[RHT_PROGRESSIVE_BOMB_BAG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMB_BAG.clear"),
                                                        // /*spanish*/un saco de bombas
                                                        {
-                                                       CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMB_BAG.ambiguous.0"),
                                                         // /*spanish*/un montón de explosivos
-                                                       CustomMessage("something that can remove boulders", /*german*/"etwas zum Geröll entfernen", /*french*/"une chose qui enlève les rochers")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMB_BAG.ambiguous.1")
                                                         // /*spanish*/algo que pueda quitar rocas
                                                        }, {
-                                                       CustomMessage("an explosive container", /*german*/"ein Explosivbehälter", /*french*/"un porte-grenade"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMB_BAG.obscure.0"),
                                                         // /*spanish*/un recipiente explosivo
-                                                       CustomMessage("a blast bag", /*german*/"ein Dodongomagen", /*french*/"un estomac de Dodongo")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMB_BAG.obscure.1")});
                                                         // /*spanish*/un zurrón de estallidos
 
-    hintTextTable[RHT_PROGRESSIVE_BOW] = HintText(CustomMessage("a Fairy Bow", /*german*/"ein Feen-Bogen", /*french*/"l'Arc des Fées"),
+    hintTextTable[RHT_PROGRESSIVE_BOW] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOW.clear"),
                                                   // /*spanish*/un arco de las hadas
                                                   {
-                                                  CustomMessage("a projectile shooter", /*german*/"ein Projektilwerfer", /*french*/"un tire-projectile")
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOW.ambiguous.0")
                                                    // /*spanish*/un arma de proyectil
                                                   }, {
-                                                  CustomMessage("an archery enabler", /*german*/"ein Bogenschussermöglicher", /*french*/"un facilitateur de tir"),
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOW.obscure.0"),
                                                    // /*spanish*/un tiro al blanco
-                                                  CustomMessage("a danger dart launcher", /*german*/"ein Pfeilwerfer", /*french*/"un tire-fléchette")});
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOW.obscure.1")});
                                                    // /*spanish*/un peligroso lanzadardos
 
-    hintTextTable[RHT_PROGRESSIVE_SLINGSHOT] = HintText(CustomMessage("a Slingshot", /*german*/"eine Feen-Schleuder", /*french*/"un Lance-Pierre"),
+    hintTextTable[RHT_PROGRESSIVE_SLINGSHOT] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SLINGSHOT.clear"),
                                                         // /*spanish*/una resortera de las hadas
                                                         {
-                                                        CustomMessage("a projectile shooter", /*german*/"ein Projektilwerfer", /*french*/"un tire-projectile")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SLINGSHOT.ambiguous.0")
                                                          // /*spanish*/un arma de proyectil
                                                         }, {
-                                                        CustomMessage("a seed shooter", /*german*/"ein Kernwerfer", /*french*/"un lance-noix"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SLINGSHOT.obscure.0"),
                                                          // /*spanish*/un lanzasemillas
-                                                        CustomMessage("a rubberband", /*german*/"ein Gummiband", /*french*/"un élastique"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SLINGSHOT.obscure.1"),
                                                          // /*spanish*/un tirachinas
-                                                        CustomMessage("a child's catapult", /*german*/"ein Kinderkatapult", /*french*/"un jouet d'enfant")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SLINGSHOT.obscure.2")});
                                                          // /*spanish*/una catapulta infantil
 
-    hintTextTable[RHT_PROGRESSIVE_WALLET] = HintText(CustomMessage("a Wallet", /*german*/"eine Geldbörse", /*french*/"une Bourse"),
+    hintTextTable[RHT_PROGRESSIVE_WALLET] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_WALLET.clear"),
                                                      // /*spanish*/una bolsa de rupias
                                                      {
-                                                     CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas")
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_WALLET.ambiguous.0")
                                                       // /*spanish*/un obsequio de la Casa Skulltula
                                                      }, {
-                                                     CustomMessage("a mo' money holder", /*german*/"ein Geldhalter", /*french*/"un sac à sous"),
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_WALLET.obscure.0"),
                                                       // /*spanish*/una cartera de dinero
-                                                     CustomMessage("a gem purse", /*german*/"ein Edelsteinportemonnaie", /*french*/"une sacoche"),
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_WALLET.obscure.1"),
                                                       // /*spanish*/un zurrón de gemas
-                                                     CustomMessage("a portable bank", /*german*/"eine tragbare Bank", /*french*/"une petite banque")});
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_WALLET.obscure.2")});
                                                       // /*spanish*/un banco portable
 
-    hintTextTable[RHT_PROGRESSIVE_SCALE] = HintText(CustomMessage("a Zora Scale", /*german*/"eine Zora-Schuppe", /*french*/"une Écaille Zora"),
+    hintTextTable[RHT_PROGRESSIVE_SCALE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SCALE.clear"),
                                                     // /*spanish*/una escama Zora
                                                     {
-                                                    CustomMessage("a diving tool", /*german*/"ein Tauchwerkzeug", /*french*/"un outil de plongée")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SCALE.ambiguous.0")
                                                      // /*spanish*/un instrumento de buceo
                                                     }, {
-                                                    CustomMessage("a deeper dive", /*german*/"eine Tauchblase", /*french*/"une bulle de plongée"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SCALE.obscure.0"),
                                                      // /*spanish*/un profundo buceo
-                                                    CustomMessage("a piece of Zora", /*german*/"ein Zora-Fragment", /*french*/"un morceau de Zora")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_SCALE.obscure.1")});
                                                      // /*spanish*/un fragmento de Zora
 
-    hintTextTable[RHT_PROGRESSIVE_NUT_UPGRADE] = HintText(CustomMessage("Deku Nut Capacity", /*german*/"Deku-Nuß-Kapazität", /*french*/"une Augmentation de Noix Mojo"),
+    hintTextTable[RHT_PROGRESSIVE_NUT_UPGRADE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_NUT_UPGRADE.clear"),
                                                           // /*spanish*/un aumento de nueces deku
                                                           {
-                                                          CustomMessage("some Deku munitions", /*german*/"etwas Deku-Munition", /*french*/"un paquet de munitions Mojo"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_NUT_UPGRADE.ambiguous.0"),
                                                            // /*spanish*/un montón de municiones Deku
-                                                          CustomMessage("something that can stun", /*german*/"etwas zum Betäuben", /*french*/"une chose qui peut paralyser")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_NUT_UPGRADE.ambiguous.1")
                                                            // /*spanish*/algo que pueda paralizar
                                                           }, {
-                                                          CustomMessage("more nuts", /*german*/"mehr Nüsse€", /*french*/"encore plus de noix"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_NUT_UPGRADE.obscure.0"),
                                                            // /*spanish*/más semillas de nogal
-                                                          CustomMessage("flashbang storage", /*german*/"Blendgranatenvorrat", /*french*/"un sac à noix")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_NUT_UPGRADE.obscure.1")});
                                                            // /*spanish*/más frutos aturdidores
 
-    hintTextTable[RHT_PROGRESSIVE_STICK_UPGRADE] = HintText(CustomMessage("Deku Stick Capacity", /*german*/"Deku-Stab-Kapazität", /*french*/"une augmentation de bâtons Mojo"),
+    hintTextTable[RHT_PROGRESSIVE_STICK_UPGRADE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STICK_UPGRADE.clear"),
                                                             // /*spanish*/un aumento de palos deku
                                                             {
-                                                            CustomMessage("some Deku munitions", /*german*/"etwas Deku-Munition", /*french*/"un paquet de munitions Mojo")
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STICK_UPGRADE.ambiguous.0")
                                                              // /*spanish*/un montón de municiones Deku
                                                             }, {
-                                                            CustomMessage("lumber racks", /*german*/"Holzgestelle€", /*french*/"un paquet de bois"),
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STICK_UPGRADE.obscure.0"),
                                                              // /*spanish*/más bastones
-                                                            CustomMessage("more flammable twigs", /*german*/"mehr entflammbare Zweige", /*french*/"beaucoup de branches")});
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_STICK_UPGRADE.obscure.1")});
                                                              // /*spanish*/más varas
 
-    hintTextTable[RHT_PROGRESSIVE_MAGIC_METER] = HintText(CustomMessage("a Magic Meter", /*german*/"Magische Kraft", /*french*/"une Jauge de Magie"),
+    hintTextTable[RHT_PROGRESSIVE_MAGIC_METER] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_MAGIC_METER.clear"),
                                                           // /*spanish*/un aumento de poder mágico
                                                           {
-                                                          CustomMessage("a Great Fairy's power", /*german*/"eine Kraft einer großen Fee", /*french*/"le pouvoir d'une grande fée")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_MAGIC_METER.ambiguous.0")
                                                            // /*spanish*/el poder de una Gran Hada
                                                           }, {
-                                                          CustomMessage("mystic training", /*german*/"mystisches Training", /*french*/"un potentiel magique"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_MAGIC_METER.obscure.0"),
                                                            // /*spanish*/una maestría mística
-                                                          CustomMessage("pixie dust", /*german*/"Feenstaub", /*french*/"de la poudre de fée"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_MAGIC_METER.obscure.1"),
                                                            // /*spanish*/un polvo de hada
-                                                          CustomMessage("a green rectangle", /*german*/"ein grünes Rechteck", /*french*/"un rectangle vert")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_MAGIC_METER.obscure.2")});
                                                            // /*spanish*/una verduzca barra
 
-    hintTextTable[RHT_PROGRESSIVE_OCARINA] = HintText(CustomMessage("an Ocarina", /*german*/"eine Okarina", /*french*/"un ocarina"),
+    hintTextTable[RHT_PROGRESSIVE_OCARINA] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_OCARINA.clear"),
                                                       // /*spanish*/una ocarina
                                                       {
-                                                      CustomMessage("something given by Saria", /*german*/"ein Geschenk von Salia", /*french*/"un cadeau de Saria"),
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_OCARINA.ambiguous.0"),
                                                        // /*spanish*/un obsequio de Saria
-                                                      CustomMessage("something kept by the royal family", /*german*/"etwas aus dem Besitz der Königsfamilie", /*french*/"une chose qui paralyse")
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_OCARINA.ambiguous.1")
                                                        // /*spanish*/algo guardado por la familia real
                                                       }, {
-                                                      CustomMessage("a flute", /*german*/"eine Flöte", /*french*/"un bec musical"),
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_OCARINA.obscure.0"),
                                                        // /*spanish*/un utensilio musical
-                                                      CustomMessage("a music maker", /*german*/"ein Musikmacher", /*french*/"un porteur de chansons")});
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_OCARINA.obscure.1")});
                                                        // /*spanish*/un instrumento
 
-    hintTextTable[RHT_PROGRESSIVE_BOMBCHUS] = HintText(CustomMessage("Bombchus", /*german*/"Krabbelminen€", /*french*/"un paquet de Missiles"),
+    hintTextTable[RHT_PROGRESSIVE_BOMBCHUS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMBCHUS.clear"),
                                                        // /*spanish*/unos bombchus
                                                        {
-                                                       CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMBCHUS.ambiguous.0"),
                                                         // /*spanish*/un obsequio de la Casa Skulltula
-                                                       CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMBCHUS.ambiguous.1")
                                                         // /*spanish*/un montón de explosivos
                                                        }, {
-                                                       CustomMessage("mice bombs", /*german*/"Mäusebomben€", /*french*/"un adorable explosif"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMBCHUS.obscure.0"),
                                                         // /*spanish*/unas bombas roedoras
-                                                       CustomMessage("proximity mice", /*german*/"Näherungsmäuse€", /*french*/"une mine anti-rongeur"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMBCHUS.obscure.1"),
                                                         // /*spanish*/unos explosivos ratoncitos
-                                                       CustomMessage("wall crawlers", /*german*/"Wandkrabbler€", /*french*/"un rapide grimpeur"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMBCHUS.obscure.2"),
                                                         // /*spanish*/unos trepaparedes
-                                                       CustomMessage("trail blazers", /*german*/"Vorreiter€", /*french*/"un zigzag éclatant")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_BOMBCHUS.obscure.3")});
                                                         // /*spanish*/unas ratas propulsadas
 
-    hintTextTable[RHT_PROGRESSIVE_GORONSWORD] = HintText(CustomMessage("a Goron Sword", /*german*/"ein Goronen-Schwert", /*french*/"une épée Goron"),
+    hintTextTable[RHT_PROGRESSIVE_GORONSWORD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_GORONSWORD.clear"),
                                                          // /*spanish*/una espada goron
                                                          {
-                                                         CustomMessage("a sword", /*german*/"ein Schwert", /*french*/"une épée")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_GORONSWORD.ambiguous.0")
                                                           // /*spanish*/una espada
                                                          }, {
-                                                         CustomMessage("a long blade", /*german*/"eine lange Klinge", /*french*/"une longue lame"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_GORONSWORD.obscure.0"),
                                                           // /*spanish*/una gran hoja
-                                                         CustomMessage("a Goron weapon", /*german*/"eine Goronenwaffe", /*french*/"une arme Goron")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_PROGRESSIVE_GORONSWORD.obscure.1")});
                                                           // /*spanish*/un arma goron
 
-    hintTextTable[RHT_EMPTY_BOTTLE] = HintText(CustomMessage("a bottle", /*german*/"eine leere Flasche", /*french*/"un flacon vide"),
+    hintTextTable[RHT_EMPTY_BOTTLE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_EMPTY_BOTTLE.clear"),
                                                // /*spanish*/una botella
                                                {
-                                               CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_EMPTY_BOTTLE.ambiguous.0")
                                                 // /*spanish*/una botella
                                                }, {
-                                               CustomMessage("a glass container", /*german*/"ein Glasbehälter", /*french*/"un cylindre de cristal"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_EMPTY_BOTTLE.obscure.0"),
                                                 // /*spanish*/un recipiente de cristal
-                                               CustomMessage("an empty jar", /*german*/"ein leeres Gefäß", /*french*/"une jarre incassable"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_EMPTY_BOTTLE.obscure.1"),
                                                 // /*spanish*/un frasco vacío
-                                               CustomMessage("encased air", /*german*/"eingeschlossene Luft", /*french*/"un bocal d'air")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_EMPTY_BOTTLE.obscure.2")});
                                                 // /*spanish*/aire a presión
 
-    hintTextTable[RHT_BOTTLE_WITH_MILK] = HintText(CustomMessage("a Milk Bottle", /*german*/"eine Flasche mit Milch", /*french*/"un flacon de lait"),
+    hintTextTable[RHT_BOTTLE_WITH_MILK] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_MILK.clear"),
                                                    // /*spanish*/una botella de leche
                                                    {
-                                                   CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_MILK.ambiguous.0")
                                                     // /*spanish*/una botella
                                                    }, {
-                                                   CustomMessage("cow juice", /*german*/"Kuhsaft", /*french*/"une source de calcium"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_MILK.obscure.0"),
                                                     // /*spanish*/una fuente de calcio
-                                                   CustomMessage("a white liquid", /*german*/"eine weiße Flüssigkeit", /*french*/"un liquide blanc"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_MILK.obscure.1"),
                                                     // /*spanish*/una bebida nutritiva
-                                                   CustomMessage("a baby's breakfast", /*german*/"ein Babyfrühstück", /*french*/"du jus pour bébé")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_MILK.obscure.2")});
                                                     // /*spanish*/un trago para bebés
 
-    hintTextTable[RHT_BOTTLE_WITH_RED_POTION] = HintText(CustomMessage("a Red Potion Bottle", /*german*/"eine Flasche mit rotem Elixier", /*french*/"un flacon de potion rouge"),
+    hintTextTable[RHT_BOTTLE_WITH_RED_POTION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_RED_POTION.clear"),
                                                          // /*spanish*/una botella de poción roja
                                                          {
-                                                         CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_RED_POTION.ambiguous.0")
                                                           // /*spanish*/una botella
                                                          }, {
-                                                         CustomMessage("a vitality vial", /*german*/"eine Vitalitätsphiole", /*french*/"un mélange de vitalité"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_RED_POTION.obscure.0"),
                                                           // /*spanish*/una pócima vitalicia
-                                                         CustomMessage("a red liquid", /*german*/"eine rote Flüssigkeit", /*french*/"un liquide rouge")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_RED_POTION.obscure.1")});
                                                           // /*spanish*/un remedio rojizo
 
-    hintTextTable[RHT_BOTTLE_WITH_GREEN_POTION] = HintText(CustomMessage("a Green Potion Bottle", /*german*/"eine Flasche mit grünem Elixier", /*french*/"un flacon de potion verte"),
+    hintTextTable[RHT_BOTTLE_WITH_GREEN_POTION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_GREEN_POTION.clear"),
                                                            // /*spanish*/una botella de poción verde
                                                            {
-                                                           CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_GREEN_POTION.ambiguous.0")
                                                             // /*spanish*/una botella
                                                            }, {
-                                                           CustomMessage("a magic mixture", /*german*/"eine magische Mixtur", /*french*/"une réserve magique"),
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_GREEN_POTION.obscure.0"),
                                                             // /*spanish*/un potingue mágico
-                                                           CustomMessage("a green liquid", /*german*/"eine grüne Flüssigkeit", /*french*/"un liquide vert")});
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_GREEN_POTION.obscure.1")});
                                                             // /*spanish*/un remedio verduzco
 
-    hintTextTable[RHT_BOTTLE_WITH_BLUE_POTION] = HintText(CustomMessage("a Blue Potion Bottle", /*german*/"eine Flasche mit blauem Elixier", /*french*/"un flacon de potion bleue"),
+    hintTextTable[RHT_BOTTLE_WITH_BLUE_POTION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BLUE_POTION.clear"),
                                                           // /*spanish*/una botella de poción azul
                                                           {
-                                                          CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BLUE_POTION.ambiguous.0")
                                                            // /*spanish*/una botella
                                                           }, {
-                                                          CustomMessage("an ailment antidote", /*german*/"ein Allheilmittel", /*french*/"l'élixir ultime"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BLUE_POTION.obscure.0"),
                                                            // /*spanish*/un antídoto para el dolor
-                                                          CustomMessage("a blue liquid", /*german*/"eine blaue Flüssigkeit", /*french*/"un liquide bleu")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BLUE_POTION.obscure.1")});
                                                            // /*spanish*/un remedio índigo
 
-    hintTextTable[RHT_BOTTLE_WITH_FAIRY] = HintText(CustomMessage("a Fairy Bottle", /*german*/"eine Flasche mit Fee", /*french*/"une fée en flacon"),
+    hintTextTable[RHT_BOTTLE_WITH_FAIRY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FAIRY.clear"),
                                                     // /*spanish*/un hada en una botella
                                                     {
-                                                    CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FAIRY.ambiguous.0")
                                                      // /*spanish*/una botella
                                                     }, {
-                                                    CustomMessage("an imprisoned fairy", /*german*/"eine gefangene Fee", /*french*/"une fée emprisonnée"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FAIRY.obscure.0"),
                                                      // /*spanish*/un hada atrapada
-                                                    CustomMessage("an extra life", /*german*/"ein Extraleben", /*french*/"une vie de rechange"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FAIRY.obscure.1"),
                                                      // /*spanish*/una oportunidad más
-                                                    CustomMessage("Navi's cousin", /*german*/"Navis Cousine", /*french*/"le cousin de Navi")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FAIRY.obscure.2")});
                                                      // /*spanish*/una prima de Navi
 
-    hintTextTable[RHT_BOTTLE_WITH_FISH] = HintText(CustomMessage("a Fish Bottle", /*german*/"eine Flasche mit Fisch", /*french*/"un poisson en flacon"),
+    hintTextTable[RHT_BOTTLE_WITH_FISH] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FISH.clear"),
                                                    // /*spanish*/un pez en una botella
                                                    {
-                                                   CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FISH.ambiguous.0")
                                                     // /*spanish*/una botella
                                                    }, {
-                                                   CustomMessage("an aquarium", /*german*/"ein Aquarium", /*french*/"un aquarium"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FISH.obscure.0"),
                                                     // /*spanish*/un escamado ser
-                                                   CustomMessage("a deity's snack", /*german*/"ein göttlicher Snack", /*french*/"le repas d'un dieu marin")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_FISH.obscure.1")});
                                                     // /*spanish*/un tentempié de cierta deidad
 
-    hintTextTable[RHT_BOTTLE_WITH_BLUE_FIRE] = HintText(CustomMessage("a Blue Fire Bottle", /*german*/"eine Flasche mit blauem Feuer", /*french*/"une flamme bleue en flacon"),
+    hintTextTable[RHT_BOTTLE_WITH_BLUE_FIRE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BLUE_FIRE.clear"),
                                                         // /*spanish*/una botella de fuego azul
                                                         {
-                                                        CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BLUE_FIRE.ambiguous.0")
                                                          // /*spanish*/una botella
                                                         }, {
-                                                        CustomMessage("a conflagration canteen", /*german*/"eine Brandfeldflasche", /*french*/"une mystérieuse flamme"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BLUE_FIRE.obscure.0"),
                                                          // /*spanish*/un incendio retenido
-                                                        CustomMessage("an icemelt jar", /*german*/"ein eisschmelzendes Gefäß", /*french*/"un brasier glacial")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BLUE_FIRE.obscure.1")});
                                                          // /*spanish*/unas brasas enfrascadas
 
-    hintTextTable[RHT_BOTTLE_WITH_BUGS] = HintText(CustomMessage("a Bug Bottle", /*german*/"eine Flasche mit Käfern", /*french*/"un insecte en flacon"),
+    hintTextTable[RHT_BOTTLE_WITH_BUGS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BUGS.clear"),
                                                    // /*spanish*/unos insectos en una botella
                                                    {
-                                                   CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BUGS.ambiguous.0")
                                                     // /*spanish*/una botella
                                                    }, {
-                                                   CustomMessage("an insectarium", /*german*/"ein Insektarium", /*french*/"un insectarium"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BUGS.obscure.0"),
                                                     // /*spanish*/unos invertebrados seres
-                                                   CustomMessage("Skulltula finders", /*german*/"Skulltula-Finder", /*french*/"une poignée de trouve-Skulltula")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BUGS.obscure.1")});
                                                     // /*spanish*/unos rastreadores de skulltulas
 
-    hintTextTable[RHT_BOTTLE_WITH_POE] = HintText(CustomMessage("a Poe Bottle", /*german*/"eine Flasche mit Irrlicht", /*french*/"un Esprit en flacon"),
+    hintTextTable[RHT_BOTTLE_WITH_POE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_POE.clear"),
                                                   // /*spanish*/un Poe en una botella
                                                   {
-                                                  CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_POE.ambiguous.0")
                                                    // /*spanish*/una botella
                                                   }, {
-                                                  CustomMessage("a spooky ghost", /*german*/"ein gruseliger Geist", /*french*/"un effroyable fantôme"),
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_POE.obscure.0"),
                                                    // /*spanish*/un espantoso espectro
-                                                  CustomMessage("a face in the jar", /*german*/"ein Gesicht im Gefäß", /*french*/"un visage dans un bocal")});
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_POE.obscure.1")});
                                                    // /*spanish*/una expresión enfrascada
 
-    hintTextTable[RHT_BOTTLE_WITH_BIG_POE] = HintText(CustomMessage("a Big Poe Bottle", /*german*/"eine Flasche mit Nachtschwärmer", /*french*/"une Ame en flacon"),
+    hintTextTable[RHT_BOTTLE_WITH_BIG_POE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BIG_POE.clear"),
                                                       // /*spanish*/un Gran Poe en una botella
                                                       {
-                                                      CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BIG_POE.ambiguous.0")
                                                        // /*spanish*/una botella
                                                       }, {
-                                                      CustomMessage("the spookiest ghost", /*german*/"der gruseligste Geist", /*french*/"un épouvantable spectre"),
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BIG_POE.obscure.0"),
                                                        // /*spanish*/el espectro más espeluznante
-                                                      CustomMessage("a sidequest spirit", /*german*/"ein Nebenmissionsgeist", /*french*/"un précieux esprit")});
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTLE_WITH_BIG_POE.obscure.1")});
                                                        // /*spanish*/un buen valorado espíritu
 
-    hintTextTable[RHT_RUTOS_LETTER] = HintText(CustomMessage("Ruto's Letter", /*german*/"Rutos Brief", /*french*/"la lettre de Ruto"),
+    hintTextTable[RHT_RUTOS_LETTER] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_RUTOS_LETTER.clear"),
                                                // /*spanish*/la carta de Ruto
                                                {
-                                               CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_RUTOS_LETTER.ambiguous.0")
                                                 // /*spanish*/una botella
                                                }, {
-                                               CustomMessage("a call for help", /*german*/"ein Hilferuf", /*french*/"un appel au secours"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_RUTOS_LETTER.obscure.0"),
                                                 // /*spanish*/una llamada de auxilio
-                                               CustomMessage("the note that Mweeps", /*german*/"eine Notiz, die Mweeps", /*french*/"un message qui fait mwip"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_RUTOS_LETTER.obscure.1"),
                                                 // /*spanish*/un escrito mweep
-                                               CustomMessage("an SOS call", /*german*/"ein Notrufsignal", /*french*/"un signal SOS"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_RUTOS_LETTER.obscure.2"),
                                                 // /*spanish*/una nota de socorro
-                                               CustomMessage("a fishy stationery", /*german*/"fischiges Briefpapier", /*french*/"un papier mouillé")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_RUTOS_LETTER.obscure.3")});
                                                 // /*spanish*/un mensaje de ayuda
 
-    hintTextTable[RHT_ZELDAS_LULLABY] = HintText(CustomMessage("Zelda's Lullaby", /*german*/"Zeldas Wiegenlied", /*french*/"la berceuse de Zelda"),
+    hintTextTable[RHT_ZELDAS_LULLABY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LULLABY.clear"),
                                                  // /*spanish*/la Nana de Zelda
                                                  {
-                                                 CustomMessage("a regular song", /*german*/"ein gewöhnliches Lied", /*french*/"une chanson normale"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LULLABY.ambiguous.0"),
                                                   // /*spanish*/una cancion normal
-                                                 CustomMessage("something kept by the royal family", /*german*/"etwas aus dem Besitz der Königsfamilie", /*french*/"une chose qui paralyse")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LULLABY.ambiguous.1")
                                                   // /*spanish*/algo guardado por la familia real
                                                  }, {
-                                                 CustomMessage("a song of royal slumber", /*german*/"ein königliches Schlaflied", /*french*/"une chanson royale"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LULLABY.obscure.0"),
                                                   // /*spanish*/la canción real
-                                                 CustomMessage("a triforce tune", /*german*/"die Melodie des Triforce", /*french*/"la musique sacrée")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ZELDAS_LULLABY.obscure.1")});
                                                   // /*spanish*/la melodía de la trifuerza
 
-    hintTextTable[RHT_EPONAS_SONG] = HintText(CustomMessage("Epona's Song", /*german*/"Eponas Lied", /*french*/"le chant d'Epona"),
+    hintTextTable[RHT_EPONAS_SONG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_EPONAS_SONG.clear"),
                                               // /*spanish*/la Canción de Epona
                                               {
-                                              CustomMessage("a regular song", /*german*/"ein gewöhnliches Lied", /*french*/"une chanson normale")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_EPONAS_SONG.ambiguous.0")
                                                // /*spanish*/una cancion normal
                                               }, {
-                                              CustomMessage("an equestrian etude", /*german*/"eine Reiterhymne", /*french*/"une hymne équestre"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_EPONAS_SONG.obscure.0"),
                                                // /*spanish*/una copla ecuestre
-                                              CustomMessage("Malon's melody", /*german*/"Malons Melodie", /*french*/"la mélodie des vaches"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_EPONAS_SONG.obscure.1"),
                                                // /*spanish*/la sonata de Malon
-                                              CustomMessage("a ranch song", /*german*/"ein Lied des Ackers", /*french*/"le chant des champs")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_EPONAS_SONG.obscure.2")});
                                                // /*spanish*/un canto rupestre
 
-    hintTextTable[RHT_SARIAS_SONG] = HintText(CustomMessage("Saria's Song", /*german*/"Salias Lied", /*french*/"le chant de Saria"),
+    hintTextTable[RHT_SARIAS_SONG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SARIAS_SONG.clear"),
                                               // /*spanish*/la Canción de Saria
                                               {
-                                              CustomMessage("a regular song", /*german*/"ein gewöhnliches Lied", /*french*/"une chanson normale"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_SARIAS_SONG.ambiguous.0"),
                                                // /*spanish*/una cancion normal
-                                              CustomMessage("something given by Saria", /*german*/"ein Geschenk von Salia", /*french*/"un cadeau de Saria")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_SARIAS_SONG.ambiguous.1")
                                                // /*spanish*/un obsequio de Saria
                                               }, {
-                                              CustomMessage("a song of dancing Gorons", /*german*/"ein Lied der tanzenden Goronen", /*french*/"une chanson danceuse"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_SARIAS_SONG.obscure.0"),
                                                // /*spanish*/un pegadizo tono goron
-                                              CustomMessage("Saria's phone number", /*german*/"Salias Telefonnummer", /*french*/"le téléphone d'une amie")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_SARIAS_SONG.obscure.1")});
                                                // /*spanish*/una consulta de asistencia
 
-    hintTextTable[RHT_SUNS_SONG] = HintText(CustomMessage("the Sun's Song", /*german*/"die Hymne der Sonne", /*french*/"le chant du soleil"),
+    hintTextTable[RHT_SUNS_SONG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SUNS_SONG.clear"),
                                             // /*spanish*/la Canción del Sol
                                             {
-                                            CustomMessage("a regular song", /*german*/"ein gewöhnliches Lied", /*french*/"une chanson normale"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_SUNS_SONG.ambiguous.0"),
                                              // /*spanish*/una cancion normal
-                                            CustomMessage("something that can stun", /*german*/"etwas zum Betäuben", /*french*/"une chose qui peut paralyser")
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_SUNS_SONG.ambiguous.1")
                                              // /*spanish*/algo que pueda paralizar
                                             }, {
-                                            CustomMessage("Sunny Day", /*german*/"ein sonniger Tag", /*french*/"Zénith"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_SUNS_SONG.obscure.0"),
                                              // /*spanish*/un día soleado
-                                            CustomMessage("the ReDead's bane", /*german*/"das Verderben der Remorts", /*french*/"le fléau des Éffrois"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_SUNS_SONG.obscure.1"),
                                              // /*spanish*/la destructora de Redeads
-                                            CustomMessage("the Gibdo's bane", /*german*/"das Verderben der Gibdos", /*french*/"le fléau des Gibdo")});
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_SUNS_SONG.obscure.2")});
                                              // /*spanish*/la destructora de Gibdos
 
-    hintTextTable[RHT_SONG_OF_TIME] = HintText(CustomMessage("the Song of Time", /*german*/"die Hymne der Zeit", /*french*/"le chant du temps"),
+    hintTextTable[RHT_SONG_OF_TIME] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_TIME.clear"),
                                                // /*spanish*/la Canción del tiempo
                                                {
-                                               CustomMessage("a regular song", /*german*/"ein gewöhnliches Lied", /*french*/"une chanson normale")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_TIME.ambiguous.0")
                                                 // /*spanish*/una cancion normal
                                                }, {
-                                               CustomMessage("a song 7 years long", /*german*/"ein sieben Jahre langes Lied", /*french*/"le flot du temps"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_TIME.obscure.0"),
                                                 // /*spanish*/la setenada canción
-                                               CustomMessage("the tune of ages", /*german*/"die Melodie der Äonen", /*french*/"le Chant des Âges")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_TIME.obscure.1")});
                                                 // /*spanish*/la melodía eónica
 
-    hintTextTable[RHT_SONG_OF_STORMS] = HintText(CustomMessage("the Song of Storms", /*german*/"die Hymne des Sturms", /*french*/"le chant des tempêtes"),
+    hintTextTable[RHT_SONG_OF_STORMS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_STORMS.clear"),
                                                  // /*spanish*/la Canción de la Tormenta
                                                  {
-                                                 CustomMessage("a regular song", /*german*/"ein gewöhnliches Lied", /*french*/"une chanson normale")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_STORMS.ambiguous.0")
                                                   // /*spanish*/una cancion normal
                                                  }, {
-                                                 CustomMessage("Rain Dance", /*german*/"ein Regentanz", /*french*/"Danse Pluie"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_STORMS.obscure.0"),
                                                   // /*spanish*/la danza de la lluvia
-                                                 CustomMessage("a thunderstorm tune", /*german*/"die Melodie des Gewitters", /*french*/"une hymne foudroyante"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_STORMS.obscure.1"),
                                                   // /*spanish*/una sonata tormentosa
-                                                 CustomMessage("windmill acceleration", /*german*/"eine Windmühlenbeschleunigung", /*french*/"l'accélérateur de moulins")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_SONG_OF_STORMS.obscure.2")});
                                                   // /*spanish*/el arranque de molinos
 
-    hintTextTable[RHT_MINUET_OF_FOREST] = HintText(CustomMessage("the Minuet of Forest", /*german*/"das Menuett des Waldes", /*french*/"le menuet de la forêt"),
+    hintTextTable[RHT_MINUET_OF_FOREST] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MINUET_OF_FOREST.clear"),
                                                    // /*spanish*/el Minueto del bosque
                                                    {
-                                                   CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_MINUET_OF_FOREST.ambiguous.0")
                                                     // /*spanish*/una canción de teletransportación
                                                    }, {
-                                                   CustomMessage("the song of tall trees", /*german*/"das Lied der großen Bäume", /*french*/"le bruit des arbres"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_MINUET_OF_FOREST.obscure.0"),
                                                     // /*spanish*/la canción de las copas
-                                                   CustomMessage("an arboreal anthem", /*german*/"eine baumartige Hymne", /*french*/"l'hymne sylvestre"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_MINUET_OF_FOREST.obscure.1"),
                                                     // /*spanish*/el himno forestal
-                                                   CustomMessage("a green spark trail", /*german*/"grüne Funken€", /*french*/"une comète verte")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_MINUET_OF_FOREST.obscure.2")});
                                                     // /*spanish*/el sendero esmeralda
 
-    hintTextTable[RHT_BOLERO_OF_FIRE] = HintText(CustomMessage("the Bolero of Fire", /*german*/"der Bolero des Feuers", /*french*/"le boléro du feu"),
+    hintTextTable[RHT_BOLERO_OF_FIRE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOLERO_OF_FIRE.clear"),
                                                  // /*spanish*/el Bolero del fuego
                                                  {
-                                                 CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_BOLERO_OF_FIRE.ambiguous.0")
                                                   // /*spanish*/una canción de teletransportación
                                                  }, {
-                                                 CustomMessage("a song of lethal lava", /*german*/"das Lied der tödlichen Lava", /*french*/"une musique enflammée"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_BOLERO_OF_FIRE.obscure.0"),
                                                   // /*spanish*/la canción de la lava
-                                                 CustomMessage("a red spark trail", /*german*/"rote Funken€", /*french*/"une comète rouge"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_BOLERO_OF_FIRE.obscure.1"),
                                                   // /*spanish*/el sendero rubí
-                                                 CustomMessage("a volcanic verse", /*german*/"ein vulkanischer Vers", /*french*/"le souffle du volcan")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_BOLERO_OF_FIRE.obscure.2")});
                                                   // /*spanish*/el verso volcánico
 
-    hintTextTable[RHT_SERENADE_OF_WATER] = HintText(CustomMessage("the Serenade of Water", /*german*/"die Serenade des Wassers", /*french*/"la sérénade de l'eau"),
+    hintTextTable[RHT_SERENADE_OF_WATER] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SERENADE_OF_WATER.clear"),
                                                     // /*spanish*/la Serenata del agua
                                                     {
-                                                    CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SERENADE_OF_WATER.ambiguous.0")
                                                      // /*spanish*/una canción de teletransportación
                                                     }, {
-                                                    CustomMessage("a song of a damp ditch", /*german*/"ein Lied der Gewässer", /*french*/"le calme de l'eau"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SERENADE_OF_WATER.obscure.0"),
                                                      // /*spanish*/la canción del estanque
-                                                    CustomMessage("a blue spark trail", /*german*/"blaue Funken€", /*french*/"une comète bleue"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SERENADE_OF_WATER.obscure.1"),
                                                      // /*spanish*/el sendero zafiro
-                                                    CustomMessage("the lake's lyric", /*german*/"die Lyrik des Sees", /*french*/"la voix du lac")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SERENADE_OF_WATER.obscure.2")});
                                                      // /*spanish*/la letra del lago
 
-    hintTextTable[RHT_REQUIEM_OF_SPIRIT] = HintText(CustomMessage("the Requiem of Spirit", /*german*/"das Requiem der Geister", /*french*/"le requiem des esprits"),
+    hintTextTable[RHT_REQUIEM_OF_SPIRIT] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_REQUIEM_OF_SPIRIT.clear"),
                                                     // /*spanish*/el Réquiem del espíritu
                                                     {
-                                                    CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_REQUIEM_OF_SPIRIT.ambiguous.0")
                                                      // /*spanish*/una canción de teletransportación
                                                     }, {
-                                                    CustomMessage("a song of sandy statues", /*german*/"ein Lied der sandigen Statuen", /*french*/"la mélodie d'une grande statue"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_REQUIEM_OF_SPIRIT.obscure.0"),
                                                      // /*spanish*/la canción de la gran estatua
-                                                    CustomMessage("an orange spark trail", /*german*/"orangene Funken€", /*french*/"une comète orange"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_REQUIEM_OF_SPIRIT.obscure.1"),
                                                      // /*spanish*/el sendero ámbar
-                                                    CustomMessage("the desert ditty", /*german*/"der Wind der Wüste", /*french*/"le vent du désert")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_REQUIEM_OF_SPIRIT.obscure.2")});
                                                      // /*spanish*/la estrofa del desierto
 
-    hintTextTable[RHT_NOCTURNE_OF_SHADOW] = HintText(CustomMessage("the Nocturne of Shadow", /*german*/"die Nocturne des Schattens", /*french*/"le nocturne de l'ombre"),
+    hintTextTable[RHT_NOCTURNE_OF_SHADOW] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_NOCTURNE_OF_SHADOW.clear"),
                                                      // /*spanish*/el Nocturno de la sombra
                                                      {
-                                                     CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_NOCTURNE_OF_SHADOW.ambiguous.0")
                                                       // /*spanish*/una canción de teletransportación
                                                      }, {
-                                                     CustomMessage("a song of spooky spirits", /*german*/"das Lied der spukenden Geister", /*french*/"une hymne de chair de poule"),
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_NOCTURNE_OF_SHADOW.obscure.0"),
                                                       // /*spanish*/la canción de los espectros
-                                                     CustomMessage("a graveyard boogie", /*german*/"ein Friedhofsboogie", /*french*/"un boogie de fantômes"),
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_NOCTURNE_OF_SHADOW.obscure.1"),
                                                       // /*spanish*/una honra fúnebre
-                                                     CustomMessage("a haunted hymn", /*german*/"eine heimgesuchte Hymne", /*french*/"une chanson lugubre"),
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_NOCTURNE_OF_SHADOW.obscure.2"),
                                                       // /*spanish*/una estrofa encantada
-                                                     CustomMessage("a purple spark trail", /*german*/"violette Funken€", /*french*/"une comète mauve")});
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_NOCTURNE_OF_SHADOW.obscure.3")});
                                                       // /*spanish*/el sendero malva
 
-    hintTextTable[RHT_PRELUDE_OF_LIGHT] = HintText(CustomMessage("the Prelude of Light", /*german*/"die Kantate des Lichts", /*french*/"le prélude de la lumière"),
+    hintTextTable[RHT_PRELUDE_OF_LIGHT] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PRELUDE_OF_LIGHT.clear"),
                                                    // /*spanish*/el Preludio de la luz
                                                    {
-                                                   CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_PRELUDE_OF_LIGHT.ambiguous.0")
                                                     // /*spanish*/una canción de teletransportación
                                                    }, {
-                                                   CustomMessage("a luminous prologue melody", /*german*/"der leuchtende Prolog", /*french*/"une matine illuminée"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_PRELUDE_OF_LIGHT.obscure.0"),
                                                     // /*spanish*/la melodía refulgente
-                                                   CustomMessage("a yellow spark trail", /*german*/"gelbe Funken€", /*french*/"une comète jaune"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_PRELUDE_OF_LIGHT.obscure.1"),
                                                     // /*spanish*/el sendero resplandeciente
-                                                   CustomMessage("the temple traveler", /*german*/"ein Tempelreisender", /*french*/"un chant de sanctuaire")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_PRELUDE_OF_LIGHT.obscure.2")});
                                                     // /*spanish*/la ruta del templo
 
-    hintTextTable[RHT_DEKU_TREE_MAP] = HintText(CustomMessage("the Deku Tree Map", /*german*/"die Labyrinth-Karte des Deku-Baumes", /*french*/"la carte de l'Arbre Mojo"),
+    hintTextTable[RHT_DEKU_TREE_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_TREE_MAP.clear"),
                                                 // /*spanish*/el mapa del Gran Árbol Deku
                                                 {
-                                                CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_TREE_MAP.ambiguous.0")
                                                  // /*spanish*/un mapa
                                                 }, {
-                                                CustomMessage("a mossy atlas", /*german*/"ein moosiger Atlas", /*french*/"un atlas boisé"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_TREE_MAP.obscure.0"),
                                                  // /*spanish*/un atlas musgoso
-                                                CustomMessage("some mossy blueprints", /*german*/"moosige Baupläne€", /*french*/"un plan boisé")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_TREE_MAP.obscure.1")});
                                                  // /*spanish*/unos planos musgosos
 
-    hintTextTable[RHT_DODONGOS_CAVERN_MAP] = HintText(CustomMessage("the Dodongo's Cavern Map", /*german*/"die Labyrinth-Karte von Dodongos Höhle", /*french*/"la carte de la Caverne Dodongo"),
+    hintTextTable[RHT_DODONGOS_CAVERN_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DODONGOS_CAVERN_MAP.clear"),
                                                       // /*spanish*/el mapa de la Cueva de los Dodongos
                                                       {
-                                                      CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_DODONGOS_CAVERN_MAP.ambiguous.0")
                                                        // /*spanish*/un mapa
                                                       }, {
-                                                      CustomMessage("a rocky atlas", /*german*/"eine felsiger Atlas", /*french*/"un atlas rocheux"),
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_DODONGOS_CAVERN_MAP.obscure.0"),
                                                        // /*spanish*/un atlas rocoso
-                                                      CustomMessage("some rocky blueprints", /*german*/"felsige Baupläne€", /*french*/"un plan rocheux")});
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_DODONGOS_CAVERN_MAP.obscure.1")});
                                                        // /*spanish*/unos planos rocosos
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_MAP] = HintText(CustomMessage("the Jabu-Jabu's Belly Map", /*german*/"die Labyrinth-Karte von Jabu-Jabus Bauch", /*french*/"la carte de Jabu-Jabu"),
+    hintTextTable[RHT_JABU_JABUS_BELLY_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_JABU_JABUS_BELLY_MAP.clear"),
                                                        // /*spanish*/el mapa de la Tripa de Jabu-Jabu
                                                        {
-                                                       CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_JABU_JABUS_BELLY_MAP.ambiguous.0")
                                                         // /*spanish*/un mapa
                                                        }, {
-                                                       CustomMessage("a fishy atlas", /*german*/"ein fischiger Atlas", /*french*/"un atlas digéré"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_JABU_JABUS_BELLY_MAP.obscure.0"),
                                                         // /*spanish*/un atlas digesto
-                                                       CustomMessage("some fishy blueprints", /*german*/"fischige Baupläne€", /*french*/"un plan digéré")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_JABU_JABUS_BELLY_MAP.obscure.1")});
                                                         // /*spanish*/unos planos digestos
 
-    hintTextTable[RHT_FOREST_TEMPLE_MAP] = HintText(CustomMessage("the Forest Temple Map", /*german*/"die Labyrinth-Karte des Waldtempels", /*french*/"la carte du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_MAP.clear"),
                                                     // /*spanish*/el mapa del Templo del Bosque
                                                     {
-                                                    CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_MAP.ambiguous.0")
                                                      // /*spanish*/un mapa
                                                     }, {
-                                                    CustomMessage("a sylvan atlas", /*german*/"ein waldiger Atlas", /*french*/"un atlas sylvestre"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_MAP.obscure.0"),
                                                      // /*spanish*/un atlas enselvado
-                                                    CustomMessage("some sylvan blueprints", /*german*/"waldige Baupläne€", /*french*/"un plan sylvestre")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_MAP.obscure.1")});
                                                      // /*spanish*/unos planos enselvados
 
-    hintTextTable[RHT_FIRE_TEMPLE_MAP] = HintText(CustomMessage("the Fire Temple Map", /*german*/"die Labyrinth-Karte des Feuertempels", /*french*/"la carte du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_MAP.clear"),
                                                   // /*spanish*/el mapa del Templo del Fuego
                                                   {
-                                                  CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_MAP.ambiguous.0")
                                                    // /*spanish*/un mapa
                                                   }, {
-                                                  CustomMessage("a molten atlas", /*german*/"ein geschmolzener Atlas", /*french*/"un atlas fondu"),
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_MAP.obscure.0"),
                                                    // /*spanish*/un atlas fundido
-                                                  CustomMessage("some molten blueprints", /*german*/"geschmolzene Baupläne€", /*french*/"un plan fondu")});
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_MAP.obscure.1")});
                                                    // /*spanish*/unos planos fundidos
 
-    hintTextTable[RHT_WATER_TEMPLE_MAP] = HintText(CustomMessage("the Water Temple Map", /*german*/"die Labyrinth-Karte des Wassertempels", /*french*/"la carte du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_MAP.clear"),
                                                    // /*spanish*/el mapa del Templo del Agua
                                                    {
-                                                   CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_MAP.ambiguous.0")
                                                     // /*spanish*/un mapa
                                                    }, {
-                                                   CustomMessage("a wet atlas", /*german*/"ein nasser Atlas", /*french*/"un atlas humide"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_MAP.obscure.0"),
                                                     // /*spanish*/un atlas mojado
-                                                   CustomMessage("some wet blueprints", /*german*/"nasse Baupläne€", /*french*/"un plan humide")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_MAP.obscure.1")});
                                                     // /*spanish*/unos planos mojados
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_MAP] = HintText(CustomMessage("the Spirit Temple Map", /*german*/"die Labyrinth-Karte des Geistertempels", /*french*/"la carte du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_MAP.clear"),
                                                     // /*spanish*/el mapa del Templo del Espíritu
                                                     {
-                                                    CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_MAP.ambiguous.0")
                                                      // /*spanish*/un mapa
                                                     }, {
-                                                    CustomMessage("a sandy atlas", /*german*/"ein sandiger Atlas", /*french*/"un atlas sableux"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_MAP.obscure.0"),
                                                      // /*spanish*/un atlas arenoso
-                                                    CustomMessage("some sandy blueprints", /*german*/"sandige Baupläne€", /*french*/"un plan sableux")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_MAP.obscure.1")});
                                                      // /*spanish*/unos planos arenosos
 
-    hintTextTable[RHT_SHADOW_TEMPLE_MAP] = HintText(CustomMessage("the Shadow Temple Map", /*german*/"die Labyrinth-Karte des Schattentempels", /*french*/"la carte du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_MAP.clear"),
                                                     // /*spanish*/el mapa del Templo de las Sombras
                                                     {
-                                                    CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_MAP.ambiguous.0")
                                                      // /*spanish*/un mapa
                                                     }, {
-                                                    CustomMessage("a creepy atlas", /*german*/"eine gruseliger Atlas", /*french*/"un atlas sinistre"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_MAP.obscure.0"),
                                                      // /*spanish*/un atlas siniestra
-                                                    CustomMessage("some creepy blueprints", /*german*/"gruselige Baupläne€", /*french*/"un plan sinistre")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_MAP.obscure.1")});
                                                      // /*spanish*/unos planos siniestras
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Labyrinth-Karte vom Grund des Brunnens", /*french*/"la carte du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_MAP.clear"),
                                                          // /*spanish*/el mapa del Fondo del pozo
                                                          {
-                                                         CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_MAP.ambiguous.0")
                                                           // /*spanish*/un mapa
                                                          }, {
-                                                         CustomMessage("a moldy atlas", /*german*/"ein schimmeliger Atlas", /*french*/"un atlas moisi"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_MAP.obscure.0"),
                                                           // /*spanish*/un atlas mohoso
-                                                         CustomMessage("some moldy blueprints", /*german*/"schimmelige Baupläne€", /*french*/"un plan moisi")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_MAP.obscure.1")});
                                                           // /*spanish*/unos planos mohosos
 
-    hintTextTable[RHT_ICE_CAVERN_MAP] = HintText(CustomMessage("the Ice Cavern Map", /*german*/"die Labyrinth-Karte der Eishöhle", /*french*/"la carte de la Caverne Polaire"),
+    hintTextTable[RHT_ICE_CAVERN_MAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_CAVERN_MAP.clear"),
                                                  // /*spanish*/el mapa de la Caverna de hielo
                                                  {
-                                                 CustomMessage("a dungeon map", /*german*/"eine Labyrinth-Karte", /*french*/"une carte")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_CAVERN_MAP.ambiguous.0")
                                                   // /*spanish*/un mapa
                                                  }, {
-                                                 CustomMessage("a polar atlas", /*german*/"ein polarer Atlas", /*french*/"un atlas polaire"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_CAVERN_MAP.obscure.0"),
                                                   // /*spanish*/un atlas polar
-                                                 CustomMessage("some polar blueprints", /*german*/"polare Baupläne€", /*french*/"un plan polaire")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_CAVERN_MAP.obscure.1")});
                                                   // /*spanish*/unos planos polars
 
-    hintTextTable[RHT_DEKU_TREE_COMPASS] = HintText(CustomMessage("the Deku Tree Compass", /*german*/"der Kompaß des Deku-Baumes", /*french*/"la boussole de l'Arbre Mojo"),
+    hintTextTable[RHT_DEKU_TREE_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_TREE_COMPASS.clear"),
                                                     // /*spanish*/la brújula del Gran Árbol Deku
                                                     {
-                                                    CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_TREE_COMPASS.ambiguous.0")
                                                      // /*spanish*/una brújula
                                                     }, {
-                                                    CustomMessage("a mossy treasure tracker", /*german*/"ein moosiger Schatzfinder", /*french*/"un cherche-trésor boisé"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_TREE_COMPASS.obscure.0"),
                                                      // /*spanish*/un zahorí musgoso
-                                                    CustomMessage("a mossy magnetic needle", /*german*/"eine moosige Magnetnadel", /*french*/"une aimant boisée")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_TREE_COMPASS.obscure.1")});
                                                      // /*spanish*/un imán musgoso
 
-    hintTextTable[RHT_DODONGOS_CAVERN_COMPASS] = HintText(CustomMessage("the Dodongo's Cavern Compass", /*german*/"der Kompaß von Dodongos Höhle", /*french*/"la boussole de la Caverne Dodongo"),
+    hintTextTable[RHT_DODONGOS_CAVERN_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DODONGOS_CAVERN_COMPASS.clear"),
                                                           // /*spanish*/la brújula de la Cueva de los Dodongos
                                                           {
-                                                          CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_DODONGOS_CAVERN_COMPASS.ambiguous.0")
                                                            // /*spanish*/una brújula
                                                           }, {
-                                                          CustomMessage("a rocky treasure tracker", /*german*/"ein felsiger Schatzfinder", /*french*/"un cherche-trésor rocheux"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_DODONGOS_CAVERN_COMPASS.obscure.0"),
                                                            // /*spanish*/un zahorí rocoso
-                                                          CustomMessage("a rocky magnetic needle", /*german*/"eine felsige Magnetnadel", /*french*/"une aimant rocheux")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_DODONGOS_CAVERN_COMPASS.obscure.1")});
                                                            // /*spanish*/un imán rocoso
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_COMPASS] = HintText(CustomMessage("the Jabu-Jabu's Belly Compass", /*german*/"der Kompaß von Jabu-Jabus Bauch", /*french*/"la boussole de Jabu-Jabu"),
+    hintTextTable[RHT_JABU_JABUS_BELLY_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_JABU_JABUS_BELLY_COMPASS.clear"),
                                                            // /*spanish*/la brújula de la Tripa de Jabu-Jabu
                                                            {
-                                                           CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_JABU_JABUS_BELLY_COMPASS.ambiguous.0")
                                                             // /*spanish*/una brújula
                                                            }, {
-                                                           CustomMessage("a fishy treasure tracker", /*german*/"ein fischiger Schatzfinder", /*french*/"un cherche-trésor digéré"),
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_JABU_JABUS_BELLY_COMPASS.obscure.0"),
                                                             // /*spanish*/un zahorí digesto
-                                                           CustomMessage("a fishy magnetic needle", /*german*/"eine fischige Magnetnadel", /*french*/"une aimant digéré")});
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_JABU_JABUS_BELLY_COMPASS.obscure.1")});
                                                             // /*spanish*/un imán digesto
 
-    hintTextTable[RHT_FOREST_TEMPLE_COMPASS] = HintText(CustomMessage("the Forest Temple Compass", /*german*/"der Kompaß des Waldtempels", /*french*/"la boussole du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_COMPASS.clear"),
                                                         // /*spanish*/la brújula del Templo del Bosque
                                                         {
-                                                        CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_COMPASS.ambiguous.0")
                                                          // /*spanish*/una brújula
                                                         }, {
-                                                        CustomMessage("a sylvan treasure tracker", /*german*/"ein waldiger Schatzfinder", /*french*/"un cherche-trésor sylvestre"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_COMPASS.obscure.0"),
                                                          // /*spanish*/un zahorí enselvado
-                                                        CustomMessage("a sylvan magnetic needle", /*german*/"eine waldige Magnetnadel", /*french*/"une aimant sylvestre")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_COMPASS.obscure.1")});
                                                          // /*spanish*/un imán enselvado
 
-    hintTextTable[RHT_FIRE_TEMPLE_COMPASS] = HintText(CustomMessage("the Fire Temple Compass", /*german*/"der Kompaß des Feuertempels", /*french*/"la boussole du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_COMPASS.clear"),
                                                       // /*spanish*/la brújula del Templo del Fuego
                                                       {
-                                                      CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_COMPASS.ambiguous.0")
                                                        // /*spanish*/una brújula
                                                       }, {
-                                                      CustomMessage("a molten treasure tracker", /*german*/"ein geschmolzener Schatzfinder", /*french*/"un cherche-trésor fondu"),
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_COMPASS.obscure.0"),
                                                        // /*spanish*/un zahorí fundido
-                                                      CustomMessage("a molten magnetic needle", /*german*/"eine geschmolzene Magnetnadel", /*french*/"une aimant fondu")});
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_COMPASS.obscure.1")});
                                                        // /*spanish*/un imán fundido
 
-    hintTextTable[RHT_WATER_TEMPLE_COMPASS] = HintText(CustomMessage("the Water Temple Compass", /*german*/"der Kompaß des Wassertempels", /*french*/"la boussole du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_COMPASS.clear"),
                                                        // /*spanish*/la brújula del Templo del Agua
                                                        {
-                                                       CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_COMPASS.ambiguous.0")
                                                         // /*spanish*/una brújula
                                                        }, {
-                                                       CustomMessage("a wet treasure tracker", /*german*/"ein nasser Schatzfinder", /*french*/"un cherche-trésor humide"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_COMPASS.obscure.0"),
                                                         // /*spanish*/un zahorí mojado
-                                                       CustomMessage("a wet magnetic needle", /*german*/"eine nasse Magnetnadel", /*french*/"une aimant humide")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_COMPASS.obscure.1")});
                                                         // /*spanish*/un imán mojado
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_COMPASS] = HintText(CustomMessage("the Spirit Temple Compass", /*german*/"der Kompaß des Geistertempels", /*french*/"la boussole du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_COMPASS.clear"),
                                                         // /*spanish*/la brújula del Templo del Espíritu
                                                         {
-                                                        CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_COMPASS.ambiguous.0")
                                                          // /*spanish*/una brújula
                                                         }, {
-                                                        CustomMessage("a sandy treasure tracker", /*german*/"ein sandiger Schatzfinder", /*french*/"un cherche-trésor sableux"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_COMPASS.obscure.0"),
                                                          // /*spanish*/un zahorí arenoso
-                                                        CustomMessage("a sandy magnetic needle", /*german*/"eine sandige Magnetnadel", /*french*/"une aimant sableux")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_COMPASS.obscure.1")});
                                                          // /*spanish*/un imán arenoso
 
-    hintTextTable[RHT_SHADOW_TEMPLE_COMPASS] = HintText(CustomMessage("the Shadow Temple Compass", /*german*/"der Kompaß des Schattentempels", /*french*/"la boussole du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_COMPASS.clear"),
                                                         // /*spanish*/la brújula del Templo de las Sombras
                                                         {
-                                                        CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_COMPASS.ambiguous.0")
                                                          // /*spanish*/una brújula
                                                         }, {
-                                                        CustomMessage("a creepy treasure tracker", /*german*/"ein gruseliger Schatzfinder", /*french*/"un cherche-trésor sinistre"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_COMPASS.obscure.0"),
                                                          // /*spanish*/un zahorí siniestra
-                                                        CustomMessage("a creepy magnetic needle", /*german*/"eine gruselige Magnetnadel", /*french*/"une aimant sinistre")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_COMPASS.obscure.1")});
                                                          // /*spanish*/un imán siniestra
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß vom Grund des Brunnens", /*french*/"la boussole du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_COMPASS.clear"),
                                                              // /*spanish*/la brújula del Fondo del pozo
                                                              {
-                                                             CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_COMPASS.ambiguous.0")
                                                               // /*spanish*/una brújula
                                                              }, {
-                                                             CustomMessage("a dank treasure tracker", /*german*/"ein schimmeliger Schatzfinder", /*french*/"un cherche-trésor moisi"),
+                                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_COMPASS.obscure.0"),
                                                               // /*spanish*/un zahorí mohoso
-                                                             CustomMessage("a dank magnetic needle", /*german*/"eine schimmelige Magnetnadel", /*french*/"une aimant moisi")});
+                                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_COMPASS.obscure.1")});
                                                               // /*spanish*/un imán mohoso
 
-    hintTextTable[RHT_ICE_CAVERN_COMPASS] = HintText(CustomMessage("the Ice Cavern Compass", /*german*/"der Kompaß der Eishöhle", /*french*/"la Boussole de la Caverne Polaire"),
+    hintTextTable[RHT_ICE_CAVERN_COMPASS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_CAVERN_COMPASS.clear"),
                                                      // /*spanish*/la brújula de la Caverna de hielo
                                                      {
-                                                     CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_CAVERN_COMPASS.ambiguous.0")
                                                       // /*spanish*/una brújula
                                                      }, {
-                                                     CustomMessage("a polar treasure tracker", /*german*/"ein polarer Schatzfinder", /*french*/"un cherche-trésor polaire"),
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_CAVERN_COMPASS.obscure.0"),
                                                       // /*spanish*/un zahorí polar
-                                                     CustomMessage("a polar magnetic needle", /*german*/"eine polare Magnetnadel", /*french*/"une aimant polaire")});
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_CAVERN_COMPASS.obscure.1")});
                                                       // /*spanish*/un imán polar
 
-    hintTextTable[RHT_FOREST_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Forest Temple Boss Key", /*german*/"der Master-Schlüssel des Waldtempels", /*french*/"la Clé d'Or du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_BOSS_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_BOSS_KEY.clear"),
                                                          // /*spanish*/la gran llave del Templo del Bosque
                                                          {
-                                                         CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_BOSS_KEY.ambiguous.0")
                                                           // /*spanish*/una gran llave
                                                          }, {
-                                                         CustomMessage("a sylvan master of unlocking", /*german*/"ein waldiger Meister der Entriegelung", /*french*/"un anti-grosse porte sylvestre"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_BOSS_KEY.obscure.0"),
                                                           // /*spanish*/la clave enselvada de un jefe
-                                                         CustomMessage("a sylvan dungeon's master pass", /*german*/"ein waldiger Labyrinth-Meisterpass", /*french*/"une clé maléfique sylvestre")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_BOSS_KEY.obscure.1")});
                                                           // /*spanish*/el pase maestro enselvado
 
-    hintTextTable[RHT_FIRE_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Fire Temple Boss Key", /*german*/"der Master-Schlüssel des Feuertempels", /*french*/"la Clé d'Or du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_BOSS_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_BOSS_KEY.clear"),
                                                        // /*spanish*/la gran llave del Templo del Fuego
                                                        {
-                                                       CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_BOSS_KEY.ambiguous.0")
                                                         // /*spanish*/una gran llave
                                                        }, {
-                                                       CustomMessage("a molten master of unlocking", /*german*/"ein geschmolzener Meister der Entriegelung", /*french*/"un anti-grosse porte fondu"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_BOSS_KEY.obscure.0"),
                                                         // /*spanish*/la clave fundido de un jefe
-                                                       CustomMessage("a molten dungeon's master pass", /*german*/"ein geschmolzener Labyrinth-Meisterpass", /*french*/"une clé maléfique fondu")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_BOSS_KEY.obscure.1")});
                                                         // /*spanish*/el pase maestro fundido
 
-    hintTextTable[RHT_WATER_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Water Temple Boss Key", /*german*/"der Master-Schlüssel des Wassertempels", /*french*/"la Clé d'Or du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_BOSS_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_BOSS_KEY.clear"),
                                                         // /*spanish*/la gran llave del Templo del Agua
                                                         {
-                                                        CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_BOSS_KEY.ambiguous.0")
                                                          // /*spanish*/una gran llave
                                                         }, {
-                                                        CustomMessage("a wet master of unlocking", /*german*/"ein nasser Meister der Entriegelung", /*french*/"un anti-grosse porte humide"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_BOSS_KEY.obscure.0"),
                                                          // /*spanish*/la clave mojado de un jefe
-                                                        CustomMessage("a wet dungeon's master pass", /*german*/"ein nasser Labyrinth-Meisterpass", /*french*/"une clé maléfique humide")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_BOSS_KEY.obscure.1")});
                                                          // /*spanish*/el pase maestro mojado
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Spirit Temple Boss Key", /*german*/"der Master-Schlüssel des Geistertempels", /*french*/"la Clé d'Or du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_BOSS_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_BOSS_KEY.clear"),
                                                          // /*spanish*/la gran llave del Templo del Espíritu
                                                          {
-                                                         CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_BOSS_KEY.ambiguous.0")
                                                           // /*spanish*/una gran llave
                                                          }, {
-                                                         CustomMessage("a sandy master of unlocking", /*german*/"ein sandiger Meister der Entriegelung", /*french*/"un anti-grosse porte sableux"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_BOSS_KEY.obscure.0"),
                                                           // /*spanish*/la clave arenoso de un jefe
-                                                         CustomMessage("a sandy dungeon's master pass", /*german*/"ein sandiger Labyrinth-Meisterpass", /*french*/"une clé maléfique sableux")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_BOSS_KEY.obscure.1")});
                                                           // /*spanish*/el pase maestro arenoso
 
-    hintTextTable[RHT_SHADOW_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Shadow Temple Boss Key", /*german*/"der Master-Schlüssel des Schattentempels", /*french*/"la Clé d'Or du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_BOSS_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_BOSS_KEY.clear"),
                                                          // /*spanish*/la gran llave del Templo de las Sombras
                                                          {
-                                                         CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_BOSS_KEY.ambiguous.0")
                                                           // /*spanish*/una gran llave
                                                          }, {
-                                                         CustomMessage("a creepy master of unlocking", /*german*/"ein gruseliger Meister der Entriegelung", /*french*/"un anti-grosse porte sinistre"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_BOSS_KEY.obscure.0"),
                                                           // /*spanish*/la clave siniestra de un jefe
-                                                         CustomMessage("a creepy dungeon's master pass", /*german*/"ein gruseliger Labyrinth-Meisterpass", /*french*/"une clé maléfique sinistre")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_BOSS_KEY.obscure.1")});
                                                           // /*spanish*/el pase maestro siniestra
 
-    hintTextTable[RHT_GANONS_CASTLE_BOSS_KEY] = HintText(CustomMessage("the Ganon's Castle Boss Key", /*german*/"der Master-Schlüssel von Ganons Schloß", /*french*/"la Clé d'Or du Château de Ganon"),
+    hintTextTable[RHT_GANONS_CASTLE_BOSS_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_BOSS_KEY.clear"),
                                                          // /*spanish*/la gran llave del Castillo de Ganon
                                                          {
-                                                         CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_BOSS_KEY.ambiguous.0")
                                                           // /*spanish*/una gran llave
                                                          }, {
-                                                         CustomMessage("a final master of unlocking", /*german*/"ein finaler Meister der Entriegelung", /*french*/"un anti-grosse porte final"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_BOSS_KEY.obscure.0"),
                                                           // /*spanish*/la clave final de un jefe
-                                                         CustomMessage("a final dungeon's master pass", /*german*/"ein finaler Labyrinth-Meisterpass", /*french*/"une clé maléfique final")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_BOSS_KEY.obscure.1")});
                                                           // /*spanish*/el pase maestro final
 
-    hintTextTable[RHT_FOREST_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Forest Temple Small Key", /*german*/"ein kleiner Schlüssel des Waldtempels", /*french*/"une petite clé du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_SMALL_KEY.clear"),
                                                           // /*spanish*/una llave pequeña del Templo del Bosque
                                                           {
-                                                          CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_SMALL_KEY.ambiguous.0")
                                                            // /*spanish*/una llave pequeña
                                                           }, {
-                                                          CustomMessage("a sylvan tool for unlocking", /*german*/"ein waldiges Werkzeug zur Entriegelung", /*french*/"un anti-porte sylvestre"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_SMALL_KEY.obscure.0"),
                                                            // /*spanish*/una clave de una entrada enselvada
-                                                          CustomMessage("a sylvan dungeon pass", /*german*/"ein waldiger Labyrinth-Pass", /*french*/"le rêve sylvestre d'un prisonnier"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_SMALL_KEY.obscure.1"),
                                                            // /*spanish*/un pase de una mazmorra enselvada
-                                                          CustomMessage("a sylvan lock remover", /*german*/"ein waldiger Schlossentferner", /*french*/"un efface-serrure sylvestre"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_SMALL_KEY.obscure.2"),
                                                            // /*spanish*/un destructor de cerraduras enselvada
-                                                          CustomMessage("a sylvan lockpick", /*german*/"ein waldiger Dietrich", /*french*/"un crochet à porte sylvestre")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_SMALL_KEY.obscure.3")});
                                                            // /*spanish*/una apertura portentosa enselvada
 
-    hintTextTable[RHT_FIRE_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Fire Temple Small Key", /*german*/"ein kleiner Schlüssel des Feuertempels", /*french*/"une petite clé du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_SMALL_KEY.clear"),
                                                         // /*spanish*/una llave pequeña del Templo del Fuego
                                                         {
-                                                        CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_SMALL_KEY.ambiguous.0")
                                                          // /*spanish*/una llave pequeña
                                                         }, {
-                                                        CustomMessage("a molten tool for unlocking", /*german*/"ein geschmolzenes Werkzeug zur Entriegelung", /*french*/"un anti-porte fondu"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_SMALL_KEY.obscure.0"),
                                                          // /*spanish*/una clave de una entrada fundida
-                                                        CustomMessage("a molten dungeon pass", /*german*/"ein geschmolzener Labyrinth-Pass", /*french*/"le rêve fondu d'un prisonnier"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_SMALL_KEY.obscure.1"),
                                                          // /*spanish*/un pase de una mazmorra fundida
-                                                        CustomMessage("a molten lock remover", /*german*/"ein geschmolzener Schlossentferner", /*french*/"un efface-serrure fondu"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_SMALL_KEY.obscure.2"),
                                                          // /*spanish*/un destructor de cerraduras fundida
-                                                        CustomMessage("a molten lockpick", /*german*/"ein geschmolzener Dietrich", /*french*/"un crochet à porte fondu")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_SMALL_KEY.obscure.3")});
                                                          // /*spanish*/una apertura portentosa fundida
 
-    hintTextTable[RHT_WATER_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Water Temple Small Key", /*german*/"ein kleiner Schlüssel des Wassertempels", /*french*/"une petite clé du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_SMALL_KEY.clear"),
                                                          // /*spanish*/una llave pequeña del Templo del Agua
                                                          {
-                                                         CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_SMALL_KEY.ambiguous.0")
                                                           // /*spanish*/una llave pequeña
                                                          }, {
-                                                         CustomMessage("a wet tool for unlocking", /*german*/"ein nasses Werkzeug zur Entriegelung", /*french*/"un anti-porte humide"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_SMALL_KEY.obscure.0"),
                                                           // /*spanish*/una clave de una entrada mojada
-                                                         CustomMessage("a wet dungeon pass", /*german*/"ein nasser Labyrinth-Pass", /*french*/"le rêve humide d'un prisonnier"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_SMALL_KEY.obscure.1"),
                                                           // /*spanish*/un pase de una mazmorra mojada
-                                                         CustomMessage("a wet lock remover", /*german*/"ein nasser Schlossentferner", /*french*/"un efface-serrure humide"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_SMALL_KEY.obscure.2"),
                                                           // /*spanish*/un destructor de cerraduras mojada
-                                                         CustomMessage("a wet lockpick", /*german*/"ein nasser Dietrich", /*french*/"un crochet à porte humide")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_SMALL_KEY.obscure.3")});
                                                           // /*spanish*/una apertura portentosa mojada
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Spirit Temple Small Key", /*german*/"ein kleiner Schlüssel des Geistertempels", /*french*/"une petite clé du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_SMALL_KEY.clear"),
                                                           // /*spanish*/una llave pequeña del Templo del Espíritu
                                                           {
-                                                          CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_SMALL_KEY.ambiguous.0")
                                                            // /*spanish*/una llave pequeña
                                                           }, {
-                                                          CustomMessage("a sandy tool for unlocking", /*german*/"ein sandiges Werkzeug zur Entriegelung", /*french*/"un anti-porte sableux"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_SMALL_KEY.obscure.0"),
                                                            // /*spanish*/una clave de una entrada arenosa
-                                                          CustomMessage("a sandy dungeon pass", /*german*/"ein sandiger Labyrinth-Pass", /*french*/"le rêve sableux d'un prisonnier"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_SMALL_KEY.obscure.1"),
                                                            // /*spanish*/un pase de una mazmorra arenosa
-                                                          CustomMessage("a sandy lock remover", /*german*/"ein sandiger Schlossentferner", /*french*/"un efface-serrure sableux"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_SMALL_KEY.obscure.2"),
                                                            // /*spanish*/un destructor de cerraduras arenosa
-                                                          CustomMessage("a sandy lockpick", /*german*/"ein sandiger Dietrich", /*french*/"un crochet à porte sableux")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_SMALL_KEY.obscure.3")});
                                                            // /*spanish*/una apertura portentosa arenosa
 
-    hintTextTable[RHT_SHADOW_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Shadow Temple Small Key", /*german*/"ein kleiner Schlüssel des Schattentempels", /*french*/"une petite clé du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_SMALL_KEY.clear"),
                                                           // /*spanish*/una llave pequeña del Templo de las Sombras
                                                           {
-                                                          CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_SMALL_KEY.ambiguous.0")
                                                            // /*spanish*/una llave pequeña
                                                           }, {
-                                                          CustomMessage("a creepy tool for unlocking", /*german*/"ein gruseliges Werkzeug zur Entriegelung", /*french*/"un anti-porte sinistre"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_SMALL_KEY.obscure.0"),
                                                            // /*spanish*/una clave de una entrada siniestra:a
-                                                          CustomMessage("a creepy dungeon pass", /*german*/"ein gruseliger Labyrinth-Pass", /*french*/"le rêve sinistre d'un prisonnier"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_SMALL_KEY.obscure.1"),
                                                            // /*spanish*/un pase de una mazmorra siniestra:a
-                                                          CustomMessage("a creepy lock remover", /*german*/"ein gruseliger Schlossentferner", /*french*/"un efface-serrure sinistre"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_SMALL_KEY.obscure.2"),
                                                            // /*spanish*/un destructor de cerraduras siniestra:a
-                                                          CustomMessage("a creepy lockpick", /*german*/"ein gruseliger Dietrich", /*french*/"un crochet à porte sinistre")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_SMALL_KEY.obscure.3")});
                                                            // /*spanish*/una apertura portentosa siniestra:a
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_SMALL_KEY] = HintText(CustomMessage("a Gerudo Training Ground Small Key", /*german*/"ein kleiner Schlüssel der Gerudo-Trainingsarena", /*french*/"une petite clé du Gymnase Gerudo"),
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_SMALL_KEY.clear"),
                                                                     // /*spanish*/una llave pequeña del Centro de Instrucción Gerudo
                                                                     {
-                                                                    CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_SMALL_KEY.ambiguous.0")
                                                                      // /*spanish*/una llave pequeña
                                                                     }, {
-                                                                    CustomMessage("a labyrinthian tool for unlocking", /*german*/"ein verwirrendes Werkzeug zur Entriegelung", /*french*/"un anti-porte labyrinthique"),
+                                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_SMALL_KEY.obscure.0"),
                                                                      // /*spanish*/una clave de una entrada laberíntica
-                                                                    CustomMessage("a labyrinthian dungeon pass", /*german*/"ein verwirrender Labyrinth-Pass", /*french*/"le rêve labyrinthique d'un prisonnier"),
+                                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_SMALL_KEY.obscure.1"),
                                                                      // /*spanish*/un pase de una mazmorra laberíntica
-                                                                    CustomMessage("a labyrinthian lock remover", /*german*/"ein verwirrender Schlossentferner", /*french*/"un efface-serrure labyrinthique"),
+                                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_SMALL_KEY.obscure.2"),
                                                                      // /*spanish*/un destructor de cerraduras laberíntica
-                                                                    CustomMessage("a labyrinthian lockpick", /*german*/"ein verwirrender Dietrich", /*french*/"un crochet à porte labyrinthique")});
+                                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_SMALL_KEY.obscure.3")});
                                                                      // /*spanish*/una apertura portentosa laberíntica
 
-    hintTextTable[RHT_GERUDO_FORTRESS_SMALL_KEY] = HintText(CustomMessage("a Gerudo Fortress Small Key", /*german*/"ein kleiner Schlüssel des Diebesverstecks", /*french*/"une petite clé de la Repaire des Voleurs"),
+    hintTextTable[RHT_GERUDO_FORTRESS_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_SMALL_KEY.clear"),
                                                             // /*spanish*/una llave pequeña de la Fortaleza Gerudo
                                                             {
-                                                            CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_SMALL_KEY.ambiguous.0")
                                                              // /*spanish*/una llave pequeña
                                                             }, {
-                                                            CustomMessage("an imprisoned tool for unlocking", /*german*/"ein gefangenes Werkzeug zur Entriegelung", /*french*/"un anti-porte emprisonné"),
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_SMALL_KEY.obscure.0"),
                                                              // /*spanish*/una clave de una entrada encarcelada
-                                                            CustomMessage("an imprisoned dungeon pass", /*german*/"ein gefangener Labyrinth-Pass", /*french*/"le rêve emprisonné d'un prisonnier"),
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_SMALL_KEY.obscure.1"),
                                                              // /*spanish*/un pase de una mazmorra encarcelada
-                                                            CustomMessage("an imprisoned lock remover", /*german*/"ein gefangener Schlossentferner", /*french*/"un efface-serrure emprisonné"),
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_SMALL_KEY.obscure.2"),
                                                              // /*spanish*/un destructor de cerraduras encarcelada
-                                                            CustomMessage("an imprisoned lockpick", /*german*/"ein gefangener Dietrich", /*french*/"un crochet à porte emprisonné")});
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_SMALL_KEY.obscure.3")});
                                                              // /*spanish*/una apertura portentosa encarcelada
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_SMALL_KEY] = HintText(CustomMessage("a Bottom of the Well Small Key", /*german*/"ein kleiner Schlüssel vom Grund des Brunnens", /*french*/"une petite clé du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_SMALL_KEY.clear"),
                                                                // /*spanish*/una llave pequeña del Fondo del pozo
                                                                {
-                                                               CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                               CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_SMALL_KEY.ambiguous.0")
                                                                 // /*spanish*/una llave pequeña
                                                                }, {
-                                                               CustomMessage("a moldy tool for unlocking", /*german*/"ein schimmeliges Werkzeug zur Entriegelung", /*french*/"un anti-porte moisi"),
+                                                               CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_SMALL_KEY.obscure.0"),
                                                                 // /*spanish*/una clave de una entrada mohosa
-                                                               CustomMessage("a moldy dungeon pass", /*german*/"ein schimmeliger Labyrinth-Pass", /*french*/"le rêve moisi d'un prisonnier"),
+                                                               CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_SMALL_KEY.obscure.1"),
                                                                 // /*spanish*/un pase de una mazmorra mohosa
-                                                               CustomMessage("a moldy lock remover", /*german*/"ein schimmeliger Schlossentferner", /*french*/"un efface-serrure moisi"),
+                                                               CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_SMALL_KEY.obscure.2"),
                                                                 // /*spanish*/un destructor de cerraduras mohosa
-                                                               CustomMessage("a moldy lockpick", /*german*/"ein schimmeliger Dietrich", /*french*/"un crochet à porte moisi")});
+                                                               CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_SMALL_KEY.obscure.3")});
                                                                 // /*spanish*/una apertura portentosa mohosa
 
-    hintTextTable[RHT_GANONS_CASTLE_SMALL_KEY] = HintText(CustomMessage("a Ganon's Castle Small Key", /*german*/"ein kleiner Schlüssel von Ganons Schloß", /*french*/"une petite clé du Château de Ganon"),
+    hintTextTable[RHT_GANONS_CASTLE_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_SMALL_KEY.clear"),
                                                           // /*spanish*/una llave pequeña del Castillo de Ganon
                                                           {
-                                                          CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_SMALL_KEY.ambiguous.0")
                                                            // /*spanish*/una llave pequeña
                                                           }, {
-                                                          CustomMessage("a final tool for unlocking", /*german*/"ein finales Werkzeug zur Entriegelung", /*french*/"un anti-porte final"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_SMALL_KEY.obscure.0"),
                                                            // /*spanish*/una clave de una entrada final
-                                                          CustomMessage("a final dungeon pass", /*german*/"ein finaler Labyrinth-Pass", /*french*/"le rêve final d'un prisonnier"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_SMALL_KEY.obscure.1"),
                                                            // /*spanish*/un pase de una mazmorra final
-                                                          CustomMessage("a final lock remover", /*german*/"ein finaler Schlossentferner", /*french*/"un efface-serrure final"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_SMALL_KEY.obscure.2"),
                                                            // /*spanish*/un destructor de cerraduras final
-                                                          CustomMessage("a final lockpick", /*german*/"ein finaler Dietrich", /*french*/"un crochet à porte final")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_SMALL_KEY.obscure.3")});
                                                            // /*spanish*/una apertura portentosa final
 
-    hintTextTable[RHT_OVERWORLD_KEY] = HintText(CustomMessage("an Overworld Key", /*german*/"ein Schlüssel der Oberwelt", /*french*/"une clé de l'Overworld"),
+    hintTextTable[RHT_OVERWORLD_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_OVERWORLD_KEY.clear"),
                                                 // /*spanish*/una llave del mundo exterior
                                                 {
-                                                CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_OVERWORLD_KEY.ambiguous.0")
                                                  // /*spanish*/una llave
                                                 }, {
-                                                CustomMessage("a key to the world", /*german*/"ein Schlüssel zur Welt", /*french*/"une clé du monde"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_OVERWORLD_KEY.obscure.0"),
                                                  // /*spanish*/una llave al mundo
-                                                CustomMessage("a key to the kingdom", /*german*/"ein Schlüssel zum Königreich", /*french*/"une clé du royaume"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_OVERWORLD_KEY.obscure.1"),
                                                  // /*spanish*/una llave al reino
-                                                CustomMessage("a key to the universe", /*german*/"ein Schlüssel zum Universum", /*french*/"une clé de l'univers")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_OVERWORLD_KEY.obscure.2")});
                                                  // /*spanish*/una llave al universo
 
-    hintTextTable[RHT_FOREST_TEMPLE_KEY_RING] = HintText(CustomMessage("a Forest Temple Keyring", /*german*/"das Schlüsselbund des Waldtempels", /*french*/"un trousseau de clés du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_KEY_RING.clear"),
                                                          // /*spanish*/un llavero del Templo del Bosque
                                                          {
-                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_KEY_RING.ambiguous.0")
                                                           // /*spanish*/un llavero
                                                          }, {
-                                                         CustomMessage("a sylvan toolbox for unlocking", /*german*/"eine waldige Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes sylvestres"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_KEY_RING.obscure.0"),
                                                           // /*spanish*/un conjunto silvestre de cerrajero
-                                                         CustomMessage("a sylvan dungeon season pass", /*german*/"ein waldiger Labyrinth-Season-Pass", /*french*/"les rêves sylvestres d'un prisonnier"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_KEY_RING.obscure.1"),
                                                           // /*spanish*/un pase vip de mazmorras silvestre
-                                                         CustomMessage("a sylvan jingling ring", /*german*/"ein waldiger Multifunktionsschlüssel", /*french*/"des efface-serrures sylvestres"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_KEY_RING.obscure.2"),
                                                           // /*spanish*/una cadena multiusos silvestre
-                                                         CustomMessage("a sylvan skeleton key", /*german*/"ein waldiger Skelettschlüssel", /*french*/"des crochets à porte sylvestres")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_TEMPLE_KEY_RING.obscure.3")});
                                                           // /*spanish*/un anillo silvestre contra cerrojos
 
-    hintTextTable[RHT_FIRE_TEMPLE_KEY_RING] = HintText(CustomMessage("a Fire Temple Keyring", /*german*/"das Schlüsselbund des Feuertempels", /*french*/"un trousseau de clés du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_KEY_RING.clear"),
                                                        // /*spanish*/un llavero del Templo del Fuego
                                                        {
-                                                       CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_KEY_RING.ambiguous.0")
                                                         // /*spanish*/un llavero
                                                        }, {
-                                                       CustomMessage("a molten toolbox for unlocking", /*german*/"eine geschmolzene Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes fondus"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_KEY_RING.obscure.0"),
                                                         // /*spanish*/un conjunto fundido de cerrajero
-                                                       CustomMessage("a molten dungeon season pass", /*german*/"ein geschmolzener Labyrinth-Season-Pass", /*french*/"les rêves fondus d'un prisonnier"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_KEY_RING.obscure.1"),
                                                         // /*spanish*/un pase vip de mazmorras fundido
-                                                       CustomMessage("a molten jingling ring", /*german*/"ein geschmolzener Multifunktionsschlüssel", /*french*/"des efface-serrures fondus"),
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_KEY_RING.obscure.2"),
                                                         // /*spanish*/una cadena multiusos fundida
-                                                       CustomMessage("a molten skeleton key", /*german*/"ein geschmolzener Skelettschlüssel", /*french*/"des crochets à porte fondus")});
+                                                       CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_TEMPLE_KEY_RING.obscure.3")});
                                                         // /*spanish*/un anillo fundido contra cerrojos
 
-    hintTextTable[RHT_WATER_TEMPLE_KEY_RING] = HintText(CustomMessage("a Water Temple Keyring", /*german*/"das Schlüsselbund des Wassertempels", /*french*/"un trousseau de clés du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_KEY_RING.clear"),
                                                         // /*spanish*/un llavero del Templo del Agua
                                                         {
-                                                        CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_KEY_RING.ambiguous.0")
                                                          // /*spanish*/un llavero
                                                         }, {
-                                                        CustomMessage("a wet toolbox for unlocking", /*german*/"eine nasse Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes humides"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_KEY_RING.obscure.0"),
                                                          // /*spanish*/un conjunto abisal de cerrajero
-                                                        CustomMessage("a wet dungeon season pass", /*german*/"ein nasser Labyrinth-Season-Pass", /*french*/"les rêves humides d'un prisonnier"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_KEY_RING.obscure.1"),
                                                          // /*spanish*/un pase vip de mazmorras abisal
-                                                        CustomMessage("a wet jingling ring", /*german*/"ein nasser Multifunktionsschlüssel", /*french*/"des efface-serrures humides"),
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_KEY_RING.obscure.2"),
                                                          // /*spanish*/una cadena multiusos abisal
-                                                        CustomMessage("a wet skeleton key", /*german*/"ein nasser Skelettschlüssel", /*french*/"des crochets à porte humides")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_TEMPLE_KEY_RING.obscure.3")});
                                                          // /*spanish*/un anillo abisal contra cerrojos
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_KEY_RING] = HintText(CustomMessage("a Spirit Temple Keyring", /*german*/"das Schlüsselbund des Geistertempels", /*french*/"un trousseau de clés du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_KEY_RING.clear"),
                                                          // /*spanish*/un llavero del Templo del Espíritu
                                                          {
-                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_KEY_RING.ambiguous.0")
                                                           // /*spanish*/un llavero
                                                          }, {
-                                                         CustomMessage("a sandy toolbox for unlocking", /*german*/"eine sandige Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes sableux"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_KEY_RING.obscure.0"),
                                                           // /*spanish*/un conjunto arenoso de cerrajero
-                                                         CustomMessage("a sandy dungeon season pass", /*german*/"ein sandiger Labyrinth-Season-Pass", /*french*/"les rêves sableux d'un prisonnier"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_KEY_RING.obscure.1"),
                                                           // /*spanish*/un pase vip de mazmorras arenoso
-                                                         CustomMessage("a sandy jingling ring", /*german*/"ein sandiger Multifunktionsschlüssel", /*french*/"des efface-serrures sableux"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_KEY_RING.obscure.2"),
                                                           // /*spanish*/una cadena multiusos arenosa
-                                                         CustomMessage("a sandy skeleton key", /*german*/"ein sandiger Skelettschlüssel", /*french*/"des crochets à porte sableux")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_TEMPLE_KEY_RING.obscure.3")});
                                                           // /*spanish*/un anillo arenoso contra cerrojos
 
-    hintTextTable[RHT_SHADOW_TEMPLE_KEY_RING] = HintText(CustomMessage("a Shadow Temple Keyring", /*german*/"das Schlüsselbund des Schattentempels", /*french*/"un trousseau de clés du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_KEY_RING.clear"),
                                                          // /*spanish*/un llavero del Templo de las Sombras
                                                          {
-                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_KEY_RING.ambiguous.0")
                                                           // /*spanish*/un llavero
                                                          }, {
-                                                         CustomMessage("a creepy toolbox for unlocking", /*german*/"eine gruselige Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes sinistres"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_KEY_RING.obscure.0"),
                                                           // /*spanish*/un conjunto tenebroso de cerrajero
-                                                         CustomMessage("a creepy dungeon season pass", /*german*/"ein gruseliger Labyrinth-Season-Pass", /*french*/"les rêves sinistres d'un prisonnier"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_KEY_RING.obscure.1"),
                                                           // /*spanish*/un pase vip de mazmorras tenebroso
-                                                         CustomMessage("a creepy jingling ring", /*german*/"ein gruseliger Multifunktionsschlüssel", /*french*/"des efface-serrures sinistres"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_KEY_RING.obscure.2"),
                                                           // /*spanish*/una cadena multiusos tenebrosa
-                                                         CustomMessage("a creepy skeleton key", /*german*/"ein gruseliger Skelettschlüssel", /*french*/"des crochets à porte sinistres")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_TEMPLE_KEY_RING.obscure.3")});
                                                           // /*spanish*/un anillo tenebroso contra cerrojos
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Keyring", /*german*/"das Schlüsselbund der Gerudo-Trainingsarena", /*french*/"un trousseau de clés du Gymnase Gerudo"),
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_KEY_RING.clear"),
                                                                    // /*spanish*/un llavero del Centro de Instrucción Gerudo
                                                                    {
-                                                                   CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_KEY_RING.ambiguous.0")
                                                                     // /*spanish*/un llavero
                                                                    }, {
-                                                                   CustomMessage("a labyrinthian toolbox for unlocking", /*german*/"eine verwirrende Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes labyrinthiques"),
+                                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_KEY_RING.obscure.0"),
                                                                     // /*spanish*/un conjunto laberíntico de cerrajero
-                                                                   CustomMessage("a labyrinthian dungeon season pass", /*german*/"ein verwirrender Labyrinth-Season-Pass", /*french*/"les rêves labyrinthiques d'un prisonnier"),
+                                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_KEY_RING.obscure.1"),
                                                                     // /*spanish*/un pase vip de mazmorras laberíntico
-                                                                   CustomMessage("a labyrinthian jingling ring", /*german*/"ein verwirrender Multifunktionsschlüssel", /*french*/"des efface-serrures labyrinthiques"),
+                                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_KEY_RING.obscure.2"),
                                                                     // /*spanish*/una cadena multiusos laberíntica
-                                                                   CustomMessage("a labyrinthian skeleton key", /*german*/"ein verwirrender Skelettschlüssel", /*french*/"des crochets à porte labyrinthiques")});
+                                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_TRAINING_GROUND_KEY_RING.obscure.3")});
                                                                     // /*spanish*/un anillo laberíntico contra cerrojos
 
-    hintTextTable[RHT_GERUDO_FORTRESS_KEY_RING] = HintText(CustomMessage("a Gerudo Fortress Keyring", /*german*/"das Schlüsselbund des Diebesverstecks", /*french*/"un trousseau de clés de la Repaire des Voleurs"),
+    hintTextTable[RHT_GERUDO_FORTRESS_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_KEY_RING.clear"),
                                                            // /*spanish*/un llavero de la Fortaleza Gerudo
                                                            {
-                                                           CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_KEY_RING.ambiguous.0")
                                                             // /*spanish*/un llavero
                                                            }, {
-                                                           CustomMessage("an imprisoned toolbox for unlocking", /*german*/"eine gefangene Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes emprisonnés"),
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_KEY_RING.obscure.0"),
                                                             // /*spanish*/un conjunto enjaulado de cerrajero
-                                                           CustomMessage("an imprisoned dungeon season pass", /*german*/"ein gefangener Labyrinth-Season-Pass", /*french*/"les rêves emprisonnés d'un prisonnier"),
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_KEY_RING.obscure.1"),
                                                             // /*spanish*/un pase vip de una mazmorra enjaulado
-                                                           CustomMessage("an imprisoned jingling ring", /*german*/"ein gefangener Multifunktionsschlüssel", /*french*/"des efface-serrures emprisonnés"),
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_KEY_RING.obscure.2"),
                                                             // /*spanish*/una cadena multiusos enjaulada
-                                                           CustomMessage("an imprisoned skeleton key", /*german*/"ein gefangener Skelettschlüssel", /*french*/"des crochets à porte emprisonnés")});
+                                                           CustomMessages::CreateMessage("randomizer.hints.RHT_GERUDO_FORTRESS_KEY_RING.obscure.3")});
                                                             // /*spanish*/un anillo enjaulado contra cerrojos
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Keyring", /*german*/"das Schlüsselbund vom Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_KEY_RING.clear"),
                                                               // /*spanish*/un llavero del Fondo del pozo
                                                               {
-                                                              CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                              CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_KEY_RING.ambiguous.0")
                                                                // /*spanish*/un llavero
                                                               }, {
-                                                              CustomMessage("a moldy toolbox for unlocking", /*german*/"eine schimmelige Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes moisis"),
+                                                              CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_KEY_RING.obscure.0"),
                                                                // /*spanish*/un conjunto subterráneo de cerrajero
-                                                              CustomMessage("a moldy dungeon season pass", /*german*/"ein schimmeliger Labyrinth-Season-Pass", /*french*/"les rêves moisis d'un prisonnier"),
+                                                              CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_KEY_RING.obscure.1"),
                                                                // /*spanish*/un pase vip de una mazmorra subterráneo
-                                                              CustomMessage("a moldy jingling ring", /*german*/"ein schimmeliger Multifunktionsschlüssel", /*french*/"des efface-serrures moisis"),
+                                                              CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_KEY_RING.obscure.2"),
                                                                // /*spanish*/una cadena multiusos subterránea
-                                                              CustomMessage("a moldy skeleton key", /*german*/"ein schimmeliger Skelettschlüssel", /*french*/"des crochets à porte moisis")});
+                                                              CustomMessages::CreateMessage("randomizer.hints.RHT_BOTTOM_OF_THE_WELL_KEY_RING.obscure.3")});
                                                                // /*spanish*/un anillo subterráneo contra cerrojos
 
-    hintTextTable[RHT_GANONS_CASTLE_KEY_RING] = HintText(CustomMessage("a Ganon's Castle Keyring", /*german*/"das Schlüsselbund von Ganons Schloß", /*french*/"un trousseau de clés du Château de Ganon"),
+    hintTextTable[RHT_GANONS_CASTLE_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_KEY_RING.clear"),
                                                          // /*spanish*/un llavero del Castillo de Ganon
                                                          {
-                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_KEY_RING.ambiguous.0")
                                                           // /*spanish*/un llavero
                                                          }, {
-                                                         CustomMessage("a final toolbox for unlocking", /*german*/"eine finale Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes finaux"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_KEY_RING.obscure.0"),
                                                           // /*spanish*/un conjunto decisivo de cerrajero
-                                                         CustomMessage("a final dungeon season pass", /*german*/"ein finaler Labyrinth-Season-Pass", /*french*/"les rêves finaux d'un prisonnier"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_KEY_RING.obscure.1"),
                                                           // /*spanish*/un pase vip de una mazmorra decisivo
-                                                         CustomMessage("a final jingling ring", /*german*/"ein finaler Multifunktionsschlüssel", /*french*/"des efface-serrures finaux"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_KEY_RING.obscure.2"),
                                                           // /*spanish*/una cadena multiusos decisiva
-                                                         CustomMessage("a final skeleton key", /*german*/"ein finaler Skelettschlüssel", /*french*/"des crochets à porte finaux")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_GANONS_CASTLE_KEY_RING.obscure.3")});
                                                           // /*spanish*/un anillo decisivo multiusos
 
-    hintTextTable[RHT_TREASURE_GAME_SMALL_KEY] = HintText(CustomMessage("a Treasure Chest Shop Small Key", /*german*/"ein kleiner Schlüssel der Truhenlotterie", /*french*/"une petite clé de la chasse aux trésors"),
+    hintTextTable[RHT_TREASURE_GAME_SMALL_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_SMALL_KEY.clear"),
                                                           // /*spanish*/una llave pequeña del Cofre del Tesoro
                                                           {
-                                                          CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_SMALL_KEY.ambiguous.0")
                                                            // /*spanish*/una llave pequeña
                                                           }, {
-                                                          CustomMessage("a gambler's tool for unlocking", /*german*/"ein Zocker-Werkzeug zur Entriegelung", /*french*/"un anti-porte de parieur"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_SMALL_KEY.obscure.0"),
                                                            // /*spanish*/una clave de un juego de azar
-                                                          CustomMessage("a gambler's dungeon pass", /*german*/"ein Zocker-Labyrinth-Pass", /*french*/"le rêve d'un prisonnier parieur"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_SMALL_KEY.obscure.1"),
                                                            // /*spanish*/un pase de un juego de azar
-                                                          CustomMessage("a gambler's lock remover", /*german*/"ein Zocker-Schlossentferner", /*french*/"un efface-serrure de parieur"),
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_SMALL_KEY.obscure.2"),
                                                            // /*spanish*/un destructor de cerraduras del juego de azar
-                                                          CustomMessage("a gambler's lockpick", /*german*/"ein Zocker-Dietrich", /*french*/"un crochet à serrure de parieur")});
+                                                          CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_SMALL_KEY.obscure.3")});
                                                            // /*spanish*/una apertura portentosa del juego de azar
 
-     hintTextTable[RHT_TREASURE_GAME_KEY_RING] = HintText(CustomMessage("a Chest Game Keyring", /*german*/ "das Schlüsselbund der Truhenlotterie", /*french*/ "TRANSLATE THIS"),
+     hintTextTable[RHT_TREASURE_GAME_KEY_RING] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_KEY_RING.clear"),
                                                          {
-                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_KEY_RING.ambiguous.0")
                                                           // /*spanish*/un llavero
                                                          }, {
-                                                         CustomMessage("a gambler's toolbox for unlocking", /*german*/ "eine Zocker-Werkzeugkiste zur Entriegelung", /*french*/ "TRANSLATE THIS"),
-                                                         CustomMessage("a gambler's season pass", /*german*/ "ein Zocker-Labyrinth-Season-Pass", /*french*/ "TRANSLATE THIS"),
-                                                         CustomMessage("a gambler's jingling ring", /*german*/ "ein Zocker-Multifunktionsschlüssel", /*french*/ "TRANSLATE THIS"),
-                                                         CustomMessage("a gambler's skeleton key", /*german*/ "ein Zocker-Skelettschlüssel", /*french*/ "TRANSLATE THIS")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_KEY_RING.obscure.0"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_KEY_RING.obscure.1"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_KEY_RING.obscure.2"),
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_KEY_RING.obscure.3")});
 
-    hintTextTable[RHT_KOKIRI_EMERALD] = HintText(CustomMessage("the Kokiri Emerald", /*german*/"der Kokiri-Smaragd", /*french*/"l'Émeraude Kokiri"),
+    hintTextTable[RHT_KOKIRI_EMERALD] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_EMERALD.clear"),
                                                  // /*spanish*/la Esmeralda de los Kokiri
                                                  {
-                                                 CustomMessage("a spiritual stone", /*german*/"ein Heiliger Stein", /*french*/"une Pierre Ancestrale")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_EMERALD.ambiguous.0")
                                                   // /*spanish*/una piedra espiritual
                                                  }, {
-                                                 CustomMessage("a green stone", /*german*/"ein grüner Stein", /*french*/"une pierre verte"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_EMERALD.obscure.0"),
                                                   // /*spanish*/una piedra verde
-                                                 CustomMessage("a gift before death", /*german*/"ein Geschenk vor dem Tod", /*french*/"le dernier souffle d'un arbre")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_KOKIRI_EMERALD.obscure.1")});
                                                   // /*spanish*/un obsequio testamentario
 
-    hintTextTable[RHT_GORON_RUBY] = HintText(CustomMessage("the Goron Ruby", /*german*/"der Goronen-Rubin", /*french*/"le Rubis Goron"),
+    hintTextTable[RHT_GORON_RUBY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_RUBY.clear"),
                                              // /*spanish*/el Rubí de los Goron
                                              {
-                                             CustomMessage("a spiritual stone", /*german*/"ein Heiliger Stein", /*french*/"une Pierre Ancestrale")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_RUBY.ambiguous.0")
                                               // /*spanish*/una piedra espiritual
                                              }, {
-                                             CustomMessage("a red stone", /*german*/"ein roter Stein", /*french*/"une pierre rouge"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_RUBY.obscure.0"),
                                               // /*spanish*/una piedra carmín
-                                             CustomMessage("sworn brotherhood", /*german*/"die geschworene Bruderschaft", /*french*/"un serment de fraternité")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GORON_RUBY.obscure.1")});
                                               // /*spanish*/el juramento de hermanos de sangre
 
-    hintTextTable[RHT_ZORA_SAPPHIRE] = HintText(CustomMessage("the Zora Sapphire", /*german*/"der Zora-Saphir", /*french*/"le Saphir Zora"),
+    hintTextTable[RHT_ZORA_SAPPHIRE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_SAPPHIRE.clear"),
                                                 // /*spanish*/el Zafiro de los Zora
                                                 {
-                                                CustomMessage("a spiritual stone", /*german*/"ein Heiliger Stein", /*french*/"une Pierre Ancestrale")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_SAPPHIRE.ambiguous.0")
                                                  // /*spanish*/una piedra espiritual
                                                 }, {
-                                                CustomMessage("a blue stone", /*german*/"ein blauer Stein", /*french*/"une pierre bleue"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_SAPPHIRE.obscure.0"),
                                                  // /*spanish*/una piedra celeste
-                                                CustomMessage("an engagement gift", /*german*/"ein Verlobungsgeschenk", /*french*/"un cadeau de mariage")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_ZORA_SAPPHIRE.obscure.1")});
                                                  // /*spanish*/un regalo de compromiso
 
-    hintTextTable[RHT_FOREST_MEDALLION] = HintText(CustomMessage("the Forest Medallion", /*german*/"das Amulett des Waldes", /*french*/"le Médaillon de la Forêt"),
+    hintTextTable[RHT_FOREST_MEDALLION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_MEDALLION.clear"),
                                                    // /*spanish*/el Medallón del Bosque
                                                    {
-                                                   CustomMessage("a medallion", /*german*/"ein Amulett", /*french*/"un médaillon")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_MEDALLION.ambiguous.0")
                                                     // /*spanish*/un medallón
                                                    }, {
-                                                   CustomMessage("a green coin", /*german*/"eine grüne Münze", /*french*/"une pièce verte"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_MEDALLION.obscure.0"),
                                                     // /*spanish*/una moneda esmeralda
-                                                   CustomMessage("Saria's friendship", /*german*/"Salias Freundschaft", /*french*/"l'amitié de Saria")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_FOREST_MEDALLION.obscure.1")});
                                                     // /*spanish*/la amistad de Saria
 
-    hintTextTable[RHT_FIRE_MEDALLION] = HintText(CustomMessage("the Fire Medallion", /*german*/"das Amulett des Feuers", /*french*/"le Médaillon du Feu"),
+    hintTextTable[RHT_FIRE_MEDALLION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_MEDALLION.clear"),
                                                  // /*spanish*/el Medallón del Fuego
                                                  {
-                                                 CustomMessage("a medallion", /*german*/"ein Amulett", /*french*/"un médaillon")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_MEDALLION.ambiguous.0")
                                                   // /*spanish*/un medallón
                                                  }, {
-                                                 CustomMessage("a red coin", /*german*/"eine rote Münze", /*french*/"une pièce rouge"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_MEDALLION.obscure.0"),
                                                   // /*spanish*/una moneda rubí
-                                                 CustomMessage("Darunia's power", /*german*/"Darunias Kraft", /*french*/"la fraternité de Darunia")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_FIRE_MEDALLION.obscure.1")});
                                                   // /*spanish*/la fraternidad de Darunia
 
-    hintTextTable[RHT_WATER_MEDALLION] = HintText(CustomMessage("the Water Medallion", /*german*/"das Amulett des Wassers", /*french*/"le Médaillon de l'Eau"),
+    hintTextTable[RHT_WATER_MEDALLION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_MEDALLION.clear"),
                                                   // /*spanish*/el Medallón del Agua
                                                   {
-                                                  CustomMessage("a medallion", /*german*/"ein Amulett", /*french*/"un médaillon")
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_MEDALLION.ambiguous.0")
                                                    // /*spanish*/un medallón
                                                   }, {
-                                                  CustomMessage("a blue coin", /*german*/"eine blaue Münze", /*french*/"une pièce bleue"),
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_MEDALLION.obscure.0"),
                                                    // /*spanish*/una moneda zafiro
-                                                  CustomMessage("Ruto's power", /*german*/"Rutos Liebe", /*french*/"l'amour de Ruto")});
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_WATER_MEDALLION.obscure.1")});
                                                    // /*spanish*/el amor de Ruto
 
-    hintTextTable[RHT_SPIRIT_MEDALLION] = HintText(CustomMessage("the Spirit Medallion", /*german*/"das Amulett der Geister", /*french*/"le Médaillon de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_MEDALLION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_MEDALLION.clear"),
                                                    // /*spanish*/el Medallón del Espíritu
                                                    {
-                                                   CustomMessage("a medallion", /*german*/"ein Amulett", /*french*/"un médaillon")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_MEDALLION.ambiguous.0")
                                                     // /*spanish*/un medallón
                                                    }, {
-                                                   CustomMessage("an orange coin", /*german*/"eine orangene Münze", /*french*/"une pièce orange"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_MEDALLION.obscure.0"),
                                                     // /*spanish*/una moneda ámbar
-                                                   CustomMessage("Nabooru's power", /*german*/"Naborus Respekt", /*french*/"le respect de Nabooru")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_SPIRIT_MEDALLION.obscure.1")});
                                                     // /*spanish*/el respeto de Nabooru
 
-    hintTextTable[RHT_SHADOW_MEDALLION] = HintText(CustomMessage("the Shadow Medallion", /*german*/"das Amulett des Schattens", /*french*/"le Médaillon de l'Ombre"),
+    hintTextTable[RHT_SHADOW_MEDALLION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_MEDALLION.clear"),
                                                    // /*spanish*/el Medallón de la Sombra
                                                    {
-                                                   CustomMessage("a medallion", /*german*/"ein Amulett", /*french*/"un médaillon")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_MEDALLION.ambiguous.0")
                                                     // /*spanish*/un medallón
                                                    }, {
-                                                   CustomMessage("a purple coin", /*german*/"eine violette Münze", /*french*/"une pièce pourpre"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_MEDALLION.obscure.0"),
                                                     // /*spanish*/una moneda malva
-                                                   CustomMessage("Impa's power", /*german*/"Impas Vertrauen", /*french*/"la confiance d'Impa")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_SHADOW_MEDALLION.obscure.1")});
                                                     // /*spanish*/la confianza de Impa
 
-    hintTextTable[RHT_LIGHT_MEDALLION] = HintText(CustomMessage("the Light Medallion", /*german*/"das Amulett des Lichts", /*french*/"le Médaillon de la Lumière"),
+    hintTextTable[RHT_LIGHT_MEDALLION] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_MEDALLION.clear"),
                                                   // /*spanish*/el Medallón de la Luz
                                                   {
-                                                  CustomMessage("a medallion", /*german*/"ein Amulett", /*french*/"un médaillon")
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_MEDALLION.ambiguous.0")
                                                    // /*spanish*/un medallón
                                                   }, {
-                                                  CustomMessage("a yellow coin", /*german*/"eine gelbe Münze", /*french*/"une pièce jaune"),
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_MEDALLION.obscure.0"),
                                                    // /*spanish*/una moneda resplandeciente
-                                                  CustomMessage("Rauru's power", /*german*/"Raurus Glaube", /*french*/"la foi de Rauru")});
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_LIGHT_MEDALLION.obscure.1")});
                                                    // /*spanish*/la fe de Rauru
 
-    hintTextTable[RHT_RECOVERY_HEART] = HintText(CustomMessage("a Recovery Heart", /*german*/"ein Herz", /*french*/"un coeur de vie"),
+    hintTextTable[RHT_RECOVERY_HEART] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_RECOVERY_HEART.clear"),
                                                  // /*spanish*/un corazón
                                                  {
-                                                 CustomMessage("something heart-shaped", /*german*/"etwas Herzförmiges", /*french*/"une chose en forme de coeur")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_RECOVERY_HEART.ambiguous.0")
                                                   // /*spanish*/algo con forma de corazón
                                                  }, {
-                                                 CustomMessage("a free heal", /*german*/"eine kostenlose Heilung", /*french*/"un bec-au-bobo"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_RECOVERY_HEART.obscure.0"),
                                                   // /*spanish*/una cura de regalo
-                                                 CustomMessage("a hearty meal", /*german*/"ein herzhaftes Mahl", /*french*/"un petit amour"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_RECOVERY_HEART.obscure.1"),
                                                   // /*spanish*/una sanación romántica
-                                                 CustomMessage("a Band-Aid", /*german*/"ein Wundpflaster", /*french*/"un diachylon")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_RECOVERY_HEART.obscure.2")});
                                                   // /*spanish*/un corazoncito sanador
 
-    hintTextTable[RHT_GREEN_RUPEE] = HintText(CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert"),
+    hintTextTable[RHT_GREEN_RUPEE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GREEN_RUPEE.clear"),
                                               // /*spanish*/una rupia verde
                                               {
-                                              CustomMessage("some rupees", /*german*/"einige Rubine€", /*french*/"une quantité de rubis")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_GREEN_RUPEE.ambiguous.0")
                                                // /*spanish*/una cantidad de rupias
                                               }, {
-                                              CustomMessage("a unique coin", /*german*/"eine einzigartige Münze", /*french*/"un rubis bien mérité"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_GREEN_RUPEE.obscure.0"),
                                                // /*spanish*/una singular moneda
-                                              CustomMessage("a penny", /*german*/"ein Pfennig", /*french*/"un sou"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_GREEN_RUPEE.obscure.1"),
                                                // /*spanish*/un peso hyliano
-                                              CustomMessage("a green gem", /*german*/"ein grüner Edelstein", /*french*/"un joyau vert")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_GREEN_RUPEE.obscure.2")});
                                                // /*spanish*/una gema verde
 
-    hintTextTable[RHT_GREG_RUPEE] = HintText(CustomMessage("Greg", /*german*/"Greg", /*french*/"Greg"),
+    hintTextTable[RHT_GREG_RUPEE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GREG_RUPEE.clear"),
                                              // /*spanish*/Greg
                                              {
-                                             CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GREG_RUPEE.ambiguous.0")
                                               // /*spanish*/una rupia verde
                                              }, {
-                                             CustomMessage("an old friend", /*german*/"ein alter Freund", /*french*/"Greg"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GREG_RUPEE.obscure.0"),
                                               // /*spanish*/Greg
-                                             CustomMessage("a glorious gem", /*german*/"ein glorioser Edelstein", /*french*/"Greg")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GREG_RUPEE.obscure.1")});
                                               // /*spanish*/Greg
 
-    hintTextTable[RHT_BLUE_RUPEE] = HintText(CustomMessage("a Blue Rupee", /*german*/"ein blauer Rubin", /*french*/"un rubis bleu"),
+    hintTextTable[RHT_BLUE_RUPEE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BLUE_RUPEE.clear"),
                                              // /*spanish*/una rupia azul
                                              {
-                                             CustomMessage("some rupees", /*german*/"einige Rubine€", /*french*/"une quantité de rubis")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BLUE_RUPEE.ambiguous.0")
                                               // /*spanish*/una cantidad de rupias
                                              }, {
-                                             CustomMessage("a common coin", /*german*/"eine gewöhnliche Münze", /*french*/"quelques sous"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BLUE_RUPEE.obscure.0"),
                                               // /*spanish*/una moneda usual
-                                             CustomMessage("a blue gem", /*german*/"ein blauer Edelstein", /*french*/"un joyau bleu")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BLUE_RUPEE.obscure.1")});
                                               // /*spanish*/una gema azul
 
-    hintTextTable[RHT_RED_RUPEE] = HintText(CustomMessage("a Red Rupee", /*german*/"ein roter Rubin", /*french*/"un rubis rouge"),
+    hintTextTable[RHT_RED_RUPEE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_RED_RUPEE.clear"),
                                             // /*spanish*/una rupia roja
                                             {
-                                            CustomMessage("some rupees", /*german*/"einige Rubine€", /*french*/"une quantité de rubis")
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_RED_RUPEE.ambiguous.0")
                                              // /*spanish*/una cantidad de rupias
                                             }, {
-                                            CustomMessage("couch cash", /*german*/"ein wenig Zaster", /*french*/"un peu de fric"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_RED_RUPEE.obscure.0"),
                                              // /*spanish*/una buena moneda
-                                            CustomMessage("a red gem", /*german*/"ein roter Edelstein", /*french*/"un joyau rouge")});
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_RED_RUPEE.obscure.1")});
                                              // /*spanish*/una gema roja
 
-    hintTextTable[RHT_PURPLE_RUPEE] = HintText(CustomMessage("a Purple Rupee", /*german*/"ein violetter Rubin", /*french*/"un rubis pourpre"),
+    hintTextTable[RHT_PURPLE_RUPEE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PURPLE_RUPEE.clear"),
                                                // /*spanish*/una rupia morada
                                                {
-                                               CustomMessage("some rupees", /*german*/"einige Rubine€", /*french*/"une quantité de rubis")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_PURPLE_RUPEE.ambiguous.0")
                                                 // /*spanish*/una cantidad de rupias
                                                }, {
-                                               CustomMessage("big bucks", /*german*/"ordentlich Zaster", /*french*/"plein de fric"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_PURPLE_RUPEE.obscure.0"),
                                                 // /*spanish*/plata de calidad
-                                               CustomMessage("a purple gem", /*german*/"ein violetter Edelstein", /*french*/"un joyau mauve"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_PURPLE_RUPEE.obscure.1"),
                                                 // /*spanish*/una gema morada
-                                               CustomMessage("wealth", /*german*/"Wohlstand", /*french*/"la richesse")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_PURPLE_RUPEE.obscure.2")});
                                                 // /*spanish*/una buena riqueza
 
-    hintTextTable[RHT_HUGE_RUPEE] = HintText(CustomMessage("a Huge Rupee", /*german*/"ein goldener Rubin", /*french*/"un énorme rubis"),
+    hintTextTable[RHT_HUGE_RUPEE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_HUGE_RUPEE.clear"),
                                              // /*spanish*/una rupia gigante
                                              {
-                                             CustomMessage("some rupees", /*german*/"einige Rubine€", /*french*/"une quantité de rubis")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_HUGE_RUPEE.ambiguous.0")
                                               // /*spanish*/una cantidad de rupias
                                              }, {
-                                             CustomMessage("a juicy jackpot", /*german*/"ein saftiger Jackpot", /*french*/"le jackpot"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_HUGE_RUPEE.obscure.0"),
                                               // /*spanish*/el premio gordo
-                                             CustomMessage("a yellow gem", /*german*/"ein goldener Edelstein", /*french*/"un joyau doré"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_HUGE_RUPEE.obscure.1"),
                                               // /*spanish*/una gema amarilla
-                                             CustomMessage("a giant gem", /*german*/"ein riesiger Edelstein", /*french*/"un gros joyau"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_HUGE_RUPEE.obscure.2"),
                                               // /*spanish*/una gema descomunal
-                                             CustomMessage("great wealth", /*german*/"Reichtum", /*french*/"l'aisance financière")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_HUGE_RUPEE.obscure.3")});
                                               // /*spanish*/dinero a caudales
 
-    hintTextTable[RHT_PIECE_OF_HEART] = HintText(CustomMessage("a Piece of Heart", /*german*/"ein Herzteil", /*french*/"un Quart de Coeur"),
+    hintTextTable[RHT_PIECE_OF_HEART] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PIECE_OF_HEART.clear"),
                                                  // /*spanish*/una pieza de corazón
                                                  {
-                                                 CustomMessage("something heart-shaped", /*german*/"etwas Herzförmiges", /*french*/"une chose en forme de coeur")
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_PIECE_OF_HEART.ambiguous.0")
                                                   // /*spanish*/algo con forma de corazón
                                                  }, {
-                                                 CustomMessage("a little love", /*german*/"ein wenig Liebe", /*french*/"un peu plus d'amour"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_PIECE_OF_HEART.obscure.0"),
                                                   // /*spanish*/un cuarto de amor
-                                                 CustomMessage("a broken heart", /*german*/"ein gebrochenes Herz", /*french*/"un coeur brisé")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_PIECE_OF_HEART.obscure.1")});
                                                   // /*spanish*/un corazón roto
 
-    hintTextTable[RHT_HEART_CONTAINER] = HintText(CustomMessage("a Heart Container", /*german*/"ein Herzcontainer", /*french*/"un Réceptacle de Coeur"),
+    hintTextTable[RHT_HEART_CONTAINER] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_HEART_CONTAINER.clear"),
                                                   // /*spanish*/un contenedor de corazón
                                                   {
-                                                  CustomMessage("something heart-shaped", /*german*/"etwas Herzförmiges", /*french*/"une chose en forme de coeur")
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_HEART_CONTAINER.ambiguous.0")
                                                    // /*spanish*/algo con forma de corazón
                                                   }, {
-                                                  CustomMessage("a lot of love", /*german*/"eine Menge Liebe", /*french*/"le grand amour"),
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_HEART_CONTAINER.obscure.0"),
                                                    // /*spanish*/amor por doquier
-                                                  CustomMessage("a Valentine's gift", /*german*/"ein Valentinsgeschenk", /*french*/"un cadeau de Saint-Valentin"),
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_HEART_CONTAINER.obscure.1"),
                                                    // /*spanish*/un contenedor de afección
-                                                  CustomMessage("a boss's organ", /*german*/"ein monströses Organ", /*french*/"un organe de monstre")});
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_HEART_CONTAINER.obscure.2")});
                                                    // /*spanish*/los órganos de un jefe
 
-    hintTextTable[RHT_ICE_TRAP] = HintText(CustomMessage("an Ice Trap", /*german*/"eine Eisfalle", /*french*/"un Piège de Glace"),
+    hintTextTable[RHT_ICE_TRAP] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.clear"),
                                            // /*spanish*/una trampa de hielo
                                            {
-                                           CustomMessage("a Great Fairy's power", /*german*/"eine Kraft einer großen Fee", /*french*/"le pouvoir d'une grande fée"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.ambiguous.0"),
                                             // /*spanish*/el poder de una Gran Hada
-                                           CustomMessage("a magic arrow", /*german*/"magische Pfeile€", /*french*/"une flèche magique"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.ambiguous.1"),
                                             // /*spanish*/una flecha mágica
-                                           CustomMessage("a medallion", /*german*/"ein Amulett", /*french*/"un médaillon"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.ambiguous.2"),
                                             // /*spanish*/un medallón
-                                           CustomMessage("a spiritual stone", /*german*/"ein Heiliger Stein", /*french*/"une Pierre Ancestrale"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.ambiguous.3"),
                                             // /*spanish*/una piedra espiritual
-                                           CustomMessage("something that can stun", /*german*/"etwas zum Betäuben", /*french*/"une chose qui peut paralyser")
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.ambiguous.4")
                                             // /*spanish*/algo que pueda paralizar
                                            }, {
-                                           CustomMessage("a gift from Ganon", /*german*/"ein Geschenk Ganons", /*french*/"un cadeau de Ganon"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.obscure.0"),
                                             // /*spanish*/un regalo de Ganon
-                                           CustomMessage("a chilling discovery", /*german*/"eine kühle Entdeckung", /*french*/"une frissonante découverte"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.obscure.1"),
                                             // /*spanish*/un escalofriante hallazgo
-                                           CustomMessage("frosty fun", /*german*/"frostiger Spaß", /*french*/"une engelure")});
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ICE_TRAP.obscure.2")});
                                             // /*spanish*/una gélida diversión
 
-    hintTextTable[RHT_BOMBS_5] = HintText(CustomMessage("Bombs (5 pieces)", /*german*/"Bomben (5 Stück)€", /*french*/"une demi-dizaine de bombes"),
+    hintTextTable[RHT_BOMBS_5] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_5.clear"),
                                           // /*spanish*/unas (5) bombas
                                           {
-                                          CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs")
+                                          CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_5.ambiguous.0")
                                            // /*spanish*/un montón de explosivos
                                           }, {
-                                          CustomMessage("a few explosives", /*german*/"wenig Explosives", /*french*/"une poignée de pétards"),
+                                          CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_5.obscure.0"),
                                            // /*spanish*/un par de explosivos
-                                          CustomMessage("a few blast balls", /*german*/"ein paar Explosionskugeln€", /*french*/"une poignée de boules bleues")});
+                                          CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_5.obscure.1")});
                                            // /*spanish*/un par de estallidos
 
-    hintTextTable[RHT_BOMBS_10] = HintText(CustomMessage("Bombs (10 pieces)", /*german*/"Bomben (10 Stück)€", /*french*/"une dizaine de bombes"),
+    hintTextTable[RHT_BOMBS_10] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_10.clear"),
                                            // /*spanish*/unas (10) bombas
                                            {
-                                           CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs")
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_10.ambiguous.0")
                                             // /*spanish*/un montón de explosivos
                                            }, {
-                                           CustomMessage("some explosives", /*german*/"etwas Explosives", /*french*/"un paquet de pétards"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_10.obscure.0"),
                                             // /*spanish*/unos cuantos explosivos
-                                           CustomMessage("some blast balls", /*german*/"einige Explosionskugeln€", /*french*/"un paquet de boules bleues")});
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_10.obscure.1")});
                                             // /*spanish*/unos cuantos estallidos
 
-    hintTextTable[RHT_BOMBS_20] = HintText(CustomMessage("Bombs (20 pieces)", /*german*/"Bomben (20 Stück)€", /*french*/"une vingtaine de bombes"),
+    hintTextTable[RHT_BOMBS_20] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_20.clear"),
                                            // /*spanish*/unas (20) bombas
                                            {
-                                           CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs")
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_20.ambiguous.0")
                                             // /*spanish*/un montón de explosivos
                                            }, {
-                                           CustomMessage("lots-o-explosives", /*german*/"viel Explosives", /*french*/"une abondance de pétards"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_20.obscure.0"),
                                             // /*spanish*/un puñado de explosivos
-                                           CustomMessage("plenty of blast balls", /*german*/"viele Explosionskugeln€", /*french*/"une abondance de boules bleues")});
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBS_20.obscure.1")});
                                             // /*spanish*/bastantes estallidos
 
-    hintTextTable[RHT_BOMBCHUS_5] = HintText(CustomMessage("Bombchus (5 pieces)", /*german*/"Krabbelminen (5 Stück)€", /*french*/"une demi-dizaine de Missiles"),
+    hintTextTable[RHT_BOMBCHUS_5] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_5.clear"),
                                             // /*spanish*/unos (5) bombchus
                                             {
-                                            CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_5.ambiguous.0"),
                                              // /*spanish*/un obsequio de la Casa Skulltula
-                                            CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs")
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_5.ambiguous.1")
                                              // /*spanish*/un montón de explosivos
                                             }, {
-                                            CustomMessage("a few mice bombs", /*german*/"ein paar Mäusebomben€", /*french*/"une poignée de mignons explosifs"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_5.obscure.0"),
                                              // /*spanish*/un par de bombas roedoras
-                                            CustomMessage("a few proximity mice", /*german*/"ein paar Näherungsmäuse€", /*french*/"une poignée de jouets à remonter"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_5.obscure.1"),
                                              // /*spanish*/un par de explosivos ratoncitos
-                                            CustomMessage("a few wall crawlers", /*german*/"ein paar Wandkrabbler€", /*french*/"une poignée de rapides grimpeurs"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_5.obscure.2"),
                                              // /*spanish*/un par de trepaparedes
-                                            CustomMessage("a few trail blazers", /*german*/"ein paar Vorreiter€", /*french*/"une poignée de zigzags éclatants")});
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_5.obscure.3")});
                                              // /*spanish*/un par de ratas propulsadas
 
-    hintTextTable[RHT_BOMBCHUS_10] = HintText(CustomMessage("Bombchus (10 pieces)", /*german*/"Krabbelminen (10 Stück)€", /*french*/"une dizaine de Missiles"),
+    hintTextTable[RHT_BOMBCHUS_10] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_10.clear"),
                                              // /*spanish*/unos (10) bombchus
                                              {
-                                             CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_10.ambiguous.0"),
                                               // /*spanish*/un obsequio de la Casa Skulltula
-                                             CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_10.ambiguous.1")
                                               // /*spanish*/un montón de explosivos
                                              }, {
-                                             CustomMessage("some mice bombs", /*german*/"einige Mäusebomben€", /*french*/"un paquet de mignons explosifs"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_10.obscure.0"),
                                               // /*spanish*/unas cuantas bombas roedoras
-                                             CustomMessage("some proximity mice", /*german*/"einige Näherungsmäuse€", /*french*/"un paquet de jouets à remonter"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_10.obscure.1"),
                                               // /*spanish*/unos cuantos explosivos ratoncitos
-                                             CustomMessage("some wall crawlers", /*german*/"einige Wandkrabbler€", /*french*/"un paquet de rapides grimpeurs"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_10.obscure.2"),
                                               // /*spanish*/unos cuantos trepaparedes
-                                             CustomMessage("some trail blazers", /*german*/"einige Vorreiter€", /*french*/"un paquet de zigzags éclatants")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_10.obscure.3")});
                                               // /*spanish*/unas cuantas ratas propulsadas
 
-    hintTextTable[RHT_BOMBCHUS_20] = HintText(CustomMessage("Bombchus (20 pieces)", /*german*/"Krabbelminen (20 Stück)€", /*french*/"une vingtaine de Missiles"),
+    hintTextTable[RHT_BOMBCHUS_20] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_20.clear"),
                                              // /*spanish*/unos (20) bombchus
                                              {
-                                             CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_20.ambiguous.0"),
                                               // /*spanish*/un obsequio de la Casa Skulltula
-                                             CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_20.ambiguous.1")
                                               // /*spanish*/un montón de explosivos
                                              }, {
-                                             CustomMessage("plenty of mice bombs", /*german*/"viele Mäusebomben€", /*french*/"une abondance de mignons explosifs"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_20.obscure.0"),
                                               // /*spanish*/bastantes bombas roedoras
-                                             CustomMessage("plenty of proximity mice", /*german*/"viele Näherungsmäuse€", /*french*/"une abondance de jouets à remonter"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_20.obscure.1"),
                                               // /*spanish*/bastantes explosivos ratoncitos
-                                             CustomMessage("plenty of wall crawlers", /*german*/"viele Wandkrabbler€", /*french*/"une abondance de rapides grimpeurs"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_20.obscure.2"),
                                               // /*spanish*/bastantes trepaparedes
-                                             CustomMessage("plenty of trail blazers", /*german*/"viele Vorreiter€", /*french*/"une abondance de zigzags éclatants")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHUS_20.obscure.3")});
                                               // /*spanish*/bastantes ratas propulsadas
 
-    hintTextTable[RHT_ARROWS_5] = HintText(CustomMessage("Arrows (5 pieces)", /*german*/"Pfeile (5 Stück)€", /*french*/"une demi-dizaine de flèches"),
+    hintTextTable[RHT_ARROWS_5] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_5.clear"),
                                            // /*spanish*/unas (5) flechas
                                            {
-                                           CustomMessage("a projectile", /*german*/"ein Projektil", /*french*/"un projectile")
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_5.ambiguous.0")
                                             // /*spanish*/un proyectil
                                            }, {
-                                           CustomMessage("a few danger darts", /*german*/"ein paar gefährliche Spitzen€", /*french*/"une poignée d'obus"),
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_5.obscure.0"),
                                             // /*spanish*/un par de peligrosos dardos
-                                           CustomMessage("a few sharp shafts", /*german*/"ein paar scharfe Stifte€", /*french*/"une poignée de piquets")});
+                                           CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_5.obscure.1")});
                                             // /*spanish*/un par de puntas afiladas
 
-    hintTextTable[RHT_ARROWS_10] = HintText(CustomMessage("Arrows (10 pieces)", /*german*/"Pfeile (10 Stück)€", /*french*/"une dizaine de flèches"),
+    hintTextTable[RHT_ARROWS_10] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_10.clear"),
                                             // /*spanish*/unas (10) flechas
                                             {
-                                            CustomMessage("a projectile", /*german*/"ein Projektil", /*french*/"un projectile")
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_10.ambiguous.0")
                                              // /*spanish*/un proyectil
                                             }, {
-                                            CustomMessage("some danger darts", /*german*/"einige gefährliche Spitzen€", /*french*/"un paquet d'obus"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_10.obscure.0"),
                                              // /*spanish*/unos cuantos peligrosos dardos
-                                            CustomMessage("some sharp shafts", /*german*/"einige scharfe Stifte€", /*french*/"un paquet de piquets")});
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_10.obscure.1")});
                                              // /*spanish*/unas cuantas puntas afiladas
 
-    hintTextTable[RHT_ARROWS_30] = HintText(CustomMessage("Arrows (30 pieces)", /*german*/"Pfeile (30 Stück)€", /*french*/"une trentaine de flèches"),
+    hintTextTable[RHT_ARROWS_30] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_30.clear"),
                                             // /*spanish*/unas (30) flechas
                                             {
-                                            CustomMessage("a projectile", /*german*/"ein Projektil", /*french*/"un projectile")
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_30.ambiguous.0")
                                              // /*spanish*/un proyectil
                                             }, {
-                                            CustomMessage("plenty of danger darts", /*german*/"viele gefährliche Spitzen€", /*french*/"une abondance d'obus"),
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_30.obscure.0"),
                                              // /*spanish*/bastantes peligrosos dardos
-                                            CustomMessage("plenty of sharp shafts", /*german*/"viele scharfe Stifte€", /*french*/"une abondance de piquets")});
+                                            CustomMessages::CreateMessage("randomizer.hints.RHT_ARROWS_30.obscure.1")});
                                              // /*spanish*/bastantes puntas afiladas
 
-    hintTextTable[RHT_DEKU_NUTS_5] = HintText(CustomMessage("Deku Nuts (5 pieces)", /*german*/"Deku-Nüsse (5 Stück)€", /*french*/"une demi-dizaine de noix Mojo"),
+    hintTextTable[RHT_DEKU_NUTS_5] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_5.clear"),
                                               // /*spanish*/unas (5) nueces deku
                                               {
-                                              CustomMessage("some Deku munitions", /*german*/"etwas Deku-Munition", /*french*/"un paquet de munitions Mojo"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_5.ambiguous.0"),
                                                // /*spanish*/un montón de municiones Deku
-                                              CustomMessage("something that can stun", /*german*/"etwas zum Betäuben", /*french*/"une chose qui peut paralyser")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_5.ambiguous.1")
                                                // /*spanish*/algo que pueda paralizar
                                               }, {
-                                              CustomMessage("some nuts", /*german*/"ein paar Nüsse€", /*french*/"une poignée de noisettes"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_5.obscure.0"),
                                                // /*spanish*/un par de nueces
-                                              CustomMessage("some flashbangs", /*german*/"ein paar Blendgranaten€", /*french*/"une poignée d'éclats"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_5.obscure.1"),
                                                // /*spanish*/un par de semillas aturdidoras
-                                              CustomMessage("some scrub spit", /*german*/"etwas Deku-Spucke€", /*french*/"une poignée de crachats Mojo")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_5.obscure.2")});
                                                // /*spanish*/un par de escupitajos deku
 
-    hintTextTable[RHT_DEKU_NUTS_10] = HintText(CustomMessage("Deku Nuts (10 pieces)", /*german*/"Deku-Nüsse (10 Stück)€", /*french*/"une dizaine de noix Mojo"),
+    hintTextTable[RHT_DEKU_NUTS_10] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_10.clear"),
                                                // /*spanish*/unas (10) nueces deku
                                                {
-                                               CustomMessage("some Deku munitions", /*german*/"etwas Deku-Munition", /*french*/"un paquet de munitions Mojo"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_10.ambiguous.0"),
                                                 // /*spanish*/un montón de municiones Deku
-                                               CustomMessage("something that can stun", /*german*/"etwas zum Betäuben", /*french*/"une chose qui peut paralyser")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_10.ambiguous.1")
                                                 // /*spanish*/algo que pueda paralizar
                                                }, {
-                                               CustomMessage("lots-o-nuts", /*german*/"einige Nüsse€", /*french*/"un paquet de noisettes"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_10.obscure.0"),
                                                 // /*spanish*/un puñado de nueces
-                                               CustomMessage("plenty of flashbangs", /*german*/"einige Blendgranaten€", /*french*/"un paquet d'éclats"),
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_10.obscure.1"),
                                                 // /*spanish*/unas cuantas semillas aturdidoras
-                                               CustomMessage("plenty of scrub spit", /*german*/"einiges an Deku-Spucke€", /*french*/"un paquet de crachats Mojo")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_NUTS_10.obscure.2")});
                                                 // /*spanish*/unos cuantos escupitajos deku
 
-    hintTextTable[RHT_DEKU_SEEDS_30] = HintText(CustomMessage("Deku Seeds (30 pieces)", /*german*/"Deku-Kerne (30 Stück)€", /*french*/"une trentaine de graines Mojo"),
+    hintTextTable[RHT_DEKU_SEEDS_30] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SEEDS_30.clear"),
                                                 // /*spanish*/unas (30) semillas deku
                                                 {
-                                                CustomMessage("a projectile", /*german*/"ein Projektil", /*french*/"un projectile"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SEEDS_30.ambiguous.0"),
                                                  // /*spanish*/un proyectil
-                                                CustomMessage("some Deku munitions", /*german*/"viel Deku-Munition", /*french*/"un paquet de munitions Mojo")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SEEDS_30.ambiguous.1")
                                                  // /*spanish*/un montón de municiones Deku
                                                 }, {
-                                                CustomMessage("catapult ammo", /*german*/"Katapultmunition", /*french*/"un paquet de délicieuses munitions"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SEEDS_30.obscure.0"),
                                                  // /*spanish*/un par de munición infantil
-                                                CustomMessage("lots-o-seeds", /*german*/"viele Kerne€", /*french*/"un paquet de germes séchés")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_SEEDS_30.obscure.1")});
                                                  // /*spanish*/un puñado de semillas
 
-    hintTextTable[RHT_DEKU_STICK_1] = HintText(CustomMessage("a Deku Stick", /*german*/"ein Deku-Stab", /*french*/"un bâton Mojo"),
+    hintTextTable[RHT_DEKU_STICK_1] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_STICK_1.clear"),
                                                // /*spanish*/un palo deku
                                                {
-                                               CustomMessage("some Deku munitions", /*german*/"etwas Deku-Munition", /*french*/"un paquet de munitions Mojo")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_STICK_1.ambiguous.0")
                                                 // /*spanish*/un montón de municiones Deku
                                                }, {
-                                               CustomMessage("a breakable branch", /*german*/"ein brüchiger Zweig", /*french*/"un bout de bois")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_DEKU_STICK_1.obscure.0")});
                                                 // /*spanish*/un pequeño báculo
 
-    hintTextTable[RHT_TREASURE_GAME_HEART] = HintText(CustomMessage("a Piece of Heart", /*german*/"ein Herzteil", /*french*/"un Quart de Coeur"),
+    hintTextTable[RHT_TREASURE_GAME_HEART] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_HEART.clear"),
                                                       // /*spanish*/el amor de la victoria
                                                       {
-                                                      CustomMessage("something heart-shaped", /*german*/"etwas Herzförmiges", /*french*/"une chose en forme de coeur")
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_HEART.ambiguous.0")
                                                        // /*spanish*/algo con forma de corazón
                                                       }, {
-                                                      CustomMessage("a victory valentine", /*german*/"ein siegreicher Valentin", /*french*/"un amour gagnant")});
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_HEART.obscure.0")});
                                                        // /*spanish*/el amor victorioso
 
-    hintTextTable[RHT_TREASURE_GAME_GREEN_RUPEE] = HintText(CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert"),
+    hintTextTable[RHT_TREASURE_GAME_GREEN_RUPEE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_GREEN_RUPEE.clear"),
                                                             // /*spanish*/una rupia verde
                                                             {
-                                                            CustomMessage("some rupees", /*german*/"einige Rubine€", /*french*/"une quantité de rubis")
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_GREEN_RUPEE.ambiguous.0")
                                                              // /*spanish*/una cantidad de rupias
                                                             }, {
-                                                            CustomMessage("the dollar of defeat", /*german*/"der Rubin der Niederlage", /*french*/"le rubis de la défaite")});
+                                                            CustomMessages::CreateMessage("randomizer.hints.RHT_TREASURE_GAME_GREEN_RUPEE.obscure.0")});
                                                              // /*spanish*/el peso de la derrota
 
-    hintTextTable[RHT_TRIFORCE_PIECE] = HintText(CustomMessage("a Piece of the Triforce", /*german*/"ein Triforce-Splitter", /*french*/"un fragment de la Triforce"),
+    hintTextTable[RHT_TRIFORCE_PIECE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_TRIFORCE_PIECE.clear"),
                                                  // /*spanish*/un fragmento de la Trifuerza
                                                  {}, {
-                                                 CustomMessage("a triumph fork", /*german*/"ein Dreieck des Triumphs", /*french*/"la Tribosse"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_TRIFORCE_PIECE.obscure.0"),
                                                   // /*spanish*/un trígono del triunfo
-                                                 CustomMessage("cheese", /*german*/"Käse", /*french*/"du fromage"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_TRIFORCE_PIECE.obscure.1"),
                                                   // /*spanish*/un porción de queso
-                                                 CustomMessage("a gold fragment", /*german*/"ein Goldfragment", /*french*/"un fragment d'or")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_TRIFORCE_PIECE.obscure.2")});
                                                   // /*spanish*/un fragmento dorado
 
-    hintTextTable[RHT_ROCS_FEATHER] = HintText(CustomMessage("Roc's Feather", /*german*/"Greifenfeder", /*french*/"Plume de Roc"),
+    hintTextTable[RHT_ROCS_FEATHER] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_ROCS_FEATHER.clear"),
                                                  {}, {
-                                                 CustomMessage("a feather", /*german*/"eine Feder", /*french*/"une plume"),
-                                                 CustomMessage("a chicken wing", /*german*/"ein Hühnerflügel", /*french*/"une aile de poulet"),
-                                                 CustomMessage("a blue wing", /*german*/"ein blauer Flügel", /*french*/"une aile bleue")});
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ROCS_FEATHER.obscure.0"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ROCS_FEATHER.obscure.1"),
+                                                 CustomMessages::CreateMessage("randomizer.hints.RHT_ROCS_FEATHER.obscure.2")});
 
-    hintTextTable[RHT_BEAN_SOUL] = HintText(CustomMessage("a bean soul", /*german*/"eine bohnenseele", /*french*/"une âme de haricot"));
+    hintTextTable[RHT_BEAN_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BEAN_SOUL.clear"));
 
-    hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"Gohmas Seele", /*french*/"l'Âme de Gohma"),
+    hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GOHMA_SOUL.clear"),
                                              {
-                                             CustomMessage("something webbed", /*german*/"etwas Verwobenes", /*french*/"un truc entoilé")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GOHMA_SOUL.ambiguous.0")
                                              }, {
-                                             CustomMessage("an invasive soul", /*german*/"eine parasitäre Seele", /*french*/"une âme invasive"),
-                                             CustomMessage("some spider essence", /*german*/"etwas spinnenartige Essenz", /*french*/"une essence d'araignée")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GOHMA_SOUL.obscure.0"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GOHMA_SOUL.obscure.1")});
 
-    hintTextTable[RHT_KING_DODONGO_SOUL] = HintText(CustomMessage("the soul of King Dodongo", /*german*/"König Dodongos Seele", /*french*/"l'Âme du Roi Dodongo"),
+    hintTextTable[RHT_KING_DODONGO_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_KING_DODONGO_SOUL.clear"),
                                                     {
-                                                    CustomMessage("something explosive", /*german*/"etwas Explosives", /*french*/"un truc détonnant")
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_KING_DODONGO_SOUL.ambiguous.0")
                                                     }, {
-                                                    CustomMessage("a royal soul", /*german*/"eine königliche Seele", /*french*/"une âme royale"),
-                                                    CustomMessage("some reptile essence", /*german*/"etwas reptilienartige Essenz", /*french*/"une essence de reptile")});
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_KING_DODONGO_SOUL.obscure.0"),
+                                                    CustomMessages::CreateMessage("randomizer.hints.RHT_KING_DODONGO_SOUL.obscure.1")});
 
-    hintTextTable[RHT_BARINADE_SOUL] = HintText(CustomMessage("the soul of Barinade", /*german*/"Barinades Seele", /*french*/"l'Âme de Barinade"),
+    hintTextTable[RHT_BARINADE_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BARINADE_SOUL.clear"),
                                                 {
-                                                CustomMessage("something fishy", /*german*/"etwas Fischiges", /*french*/"un truc gluant")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_BARINADE_SOUL.ambiguous.0")
                                                 }, {
-                                                CustomMessage("an infectuous soul", /*german*/"eine infektiöse Seele", /*french*/"une âme infectieuse"),
-                                                CustomMessage("some parasitic essence", /*german*/"etwas elektrische Essenz", /*french*/"une essence parasitique")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_BARINADE_SOUL.obscure.0"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_BARINADE_SOUL.obscure.1")});
 
-    hintTextTable[RHT_PHANTOM_GANON_SOUL] = HintText(CustomMessage("the soul of Phantom Ganon", /*german*/"Phantom-Ganons Seele", /*french*/"l'Âme de Ganon Spectral"),
+    hintTextTable[RHT_PHANTOM_GANON_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_PHANTOM_GANON_SOUL.clear"),
                                                      {
-                                                     CustomMessage("something spectral", /*german*/"etwas Spektrales", /*french*/"un truc spectral")
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_PHANTOM_GANON_SOUL.ambiguous.0")
                                                      }, {
-                                                     CustomMessage("a duplicate soul", /*german*/"eine duplizierte Seele", /*french*/"une âme clonée"),
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_PHANTOM_GANON_SOUL.obscure.0"),
 
-                                                     CustomMessage("some illusionary essence", /*german*/"etwas illusionäre Essenz", /*french*/"une essence illusoire")});
+                                                     CustomMessages::CreateMessage("randomizer.hints.RHT_PHANTOM_GANON_SOUL.obscure.1")});
 
-    hintTextTable[RHT_VOLVAGIA_SOUL] = HintText(CustomMessage("the soul of Volvagia", /*german*/"Volvagias Seele", /*french*/"l'Âme de Volcania"),
+    hintTextTable[RHT_VOLVAGIA_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_VOLVAGIA_SOUL.clear"),
                                                 {
-                                                CustomMessage("something hot", /*german*/"etwas Heißes", /*french*/"quelque chose de très chaud")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_VOLVAGIA_SOUL.ambiguous.0")
                                                 }, {
-                                                CustomMessage("a draconic soul", /*german*/"eine drakonische Seele", /*french*/"une essence draconique"),
-                                                CustomMessage("some magmatic essence", /*german*/"etwas magmatische Essenz", /*french*/"une essence magmatique")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_VOLVAGIA_SOUL.obscure.0"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_VOLVAGIA_SOUL.obscure.1")});
 
-    hintTextTable[RHT_MORPHA_SOUL] = HintText(CustomMessage("the soul of Morpha", /*german*/"Morphas Seele", /*french*/"l'Âme de Morpha"),
+    hintTextTable[RHT_MORPHA_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MORPHA_SOUL.clear"),
                                               {
-                                              CustomMessage("something wet", /*german*/"etwas Nasses", /*french*/"un truc mouillé")
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_MORPHA_SOUL.ambiguous.0")
                                               }, {
-                                              CustomMessage("an aquatic soul", /*german*/"eine aquatische Seele", /*french*/"une âme aquatique"),
-                                              CustomMessage("some liquid essence", /*german*/"etwas flüssige Essenz", /*french*/"une essence liquide")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_MORPHA_SOUL.obscure.0"),
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_MORPHA_SOUL.obscure.1")});
 
-    hintTextTable[RHT_BONGO_BONGO_SOUL] = HintText(CustomMessage("the soul of Bongo Bongo", /*german*/"Bongo Bongos Seele", /*french*/"l'Âme de Bongo Bongo"),
+    hintTextTable[RHT_BONGO_BONGO_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BONGO_BONGO_SOUL.clear"),
                                                    {
-                                                   CustomMessage("something dark", /*german*/"etwas Dunkles", /*french*/"quelque chose de sombre")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BONGO_BONGO_SOUL.ambiguous.0")
                                                    }, {
-                                                   CustomMessage("a shadowy soul", /*german*/"eine schattige Seele", /*french*/"une âme ténébreuse"),
-                                                   CustomMessage("some handy essence", /*german*/"etwas bestialische Essenz", /*french*/"l'âme du tape m'en cinq")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BONGO_BONGO_SOUL.obscure.0"),
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_BONGO_BONGO_SOUL.obscure.1")});
 
-    hintTextTable[RHT_TWINROVA_SOUL] = HintText(CustomMessage("the soul of Twinrova", /*german*/"Twinrovas Seele", /*french*/"l'Âme du Duo Maléfique"),
+    hintTextTable[RHT_TWINROVA_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_TWINROVA_SOUL.clear"),
                                                 {
-                                                CustomMessage("something spiritual", /*german*/"etwas Geisterhaftes", /*french*/"un truc spirituel")
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_TWINROVA_SOUL.ambiguous.0")
                                                 }, {
-                                                CustomMessage("old souls", /*german*/"alte Seelen", /*french*/"deux vieilles âmes"),
-                                                CustomMessage("twin essences", /*german*/"Zwillingsessenzen€", /*french*/"des essences jumelles")});
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_TWINROVA_SOUL.obscure.0"),
+                                                CustomMessages::CreateMessage("randomizer.hints.RHT_TWINROVA_SOUL.obscure.1")});
 
-    hintTextTable[RHT_GANON_SOUL] = HintText(CustomMessage("the soul of Ganon", /*german*/"Ganons Seele", /*french*/"l'Âme de Ganon"),
+    hintTextTable[RHT_GANON_SOUL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_GANON_SOUL.clear"),
                                              {
-                                             CustomMessage("something strong", /*german*/"etwas Starkes", /*french*/"un truc de fort")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GANON_SOUL.ambiguous.0")
                                              }, {
-                                             CustomMessage("an evil soul", /*german*/"eine böse Seele", /*french*/"une âme maléfique"),
-                                             CustomMessage("some powerful essence", /*german*/"etwas mächtige Essenz", /*french*/"une essence incroyablement puissante")});
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GANON_SOUL.obscure.0"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_GANON_SOUL.obscure.1")});
 
-    hintTextTable[RHT_OCARINA_A_BUTTON] = HintText(CustomMessage("an Ocarina A Button", /*german*/"die A-Taste der Okarina", /*french*/"la Touche A de l'Ocarina"),
+    hintTextTable[RHT_OCARINA_A_BUTTON] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_A_BUTTON.clear"),
                                                    // /*spanish*/un botón A de Ocarina
                                                    {
-                                                   CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_A_BUTTON.ambiguous.0")
                                                     // /*spanish*/algo melódico
                                                    }, {
-                                                   CustomMessage("a musical letter", /*german*/"ein musikalischer Brief", /*french*/"une lettre musicale")});
+                                                   CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_A_BUTTON.obscure.0")});
                                                     // /*spanish*/una letra musical
 
-    hintTextTable[RHT_OCARINA_C_UP_BUTTON] = HintText(CustomMessage("an Ocarina C Up Button", /*german*/"die C-Oben-Taste der Okarina", /*french*/"la Touche C-Haut de l'Ocarina"),
+    hintTextTable[RHT_OCARINA_C_UP_BUTTON] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_UP_BUTTON.clear"),
                                                       // /*spanish*/un botón C superior de Ocarina
                                                       {
-                                                      CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_UP_BUTTON.ambiguous.0")
                                                        // /*spanish*/algo melódico
                                                       }, {
-                                                      CustomMessage("a high tone", /*german*/"ein hoher Ton", /*french*/"une tonalité élevée")});
+                                                      CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_UP_BUTTON.obscure.0")});
                                                        // /*spanish*/un tono alto
 
-    hintTextTable[RHT_OCARINA_C_DOWN_BUTTON] = HintText(CustomMessage("an Ocarina C Down Button", /*german*/"die C-Unten-Taste der Okarina", /*french*/"la Touche C-Bas de l'Ocarina"),
+    hintTextTable[RHT_OCARINA_C_DOWN_BUTTON] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_DOWN_BUTTON.clear"),
                                                         // /*spanish*/un botón C inferior de Ocarina
                                                         {
-                                                        CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_DOWN_BUTTON.ambiguous.0")
                                                          // /*spanish*/algo melódico
                                                         }, {
-                                                        CustomMessage("a low tone", /*german*/"ein tiefer Ton", /*french*/"une tonalité basse")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_DOWN_BUTTON.obscure.0")});
                                                          // /*spanish*/un tono bajo
 
-    hintTextTable[RHT_OCARINA_C_LEFT_BUTTON] = HintText(CustomMessage("an Ocarina C Left Button", /*german*/"die C-Links-Taste der Okarina", /*french*/"la Touche C-Gauche de l'Ocarina"),
+    hintTextTable[RHT_OCARINA_C_LEFT_BUTTON] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_LEFT_BUTTON.clear"),
                                                         // /*spanish*/un botón C izquierdo de Ocarina
                                                         {
-                                                        CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_LEFT_BUTTON.ambiguous.0")
                                                          // /*spanish*/algo melódico
                                                         }, {
-                                                        CustomMessage("a leftward tone", /*german*/"ein linksseitiger Ton", /*french*/"une tonalité vers la gauche")});
+                                                        CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_LEFT_BUTTON.obscure.0")});
                                                          // /*spanish*/un tono hacia la izquierda
 
-    hintTextTable[RHT_OCARINA_C_RIGHT_BUTTON] = HintText(CustomMessage("an Ocarina C Right Button", /*german*/"die C-Rechts-Taste der Okarina", /*french*/"la Touche C-Droit de l'Ocarina"),
+    hintTextTable[RHT_OCARINA_C_RIGHT_BUTTON] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_RIGHT_BUTTON.clear"),
                                                          // /*spanish*/un botón C derecho de Ocarina
                                                          {
-                                                         CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_RIGHT_BUTTON.ambiguous.0")
                                                           // /*spanish*/algo melódico
                                                          }, {
-                                                         CustomMessage("a rightward tone", /*german*/"ein rechtsseitiger Ton", /*french*/"une tonalité vers la droite")});
+                                                         CustomMessages::CreateMessage("randomizer.hints.RHT_OCARINA_C_RIGHT_BUTTON.obscure.0")});
                                                           // /*spanish*/un tono hacia la derecha
 
-    hintTextTable[RHT_MASK_KEATON] = HintText(CustomMessage("a keaton mask", /*german*/"die Fuchs-Maske", /*french*/"le Masque du Renard"), {CustomMessage("a mask", /*german*/"eine Maske", /*french*/"un masque")});
-    hintTextTable[RHT_MASK_SKULL] = HintText(CustomMessage("a skull mask", /*german*/"die Schädel-Maske", /*french*/"le Masque de Mort"), {CustomMessage("a mask", /*german*/"eine Maske", /*french*/"un masque")});
-    hintTextTable[RHT_MASK_SPOOKY] = HintText(CustomMessage("a spooky mask", /*german*/"die Geister-Maske", /*french*/"le Masque d'Effroi"), {CustomMessage("a mask", /*german*/"eine Maske", /*french*/"un masque")});
-    hintTextTable[RHT_MASK_BUNNY] = HintText(CustomMessage("a bunny hood", /*german*/"die Hasenohren", /*french*/"le Masque du Lapin"), {CustomMessage("a mask", /*german*/"eine Maske", /*french*/"un masque")});
-    hintTextTable[RHT_MASK_GORON] = HintText(CustomMessage("a goron mask", /*german*/"die Goronen-Maske", /*french*/"le Masque de Goron"), {CustomMessage("a mask", /*german*/"eine Maske", /*french*/"un masque")});
-    hintTextTable[RHT_MASK_ZORA] = HintText(CustomMessage("a zora mask", /*german*/"die Zora-Maske", /*french*/"le Masque de Zora"), {CustomMessage("a mask", /*german*/"eine Maske", /*french*/"un masque")});
-    hintTextTable[RHT_MASK_GERUDO] = HintText(CustomMessage("a gerudo mask", /*german*/"die Gerudo-Maske", /*french*/"le Masque de Gerudo"), {CustomMessage("a mask", /*german*/"eine Maske", /*french*/"un masque")});
-    hintTextTable[RHT_MASK_TRUTH] = HintText(CustomMessage("a mask of truth", /*german*/"die Maske des Wissens", /*french*/"le Masque de Vérité"), {CustomMessage("a mask", /*german*/"eine Maske", /*french*/"un masque")});
+    hintTextTable[RHT_MASK_KEATON] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_KEATON.clear"), {CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_KEATON.ambiguous.0")});
+    hintTextTable[RHT_MASK_SKULL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_SKULL.clear"), {CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_SKULL.ambiguous.0")});
+    hintTextTable[RHT_MASK_SPOOKY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_SPOOKY.clear"), {CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_SPOOKY.ambiguous.0")});
+    hintTextTable[RHT_MASK_BUNNY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_BUNNY.clear"), {CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_BUNNY.ambiguous.0")});
+    hintTextTable[RHT_MASK_GORON] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_GORON.clear"), {CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_GORON.ambiguous.0")});
+    hintTextTable[RHT_MASK_ZORA] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_ZORA.clear"), {CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_ZORA.ambiguous.0")});
+    hintTextTable[RHT_MASK_GERUDO] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_GERUDO.clear"), {CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_GERUDO.ambiguous.0")});
+    hintTextTable[RHT_MASK_TRUTH] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_TRUTH.clear"), {CustomMessages::CreateMessage("randomizer.hints.RHT_MASK_TRUTH.ambiguous.0")});
 
-    hintTextTable[RHT_SCARECROWS_SONG] = HintText(CustomMessage("Scarecrow's Song", /*german*/"das Vogelscheuchenlied", /*french*/"le chant de l'épouvantail"),
+    hintTextTable[RHT_SCARECROWS_SONG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SCARECROWS_SONG.clear"),
                                                   {
-                                                  CustomMessage("a song", /*german*/"ein Lied", /*french*/"un chant")
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_SCARECROWS_SONG.ambiguous.0")
                                                   }, {
-                                                  CustomMessage("a scarecrow's memory", /*german*/"eine Vogelscheuchen-Erinnerung", /*french*/"un souvenir d'épouvantail")});
+                                                  CustomMessages::CreateMessage("randomizer.hints.RHT_SCARECROWS_SONG.obscure.0")});
 
-    hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessage("a fishing pole", /*german*/"eine Angelrute", /*french*/"une canne à pêche"),
+    hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_FISHING_POLE.clear"),
                                                // /*spanish*/caña de pescar
                                                {
-                                               CustomMessage("the pond owner's property", /*german*/"das Eigentum des Fischweiherbesitzers", /*french*/"(un truc qui appartient au propriétaire de l'étang)")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_FISHING_POLE.ambiguous.0")
                                                 // /*spanish*/(caña de pescar)
                                                }, {
-                                               CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(un aimant à poisson)")});
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_FISHING_POLE.obscure.0")});
                                                 // /*spanish*/(caña de pescar)
 
-    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("a Bombchu Bag", /*german*/"eine Krabbelminentasche", /*french*/"un Sac de Missiles Teigneux"),
+    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHU_BAG.clear"),
                                               {
-                                             CustomMessage("explosives", /*german*/"Explosives", /*french*/"un paquet d'explosifs"),
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHU_BAG.ambiguous.0"),
                                                   // /*spanish*/un montón de explosivos
-                                             CustomMessage("something that can remove boulders", /*german*/"etwas zum Geröll entfernen", /*french*/"une chose qui enlève les rochers")
+                                             CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHU_BAG.ambiguous.1")
                                                   // /*spanish*/algo que pueda quitar rocas
                                               }, {
-                                              CustomMessage("sack of mice", /*german*/"ein Sack Mäuse", /*french*/"un Sac rempli de souris")});
+                                              CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHU_BAG.obscure.0")});
 
-    hintTextTable[RHT_SILVER_RUPEE_DODONGOS_CAVERN] = HintText(CustomMessage("a Dodongo's Cavern Silver Rupee", /*german*/ "ein Silberner Rubin aus Dodongos Höhle", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_SHADOW_TEMPLE] = HintText(CustomMessage("a Shadow Temple Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Schattentempel", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_SPIRIT_TEMPLE] = HintText(CustomMessage("a Spirit Temple Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Geistertempel", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_BOTW] = HintText(CustomMessage("a Bottom of the Well Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Brunnen", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_ICE_CAVERN] = HintText(CustomMessage("an Ice Cavern Silver Rupee", /*german*/ "ein Silberner Rubin aus der Eishöhle", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_GTG] = HintText(CustomMessage("a Gerudo Training Ground Silver Rupee", /*german*/ "ein Silberner Rubin aus der Trainingshalle", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_GANONS_CASTLE] = HintText(CustomMessage("a Ganon's Castle Silver Rupee", /*german*/ "ein Silberner Rubin aus Ganons Schloß", /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_DODONGOS_CAVERN] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SILVER_RUPEE_DODONGOS_CAVERN.clear"));
+    hintTextTable[RHT_SILVER_RUPEE_SHADOW_TEMPLE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SILVER_RUPEE_SHADOW_TEMPLE.clear"));
+    hintTextTable[RHT_SILVER_RUPEE_SPIRIT_TEMPLE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SILVER_RUPEE_SPIRIT_TEMPLE.clear"));
+    hintTextTable[RHT_SILVER_RUPEE_BOTW] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SILVER_RUPEE_BOTW.clear"));
+    hintTextTable[RHT_SILVER_RUPEE_ICE_CAVERN] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SILVER_RUPEE_ICE_CAVERN.clear"));
+    hintTextTable[RHT_SILVER_RUPEE_GTG] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SILVER_RUPEE_GTG.clear"));
+    hintTextTable[RHT_SILVER_RUPEE_GANONS_CASTLE] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SILVER_RUPEE_GANONS_CASTLE.clear"));
 
-    hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "der Skelettschlüssel", /*french*/ "une Clé Squelette"),
+    hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SKELETON_KEY.clear"),
                                                // /*spanish*/una Llave Maestra
                                                {
-                                               CustomMessage("a key", /*german*/ "ein Schlüssel", /*french*/ "une clé")
+                                               CustomMessages::CreateMessage("randomizer.hints.RHT_SKELETON_KEY.ambiguous.0")
                                                 // /*spanish*/una llave
                                                },
-                                               { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
+                                               { CustomMessages::CreateMessage("randomizer.hints.RHT_SKELETON_KEY.obscure.0") });
                                                 // /*spanish*/un desbloqueador maestro
 
     //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
-    hintTextTable[RHT_CLIMB] = HintText(CustomMessage("the ability to climb", /*german*/"die Fähigkeit zu klettern", /*french*/"la capacité de grimper"));
-    hintTextTable[RHT_CRAWL] = HintText(CustomMessage("the ability to crawl", /*german*/"die Fähigkeit zu kriechen", /*french*/"la capacité de ramper"));
-    hintTextTable[RHT_OPEN_CHEST] = HintText(CustomMessage("the ability to open chests", /*german*/"die Fähigkeit, Truhen zu öffnen", /*french*/TODO_TRANSLATE));
-    hintTextTable[RHT_SPEAK] = HintText(CustomMessage("the ability to speak",  /*german*/"die Fähigkeit zu sprechen", /*french*/"la faculté de parler"));
+    hintTextTable[RHT_CLIMB] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_CLIMB.clear"));
+    hintTextTable[RHT_CRAWL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_CRAWL.clear"));
+    hintTextTable[RHT_OPEN_CHEST] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_OPEN_CHEST.clear"));
+    hintTextTable[RHT_SPEAK] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_SPEAK.clear"));
 
-    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"der unendliche Köcher", /*french*/"un Carquois Infini"));
+    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_QUIVER_INF.clear"));
 
-    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("an infinite Bomb Bag", /*german*/"die unendliche Bombentasche", /*french*/"un Sac de Bombe sans fond"));
+    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMB_BAG_INF.clear"));
 
-    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("an infinite Bullet Bag", /*german*/"die unendliche Munitionstasche", /*french*/"un Sac de Graine sans fond"));
+    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BULLET_BAG_INF.clear"));
 
-    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Sticks", /*german*/"unendliche Deku-Stab-Kapazität", /*french*/"des Bâtons Mojo illimités"));
+    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_STICK_UPGRADE_INF.clear"));
 
-    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Nuts", /*german*/"unendliche Deku-Nuß-Kapazität", /*french*/"des Noix Mojo illimitées"));
+    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_NUT_UPGRADE_INF.clear"));
 
-    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("unlimited Magic", /*german*/"unendliche Magische Kraft", /*french*/"de la Magie infinie"));
+    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MAGIC_INF.clear"));
 
-    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("infinite Bombchus", /*german*/"die unendliche Krabbelminentasche", /*french*/"des Missiles Teigneux illimités"));
+    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_BOMBCHU_INF.clear"));
 
-    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"die unendliche Geldbörse", /*french*/"une Bourse sans fond"));
+    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_WALLET_INF.clear"));
 
-    hintTextTable[RHT_EPONA] = HintText(CustomMessage("Epona", /*german*/"Epona", /*french*/"Epona"),
+    hintTextTable[RHT_EPONA] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_EPONA.clear"),
                                     // /*spanish*/a Epona
                                     {
-                                    CustomMessage("something from Malon", /*german*/"ein Geschenk von Malon", /*french*/"un cadeau de Malon"),
+                                    CustomMessages::CreateMessage("randomizer.hints.RHT_EPONA.ambiguous.0"),
                                          // /*spanish*/un obsequio de Malon
-                                    CustomMessage("a song sung by frogs", /*german*/"ein von Fröschen gesungenes Lied,", /*french*/"une chanson aimée des grenouilles"),
+                                    CustomMessages::CreateMessage("randomizer.hints.RHT_EPONA.ambiguous.1"),
                                          // /*spanish*/una melodía de ranas
-                                    CustomMessage("something to cross a broken bridge", /*german*/"etwas um eine kaputte Brücke zu überqueren,", /*french*/"une chose pour traverser un pont brisé")
+                                    CustomMessages::CreateMessage("randomizer.hints.RHT_EPONA.ambiguous.2")
                                          // /*spanish*/algo para cruzar un puente roto
                                     }, {
-                                    CustomMessage("a horse", /*german*/"ein Pferd", /*french*/"un fidèle destrier"),
+                                    CustomMessages::CreateMessage("randomizer.hints.RHT_EPONA.obscure.0"),
                                          // /*spanish*/una yegua
-                                    CustomMessage("a four legged friend", /*german*/"ein vierbeiniger Freund", /*french*/"un puissant animal")});
+                                    CustomMessages::CreateMessage("randomizer.hints.RHT_EPONA.obscure.1")});
                                          // /*spanish*/una amiga cuadrúpeda
 
     //What is this used for?
-    hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
+    hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_HINT_MYSTERIOUS.clear"));
                                                   // /*spanish*/algo misterioso
 
-    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("a mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"un objet mystérieux"));
+    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MYSTERIOUS_ITEM.clear"));
                                                   // /*spanish*/algo misterioso
 
-     hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL] = HintText(CustomMessage("Mysterious Item", /*german*/"Mysteriöser Gegenstand", /*french*/"Objet Mystérieux"));
+     hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL] = HintText(CustomMessages::CreateMessage("randomizer.hints.RHT_MYSTERIOUS_ITEM_CAPITAL.clear"));
                                                   // /*spanish*/Algo Misterioso
 
     // clang-format on

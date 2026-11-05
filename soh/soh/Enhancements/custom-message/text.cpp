@@ -1,9 +1,34 @@
 #include "text.h"
+#include "soh/Enhancements/Lang/LanguagePolicy.h"
 #include "soh/ShipUtils.h"
 #include <functional>
+#include <nlohmann/json.hpp>
 #include "z64.h"
 
 Text::Text() = default;
+
+void to_json(nlohmann::json& json, const Text& text) {
+    json = { { "english", text.GetEnglish() },
+             { "french", text.GetFrench() },
+             { "german", text.GetGerman() },
+             { "spanish", text.GetSpanish() },
+             { "locales", text.GetLocales() } };
+}
+
+void from_json(const nlohmann::json& json, Text& text) {
+    Text result;
+    if (json.is_string()) {
+        result = Text(json.get<std::string>());
+    } else if (json.is_object()) {
+        result = Text(json.value("english", ""), json.value("french", ""), json.value("german", ""),
+                      json.value("spanish", ""));
+        if (json.contains("locales")) {
+            for (const auto& [locale, value] : json.at("locales").items())
+                result.SetForLocale(locale, value.get<std::string>());
+        }
+    }
+    text = std::move(result);
+}
 
 Text::Text(std::string english_, std::string french_, std::string german_)
     : english(std::move(english_)), french(std::move(french_)), german(std::move(german_)), spanish("") {
@@ -49,7 +74,9 @@ const std::string& Text::GetSpanish() const {
 }
 
 const std::string& Text::GetForLanguage(uint8_t language) const {
-    switch (language) {
+    if (language == 3)
+        return GetForLocale("ja_JP");
+    switch (LanguagePolicy_LegacyText(language)) {
         case 0:
             return GetEnglish();
         case 2:
@@ -61,22 +88,55 @@ const std::string& Text::GetForLanguage(uint8_t language) const {
     }
 }
 
+const std::string& Text::GetForLocale(const std::string& locale) const {
+    if (locale == "en_US")
+        return GetEnglish();
+    if (locale == "de_DE")
+        return GetGerman();
+    if (locale == "fr_FR")
+        return GetFrench();
+    const auto found = locales.find(locale);
+    return found == locales.end() || found->second == TODO_TRANSLATE ? english : found->second;
+}
+
+void Text::SetForLocale(const std::string& locale, std::string text) {
+    if (locale == "en_US")
+        english = std::move(text);
+    else if (locale == "de_DE")
+        german = std::move(text);
+    else if (locale == "fr_FR")
+        french = std::move(text);
+    else
+        locales[locale] = std::move(text);
+}
+
+const std::map<std::string, std::string>& Text::GetLocales() const {
+    return locales;
+}
+
+std::vector<std::reference_wrapper<std::string>> Text::AllTexts() {
+    std::vector<std::reference_wrapper<std::string>> result = { english, french, german, spanish };
+    for (auto& [locale, text] : locales)
+        result.emplace_back(text);
+    return result;
+}
+
 Text Text::operator+(const Text& right) const {
-    return Text{
-        english + right.GetEnglish(),
-        french + right.GetFrench(),
-        german + right.GetGerman(),
-        spanish + right.GetSpanish(),
-    };
+    Text result{ english + right.GetEnglish(), french + right.GetFrench(), german + right.GetGerman(),
+                 spanish + right.GetSpanish() };
+    for (const auto& [locale, text] : locales)
+        result.SetForLocale(locale, text + right.GetForLocale(locale));
+    for (const auto& [locale, text] : right.locales)
+        if (!locales.contains(locale))
+            result.SetForLocale(locale, GetForLocale(locale) + text);
+    return result;
 }
 
 Text Text::operator+(const std::string& right) const {
-    return Text{
-        english + right,
-        french + right,
-        german + right,
-        spanish + right,
-    };
+    Text result{ english + right, french + right, german + right, spanish + right };
+    for (const auto& [locale, text] : locales)
+        result.SetForLocale(locale, text + right);
+    return result;
 }
 
 bool Text::operator==(const Text& right) const {
@@ -100,16 +160,21 @@ static void replaceAll(std::string& target, const std::string& oldStr, const std
 }
 
 void Text::Replace(const std::string& oldStr, const std::string& newStr) {
-    for (std::string& str : { std::ref(english), std::ref(french), std::ref(german), std::ref(spanish) }) {
+    for (std::string& str : AllTexts()) {
         replaceAll(str, oldStr, newStr);
     }
 }
 
 void Text::Replace(const std::string& oldStr, const Text& newText) {
+    for (const auto& [locale, text] : newText.locales)
+        if (!locales.contains(locale))
+            locales[locale] = english;
     replaceAll(english, oldStr, newText.GetEnglish());
     replaceAll(french, oldStr, newText.GetFrench());
     replaceAll(german, oldStr, newText.GetGerman());
     replaceAll(spanish, oldStr, newText.GetSpanish());
+    for (auto& [locale, text] : locales)
+        replaceAll(text, oldStr, newText.GetForLocale(locale));
 }
 
 static bool isAsciiVowel(char c) {
@@ -154,7 +219,7 @@ static void replaceRandomVowel(std::string& target, uint64_t* randState) {
 }
 
 void Text::ReplaceRandomVowel(uint64_t* randState) {
-    for (std::string& str : { std::ref(english), std::ref(french), std::ref(german), std::ref(spanish) }) {
+    for (std::string& str : AllTexts()) {
         replaceRandomVowel(str, randState);
     }
 }
@@ -168,7 +233,7 @@ static void duplicateRandomLetter(std::string& target, uint64_t* randState) {
 }
 
 void Text::DuplicateRandomLetter(uint64_t* randState) {
-    for (std::string& str : { std::ref(english), std::ref(french), std::ref(german), std::ref(spanish) }) {
+    for (std::string& str : AllTexts()) {
         duplicateRandomLetter(str, randState);
     }
 }

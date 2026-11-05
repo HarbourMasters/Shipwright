@@ -1868,7 +1868,7 @@ void Settings::CreateOptions() {
         auto trick = &mTrickSettings[i];
         if (trick->GetCategory() == OptionCategory::Trick) {
             tricksOption.push_back(trick);
-            mTrickNameToEnum[std::string(trick->GetName())] = static_cast<RandomizerTrick>(i);
+            mTrickNameToEnum[trick->GetCanonicalName()] = static_cast<RandomizerTrick>(i);
             mTricksByArea[trick->GetArea()].push_back(static_cast<RandomizerTrick>(i));
         }
     }
@@ -2587,7 +2587,7 @@ std::unordered_map<std::string, RandomizerSettingKey> Settings::PopulateOptionNa
     for (size_t count = 0; count < RSK_MAX; count++) {
         // skip unassigned settings (RSK_NONE)
         if (mOptions[count].GetOptionCount() > 0) {
-            output[mOptions[count].GetName()] = static_cast<RandomizerSettingKey>(count);
+            output[mOptions[count].GetCanonicalName()] = static_cast<RandomizerSettingKey>(count);
         }
     }
     return output;

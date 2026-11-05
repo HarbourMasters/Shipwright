@@ -1,5 +1,9 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include "CustomMessageManager.h"
+#include "soh/Enhancements/Lang/GameLanguage.h"
+#include "soh/Enhancements/Lang/MessageLanguage.h"
 #include "CustomMessageInterfaceAddon.h"
+#include "UnicodeMessage.h"
 #include <algorithm>
 #include <stdint.h>
 #include <cstring>
@@ -105,6 +109,7 @@ CustomMessage::CustomMessage(Text text, TextBoxType type_, TextBoxPosition posit
     messages[LANGUAGE_ENG] = text.GetEnglish();
     messages[LANGUAGE_GER] = text.GetGerman();
     messages[LANGUAGE_FRA] = text.GetFrench();
+    locales = text.GetLocales();
 }
 
 typedef struct {
@@ -122,9 +127,9 @@ CustomMessage CustomMessage::LoadVanillaMessageTableEntry(uint16_t textId) {
     MessageTableEntry* msgEntry = sNesMessageEntryTablePtr;
     u16 bufferId = textId;
     CustomMessage msg;
-    if (gSaveContext.language == LANGUAGE_GER) {
+    if (GameLanguage_GetLegacyText() == LANGUAGE_GER) {
         msgEntry = sGerMessageEntryTablePtr;
-    } else if (gSaveContext.language == LANGUAGE_FRA) {
+    } else if (GameLanguage_GetLegacyText() == LANGUAGE_FRA) {
         msgEntry = sFraMessageEntryTablePtr;
     }
     while (msgEntry->textId != 0xFFFF) {
@@ -155,14 +160,88 @@ const std::string CustomMessage::GetFrench(MessageFormat format) const {
 }
 
 const std::string CustomMessage::GetForCurrentLanguage(MessageFormat format) const {
-    return GetForLanguage(
-        ((Language)gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : (Language)gSaveContext.language, format);
+    return GetForLocale(GameLanguage_GetMessageLocale(), format);
+}
+
+const std::string CustomMessage::GetForUILanguage(MessageFormat format) const {
+    return GetForLocale(Lang::GetUILanguage(), format);
 }
 
 const std::string CustomMessage::GetForLanguage(uint8_t language, MessageFormat format) const {
-    std::string output = !messages[language].starts_with(TODO_TRANSLATE) ? messages[language] : messages[LANGUAGE_ENG];
+    if (language == LANGUAGE_JPN)
+        return GetForLocale("ja_JP", format);
+    const uint8_t slot = LanguagePolicy_LegacyText(language);
+    std::string output = !messages[slot].starts_with(TODO_TRANSLATE) ? messages[slot] : messages[LANGUAGE_ENG];
     ProcessMessageFormat(output, format);
     return output;
+}
+
+void CustomMessage::SetForLocale(const std::string& locale, std::string text) {
+    if (locale == "en_US")
+        messages[LANGUAGE_ENG] = std::move(text);
+    else if (locale == "de_DE")
+        messages[LANGUAGE_GER] = std::move(text);
+    else if (locale == "fr_FR")
+        messages[LANGUAGE_FRA] = std::move(text);
+    else
+        locales[locale] = std::move(text);
+}
+const std::map<std::string, std::string>& CustomMessage::GetLocales() const {
+    return locales;
+}
+void CustomMessage::SetAlignment(const std::string& locale, MessageAlignment alignment) {
+    if (alignment == MESSAGE_ALIGNMENT_AUTO)
+        alignments.erase(locale);
+    else
+        alignments[locale] = alignment;
+}
+MessageAlignment CustomMessage::GetAlignment(const std::string& locale) const {
+    const auto found = alignments.find(locale);
+    return found == alignments.end() ? MESSAGE_ALIGNMENT_AUTO : found->second;
+}
+bool CustomMessage::HasLocale(const std::string& locale) const {
+    if (locale == "en_US")
+        return !messages[LANGUAGE_ENG].starts_with(TODO_TRANSLATE);
+    if (locale == "de_DE")
+        return !messages[LANGUAGE_GER].starts_with(TODO_TRANSLATE);
+    if (locale == "fr_FR")
+        return !messages[LANGUAGE_FRA].starts_with(TODO_TRANSLATE);
+    const auto found = locales.find(locale);
+    return found != locales.end() && !found->second.starts_with(TODO_TRANSLATE);
+}
+std::string CustomMessage::GetForLocale(const std::string& locale, MessageFormat format) const {
+    if (locale == "en_US")
+        return GetEnglish(format);
+    if (locale == "de_DE")
+        return GetGerman(format);
+    if (locale == "fr_FR")
+        return GetFrench(format);
+    std::string result = HasLocale(locale) ? locales.at(locale) : messages[LANGUAGE_ENG];
+    if (format == MF_CLEAN)
+        CleanString(result);
+    else if (format == MF_ENCODE)
+        EncodeColors(result);
+    else if (format != MF_RAW)
+        FormatUnicode(result, locale);
+    return result;
+}
+std::vector<std::reference_wrapper<std::string>> CustomMessage::AllMessages() {
+    std::vector<std::reference_wrapper<std::string>> result;
+    for (auto& text : messages)
+        result.emplace_back(text);
+    for (auto& [locale, text] : locales)
+        result.emplace_back(text);
+    return result;
+}
+void CustomMessage::IncludeLocales(const CustomMessage& other) {
+    for (const auto& [locale, text] : other.locales)
+        if (!locales.contains(locale))
+            locales[locale] = messages[LANGUAGE_ENG];
+}
+void CustomMessage::FormatUnicode(std::string& text, const std::string& locale, std::optional<uint8_t> itemIcon) const {
+    ReplaceColors(text);
+    ReplaceAltarIcons(text);
+    text = UnicodeMessage::Format(text, locale == "ja_JP", itemIcon);
 }
 
 const std::vector<std::string> CustomMessage::GetAllMessages(MessageFormat format) const {
@@ -217,21 +296,21 @@ void CustomMessage::SetTextBoxPosition(TextBoxPosition boxPos) {
 }
 
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
-    std::vector<std::string> newColors = colors;
-    SohUtils::AppendVector(newColors, right.GetColors());
-    std::vector<bool> newCapital = capital;
-    SohUtils::AppendVector(newCapital, right.GetCapital());
-    return CustomMessage(messages[LANGUAGE_ENG] + right.GetEnglish(MF_RAW),
-                         messages[LANGUAGE_GER] + right.GetGerman(MF_RAW),
-                         messages[LANGUAGE_FRA] + right.GetFrench(MF_RAW), newColors, newCapital, type, position);
+    CustomMessage result = *this;
+    result += right;
+    return result;
 }
 
 CustomMessage CustomMessage::operator+(const std::string& right) const {
-    return CustomMessage(messages[LANGUAGE_ENG] + right, messages[LANGUAGE_GER] + right,
-                         messages[LANGUAGE_FRA] + right);
+    CustomMessage result = *this;
+    result += right;
+    return result;
 }
 
 void CustomMessage::operator+=(const CustomMessage& right) {
+    IncludeLocales(right);
+    for (auto& [locale, text] : locales)
+        text += right.GetForLocale(locale, MF_RAW);
     messages[LANGUAGE_ENG] += right.GetEnglish(MF_RAW);
     messages[LANGUAGE_GER] += right.GetGerman(MF_RAW);
     messages[LANGUAGE_FRA] += right.GetFrench(MF_RAW);
@@ -240,6 +319,8 @@ void CustomMessage::operator+=(const CustomMessage& right) {
 }
 
 void CustomMessage::operator+=(const std::string& right) {
+    for (auto& [locale, text] : locales)
+        text += right;
     messages[LANGUAGE_ENG] += right;
     messages[LANGUAGE_GER] += right;
     messages[LANGUAGE_FRA] += right;
@@ -263,30 +344,54 @@ bool CustomMessage::operator!=(const CustomMessage& operand) const {
 }
 
 void CustomMessage::LoadIntoFont() {
+    LoadIntoFont(GameLanguage_GetMessageLocale());
+}
+
+void CustomMessage::LoadIntoFont(const std::string& locale) {
     MessageContext* msgCtx = &gPlayState->msgCtx;
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
     const size_t maxBufferSize = sizeof(font->msgBuf);
     font->charTexBuf[0] = (type << 4) | position;
-    switch (gSaveContext.language) {
-        case LANGUAGE_FRA:
-            msgCtx->msgLength = font->msgLength =
-                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetFrench(MF_RAW), maxBufferSize));
-            break;
-        case LANGUAGE_GER:
-            msgCtx->msgLength = font->msgLength =
-                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetGerman(MF_RAW), maxBufferSize));
-            break;
-        case LANGUAGE_ENG:
-        default:
-            msgCtx->msgLength = font->msgLength =
-                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetEnglish(MF_RAW), maxBufferSize));
-            break;
+    bool unicode = (locale != "en_US" && locale != "de_DE" && locale != "fr_FR" && HasLocale(locale)) ||
+                   UnicodeMessage::RequiresUnicode(GetForLocale(locale, MF_RAW));
+    uint8_t language = unicode ? LanguagePolicy_FromLocale(locale.c_str())
+                               : LanguagePolicy_LegacyText(LanguagePolicy_FromLocale(locale.c_str()));
+    std::string text = unicode ? GetForLocale(locale, MF_FORMATTED) : GetForLanguage(language, MF_RAW);
+    if (unicode && text.size() > maxBufferSize) {
+        // Never cut off choice labels or half of a control code in an oversized translation.
+        SPDLOG_WARN("Custom message ({}) exceeds native buffer; using the complete legacy message", locale);
+        unicode = false;
+        language = LanguagePolicy_LegacyText(LanguagePolicy_FromLocale(locale.c_str()));
+        text = GetForLanguage(language, MF_RAW);
     }
+    if (unicode) {
+        MessageLanguage_SetUnicode(language);
+        auto alignment = GetAlignment(locale);
+        if (alignment == MESSAGE_ALIGNMENT_AUTO) {
+            alignment = MESSAGE_ALIGNMENT_CENTER;
+            // Inspect the complete formatted message once, skipping operands.
+            // Choice prompts stay left-aligned even on preceding pages.
+            for (size_t cursor = 0; cursor < text.size();) {
+                const auto code = static_cast<unsigned char>(text[cursor]);
+                if (code == 0x1B || code == 0x1C) {
+                    alignment = MESSAGE_ALIGNMENT_LEFT;
+                    break;
+                }
+                cursor += code < 0x20 ? UnicodeMessage::ControlSize(code) : 1;
+            }
+        }
+        MessageLanguage_SetAlignment(alignment);
+    } else {
+        MessageLanguage_Set(language);
+    }
+    const size_t length = SohUtils::CopyStringToCharBuffer(buffer, text, maxBufferSize);
+    font->msgLength = static_cast<u32>(length);
+    msgCtx->msgLength = static_cast<s32>(length);
 }
 
 void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
-    for (std::string& str : messages) {
+    for (std::string& str : AllMessages()) {
         size_t position = str.find(oldStr);
         while (position != std::string::npos) {
             str.replace(position, oldStr.length(), newStr);
@@ -296,6 +401,7 @@ void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
 }
 
 void CustomMessage::Replace(std::string&& oldStr, CustomMessage newMessage) {
+    IncludeLocales(newMessage);
     for (uint8_t language = 0; language < LANGUAGE_MAX - 1; language++) {
         size_t position = messages[language].find(oldStr);
         std::string newMsg = newMessage.messages[language];
@@ -305,6 +411,14 @@ void CustomMessage::Replace(std::string&& oldStr, CustomMessage newMessage) {
         while (position != std::string::npos) {
             messages[language].replace(position, oldStr.length(), newMsg);
             position = messages[language].find(oldStr);
+        }
+    }
+    for (auto& [locale, text] : locales) {
+        const std::string replacement = newMessage.GetForLocale(locale, MF_RAW);
+        size_t cursor = 0;
+        while ((cursor = text.find(oldStr, cursor)) != std::string::npos) {
+            text.replace(cursor, oldStr.size(), replacement);
+            cursor += replacement.size();
         }
     }
 }
@@ -323,37 +437,59 @@ void CustomMessage::Format(ItemID iid) {
         ReplaceColors(str);
         ReplaceAltarIcons(str);
     }
-    *this += MESSAGE_END();
+    for (auto& [locale, text] : locales) {
+        FormatUnicode(text, locale, static_cast<uint8_t>(iid));
+    }
+    for (auto& text : messages)
+        text += MESSAGE_END();
 }
 
 void CustomMessage::Format() {
     for (std::string& str : messages) {
         FormatString(str);
     }
+    for (auto& [locale, text] : locales)
+        FormatUnicode(text, locale);
 }
 
 void CustomMessage::AutoFormat() {
     for (std::string& str : messages) {
         AutoFormatString(str);
     }
+    for (auto& [locale, text] : locales)
+        FormatUnicode(text, locale);
 }
 
 void CustomMessage::AutoFormat(ItemID iid) {
+    const auto icon = ITEM_OBTAINED(iid);
     for (std::string& str : messages) {
-        str.insert(0, ITEM_OBTAINED(iid));
+        str.insert(0, icon);
+        AutoFormatString(str);
+        // Legacy pages still get their icon here, but a control operand whose
+        // value is 0x04/0x0C is not a page break (including the icon ID itself).
+        for (size_t cursor = 0; cursor < str.size();) {
+            const auto code = static_cast<unsigned char>(str[cursor]);
+            cursor += code < 0x20 ? UnicodeMessage::ControlSize(code) : 1;
+            if (code == 0x04 || code == 0x0C) {
+                str.insert(cursor, icon);
+                cursor += icon.size();
+            }
+        }
     }
-    AutoFormat();
-    Replace(WAIT_FOR_INPUT(), WAIT_FOR_INPUT() + ITEM_OBTAINED(iid));
+    // The Unicode formatter owns both authored and automatic continuations.
+    // Do not insert icons again after it has already repeated them.
+    for (auto& [locale, text] : locales)
+        FormatUnicode(text, locale, static_cast<uint8_t>(iid));
 }
 
 void CustomMessage::Clean() {
-    for (std::string& str : messages) {
+    for (std::string& str : AllMessages()) {
         CleanString(str);
     }
 }
 
 void CustomMessage::Encode() {
-    for (std::string& str : messages) {
+    for (std::string& str : AllMessages()) {
         EncodeColors(str);
     }
 }
@@ -420,10 +556,10 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
             // Some characters only one byte while others are two bytes
             // So check both possibilities when checking for a character
             if (pixelWidthTable.count(textStr->substr(currentPos, 1))) {
-                totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 1)];
+                totalPixelWidth += static_cast<size_t>(pixelWidthTable[textStr->substr(currentPos, 1)]);
                 nextPosJump = 1;
             } else if (pixelWidthTable.count(textStr->substr(currentPos, 2))) {
-                totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 2)];
+                totalPixelWidth += static_cast<size_t>(pixelWidthTable[textStr->substr(currentPos, 2)]);
                 nextPosJump = 2;
             } else {
                 SPDLOG_DEBUG("Table does not contain " + textStr->substr(currentPos, 1) + "/" +
@@ -638,7 +774,7 @@ void CustomMessage::AutoFormatString(std::string& str) const {
 }
 
 void CustomMessage::InsertNumber(uint8_t num) {
-    for (std::string& str : messages) {
+    for (std::string& str : AllMessages()) {
         size_t firstBar = str.find('|');
         if (firstBar != std::string::npos) {
             size_t secondBar = str.find('|', firstBar + 1);
@@ -660,7 +796,7 @@ void CustomMessage::InsertNumber(uint8_t num) {
 }
 
 void CustomMessage::SetSingularPlural() {
-    for (std::string& str : messages) {
+    for (std::string& str : AllMessages()) {
         size_t firstBar = str.find('|');
         if (firstBar != std::string::npos) {
             size_t euroSign = str.find("€");
@@ -683,8 +819,8 @@ void CustomMessage::SetSingularPlural() {
 }
 
 void CustomMessage::Capitalize() {
-    for (std::string& str : messages) {
-        if (!str.empty()) {
+    for (std::string& str : AllMessages()) {
+        if (!str.empty() && static_cast<unsigned char>(str[0]) < 0x80) {
             str[0] = std::toupper(str[0]);
         }
     }

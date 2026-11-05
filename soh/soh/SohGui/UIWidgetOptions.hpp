@@ -265,6 +265,12 @@ struct ComboboxOptions : WidgetOptions {
     LabelPositions labelPosition = LabelPositions::Above;
     ImGuiComboFlags flags = 0;
     Colors color = Colors::LightBlue;
+    // Canonical choices stay unchanged; only their displayed text uses this scope.
+    std::string translationScope;
+    ComboboxOptions& TranslationScope(std::string scope) {
+        translationScope = std::move(scope);
+        return *this;
+    }
 
     ComboboxOptions& ComboMap(std::map<int32_t, const char*> comboMap_) {
         comboMap = comboMap_;

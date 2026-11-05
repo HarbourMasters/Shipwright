@@ -1,3 +1,6 @@
+#include "soh/Enhancements/Lang/Lang.h"
+#include "soh/Enhancements/Lang/MessageLanguage.h"
+#include "soh/Enhancements/Lang/LanguagePolicy.h"
 #include <ship/window/Window.h>
 
 #include "MessageViewer.h"
@@ -33,13 +36,13 @@ MessageViewer::~MessageViewer() {
 
 void MessageViewer::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-    ImGui::Text("Table ID");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.messageviewer.table_id", "Table ID"));
     ImGui::SameLine();
     PushStyleInput(THEME_COLOR);
     ImGui::InputText("##TableID", mTableIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter,
                      UIWidgets::TextFilters::FilterAlphaNum);
     UIWidgets::InsertHelpHoverText("Leave blank for vanilla table");
-    ImGui::Text("Text ID");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.messageviewer.text_id", "Text ID"));
     ImGui::SameLine();
     switch (mTextIdBase) {
         case DECIMAL:
@@ -55,32 +58,43 @@ void MessageViewer::DrawElement() {
     }
     PopStyleInput();
     PushStyleCheckbox(THEME_COLOR);
-    if (ImGui::RadioButton("Hexadecimal", &mTextIdBase, HEXADECIMAL)) {
+    if (ImGui::RadioButton(Lang::UILabel("ui.text.enhancements.debugger.messageviewer.hexadecimal", "Hexadecimal"),
+                           &mTextIdBase, HEXADECIMAL)) {
         memset(mTextIdBuf, 0, sizeof(char) * MAX_STRING_SIZE);
     }
     ImGui::SameLine();
-    if (ImGui::RadioButton("Decimal", &mTextIdBase, DECIMAL)) {
+    if (ImGui::RadioButton(Lang::UILabel("ui.text.enhancements.debugger.messageviewer.decimal", "Decimal"),
+                           &mTextIdBase, DECIMAL)) {
         memset(mTextIdBuf, 0, sizeof(char) * MAX_STRING_SIZE);
     }
     PopStyleCheckbox();
     SohGui::SohMenu::UpdateLanguageMap(SohGui::languages);
-    UIWidgets::Combobox("Language", &mLanguage, SohGui::languages,
-                        UIWidgets::ComboboxOptions()
-                            .Color(THEME_COLOR)
-                            .DefaultIndex(0)
-                            .Tooltip("Which language to load from the selected text ID"));
+    UIWidgets::Combobox(
+        Lang::UILabel("ui.text.enhancements.debugger.messageviewer.language", "Language"), &mLanguage,
+        SohGui::languages,
+        UIWidgets::ComboboxOptions(
+            UIWidgets::ComboboxOptions()
+                .Color(THEME_COLOR)
+                .DefaultIndex(0)
+                .Tooltip(Lang::UIString(
+                    "ui.text.enhancements.debugger.messageviewer.which_language_to_load_from_the_selected_text_id",
+                    "Which language to load from the selected text ID")))
+            .TranslationScope("ui.text.enhancements.debugger.messageviewer"));
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button("Display Message##ExistingMessage")) {
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.debugger.messageviewer.display_message",
+                                    "Display Message##ExistingMessage"))) {
         mDisplayExistingMessageClicked = true;
     }
-    ImGui::Text("Custom Message");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.messageviewer.custom_message", "Custom Message"));
     UIWidgets::InsertHelpHoverText("Enter a string using Custom Message Syntax to preview it in-game. "
                                    "Any newline (\\n) characters inserted by the Enter key will be stripped "
                                    "from the output.");
     PushStyleInput(THEME_COLOR);
     ImGui::InputTextMultiline("##CustomMessage", mCustomMessageBuf, MAX_STRING_SIZE);
     PopStyleInput();
-    if (ImGui::Button("Display Message##CustomMessage")) {
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.debugger.messageviewer.display_message",
+                                    "Display Message##CustomMessage"))) {
         mDisplayCustomMessageClicked = true;
     }
     PopStyleButton();
@@ -180,6 +194,10 @@ static const char* msgStaticTbl[] = {
 };
 
 void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t language) {
+    MessageLanguage_Begin(language);
+    if (strlen(tableId) != 0) {
+        MessageLanguage_Set(LanguagePolicy_LegacyText(language));
+    }
     PlayState* play = gPlayState;
     static int16_t messageStaticIndices[] = { 0, 1, 3, 2 };
     const auto player = GET_PLAYER(gPlayState);
@@ -194,12 +212,11 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
     R_TEXT_CHAR_SCALE = 75;
     R_TEXT_LINE_SPACING = 12;
     R_TEXT_INIT_XPOS = 65;
-    if (language == LANGUAGE_JPN) {
+    if (MessageLanguage_IsJapanese()) {
         R_TEXT_CHAR_SCALE = 88;
         R_TEXT_LINE_SPACING = 18;
         R_TEXT_INIT_XPOS = 65;
     }
-    char* buffer = font->msgBuf;
     msgCtx->textId = textId;
     if (strlen(tableId) == 0) {
         FindMessage(play, textId, language);
@@ -207,12 +224,13 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
         const uintptr_t src = font->msgOffset;
         memcpy(font->msgBuf, reinterpret_cast<void const*>(src), font->msgLength);
     } else {
-        constexpr size_t maxBufferSize = sizeof(font->msgBuf);
-        const CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(tableId, textId);
-        font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
-        font->msgLength = static_cast<u32>(
-            SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize));
-        msgCtx->msgLength = static_cast<int32_t>(font->msgLength);
+        CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(tableId, textId);
+        messageEntry.LoadIntoFont(LanguagePolicy_Locale(language));
+        if (MessageLanguage_UsesUnicode()) {
+            R_TEXT_CHAR_SCALE = 88;
+            R_TEXT_LINE_SPACING = 14;
+            R_TEXT_INIT_XPOS = 50;
+        }
     }
     msgCtx->textBoxProperties = font->charTexBuf[0];
     msgCtx->textBoxType = msgCtx->textBoxProperties >> 4;

@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <algorithm>
 #include <cctype>
 #include <map>
@@ -420,9 +421,10 @@ void DrawMods(bool enabled) {
                     SelectOnlyMod(file, sourceIndex);
                 ImGui::SetDragDropPayload("DragMove", &sourceIndex, sizeof(int));
                 if (selectedEnabledModFiles.size() == 1) {
-                    ImGui::Text("Move %s", file.c_str());
+                    ImGui::Text(Lang::UIFormat("ui.text.enhancements.mod_menu.move_s", "Move %s"), file.c_str());
                 } else {
-                    ImGui::Text("Move %zu mods", selectedEnabledModFiles.size());
+                    ImGui::Text(Lang::UIFormat("ui.text.enhancements.mod_menu.move_zu_mods", "Move %zu mods"),
+                                selectedEnabledModFiles.size());
                 }
                 ImGui::EndDragDropSource();
             }
@@ -451,16 +453,22 @@ void DrawCustomMusicSummary() {
     }
 
     if (skipped.empty()) {
-        ImGui::Text("Custom Music: %zu song(s) loaded from .ootrs files", songCount);
+        ImGui::Text(Lang::UIFormat("ui.text.enhancements.mod_menu.custom_music_zu_song_s_loaded_from_ootrs_files",
+                                   "Custom Music: %zu song(s) loaded from .ootrs files"),
+                    songCount);
         return;
     }
 
-    ImGui::Text("Custom Music: %zu song(s) loaded from .ootrs files", songCount);
+    ImGui::Text(Lang::UIFormat("ui.text.enhancements.mod_menu.custom_music_zu_song_s_loaded_from_ootrs_files",
+                               "Custom Music: %zu song(s) loaded from .ootrs files"),
+                songCount);
     ImGui::SameLine();
-    ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow), "(%zu skipped)", skipped.size());
+    ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
+                       Lang::UIFormat("ui.text.enhancements.mod_menu.zu_skipped", "(%zu skipped)"), skipped.size());
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
-        ImGui::Text("Custom soundbanks are not supported yet:");
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.mod_menu.custom_soundbanks_are_not_supported_yet",
+                                              "Custom soundbanks are not supported yet:"));
         for (const std::string& file : skipped) {
             ImGui::BulletText("%s", file.c_str());
         }
@@ -474,10 +482,14 @@ void ModMenuWindow::DrawElement() {
     SohGui::mSohMenu->MenuDrawItem(tabHotkeyWidget, THEME_COLOR);
 
     ImGui::TextColored(
-        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
-        "Mods are currently not reloaded at runtime. Close and re-open Ship for the changes to take effect.\n"
-        "Drag ordering for the enabled list is available.\nMod priority is top to bottom. They override mods listed "
-        "below them.");
+        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow), "%s",
+        Lang::UIString(
+            "ui.text.enhancements.mod_menu.mods_are_currently_not_reloaded_at_runtime_close_and_re_open_ship_for_the_"
+            "changes_to_take_effect_dra",
+            "Mods are currently not reloaded at runtime. Close and re-open Ship for the changes to take effect.\n"
+            "Drag ordering for the enabled list is available.\nMod priority is top to bottom. They override mods "
+            "listed "
+            "below them."));
 
     DrawCustomMusicSummary();
 
@@ -489,7 +501,7 @@ void ModMenuWindow::DrawElement() {
     //     UpdateModFiles();
     // }
     // ImGui::SameLine();
-    if (UIWidgets::Button("Edit",
+    if (UIWidgets::Button(Lang::UILabel("ui.text.enhancements.mod_menu.edit", "Edit"),
                           UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Already editing..." } })
                               .Size(UIWidgets::Sizes::Inline)
                               .Color(THEME_COLOR))) {
@@ -497,42 +509,50 @@ void ModMenuWindow::DrawElement() {
     }
     if (editing) {
         ImGui::SameLine();
-        if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
+        if (UIWidgets::Button(Lang::UILabel("ui.text.enhancements.mod_menu.cancel", "Cancel"),
+                              UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
             editing = false;
             UpdateModFiles(false, true);
         }
         ImGui::SameLine();
-        if (UIWidgets::Button("Clear List", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
-            SohGui::RegisterPopup("Clear List",
-                                  "Clear the current mod list and force a rebuild on next boot.\nClick Apply & Close "
-                                  "to save this change.",
-                                  "Clear", "Cancel", [&]() {
-                                      enabledModFiles.clear();
-                                      ClearSelectedMods();
-                                      AfterModChange();
-                                  });
+        if (UIWidgets::Button(Lang::UILabel("ui.text.enhancements.mod_menu.clear_list", "Clear List"),
+                              UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
+            SohGui::RegisterPopup(
+                "Clear List",
+                "Clear the current mod list and force a rebuild on next boot.\nClick Apply & Close "
+                "to save this change.",
+                "Clear", "Cancel",
+                [&]() {
+                    enabledModFiles.clear();
+                    ClearSelectedMods();
+                    AfterModChange();
+                },
+                nullptr, "ui.text.enhancements.mod_menu");
         }
         ImGui::SameLine();
-        if (UIWidgets::Button("Apply & Close",
+        if (UIWidgets::Button(Lang::UILabel("ui.text.enhancements.mod_menu.apply_close", "Apply & Close"),
                               UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-            SohGui::RegisterPopup("Apply & Close",
-                                  "Application currently requires a restart. Save the mod info and close SoH?", "Close",
-                                  "Cancel", [&]() {
-                                      // TODO: runtime changes
-                                      SetEnabledModsCVarValue();
-                                      // TODO: runtime changes
-                                      /*
-                                      gfx_texture_cache_clear();
-                                      SOH::SkeletonPatcher::ClearSkeletons();
-                                      */
-                                      Ship::Context::GetRawInstance()->GetConsoleVariables()->Save();
-                                      Ship::Context::GetRawInstance()->GetWindow()->Close();
-                                  });
+            SohGui::RegisterPopup(
+                "Apply & Close", "Application currently requires a restart. Save the mod info and close SoH?", "Close",
+                "Cancel",
+                [&]() {
+                    // TODO: runtime changes
+                    SetEnabledModsCVarValue();
+                    // TODO: runtime changes
+                    /*
+                    gfx_texture_cache_clear();
+                    SOH::SkeletonPatcher::ClearSkeletons();
+                    */
+                    Ship::Context::GetRawInstance()->GetConsoleVariables()->Save();
+                    Ship::Context::GetRawInstance()->GetWindow()->Close();
+                },
+                nullptr, "ui.text.enhancements.mod_menu");
         }
     }
     ImGui::BeginDisabled(!editing);
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Enabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.mod_menu.enabled_mods", "Enabled Mods"),
+                                ImGuiTableColumnFlags_WidthStretch, 200.0f);
         // ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
         ImGui::TableHeadersRow();
@@ -570,7 +590,9 @@ void RegisterModMenuWidgets() {
         .RaceDisable(false)
         .Options(UIWidgets::CheckboxOptions({ { .disabledTooltip = "Temporarily disabled while editing mods list." } })
                      .Color(THEME_COLOR)
-                     .Tooltip("Toggle mods. For graphics mods, this means toggling between default and mod graphics.")
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gSettings.AltAssets.description",
+                         "Toggle mods. For graphics mods, this means toggling between default and mod graphics."))
                      .DefaultValue(true))
         .PreFunc([&](WidgetInfo& info) {
             auto options = std::static_pointer_cast<UIWidgets::CheckboxOptions>(info.options);
@@ -583,7 +605,8 @@ void RegisterModMenuWidgets() {
         .RaceDisable(false)
         .Options(UIWidgets::CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Allows pressing the Tab key to toggle mods")
+                     .Tooltip(Lang::UIString("ui.widgets.gSettings.Mods.AlternateAssetsHotkey.description",
+                                             "Allows pressing the Tab key to toggle mods"))
                      .DefaultValue(true));
     SohGui::mSohMenu->AddSearchWidget(
         { tabHotkeyWidget, "Settings", "Mod Menu", "Top", "alternate assets tab hotkey" });

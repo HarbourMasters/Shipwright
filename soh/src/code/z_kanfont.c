@@ -4142,26 +4142,58 @@ const char* msgStaticTbl[] = {
 };
 // #endregion
 
-/**
- * Loads a texture from kanji for the requested `character` into the character texture buffer
- * at `codePointIndex`. The value of `character` is the SHIFT-JIS encoding of the character.
- */
-void Font_LoadCharWide(Font* font, u16 character, u16 codePointIndex) {
-    // DmaMgr_RequestSync(&font->charTexBuf[codePointIndex], _kanjiSegmentStart + Kanji_OffsetFromShiftJIS(character),
-    // 0x80);
-
-    // #region SOH [NTSC]
-    // This function is called even for non-nstc, but this function would be empty for non-ntsc.
-    // To simulate that, we check if the jpn message table is loaded and if not immediately return.
+/** Returns the native kanji texture reference for a SHIFT-JIS character, or NULL without Japanese assets. */
+const char* Font_GetCharWideTexture(u16 character) {
+    // A PAL-only archive has no Japanese font. Preserve the native loader's
+    // availability check for both ROM text and added UTF-8 messages.
     if (sJpnMessageEntryTablePtr == NULL) {
-        return;
+        return NULL;
     }
-
     s32 charIndex = Kanji_OffsetFromShiftJIS(character);
     charIndex /= FONT_CHAR_TEX_SIZE;
-    if (charIndex < ARRAY_COUNT(kanjiFontTbl))
-        memcpy(&font->charTexBuf[codePointIndex], kanjiFontTbl[charIndex], strlen(kanjiFontTbl[charIndex]) + 1);
-    // #endregion
+    return charIndex >= 0 && charIndex < ARRAY_COUNT(kanjiFontTbl) ? kanjiFontTbl[charIndex] : NULL;
+}
+
+/** Returns the native glyph for a byte in an NTSC Japanese save filename. */
+const char* Font_GetNameCharTexture(u8 character) {
+    static MessageTableEntry* cachedTable;
+    static const char* textures[256];
+
+    // Use the same ordered character message as Font_LoadOrderedFontNTSC.
+    // Cache resource references once per archive table, independently of the
+    // PAL/NTSC fontBuf selected at startup. No new character map is needed.
+    if (cachedTable != sJpnMessageEntryTablePtr) {
+        cachedTable = sJpnMessageEntryTablePtr;
+        memset(textures, 0, sizeof(textures));
+        if (cachedTable != NULL) {
+            MessageTableEntry* entry = cachedTable;
+            while (entry->textId < 0xFFFC) {
+                entry++;
+            }
+            if (entry->textId == 0xFFFC && entry->segment != NULL) {
+                size_t index = 0;
+                for (size_t pos = 0; pos < entry->msgSize / sizeof(u16) && index < ARRAY_COUNT(textures); pos++) {
+                    u16 glyph;
+                    memcpy(&glyph, entry->segment + pos * sizeof(u16), sizeof(glyph));
+                    if (glyph == MESSAGE_END_JPN) {
+                        break;
+                    }
+                    if (glyph != MESSAGE_NEWLINE_JPN) {
+                        textures[index++] = Font_GetCharWideTexture(glyph);
+                    }
+                }
+            }
+        }
+    }
+    return textures[character];
+}
+
+/** Loads a native kanji texture reference into the character texture buffer at codePointIndex. */
+void Font_LoadCharWide(Font* font, u16 character, u16 codePointIndex) {
+    const char* texture = Font_GetCharWideTexture(character);
+    if (texture != NULL) {
+        memcpy(&font->charTexBuf[codePointIndex], texture, strlen(texture) + 1);
+    }
 }
 
 /**

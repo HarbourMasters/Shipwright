@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/custom-message/CustomMessageManager.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
@@ -20,9 +21,8 @@ static u8& NayrusLoveUses() {
 
 // The text opens before Item_Give runs, so the stored count doesn't include this item yet
 static void BuildNayrusLoveMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage("You got %bNayru's Love%w!&You now have %b[[d]]%w |use|uses| of it!",
-                                      "Du erhältst %bNayrus Umarmung%w!&Du kannst sie nun %b[[d]]%w-mal einsetzen!",
-                                      "Vous obtenez l'%bAmour de Nayru%w!&Vous pouvez l'utiliser %b[[d]]%w fois!");
+    CustomMessage msg =
+        CustomMessages::CreateMessage("randomizer.messages.consumable_nayrus_love.build_nayrus_love_message.0");
     uint8_t uses = NayrusLoveUses() < NAYRUS_LOVE_USES_MAX ? NayrusLoveUses() + 1 : NAYRUS_LOVE_USES_MAX;
     msg.InsertNumber(uses);
     msg.AutoFormat(ITEM_NAYRUS_LOVE);

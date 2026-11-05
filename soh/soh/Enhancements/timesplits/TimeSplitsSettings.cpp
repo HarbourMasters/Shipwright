@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 
 #include "TimeSplitsSettings.h"
 #include "TimeSplits.h"
@@ -404,54 +405,82 @@ void DrawOptions() {
         ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Enable Time Splits", "gSettings.TimeSplits.Enable",
+        UIWidgets::CVarCheckbox(Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.enable_time_splits",
+                                              "Enable Time Splits"),
+                                "gSettings.TimeSplits.Enable",
                                 {
                                     .color = THEME_COLOR,
                                 });
-        UIWidgets::Tooltip("Enables the Time Split system, splits will not occur with this unchecked.");
+        UIWidgets::Tooltip(Lang::UIString("ui.text.enhancements.timesplits.timesplitssettings.enables_the_time_split_"
+                                          "system_splits_will_not_occur_with_this_unchecked",
+                                          "Enables the Time Split system, splits will not occur with this unchecked."));
 
         ImGui::TableNextColumn();
-        if (UIWidgets::CVarCheckbox("Show Headers", "gSettings.TimeSplits.ShowHeaders",
-                                    {
-                                        .color = THEME_COLOR,
-                                    })) {
+        if (UIWidgets::CVarCheckbox(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.show_headers", "Show Headers"),
+                "gSettings.TimeSplits.ShowHeaders",
+                {
+                    .color = THEME_COLOR,
+                })) {
             UpdateSplitSettings(SPLIT_HEADERS);
         };
-        UIWidgets::Tooltip("Shows the column names in the Split List.");
+        UIWidgets::Tooltip(Lang::UIString(
+            "ui.text.enhancements.timesplits.timesplitssettings.shows_the_column_names_in_the_split_list",
+            "Shows the column names in the Split List."));
 
         ImGui::TableNextColumn();
-        if (UIWidgets::CVarCheckbox("Hide Background", "gSettings.TimeSplits.Opacity",
-                                    {
-                                        .color = THEME_COLOR,
-                                    })) {
+        if (UIWidgets::CVarCheckbox(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.hide_background", "Hide Background"),
+                "gSettings.TimeSplits.Opacity",
+                {
+                    .color = THEME_COLOR,
+                })) {
             UpdateSplitSettings(SPLIT_OPACITY);
         };
-        UIWidgets::Tooltip("Hides the background of the Splits List.\n"
-                           "Note: The background will display if the window extrudes from the main game window.");
+        UIWidgets::Tooltip(
+            Lang::UIString("ui.text.enhancements.timesplits.timesplitssettings.hides_the_background_of_the_splits_list_"
+                           "note_the_background_will_display_if_the_window_extrudes_from",
+                           "Hides the background of the Splits List.\n"
+                           "Note: The background will display if the window extrudes from the main game window."));
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Highlight Active Split", "gSettings.TimeSplits.Highlight",
+        UIWidgets::CVarCheckbox(
+            Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.highlight_active_split",
+                          "Highlight Active Split"),
+            "gSettings.TimeSplits.Highlight",
+            {
+                .color = THEME_COLOR,
+            });
+        UIWidgets::Tooltip(Lang::UIString(
+            "ui.text.enhancements.timesplits.timesplitssettings.highlights_the_row_with_the_current_active_split",
+            "Highlights the row with the current Active Split."));
+
+        ImGui::TableNextColumn();
+        UIWidgets::CVarCheckbox(Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.follow_active_split",
+                                              "Follow Active Split"),
+                                "gSettings.TimeSplits.Follow",
                                 {
                                     .color = THEME_COLOR,
                                 });
-        UIWidgets::Tooltip("Highlights the row with the current Active Split.");
-
-        ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Follow Active Split", "gSettings.TimeSplits.Follow",
-                                {
-                                    .color = THEME_COLOR,
-                                });
-        UIWidgets::Tooltip("Forces the Split List window to keep the Active Split visible.\n"
-                           "Note: This prevents user scrolling, disable to restore control.");
+        UIWidgets::Tooltip(
+            Lang::UIString("ui.text.enhancements.timesplits.timesplitssettings.forces_the_split_list_window_to_keep_"
+                           "the_active_split_visible_note_this_prevents_user_scrolling_disa",
+                           "Forces the Split List window to keep the Active Split visible.\n"
+                           "Note: This prevents user scrolling, disable to restore control."));
 
         ImGui::EndTable();
     }
 
-    UIWidgets::CVarCheckbox("Compare Splits", "gSettings.TimeSplits.Compare",
-                            {
-                                .color = THEME_COLOR,
-                            });
-    UIWidgets::Tooltip("Enables Split Comparisons between lists, this will integrate within the Split List.");
+    UIWidgets::CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.compare_splits", "Compare Splits"),
+        "gSettings.TimeSplits.Compare",
+        {
+            .color = THEME_COLOR,
+        });
+    UIWidgets::Tooltip(
+        Lang::UIString("ui.text.enhancements.timesplits.timesplitssettings.enables_split_comparisons_between_lists_"
+                       "this_will_integrate_within_the_split_list",
+                       "Enables Split Comparisons between lists, this will integrate within the Split List."));
 
     if (CVarGetInteger("gSettings.TimeSplits.Compare", 0)) {
         ImGui::SameLine();
@@ -478,7 +507,8 @@ void DrawActionButtons() {
         ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
 
         ImGui::TableNextColumn();
-        UIWidgets::InputString("New List", &listInputName,
+        UIWidgets::InputString(Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.new_list", "New List"),
+                               &listInputName,
                                {
                                    .labelPosition = UIWidgets::LabelPositions::None,
                                    .color = THEME_COLOR,
@@ -486,9 +516,11 @@ void DrawActionButtons() {
                                });
 
         ImGui::TableNextColumn();
-        if (UIWidgets::Button("Create List", {
-                                                 .color = THEME_COLOR,
-                                             })) {
+        if (UIWidgets::Button(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.create_list", "Create List"),
+                {
+                    .color = THEME_COLOR,
+                })) {
             if (!listInputName.empty()) {
                 SplitSaveFileAction(SPLIT_SAVE, listInputName);
                 SplitSaveFileAction(SPLIT_RETRIEVE, "");
@@ -511,28 +543,34 @@ void DrawActionButtons() {
         UIWidgets::PopStyleCombobox();
 
         ImGui::TableNextColumn();
-        if (UIWidgets::Button("Save Splits", {
-                                                 .size = { (ImGui::GetContentRegionAvail().x * 0.5f), 0 },
-                                                 .color = THEME_COLOR,
-                                             })) {
+        if (UIWidgets::Button(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.save_splits", "Save Splits"),
+                {
+                    .size = { (ImGui::GetContentRegionAvail().x * 0.5f), 0 },
+                    .color = THEME_COLOR,
+                })) {
             if (savedLists[0] != "Create a List First") {
                 SplitSaveFileAction(SPLIT_SAVE, savedLists[selectedIndex]);
             }
         }
         ImGui::SameLine();
-        if (UIWidgets::Button("Load Splits", {
-                                                 .size = { (ImGui::GetContentRegionAvail().x), 0 },
-                                                 .color = THEME_COLOR,
-                                             })) {
+        if (UIWidgets::Button(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.load_splits", "Load Splits"),
+                {
+                    .size = { (ImGui::GetContentRegionAvail().x), 0 },
+                    .color = THEME_COLOR,
+                })) {
             if (savedLists[0] != "Create a List First") {
                 SplitSaveFileAction(SPLIT_LOAD, savedLists[selectedIndex]);
             }
         }
 
         ImGui::TableNextColumn();
-        if (UIWidgets::Button("New Attempt", {
-                                                 .color = THEME_COLOR,
-                                             })) {
+        if (UIWidgets::Button(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.new_attempt", "New Attempt"),
+                {
+                    .color = THEME_COLOR,
+                })) {
             for (auto& splits : splitList) {
                 splits.splitStatus = SPLIT_INACTIVE;
             }
@@ -542,9 +580,11 @@ void DrawActionButtons() {
         }
 
         ImGui::TableNextColumn();
-        if (UIWidgets::Button("Update Splits", {
-                                                   .color = THEME_COLOR,
-                                               })) {
+        if (UIWidgets::Button(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.update_splits", "Update Splits"),
+                {
+                    .color = THEME_COLOR,
+                })) {
             UpdateSplitBests();
         }
 
@@ -556,9 +596,11 @@ void DrawEntranceList() {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-    if (ImGui::BeginCombo("##SceneFilter", sceneAreaNameMap[sceneFilterIndex])) {
+    if (ImGui::BeginCombo("##SceneFilter", Lang::UIVariant("ui.text.enhancements.timesplits.timesplitssettings",
+                                                           sceneAreaNameMap[sceneFilterIndex]))) {
         for (uint32_t i = 0; i < sceneAreaNameMap.size(); i++) {
-            if (ImGui::Selectable(sceneAreaNameMap[i])) {
+            if (ImGui::Selectable(
+                    Lang::UILabelVariant("ui.text.enhancements.timesplits.timesplitssettings", sceneAreaNameMap[i]))) {
                 sceneFilterIndex = i;
                 sceneRange = GetSceneIndexRange(sceneAreaRangeMap.at(sceneAreaNameMap[i]).startIndex,
                                                 sceneAreaRangeMap.at(sceneAreaNameMap[i]).endIndex);
@@ -583,7 +625,8 @@ void DrawEntranceList() {
                 };
                 ImGui::SameLine();
                 TableCellCenteredText(UIWidgets::ColorValues.at(UIWidgets::Colors::White),
-                                      sceneObjectList[i].splitName.c_str());
+                                      Lang::UIVariant("ui.text.enhancements.timesplits.timesplitssettings",
+                                                      sceneObjectList[i].splitName.c_str()));
 
                 SplitsPopImageButtonStyle();
                 ImGui::PopID();
@@ -613,11 +656,13 @@ void DrawItemList(std::string tableName, IndexRangeObject range, uint32_t tableS
                     AddSplitEntry(split.splitType, split.splitId);
                 }
             }
-            UIWidgets::Tooltip(splitObjectList[i].splitName.c_str());
+            UIWidgets::Tooltip(Lang::UIVariant("ui.text.enhancements.timesplits.timesplitssettings",
+                                               splitObjectList[i].splitName.c_str()));
             if (listName == "Bosses") {
                 ImGui::SameLine();
                 TableCellCenteredText(UIWidgets::ColorValues.at(UIWidgets::Colors::White),
-                                      splitObjectList[i].splitName.c_str());
+                                      Lang::UIVariant("ui.text.enhancements.timesplits.timesplitssettings",
+                                                      splitObjectList[i].splitName.c_str()));
             }
 
             SplitsPopImageButtonStyle();
@@ -634,27 +679,36 @@ void TimesplitsSettingsWindow::DrawElement() {
 
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("Timesplit Settings Tabs")) {
-        if (ImGui::BeginTabItem("List Options")) {
+        if (ImGui::BeginTabItem(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.list_options", "List Options"))) {
             DrawOptions();
             DrawActionButtons();
-            ImGui::SeparatorText("Current Splits");
+            ImGui::SeparatorText(
+                Lang::UIString("ui.text.enhancements.timesplits.timesplitssettings.current_splits", "Current Splits"));
             DrawSplitsList(false);
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Split Entries")) {
+        if (ImGui::BeginTabItem(
+                Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.split_entries", "Split Entries"))) {
             if (ImGui::BeginTable("Split Settings", 3)) {
-                ImGui::TableSetupColumn("Preview",
-                                        ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 88.0f);
-                ImGui::TableSetupColumn("Item Categories",
-                                        ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 120.0f);
-                ImGui::TableSetupColumn("Item Grids",
-                                        ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_NoHeaderLabel);
+                ImGui::TableSetupColumn(
+                    Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.preview", "Preview"),
+                    ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 88.0f);
+                ImGui::TableSetupColumn(
+                    Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.item_categories",
+                                  "Item Categories"),
+                    ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 120.0f);
+                ImGui::TableSetupColumn(
+                    Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.item_grids", "Item Grids"),
+                    ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_NoHeaderLabel);
 
                 ImGui::TableNextColumn();
                 ImGui::BeginDisabled();
-                UIWidgets::Button("Preview", {
-                                                 .color = THEME_COLOR,
-                                             });
+                UIWidgets::Button(
+                    Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.preview", "Preview"),
+                    {
+                        .color = THEME_COLOR,
+                    });
                 ImGui::EndDisabled();
                 ImGui::BeginChild("Preview List");
                 for (size_t i = 0; i < splitList.size(); i++) {
@@ -668,7 +722,8 @@ void TimesplitsSettingsWindow::DrawElement() {
                         shouldRemoveEntry = true;
                         entryIndex = (uint32_t)i;
                     };
-                    UIWidgets::Tooltip(splitList[i].splitName.c_str());
+                    UIWidgets::Tooltip(Lang::UIVariant("ui.text.enhancements.timesplits.timesplitssettings",
+                                                       splitList[i].splitName.c_str()));
 
                     HandleDragAndDrop(i);
                     SplitsPopImageButtonStyle();
@@ -677,37 +732,47 @@ void TimesplitsSettingsWindow::DrawElement() {
                 ImGui::EndChild();
 
                 ImGui::TableNextColumn();
-                if (UIWidgets::Button("Equipment", {
-                                                       .color = THEME_COLOR,
-                                                   })) {
+                if (UIWidgets::Button(
+                        Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.equipment", "Equipment"),
+                        {
+                            .color = THEME_COLOR,
+                        })) {
                     range = GetIndexRange(SPLIT_TYPE_ITEM, ITEM_SWORD_KOKIRI, ITEM_DOUBLE_DEFENSE);
                     listName = "Equipment";
                     listColumns = 3;
                 }
-                if (UIWidgets::Button("Inventory", {
-                                                       .color = THEME_COLOR,
-                                                   })) {
+                if (UIWidgets::Button(
+                        Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.inventory", "Inventory"),
+                        {
+                            .color = THEME_COLOR,
+                        })) {
                     range = GetIndexRange(SPLIT_TYPE_ITEM, ITEM_STICK, ITEM_WEIRD_EGG);
                     listName = "Inventory";
                     listColumns = 6;
                 }
-                if (UIWidgets::Button("Quest", {
-                                                   .color = THEME_COLOR,
-                                               })) {
+                if (UIWidgets::Button(
+                        Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.quest", "Quest"),
+                        {
+                            .color = THEME_COLOR,
+                        })) {
                     range = GetIndexRange(SPLIT_TYPE_ITEM, ITEM_SONG_LULLABY, ITEM_ZORA_SAPPHIRE);
                     listName = "Quest";
                     listColumns = 6;
                 }
-                if (UIWidgets::Button("Bosses", {
-                                                    .color = THEME_COLOR,
-                                                })) {
+                if (UIWidgets::Button(
+                        Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.bosses", "Bosses"),
+                        {
+                            .color = THEME_COLOR,
+                        })) {
                     range = GetIndexRange(SPLIT_TYPE_BOSS, ACTOR_BOSS_GOMA, ACTOR_BOSS_GANON2);
                     listName = "Bosses";
                     listColumns = 2;
                 }
-                if (UIWidgets::Button("Entrances", {
-                                                       .color = THEME_COLOR,
-                                                   })) {
+                if (UIWidgets::Button(
+                        Lang::UILabel("ui.text.enhancements.timesplits.timesplitssettings.entrances", "Entrances"),
+                        {
+                            .color = THEME_COLOR,
+                        })) {
                     listName = "Entrances";
                 }
                 ImGui::TableNextColumn();

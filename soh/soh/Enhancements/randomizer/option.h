@@ -179,6 +179,9 @@ class Option {
      * @return const std::string&
      */
     const std::string& GetName() const;
+    // English names are part of the existing spoiler/settings file format.
+    // Use GetName() for UI text and this accessor for serialization and lookup maps.
+    const std::string& GetCanonicalName() const;
     const std::string& GetDescription() const;
 
     /**
@@ -188,6 +191,9 @@ class Option {
      * @return const std::string&
      */
     const std::string& GetOptionText(size_t index) const;
+    // Display only: option parsing, seeds and saves retain canonical text/indices.
+    const std::string& GetUIOptionText(size_t index) const;
+    const std::string& GetCanonicalOptionText(size_t index) const;
 
     /**
      * @brief Get the CVar name for this Option.

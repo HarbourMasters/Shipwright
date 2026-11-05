@@ -1,13 +1,12 @@
 #pragma once
 
-#include <ship/window/gui/GuiWindow.h>
-
 typedef enum { COLVIEW_DISABLED, COLVIEW_SOLID, COLVIEW_TRANSPARENT } ColViewerRenderSetting;
 
 #ifdef __cplusplus
-class ColViewerWindow final : public Ship::GuiWindow {
+#include "soh/SohGui/LocalizedWindow.h"
+class ColViewerWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
     void InitElement() override;
     void DrawElement() override;

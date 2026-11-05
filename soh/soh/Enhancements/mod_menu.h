@@ -1,11 +1,10 @@
 #pragma once
 
-#include <ship/window/gui/GuiWindow.h>
-
 #ifdef __cplusplus
-class ModMenuWindow : public Ship::GuiWindow {
+#include "soh/SohGui/LocalizedWindow.h"
+class ModMenuWindow : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
     void InitElement() override;
     void DrawElement() override;

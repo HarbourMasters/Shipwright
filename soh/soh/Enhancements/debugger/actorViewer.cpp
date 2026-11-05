@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <algorithm>
 #include <array>
 #include <unordered_map>
@@ -238,7 +239,7 @@ void CreateActorSpecificData() {
         if (shotsPerRound == 0xFF || shotsPerRound == 0) {
             shotsPerRound = 1;
         }
-        ImGui::Checkbox("Flower", &isFlower);
+        ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.flower", "Flower"), &isFlower);
         if (!isFlower) {
             ImGui::InputScalar("Shots Per Round", ImGuiDataType_S16, &shotsPerRound);
         }
@@ -346,21 +347,23 @@ void CreateActorSpecificData() {
 
     actorSpecificData[ACTOR_EN_REEBA] = [](s16 params) -> s16 {
         bool isBig = params != 0;
-        ImGui::Checkbox("Big", &isBig);
+        ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.big", "Big"), &isBig);
 
         return isBig;
     };
 
     actorSpecificData[ACTOR_EN_TK] = [](s16 params) -> s16 {
         bool canTurn = params >= 0;
-        ImGui::Checkbox("Can Turn", &canTurn);
+        ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.can_turn", "Can Turn"), &canTurn);
 
         return canTurn ? 0 : -1;
     };
 
     actorSpecificData[ACTOR_EN_ITEM00] = [](s16 params) -> s16 {
         bool autoCollect = params & 0x8000;
-        ImGui::Checkbox("Automatically Collect", &autoCollect);
+        ImGui::Checkbox(
+            Lang::UILabel("ui.text.enhancements.debugger.actorviewer.automatically_collect", "Automatically Collect"),
+            &autoCollect);
         u8 collectibleFlag = (params & 0x3F00) >> 8;
         ImGui::InputScalar("Collectible Flag", ImGuiDataType_U8, &collectibleFlag);
         if (collectibleFlag > 0x3F) {
@@ -707,7 +710,8 @@ void CreateActorSpecificData() {
         }
 
         bool doubleDoor = ((params >> 6) & 1) != 0;
-        ImGui::Checkbox("Double Door", &doubleDoor);
+        ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.double_door", "Double Door"),
+                        &doubleDoor);
 
         u8 lowerBits = params & 0x3F;
         if (type == 1) {
@@ -738,10 +742,11 @@ void CreateActorSpecificData() {
     actorSpecificData[ACTOR_EN_KANBAN] = [](s16 params) -> s16 {
         bool piece = params == (s16)0xFFDD;
         bool fishingSign = params == 0x300;
-        if (ImGui::Checkbox("Piece", &piece)) {
+        if (ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.piece", "Piece"), &piece)) {
             fishingSign = false;
         }
-        if (ImGui::Checkbox("Fishing Sign", &fishingSign)) {
+        if (ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.fishing_sign", "Fishing Sign"),
+                            &fishingSign)) {
             piece = false;
         }
 
@@ -762,7 +767,7 @@ void CreateActorSpecificData() {
         ImGui::Combo("Type", &type, items, IM_ARRAYSIZE(items));
 
         bool bugs = ((params >> 4) & 1) != 0;
-        ImGui::Checkbox("Bugs", &bugs);
+        ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.bugs", "Bugs"), &bugs);
 
         u8 drop = (params >> 8) & 0xF;
         if (type == 2) {
@@ -874,26 +879,39 @@ void ActorViewerWindow::DrawElement() {
             bool toggled = false;
             bool optionChange = false;
 
-            ImGui::SeparatorText("Options");
+            ImGui::SeparatorText(Lang::UIString("ui.text.enhancements.debugger.actorviewer.options", "Options"));
 
-            toggled = UIWidgets::CVarCheckbox("Actor Name Tags", CVAR_ACTOR_NAME_TAGS("Enabled"),
-                                              { { .tooltip = "Adds \"name tags\" above actors for identification" } });
+            toggled = UIWidgets::CVarCheckbox(
+                Lang::UILabel("ui.text.enhancements.debugger.actorviewer.actor_name_tags", "Actor Name Tags"),
+                CVAR_ACTOR_NAME_TAGS("Enabled"),
+                { { .tooltip = "Adds \"name tags\" above actors for identification" } });
 
             ImGui::SameLine();
 
-            UIWidgets::Button("Display Items", { { .tooltip = "Click to add display items on the name tags" } });
+            UIWidgets::Button(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.display_items", "Display Items"),
+                              { { .tooltip = "Click to add display items on the name tags" } });
 
             if (ImGui::BeginPopupContextItem(nullptr, ImGuiPopupFlags_MouseButtonLeft | ImGuiPopupFlags_NoReopen)) {
-                optionChange |= UIWidgets::CVarCheckbox("ID", CVAR_ACTOR_NAME_TAGS("DisplayID"));
-                optionChange |= UIWidgets::CVarCheckbox("Description", CVAR_ACTOR_NAME_TAGS("DisplayDescription"));
-                optionChange |= UIWidgets::CVarCheckbox("Category", CVAR_ACTOR_NAME_TAGS("DisplayCategory"));
-                optionChange |= UIWidgets::CVarCheckbox("Params", CVAR_ACTOR_NAME_TAGS("DisplayParams"));
+                optionChange |=
+                    UIWidgets::CVarCheckbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.id", "ID"),
+                                            CVAR_ACTOR_NAME_TAGS("DisplayID"));
+                optionChange |= UIWidgets::CVarCheckbox(
+                    Lang::UILabel("ui.text.enhancements.debugger.actorviewer.description", "Description"),
+                    CVAR_ACTOR_NAME_TAGS("DisplayDescription"));
+                optionChange |= UIWidgets::CVarCheckbox(
+                    Lang::UILabel("ui.text.enhancements.debugger.actorviewer.category", "Category"),
+                    CVAR_ACTOR_NAME_TAGS("DisplayCategory"));
+                optionChange |=
+                    UIWidgets::CVarCheckbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.params", "Params"),
+                                            CVAR_ACTOR_NAME_TAGS("DisplayParams"));
 
                 ImGui::EndPopup();
             }
 
             optionChange |= UIWidgets::CVarCheckbox(
-                "Name tags with Z-Buffer", CVAR_ACTOR_NAME_TAGS("WithZBuffer"),
+                Lang::UILabel("ui.text.enhancements.debugger.actorviewer.name_tags_with_z_buffer",
+                              "Name tags with Z-Buffer"),
+                CVAR_ACTOR_NAME_TAGS("WithZBuffer"),
                 { { .tooltip = "Allow name tags to be obstructed when behind geometry and actors" } });
 
             if (toggled || optionChange) {
@@ -922,7 +940,8 @@ void ActorViewerWindow::DrawElement() {
         ImGui::EndChild();
 
         PushStyleCombobox(THEME_COLOR);
-        if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
+        if (ImGui::BeginCombo(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.actor_type", "Actor Type"),
+                              acMapping[category])) {
             for (size_t i = 0; i < acMapping.size(); i++) {
                 if (ImGui::Selectable(acMapping[i])) {
                     category = static_cast<int>(i);
@@ -937,7 +956,8 @@ void ActorViewerWindow::DrawElement() {
             filler = "Please select";
         }
 
-        if (ImGui::BeginCombo("Actor", filler.c_str())) {
+        if (ImGui::BeginCombo(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.actor", "Actor"),
+                              filler.c_str())) {
             for (size_t i = 0; i < list.size(); i++) {
                 std::string label = std::to_string(i) + ": " + ActorDB::Instance->RetrieveEntry(list[i]->id).name;
                 std::string description = GetActorDescription(list[i]->id);
@@ -955,16 +975,28 @@ void ActorViewerWindow::DrawElement() {
         PopStyleCombobox();
 
         PushStyleHeader(THEME_COLOR);
-        if (ImGui::TreeNode("Selected Actor")) {
+        if (ImGui::TreeNode(
+                Lang::UILabel("ui.text.enhancements.debugger.actorviewer.selected_actor", "Selected Actor"))) {
             if (display != nullptr) {
                 DrawGroupWithBorder(
                     [&]() {
-                        ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
-                        ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
-                        ImGui::Text("Category: %s (%d)", acMapping[display->category], display->category);
-                        ImGui::Text("ID: %d (0x%x)", display->id, display->id);
-                        ImGui::Text("Parameters: %d (0x%x)", display->params, display->params);
-                        ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
+                        ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.actorviewer.name_s", "Name: %s"),
+                                    ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
+                        ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.actorviewer.description_s",
+                                                   "Description: %s"),
+                                    GetActorDescription(display->id).c_str());
+                        ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.actorviewer.category_s_d",
+                                                   "Category: %s (%d)"),
+                                    acMapping[display->category], display->category);
+                        ImGui::Text(
+                            Lang::UIFormat("ui.text.enhancements.debugger.actorviewer.id_d_0x_x", "ID: %d (0x%x)"),
+                            display->id, display->id);
+                        ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.actorviewer.parameters_d_0x_x",
+                                                   "Parameters: %d (0x%x)"),
+                                    display->params, display->params);
+                        ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.actorviewer.actor_list_index_d",
+                                                   "Actor List Index: %d"),
+                                    GetActorListIndex(display));
                     },
                     "Selected Actor");
                 ImGui::SameLine();
@@ -974,7 +1006,8 @@ void ActorViewerWindow::DrawElement() {
                     [&]() {
                         ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
                         PushStyleInput(THEME_COLOR);
-                        ImGui::Text("Actor Position");
+                        ImGui::TextUnformatted(Lang::UIString(
+                            "ui.text.enhancements.debugger.actorviewer.actor_position", "Actor Position"));
                         ImGui::InputScalar("X##CurPos", ImGuiDataType_Float, &display->world.pos.x);
                         ImGui::InputScalar("Y##CurPos", ImGuiDataType_Float, &display->world.pos.y);
                         ImGui::InputScalar("Z##CurPos", ImGuiDataType_Float, &display->world.pos.z);
@@ -987,7 +1020,8 @@ void ActorViewerWindow::DrawElement() {
                     [&]() {
                         PushStyleInput(THEME_COLOR);
                         ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
-                        ImGui::Text("Actor Rotation");
+                        ImGui::TextUnformatted(Lang::UIString(
+                            "ui.text.enhancements.debugger.actorviewer.actor_rotation", "Actor Rotation"));
                         ImGui::InputScalar("X##CurRot", ImGuiDataType_S16, &display->world.rot.x);
                         ImGui::InputScalar("Y##CurRot", ImGuiDataType_S16, &display->world.rot.y);
                         ImGui::InputScalar("Z##CurRot", ImGuiDataType_S16, &display->world.rot.z);
@@ -1005,7 +1039,8 @@ void ActorViewerWindow::DrawElement() {
 
                 DrawGroupWithBorder(
                     [&]() {
-                        ImGui::Text("flags");
+                        ImGui::TextUnformatted(
+                            Lang::UIString("ui.text.enhancements.debugger.actorviewer.flags", "flags"));
                         UIWidgets::DrawFlagArray32("flags", display->flags);
                     },
                     "flags");
@@ -1019,19 +1054,26 @@ void ActorViewerWindow::DrawElement() {
                     },
                     "bgCheckFlags");
 
-                if (Button("Go to Actor", ButtonOptions().Color(THEME_COLOR))) {
+                if (Button(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.go_to_actor", "Go to Actor"),
+                           ButtonOptions().Color(THEME_COLOR))) {
                     Player* player = GET_PLAYER(gPlayState);
                     Math_Vec3f_Copy(&player->actor.world.pos, &display->world.pos);
                     Math_Vec3f_Copy(&player->actor.home.pos, &player->actor.world.pos);
                 }
             } else {
-                ImGui::Text("Select an actor to display information.");
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.debugger.actorviewer.select_an_actor_to_display_information",
+                                   "Select an actor to display information."));
             }
 
-            if (Button("Fetch from Target",
-                       ButtonOptions()
-                           .Color(THEME_COLOR)
-                           .Tooltip("Grabs actor with target arrow above it. You might need C-Up for enemies"))) {
+            if (Button(
+                    Lang::UILabel("ui.text.enhancements.debugger.actorviewer.fetch_from_target", "Fetch from Target"),
+                    ButtonOptions()
+                        .Color(THEME_COLOR)
+                        .Tooltip(Lang::UIString(
+                            "ui.text.enhancements.debugger.actorviewer.grabs_actor_with_target_arrow_above_it_you_"
+                            "might_need_c_up_for_enemies",
+                            "Grabs actor with target arrow above it. You might need C-Up for enemies")))) {
                 Player* player = GET_PLAYER(gPlayState);
                 if (player->talkActor != NULL) {
                     display = player->talkActor;
@@ -1039,8 +1081,12 @@ void ActorViewerWindow::DrawElement() {
                     PopulateActorDropdown(category, list);
                 }
             }
-            if (Button("Fetch from Held",
-                       ButtonOptions().Color(THEME_COLOR).Tooltip("Grabs actor that Link is holding"))) {
+            if (Button(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.fetch_from_held", "Fetch from Held"),
+                       ButtonOptions()
+                           .Color(THEME_COLOR)
+                           .Tooltip(Lang::UIString(
+                               "ui.text.enhancements.debugger.actorviewer.grabs_actor_that_link_is_holding",
+                               "Grabs actor that Link is holding")))) {
                 Player* player = GET_PLAYER(gPlayState);
                 if (player->heldActor != NULL) {
                     display = player->heldActor;
@@ -1048,8 +1094,13 @@ void ActorViewerWindow::DrawElement() {
                     PopulateActorDropdown(category, list);
                 }
             }
-            if (Button("Fetch from Interaction",
-                       ButtonOptions().Color(THEME_COLOR).Tooltip("Grabs actor from \"interaction range\""))) {
+            if (Button(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.fetch_from_interaction",
+                                     "Fetch from Interaction"),
+                       ButtonOptions()
+                           .Color(THEME_COLOR)
+                           .Tooltip(Lang::UIString(
+                               "ui.text.enhancements.debugger.actorviewer.grabs_actor_from_interaction_range",
+                               "Grabs actor from \"interaction range\"")))) {
                 Player* player = GET_PLAYER(gPlayState);
                 if (player->interactRangeActor != NULL) {
                     display = player->interactRangeActor;
@@ -1061,10 +1112,11 @@ void ActorViewerWindow::DrawElement() {
             ImGui::TreePop();
         }
 
-        if (ImGui::TreeNode("New...")) {
+        if (ImGui::TreeNode(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.new", "New..."))) {
             // ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
-            if (InputString("Search Actor", &searchString, InputOptions().Color(THEME_COLOR))) {
+            if (InputString(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.search_actor", "Search Actor"),
+                            &searchString, InputOptions().Color(THEME_COLOR))) {
                 actorSearchResults = GetActorsWithDescriptionContainingString(searchString);
                 currentSelectedInDropdown = -1;
             }
@@ -1075,7 +1127,8 @@ void ActorViewerWindow::DrawElement() {
                         ? "Please Select"
                         : ActorDB::Instance->RetrieveEntry(actorSearchResults[currentSelectedInDropdown]).desc;
                 PushStyleCombobox(THEME_COLOR);
-                if (ImGui::BeginCombo("Results", preview.c_str())) {
+                if (ImGui::BeginCombo(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.results", "Results"),
+                                      preview.c_str())) {
                     for (u8 i = 0; i < actorSearchResults.size(); i++) {
                         if (ImGui::Selectable(ActorDB::Instance->RetrieveEntry(actorSearchResults[i]).desc.c_str(),
                                               i == currentSelectedInDropdown)) {
@@ -1093,8 +1146,12 @@ void ActorViewerWindow::DrawElement() {
                 newActor.params = 0;
             }
 
-            CVarCheckbox("Advanced mode", CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"),
-                         CheckboxOptions().Tooltip("Changes the actor specific param menus with a direct input"));
+            CVarCheckbox(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.advanced_mode", "Advanced mode"),
+                         CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"),
+                         CheckboxOptions().Tooltip(
+                             Lang::UIString("ui.text.enhancements.debugger.actorviewer.changes_the_actor_specific_"
+                                            "param_menus_with_a_direct_input",
+                                            "Changes the actor specific param menus with a direct input")));
 
             if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"), 0)) {
                 PushStyleInput(THEME_COLOR);
@@ -1109,7 +1166,9 @@ void ActorViewerWindow::DrawElement() {
                 } else {
                     DrawGroupWithBorder(
                         [&]() {
-                            ImGui::Text("Actor Specific Data");
+                            ImGui::TextUnformatted(
+                                Lang::UIString("ui.text.enhancements.debugger.actorviewer.actor_specific_data",
+                                               "Actor Specific Data"));
                             newActor.params = actorSpecificData[newActor.id](newActor.params);
                         },
                         "Actor Specific Data");
@@ -1121,7 +1180,8 @@ void ActorViewerWindow::DrawElement() {
             DrawGroupWithBorder(
                 [&]() {
                     PushStyleInput(THEME_COLOR);
-                    ImGui::Text("New Actor Position");
+                    ImGui::TextUnformatted(Lang::UIString(
+                        "ui.text.enhancements.debugger.actorviewer.new_actor_position", "New Actor Position"));
                     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
                     ImGui::InputScalar("X##NewPos", ImGuiDataType_Float, &newActor.pos.x);
                     ImGui::InputScalar("Y##NewPos", ImGuiDataType_Float, &newActor.pos.y);
@@ -1134,7 +1194,8 @@ void ActorViewerWindow::DrawElement() {
             DrawGroupWithBorder(
                 [&]() {
                     PushStyleInput(THEME_COLOR);
-                    ImGui::Text("New Actor Rotation");
+                    ImGui::TextUnformatted(Lang::UIString(
+                        "ui.text.enhancements.debugger.actorviewer.new_actor_rotation", "New Actor Rotation"));
                     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
                     ImGui::InputScalar("X##NewRot", ImGuiDataType_S16, &newActor.rot.x);
                     ImGui::InputScalar("Y##NewRot", ImGuiDataType_S16, &newActor.rot.y);
@@ -1144,7 +1205,8 @@ void ActorViewerWindow::DrawElement() {
                 },
                 "New Actor Rotation");
 
-            if (Button("Fetch from Link", ButtonOptions().Color(THEME_COLOR))) {
+            if (Button(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.fetch_from_link", "Fetch from Link"),
+                       ButtonOptions().Color(THEME_COLOR))) {
                 Player* player = GET_PLAYER(gPlayState);
                 Vec3f newPos = player->actor.world.pos;
                 Vec3s newRot = player->actor.world.rot;
@@ -1152,7 +1214,8 @@ void ActorViewerWindow::DrawElement() {
                 newActor.rot = newRot;
             }
 
-            if (Button("Spawn", ButtonOptions().Color(THEME_COLOR))) {
+            if (Button(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.spawn", "Spawn"),
+                       ButtonOptions().Color(THEME_COLOR))) {
                 if (ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, newActor.id, newActor.pos.x, newActor.pos.y,
                                 newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params);
@@ -1161,7 +1224,8 @@ void ActorViewerWindow::DrawElement() {
                 }
             }
 
-            if (Button("Spawn as Child", ButtonOptions().Color(THEME_COLOR))) {
+            if (Button(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.spawn_as_child", "Spawn as Child"),
+                       ButtonOptions().Color(THEME_COLOR))) {
                 Actor* parent = display;
                 if (parent != NULL) {
                     if (ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
@@ -1174,7 +1238,8 @@ void ActorViewerWindow::DrawElement() {
                 }
             }
 
-            if (Button("Reset", ButtonOptions().Color(THEME_COLOR))) {
+            if (Button(Lang::UILabel("ui.text.enhancements.debugger.actorviewer.reset", "Reset"),
+                       ButtonOptions().Color(THEME_COLOR))) {
                 newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
             }
 
@@ -1182,7 +1247,9 @@ void ActorViewerWindow::DrawElement() {
         }
         PopStyleHeader();
     } else {
-        ImGui::Text("Global Context needed for actor info!");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.debugger.actorviewer.global_context_needed_for_actor_info",
+                           "Global Context needed for actor info!"));
     }
     ImGui::EndDisabled();
 }

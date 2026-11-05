@@ -1,3 +1,6 @@
+#include "soh/Enhancements/Lang/Lang.h"
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
+#include "randomizerEnumStrings.h"
 #include "item.h"
 #include "SeedContext.h"
 #include "logic.h"
@@ -59,6 +62,11 @@ void Item::UndoEffect() const {
 
 const Text& Item::GetName() const {
     return name;
+}
+
+std::string Item::GetNameForUI() const {
+    return CustomMessages::GetTextForUI("randomizer.item_names." + std::string(EnumToString(randomizerGet)),
+                                        name.GetForLanguage(Lang::GetUILegacyTextLanguage()));
 }
 
 const Text& Item::GetArticle() const {

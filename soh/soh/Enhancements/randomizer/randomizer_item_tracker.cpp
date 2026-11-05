@@ -1,3 +1,6 @@
+#include "TrackerLocalization.h"
+#include "randomizerEnumStrings.h"
+#include "soh/Enhancements/Lang/Lang.h"
 #include <algorithm>
 #include <array>
 #include <map>
@@ -903,7 +906,10 @@ void DrawEquip(ItemTrackerItem item) {
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::Image(gui->GetTextureByName(iconName), ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
 
-    Tooltip(giantsKnife ? "Giant's Knife" : SohUtils::GetItemName(item.id).c_str());
+    Tooltip(giantsKnife
+                ? TrackerLocalization::Name("items.randomizer", "RG_GIANTS_KNIFE", "Giant's Knife").c_str()
+                : TrackerLocalization::Name("items.vanilla", std::to_string(item.id), SohUtils::GetItemName(item.id))
+                      .c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
@@ -921,7 +927,8 @@ void DrawQuest(ItemTrackerItem item) {
 
     ImGui::EndGroup();
 
-    Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
+    Tooltip(
+        TrackerLocalization::Name("items.quest", std::to_string(item.id), SohUtils::GetQuestItemName(item.id)).c_str());
 };
 
 bool HasBossSoul(RandomizerInf bossSoul) {
@@ -993,7 +1000,7 @@ void DrawItem(ItemTrackerItem item) {
             case ITEM_FISHING_POLE:
                 actualItemId = item.id;
                 hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
-                itemName = "Fishing Pole";
+                itemName = TrackerLocalization::Name("items.labels", "fishing_pole", "Fishing Pole");
                 break;
             case ITEM_NONE: // spacer, don't render
                 return;
@@ -1008,184 +1015,198 @@ void DrawItem(ItemTrackerItem item) {
             case RG_TRIFORCE_PIECE:
                 hasItem = IS_RANDO &&
                           (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0);
-                itemName = "Triforce Piece";
+                itemName = TrackerLocalization::Name("items.labels", "triforce_piece", "Triforce Piece");
                 break;
             case RG_ROCS_FEATHER:
-                itemName = "Roc's Feather";
+                itemName = TrackerLocalization::Name("items.labels", "roc_s_feather", "Roc's Feather");
                 break;
             case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
-                itemName = "Death Mountain Crater Bean Soul";
+                itemName = TrackerLocalization::Name("items.labels", "death_mountain_crater_bean_soul",
+                                                     "Death Mountain Crater Bean Soul");
                 break;
             case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
-                itemName = "Death Mountain Trail Bean Soul";
+                itemName = TrackerLocalization::Name("items.labels", "death_mountain_trail_bean_soul",
+                                                     "Death Mountain Trail Bean Soul");
                 break;
             case RG_DESERT_COLOSSUS_BEAN_SOUL:
-                itemName = "Desert Colossus Bean Soul";
+                itemName =
+                    TrackerLocalization::Name("items.labels", "desert_colossus_bean_soul", "Desert Colossus Bean Soul");
                 break;
             case RG_GERUDO_VALLEY_BEAN_SOUL:
-                itemName = "Gerudo Valley Bean Soul";
+                itemName =
+                    TrackerLocalization::Name("items.labels", "gerudo_valley_bean_soul", "Gerudo Valley Bean Soul");
                 break;
             case RG_GRAVEYARD_BEAN_SOUL:
-                itemName = "Graveyard Bean Soul";
+                itemName = TrackerLocalization::Name("items.labels", "graveyard_bean_soul", "Graveyard Bean Soul");
                 break;
             case RG_KOKIRI_FOREST_BEAN_SOUL:
-                itemName = "Kokiri Forest Bean Soul";
+                itemName =
+                    TrackerLocalization::Name("items.labels", "kokiri_forest_bean_soul", "Kokiri Forest Bean Soul");
                 break;
             case RG_LAKE_HYLIA_BEAN_SOUL:
-                itemName = "Lake Hylia Bean Soul";
+                itemName = TrackerLocalization::Name("items.labels", "lake_hylia_bean_soul", "Lake Hylia Bean Soul");
                 break;
             case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
-                itemName = "Lost Woods Bridge Bean Soul";
+                itemName = TrackerLocalization::Name("items.labels", "lost_woods_bridge_bean_soul",
+                                                     "Lost Woods Bridge Bean Soul");
                 break;
             case RG_LOST_WOODS_BEAN_SOUL:
-                itemName = "Lost Woods Theatre Bean Soul";
+                itemName = TrackerLocalization::Name("items.labels", "lost_woods_theatre_bean_soul",
+                                                     "Lost Woods Theatre Bean Soul");
                 break;
             case RG_ZORAS_RIVER_BEAN_SOUL:
-                itemName = "Zora's River Bean Soul";
+                itemName =
+                    TrackerLocalization::Name("items.labels", "zora_s_river_bean_soul", "Zora's River Bean Soul");
                 break;
             case RG_GOHMA_SOUL:
                 hasItem = HasBossSoul(RAND_INF_GOHMA_SOUL);
-                itemName = "Gohma's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "gohma_s_soul", "Gohma's Soul");
                 break;
             case RG_KING_DODONGO_SOUL:
                 hasItem = HasBossSoul(RAND_INF_KING_DODONGO_SOUL);
-                itemName = "King Dodongo's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "king_dodongo_s_soul", "King Dodongo's Soul");
                 break;
             case RG_BARINADE_SOUL:
                 hasItem = HasBossSoul(RAND_INF_BARINADE_SOUL);
-                itemName = "Barinade's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "barinade_s_soul", "Barinade's Soul");
                 break;
             case RG_PHANTOM_GANON_SOUL:
                 hasItem = HasBossSoul(RAND_INF_PHANTOM_GANON_SOUL);
-                itemName = "Phantom Ganon's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "phantom_ganon_s_soul", "Phantom Ganon's Soul");
                 break;
             case RG_VOLVAGIA_SOUL:
                 hasItem = HasBossSoul(RAND_INF_VOLVAGIA_SOUL);
-                itemName = "Volvagia's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "volvagia_s_soul", "Volvagia's Soul");
                 break;
             case RG_MORPHA_SOUL:
                 hasItem = HasBossSoul(RAND_INF_MORPHA_SOUL);
-                itemName = "Morpha's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "morpha_s_soul", "Morpha's Soul");
                 break;
             case RG_BONGO_BONGO_SOUL:
                 hasItem = HasBossSoul(RAND_INF_BONGO_BONGO_SOUL);
-                itemName = "Bongo Bongo's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "bongo_bongo_s_soul", "Bongo Bongo's Soul");
                 break;
             case RG_TWINROVA_SOUL:
                 hasItem = HasBossSoul(RAND_INF_TWINROVA_SOUL);
-                itemName = "Twinrova's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "twinrova_s_soul", "Twinrova's Soul");
                 break;
             case RG_GANON_SOUL:
                 hasItem = HasBossSoul(RAND_INF_GANON_SOUL);
-                itemName = "Ganon's Soul";
+                itemName = TrackerLocalization::Name("items.labels", "ganon_s_soul", "Ganon's Soul");
                 break;
 
             case RG_SPEAK_DEKU:
-                itemName = "Deku Jabber Nut";
+                itemName = TrackerLocalization::Name("items.labels", "deku_jabber_nut", "Deku Jabber Nut");
                 break;
             case RG_SPEAK_GERUDO:
-                itemName = "Gerudo Jabber Nut";
+                itemName = TrackerLocalization::Name("items.labels", "gerudo_jabber_nut", "Gerudo Jabber Nut");
                 break;
             case RG_SPEAK_GORON:
-                itemName = "Goron Jabber Nut";
+                itemName = TrackerLocalization::Name("items.labels", "goron_jabber_nut", "Goron Jabber Nut");
                 break;
             case RG_SPEAK_HYLIAN:
-                itemName = "Hylian Jabber Nut";
+                itemName = TrackerLocalization::Name("items.labels", "hylian_jabber_nut", "Hylian Jabber Nut");
                 break;
             case RG_SPEAK_KOKIRI:
-                itemName = "Kokiri Jabber Nut";
+                itemName = TrackerLocalization::Name("items.labels", "kokiri_jabber_nut", "Kokiri Jabber Nut");
                 break;
             case RG_SPEAK_ZORA:
-                itemName = "Zora Jabber Nut";
+                itemName = TrackerLocalization::Name("items.labels", "zora_jabber_nut", "Zora Jabber Nut");
                 break;
 
             case RG_OCARINA_A_BUTTON:
-                itemName = "Ocarina A Button";
+                itemName = TrackerLocalization::Name("items.labels", "ocarina_a_button", "Ocarina A Button");
                 break;
             case RG_OCARINA_C_UP_BUTTON:
-                itemName = "Ocarina C Up Button";
+                itemName = TrackerLocalization::Name("items.labels", "ocarina_c_up_button", "Ocarina C Up Button");
                 break;
             case RG_OCARINA_C_DOWN_BUTTON:
-                itemName = "Ocarina C Down Button";
+                itemName = TrackerLocalization::Name("items.labels", "ocarina_c_down_button", "Ocarina C Down Button");
                 break;
             case RG_OCARINA_C_LEFT_BUTTON:
-                itemName = "Ocarina C Left Button";
+                itemName = TrackerLocalization::Name("items.labels", "ocarina_c_left_button", "Ocarina C Left Button");
                 break;
             case RG_OCARINA_C_RIGHT_BUTTON:
-                itemName = "Ocarina C Right Button";
+                itemName =
+                    TrackerLocalization::Name("items.labels", "ocarina_c_right_button", "Ocarina C Right Button");
                 break;
 
             case RG_GUARD_HOUSE_KEY:
-                itemName = "Guard House Key";
+                itemName = TrackerLocalization::Name("items.labels", "guard_house_key", "Guard House Key");
                 break;
             case RG_MARKET_BAZAAR_KEY:
-                itemName = "Market Bazaar Key";
+                itemName = TrackerLocalization::Name("items.labels", "market_bazaar_key", "Market Bazaar Key");
                 break;
             case RG_MARKET_POTION_SHOP_KEY:
-                itemName = "Market Potion Shop Key";
+                itemName =
+                    TrackerLocalization::Name("items.labels", "market_potion_shop_key", "Market Potion Shop Key");
                 break;
             case RG_MASK_SHOP_KEY:
-                itemName = "Mask Shop Key";
+                itemName = TrackerLocalization::Name("items.labels", "mask_shop_key", "Mask Shop Key");
                 break;
             case RG_MARKET_SHOOTING_GALLERY_KEY:
-                itemName = "Market Shooting Gallery Key";
+                itemName = TrackerLocalization::Name("items.labels", "market_shooting_gallery_key",
+                                                     "Market Shooting Gallery Key");
                 break;
             case RG_BOMBCHU_BOWLING_KEY:
-                itemName = "Bombchu Bowling Key";
+                itemName = TrackerLocalization::Name("items.labels", "bombchu_bowling_key", "Bombchu Bowling Key");
                 break;
             case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
-                itemName = "Treasure Chest Game Building Key";
+                itemName = TrackerLocalization::Name("items.labels", "treasure_chest_game_building_key",
+                                                     "Treasure Chest Game Building Key");
                 break;
             case RG_BOMBCHU_SHOP_KEY:
-                itemName = "Bombchu Shop Key";
+                itemName = TrackerLocalization::Name("items.labels", "bombchu_shop_key", "Bombchu Shop Key");
                 break;
             case RG_RICHARDS_HOUSE_KEY:
-                itemName = "Richards House Key";
+                itemName = TrackerLocalization::Name("items.labels", "richards_house_key", "Richards House Key");
                 break;
             case RG_ALLEY_HOUSE_KEY:
-                itemName = "Alley House Key";
+                itemName = TrackerLocalization::Name("items.labels", "alley_house_key", "Alley House Key");
                 break;
             case RG_KAK_BAZAAR_KEY:
-                itemName = "Kak Bazaar Key";
+                itemName = TrackerLocalization::Name("items.labels", "kak_bazaar_key", "Kak Bazaar Key");
                 break;
             case RG_KAK_POTION_SHOP_KEY:
-                itemName = "Kak Potion Shop Key";
+                itemName = TrackerLocalization::Name("items.labels", "kak_potion_shop_key", "Kak Potion Shop Key");
                 break;
             case RG_BOSS_HOUSE_KEY:
-                itemName = "Boss House Key";
+                itemName = TrackerLocalization::Name("items.labels", "boss_house_key", "Boss House Key");
                 break;
             case RG_GRANNYS_POTION_SHOP_KEY:
-                itemName = "Granny's Potion Shop Key";
+                itemName =
+                    TrackerLocalization::Name("items.labels", "granny_s_potion_shop_key", "Granny's Potion Shop Key");
                 break;
             case RG_SKULLTULA_HOUSE_KEY:
-                itemName = "Skulltula House Key";
+                itemName = TrackerLocalization::Name("items.labels", "skulltula_house_key", "Skulltula House Key");
                 break;
             case RG_IMPAS_HOUSE_KEY:
-                itemName = "Impa's House Key";
+                itemName = TrackerLocalization::Name("items.labels", "impa_s_house_key", "Impa's House Key");
                 break;
             case RG_WINDMILL_KEY:
-                itemName = "Windmill Key";
+                itemName = TrackerLocalization::Name("items.labels", "windmill_key", "Windmill Key");
                 break;
             case RG_KAK_SHOOTING_GALLERY_KEY:
-                itemName = "Kak Shooting Gallery Key";
+                itemName =
+                    TrackerLocalization::Name("items.labels", "kak_shooting_gallery_key", "Kak Shooting Gallery Key");
                 break;
             case RG_DAMPES_HUT_KEY:
                 itemName = "Dampé's Hut Key";
                 break;
             case RG_TALONS_HOUSE_KEY:
-                itemName = "Talon's House Key";
+                itemName = TrackerLocalization::Name("items.labels", "talon_s_house_key", "Talon's House Key");
                 break;
             case RG_STABLES_KEY:
-                itemName = "Stables Key";
+                itemName = TrackerLocalization::Name("items.labels", "stables_key", "Stables Key");
                 break;
             case RG_BACK_TOWER_KEY:
-                itemName = "Back Tower Key";
+                itemName = TrackerLocalization::Name("items.labels", "back_tower_key", "Back Tower Key");
                 break;
             case RG_HYLIA_LAB_KEY:
-                itemName = "Hylia Lab Key";
+                itemName = TrackerLocalization::Name("items.labels", "hylia_lab_key", "Hylia Lab Key");
                 break;
             case RG_FISHING_HOLE_KEY:
-                itemName = "Fishing Hole Key";
+                itemName = TrackerLocalization::Name("items.labels", "fishing_hole_key", "Fishing Hole Key");
                 break;
             case RG_SHADOW_SILVER_BLADES:
             case RG_SHADOW_SILVER_PIT:
@@ -1214,33 +1235,35 @@ void DrawItem(ItemTrackerItem item) {
                 hasItem = IsSilverCleared(static_cast<RandomizerGet>(item.id)) &&
                           (!hideMax || OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER) !=
                                            RO_SHUFFLE_SILVER_ON);
-                itemName = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(actualItemId))
-                               .GetName()
-                               .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG));
+                itemName = TrackerLocalization::Name(
+                    "items.randomizer", EnumToString(static_cast<RandomizerGet>(actualItemId)),
+                    Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(actualItemId)).GetNameForUI());
                 break;
             case RG_BRONZE_SCALE:
-                itemName = "Swim";
+                itemName = TrackerLocalization::Name("items.labels", "swim", "Swim");
                 break;
             case RG_CRAWL:
-                itemName = "Crawl";
+                itemName = TrackerLocalization::Name("items.labels", "crawl", "Crawl");
                 break;
             case RG_CLIMB:
-                itemName = "Climb";
+                itemName = TrackerLocalization::Name("items.labels", "climb", "Climb");
                 break;
             case RG_POWER_BRACELET:
-                itemName = "Grab";
+                itemName = TrackerLocalization::Name("items.labels", "grab", "Grab");
                 break;
             case RG_OPEN_CHEST:
-                itemName = "Open";
+                itemName = TrackerLocalization::Name("items.labels", "open", "Open");
                 break;
             case RG_SCARECROWS_SONG:
-                itemName = "Scarecrow's Song";
+                itemName = TrackerLocalization::Name("items.labels", "scarecrow_s_song", "Scarecrow's Song");
                 break;
         }
     } else if (item.kind == ITEM_KIND_DUMMY) {
         if (item.id == ITEMTYPE_SILVER) {
             hasItem = false;
-            itemName = "More Silver Rupees may or may not exist based on unknown dungeons.";
+            itemName = TrackerLocalization::Name("items.labels",
+                                                 "more_silver_rupees_may_or_may_not_exist_based_on_unknown_dungeons",
+                                                 "More Silver Rupees may or may not exist based on unknown dungeons.");
         }
     }
 
@@ -1257,13 +1280,14 @@ void DrawItem(ItemTrackerItem item) {
     DrawItemCount(item, hideMax);
 
     if (item.displayName != "") {
-        DrawName(item.displayName, item.kind == ITEM_KIND_DUMMY ? IM_COL_GREEN : IM_COL_WHITE);
+        DrawName(TrackerLocalization::Name("items.captions", item.displayName, item.displayName),
+                 item.kind == ITEM_KIND_DUMMY ? IM_COL_GREEN : IM_COL_WHITE);
     }
 
     ImGui::EndGroup();
 
     if (itemName == "" && item.kind == ITEM_KIND_ITEM) {
-        itemName = SohUtils::GetItemName(item.id);
+        itemName = TrackerLocalization::Name("items.vanilla", std::to_string(item.id), SohUtils::GetItemName(item.id));
     }
 
     Tooltip(itemName.c_str());
@@ -1284,7 +1308,8 @@ void DrawBottle(ItemTrackerItem item) {
     ImGui::Image(gui->GetTextureByName(hasItem ? item.iconName : item.fadedIconName), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
-    Tooltip(SohUtils::GetItemName(item.id).c_str());
+    Tooltip(
+        TrackerLocalization::Name("items.vanilla", std::to_string(item.id), SohUtils::GetItemName(item.id)).c_str());
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
@@ -1314,7 +1339,8 @@ void DrawDungeonItem(ItemTrackerItem item) {
         // offset puts the text at the correct level. for some reason, if the save is loaded, the margin is 3 pixels
         // higher only for small keys, so we use 16 then. Otherwise, 13 is where everything else is
         int offset = TrackerHasSave() ? 16 : 13;
-        std::string dungeonName = itemTrackerDungeonShortNames[item.data];
+        const std::string& dungeonName = TrackerLocalization::Name(
+            "items.captions", itemTrackerDungeonShortNames[item.data], itemTrackerDungeonShortNames[item.data]);
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + offset)));
         ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
@@ -1325,7 +1351,8 @@ void DrawDungeonItem(ItemTrackerItem item) {
     if (itemId == ITEM_DUNGEON_MAP && (item.data == SCENE_DEKU_TREE || item.data == SCENE_DODONGOS_CAVERN ||
                                        item.data == SCENE_JABU_JABU || item.data == SCENE_ICE_CAVERN)) {
         ImVec2 p = ImGui::GetCursorScreenPos();
-        std::string dungeonName = itemTrackerDungeonShortNames[item.data];
+        const std::string& dungeonName = TrackerLocalization::Name(
+            "items.captions", itemTrackerDungeonShortNames[item.data], itemTrackerDungeonShortNames[item.data]);
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 13)));
         ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
@@ -1334,7 +1361,8 @@ void DrawDungeonItem(ItemTrackerItem item) {
     }
     ImGui::EndGroup();
 
-    Tooltip(SohUtils::GetItemName(item.id).c_str());
+    Tooltip(
+        TrackerLocalization::Name("items.vanilla", std::to_string(item.id), SohUtils::GetItemName(item.id)).c_str());
 }
 
 void DrawSong(ItemTrackerItem item) {
@@ -1346,7 +1374,8 @@ void DrawSong(ItemTrackerItem item) {
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(gui->GetTextureByName(hasSong ? item.iconName : item.fadedIconName), ImVec2(iconSize / 1.5f, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
-    Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
+    Tooltip(
+        TrackerLocalization::Name("items.quest", std::to_string(item.id), SohUtils::GetQuestItemName(item.id)).c_str());
 }
 
 void DrawNotes(bool resizeable = false) {
@@ -1399,7 +1428,8 @@ void DrawTotalChecks() {
     } else {
         ImGui::SetWindowFontScale(1);
     }
-    ImGui::Text("Checks: %d/%d", totalChecksGotten, totalChecks);
+    ImGui::Text(TrackerLocalization::Name("status", "item_check_totals", "Checks: %d/%d").c_str(), totalChecksGotten,
+                totalChecks);
     ImGui::EndGroup();
 }
 
@@ -1816,7 +1846,7 @@ void ItemTrackerWindow::Draw() {
     if (!IsVisible()) {
         return;
     }
-    ImGui::PushFont(OTRGlobals::Instance->fontMono);
+    ImGui::PushFont(OTRGlobals::Instance->GetGuiFont(OTRGlobals::Instance->fontMono));
     DrawElement();
     // Sync up the IsVisible flag if it was changed by ImGui
     SyncVisibilityConsoleVariable();
@@ -2045,8 +2075,14 @@ static std::map<int32_t, const char*> minimalDisplayTypes = { { SECTION_DISPLAY_
 void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-        ImGui::TableSetupColumn("Section settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.general_settings_2",
+                          "General settings"),
+            ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.section_settings",
+                          "Section settings"),
+            ImGuiTableColumnFlags_WidthStretch, 200.0f);
         ImGui::TableHeadersRow();
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
@@ -2056,48 +2092,65 @@ void ItemTrackerSettingsWindow::DrawElement() {
         SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
-            if (CVarCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
+            if (CVarCheckbox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.enable_dragging",
+                                           "Enable Dragging"),
+                             CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
                 RefreshItemTrackerMainWindow();
             }
-            if (CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"),
-                             CheckboxOptions().Color(THEME_COLOR))) {
+            if (CVarCheckbox(
+                    Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.only_enable_while_paused",
+                                  "Only Enable While Paused"),
+                    CVAR_TRACKER_ITEM("ShowOnlyPaused"), CheckboxOptions().Color(THEME_COLOR))) {
                 RefreshItemTrackerMainWindow();
             }
-            if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), showMode,
-                             ComboboxOptions()
-                                 .DefaultIndex(TRACKER_DISPLAY_ALWAYS)
-                                 .ComponentAlignment(ComponentAlignments::Right)
-                                 .LabelPosition(LabelPositions::Far)
-                                 .Color(THEME_COLOR))) {
+            if (CVarCombobox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.display_mode",
+                                           "Display Mode"),
+                             CVAR_TRACKER_ITEM("DisplayType.Main"), showMode,
+                             UIWidgets::ComboboxOptions(ComboboxOptions()
+                                                            .DefaultIndex(TRACKER_DISPLAY_ALWAYS)
+                                                            .ComponentAlignment(ComponentAlignments::Right)
+                                                            .LabelPosition(LabelPositions::Far)
+                                                            .Color(THEME_COLOR))
+                                 .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
                 RefreshItemTrackerMainWindow();
             }
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
                 TRACKER_DISPLAY_COMBO_BUTTON) {
-                if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttonStrings,
-                                 ComboboxOptions()
-                                     .DefaultIndex(TRACKER_COMBO_BUTTON_L)
-                                     .ComponentAlignment(ComponentAlignments::Right)
-                                     .LabelPosition(LabelPositions::Far)
-                                     .Color(THEME_COLOR))) {
+                if (CVarCombobox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.combo_button_1",
+                                               "Combo Button 1"),
+                                 CVAR_TRACKER_ITEM("ComboButton1"), buttonStrings,
+                                 UIWidgets::ComboboxOptions(ComboboxOptions()
+                                                                .DefaultIndex(TRACKER_COMBO_BUTTON_L)
+                                                                .ComponentAlignment(ComponentAlignments::Right)
+                                                                .LabelPosition(LabelPositions::Far)
+                                                                .Color(THEME_COLOR))
+                                     .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
                     RefreshItemTrackerMainWindow();
                 }
-                if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttonStrings,
-                                 ComboboxOptions()
-                                     .DefaultIndex(TRACKER_COMBO_BUTTON_R)
-                                     .ComponentAlignment(ComponentAlignments::Right)
-                                     .LabelPosition(LabelPositions::Far)
-                                     .Color(THEME_COLOR))) {
+                if (CVarCombobox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.combo_button_2",
+                                               "Combo Button 2"),
+                                 CVAR_TRACKER_ITEM("ComboButton2"), buttonStrings,
+                                 UIWidgets::ComboboxOptions(ComboboxOptions()
+                                                                .DefaultIndex(TRACKER_COMBO_BUTTON_R)
+                                                                .ComponentAlignment(ComponentAlignments::Right)
+                                                                .LabelPosition(LabelPositions::Far)
+                                                                .Color(THEME_COLOR))
+                                     .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
                     RefreshItemTrackerMainWindow();
                 }
             }
         }
         ImGui::Separator();
-        CVarSliderInt("Icon size : %dpx", CVAR_TRACKER_ITEM("IconSize"),
-                      IntSliderOptions().Min(25).Max(128).DefaultValue(36).Color(THEME_COLOR));
-        CVarSliderInt("Icon margins : %dpx", CVAR_TRACKER_ITEM("IconSpacing"),
+        CVarSliderInt(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.icon_size_dpx", "Icon size : %dpx"),
+            CVAR_TRACKER_ITEM("IconSize"), IntSliderOptions().Min(25).Max(128).DefaultValue(36).Color(THEME_COLOR));
+        CVarSliderInt(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.icon_margins_dpx",
+                                    "Icon margins : %dpx"),
+                      CVAR_TRACKER_ITEM("IconSpacing"),
                       IntSliderOptions().Min(-5).Max(50).DefaultValue(12).Color(THEME_COLOR));
-        CVarSliderInt("Text size : %dpx", CVAR_TRACKER_ITEM("TextSize"),
-                      IntSliderOptions().Min(1).Max(30).DefaultValue(13).Color(THEME_COLOR));
+        CVarSliderInt(
+            Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.text_size_dpx", "Text size : %dpx"),
+            CVAR_TRACKER_ITEM("TextSize"), IntSliderOptions().Min(1).Max(30).DefaultValue(13).Color(THEME_COLOR));
 
         ImGui::NewLine();
         SohGui::mSohMenu->MenuDrawItem(ammoTracking, THEME_COLOR);
@@ -2105,8 +2158,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
                 ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
             CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
                 ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
-            if (CVarCheckbox("Align count to left side", CVAR_TRACKER_ITEM("ItemCountAlignLeft"),
-                             CheckboxOptions().Color(THEME_COLOR))) {
+            if (CVarCheckbox(
+                    Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.align_count_to_left_side",
+                                  "Align count to left side"),
+                    CVAR_TRACKER_ITEM("ItemCountAlignLeft"), CheckboxOptions().Color(THEME_COLOR))) {
                 RefreshItemTrackerMainWindow();
             }
         }
@@ -2116,51 +2171,66 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
         ImGui::TableNextColumn();
 
-        if (CVarCombobox("Inventory", CVAR_TRACKER_ITEM("DisplayType.Inventory"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
+        if (CVarCombobox(
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.inventory", "Inventory"),
+                CVAR_TRACKER_ITEM("DisplayType.Inventory"), displayTypes,
+                UIWidgets::ComboboxOptions(ComboboxOptions()
+                                               .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                                               .ComponentAlignment(ComponentAlignments::Right)
+                                               .LabelPosition(LabelPositions::Far)
+                                               .Color(THEME_COLOR))
+                    .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
             RefreshItemTrackerMainWindow();
         }
-        if (CVarCombobox("Equipment", CVAR_TRACKER_ITEM("DisplayType.Equipment"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
+        if (CVarCombobox(
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.equipment", "Equipment"),
+                CVAR_TRACKER_ITEM("DisplayType.Equipment"), displayTypes,
+                UIWidgets::ComboboxOptions(ComboboxOptions()
+                                               .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                                               .ComponentAlignment(ComponentAlignments::Right)
+                                               .LabelPosition(LabelPositions::Far)
+                                               .Color(THEME_COLOR))
+                    .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
             RefreshItemTrackerMainWindow();
         }
-        if (CVarCombobox("Misc", CVAR_TRACKER_ITEM("DisplayType.Misc"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
+        if (CVarCombobox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.misc", "Misc"),
+                         CVAR_TRACKER_ITEM("DisplayType.Misc"), displayTypes,
+                         UIWidgets::ComboboxOptions(ComboboxOptions()
+                                                        .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                                                        .ComponentAlignment(ComponentAlignments::Right)
+                                                        .LabelPosition(LabelPositions::Far)
+                                                        .Color(THEME_COLOR))
+                             .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
             RefreshItemTrackerMainWindow();
         }
-        if (CVarCombobox("Dungeon Rewards", CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
+        if (CVarCombobox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.dungeon_rewards",
+                                       "Dungeon Rewards"),
+                         CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), displayTypes,
+                         UIWidgets::ComboboxOptions(ComboboxOptions()
+                                                        .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                                                        .ComponentAlignment(ComponentAlignments::Right)
+                                                        .LabelPosition(LabelPositions::Far)
+                                                        .Color(THEME_COLOR))
+                             .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
             RefreshItemTrackerMainWindow();
         }
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
-            if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"),
+            if (CVarCheckbox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.circle_display",
+                                           "Circle display"),
+                             CVAR_TRACKER_ITEM("DungeonRewardsLayout"),
                              CheckboxOptions().DefaultValue(false).Color(THEME_COLOR))) {
                 RefreshItemTrackerMainWindow();
             }
         }
-        if (CVarCombobox("Songs", CVAR_TRACKER_ITEM("DisplayType.Songs"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
+        if (CVarCombobox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.songs", "Songs"),
+                         CVAR_TRACKER_ITEM("DisplayType.Songs"), displayTypes,
+                         UIWidgets::ComboboxOptions(ComboboxOptions()
+                                                        .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                                                        .ComponentAlignment(ComponentAlignments::Right)
+                                                        .LabelPosition(LabelPositions::Far)
+                                                        .Color(THEME_COLOR))
+                             .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
             RefreshItemTrackerMainWindow();
         }
         SohGui::mSohMenu->MenuDrawItem(dungeonItemTracking, THEME_COLOR);
@@ -2168,12 +2238,17 @@ void ItemTrackerSettingsWindow::DrawElement() {
             SECTION_DISPLAY_HIDDEN) {
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
                 SECTION_DISPLAY_SEPARATE) {
-                if (CVarCheckbox("Horizontal display", CVAR_TRACKER_ITEM("DungeonItems.Layout"),
-                                 CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
+                if (CVarCheckbox(
+                        Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.horizontal_display",
+                                      "Horizontal display"),
+                        CVAR_TRACKER_ITEM("DungeonItems.Layout"),
+                        CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
                     RefreshItemTrackerMainWindow();
                 }
             }
-            if (CVarCheckbox("Maps and compasses", CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"),
+            if (CVarCheckbox(Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.maps_and_compasses",
+                                           "Maps and compasses"),
+                             CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"),
                              CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
                 RefreshItemTrackerMainWindow();
             }
@@ -2188,12 +2263,15 @@ void ItemTrackerSettingsWindow::DrawElement() {
         SohGui::mSohMenu->MenuDrawItem(silverRupeeTracking, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, THEME_COLOR);
 
-        if (CVarCombobox("Total Checks", CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_MINIMAL_HIDDEN)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
+        if (CVarCombobox(
+                Lang::UILabel("ui.text.enhancements.randomizer.randomizer_item_tracker.total_checks", "Total Checks"),
+                CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
+                UIWidgets::ComboboxOptions(ComboboxOptions()
+                                               .DefaultIndex(SECTION_DISPLAY_MINIMAL_HIDDEN)
+                                               .ComponentAlignment(ComponentAlignments::Right)
+                                               .LabelPosition(LabelPositions::Far)
+                                               .Color(THEME_COLOR))
+                    .TranslationScope("ui.text.enhancements.randomizer.randomizer_item_tracker"))) {
             RefreshItemTrackerMainWindow();
         }
 
@@ -2245,8 +2323,10 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(itemTrackerCapacityTrackOptions)
-                     .Tooltip("Customize what the numbers under each item are tracking."
-                              "\n\nNote: items without capacity upgrades will track ammo even in capacity mode"));
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gTrackers.ItemTracker.ItemCountType.description",
+                         "Customize what the numbers under each item are tracking."
+                         "\n\nNote: items without capacity upgrades will track ammo even in capacity mode")));
     SohGui::mSohMenu->AddSearchWidget({ ammoTracking, "Randomizer", "Item Tracker", "General Settings" });
 
     keyTracking = { .name = "Key Count Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
@@ -2257,7 +2337,8 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(itemTrackerKeyTrackOptions)
-                     .Tooltip("Customize what numbers are shown for key tracking."));
+                     .Tooltip(Lang::UIString("ui.widgets.gTrackers.ItemTracker.KeyCounts.description",
+                                             "Customize what numbers are shown for key tracking.")));
     SohGui::mSohMenu->AddSearchWidget({ keyTracking, "Randomizer", "Item Tracker", "General Settings" });
 
     triforcePieceTracking = { .name = "Triforce Pieces", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
@@ -2340,7 +2421,8 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(itemTrackerTriforcePieceTrackOptions)
-                     .Tooltip("Customize what numbers are shown for triforce piece tracking."));
+                     .Tooltip(Lang::UIString("ui.widgets.gTrackers.ItemTracker.TriforcePieceCounts.description",
+                                             "Customize what numbers are shown for triforce piece tracking.")));
     SohGui::mSohMenu->AddSearchWidget({ triforcePieceCount, "Randomizer", "Item Tracker", "General Settings" });
 
     ocarinaButtonTracking = { .name = "Ocarina Buttons", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
@@ -2413,15 +2495,19 @@ void RegisterItemTrackerWidgets() {
     hookshotIdentWidget.CVar(CVAR_TRACKER_ITEM("HookshotIdentifier"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot."));
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gTrackers.ItemTracker.HookshotIdentifier.description",
+                         "Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot.")));
     SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 
     openChestIdentWidget = { .name = "Show Open Chest Identifiers", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     openChestIdentWidget.CVar(CVAR_TRACKER_ITEM("OpenChestIdentifier"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("With progressive Shuffle Open Chest, shows an 'S' when only small chests can be "
-                              "opened and a 'B' once big chests can be opened too."));
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gTrackers.ItemTracker.OpenChestIdentifier.description",
+                         "With progressive Shuffle Open Chest, shows an 'S' when only small chests can be "
+                         "opened and a 'B' once big chests can be opened too.")));
     SohGui::mSohMenu->AddSearchWidget({ openChestIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 

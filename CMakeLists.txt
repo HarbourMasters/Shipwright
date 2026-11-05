@@ -334,27 +334,50 @@ add_custom_target(
     COMMAND ${CMAKE_COMMAND} -E false
 )
 
-# soh.o2r is rebuilt only when its inputs change, and is part of ALL so `install` never ships a stale one.
-file(GLOB_RECURSE SOH_O2R_ASSETS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/*)
-list(FILTER SOH_O2R_ASSETS EXCLUDE REGEX "/soh/assets/custom/shaders/")
-file(GLOB_RECURSE SOH_O2R_SHADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/*)
-add_custom_command(
-    OUTPUT ${CMAKE_BINARY_DIR}/soh/soh.o2r
-    # copy LUS default shaders into assets/custom
-    COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
+# CI generates this platform-independent archive once, then shares it with
+# each native build. Local builds continue to generate it from source by default.
+set(SOH_PREBUILT_PORT_ARCHIVE "" CACHE FILEPATH "Use an existing soh.o2r instead of rebuilding custom assets")
+if(SOH_PREBUILT_PORT_ARCHIVE)
+    get_filename_component(prebuilt_port_archive "${SOH_PREBUILT_PORT_ARCHIVE}" ABSOLUTE
+                           BASE_DIR "${CMAKE_SOURCE_DIR}")
+    if(NOT EXISTS "${prebuilt_port_archive}" OR IS_DIRECTORY "${prebuilt_port_archive}")
+        message(FATAL_ERROR "SOH_PREBUILT_PORT_ARCHIVE must name an existing soh.o2r: ${prebuilt_port_archive}")
+    endif()
+    message(STATUS "Using prebuilt port archive: ${prebuilt_port_archive}")
+    if(NOT prebuilt_port_archive STREQUAL "${CMAKE_BINARY_DIR}/soh/soh.o2r")
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/soh/soh.o2r"
+            COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/soh"
+            COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+                    "${prebuilt_port_archive}" "${CMAKE_BINARY_DIR}/soh/soh.o2r"
+            DEPENDS "${prebuilt_port_archive}"
+            COMMENT "Copying prebuilt soh.o2r..."
+            VERBATIM
+        )
+    endif()
+else()
+    # soh.o2r is rebuilt only when its inputs change, and is part of ALL so `install` never ships a stale one.
+    file(GLOB_RECURSE SOH_O2R_ASSETS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/*)
+    list(FILTER SOH_O2R_ASSETS EXCLUDE REGEX "/soh/assets/custom/shaders/")
+    file(GLOB_RECURSE SOH_O2R_SHADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/*)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/soh/soh.o2r
+        # copy LUS default shaders into assets/custom
+        COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
 
-    COMMAND $<TARGET_FILE:soh-o2r-packer>
-            ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom
-            ${CMAKE_BINARY_DIR}/soh/soh.o2r
-            ${CMAKE_PROJECT_VERSION}
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/soh/soh.o2r ${CMAKE_CURRENT_SOURCE_DIR}/soh.o2r
-    COMMENT "Generating soh.o2r..."
-    DEPENDS soh-o2r-packer ${SOH_O2R_ASSETS} ${SOH_O2R_SHADERS}
-    BYPRODUCTS ${CMAKE_SOURCE_DIR}/soh.o2r
-    VERBATIM
-)
-add_custom_target(GenerateSohOtr ALL DEPENDS ${CMAKE_BINARY_DIR}/soh/soh.o2r)
+        COMMAND $<TARGET_FILE:soh-o2r-packer>
+                ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom
+                ${CMAKE_BINARY_DIR}/soh/soh.o2r
+                ${CMAKE_PROJECT_VERSION}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/soh/soh.o2r ${CMAKE_CURRENT_SOURCE_DIR}/soh.o2r
+        COMMENT "Generating soh.o2r..."
+        DEPENDS soh-o2r-packer ${SOH_O2R_ASSETS} ${SOH_O2R_SHADERS}
+        BYPRODUCTS ${CMAKE_SOURCE_DIR}/soh.o2r
+        VERBATIM
+    )
+endif()
+add_custom_target(GenerateSohOtr ALL DEPENDS "${CMAKE_BINARY_DIR}/soh/soh.o2r")
 
 # ExtractAssets produced soh.o2r as well as the rom archives, so keep doing that.
 add_dependencies(ExtractAssets GenerateSohOtr)
@@ -374,6 +397,10 @@ add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship SYSTEM)
 quiet_target(libultraship "${WARNING_OVERRIDE}")
 target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
 add_subdirectory(soh)
+include(CMake/Localization.cmake)
+soh_add_builtin_ui_catalog(soh "${CMAKE_SOURCE_DIR}")
+soh_add_builtin_game_catalog(soh "${CMAKE_SOURCE_DIR}")
+soh_stage_port_archive(soh "${CMAKE_BINARY_DIR}/soh/soh.o2r")
 
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.desktop")

@@ -33,7 +33,7 @@ typedef enum {
 #ifdef __cplusplus
 #include <string>
 #include <map>
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 #include "soh/SohGui/UIWidgets.hpp"
 extern "C" {
 #endif //__cplusplus
@@ -158,9 +158,9 @@ void DrawCustomCosmetics();
 void ApplyCustomCosmetics();
 void UpdateCustomCosmeticsRainbow(int hue, float rainbowSpeed, int& index);
 
-class CosmeticsEditorWindow final : public Ship::GuiWindow {
+class CosmeticsEditorWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
     void InitElement() override;
     void DrawElement() override;

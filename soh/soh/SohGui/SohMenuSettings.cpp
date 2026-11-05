@@ -1,3 +1,5 @@
+#include "soh/Enhancements/Lang/Lang.h"
+#include "soh/Enhancements/Lang/GameLanguage.h"
 #include "SohMenu.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -101,19 +103,9 @@ const char* GetGameVersionString(uint32_t index) {
     }
 }
 
-#include "message_data_static.h"
-extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
-extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
-extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
-extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
-
-static const std::array<MessageTableEntry**, LANGUAGE_MAX> messageTables = {
-    &sNesMessageEntryTablePtr, &sGerMessageEntryTablePtr, &sFraMessageEntryTablePtr, &sJpnMessageEntryTablePtr
-};
-
 void SohMenu::UpdateLanguageMap(std::map<int32_t, const char*>& languageMap) {
     for (int32_t i = LANGUAGE_ENG; i < LANGUAGE_MAX; i++) {
-        if (*messageTables.at(i) != NULL) {
+        if (GameLanguage_IsAvailable(i)) {
             if (!languageMap.contains(i)) {
                 languageMap.insert(std::make_pair(i, languages.at(i)));
             }
@@ -130,22 +122,25 @@ void SohMenu::AddMenuSettings() {
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
     // General - Settings
-    AddWidget(path, "Menu Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Menu Settings", WIDGET_SEPARATOR_TEXT).Translation("ui.sections.menu_settings");
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Menu.Theme"))
         .RaceDisable(false)
         .Options(ComboboxOptions()
-                     .Tooltip("Changes the Theme of the Menu Widgets.")
+                     .Tooltip(Lang::UIString("ui.widgets.gSettings.Menu.Theme.description",
+                                             "Changes the Theme of the Menu Widgets."))
                      .ComboMap(menuThemeOptions)
                      .DefaultIndex(Colors::LightBlue));
 #if not defined(__SWITCH__) and not defined(__WIIU__)
     AddWidget(path, "Menu Controller Navigation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_IMGUI_CONTROLLER_NAV)
+        .Translation("ui.widgets.gControlNav")
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
-            "Allows controller navigation of the port menu (Settings, Enhancements,...)\nCAUTION: "
-            "This will disable game inputs while the menu is visible.\n\nD-pad to move between "
-            "items, A to select, B to move up in scope."));
+            Lang::UIString("ui.widgets.gControlNav.description",
+                           "Allows controller navigation of the port menu (Settings, Enhancements,...)\nCAUTION: "
+                           "This will disable game inputs while the menu is visible.\n\nD-pad to move between "
+                           "items, A to select, B to move up in scope.")));
     AddWidget(path, "Allow background inputs", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ALLOW_BACKGROUND_INPUTS)
         .RaceDisable(false)
@@ -154,16 +149,19 @@ void SohMenu::AddMenuSettings() {
                         CVarGetInteger(CVAR_ALLOW_BACKGROUND_INPUTS, 1) ? "1" : "0");
         })
         .Options(CheckboxOptions()
-                     .Tooltip("Allows controller inputs to be picked up by the game even when the game window isn't "
-                              "the focused window.")
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gAllowBackgroundInputs.description",
+                         "Allows controller inputs to be picked up by the game even when the game window isn't "
+                         "the focused window."))
                      .DefaultValue(1));
     AddWidget(path, "Menu Background Opacity", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Menu.BackgroundOpacity"))
         .RaceDisable(false)
         .Options(FloatSliderOptions().DefaultValue(0.85f).IsPercentage().Tooltip(
-            "Sets the opacity of the background of the port menu."));
+            Lang::UIString("ui.widgets.gSettings.Menu.BackgroundOpacity.description",
+                           "Sets the opacity of the background of the port menu.")));
 
-    AddWidget(path, "General Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "General Settings", WIDGET_SEPARATOR_TEXT).Translation("ui.sections.general_settings");
     AddWidget(path, "Cursor Always Visible", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("CursorVisibility"))
         .RaceDisable(false)
@@ -171,7 +169,8 @@ void SohMenu::AddMenuSettings() {
             Ship::Context::GetRawInstance()->GetWindow()->SetForceCursorVisibility(
                 CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
         })
-        .Options(CheckboxOptions().Tooltip("Makes the cursor always visible, even in full screen."));
+        .Options(CheckboxOptions().Tooltip(Lang::UIString("ui.widgets.gSettings.CursorVisibility.description",
+                                                          "Makes the cursor always visible, even in full screen.")));
 #endif
     AddWidget(path, "Search In Sidebar", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("Menu.SidebarSearch"))
@@ -184,45 +183,53 @@ void SohMenu::AddMenuSettings() {
             }
         })
         .Options(CheckboxOptions().Tooltip(
-            "Displays the Search menu as a sidebar entry in Settings instead of in the header."));
+            Lang::UIString("ui.widgets.gSettings.Menu.SidebarSearch.description",
+                           "Displays the Search menu as a sidebar entry in Settings instead of in the header.")));
     AddWidget(path, "Search Input Autofocus", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("Menu.SearchAutofocus"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
-            "Search input box gets autofocus when visible. Does not affect using other widgets."));
+            Lang::UIString("ui.widgets.gSettings.Menu.SearchAutofocus.description",
+                           "Search input box gets autofocus when visible. Does not affect using other widgets.")));
     AddWidget(path, "Reset Button Combination:", WIDGET_CVAR_BTN_SELECTOR)
         .CVar("gSettings.ResetBtn")
         .Options(BtnSelectorOptions().DefaultValue(BTN_CUSTOM_MODIFIER2));
     AddWidget(path, "Open App Files Folder", WIDGET_BUTTON)
+        .Translation("ui.sections.open_app_files")
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             std::string filesPath = Ship::Context::GetRawInstance()->GetAppDirectoryPath();
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         })
-        .Options(ButtonOptions().Tooltip("Opens the folder that contains the save and mods folders, etc."));
+        .Options(
+            ButtonOptions().Tooltip(Lang::UIString("ui.sections.open_app_files.description",
+                                                   "Opens the folder that contains the save and mods folders, etc.")));
 
-    AddWidget(path, "Boot", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Boot", WIDGET_SEPARATOR_TEXT).Translation("ui.sections.boot");
     AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("BootSequence"))
         .RaceDisable(false)
-        .Options(ComboboxOptions()
-                     .DefaultIndex(BOOTSEQUENCE_DEFAULT)
-                     .LabelPosition(LabelPositions::Far)
-                     .ComponentAlignment(ComponentAlignments::Right)
-                     .ComboMap(bootSequenceLabels)
-                     .Tooltip("Configure what happens when starting or resetting the game.\n\n"
-                              "Default: LUS logo -> N64 logo\n"
-                              "Authentic: N64 logo only\n"
-                              "File Select: Skip to file select menu\n"
-                              "Debug Warp Screen: Skip to the debug warp screen\n"
-                              "Warp Point: Skip to active warp point (if set), see Dev Tools -> General"));
+        .Options(
+            ComboboxOptions()
+                .DefaultIndex(BOOTSEQUENCE_DEFAULT)
+                .LabelPosition(LabelPositions::Far)
+                .ComponentAlignment(ComponentAlignments::Right)
+                .ComboMap(bootSequenceLabels)
+                .Tooltip(Lang::UIString("ui.widgets.gSettings.BootSequence.description",
+                                        "Configure what happens when starting or resetting the game.\n\n"
+                                        "Default: LUS logo -> N64 logo\n"
+                                        "Authentic: N64 logo only\n"
+                                        "File Select: Skip to file select menu\n"
+                                        "Debug Warp Screen: Skip to the debug warp screen\n"
+                                        "Warp Point: Skip to active warp point (if set), see Dev Tools -> General")));
 
-    AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT).Translation("ui.sections.languages");
     AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("TitleScreenTranslation"))
         .RaceDisable(false);
     AddWidget(path, "Language", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Languages"))
+        .Callback([](WidgetInfo&) { GameLanguage_Set(CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG)); })
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             auto options = std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options);
@@ -233,46 +240,59 @@ void SohMenu::AddMenuSettings() {
                      .ComponentAlignment(ComponentAlignments::Right)
                      .ComboMap(languages)
                      .DefaultIndex(LANGUAGE_ENG));
-    AddWidget(path, "Accessibility", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Accessibility", WIDGET_SEPARATOR_TEXT).Translation("ui.sections.accessibility");
 #if defined(_WIN32) || defined(__APPLE__) || defined(ESPEAK)
     AddWidget(path, "Text to Speech", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yTTS"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Enables text to speech for in-game dialogue"));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gSettings.A11yTTS.description", "Enables text to speech for in-game dialogue")));
 #endif
     AddWidget(path, "Disable Idle Camera Re-Centering", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
+        .Options(
+            CheckboxOptions().Tooltip(Lang::UIString("ui.widgets.gSettings.A11yDisableIdleCam.description",
+                                                     "Disables the automatic re-centering of the camera when idle.")));
     AddWidget(path, "Disable Screen Flash for Finishing Blow", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yNoScreenFlashForFinishingBlow"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Disables the white screen flash on enemy kill."));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gSettings.A11yNoScreenFlashForFinishingBlow.description",
+                           "Disables the white screen flash on enemy kill.")));
     AddWidget(path, "Disable Jabu Wobble", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yNoJabuWobble"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Disable the geometry wobble and camera distortion inside Jabu."));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gSettings.A11yNoJabuWobble.description",
+                           "Disable the geometry wobble and camera distortion inside Jabu.")));
     AddWidget(path, "Disable Heat Haze", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yNoHeatHaze"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Disable the heat haze distortion effect in Death Mountain / Fire Temple."));
-    AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gSettings.A11yNoHeatHaze.description",
+                           "Disable the heat haze distortion effect in Death Mountain / Fire Temple.")));
+    AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT)
+        .Translation("ui.sections.experimental")
+        .Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))
         .RaceDisable(false)
-        .Options(ComboboxOptions()
-                     .ComboMap(imguiScaleOptions)
-                     .Tooltip("Changes the scaling of the ImGui menu elements.")
-                     .DefaultIndex(1)
-                     .ComponentAlignment(ComponentAlignments::Right)
-                     .LabelPosition(LabelPositions::Far))
+        .Options(
+            ComboboxOptions()
+                .ComboMap(imguiScaleOptions)
+                .Tooltip(Lang::UIString("ui.text.sohgui.sohmenusettings.changes_the_scaling_of_the_imgui_menu_elements",
+                                        "Changes the scaling of the ImGui menu elements."))
+                .DefaultIndex(1)
+                .ComponentAlignment(ComponentAlignments::Right)
+                .LabelPosition(LabelPositions::Far))
         .Callback([](WidgetInfo& info) { OTRGlobals::Instance->ScaleImGui(); });
 
     // General - About
     path.column = SECTION_COLUMN_2;
 
-    AddWidget(path, "About", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Ship Of Harkinian", WIDGET_TEXT);
+    AddWidget(path, "About", WIDGET_SEPARATOR_TEXT).Translation("ui.panels.sohmenusettings.about");
+    AddWidget(path, "Ship Of Harkinian", WIDGET_TEXT).Translation("ui.panels.sohmenusettings.ship_of_harkinian");
     if (gGitCommitTag[0] != 0) {
         AddWidget(path, gBuildVersion, WIDGET_TEXT);
     } else {
@@ -323,7 +343,9 @@ void SohMenu::AddMenuSettings() {
         .Callback([](WidgetInfo& info) {
             Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
         });
-    AddWidget(path, "Audio API (Needs reload)", WIDGET_AUDIO_BACKEND).RaceDisable(false);
+    AddWidget(path, "Audio API (Needs reload)", WIDGET_AUDIO_BACKEND)
+        .Translation("ui.panels.sohmenusettings.audio_api_needs_reload")
+        .RaceDisable(false);
 
     // Graphics Settings
     static int32_t maxFps = 360;
@@ -333,13 +355,17 @@ void SohMenu::AddMenuSettings() {
         "FPS than your monitor's refresh rate will waste resources, and might give a worse result.";
     path.sidebarName = "Graphics";
     AddSidebarEntry("Settings", "Graphics", 3);
-    AddWidget(path, "Graphics Options", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Graphics Options", WIDGET_SEPARATOR_TEXT)
+        .Translation("ui.panels.sohmenusettings.graphics_options");
     AddWidget(path, "Toggle Fullscreen", WIDGET_BUTTON)
+        .Translation("ui.panels.sohmenusettings.toggle_fullscreen")
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) { Ship::Context::GetRawInstance()->GetWindow()->ToggleFullscreen(); })
-        .Options(ButtonOptions().Tooltip("Toggles Fullscreen On/Off."));
+        .Options(ButtonOptions().Tooltip(
+            Lang::UIString("ui.panels.sohmenusettings.toggle_fullscreen.description", "Toggles Fullscreen On/Off.")));
     AddWidget(path, "Internal Resolution", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_INTERNAL_RESOLUTION)
+        .Translation("ui.widgets.gInternalResolution")
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetRawInstance()->GetWindow()->SetResolutionMultiplier(
@@ -354,29 +380,32 @@ void SohMenu::AddMenuSettings() {
                 info.activeDisables.push_back(DISABLE_FOR_LOW_RES_MODE_ON);
             }
         })
-        .Options(
-            FloatSliderOptions()
-                .Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective "
-                         "form of anti-aliasing.")
-                .ShowButtons(false)
-                .IsPercentage()
-                .Min(0.5f)
-                .Max(2.0f));
+        .Options(FloatSliderOptions()
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gInternalResolution.description",
+                         "Multiplies your output resolution by the value inputted, as a more intensive but effective "
+                         "form of anti-aliasing."))
+                     .ShowButtons(false)
+                     .IsPercentage()
+                     .Min(0.5f)
+                     .Max(2.0f));
 #ifndef __WIIU__
     AddWidget(path, "Anti-aliasing (MSAA)", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_MSAA_VALUE)
+        .Translation("ui.widgets.gMSAAValue")
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetRawInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger(CVAR_MSAA_VALUE, 1));
         })
-        .Options(
-            IntSliderOptions()
-                .Tooltip("Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of "
+        .Options(IntSliderOptions()
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gMSAAValue.description",
+                         "Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of "
                          "rendered geometry.\n"
-                         "Higher sample count will result in smoother edges on models, but may reduce performance.")
-                .Min(1)
-                .Max(8)
-                .DefaultValue(1));
+                         "Higher sample count will result in smoother edges on models, but may reduce performance."))
+                     .Min(1)
+                     .Max(8)
+                     .DefaultValue(1));
 #endif
     auto fps = CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
     const char* fpsFormat = fps == 20 ? "Original (%d)" : "%d";
@@ -400,43 +429,61 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Match Refresh Rate", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("MatchRefreshRate"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Matches interpolation value to the refresh rate of your display."));
-    AddWidget(path, "Renderer API (Needs reload)", WIDGET_VIDEO_BACKEND).RaceDisable(false);
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gSettings.MatchRefreshRate.description",
+                           "Matches interpolation value to the refresh rate of your display.")));
+    AddWidget(path, "Renderer API (Needs reload)", WIDGET_VIDEO_BACKEND)
+        .Translation("ui.panels.sohmenusettings.renderer_api_needs_reload")
+        .RaceDisable(false);
     AddWidget(path, "Enable Vsync", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_VSYNC_ENABLED)
+        .Translation("ui.widgets.gVsyncEnabled")
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_VSYNC).active; })
-        .Options(CheckboxOptions()
-                     .Tooltip("Removes tearing, but clamps your max FPS to your display's refresh rate.")
-                     .DefaultValue(true));
+        .Options(
+            CheckboxOptions()
+                .Tooltip(Lang::UIString("ui.widgets.gVsyncEnabled.description",
+                                        "Removes tearing, but clamps your max FPS to your display's refresh rate."))
+                .DefaultValue(true));
     AddWidget(path, "Windowed Fullscreen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SDL_WINDOWED_FULLSCREEN)
+        .Translation("ui.widgets.gSdlWindowedFullscreen")
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_WINDOWED_FULLSCREEN).active;
         })
-        .Options(CheckboxOptions().Tooltip("Enables Windowed Fullscreen Mode."));
+        .Options(CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gSdlWindowedFullscreen.description", "Enables Windowed Fullscreen Mode.")));
     AddWidget(path, "Allow multi-windows", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENABLE_MULTI_VIEWPORTS)
+        .Translation("ui.widgets.gEnableMultiViewports")
         .RaceDisable(false)
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_MULTI_VIEWPORT).active; })
         .Options(CheckboxOptions()
-                     .Tooltip("Allows multiple windows to be opened at once. Requires a reload to take effect.")
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gEnableMultiViewports.description",
+                         "Allows multiple windows to be opened at once. Requires a reload to take effect."))
                      .DefaultValue(true));
     AddWidget(path, "Texture Filter (Needs reload)", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_TEXTURE_FILTER)
+        .Translation("ui.widgets.gTextureFilter")
         .RaceDisable(false)
-        .Options(ComboboxOptions().Tooltip("Sets the applied Texture Filtering.").ComboMap(textureFilteringMap));
+        .Options(
+            ComboboxOptions()
+                .Tooltip(Lang::UIString("ui.widgets.gTextureFilter.description", "Sets the applied Texture Filtering."))
+                .ComboMap(textureFilteringMap));
 
     path.column = SECTION_COLUMN_2;
-    AddWidget(path, "Advanced Graphics Options", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Advanced Graphics Options", WIDGET_SEPARATOR_TEXT)
+        .Translation("ui.panels.sohmenusettings.advanced_graphics_options");
 
     // Controls
     path.sidebarName = "Controls";
     path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Controls", 2);
     AddWidget(path, "Clear Devices", WIDGET_BUTTON)
+        .Translation("ui.panels.sohmenusettings.clear_devices")
         .Callback([](WidgetInfo& info) {
             SohGui::mModalWindow->RegisterPopup(
                 "Clear Config",
@@ -448,35 +495,42 @@ void SohMenu::AddMenuSettings() {
                     uint8_t bits = 0;
                     Ship::Context::GetRawInstance()->GetControlDeck()->Init(&bits);
                 },
-                nullptr);
+                nullptr, "ui.text.sohgui.sohmenusettings");
         })
         .Options(ButtonOptions().Size(Sizes::Inline));
-    AddWidget(path, "Controller Bindings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Controller Bindings", WIDGET_SEPARATOR_TEXT)
+        .Translation("ui.panels.sohmenusettings.controller_bindings");
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ControllerConfiguration"))
         .RaceDisable(false)
         .WindowName("Configure Controller")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString(
+            "ui.widgets.gOpenWindows.ControllerConfiguration.description", "Enables the separate Bindings Window.")));
 
     // Input Viewer
     path.sidebarName = "Input Viewer";
     AddSidebarEntry("Settings", path.sidebarName, 3);
-    AddWidget(path, "Input Viewer", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Input Viewer", WIDGET_SEPARATOR_TEXT).Translation("ui.panels.sohmenusettings.input_viewer");
     AddWidget(path, "Toggle Input Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("InputViewer"))
         .RaceDisable(false)
         .WindowName("Input Viewer")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Toggles the Input Viewer.").EmbedWindow(false));
+        .Options(
+            WindowButtonOptions()
+                .Tooltip(Lang::UIString("ui.widgets.gOpenWindows.InputViewer.description", "Toggles the Input Viewer."))
+                .EmbedWindow(false));
 
-    AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT)
+        .Translation("ui.panels.sohmenusettings.input_viewer_settings");
     AddWidget(path, "Popout Input Viewer Settings", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("InputViewerSettings"))
         .RaceDisable(false)
         .WindowName("Input Viewer Settings")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window."));
+        .Options(WindowButtonOptions().Tooltip(Lang::UIString("ui.widgets.gOpenWindows.InputViewerSettings.description",
+                                                              "Enables the separate Input Viewer Settings Window.")));
 
     // Notifications
     path.sidebarName = "Notifications";
@@ -486,14 +540,16 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("Notifications.Position"))
         .RaceDisable(false)
         .Options(ComboboxOptions()
-                     .Tooltip("Which corner of the screen notifications appear in.")
+                     .Tooltip(Lang::UIString("ui.widgets.gSettings.Notifications.Position.description",
+                                             "Which corner of the screen notifications appear in."))
                      .ComboMap(notificationPosition)
                      .DefaultIndex(3));
     AddWidget(path, "Duration (seconds):", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Notifications.Duration"))
         .RaceDisable(false)
         .Options(FloatSliderOptions()
-                     .Tooltip("How long notifications are displayed for.")
+                     .Tooltip(Lang::UIString("ui.widgets.gSettings.Notifications.Duration.description",
+                                             "How long notifications are displayed for."))
                      .Format("%.1f")
                      .Step(0.1f)
                      .Min(3.0f)
@@ -503,20 +559,23 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("Notifications.BgOpacity"))
         .RaceDisable(false)
         .Options(FloatSliderOptions()
-                     .Tooltip("How opaque the background of notifications is.")
+                     .Tooltip(Lang::UIString("ui.widgets.gSettings.Notifications.BgOpacity.description",
+                                             "How opaque the background of notifications is."))
                      .DefaultValue(0.5f)
                      .IsPercentage());
     AddWidget(path, "Size:", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Notifications.Size"))
         .RaceDisable(false)
         .Options(FloatSliderOptions()
-                     .Tooltip("How large notifications are.")
+                     .Tooltip(Lang::UIString("ui.widgets.gSettings.Notifications.Size.description",
+                                             "How large notifications are."))
                      .Format("%.1f")
                      .Step(0.1f)
                      .Min(1.0f)
                      .Max(5.0f)
                      .DefaultValue(1.8f));
     AddWidget(path, "Test Notification", WIDGET_BUTTON)
+        .Translation("ui.panels.sohmenusettings.test_notification")
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             Notification::Emit({
@@ -526,11 +585,13 @@ void SohMenu::AddMenuSettings() {
                 .suffix = "test.",
             });
         })
-        .Options(ButtonOptions().Tooltip("Displays a test notification."));
+        .Options(ButtonOptions().Tooltip(Lang::UIString("ui.panels.sohmenusettings.test_notification.description",
+                                                        "Displays a test notification.")));
     AddWidget(path, "Mute Notification Sound", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("Notifications.Mute"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Prevent notifications from playing a sound."));
+        .Options(CheckboxOptions().Tooltip(Lang::UIString("ui.widgets.gSettings.Notifications.Mute.description",
+                                                          "Prevent notifications from playing a sound.")));
 
     // Mod Menu
     path.sidebarName = "Mod Menu";
@@ -539,7 +600,8 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("ModMenu"))
         .WindowName("Mod Menu")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Mod Menu Window."));
+        .Options(WindowButtonOptions().Tooltip(
+            Lang::UIString("ui.widgets.gOpenWindows.ModMenu.description", "Enables the separate Mod Menu Window.")));
 }
 
 } // namespace SohGui
