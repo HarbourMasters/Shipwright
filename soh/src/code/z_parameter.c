@@ -3025,7 +3025,9 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
-        } else if (AMMO(ITEM_BOMBCHU) < 0) {
+        }
+
+        if (AMMO(ITEM_BOMBCHU) < 0) {
             AMMO(ITEM_BOMBCHU) = 0;
         }
     } else if (item == ITEM_BOW) {
@@ -3054,6 +3056,10 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
         }
     } else if (item == ITEM_BEAN) {
         AMMO(ITEM_BEAN) += ammoChange;
+
+        if (AMMO(ITEM_BEAN) < 0) {
+            AMMO(ITEM_BEAN) = 0;
+        }
     }
 
     osSyncPrintf("合計 = (%d)\n", AMMO(item)); // "Total = (%d)"
@@ -4481,11 +4487,11 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
                                interfaceCtx->cDownAlpha,    interfaceCtx->dpadUpAlpha,   interfaceCtx->dpadDownAlpha,
                                interfaceCtx->dpadLeftAlpha, interfaceCtx->dpadRightAlpha };
     s16 DPad_ItemsOffset[4][2] = {
-        { 7, -8 },         // Up
-        { 7, 24 },         // Down
-        { -9, 8 },         // Left
-        { 23, 8 },         // Right
-    };                     //(X,Y) Used with custom position to place it properly.
+        { 7, -8 }, // Up
+        { 7, 24 }, // Down
+        { -9, 8 }, // Left
+        { 23, 8 }, // Right
+    }; //(X,Y) Used with custom position to place it properly.
     s16 ItemIconPos[8][2]; //(X,Y)
     // DPadItems
     if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) != ORIGINAL_LOCATION) {
@@ -4733,7 +4739,7 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
         { 7, 35 },  // Down
         { -9, 19 }, // Left
         { 23, 19 }, // Right
-    };              //(X,Y) Used with custom position to place it properly.
+    }; //(X,Y) Used with custom position to place it properly.
     // DPadItems
     if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) != ORIGINAL_LOCATION) {
         ItemIconPos[4][1] =
@@ -4921,6 +4927,14 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
                    ((i == ITEM_NUT) && (AMMO(i) == CUR_CAPACITY(UPG_NUTS))) || ((i == ITEM_BOMBCHU) && (ammo == 50)) ||
                    ((i == ITEM_BEAN) && (ammo == 15)) || GameInteractor_Should(VB_COLOR_AMMO_GREEN, false, i)) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, alpha);
+        }
+
+        // A negative count (e.g. from an older save) would index _gAmmoDigit0Tex out of bounds.
+        // Note: so would a count of 100+ (the tens digit would be 10+, and the table only has 0-9 plus a
+        // "half" texture). Beans have no upper cap and rando bombchu capacity is configurable, so an upper
+        // clamp to 99 may be worth adding here too.
+        if (ammo < 0) {
+            ammo = 0;
         }
 
         if (ammo == 0) {
