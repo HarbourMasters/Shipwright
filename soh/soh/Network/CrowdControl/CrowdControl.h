@@ -42,7 +42,14 @@ class CrowdControl : public Network {
         NotReady = 0xFF
     };
 
-    enum ResponseType { EffectRequest = 0x00, Login = 0xF0, LoginSuccess = 0xF1, Disconnect = 0xFE, KeepAlive = 0xFF };
+    enum ResponseType {
+        EffectRequest = 0x00,
+        Login = 0xF0,
+        LoginSuccess = 0xF1,
+        Version = 0xFC,
+        Disconnect = 0xFE,
+        KeepAlive = 0xFF
+    };
 
     struct Response {
         int id;
@@ -85,6 +92,7 @@ class CrowdControl : public Network {
     void ProcessActiveEffects();
 
     void EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status);
+    void SendVersion(uint32_t id);
     std::unique_ptr<Effect> ParseMessage(nlohmann::json payload);
     EffectResult ExecuteEffect(Effect* effect);
     EffectResult CanApplyEffect(Effect* effect);
@@ -95,6 +103,7 @@ class CrowdControl : public Network {
     void Enable();
     void Disable();
     void OnIncomingJson(nlohmann::json payload);
+    void OnConnected();
     void ProcessOutgoingPackets();
     void OnGameFrameUpdate();
     bool NeedsFrameUpdate();
