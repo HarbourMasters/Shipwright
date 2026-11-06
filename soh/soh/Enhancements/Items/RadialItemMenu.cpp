@@ -448,8 +448,8 @@ static void RadialItemMenu_Equip(PlayState* play, s32 slot, s32 cButton) {
         }
     }
 
-    gSaveContext.equips.buttonItems[targetButtonIndex] = item;
-    gSaveContext.equips.cButtonSlots[cButton] = equipSlot;
+    gSaveContext.equips.buttonItems[targetButtonIndex] = (u8)item;
+    gSaveContext.equips.cButtonSlots[cButton] = (u8)equipSlot;
     if (targetButtonIndex <= 3) {
         Interface_LoadItemIcon1(play, targetButtonIndex);
         sFlashTimer[cButton] = RADIAL_FLASH_FRAMES;
@@ -467,7 +467,7 @@ static void RadialItemMenu_UpdateCursor(Input* input) {
     }
 
     // Pick the item closest to the stick direction (screen space has Y pointing down)
-    f32 stickAngle = atan2f(-stickY, stickX);
+    f32 stickAngle = atan2f((f32)-stickY, (f32)stickX);
     s32 best = -1;
     f32 bestDist = 0.0f;
     f32 cursorDist = -1.0f;
