@@ -905,6 +905,32 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Equip items and equipment on the D-pad. If used with \"D-pad on Pause Screen\", you must "
             "hold C-Up to equip instead of navigate."));
+    AddWidget(path, "Radial Item Menu", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RadialItemMenu.Enabled"))
+        .Options(CheckboxOptions().Tooltip(
+            "Hold the Radial Menu Button to bring up all of your items on a wheel. Point at an item with the "
+            "control stick and press a C-Button to assign it, without opening the pause menu.\n\n"
+            "Works with \"Equip Items on Dpad\" to assign to the D-pad as well."));
+    AddWidget(path, "Radial Menu: Button", WIDGET_CVAR_BTN_SELECTOR)
+        .CVar(CVAR_ENHANCEMENT("RadialItemMenu.Btn"))
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RadialItemMenu.Enabled"), 0); })
+        .Options(BtnSelectorOptions().DefaultValue(BTN_L).Tooltip(
+            "Button combination that opens the radial item menu. While the menu is enabled this combination "
+            "is not passed to the game (by default L, which normally toggles the minimap)."));
+    AddWidget(path, "Radial Menu: Toggle Instead of Hold", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RadialItemMenu.Toggle"))
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RadialItemMenu.Enabled"), 0); })
+        .Options(CheckboxOptions().Tooltip(
+            "Press the Radial Menu Button once to open the menu and again (or B/Start) to close it."));
+    AddWidget(path, "Radial Menu: Pause Gameplay While Open", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RadialItemMenu.Freeze"))
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RadialItemMenu.Enabled"), 0); })
+        .Options(CheckboxOptions().DefaultValue(true).Tooltip(
+            "Freezes the world while choosing items. Turn this off to keep the game running while the menu is "
+            "open (Link still stands still, since the control stick is aiming the menu)."));
     AddWidget(path, "Allow unequipping Items", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ItemUnequip"))
         .Options(CheckboxOptions().Tooltip("Allows unequipping items from C-Buttons/D-pad by hovering over an equipped "
