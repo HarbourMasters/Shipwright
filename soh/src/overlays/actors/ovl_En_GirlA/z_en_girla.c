@@ -1268,64 +1268,67 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->requiredObjectSlot)) {
         this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->actor.objBankIndex = this->requiredObjectSlot;
-        switch (this->actor.params) {
-            case SI_KEATON_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_38)) {
-                    this->actor.textId = 0x70B6;
-                } else {
-                    this->actor.textId = itemEntry->itemDescTextId;
-                }
-                this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                break;
-            case SI_SPOOKY_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
-                    this->actor.textId = 0x70B5;
-                } else {
-                    this->actor.textId = itemEntry->itemDescTextId;
-                }
-                this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                break;
-            case SI_SKULL_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_39)) {
-                    this->actor.textId = 0x70B4;
-                } else {
-                    this->actor.textId = itemEntry->itemDescTextId;
-                }
-                this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                break;
-            case SI_BUNNY_HOOD:
-                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
-                    this->actor.textId = 0x70B7;
-                } else {
-                    this->actor.textId = itemEntry->itemDescTextId;
-                }
-                this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                break;
-            case SI_MASK_OF_TRUTH:
-                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
-                    this->actor.textId = 0x70BB;
+        LUSLOG_WARN("LIZDEBUG!!!!! in EnGirlA_WaitForObject VB_REPLACE_SHOP_ITEM!!! %d", this->actor.params);
+        if (!GameInteractor_Should(VB_REPLACE_SHOP_ITEM, false, this)) {
+            switch (this->actor.params) {
+                case SI_KEATON_MASK:
+                    if (Flags_GetItemGetInf(ITEMGETINF_38)) {
+                        this->actor.textId = 0x70B6;
+                    } else {
+                        this->actor.textId = itemEntry->itemDescTextId;
+                    }
                     this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                } else {
+                    break;
+                case SI_SPOOKY_MASK:
+                    if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
+                        this->actor.textId = 0x70B5;
+                    } else {
+                        this->actor.textId = itemEntry->itemDescTextId;
+                    }
+                    this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
+                    break;
+                case SI_SKULL_MASK:
+                    if (Flags_GetItemGetInf(ITEMGETINF_39)) {
+                        this->actor.textId = 0x70B4;
+                    } else {
+                        this->actor.textId = itemEntry->itemDescTextId;
+                    }
+                    this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
+                    break;
+                case SI_BUNNY_HOOD:
+                    if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+                        this->actor.textId = 0x70B7;
+                    } else {
+                        this->actor.textId = itemEntry->itemDescTextId;
+                    }
+                    this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
+                    break;
+                case SI_MASK_OF_TRUTH:
+                    if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+                        this->actor.textId = 0x70BB;
+                        this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
+                    } else {
+                        this->actor.textId = itemEntry->itemDescTextId;
+                        this->itemBuyPromptTextId = 0xEB;
+                    }
+                    break;
+                case SI_ZORA_MASK:
                     this->actor.textId = itemEntry->itemDescTextId;
-                    this->itemBuyPromptTextId = 0xEB;
-                }
-                break;
-            case SI_ZORA_MASK:
-                this->actor.textId = itemEntry->itemDescTextId;
-                this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                break;
-            case SI_GORON_MASK:
-                this->actor.textId = itemEntry->itemDescTextId;
-                this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                break;
-            case SI_GERUDO_MASK:
-                this->actor.textId = itemEntry->itemDescTextId;
-                this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                break;
-            default:
-                this->actor.textId = itemEntry->itemDescTextId;
-                this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
-                break;
+                    this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
+                    break;
+                case SI_GORON_MASK:
+                    this->actor.textId = itemEntry->itemDescTextId;
+                    this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
+                    break;
+                case SI_GERUDO_MASK:
+                    this->actor.textId = itemEntry->itemDescTextId;
+                    this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
+                    break;
+                default:
+                    this->actor.textId = itemEntry->itemDescTextId;
+                    this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
+                    break;
+            }
         }
         if (!EnGirlA_TrySetMaskItemDescription(this, play)) {
             EnGirlA_SetItemDescription(play, this);
@@ -1365,6 +1368,8 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
                     shopItemIdentity.identity.randomizerCheck, shopItemIdentity.ogItemId);
+                LUSLOG_WARN("LIZDEBUG!!!!! wait for object shopItemIdentity.identity.randomizerInf!!! %d",
+                            shopItemIdentity.identity.randomizerInf);
                 this->actor.textId =
                     0x9100 + (shopItemIdentity.identity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
                 this->itemBuyPromptTextId =
@@ -1463,5 +1468,11 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
         return;
     }
 
-    GetItem_Draw(play, this->giDrawId);
+    LUSLOG_WARN("LIZDEBUG!!!!! in EnGirlA_Draw VB_REPLACE_SHOP_ITEM!!! %d", this->actor.params);
+    if (GameInteractor_Should(VB_REPLACE_SHOP_ITEM, false, this)) {
+        GetItemEntry getItemEntry = ItemTable_RetrieveEntry(MOD_RANDOMIZER, this->getItemId);
+        GetItemEntry_Draw(play, getItemEntry);
+    } else {
+        GetItem_Draw(play, this->giDrawId);
+    }
 }

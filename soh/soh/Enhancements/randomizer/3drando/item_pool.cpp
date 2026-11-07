@@ -435,13 +435,13 @@ void GenerateItemPool() {
         if (!ctx->GetOption(RSK_STARTING_MASK_OF_TRUTH)) AddItemToPool(RG_MASK_OF_TRUTH, 2, 1, 1, 1);
     }
 
-    if (ctx->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_ON)) {
-        uint8_t feathers = ctx->GetOption(RSK_ROCS_FEATHER_COUNT).Get()+1;
-        AddItemToPool(RG_ROCS_FEATHER, feathers, feathers, feathers, feathers);
-    } else if (ctx->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE)) {
-        JunkPoolItems.emplace_back(RG_ROCS_FEATHER);
-        JunkPoolItems.emplace_back(RG_ROCS_FEATHER);
-        JunkPoolItems.emplace_back(RG_ROCS_FEATHER);
+    if (!ctx->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_OFF)) {
+        int feathers = ctx->GetOption(RSK_ROCS_FEATHER_COUNT).Get() + 1;
+        if (ctx->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_ON)) {
+            AddFixedItemToPool(RG_ROCS_FEATHER, feathers);
+        } else {
+            AddItemToPool(RG_ROCS_FEATHER, (int) (feathers*1.5), (int) (feathers*1.25), feathers, (int) (feathers*0.75));
+        }
     }
 
     int bronzeScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;

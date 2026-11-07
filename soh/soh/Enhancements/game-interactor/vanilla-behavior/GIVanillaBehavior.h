@@ -383,16 +383,7 @@ typedef enum {
     // ```c
     // true
     // ```
-    // #### `args`
-    // - `int32_t` (item)
-    VB_CHANGE_HELD_ITEM_AND_USE_ITEM,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // Whether the default action for A should be used. Sending false will (attempt to)
-    // intercept it.
+    // Intercept the default action on A
     // #### `args`
     // - Player* player
     // - PlayState* playState
@@ -402,14 +393,9 @@ typedef enum {
     // ```c
     // true
     // ```
-    // Whether the default texture for a given action on the A button should be used.
-    // A hook returning false must specify a replacement texture pointer.
-    // A hook returning true /may/ change the ACTION supplied to alter the text shown.
-    // Interface_LoadActionLabel
     // #### `args`
-    // - `u16* action` (`DO_ACTION_<action>` - specified in `z64.h`'s `DoAction` struct)
-    // - `const char** alternateTexture` (pointer to a 32 x 32 G_IM_FMT_RGBA texture)
-    VB_SET_ACTION_TEXTURE,
+    // - `int32_t` (item)
+    VB_CHANGE_HELD_ITEM_AND_USE_ITEM,
 
     // #### `result`
     // ```c
@@ -2799,6 +2785,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnGirlA`
+    VB_REPLACE_SHOP_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*PlayState`
     // - `*Player`
     // - `*u32`
@@ -2856,6 +2850,17 @@ typedef enum {
     // #### `args`
     // - `*EnGb`
     VB_SELL_POES_TO_POE_COLLECTOR,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Change text/icon on A
+    // #### `args`
+    // - `u16 action`
+    // - `bool rgbaIcon`
+    // - `char* alternateTexture`
+    VB_SET_ACTION_TEXTURE,
 
     // #### `result`
     // ```c

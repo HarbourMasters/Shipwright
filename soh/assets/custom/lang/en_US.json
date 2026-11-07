@@ -1530,7 +1530,7 @@
                     "Off - Roc's Feather will not be shuffled. No changes will be made to item pool.\n\n",
                     "On - Adds Roc's Feather to the item pool. Roc's Feather is a custom item granting the player a jump on demand. ",
                     "Increasing the number of Feathers will allow successive jumps for each feather found.\n\n",
-                    "Consumable - Adds consumable Roc's Feathers to the item pool. Some junk drops and shop refills will be replaced with feathers.\n\n"
+                    "Consumable - Adds numerous consumable Roc's Feathers to the item pool. Recovery heart refills in shops will be replaced with feather refills.\n\n"
                 ]
             },
             "rocs_feather_count": {
