@@ -212,9 +212,7 @@ void RegisterMerchantMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_CARPET_SALESMAN_1, NON_BEAN_MERCHANTS, BuildCarpetGuyMessage);
     COND_ID_HOOK(OnOpenText, TEXT_CARPET_SALESMAN_ARMS_DEALER, NON_BEAN_MERCHANTS, BuildCarpetGuyMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SCRUB_RANDOM, IS_RANDO, BuildScrubMessage);
-    COND_HOOK(OnOpenText,
-              RAND_GET_OPTION(RSK_SHOPSANITY) || RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE),
-              BuildShopMessage);
+    COND_HOOK(OnOpenText, RAND_GET_OPTION(RSK_SHOPSANITY), BuildShopMessage);
     COND_ID_HOOK(OnOpenText, TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY, IS_RANDO, BuildCarpetGuyFailToBuyMessage);
 }
 

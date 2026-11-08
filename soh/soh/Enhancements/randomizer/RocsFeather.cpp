@@ -156,17 +156,16 @@ void RegisterRocsFeather() {
 
         u16 action = playState->interfaceCtx.unk_1F0;
 
-        // disabled during z-targeting, while paused, when grounded and any action
-        // is displayed, while climbing ladders, when midair with something held,
+        // not usable from A during z-targeting, swimming, while paused, when grounded and any
+        // action is displayed, while climbing ladders, when midair with something held,
         // while crawling, and when there are no rocs remaining to use
         if ((player->stateFlags1 &
              (PLAYER_STATE1_HOSTILE_LOCK_ON | PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS | PLAYER_STATE1_PARALLEL)) ||
-            (player->stateFlags2 & PLAYER_STATE2_CRAWLING) ||
+            (player->stateFlags1 & PLAYER_STATE1_IN_WATER) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING) ||
             (playState->pauseCtx.state > 0 && playState->pauseCtx.state < 18) ||
             ((player->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && action != DO_ACTION_NONE) ||
             (!(player->actor.bgCheckFlags & BGCHECKFLAG_GROUND) &&
-             (action == DO_ACTION_DOWN || action == DO_ACTION_DROP || action == DO_ACTION_THROW ||
-              action == DO_ACTION_DIVE)) ||
+             (action == DO_ACTION_DOWN || action == DO_ACTION_DROP || action == DO_ACTION_THROW)) ||
             (RocsFeathersRemaining() == 0)) {
             *should = true;
         } else {
@@ -215,17 +214,16 @@ void RegisterRocsFeather() {
             *action = *action == DO_ACTION_NONE ? DO_ACTION_MAX : DO_ACTION_NONE;
             *should = false;
 
-            // disabled during z-targeting, while paused, when grounded and any action
-            // is displayed, while climbing ladders, when midair with something held,
+            // do not display on A during z-targeting, while paused, when grounded and any
+            // action is displayed, while climbing ladders, when midair with something held,
             // while crawling, and when there are no rocs remaining to use
         } else if ((player->stateFlags1 &
                     (PLAYER_STATE1_HOSTILE_LOCK_ON | PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS | PLAYER_STATE1_PARALLEL)) ||
-                   (player->stateFlags2 & PLAYER_STATE2_CRAWLING) ||
+                   (player->stateFlags1 & PLAYER_STATE1_IN_WATER) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING) ||
                    (gPlayState->pauseCtx.state > 0 && gPlayState->pauseCtx.state < 18) ||
                    ((player->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && *action != DO_ACTION_NONE) ||
                    (!(player->actor.bgCheckFlags & BGCHECKFLAG_GROUND) &&
-                    (*action == DO_ACTION_DOWN || *action == DO_ACTION_DROP || *action == DO_ACTION_THROW ||
-                     *action == DO_ACTION_DIVE)) ||
+                    (*action == DO_ACTION_DOWN || *action == DO_ACTION_DROP || *action == DO_ACTION_THROW)) ||
                    (RocsFeathersRemaining() == 0)) {
             *should = false;
         } else {
