@@ -140,6 +140,12 @@ static const std::unordered_map<std::string, uint32_t> sBoxPositions = {
     { "Bottom", TEXTBOX_POS_BOTTOM },
 };
 
+// The longest text the game fills in for a control, counted in place of the control and its value
+static const std::unordered_map<uint8_t, size_t> sFilledInSizes = {
+    { MESSAGE_NAME, 8 },   { MESSAGE_MARATHON_TIME, 6 }, { MESSAGE_RACE_TIME, 6 }, { MESSAGE_POINTS, 4 },
+    { MESSAGE_TOKENS, 3 }, { MESSAGE_FISH_INFO, 2 },     { MESSAGE_TIME, 5 },      { MESSAGE_HIGHSCORE, 6 },
+};
+
 // Font characters from 0x80 on
 static const std::vector<std::string> sExtendedChars = {
     "À", "î", "Â", "Ä", "Ç", "È", "É", "Ê", "Ë", "Ï", "Ô", "Ö", "Ù", "Û", "Ü", "ß",
@@ -454,6 +460,53 @@ class MessageWriter {
     }
 };
 
+static size_t ControlValueSize(uint8_t code) {
+    switch (code) {
+        case MESSAGE_COLOR:
+        case MESSAGE_SHIFT:
+        case MESSAGE_TEXT_SPEED:
+        case MESSAGE_BOX_BREAK_DELAYED:
+        case MESSAGE_FADE:
+        case MESSAGE_ITEM_ICON:
+        case MESSAGE_HIGHSCORE:
+            return 1;
+        case MESSAGE_FADE2:
+        case MESSAGE_SFX:
+        case MESSAGE_TEXTID:
+            return 2;
+        case MESSAGE_BACKGROUND:
+            return 3;
+        default:
+            return 0;
+    }
+}
+
+static bool EndsBox(uint8_t code) {
+    return code == MESSAGE_BOX_BREAK || code == MESSAGE_BOX_BREAK_DELAYED || code == MESSAGE_TEXTID ||
+           code == MESSAGE_EVENT || code == MESSAGE_END;
+}
+
+// The game decodes one box at a time into a fixed buffer, filling in names and numbers as it goes
+static size_t LargestBoxSize(const std::string& msg) {
+    size_t largest = 0;
+    size_t box = 0;
+
+    for (size_t i = 0; i < msg.size(); i++) {
+        uint8_t code = static_cast<uint8_t>(msg[i]);
+        size_t valueSize = ControlValueSize(code);
+        auto filledIn = sFilledInSizes.find(code);
+
+        box += filledIn != sFilledInSizes.end() ? filledIn->second : 1 + valueSize;
+        i += valueSize;
+        largest = std::max(largest, box);
+        if (EndsBox(code)) {
+            box = 0;
+        }
+    }
+
+    return largest;
+}
+
 static std::optional<MessageEntry> EncodeTextEntry(const tinyxml2::XMLElement* element, const std::string& path) {
     auto id = ParseNumber(element->Attribute("ID"), 0xFFFF);
     if (!id.has_value()) {
@@ -471,6 +524,13 @@ static std::optional<MessageEntry> EncodeTextEntry(const tinyxml2::XMLElement* e
     if (entry.msg.size() > Text::MaxMessageSize) {
         SPDLOG_WARN("{}: message is {} bytes, over the {} byte limit", logContext, entry.msg.size(),
                     Text::MaxMessageSize);
+        return std::nullopt;
+    }
+
+    size_t boxSize = LargestBoxSize(entry.msg);
+    if (boxSize > Text::MaxBoxSize) {
+        SPDLOG_WARN("{}: a box is {} bytes with values filled in, over the {} byte limit", logContext, boxSize,
+                    Text::MaxBoxSize);
         return std::nullopt;
     }
 
