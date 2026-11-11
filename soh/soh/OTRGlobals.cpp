@@ -408,6 +408,26 @@ static bool RemoveArchiveAcrossAppDirs(const std::string& fileName) {
     return !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs(fileName, appShortName));
 }
 
+// Takes every "--game <rom>" and "--game=<rom>" out of args and returns the ROM paths. A launcher or script uses it
+// to say which ROMs to extract from without anyone picking them by hand. It can be given twice, for the regular
+// game and Master Quest.
+static std::vector<std::string> TakeGameArguments(std::vector<std::string>& args) {
+    const std::string equalsForm = "--game=";
+    std::vector<std::string> roms;
+    std::vector<std::string> others;
+    for (size_t i = 0; i < args.size(); i++) {
+        if (args[i] == "--game" && i + 1 < args.size()) {
+            roms.push_back(args[++i]);
+        } else if (args[i].rfind(equalsForm, 0) == 0) {
+            roms.push_back(args[i].substr(equalsForm.size()));
+        } else {
+            others.push_back(args[i]);
+        }
+    }
+    args = others;
+    return roms;
+}
+
 void OTRGlobals::RunExtract(int argc, char* argv[]) {
     bool extractDone = false;
     ExtractSteps extractStep = ES_PORT_ARCHIVE;
@@ -427,6 +447,10 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             args.push_back(argv[i]);
         }
     }
+    // With --game the ROM is only extracted when its archive is missing, so later starts go straight to the game
+    std::vector<std::string> gameRoms = TakeGameArguments(args);
+    bool romFromGameArgument = !gameRoms.empty();
+    args.insert(args.begin(), gameRoms.begin(), gameRoms.end());
     Extractor extract;
     PromptSteps promptStep = PS_FILE_CHECK;
     bool generatedIsMQ = false;
@@ -591,6 +615,10 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             }
             case ES_EXTRACT_ARGS: {
 #if !defined(__SWITCH__) && !defined(__WIIU__)
+                if (args.empty() && romFromGameArgument) {
+                    extractStep = ES_VERIFY;
+                    break;
+                }
                 if (args.empty()) {
                     SohGui::RegisterPopup(
                         "Run Ship of Harkinian", "All files have been processed. Run SoH?", "Yes", "No",
@@ -614,7 +642,12 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                 if (extract.RunFileStandalone(file)) {
                     bool doExtract = true;
                     std::string archive = (extract.IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r");
-                    if (std::filesystem::exists(Ship::Context::GetAppDirectoryPath(appShortName) + "/" + archive)) {
+                    bool archiveExists =
+                        std::filesystem::exists(Ship::Context::GetAppDirectoryPath(appShortName) + "/" + archive);
+                    if (archiveExists && romFromGameArgument) {
+                        // Extracted by an earlier start. The next pass takes the next ROM, or moves on.
+                        SPDLOG_INFO("{} already exists, not extracting {} again", archive, file);
+                    } else if (archiveExists) {
                         std::string msg = "Archive for current ROM, " + archive + ", already exists.\nExtract again?";
                         SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
                             extractionTask = threadPool->submit_task([&]() -> void {
