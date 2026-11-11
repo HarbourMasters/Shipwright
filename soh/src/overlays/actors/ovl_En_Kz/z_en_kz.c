@@ -126,7 +126,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_DONE:
-            if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
+            if (GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
                 if (Message_ShouldAdvance(play)) {
                     talkState = NPC_TALK_STATE_ITEM_GIVEN;
                 }
@@ -147,7 +147,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
             }
             break;
         case TEXT_STATE_CLOSING:
-            if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
+            if (GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
                 talkState = NPC_TALK_STATE_IDLE;
                 switch (this->actor.textId) {
                     case 0x4012:
@@ -181,7 +181,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
             }
             if (this->actor.textId == 0x4014) {
                 if (play->msgCtx.choiceIndex == 0) {
-                    if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
+                    if (!GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
                         EnKz_SetupGetItem(this, play);
                     }
                     talkState = NPC_TALK_STATE_ACTION;
@@ -234,23 +234,32 @@ s32 EnKz_UpdateTalking(PlayState* play, EnKz* this, s16* talkState, f32 interact
         return true;
     }
 
-    if (*talkState != NPC_TALK_STATE_IDLE) {
-        *talkState = updateTalkState(play, &this->actor);
-        return false;
-    }
+    if (!GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
+        if (*talkState != NPC_TALK_STATE_IDLE) {
+            *talkState = updateTalkState(play, &this->actor);
+            return 0;
+        }
 
-    yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
-    yaw -= this->actor.shape.rot.y;
-    if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
-        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-        return false;
-    }
+        yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
+        yaw -= this->actor.shape.rot.y;
+        if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+            return 0;
+        }
 
-    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+    }
 
     Actor_GetScreenPos(play, &this->actor, &x, &y);
     if (!((x >= -30) && (x < 361) && (y >= -10) && (y < 241))) {
         return false;
+    }
+
+    if (GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
+        if (*talkState != NPC_TALK_STATE_IDLE) {
+            *talkState = updateTalkState(play, &this->actor);
+            return false;
+        }
     }
 
     xzDistToPlayer = this->actor.xzDistToPlayer;
@@ -267,6 +276,18 @@ s32 EnKz_UpdateTalking(PlayState* play, EnKz* this, s16* talkState, f32 interact
 
 void func_80A9CB18(EnKz* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
+
+    if (GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
+        f32 yaw;
+
+        yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
+        yaw -= this->actor.shape.rot.y;
+        if (fabsf(yaw) > 1820.0f) {
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+            return;
+        }
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+    }
 
     if (EnKz_UpdateTalking(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetTextId, EnKz_UpdateTalkState)) {
         if (GameInteractor_Should(VB_BE_ABLE_TO_EXCHANGE_RUTOS_LETTER, (this->actor.textId == 0x401A), this) &&
@@ -287,12 +308,12 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                 this->actor.textId = 0x4014;
                 this->sfxPlayed = false;
                 player->actor.textId = this->actor.textId;
-                if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
+                if (!GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
                     this->isTrading = true;
                 }
                 return;
             }
-            if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
+            if (!GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
                 this->isTrading = false;
             }
             if (Flags_GetInfTable(INFTABLE_139)) {
@@ -455,7 +476,7 @@ void EnKz_StopMweep(EnKz* this, PlayState* play) {
 
 void EnKz_Wait(EnKz* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
+        if (GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
             this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         }
         this->actionFunc = EnKz_SetupGetItem;
@@ -476,7 +497,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
         this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
         this->actionFunc = EnKz_StartTimer;
     } else {
-        if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
+        if (GameInteractor_Should(VB_KING_ZORA_1PT0, false)) {
             getItemId = Actor_GetPlayerExchangeItemId(play) == EXCH_ITEM_PRESCRIPTION ? GI_FROG : GI_TUNIC_ZORA;
         } else {
             getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
@@ -488,7 +509,9 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
 }
 
 void EnKz_StartTimer(EnKz* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
+    if (GameInteractor_Should(VB_KING_ZORA_1PT0_TIMER,
+                              (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)),
+        this) {
         if (GameInteractor_Should(VB_TRADE_TIMER_FROG, INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG)) {
             Interface_SetSubTimer(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
@@ -510,7 +533,7 @@ void EnKz_Update(Actor* thisx, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
     EnKz_UpdateEyes(this);
     Actor_MoveXZGravity(&this->actor);
-    if (this->actionFunc != EnKz_StartTimer) {
+    if (GameInteractor_Should(VB_KING_ZORA_1PT0, this->actionFunc != EnKz_StartTimer)) {
         func_80A9CB18(this, play);
     }
     this->actionFunc(this, play);

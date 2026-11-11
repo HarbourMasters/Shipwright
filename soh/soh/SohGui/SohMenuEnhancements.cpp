@@ -1388,11 +1388,14 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("QuickBongoKill"))
         .Options(CheckboxOptions().Tooltip(
             "Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him."));
-    AddWidget(path, "Early Eyeball Frog", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "1.0 King Zora", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EarlyEyeballFrog"))
-        .Options(CheckboxOptions().Tooltip(
-            "Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora "
-            "instead of the Zora Tunic by Holding Shield."));
+        .Options(CheckboxOptions().Tooltip("Restores King Zora to his NTSC 1.0/1.1 functionality.\n"
+                                           "This allows for multiple glitches including \"Early Eyeball Frog\" "
+                                           "(which allows you to obtain the eyeball frog from King Zora instead of the "
+                                           "Zora Tunic by Holding Shield) and Text Transfer Glitch.\n"
+                                           "However this reintroduces harmful glitches with King Zora as well that "
+                                           "cause him to temporaraly become non-functional."));
     AddWidget(path, "Child Hookshot Softlock", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ChildHookshotSoftlock"))
         .Options(CheckboxOptions().Tooltip("Using the Hookshot as child softlocks."));
