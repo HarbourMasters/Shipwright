@@ -600,6 +600,9 @@ void SaveManager::Init() {
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
         if (std::filesystem::exists(GetFileName(fileNum))) {
             StartupCheckAndInitMeta(fileNum);
+            if (fileMetaInfo[fileNum].quest == QUEST_MASTER || fileMetaInfo[fileNum].quest == QUEST_SPEEDRUN_MASTER) {
+                gSaveContext.ship.quest.id = QUEST_MASTER;
+            }
         }
     }
     saveBlock = nlohmann::json::object();
@@ -993,7 +996,9 @@ void SaveManager::InitFileNormal() {
     gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
 
     // Init with normal quest unless only an MQ rom is provided
-    gSaveContext.ship.quest.id = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
+    if (gSaveContext.gameMode != GAMEMODE_TITLE_SCREEN) {
+        gSaveContext.ship.quest.id = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
+    }
 }
 
 // Debug saves start with shuffled abilities
