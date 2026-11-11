@@ -1914,6 +1914,31 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             if (item == ITEM_NAYRUS_LOVE) {
                 *should = RAND_GET_OPTION(RSK_NAYRUS_LOVE_USES).Get() > 0;
+            } else if (item == ITEM_ROCS_FEATHER) {
+                *should = RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE) ||
+                          gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired != 1;
+            }
+            break;
+        }
+        case VB_OVERRIDE_AMMO_COUNT: {
+            s16 item = *va_arg(args, s16*);
+            s16* ammo = va_arg(args, s16*);
+            if (item == ITEM_ROCS_FEATHER) {
+                if (RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE) ||
+                    gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired != 1) {
+                    *should = false;
+                    *ammo = gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining;
+                } else {
+                    *should = true;
+                }
+            }
+            break;
+        }
+        case VB_COLOR_AMMO_GREEN: {
+            int item = va_arg(args, int);
+            if (item == ITEM_ROCS_FEATHER) {
+                *should = gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired ==
+                          gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining;
             }
             break;
         }
@@ -2078,6 +2103,33 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             enMk->actionFunc = EnMk_Wait;
             enMk->flags |= 1;
             *should = false;
+            break;
+        }
+        case VB_REPLACE_SHOP_ITEM: {
+            EnGirlA* shop = va_arg(args, EnGirlA*);
+
+            // replace Recovery Hearts in shops with Roc's Feathers when they're consumable
+            if (RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE) &&
+                shop->actor.params == SI_RECOVERY_HEART) {
+                shop->actor.textId = (s16)TEXT_BUY_ROCS_FEATHER_DESC;
+                shop->itemBuyPromptTextId = (s16)TEXT_BUY_ROCS_FEATHER_PROMPT;
+                shop->getItemId = Rando::StaticData::RetrieveItem(RG_ROCS_FEATHER).GetGIEntry_Copy().getItemId;
+                shop->giDrawId = GI_NONE;
+                shop->canBuyFunc = [](PlayState*, EnGirlA*) -> s32 {
+                    if (gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining <
+                        (Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER_COUNT).Get() + 1)) {
+                        return CANBUY_RESULT_SUCCESS;
+                    } else {
+                        return CANBUY_RESULT_CANT_GET_NOW;
+                    }
+                };
+                shop->itemGiveFunc = [](PlayState*, EnGirlA* girlA) {
+                    GetItemEntry replacementItem = Rando::StaticData::RetrieveItem(RG_ROCS_FEATHER).GetGIEntry_Copy();
+                    Randomizer_Item_Give(gPlayState, replacementItem);
+                    Rupees_ChangeBy(-girlA->basePrice);
+                };
+                *should = true;
+            }
             break;
         }
         // We need to override the vanilla behavior here because the player might sequence break and get Ruto kidnapped

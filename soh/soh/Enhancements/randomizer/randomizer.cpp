@@ -1193,10 +1193,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             if (!ChildTradeSlotOccupied()) {
                 INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_LETTER_ZELDA;
             }
-        } else if (item == RG_ROCS_FEATHER) {
-            if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
-                INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
-            }
         } else if (item == RG_CHILD_WALLET &&
                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(99);
@@ -1430,6 +1426,12 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
             AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
+            break;
+        case RG_ROCS_FEATHER:
+            if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
+                INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
+            }
+            OTRGlobals::Instance->gRandoContext->HandleGetRocsFeather();
             break;
         case RG_SHADOW_SILVER_BLADES:
         case RG_SHADOW_SILVER_PIT:

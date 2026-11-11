@@ -2775,6 +2775,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnGirlA`
+    VB_REPLACE_SHOP_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*PlayState`
     // - `*Player`
     // - `*u32`
