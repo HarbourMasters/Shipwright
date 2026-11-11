@@ -383,16 +383,6 @@ typedef enum {
     // ```c
     // true
     // ```
-    // Intercept the default action on A
-    // #### `args`
-    // - Player* player
-    // - PlayState* playState
-    VB_CHANGE_ACTION_AND_USE,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
     // #### `args`
     // - `int32_t` (item)
     VB_CHANGE_HELD_ITEM_AND_USE_ITEM,
@@ -2850,17 +2840,6 @@ typedef enum {
     // #### `args`
     // - `*EnGb`
     VB_SELL_POES_TO_POE_COLLECTOR,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // Change text/icon on A
-    // #### `args`
-    // - `u16 action`
-    // - `bool rgbaIcon`
-    // - `char* alternateTexture`
-    VB_SET_ACTION_TEXTURE,
 
     // #### `result`
     // ```c

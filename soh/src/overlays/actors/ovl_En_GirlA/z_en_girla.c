@@ -1268,7 +1268,6 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->requiredObjectSlot)) {
         this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->actor.objBankIndex = this->requiredObjectSlot;
-        LUSLOG_WARN("LIZDEBUG!!!!! in EnGirlA_WaitForObject VB_REPLACE_SHOP_ITEM!!! %d", this->actor.params);
         if (!GameInteractor_Should(VB_REPLACE_SHOP_ITEM, false, this)) {
             switch (this->actor.params) {
                 case SI_KEATON_MASK:
@@ -1368,8 +1367,6 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
                     shopItemIdentity.identity.randomizerCheck, shopItemIdentity.ogItemId);
-                LUSLOG_WARN("LIZDEBUG!!!!! wait for object shopItemIdentity.identity.randomizerInf!!! %d",
-                            shopItemIdentity.identity.randomizerInf);
                 this->actor.textId =
                     0x9100 + (shopItemIdentity.identity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
                 this->itemBuyPromptTextId =
@@ -1379,8 +1376,8 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
                 this->basePrice = shopItemIdentity.itemPrice;
                 this->giDrawId = getItemEntry.gid;
 
-                // Correct the rotation for spiritual stones, but only if mysterious shuffle isn't on, else it's obvious
-                // what's there in shops
+                // Correct the rotation for spiritual stones, but only if mysterious shuffle isn't on, else
+                // it's obvious what's there in shops
                 if (!CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
                     (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE)) {
                     this->actor.shape.rot.y = this->actor.shape.rot.y + 20000;
@@ -1468,7 +1465,6 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
         return;
     }
 
-    LUSLOG_WARN("LIZDEBUG!!!!! in EnGirlA_Draw VB_REPLACE_SHOP_ITEM!!! %d", this->actor.params);
     if (GameInteractor_Should(VB_REPLACE_SHOP_ITEM, false, this)) {
         GetItemEntry getItemEntry = ItemTable_RetrieveEntry(MOD_RANDOMIZER, this->getItemId);
         GetItemEntry_Draw(play, getItemEntry);
