@@ -47,7 +47,6 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_FREED_CARPENTERS,              logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
-        ENTRANCE(RR_GF_OUTSKIRTS,          true),
         ENTRANCE(RR_GF_ABOVE_GTG,          true),
         ENTRANCE(RR_GF_TOP_OF_LOWER_VINES, true),
     });
