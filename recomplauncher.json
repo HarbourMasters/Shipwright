@@ -1,0 +1,126 @@
+{
+  "$schema": "https://recomplauncher.com/schema/recomplauncher.json",
+  "format": 1,
+  "name": "Ship of Harkinian",
+  "repo": "HarbourMasters/Shipwright",
+  "inputs": [
+    {
+      "id": "rom",
+      "label": "Your Ocarina of Time ROM (.z64, .n64 or .v64): the regular game or Master Quest, any version the Ship supports.",
+      "role": "game",
+      "formats": [{ "type": "file", "extensions": ["z64", "n64", "v64"] }]
+    },
+    {
+      "id": "rom2",
+      "label": "A second ROM, if you have both the regular game and Master Quest. You can skip this.",
+      "role": "game",
+      "optional": true,
+      "formats": [{ "type": "file", "extensions": ["z64", "n64", "v64"] }]
+    }
+  ],
+  "start": {
+    "program": ["soh.exe", "soh.appimage"],
+    "args": ["--game={input:rom}", "--game={input:rom2}"]
+  },
+  "config": [
+    {
+      "id": "main",
+      "format": "json",
+      "file": [
+        { "path": "{install}/shipofharkinian.json", "if": "{install}/shipofharkinian.json" },
+        { "path": "{local}/soh/shipofharkinian.json", "if": "{local}/soh/shipofharkinian.json" },
+        { "path": "{install}/shipofharkinian.json" }
+      ]
+    }
+  ],
+  "folders": {
+    "saves": [
+      { "path": "{install}/Save", "if": "{install}/Save" },
+      { "path": "{local}/soh/Save", "if": "{local}/soh/Save" },
+      { "path": "{install}/Save" }
+    ],
+    "logs": [
+      { "path": "{install}/logs", "if": "{install}/logs" },
+      { "path": "{local}/soh/logs", "if": "{local}/soh/logs" },
+      { "path": "{install}/logs" }
+    ]
+  },
+  "saves": [
+    "{install}/Save",
+    "{local}/soh/Save",
+    "{install}/shipofharkinian.json",
+    "{local}/soh/shipofharkinian.json"
+  ],
+  "settings": [
+    {
+      "id": "fullscreen",
+      "label": "Full screen",
+      "help": "Fills your screen instead of using a window.",
+      "choices": [
+        { "label": "Off", "set": { "Window/Fullscreen/Enabled": "false" } },
+        { "label": "On", "set": { "Window/Fullscreen/Enabled": "true" } }
+      ],
+      "defaults": { "Window/Fullscreen/Enabled": "false" }
+    },
+    {
+      "id": "resolution",
+      "label": "Resolution",
+      "help": "Draws above the window size for a sharper picture.",
+      "choices": [
+        { "label": "100% (window size)", "set": { "CVars/gSettings/InternalResolution": "1.0" } },
+        { "label": "150%", "set": { "CVars/gSettings/InternalResolution": "1.5" } },
+        { "label": "200%", "set": { "CVars/gSettings/InternalResolution": "2.0" } }
+      ],
+      "defaults": { "CVars/gSettings/InternalResolution": "1.0" }
+    },
+    {
+      "id": "msaa",
+      "label": "Anti-aliasing",
+      "help": "Smooths jagged edges. Higher costs more performance.",
+      "choices": [
+        { "label": "Off", "set": { "CVars/gSettings/MSAAValue": "1" } },
+        { "label": "2x", "set": { "CVars/gSettings/MSAAValue": "2" } },
+        { "label": "4x", "set": { "CVars/gSettings/MSAAValue": "4" } },
+        { "label": "8x", "set": { "CVars/gSettings/MSAAValue": "8" } }
+      ],
+      "defaults": { "CVars/gSettings/MSAAValue": "1" }
+    },
+    {
+      "id": "fps",
+      "label": "Frame rate",
+      "help": "The game ran at 20 frames per second on the console. Higher rates add in-between frames for smoother motion.",
+      "choices": [
+        { "label": "20 (original)", "set": { "CVars/gSettings/InterpolationFPS": "20" } },
+        { "label": "30", "set": { "CVars/gSettings/InterpolationFPS": "30" } },
+        { "label": "60", "set": { "CVars/gSettings/InterpolationFPS": "60" } },
+        { "label": "120", "set": { "CVars/gSettings/InterpolationFPS": "120" } }
+      ],
+      "defaults": { "CVars/gSettings/InterpolationFPS": "20" }
+    },
+    {
+      "id": "vsync",
+      "label": "V-Sync",
+      "help": "Stops tearing, but caps the frame rate at your screen's refresh rate.",
+      "choices": [
+        { "label": "On", "set": { "CVars/gSettings/VsyncEnabled": "1" } },
+        { "label": "Off", "set": { "CVars/gSettings/VsyncEnabled": "0" } }
+      ],
+      "defaults": { "CVars/gSettings/VsyncEnabled": "1" }
+    },
+    {
+      "id": "texture_filter",
+      "label": "Texture filtering",
+      "help": "How textures are smoothed. Three-point is how the Nintendo 64 drew them.",
+      "choices": [
+        { "label": "Three-point (original)", "set": { "CVars/gSettings/TextureFilter": "0" } },
+        { "label": "Linear", "set": { "CVars/gSettings/TextureFilter": "1" } },
+        { "label": "None", "set": { "CVars/gSettings/TextureFilter": "2" } }
+      ],
+      "defaults": { "CVars/gSettings/TextureFilter": "0" }
+    }
+  ],
+  "actions": [
+    { "id": "saves", "label": "Saves", "help": "Your save files.", "open": "saves" },
+    { "id": "logs", "label": "Logs", "help": "What the game wrote while it ran.", "open": "logs" }
+  ]
+}

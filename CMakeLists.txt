@@ -388,6 +388,11 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION assets COMPONENT ship)
 endif()
 
+# RecompLauncher reads this from the top of the Windows zip and from the root of the AppImage
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Windows")
+install(FILES "${CMAKE_SOURCE_DIR}/recomplauncher.json" DESTINATION . COMPONENT ship)
+endif()
+
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(ImageMagick COMPONENTS convert)
     if (ImageMagick_FOUND)
