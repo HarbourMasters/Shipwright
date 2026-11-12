@@ -502,32 +502,6 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
 }
 
 /**
- * Fade in the name entry box and slide it to the center of the screen from the right side.
- * After the name entry box is in place, init the keyboard/cursor and change modes.
- * Update function for `CM_START_NAME_ENTRY`
- */
-void FileChoose_StartNameEntry(GameState* thisx) {
-    FileChooseContext* this = (FileChooseContext*)thisx;
-
-    this->nameEntryBoxAlpha += 25;
-
-    if (this->nameEntryBoxAlpha >= 255) {
-        this->nameEntryBoxAlpha = 255;
-    }
-
-    this->nameEntryBoxPosX -= 30;
-
-    if (this->nameEntryBoxPosX <= 0) {
-        this->nameEntryBoxPosX = 0;
-        this->nameEntryBoxAlpha = 255;
-        this->kbdX = 0;
-        this->kbdY = 0;
-        this->kbdButton = 99;
-        this->configMode = CM_NAME_ENTRY;
-    }
-}
-
-/**
  * Update the keyboard cursor and play sounds at the appropriate times.
  * There are many special cases for warping the cursor depending on where
  * the cursor currently is.

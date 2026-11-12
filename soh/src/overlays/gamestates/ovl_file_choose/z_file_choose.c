@@ -942,6 +942,41 @@ void FileChoose_RotateToNameEntry(GameState* thisx) {
 }
 
 /**
+ * Slide the name entry box into place and set the initial keyboard selection.
+ * Update function for `CM_START_NAME_ENTRY`.
+ */
+static void FileChoose_StartNameEntry(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    this->nameEntryBoxAlpha += 25;
+
+    if (this->nameEntryBoxAlpha >= 255) {
+        this->nameEntryBoxAlpha = 255;
+    }
+
+    this->nameEntryBoxPosX -= 30;
+
+    if (this->nameEntryBoxPosX <= 0) {
+        this->nameEntryBoxPosX = 0;
+        this->nameEntryBoxAlpha = 255;
+        this->charIndex = 0;
+
+        // The default name was filled in when the player selected the empty file.
+        if (this->newFileNameCharCount > 0) {
+            this->kbdX = FS_KBD_BTN_END;
+            this->kbdY = 5;
+            this->kbdButton = FS_KBD_BTN_END;
+        } else {
+            this->kbdX = 0;
+            this->kbdY = 0;
+            this->kbdButton = FS_KBD_BTN_NONE;
+        }
+
+        this->configMode = CM_NAME_ENTRY;
+    }
+}
+
+/**
  * Rotate the window from the main menu to the options menu.
  * Update function for `CM_MAIN_TO_OPTIONS`
  */
@@ -1106,7 +1141,7 @@ static void (*gConfigModeUpdateFuncsNES[])(GameState*) = {
     FileChoose_EraseAnim2,         FileChoose_EraseAnim3,
     FileChoose_ExitEraseToMain,    FileChoose_UnusedCM31,
     FileChoose_RotateToNameEntry,  FileChoose_UpdateKeyboardCursorNES,
-    FileChoose_StartNameEntryNES,  FileChoose_RotateToMain,
+    FileChoose_StartNameEntry,     FileChoose_RotateToMain,
     FileChoose_RotateToOptions,    FileChoose_UpdateOptionsMenuNES,
     FileChoose_StartOptionsNES,    FileChoose_RotateToMain,
     FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
