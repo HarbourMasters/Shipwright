@@ -125,6 +125,10 @@ static int retryTimer = 0;
 // ~6 game-update frames (about a quarter second) of grace; see PauseSong_RetryPlay for why.
 static constexpr int OCARINA_RETRY_GRACE_FRAMES = 6;
 
+// The game reads Link's item buttons only where pressing one does something: not climbing, grabbed, knocked
+// back... A frame on which it did is the vanilla answer to whether the ocarina could come out.
+static uint32_t itemButtonsReadFrame = UINT32_MAX;
+
 static bool isCannotPlayActive = false;
 // Frames the "can't play here" textbox stays up before fading on its own (message updates run ~20/sec).
 static constexpr int CANNOT_PLAY_FADE_FRAMES = 60;
@@ -141,8 +145,8 @@ static void PauseWarp_Execute() {
         return;
     }
     isWarpActive = false;
-    GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
     if (gPlayState->msgCtx.choiceIndex != 0) {
+        Player_SetCsAction(gPlayState, NULL, PLAYER_CSACTION_7);
         return;
     }
 
@@ -505,7 +509,11 @@ static void StartWarpPlayback(int song) {
         Message_StartTextbox(gPlayState, TEXT_CANNOT_WARP_HERE, NULL);
     } else {
         Message_StartTextbox(gPlayState, songMessageMap[idx], NULL);
-        GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
+        // Held the way the engine holds Link for a scripted camera; action 7 releases him.
+        Player* player = GET_PLAYER(gPlayState);
+        player->actor.speedXZ = 0.0f;
+        player->linearVelocity = 0.0f;
+        Player_SetCsActionWithHaltedActors(gPlayState, NULL, PLAYER_CSACTION_8);
         isWarpActive = true;
     }
     // Same spot vanilla runs it in: right after the warp prompt opens (z_message_PAL.c, MSGMODE_SONG_PLAYED_ACT).
@@ -521,7 +529,7 @@ static bool PauseSong_CanPlayOcarina() {
         return false;
     }
     // The scene restriction that greys out the Ocarina on its C-button (Interface_SetSceneRestrictions).
-    if (gPlayState->interfaceCtx.restrictions.ocarina != 0) {
+    if (gPlayState->interfaceCtx.restrictions.ocarina != 0 || itemButtonsReadFrame != gPlayState->gameplayFrames) {
         return false;
     }
     // Songs can be learned before an Ocarina is found (Randomizer); there is nothing to play them on.
@@ -588,9 +596,9 @@ static bool WarpSongButtonsUnlocked(int song) {
 }
 
 // After the menu closes, keep re-checking whether the ocarina can be played and start the pending song
-// once it can. A block at selection time is usually a previous song's ocarina/message state still settling
-// -- which only advances once unpaused -- so we give it a short grace before concluding it truly can't be
-// played here. Runs each game frame; a no-op unless a retry is armed.
+// once it can. Only a running Player answers that, and a previous song's ocarina/message state also only
+// settles once unpaused, so we give it a short grace before concluding it truly can't be played here.
+// Runs each game frame; a no-op unless a retry is armed.
 static void PauseSong_RetryPlay() {
     if (retryTimer <= 0) {
         return;
@@ -653,21 +661,12 @@ static void PauseMenuSongs_HandleSelection() {
         return;
     }
 
-    // Commit: close the quest screen. Play now if the ocarina can come out, else arm the grace retry. Warp
-    // songs are gated the same way, so you can't warp from a spot the game wouldn't let you play in.
+    // Commit: close the quest screen and decide once gameplay resumes. Warp songs are gated the same way, so
+    // you can't warp from a spot the game wouldn't let you play in.
     PauseMenu_BeginClose(&gPlayState->pauseCtx);
     retrySong = song;
     retryIsWarp = isWarpSong;
-    if (PauseSong_CanPlayOcarina()) {
-        retryTimer = 0;
-        if (isWarpSong) {
-            StartWarpPlayback(song);
-        } else {
-            StartSongPlayback(song);
-        }
-    } else {
-        retryTimer = OCARINA_RETRY_GRACE_FRAMES;
-    }
+    retryTimer = OCARINA_RETRY_GRACE_FRAMES;
 }
 
 static void RegisterPauseMenuHooks() {
@@ -684,6 +683,13 @@ static void RegisterPauseMenuHooks() {
             PauseSong_ReclaimStaleOcarinaMode();
             PauseCannotPlay_Execute();
         }
+    });
+    COND_VB_SHOULD(VB_OVERRIDE_BUTTON_ITEM_USED, CVAR_PAUSE_SONGS_VALUE,
+                   { itemButtonsReadFrame = gPlayState->gameplayFrames; });
+    // A prompt or retry pending across a load would act in the new scene.
+    COND_HOOK(OnSceneInit, CVAR_PAUSE_SONGS_VALUE, [](int16_t) {
+        isWarpActive = false;
+        retryTimer = 0;
     });
     COND_ID_HOOK(OnOpenText, TEXT_CANNOT_PLAY_OCARINA_MSG, CVAR_PAUSE_SONGS_VALUE,
                  [](uint16_t* textId, bool* loadFromMessageTable) {
