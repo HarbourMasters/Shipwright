@@ -42,14 +42,14 @@
                     "time periods. Ruto's Letter is removed from the item pool."
                 ]
             },
-            "sleeping_waterfall": {
-                "name": "Sleeping Waterfall",
+            "sleepless_waterfall": {
+                "name": "Sleepless Waterfall",
                 "description": [
-                    "Closed - Sleeping Waterfall obstructs the entrance to Zora's ",
+                    "Closed - Sleepless Waterfall obstructs the entrance to Zora's ",
                     "Domain. Zelda's Lullaby must be played in order to open it ",
                     "(but only once; then it stays open in both time periods).\n",
                     "\n",
-                    "Open - Sleeping Waterfall is always open. Link may always enter Zora's Domain."
+                    "Open - Sleepless Waterfall is always open. Link may always enter Zora's Domain."
                 ]
             },
             "jabu_open": {

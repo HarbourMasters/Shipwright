@@ -122,7 +122,7 @@ void RegionTable_Init_ZoraRiver() {
         ENTRANCE(RR_ZR_FROM_SHORTCUT,    logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_ZR_STORMS_GROTTO,    logic->CanOpenStormsGrotto()),
         //possible with adult + bunny, but too precise for unintuitive
-        ENTRANCE(RR_ZR_BEHIND_WATERFALL, ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || AnyAgeTime([]{return logic->CanUse(RG_ZELDAS_LULLABY);}) ||
+        ENTRANCE(RR_ZR_BEHIND_WATERFALL, ctx->GetOption(RSK_SLEEPLESS_WATERFALL).Is(RO_WATERFALL_OPEN) || AnyAgeTime([]{return logic->CanUse(RG_ZELDAS_LULLABY);}) ||
                                              (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO) && logic->HasItem(RG_POWER_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS)) ||
                                              logic->CanMegajump() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD)),
     });
