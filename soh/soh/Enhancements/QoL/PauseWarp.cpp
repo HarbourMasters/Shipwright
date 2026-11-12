@@ -43,11 +43,15 @@ static const int songAudioMap[] = {
 
 static bool isWarpActive = false;
 
-// A song picked while the ocarina momentarily can't come out, e.g. the previous song's state still settling,
-// which only advances once unpaused.
+// The pick waits for gameplay to resume, since only a running Player answers whether the ocarina can come out,
+// and a few frames more while Link lands or the previous song settles.
 static int retrySong = 0;
 static int retryTimer = 0;
 static constexpr int OCARINA_RETRY_GRACE_FRAMES = 6;
+
+// The game reads Link's item buttons only where pressing one does something: not climbing, grabbed, knocked
+// back... A frame on which it did is the vanilla answer to whether the ocarina could come out.
+static uint32_t itemButtonsReadFrame = UINT32_MAX;
 
 static bool isCannotPlayActive = false;
 static constexpr int CANNOT_PLAY_FADE_FRAMES = 60;
@@ -61,15 +65,12 @@ static void PauseWarp_Execute() {
     if (!isWarpActive) {
         return;
     }
-    Player* player = GET_PLAYER(gPlayState);
     if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
-        // A running Link changes action as he stops, and every action change clears this flag.
-        player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
         return;
     }
     isWarpActive = false;
-    player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
     if (gPlayState->msgCtx.choiceIndex != 0) {
+        Player_SetCsAction(gPlayState, NULL, PLAYER_CSACTION_7);
         return;
     }
     if (IS_RANDO) {
@@ -86,6 +87,7 @@ static void PauseWarp_Execute() {
         }
     }
     gPlayState->transitionTrigger = TRANS_TRIGGER_OFF;
+    Player_SetCsAction(gPlayState, NULL, PLAYER_CSACTION_7);
 }
 
 static void ClosePauseMenu(PauseContext* pauseCtx) {
@@ -108,7 +110,11 @@ static void StartWarpPlayback(int song) {
         return;
     }
     Message_StartTextbox(gPlayState, songMessageMap[idx], nullptr);
-    GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
+    // Held the way the engine holds Link for a scripted camera; action 7 releases him.
+    Player* player = GET_PLAYER(gPlayState);
+    player->actor.speedXZ = 0.0f;
+    player->linearVelocity = 0.0f;
+    Player_SetCsActionWithHaltedActors(gPlayState, NULL, PLAYER_CSACTION_8);
     isWarpActive = true;
 }
 
@@ -119,7 +125,7 @@ static bool CanPlayOcarina() {
     if (gPlayState->msgCtx.msgMode != MSGMODE_NONE || gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_00) {
         return false;
     }
-    if (gPlayState->interfaceCtx.restrictions.ocarina != 0) {
+    if (gPlayState->interfaceCtx.restrictions.ocarina != 0 || itemButtonsReadFrame != gPlayState->gameplayFrames) {
         return false;
     }
     if (player->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE |
@@ -209,12 +215,8 @@ static void PauseWarp_HandleSelection() {
                 }
             }
             ClosePauseMenu(&gPlayState->pauseCtx);
-            if (CanPlayOcarina()) {
-                StartWarpPlayback(song);
-            } else {
-                retrySong = song;
-                retryTimer = OCARINA_RETRY_GRACE_FRAMES;
-            }
+            retrySong = song;
+            retryTimer = OCARINA_RETRY_GRACE_FRAMES;
         }
     }
 }
@@ -231,6 +233,13 @@ static void RegisterPauseMenuHooks() {
             PauseWarp_RetryPlay();
             PauseWarp_FadeCannotPlay();
         }
+    });
+    COND_VB_SHOULD(VB_OVERRIDE_BUTTON_ITEM_USED, CVAR_PAUSE_WARP_VALUE,
+                   { itemButtonsReadFrame = gPlayState->gameplayFrames; });
+    // A prompt or retry pending across a load would act in the new scene.
+    COND_HOOK(OnSceneInit, CVAR_PAUSE_WARP_VALUE, [](int16_t) {
+        isWarpActive = false;
+        retryTimer = 0;
     });
     COND_ID_HOOK(OnOpenText, TEXT_CANNOT_PLAY_OCARINA_MSG, CVAR_PAUSE_WARP_VALUE,
                  [](uint16_t* textId, bool* loadFromMessageTable) {
