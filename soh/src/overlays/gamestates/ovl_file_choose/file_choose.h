@@ -214,6 +214,7 @@ void FileChoose_EraseAnim3(GameState* thisx);
 void FileChoose_ExitEraseToMain(GameState* thisx);
 
 void FileChoose_UpdateKeyboardCursor(GameState* thisx);
+void FileChoose_StartNameEntry(GameState* thisx);
 void FileChoose_StartNameEntryFromMenu(FileChooseContext* fileChooseContext);
 
 // Helpers for the scrolling option lists in the boss rush, randomizer and speedrun menus.
@@ -251,6 +252,7 @@ extern s16 D_808123F0[];
 // #region SOH [NTSC]
 
 void FileChoose_UpdateKeyboardCursorNES(GameState* thisx);
+void FileChoose_StartNameEntryNES(GameState* thisx);
 void FileChoose_UpdateOptionsMenuNES(GameState* thisx);
 void FileChoose_StartOptionsNES(GameState* thisx);
 

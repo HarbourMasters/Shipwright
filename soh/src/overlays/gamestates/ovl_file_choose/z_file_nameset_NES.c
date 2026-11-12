@@ -753,6 +753,30 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
+void FileChoose_StartNameEntryNES(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    this->nameEntryBoxAlpha += 25;
+
+    if (this->nameEntryBoxAlpha >= 255) {
+        this->nameEntryBoxAlpha = 255;
+    }
+
+    this->nameEntryBoxPosX -= 30;
+
+    if (this->nameEntryBoxPosX <= 0) {
+        bool hasPrefilledName = this->newFileNameCharCount > 0;
+
+        this->nameEntryBoxPosX = 0;
+        this->nameEntryBoxAlpha = 255;
+        this->charIndex = 0;
+        this->kbdX = hasPrefilledName ? FS_KBD_BTN_END : 0;
+        this->kbdY = hasPrefilledName ? 5 : 0;
+        this->kbdButton = hasPrefilledName ? FS_KBD_BTN_END : FS_KBD_BTN_NONE;
+        this->configMode = CM_NAME_ENTRY;
+    }
+}
+
 void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
