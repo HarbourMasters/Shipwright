@@ -1147,6 +1147,7 @@ void FileChoose_PulsateCursor(GameState* thisx) {
 
 void FileChoose_ConfigModeUpdate(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
+    s16 previousConfigMode = this->configMode;
 
     // #region SOH [NTSC] Reload Fonts If Language Has Changed
     static s32 previousLanguage = LANGUAGE_ENG;
@@ -1164,6 +1165,10 @@ void FileChoose_ConfigModeUpdate(GameState* thisx) {
         gConfigModeUpdateFuncs[this->configMode](&this->state);
     } else { // GAME_REGION_NTSC
         gConfigModeUpdateFuncsNES[this->configMode](&this->state);
+    }
+
+    if (previousConfigMode == CM_START_NAME_ENTRY && this->configMode == CM_NAME_ENTRY) {
+        GameInteractor_ExecuteOnFileChooseNameEntry(thisx);
     }
 }
 

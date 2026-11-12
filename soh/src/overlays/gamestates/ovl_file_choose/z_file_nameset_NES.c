@@ -765,14 +765,11 @@ void FileChoose_StartNameEntryNES(GameState* thisx) {
     this->nameEntryBoxPosX -= 30;
 
     if (this->nameEntryBoxPosX <= 0) {
-        bool hasPrefilledName = this->newFileNameCharCount > 0;
-
         this->nameEntryBoxPosX = 0;
         this->nameEntryBoxAlpha = 255;
-        this->charIndex = 0;
-        this->kbdX = hasPrefilledName ? FS_KBD_BTN_END : 0;
-        this->kbdY = hasPrefilledName ? 5 : 0;
-        this->kbdButton = hasPrefilledName ? FS_KBD_BTN_END : FS_KBD_BTN_NONE;
+        this->kbdX = 0;
+        this->kbdY = 0;
+        this->kbdButton = 99;
         this->configMode = CM_NAME_ENTRY;
     }
 }
