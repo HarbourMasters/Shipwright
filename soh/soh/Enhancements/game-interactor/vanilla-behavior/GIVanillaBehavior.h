@@ -2167,26 +2167,6 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true if one point cutscene skip not enabled, or not randomizer
-    // ```
-    // #### `args`
-    // - none
-    VB_PLAY_TIMEBLOCK_CS,
-
-    // #### `result`
-    // Close enough & various cutscene checks
-    // ```c
-    // (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) &&
-    // (!(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
-    // PLAYER_STATE1_CLIMBING_LADDER))) &&
-    // (player->actor.bgCheckFlags & 1)
-    // ```
-    // #### `args`
-    // - `*EnRu1`
-    VB_PLAY_CHILD_RUTO_INTRO,
-
-    // #### `result`
-    // ```c
     // true
     // ```
     // #### `args`
@@ -2341,6 +2321,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_NABOORU_CAPTURED_CS,
+
+    // #### `result`
+    // ```c
+    // true if one point cutscene skip not enabled, or not randomizer
+    // ```
+    // #### `args`
+    // - none
+    VB_PLAY_TIMEBLOCK_CS,
 
     // #### `result`
     // ```c
@@ -2815,15 +2803,6 @@ typedef enum {
     // - `*EnRu1`
     // - `*DynaPolyActor`
     VB_RUTO_RUN_TO_SAPPHIRE,
-
-    // #### `result`
-    // in the big okto room and flag
-    // ```c
-    // !Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE) && (func_80AEB124(play) != 0)
-    // ```
-    // #### `args`
-    // - `*EnRu1`
-    VB_RUTO_WANT_TO_BE_TOSSED_TO_SAPPHIRE,
 
     // #### `result`
     // ```c
