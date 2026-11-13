@@ -1168,7 +1168,7 @@ void FileChoose_ConfigModeUpdate(GameState* thisx) {
     }
 
     if (previousConfigMode == CM_START_NAME_ENTRY && this->configMode == CM_NAME_ENTRY) {
-        GameInteractor_ExecuteOnFileChooseNameEntry(thisx);
+        GameInteractor_Should(VB_FILE_SELECT_NAME_ENTRY_READY, true, this);
     }
 }
 

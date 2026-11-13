@@ -3694,6 +3694,15 @@ typedef enum {
     // - `*FileChooseContext`
     VB_FILE_SELECT_DRAW_FILE_INFO_BOX,
 
+    // Fires once after the file name keyboard has been initialized.
+    // #### `result`
+    // ```c
+    // true (unused)
+    // ```
+    // #### `args`
+    // - `*FileChooseContext`
+    VB_FILE_SELECT_NAME_ENTRY_READY,
+
     // #### `result`
     // ```c
     // Actor_GetCollidedExplosive(play, &this->collider.base) != NULL
