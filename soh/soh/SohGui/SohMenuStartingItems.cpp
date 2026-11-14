@@ -77,6 +77,7 @@ static void StartingItemTiered(RandomizerSettingKey rsk, const std::vector<uint3
         for (size_t i = 0; i < itemIds.size(); i++) {
             ImGui::SameLine();
             const ItemMapEntry& entry = itemMapping[itemIds[i]];
+            ImGui::PushID(static_cast<int32_t>(i));
             PushStyleButton(Colors::DarkGray);
             if (ImGui::ImageButton(entry.name.c_str(), GetFast3dGui()->GetTextureByName(entry.name),
                                    ImVec2(kIconSize, kIconSize), ImVec2(0, 0), ImVec2(1, 1))) {
@@ -86,6 +87,7 @@ static void StartingItemTiered(RandomizerSettingKey rsk, const std::vector<uint3
             }
             PopStyleButton();
             Tooltip(option.GetOptionText(i + 1).c_str());
+            ImGui::PopID();
         }
         ImGui::EndPopup();
     }
