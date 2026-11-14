@@ -514,7 +514,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_LH_SCARECROWS_SONG] = HintText(CustomMessage("They say that #teaching a scarecrow a tune# is rewarded with #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß #das Beibringen einer Melodie an eine Vogelscheuche# mit #[[1]]# belohnt wird.",
-                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                                        /*french*/ "Selon moi, #apprendre un chant à un épouvantail# est récompensé par #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_TH_FREED_CARPENTERS] = HintText(CustomMessage("They say that #rescuing captured carpenters# is rewarded with #[[1]]#.",
                                                          /*german*/ "Man erzählt sich, daß das #Retten gefangener Zimmerleute# #[[1]]# einbrächte.",
@@ -1510,31 +1510,31 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_TH_BREAK_ROOM_FRONT_POT] = HintText(CustomMessage("They say that the #front pot watched by resting thieves# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß der #vordere Topf, der von sich ausruhenden Dieben bewacht wird# #[[1]]# enthält.",
-                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));//TODO_TRANSLATE
+                                                       /*french*/ "Selon moi, la #jarre de devant surveillée par des voleuses en pause# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_TH_BREAK_ROOM_BACK_POT] = HintText(CustomMessage("They say that the #back pot watched by resting thieves# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß der #hintere Topf, der von sich ausruhenden Dieben bewacht wird# #[[1]]# enthält.",
-                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));//TODO_TRANSLATE
+                                                       /*french*/ "Selon moi, la #jarre de derrière surveillée par des voleuses en pause# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_TH_KITCHEN_POT_1] = HintText(CustomMessage("They say that a #Hideout's Kitchen pot# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Topf in der Küche des Verstecks# #[[1]]# enthält.",
-                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));//TODO_TRANSLATE
+                                                       /*french*/ "Selon moi, une #jarre de la cuisine au Repaire des Voleurs# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_TH_KITCHEN_POT_2] = HintText(CustomMessage("They say that a #Hideout's Kitchen pot# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Topf in der Küche des Verstecks# #[[1]]# enthält.",
-                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));//TODO_TRANSLATE
+                                                       /*french*/ "Selon moi, une #jarre de la cuisine au Repaire des Voleurs# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_TH_1_TORCH_CELL_RIGHT_POT] = HintText(CustomMessage("They say that the #thieves' right pot, watched by a single torch# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß der #rechte Topf der Diebe, der von einer einzelnen Fackel beleuchtet wird# #[[1]]# enthält.",
-                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));//TODO_TRANSLATE
+                                                       /*french*/ "Selon moi, la #jarre à droite surveillée par une seule torche chez les voleuses# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_TH_1_TORCH_CELL_MID_POT] = HintText(CustomMessage("They say that the #thieves' middle pot, watched by a single torch# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß der #mittlere Topf der Diebe, der von einer einzelnen Fackel beleuchtet wird# #[[1]]# enthält.",
-                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));//TODO_TRANSLATE
+                                                       /*french*/ "Selon moi, la #jarre au millieu surveillée par une seule torche chez les voleuses# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_TH_1_TORCH_CELL_LEFT_POT] = HintText(CustomMessage("They say that the #thieves' left pot, watched by a single torch# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß der #linke Topf der Diebe, der von einer einzelnen Fackel beleuchtet wird# #[[1]]# enthält.",
-                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));//TODO_TRANSLATE
+                                                       /*french*/ "Selon moi, la #jarre à gauche surveillée par une seule torche chez les voleuses# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_TH_STEEP_SLOPE_RIGHT_POT] = HintText(CustomMessage("They say that a #Gerudo pot, on the right of a sloped corner# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Gerudo-Topf rechts neben einer schrägen Ecke# #[[1]]# enthält.",
