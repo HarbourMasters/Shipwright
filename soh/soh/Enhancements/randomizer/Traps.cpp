@@ -870,9 +870,9 @@ static void InitTrickNames() {
         { Text{ "Shiny Rock", "Caillou Brillant", "glänzender Stein" }, Text{ "a ", "un ", "einen " } }, // "Shiny Rock"
     };
     trickNameTable[RG_TRIFORCE] = {
-        { Text{ "Cheese Triangle", TODO_TRANSLATE, "Käse" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Triumph Fork", TODO_TRANSLATE, "Chaos Emerald" }, Text{ "the ", TODO_TRANSLATE, "Das " } },
-        { Text{ "Force Gem", TODO_TRANSLATE, "Dragonball" }, Text{ "a ", TODO_TRANSLATE, "ein " } },
+        { Text{ "Cheese Triangle", "Camembert", "Käse" }, Text{ "a ", "un ", "" } },
+        { Text{ "Triumph Fork", "Force Trois", "Chaos Emerald" }, Text{ "the ", "le ", "Das " } },
+        { Text{ "Force Gem", "Sept Boules de Cristal", "Dragonball" }, Text{ "a ", "les ", "ein " } },
     };
     trickNameTable[RG_ROCS_FEATHER] = {
         { Text{ "Chicken Wing", "Chicken Wing", "Hähnchenschenkel" }, Text{ "a ", "une ", "ein " } }, // "Chicken Wing"
@@ -880,56 +880,56 @@ static void InitTrickNames() {
         { Text{ "Roc's Flapper", "Roc's Flapper", "Greifenflügel" }, Text{ "", "le ", "ein " } },     // "Roc's Flapper"
     };
     trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
-        { Text{ "Volcano Seed Spirit", TODO_TRANSLATE, "Vulkanbohnen-Seele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Bolero Sprout Platform", TODO_TRANSLATE, "Bolero-Spross" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Volcano Seed Spirit", "Esprit de Graine du Volcan", "Vulkanbohnen-Seele" }, Text{ "the ", "l'", "" } },
+        { Text{ "Bolero Sprout Platform", "Plante-forme du Boléro", "Bolero-Spross" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL] = {
-        { Text{ "Dodongo's Seed Spirit", TODO_TRANSLATE, "Dodongo-Erbsenseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Boulder Sprout Platform", TODO_TRANSLATE, "Felsbrocken-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Dodongo's Seed Spirit", "Esprit de Graine de Dodongo", "Dodongo-Erbsenseele" }, Text{ "the ", "l'", "" } },
+        { Text{ "Boulder Sprout Platform", "Plante-forme du Rocher Dodongo", "Felsbrocken-Sprossseele" },
+          Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_DESERT_COLOSSUS_BEAN_SOUL] = {
-        { Text{ "Spirit Temple Seed Spirit", TODO_TRANSLATE, "Geistertempel-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Colossus Arch Sprout Platform", TODO_TRANSLATE, "Koloss-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Spirit Temple Seed Spirit", "Esprit de Graine du Temple de l'Esprit", "Geistertempel-Erbsenseele" },
+          Text{ "the ", "l'", "" } },
+        { Text{ "Colossus Arch Sprout Platform", "Plante-forme du Colosse du Désert", "Koloss-Sprossseele" },
+          Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_GERUDO_VALLEY_BEAN_SOUL] = {
-        { Text{ "Waterfall Seed Spirit", TODO_TRANSLATE, "Wasserfall-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Gerudo Cow Sprout Platform", TODO_TRANSLATE, "Gerudo-Kuh-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Waterfall Seed Spirit", "Esprit de Graine de la Cascade", "Wasserfall-Erbsenseele" },
+          Text{ "the ", "l'", "" } },
+        { Text{ "Gerudo Cow Sprout Platform", "Plante-forme de la Vache Gerudo", "Gerudo-Kuh-Sprossseele" },
+          Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_GRAVEYARD_BEAN_SOUL] = {
-        { Text{ "GY Crate Seed Spirit", TODO_TRANSLATE, "Friedhof-Erbsenseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Dampe's Sprout Platform", TODO_TRANSLATE, "Boris Sprossseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "GY Crate Seed Spirit", "Esprit de Graine du Cimetière", "Friedhof-Erbsenseele" }, Text{ "the ", "l'", "" } },
+        { Text{ "Dampe's Sprout Platform", "Plante-forme d'Igor", "Boris Sprossseele" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_KOKIRI_FOREST_BEAN_SOUL] = {
-        { Text{ "Rupee Ledge Seed Spirit", TODO_TRANSLATE, "Walddorf-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "KF Shop Sprout Platform", TODO_TRANSLATE, "Kokiri-Laden-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Rupee Ledge Seed Spirit", "Esprit de Graine du Rubis Kokiri", "Walddorf-Erbsenseele" },
+          Text{ "the ", "l'", "" } },
+        { Text{ "KF Shop Sprout Platform", "Plante-forme du Magasin Kokiri", "Kokiri-Laden-Sprossseele" },
+          Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_LAKE_HYLIA_BEAN_SOUL] = {
-        { Text{ "Hylia Lab Seed Spirit", TODO_TRANSLATE, "Labor-Erbsenseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Fishing Sprout Platform", TODO_TRANSLATE, "Angel-Sprossseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Hylia Lab Seed Spirit", "Esprit de Graine du Laboratoire", "Labor-Erbsenseele" }, Text{ "the ", "l'", "" } },
+        { Text{ "Fishing Sprout Platform", "Plante-forme de la Flaque Hylia", "Angel-Sprossseele" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_LOST_WOODS_BRIDGE_BEAN_SOUL] = {
-        { Text{ "LW Bridge Seed Spirit", TODO_TRANSLATE, "Brücken-Erbsenseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Skull Kid Sprout Platform", TODO_TRANSLATE, "Horror Kid Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "LW Bridge Seed Spirit", "Esprit de Graine de la Forêt Oubliée", "Brücken-Erbsenseele" }, Text{ "the ", "l'", "" } },
+        { Text{ "Skull Kid Sprout Platform", "Plante-forme de Skull Kid", "Horror Kid Sprossseele" },
+          Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_LOST_WOODS_BEAN_SOUL] = {
-        { Text{ "Deku Theatre Seed Spirit", TODO_TRANSLATE, "Theater-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Deku Scrubs Sprout Platform", TODO_TRANSLATE, "Wald-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Deku Theatre Seed Spirit", "Esprit de Graine du Théâtre", "Theater-Erbsenseele" },
+          Text{ "the ", "l'", "" } },
+        { Text{ "Deku Scrubs Sprout Platform", "Plante-forme des Pestes Mojo", "Wald-Sprossseele" },
+          Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_ZORAS_RIVER_BEAN_SOUL] = {
-        { Text{ "River Ride Seed Spirit", TODO_TRANSLATE, "Fluß-Weg-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Bean Salesman Sprout Platform", TODO_TRANSLATE, "Erbsenhändler-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "River Ride Seed Spirit", "Esprit de Graine de la Rivière", "Fluß-Weg-Erbsenseele" },
+          Text{ "the ", "l'", "" } },
+        { Text{ "Bean Salesman Sprout Platform", "Plante-forme du Marchand Glouton", "Erbsenhändler-Sprossseele" },
+          Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_GOHMA_SOUL] = {
         { Text{ "Spider Sense", "Sens de l'Araignée", "Spinnensinn" }, Text{ "the ", "le ", "den " } },
@@ -989,20 +989,20 @@ static void InitTrickNames() {
         { Text{ "Bonooru's Ballad", "Ballade de Bonooru", "Bonoorus Ballade" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_SKELETON_KEY] = {
-        { Text{ "Stalfos Key", TODO_TRANSLATE, "Stalfos-Schlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Nightmare Key", TODO_TRANSLATE, "Albtraumschlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Graveyard Key", TODO_TRANSLATE, "Gruftschlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "King's Key", TODO_TRANSLATE, "Königsschlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Hero's Key", TODO_TRANSLATE, "Heldenschlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Stalfos Key", "Clé de Stalfos", "Stalfos-Schlüssel" }, Text{ "the ", "la ", "" } },
+        { Text{ "Nightmare Key", "Clé du Cauchemar", "Albtraumschlüssel" }, Text{ "the ", "la ", "" } },
+        { Text{ "Graveyard Key", "Clé du Cimetière", "Gruftschlüssel" }, Text{ "the ", "la ", "" } },
+        { Text{ "King's Key", "Clé du Roi", "Königsschlüssel" }, Text{ "the ", "la ", "" } },
+        { Text{ "Hero's Key", "Clé du Héros", "Heldenschlüssel" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_CLIMB] = {
-        { Text{ "Cling", TODO_TRANSLATE, "Klammern" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Cling", "Gravir", "Klammern" }, Text{ "", "", "" } },
     };
     trickNameTable[RG_CRAWL] = {
-        { Text{ "Crouch", TODO_TRANSLATE, "Ducken" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Crouch", "Glisser", "Ducken" }, Text{ "", "", "" } },
     };
     trickNameTable[RG_OPEN_CHEST] = {
-        { Text{ "Open Cheats", TODO_TRANSLATE, "Truhenplünderer" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Open Cheats", "Ouvrir des Malles", "Truhenplünderer" }, Text{ "", "", "" } },
     };
 
     trickNameTable[RG_OCARINA_A_BUTTON] = {
@@ -1049,68 +1049,68 @@ static void InitTrickNames() {
     };
 
     trickNameTable[RG_GREG_RUPEE] = {
-        { Text{ "Morshu the Green Ruby", TODO_TRANSLATE, "Morshu, der weiße Rubin" }, Text{ "", "", "" } },
-        { Text{ "Geoffrey the Gray Rupoor", TODO_TRANSLATE, "Geoffrey, der graue Rupon" }, Text{ "", "", "" } },
-        { Text{ "Validation Rupee", TODO_TRANSLATE, "Bestätigungs Robin" }, Text{ "a ", "un ", "" } },
-        { Text{ "Gary, just Gary", TODO_TRANSLATE, "Gary, einfach Gary" }, Text{ "", "", "" } },
-        { Text{ "Ike the Indigo Ice Trap", TODO_TRANSLATE, "Herzog Onkleds Rubin" }, Text{ "", "", "" } },
+        { Text{ "Morshu the Green Ruby", "Maurice le Rubis Vert", "Morshu, der weiße Rubin" }, Text{ "", "", "" } },
+        { Text{ "Geoffrey the Gray Rupoor", "Godefroy le Roupie Gris", "Geoffrey, der graue Rupon" }, Text{ "", "", "" } },
+        { Text{ "Validation Rupee", "Rubis du Succès", "Bestätigungs Robin" }, Text{ "a ", "un ", "" } },
+        { Text{ "Gary, just Gary", "Juste, Juste Leblanc", "Gary, einfach Gary" }, Text{ "", "", "" } },
+        { Text{ "Ike the Indigo Ice Trap", "I.C Féhavoird", "Herzog Onkleds Rubin" }, Text{ "", "", "" } },
     };
 
     trickNameTable[RG_FOREST_TEMPLE_SMALL_KEY] = {
-        { Text{ "Wind Temple Smol Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Windtempel" },
+        { Text{ "Wind Temple Smol Key", "P'tite Clé du Vent", "Kleiner Schlüssel für den Windtempel" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Woodfall Temple Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Dämmerwald" },
+        { Text{ "Woodfall Temple Small Key", "P'tite Clé des Bois", "Kleiner Schlüssel für den Dämmerwald" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Skull Woods Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Sumpftempel" },
+        { Text{ "Skull Woods Small Key", "P'tite Clé de la Forêt", "Kleiner Schlüssel für den Sumpftempel" },
           Text{ "a ", "une ", "" } },
     };
     trickNameTable[RG_FIRE_TEMPLE_SMALL_KEY] = {
-        { Text{ "Ice Cavern Small Keese", TODO_TRANSLATE, "Brecheisen für die Eishöhle" }, Text{ "a ", "une ", "" } },
-        { Text{ "Goron Temple Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Goronentempel" },
+        { Text{ "Ice Cavern Small Keese", "Petite Clé Cendrée", "Brecheisen für die Eishöhle" }, Text{ "a ", "une ", "" } },
+        { Text{ "Goron Temple Small Key", "P'tite Clé de Goron", "Kleiner Schlüssel für den Goronentempel" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Eldin Temple Salmon Koi", TODO_TRANSLATE, "Mini Schlüssel für den Eldintempel" },
+        { Text{ "Eldin Temple Salmon Koi", "Ouvre Porte de Feu", "Mini Schlüssel für den Eldintempel" },
           Text{ "a ", "un ", "" } },
     };
     trickNameTable[RG_WATER_TEMPLE_SMALL_KEY] = {
-        { Text{ "Swamp Palace Small Keese", TODO_TRANSLATE, "Mini Schlüssel für den Sumpf-Palast" },
+        { Text{ "Swamp Palace Small Keese", "Petite Clé des Marais", "Mini Schlüssel für den Sumpf-Palast" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Great Bay Temple Small Key", TODO_TRANSLATE, "Brecheisen für die Schädelbucht-Tempel" },
+        { Text{ "Great Bay Temple Small Key", "P'tite Clé de la Grande Baie", "Brecheisen für die Schädelbucht-Tempel" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Lakebed Temple Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Seeschrein" },
+        { Text{ "Lakebed Temple Small Key", "Petite Clé Aquatique", "Kleiner Schlüssel für den Seeschrein" },
           Text{ "a ", "une ", "" } },
     };
     trickNameTable[RG_SPIRIT_TEMPLE_SMALL_KEY] = {
-        { Text{ "Light Temple Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Lichttempel" },
+        { Text{ "Light Temple Small Key", "Petite Clé du Temple de l'Âme", "Kleiner Schlüssel für den Lichttempel" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Lightning Temple Smol Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Blitztempel" },
+        { Text{ "Lightning Temple Smol Key", "P'tite Clé du Colosse", "Kleiner Schlüssel für den Blitztempel" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Desert Palace Small Key", TODO_TRANSLATE, "Mini Schlüssel für den Wüstentempel" },
+        { Text{ "Desert Palace Small Key", "Petite Clé des Sables", "Mini Schlüssel für den Wüstentempel" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Stone Tower Small Keese", TODO_TRANSLATE, "Brecheisen für den Felsenturm-Tempel" },
+        { Text{ "Stone Tower Small Keese", "Petite Clé de Kotake", "Brecheisen für den Felsenturm-Tempel" },
           Text{ "a ", "une ", "" } },
     };
     trickNameTable[RG_SHADOW_TEMPLE_SMALL_KEY] = {
-        { Text{ "Palace of Darkness Small Key", TODO_TRANSLATE, "Brecheisen für den Palast der Dunkelheit" },
+        { Text{ "Palace of Darkness Small Key", "Petite Clé du Tombeau Sheikah", "Brecheisen für den Palast der Dunkelheit" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Shrine of Illusion Salmon Koi", TODO_TRANSLATE, "Kleiner Schlüssel für den Terratempel" },
+        { Text{ "Shrine of Illusion Salmon Koi", "P'tite Clé du Temple de l'Illusion", "Kleiner Schlüssel für den Terratempel" },
           Text{ "a ", "un ", "" } },
-        { Text{ "Palace of Twilight Small Key", TODO_TRANSLATE, "Mini Schlüssel für den Schattenpalast" },
+        { Text{ "Palace of Twilight Small Key", "P'tite Clé du Pays du Crépuscule", "Mini Schlüssel für den Schattenpalast" },
           Text{ "a ", "une ", "" } },
     };
     trickNameTable[RG_BOTTOM_OF_THE_WELL_SMALL_KEY] = {
-        { Text{ "Top of the Wall Small Key", TODO_TRANSLATE, "Mini Schlüssel für den Bereich über dem Brunnen" },
+        { Text{ "Top of the Wall Small Key", "Petite Clé du Puits du Fou", "Mini Schlüssel für den Bereich über dem Brunnen" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Breath of the Wild Small Key", TODO_TRANSLATE, "Brecheisen für die Windmühle" },
+        { Text{ "Breath of the Wild Small Key", "P'tite Clé du Puits", "Brecheisen für die Windmühle" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Beneath the Well Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Bereich unter dem Brunnen" },
+        { Text{ "Beneath the Well Small Key", "Clé et Puits c'est tout!", "Kleiner Schlüssel für den Bereich unter dem Brunnen" },
           Text{ "a ", "une ", "" } },
     };
     trickNameTable[RG_GERUDO_TRAINING_GROUND_SMALL_KEY] = {
-        { Text{ "Gerudo Sanctum Small Key", TODO_TRANSLATE, "Brecheisen für das Gerudo-Sanktum" },
+        { Text{ "Gerudo Sanctum Small Key", "Petite Clé du Stade Gerudo", "Brecheisen für das Gerudo-Sanktum" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Lady's Lair Small Keese", TODO_TRANSLATE, "Kleiner Schlüssel für die Ritterakademie" },
+        { Text{ "Lady's Lair Small Keese", "Petite Clé du Vestiaire des Dames", "Kleiner Schlüssel für die Ritterakademie" },
           Text{ "a ", "une ", "" } },
-        { Text{ "Knight Acadamy Small Key", TODO_TRANSLATE, "Mini Schlüssel für das Dojo" }, Text{ "a ", "une ", "" } },
+        { Text{ "Knight Acadamy Small Key", "P'tite Clé du Gymnase", "Mini Schlüssel für das Dojo" }, Text{ "a ", "une ", "" } },
     };
     trickNameTable[RG_GERUDO_FORTRESS_SMALL_KEY] = {
         { Text{ "Fortress of Winds Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für die Piratenfestung" },
