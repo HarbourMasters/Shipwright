@@ -4,13 +4,10 @@
 #include "soh/ShipInit.hpp"
 #include "soh/resource/type/scenecommand/SetTimeSettings.h"
 
-extern "C" {
-#include "functions.h"
-}
-
 bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd);
 
 extern "C" {
+#include "functions.h"
 #include "variables.h"
 #include "z64save.h"
 extern SaveContext gSaveContext;
