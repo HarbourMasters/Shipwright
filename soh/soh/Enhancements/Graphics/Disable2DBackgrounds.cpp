@@ -4,6 +4,10 @@
 #include "soh/ShipInit.hpp"
 #include "soh/resource/type/scenecommand/SetTimeSettings.h"
 
+extern "C" {
+#include "functions.h"
+}
+
 bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd);
 
 extern "C" {
@@ -19,16 +23,18 @@ extern PlayState* gPlayState;
 std::set<SceneID> fogControlList = {
     SCENE_MARKET_ENTRANCE_DAY,
     SCENE_MARKET_ENTRANCE_NIGHT,
-    SCENE_MARKET_ENTRANCE_RUINS,
     SCENE_BACK_ALLEY_DAY,
     SCENE_BACK_ALLEY_NIGHT,
     SCENE_MARKET_DAY,
     SCENE_MARKET_NIGHT,
-    SCENE_MARKET_RUINS,
     SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY,
     SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT,
-    SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS,
 };
+
+bool InRuinedMarketScenes(SceneID sceneNum) {
+    return sceneNum == SCENE_MARKET_ENTRANCE_RUINS || sceneNum == SCENE_MARKET_RUINS ||
+           sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS;
+}
 
 std::set<SceneID> skyboxSceneControlList = {
     SCENE_MARKET_ENTRANCE_DAY,
@@ -101,7 +107,18 @@ void Register3DPreRenderedScenes() {
     });
 
     COND_HOOK(OnPlayDrawBegin, CVAR_VALUE, []() {
-        if (!fogControlList.contains(static_cast<SceneID>(gPlayState->sceneNum))) {
+        const auto sceneNum = static_cast<SceneID>(gPlayState->sceneNum);
+        if (InRuinedMarketScenes(sceneNum)) {
+            gPlayState->view.zFar = 8800;
+            gPlayState->lightCtx.fogColor[0] = 24;
+            gPlayState->lightCtx.fogColor[1] = 9;
+            gPlayState->lightCtx.fogColor[2] = 24;
+            gPlayState->lightCtx.fogNear = 946;
+            gPlayState->lightCtx.fogFar = 8800;
+            return;
+        }
+
+        if (!fogControlList.contains(sceneNum)) {
             return;
         }
 
@@ -111,6 +128,17 @@ void Register3DPreRenderedScenes() {
             gPlayState->lightCtx.fogNear = 1000;
             gPlayState->lightCtx.fogFar = 12800;
         }
+    });
+
+    COND_HOOK(OnPlayDrawAfterSkyboxFilters, CVAR_VALUE, []() {
+        if (!InRuinedMarketScenes(static_cast<SceneID>(gPlayState->sceneNum)) || gPlayState->envCtx.skyboxDisabled ||
+            gPlayState->skyboxId != SKYBOX_NORMAL_SKY) {
+            return;
+        }
+
+        SkyboxDraw_Draw(&gPlayState->skyboxCtx, gPlayState->state.gfxCtx, gPlayState->skyboxId,
+                        gPlayState->envCtx.skyboxBlend, gPlayState->view.eye.x, gPlayState->view.eye.y,
+                        gPlayState->view.eye.z);
     });
 
     COND_VB_SHOULD(VB_DRAW_2D_BACKGROUND, CVAR_VALUE, { *should = false; });

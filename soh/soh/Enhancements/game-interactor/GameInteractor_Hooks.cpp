@@ -251,6 +251,10 @@ void GameInteractor_ExecuteOnPlayDrawBegin() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawBegin>();
 }
 
+void GameInteractor_ExecuteOnPlayDrawAfterSkyboxFilters() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawAfterSkyboxFilters>();
+}
+
 void GameInteractor_ExecuteOnPlayDrawEnd() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawEnd>();
 }
