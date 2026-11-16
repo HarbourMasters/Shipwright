@@ -1700,6 +1700,13 @@ void ConfigVersion7Updater::Update(Ship::Config* conf) {
             break;
     }
     CVarClear("gRandoSettings.CompleteMaskQuest");
+    // PauseWarp was split into PauseMenuSongs (covers all songs) + WarpSongSkipAnimation.
+    // Old behavior skipped the animation, so migrate both flags on.
+    if (CVarGetInteger("gEnhancements.PauseWarp", 0)) {
+        CVarSetInteger("gEnhancements.PauseMenuSongs", 1);
+        CVarSetInteger("gEnhancements.WarpSongSkipAnimation", 1);
+    }
+    CVarClear("gEnhancements.PauseWarp");
 }
 
 // v4+ also run on dropped configs and presets
