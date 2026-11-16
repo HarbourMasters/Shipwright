@@ -47,6 +47,12 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
     ammo = AMMO(item);
 
+    // A negative count (e.g. from an older save) would index _gAmmoDigit0Tex out of bounds.
+    // Note: so would a count of 100+ (see Interface_DrawAmmoCount), an upper clamp to 99 may be worth adding.
+    if (ammo < 0) {
+        ammo = 0;
+    }
+
     gDPPipeSync(POLY_OPA_DISP++);
 
     if (!CHECK_AGE_REQ_SLOT(SLOT(item))) {

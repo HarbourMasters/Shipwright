@@ -1,6 +1,7 @@
 #include <libultraship/libultra.h>
 
 const char gBuildVersion[] = "@PROJECT_BUILD_NAME@ (@CMAKE_PROJECT_VERSION_MAJOR@.@CMAKE_PROJECT_VERSION_MINOR@.@CMAKE_PROJECT_VERSION_PATCH@)";
+const char gBuildName[] = "@PROJECT_BUILD_NAME@";
 const u16 gBuildVersionMajor = @CMAKE_PROJECT_VERSION_MAJOR@;
 const u16 gBuildVersionMinor = @CMAKE_PROJECT_VERSION_MINOR@;
 const u16 gBuildVersionPatch = @CMAKE_PROJECT_VERSION_PATCH@;

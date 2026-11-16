@@ -8,6 +8,7 @@
 
 extern "C" {
 #include <z64.h>
+#include "variables.h"
 extern PlayState* gPlayState;
 }
 
@@ -18,19 +19,131 @@ void CrowdControl::Enable() {
 }
 
 void CrowdControl::Disable() {
+    // Joins the network thread, so after this only the game thread touches CC state
     Network::Disable();
+
+    ClearPayloadQueues();
+
+    // Timed effects stop ticking once disabled, so undo them rather than leaving them stuck on. Removal can be
+    // refused (e.g. during a textbox or cutscene), so they're moved to a pending list that the frame hook keeps
+    // retrying until each one is actually removed. They're kept apart from activeEffects so re-enabling doesn't
+    // resume them against the new CC session.
+    for (auto& effect : activeEffects) {
+        effectsPendingRemoval.push_back(std::move(effect));
+    }
+    activeEffects.clear();
+    SPDLOG_INFO("[CrowdControl] Disabled, removing {} timed effect(s)", effectsPendingRemoval.size());
+    ProcessPendingRemovals();
+
     ShipInit::Init(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
 }
 
-void CrowdControl::OnConnected() {
-    ccThreadProcess = std::thread(&CrowdControl::ProcessActiveEffects, this);
+// Returns true once the effect no longer needs removing (removed, or can never be removed). Returns false when
+// removal is only temporarily refused (gameplay paused, textbox, cutscene, no save loaded), so the caller should
+// retry later. Ignoring that result would drop the effect while its state stays applied for good.
+bool CrowdControl::TryRemoveEffect(Effect* effect) {
+    auto* removable = dynamic_cast<RemovableGameInteractionEffect*>(effect->giEffect.get());
+    if (removable == nullptr) {
+        return true;
+    }
+
+    GameInteractionEffectQueryResult result = GameInteractor::RemoveEffect(*removable);
+    if (result == GameInteractionEffectQueryResult::TemporarilyNotPossible) {
+        return false;
+    }
+    if (result != GameInteractionEffectQueryResult::Possible) {
+        SPDLOG_WARN("[CrowdControl] Timed effect {} could not be removed", effect->id);
+    }
+    return true;
 }
 
-void CrowdControl::OnDisconnected() {
-    ccThreadProcess.join();
+void CrowdControl::ProcessPendingRemovals() {
+    auto it = effectsPendingRemoval.begin();
+    while (it != effectsPendingRemoval.end()) {
+        if (TryRemoveEffect(it->get())) {
+            it = effectsPendingRemoval.erase(it);
+        } else {
+            it++;
+        }
+    }
 }
 
+bool CrowdControl::NeedsFrameUpdate() {
+    return isEnabled || !effectsPendingRemoval.empty();
+}
+
+// Only cleared on a manual disable. Connection hiccups keep both queues, so effects already received still run
+// and any status updates emitted while disconnected are sent once the connection comes back.
+void CrowdControl::ClearPayloadQueues() {
+    {
+        std::lock_guard<std::mutex> lock(incomingPayloadQueueMutex);
+        std::queue<nlohmann::json>().swap(incomingPayloadQueue);
+    }
+    {
+        std::lock_guard<std::mutex> lock(outgoingPayloadQueueMutex);
+        std::queue<nlohmann::json>().swap(outgoingPayloadQueue);
+    }
+}
+
+// Effects touch game state (spawning actors, inventory, player), so they must only ever run on the game
+// thread. The network thread queues incoming payloads here, and they're executed in OnGameFrameUpdate.
 void CrowdControl::OnIncomingJson(nlohmann::json payload) {
+    // Version requests don't touch game state, so answer them right away instead of queuing them as effects
+    if (payload.contains("type") && payload["type"].is_number_integer() &&
+        payload["type"].get<int>() == ResponseType::Version) {
+        SendVersion(payload.value("id", 0u));
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(incomingPayloadQueueMutex);
+    incomingPayloadQueue.push(payload);
+}
+
+// Announce our version on every connection instead of waiting to be asked. The pack does request it when the
+// connection opens, but that request can be lost if it arrives before the pack has finished registering this
+// client, and it isn't retried. An unsolicited response with id 0 is accepted all the same.
+void CrowdControl::OnConnected() {
+    SendVersion(0);
+}
+
+void CrowdControl::OnGameFrameUpdate() {
+    // Effects left over from a disable are retried every frame until they've all been removed.
+    ProcessPendingRemovals();
+
+    if (!isEnabled) {
+        return;
+    }
+
+    // Copy all queued payloads while holding the lock, then process them after releasing
+    std::queue<nlohmann::json> payloadsToProcess;
+    {
+        std::lock_guard<std::mutex> lock(incomingPayloadQueueMutex);
+        payloadsToProcess.swap(incomingPayloadQueue);
+    }
+
+    while (!payloadsToProcess.empty()) {
+        try {
+            ProcessIncomingPayload(payloadsToProcess.front());
+        } catch (const std::exception& e) {
+            SPDLOG_ERROR("[CrowdControl] Exception handling incoming JSON: {}", e.what());
+        } catch (...) { SPDLOG_ERROR("[CrowdControl] Unknown exception handling incoming JSON"); }
+        payloadsToProcess.pop();
+    }
+
+    // Timed effects are ticked once per second. Advance by exactly one second so frame timing doesn't make
+    // effects run longer than CC's overlay timer, but resync if we've fallen far behind (e.g. a long stall)
+    // instead of firing a burst of catch-up ticks.
+    auto now = std::chrono::steady_clock::now();
+    if (now - lastActiveEffectsTick >= std::chrono::seconds(1)) {
+        lastActiveEffectsTick += std::chrono::seconds(1);
+        if (now - lastActiveEffectsTick >= std::chrono::seconds(1)) {
+            lastActiveEffectsTick = now;
+        }
+        ProcessActiveEffects();
+    }
+}
+
+void CrowdControl::ProcessIncomingPayload(nlohmann::json payload) {
     std::unique_ptr<Effect> incomingEffect = ParseMessage(payload);
     if (!incomingEffect) {
         return;
@@ -60,65 +173,78 @@ void CrowdControl::OnIncomingJson(nlohmann::json payload) {
                 return;
             }
 
-            activeEffectsMutex.lock();
             activeEffects.push_back(std::move(incomingEffect));
-            activeEffectsMutex.unlock();
         }
     }
 }
 
 void CrowdControl::ProcessActiveEffects() {
-    while (isEnabled) {
-        // We only want to send events when status changes, on start we send Success.
-        // If it fails at some point, we send Pause, and when it starts to succeed again we send Success.
-        // CC uses this to pause the timer on the overlay.
-        activeEffectsMutex.lock();
-        auto it = activeEffects.begin();
+    // We only want to send events when status changes, on start we send Success.
+    // If it fails at some point, we send Pause, and when it starts to succeed again we send Success.
+    // CC uses this to pause the timer on the overlay.
+    auto it = activeEffects.begin();
 
-        while (it != activeEffects.end()) {
-            Effect* effect = it->get();
-            EffectResult result = CrowdControl::ExecuteEffect(effect);
+    while (it != activeEffects.end()) {
+        Effect* effect = it->get();
+        EffectResult result = CrowdControl::ExecuteEffect(effect);
 
-            if (result == EffectResult::Success) {
-                // If time remaining has reached 0, we have finished the effect.
-                if (effect->timeRemaining <= 0) {
-                    GameInteractor::RemoveEffect(
-                        *dynamic_cast<RemovableGameInteractionEffect*>(effect->giEffect.get()));
+        if (result == EffectResult::Success) {
+            // If time remaining has reached 0, we have finished the effect.
+            // If removal is temporarily refused, keep it and retry on the next tick.
+            if (effect->timeRemaining <= 0) {
+                if (TryRemoveEffect(effect)) {
                     it = activeEffects.erase(it);
                 } else {
-                    // If we have a success after previously being paused, tell CC to resume timer.
-                    if (effect->isPaused) {
-                        effect->isPaused = false;
-                        EmitMessage(effect->id, effect->timeRemaining, EffectResult::Resumed);
-                        // If not paused before, subtract time from the timer and send a Success event if
-                        // the result is different from the last time this was ran.
-                        // Timed events are put on a thread that runs once per second.
-                    } else {
-                        effect->timeRemaining -= 1000;
-                        if (result != effect->lastExecutionResult) {
-                            effect->lastExecutionResult = result;
-                            EmitMessage(effect->id, effect->timeRemaining, EffectResult::Success);
-                        }
-                    }
                     it++;
                 }
-            } else { // Timed effects only do Success or Retry
-                if (!effect->isPaused && effect->timeRemaining > 0) {
-                    effect->isPaused = true;
-                    EmitMessage(effect->id, effect->timeRemaining, EffectResult::Paused);
+            } else {
+                // If we have a success after previously being paused, tell CC to resume timer.
+                if (effect->isPaused) {
+                    effect->isPaused = false;
+                    EmitMessage(effect->id, effect->timeRemaining, EffectResult::Resumed);
+                    // If not paused before, subtract time from the timer and send a Success event if
+                    // the result is different from the last time this was ran.
+                    // Timed events are ticked once per second.
+                } else {
+                    effect->timeRemaining -= 1000;
+                    if (result != effect->lastExecutionResult) {
+                        effect->lastExecutionResult = result;
+                        EmitMessage(effect->id, effect->timeRemaining, EffectResult::Success);
+                    }
                 }
                 it++;
             }
+        } else { // Timed effects only do Success or Retry
+            if (!effect->isPaused && effect->timeRemaining > 0) {
+                effect->isPaused = true;
+                EmitMessage(effect->id, effect->timeRemaining, EffectResult::Paused);
+            }
+            it++;
         }
+    }
+}
 
-        activeEffectsMutex.unlock();
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+void CrowdControl::ProcessOutgoingPackets() {
+    // Copy all queued payloads while holding the lock, then send them after releasing
+    std::queue<nlohmann::json> payloadsToSend;
+    {
+        std::lock_guard<std::mutex> lock(outgoingPayloadQueueMutex);
+        payloadsToSend.swap(outgoingPayloadQueue);
     }
 
-    SPDLOG_TRACE("[CrowdControl] Ending Process thread...");
+    while (!payloadsToSend.empty()) {
+        SendJsonToRemote(payloadsToSend.front());
+        payloadsToSend.pop();
+    }
 }
 
 void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status) {
+    // Queued even while disconnected, so CC catches up on effect status after a connection hiccup.
+    // A manual disable clears the queue.
+    if (!isEnabled) {
+        return;
+    }
+
     nlohmann::json payload;
 
     payload["id"] = eventId;
@@ -128,7 +254,29 @@ void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResul
 
     SPDLOG_INFO("[CrowdControl] Sending payload:\n{}", payload.dump());
 
-    SendJsonToRemote(payload);
+    // Queue the payload to be sent on the network thread
+    std::lock_guard<std::mutex> lock(outgoingPayloadQueueMutex);
+    outgoingPayloadQueue.push(payload);
+}
+
+// Reports this build to CC so the pack can require a minimum version. Everything comes from the build info
+// generated by CMake (src/boot/build.c.in), so forks and custom builds report their own name, team and commit.
+// The client only reads "version", extra fields are ignored by older clients.
+void CrowdControl::SendVersion(uint32_t id) {
+    nlohmann::json payload;
+
+    payload["id"] = id;
+    payload["type"] = ResponseType::Version;
+    payload["version"] = std::to_string(gBuildVersionMajor) + "." + std::to_string(gBuildVersionMinor) + "." +
+                         std::to_string(gBuildVersionPatch);
+    payload["codename"] = std::string(gBuildName);
+    payload["team"] = std::string((const char*)gBuildTeam);
+    payload["commit"] = std::string(gGitCommitHash);
+
+    SPDLOG_INFO("[CrowdControl] Sending version:\n{}", payload.dump());
+
+    std::lock_guard<std::mutex> lock(outgoingPayloadQueueMutex);
+    outgoingPayloadQueue.push(payload);
 }
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
@@ -186,7 +334,7 @@ std::unique_ptr<CrowdControl::Effect> CrowdControl::ParseMessage(nlohmann::json 
 
     // "parameters" is intentionally not required: most effects (spawn enemies, teleports, status
     // effects, etc.) carry no parameters. Its absence is handled safely below, and any type error
-    // is caught by the guard in Network::HandleRemoteJson.
+    // is caught by the guard in CrowdControl::OnGameFrameUpdate.
     if (!dataReceived.contains("code") || !dataReceived.contains("viewer")) {
         // This seems to happen when the CC session ends
         SPDLOG_ERROR("[CrowdControl] Payload does not contain code or viewer, ignoring.");
@@ -683,3 +831,11 @@ std::unique_ptr<CrowdControl::Effect> CrowdControl::ParseMessage(nlohmann::json 
 
     return effect;
 }
+
+static void RegisterCrowdControl() {
+    // Stays registered after a disable until any leftover timed effects have been removed
+    COND_HOOK(OnGameFrameUpdate, CrowdControl::Instance != nullptr && CrowdControl::Instance->NeedsFrameUpdate(),
+              []() { CrowdControl::Instance->OnGameFrameUpdate(); });
+}
+
+static RegisterShipInitFunc initFunc(RegisterCrowdControl, { CVAR_REMOTE_CROWD_CONTROL("Enabled") });

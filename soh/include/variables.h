@@ -46,6 +46,7 @@ extern "C"
 	extern OSViMode osViModeFpalLan1;
 	extern u32 __additional_scanline;
 	extern const char gBuildVersion[];
+	extern const char gBuildName[];
 	extern u16 gBuildVersionMajor;
 	extern u16 gBuildVersionMinor;
 	extern u16 gBuildVersionPatch;
