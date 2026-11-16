@@ -625,6 +625,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Stops the game from freezing the player when picking up Gold Skulltula Tokens. Does not "
             "apply in randomizer savefiles."));
+    AddWidget(path, "One-Hit Gold Skulltulas", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("OneHitGoldSkulltulas"))
+        .Options(CheckboxOptions().Tooltip("Gold Skulltulas die in a single hit from any attack."));
     AddWidget(path, "Skip Save Confirmation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkipSaveConfirmation"))
         .Options(CheckboxOptions().Tooltip("Skip the \"Game Saved\" confirmation screen."));
