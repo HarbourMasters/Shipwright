@@ -1,7 +1,9 @@
 :config:
   segments:
-    - [ 128, 0x014BF110 ]
-
+    - [1, 0x014BF110]
+  directory: textures/
+  external_files:
+    - ntsc_j_mq/textures/vr_K5VR_pal_static.yml
 gSariasHouse2BgTex:
   type: TEXTURE
   offset: 0x10000
@@ -11,7 +13,6 @@ gSariasHouse2BgTex:
   height: 256
   external_tlut: vr_K5VR_pal_static
   external_tlut_offset: 0x200
-
 gSariasHouse3BgTex:
   type: TEXTURE
   offset: 0x20000
@@ -21,7 +22,6 @@ gSariasHouse3BgTex:
   height: 256
   external_tlut: vr_K5VR_pal_static
   external_tlut_offset: 0x400
-
 gSariasHouseBgTex:
   type: TEXTURE
   offset: 0x0
@@ -31,4 +31,3 @@ gSariasHouseBgTex:
   height: 256
   external_tlut: vr_K5VR_pal_static
   external_tlut_offset: 0x0
-

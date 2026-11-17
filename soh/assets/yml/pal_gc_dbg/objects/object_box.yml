@@ -8,8 +8,6 @@
     - [ 11, 0x01041000 ]
     - [ 12, 0x01041000 ]
     - [ 13, 0x01041000 ]
-  external_files:
-    - pal_gc_dbg/objects/gameplay_keep.yml
 
 gBoxBlob_00025C:
   type: BLOB
