@@ -4,6 +4,11 @@
 
 #include "soh/Enhancements/audio/AudioEditor.h"
 
+// The engine advances only when a port-side producer runs an update, and the
+// usual producers can be idle while the game waits here (drainless output
+// backend, no gfx frame window), so the wait itself drives the engine.
+extern void OTRAudio_Pump(void);
+
 typedef struct {
     u8 unk_0;
     u8 unk_1; // importance?
@@ -687,9 +692,13 @@ u8 func_800FAD34(void) {
                 D_80133418 = 0;
                 Audio_QueueCmdS8(0x46020000, gSfxChannelLayout);
                 func_800F7170();
+            } else {
+                OTRAudio_Pump();
             }
         } else if (D_80133418 == 2) {
-            while (func_800E5EDC() != 1) {}
+            while (func_800E5EDC() != 1) {
+                OTRAudio_Pump();
+            }
             D_80133418 = 0;
             Audio_QueueCmdS8(0x46020000, gSfxChannelLayout);
             func_800F7170();
