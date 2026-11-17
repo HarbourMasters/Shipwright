@@ -10,6 +10,7 @@
 #include <libultraship/bridge/windowbridge.h>
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
@@ -433,6 +434,7 @@ uint64_t GetPerfCounter();
 extern AudioMgr gAudioMgr;
 
 extern void ProcessSaveStateRequests(void);
+extern void Graph_ProcessGfxCommandsFrozen(Gfx* commands, s32 slowMotion);
 
 static void RunFrame() {
     u32 size;
@@ -475,6 +477,17 @@ static void RunFrame() {
 
             Graph_StartFrame();
 
+            // ShipGZ frame control is dispatched through GameInteractor; default is the unmodified game loop.
+            bool runGameFrame = true;
+            bool slowMotionFrame = false;
+            GameInteractor_ExecuteOnShipGZBeginFrame(&runGameFrame, &slowMotionFrame);
+            if (!runGameFrame) {
+                Graph_ProcessGfxCommandsFrozen(runFrameContext.gfxCtx.workBuffer, slowMotionFrame);
+                runFrameContext.state = 1;
+                ProcessSaveStateRequests();
+                return;
+            }
+
             PadMgr_ThreadEntry(&gPadMgr);
 
             Graph_Update(&runFrameContext.gfxCtx, gGameState);
@@ -485,6 +498,15 @@ static void RunFrame() {
             }
 
             Graph_ProcessGfxCommands(runFrameContext.gfxCtx.workBuffer);
+
+            // ShipGZ can request a recorded reset at the frame boundary through GameInteractor.
+            bool resetGame = false;
+            GameInteractor_ExecuteOnShipGZEndFrame(&resetGame);
+            if (resetGame) {
+                SET_NEXT_GAMESTATE(gGameState, TitleSetup_Init, GameState);
+                gGameState->running = false;
+                GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
+            }
 
             // uint64_t diff = (ticksB - ticksA) / (freq / 1000);
             // printf("Frame simulated in %ims\n", diff);

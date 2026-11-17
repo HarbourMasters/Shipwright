@@ -9,6 +9,7 @@
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 #include "soh/Enhancements/Restorations/GetItemManipulation.h"
+#include "soh/Enhancements/tas/ShipGZ.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include <ship/Context.h>
 #include <libultraship/bridge/consolevariablebridge.h>
@@ -201,6 +202,25 @@ void SohMenu::AddMenuEnhancements() {
     // Quality of Life
     WidgetPath path = { "Enhancements", "Quality of Life", SECTION_COLUMN_1 };
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
+    path.column = SECTION_COLUMN_1;
+
+    // ShipGZ TAS tools
+    path.sidebarName = "GZ / TAS Tools";
+    AddSidebarEntry("Enhancements", path.sidebarName, 1);
+    AddWidget(path, "GZ / TAS Tools", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enable GZ TAS Tools", WIDGET_CVAR_CHECKBOX)
+        .CVar("gShipGZ.Enabled")
+        .RaceDisable(false)
+        .Options(CheckboxOptions().DefaultValue(true).Tooltip(
+            "Enable GZ-style macro recording and playback, frame advance, pause, savestates, and TAS controls. "
+            "Disabling takes effect immediately and leaves the ShipGZ window available to re-enable it."));
+    AddWidget(path, "Open GZ TAS Tools", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ShipGZ"))
+        .RaceDisable(false)
+        .WindowName("ShipGZ")
+        .Options(WindowButtonOptions().Tooltip("Open the GZ macro recorder, playback controls, frame tools and settings."));
+
+    path.sidebarName = "Quality of Life";
     path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Saving", WIDGET_SEPARATOR_TEXT);

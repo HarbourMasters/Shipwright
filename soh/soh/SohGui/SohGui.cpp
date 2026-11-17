@@ -34,6 +34,7 @@
 #include "soh/Enhancements/debugger/SohGfxDebuggerWindow.h"
 #include "soh/Enhancements/debugger/SohStatsWindow.h"
 #include "soh/Enhancements/debugger/valueViewer.h"
+#include "soh/Enhancements/tas/ShipGZWindow.h"
 #include "soh/Enhancements/gameplaystatswindow.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
@@ -94,6 +95,7 @@ std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
 std::shared_ptr<HookDebuggerWindow> mHookDebuggerWindow;
 std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
+std::shared_ptr<ShipGZWindow> mShipGZWindow;
 std::shared_ptr<MessageViewer> mMessageViewerWindow;
 std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
@@ -137,6 +139,7 @@ std::vector<std::shared_ptr<Ship::GuiWindow>> GetAllGuiWindows() {
         mHookDebuggerWindow,
         mDLViewerWindow,
         mValueViewerWindow,
+        mShipGZWindow,
         mMessageViewerWindow,
         mGameplayStatsWindow,
         mCheckTrackerWindow,
@@ -223,6 +226,8 @@ void SetupGuiElements() {
     mValueViewerWindow =
         std::make_shared<ValueViewerWindow>(CVAR_WINDOW("ValueViewer"), "Value Viewer", ImVec2(520, 600));
     gui->AddGuiWindow(mValueViewerWindow);
+    mShipGZWindow = std::make_shared<ShipGZWindow>(CVAR_WINDOW("ShipGZ"), "ShipGZ", ImVec2(760, 680));
+    gui->AddGuiWindow(mShipGZWindow);
     mMessageViewerWindow =
         std::make_shared<MessageViewer>(CVAR_WINDOW("MessageViewer"), "Message Viewer", ImVec2(520, 600));
     gui->AddGuiWindow(mMessageViewerWindow);
@@ -289,6 +294,7 @@ void Destroy() {
     mGameplayStatsWindow = nullptr;
     mDLViewerWindow = nullptr;
     mValueViewerWindow = nullptr;
+    mShipGZWindow = nullptr;
     mMessageViewerWindow = nullptr;
     mSaveEditorWindow = nullptr;
     mHookDebuggerWindow = nullptr;

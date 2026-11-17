@@ -5,12 +5,23 @@
  *    - Argument 1: Name of the hook
  *    - Argument 2: Function type that the hook uses
  */
+
 DEFINE_HOOK(OnZTitleInit, (void* gameState));
 DEFINE_HOOK(OnZTitleUpdate, (void* gameState));
 DEFINE_HOOK(OnLoadGame, (int32_t fileNum));
 DEFINE_HOOK(OnExitGame, (int32_t fileNum));
 DEFINE_HOOK(OnGameStateMainStart, ());
 DEFINE_HOOK(OnGameFrameUpdate, ());
+DEFINE_HOOK(OnShipGZBeginFrame, (bool* runGameFrame, bool* slowMotion));
+DEFINE_HOOK(OnShipGZEndFrame, (bool* resetGame));
+DEFINE_HOOK(OnShipGZProcessPads, (OSContPad* pads, int32_t numPads));
+DEFINE_HOOK(OnShipGZFilterRandSeed, (uint32_t naturalSeed, uint32_t* seed));
+DEFINE_HOOK(OnShipGZFilterAudioRandom, (uint32_t naturalValue, uint32_t* value));
+DEFINE_HOOK(OnShipGZGetSpeed, (float* speed));
+DEFINE_HOOK(OnShipGZStateSaved, (uint32_t slot));
+DEFINE_HOOK(OnShipGZStateLoaded, (uint32_t slot));
+DEFINE_HOOK(OnShipGZBeforeStateSave, (uint32_t* rngSeed, void* padInputs, size_t numPadInputs));
+DEFINE_HOOK(OnShipGZAfterStateLoad, (uint32_t rngSeed, void* padInputs, size_t numPadInputs));
 DEFINE_HOOK(OnCameraState, (PlayState * play));
 DEFINE_HOOK(OnItemReceive, (GetItemEntry itemEntry));
 DEFINE_HOOK(OnEquipmentDelete, (int16_t equipmentType, uint16_t equipValue));

@@ -29,6 +29,53 @@ void GameInteractor_ExecuteOnGameFrameUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameFrameUpdate>();
 }
 
+void GameInteractor_ExecuteOnShipGZBeginFrame(bool* runGameFrame, bool* slowMotion) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZBeginFrame>(runGameFrame, slowMotion);
+}
+
+void GameInteractor_ExecuteOnShipGZEndFrame(bool* resetGame) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZEndFrame>(resetGame);
+}
+
+void GameInteractor_ExecuteOnShipGZProcessPads(OSContPad* pads, int32_t numPads) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZProcessPads>(pads, numPads);
+}
+
+uint32_t GameInteractor_ExecuteOnShipGZFilterRandSeed(uint32_t naturalSeed) {
+    uint32_t seed = naturalSeed;
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZFilterRandSeed>(naturalSeed, &seed);
+    return seed;
+}
+
+uint32_t GameInteractor_ExecuteOnShipGZFilterAudioRandom(uint32_t naturalValue) {
+    uint32_t value = naturalValue;
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZFilterAudioRandom>(naturalValue, &value);
+    return value;
+}
+
+float GameInteractor_ExecuteOnShipGZGetSpeed(float defaultSpeed) {
+    float speed = defaultSpeed;
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZGetSpeed>(&speed);
+    return speed;
+}
+
+void GameInteractor_ExecuteOnShipGZStateSaved(uint32_t slot) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZStateSaved>(slot);
+}
+
+void GameInteractor_ExecuteOnShipGZStateLoaded(uint32_t slot) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZStateLoaded>(slot);
+}
+
+void GameInteractor_ExecuteOnShipGZBeforeStateSave(uint32_t* rngSeed, void* padInputs, size_t numPadInputs) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZBeforeStateSave>(rngSeed, padInputs, numPadInputs);
+}
+
+void GameInteractor_ExecuteOnShipGZAfterStateLoad(uint32_t rngSeed, void* padInputs, size_t numPadInputs) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShipGZAfterStateLoad>(rngSeed, padInputs, numPadInputs);
+}
+
+
 void GameInteractor_ExecuteOnCameraState(PlayState* play) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCameraState>(play);
 }
