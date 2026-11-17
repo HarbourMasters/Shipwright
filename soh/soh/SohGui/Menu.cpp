@@ -159,12 +159,20 @@ void Menu::UpdateElement() {
     menuThemeIndex = static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), defaultThemeIndex));
 }
 
+static ImGuiID SidebarEntryId(const std::string& label) {
+    return ImGui::GetID((label + "##Sidebar").c_str());
+}
+
+static ImGuiID HeaderEntryId(const std::string& label) {
+    return ImGui::GetID((label + "##Header").c_str());
+}
+
 bool ModernMenuSidebarEntry(std::string label) {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec2 pos = window->DC.CursorPos;
-    const ImGuiID sidebarId = window->GetID(std::string(label + "##Sidebar").c_str());
+    const ImGuiID sidebarId = SidebarEntryId(label);
     ImVec2 labelSize = ImGui::CalcTextSize(label.c_str(), ImGui::FindRenderedTextEnd(label.c_str()), true);
     pos.y += style.FramePadding.y;
     pos.x = window->WorkRect.GetCenter().x - labelSize.x / 2;
@@ -190,7 +198,7 @@ bool ModernMenuHeaderEntry(std::string label) {
     ImGuiWindow* window = g.CurrentWindow;
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec2 pos = window->DC.CursorPos;
-    const ImGuiID headerId = window->GetID(std::string(label + "##Header").c_str());
+    const ImGuiID headerId = HeaderEntryId(label);
     ImVec2 labelSize = ImGui::CalcTextSize(label.c_str(), ImGui::FindRenderedTextEnd(label.c_str()), true);
     ImRect bb = { pos, pos + labelSize + style.FramePadding * 2 };
     ImGui::ItemSize(bb, style.FramePadding.y);
@@ -207,6 +215,147 @@ bool ModernMenuHeaderEntry(std::string label) {
     return pressed;
 }
 
+static bool NavGamepadEnabled() {
+    return ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_NavEnableGamepad;
+}
+
+// Move navigation focus in code as if the D-pad had moved it: show the cursor and stop the mouse or last touch
+// from also highlighting whatever item sits under it.
+static void NavFocus(ImGuiID id) {
+    ImGui::SetFocusID(id, ImGui::GetCurrentWindow());
+    ImGui::SetNavCursorVisibleAfterMove();
+}
+
+// With controller navigation the header and sidebar act like tab strips: moving along one selects the focused entry,
+// and moving into one from elsewhere lands on its selected entry instead of the nearest one.
+static ImGuiID navWindowLastFrame = 0;
+struct NavTabStrip {
+    bool entered = false;
+
+    // Construct right after the strip's BeginChild, so the redirect happens before any entry draws its highlight.
+    explicit NavTabStrip(ImGuiID selectedId) {
+        ImGuiContext& g = *GImGui;
+        entered = NavGamepadEnabled() && g.NavJustMovedToId != 0 && g.NavWindow == g.CurrentWindow &&
+                  navWindowLastFrame != g.CurrentWindow->ID;
+        if (entered) {
+            NavFocus(selectedId);
+        }
+    }
+
+    // Call after drawing each entry. Returns true when navigation just moved onto it, so it should be selected.
+    bool Selects(bool selected) const {
+        return !entered && !selected && NavGamepadEnabled() && GImGui->NavJustMovedToId == GImGui->LastItemData.ID;
+    }
+};
+
+// The sidebar and content columns form a row of areas. ImGui scores every area at once, so Up/Down could hop into a
+// neighbouring column, and Left/Right only reached items that lined up with the current one. Instead, Up/Down stays in
+// the current area, and Left/Right prefers the current row, then the nearest widget in the closest non-empty area.
+static std::vector<ImGuiID> navAreasLastFrame;
+class NavAreaRow {
+  public:
+    NavAreaRow() {
+        ImGuiContext& g = *GImGui;
+        if (!NavGamepadEnabled() || !g.NavMoveScoringItems || g.NavWindow == nullptr) {
+            return;
+        }
+        for (size_t i = 0; i < navAreasLastFrame.size(); i++) {
+            ImGuiWindow* area = ImGui::FindWindowByID(navAreasLastFrame[i]);
+            if (area != nullptr && (area == g.NavWindow || ImGui::IsWindowChildOf(g.NavWindow, area, false, false))) {
+                current = area->ID;
+                currentIndex = i;
+                direction = g.NavMoveDir == ImGuiDir_Right ? 1 : g.NavMoveDir == ImGuiDir_Left ? -1 : 0;
+                targetY = g.NavScoringRect.GetCenter().y;
+                break;
+            }
+        }
+    }
+
+    // Call right after each area's BeginChild.
+    void BeginArea() {
+        ImGuiContext& g = *GImGui;
+        const ImGuiID id = g.CurrentWindow->ID;
+        const size_t index = areas.size();
+        areas.push_back(id);
+        if (current == 0 || id == current) {
+            return;
+        }
+        // Moving right, the first area with a candidate is the closest; moving left, the last one is.
+        const bool ahead = direction > 0 ? index > currentIndex : direction < 0 && index < currentIndex;
+        if (ahead && !(direction > 0 && chosen.ID != 0)) {
+            // Every item lines up vertically, so ImGui's scoring picks the nearest item within each widget.
+            inTarget = true;
+            g.NavScoringRect.Min.y -= kLineUpAll;
+            g.NavScoringRect.Max.y += kLineUpAll;
+            g.NavMoveResultOther.Clear();
+            best.Clear();
+            bestDist = FLT_MAX;
+        } else {
+            suppressed = true;
+            g.NavMoveScoringItems = false;
+        }
+    }
+
+    // Draw one widget. In a target area, keep whichever widget sits nearest the current item's height.
+    template <typename Draw> void Item(Draw&& draw) {
+        if (!inTarget) {
+            draw();
+            return;
+        }
+        ImGuiContext& g = *GImGui;
+        ImGuiNavItemData saved = g.NavMoveResultOther;
+        g.NavMoveResultOther.Clear();
+        draw();
+        const ImGuiNavItemData& found = g.NavMoveResultOther;
+        if (found.ID != 0) {
+            const float dist = ImFabs(ImGui::WindowRectRelToAbs(found.Window, found.RectRel).GetCenter().y - targetY);
+            if (dist < bestDist) {
+                best = found;
+                bestDist = dist;
+            }
+        }
+        g.NavMoveResultOther = saved;
+    }
+
+    // Call right before each area's EndChild.
+    void EndArea() {
+        ImGuiContext& g = *GImGui;
+        if (inTarget) {
+            g.NavScoringRect.Min.y += kLineUpAll;
+            g.NavScoringRect.Max.y -= kLineUpAll;
+            // Areas without Item() calls, like the sidebar, keep ImGui's own pick.
+            const ImGuiNavItemData& areaBest = best.ID != 0 ? best : g.NavMoveResultOther;
+            if (areaBest.ID != 0) {
+                chosen = areaBest;
+            }
+            g.NavMoveResultOther = chosen;
+            inTarget = false;
+        }
+        if (suppressed) {
+            g.NavMoveScoringItems = true;
+            suppressed = false;
+        }
+    }
+
+    // Call after the last area.
+    void End() {
+        navAreasLastFrame = areas;
+    }
+
+  private:
+    static constexpr float kLineUpAll = 100000.0f;
+    std::vector<ImGuiID> areas;
+    ImGuiID current = 0;
+    size_t currentIndex = 0;
+    int direction = 0;
+    float targetY = 0.0f;
+    bool inTarget = false;
+    bool suppressed = false;
+    ImGuiNavItemData best;
+    float bestDist = FLT_MAX;
+    ImGuiNavItemData chosen;
+};
+
 uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
     int searchCount = 0;
     std::transform(menuSearchText.begin(), menuSearchText.end(), menuSearchText.begin(), ::tolower);
@@ -214,7 +363,7 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
     ImGui::SetNextWindowSizeConstraints({ ImGui::GetContentRegionAvail().x / 2, 0 },
                                         { ImGui::GetContentRegionAvail().x / 2, ImGui::GetContentRegionAvail().y });
     if (ImGui::BeginChild("Search Results Col 1", { ImGui::GetContentRegionAvail().x / 2, 0 },
-                          ImGuiChildFlags_AutoResizeY, ImGuiWindowFlags_NoTitleBar)) {
+                          ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_NavFlattened, ImGuiWindowFlags_NoTitleBar)) {
         for (auto& menuLabel : menuOrder) {
             auto& menuEntry = menuEntries.at(menuLabel);
             for (auto& sidebarLabel : menuEntry.sidebarOrder) {
@@ -700,7 +849,8 @@ void Menu::DrawElement() {
     pos += window->WorkRect.GetSize() / 2 - menuSize / 2;
     ImGui::SetNextWindowPos(pos);
     ImGui::BeginChild("Menu Block", menuSize,
-                      ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
+                      ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize |
+                          ImGuiChildFlags_NavFlattened,
                       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar);
 
     std::unordered_map<std::string, SidebarEntry>* sidebar = nullptr;
@@ -717,9 +867,35 @@ void Menu::DrawElement() {
         headerSelSize.y += style.ScrollbarSize;
     }
     bool autoFocus = CVarGetInteger(CVAR_SETTING("Menu.SearchAutofocus"), 0);
+    // Controller users start on the selected header with the cursor showing, instead of pressing the D-pad first.
+    bool navFocusOnOpen = ImGui::IsWindowAppearing() && NavGamepadEnabled();
     ImGui::BeginChild("Header Selection", headerSelSize,
-                      ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
+                      ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize |
+                          ImGuiChildFlags_NavFlattened,
                       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_HorizontalScrollbar);
+    // L/R (shoulders or triggers) switch header tabs. Skipped while a widget is active, since ImGui uses L1/R1 to
+    // tweak values slower/faster.
+    const bool right = ImGui::IsKeyPressed(ImGuiKey_GamepadR1, false) || ImGui::IsKeyPressed(ImGuiKey_GamepadR2, false);
+    const bool left = ImGui::IsKeyPressed(ImGuiKey_GamepadL1, false) || ImGui::IsKeyPressed(ImGuiKey_GamepadL2, false);
+    const int tabStep = right - left;
+    auto selectHeader = [&](const std::string& label) {
+        if (headerSearch) {
+            menuSearch.Clear();
+        }
+        CVarSetString(headerCvar, label.c_str());
+        CVarSave();
+    };
+    if (tabStep != 0 && NavGamepadEnabled() && !ImGui::IsAnyItemActive() &&
+        ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)) {
+        auto it = std::find(menuOrder.begin(), menuOrder.end(), headerIndex);
+        if (it != menuOrder.end()) {
+            const size_t count = menuOrder.size();
+            headerIndex = menuOrder.at((it - menuOrder.begin() + count + tabStep) % count);
+            selectHeader(headerIndex);
+            NavFocus(HeaderEntryId(menuEntries.at(headerIndex).label));
+        }
+    }
+    NavTabStrip headerStrip(HeaderEntryId(menuEntries.at(headerIndex).label));
     uint8_t curIndex = 0;
     for (auto& label : menuOrder) {
         if (curIndex != 0) {
@@ -731,12 +907,13 @@ void Menu::DrawElement() {
         if (headerIndex != label) {
             ImGui::PushStyleColor(ImGuiCol_Button, { 0, 0, 0, 0 });
         }
-        if (ModernMenuHeaderEntry(entry.label)) {
-            if (headerSearch) {
-                menuSearch.Clear();
-            }
-            CVarSetString(headerCvar, label.c_str());
-            CVarSave();
+        bool headerPressed = ModernMenuHeaderEntry(entry.label);
+        if (navFocusOnOpen && headerIndex == label) {
+            ImGui::SetItemDefaultFocus();
+            ImGui::SetNavCursorVisibleAfterMove();
+        }
+        if (headerPressed || headerStrip.Selects(headerIndex == label)) {
+            selectHeader(label);
             nextIndex = label;
         }
         if (headerIndex != label) {
@@ -854,14 +1031,18 @@ void Menu::DrawElement() {
     float topY = pos.y;
     ImGui::SetNextWindowSizeConstraints({ sidebarWidth, 0 }, { sidebarWidth, columnHeight });
     ImGui::BeginChild((menuEntries.at(headerIndex).label + " Section").c_str(), { sidebarWidth, columnHeight * 3 },
-                      ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize, ImGuiWindowFlags_NoTitleBar);
+                      ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_NavFlattened,
+                      ImGuiWindowFlags_NoTitleBar);
+    NavAreaRow areaRow;
+    areaRow.BeginArea();
+    NavTabStrip sidebarStrip(SidebarEntryId(sectionIndex));
     for (auto& sidebarLabel : menuEntries.at(headerIndex).sidebarOrder) {
         std::string nextIndex = "";
         UIWidgets::PushStyleButton(menuThemeIndex);
         if (sectionIndex != sidebarLabel) {
             ImGui::PushStyleColor(ImGuiCol_Button, { 0, 0, 0, 0 });
         }
-        if (ModernMenuSidebarEntry(sidebarLabel)) {
+        if (ModernMenuSidebarEntry(sidebarLabel) || sidebarStrip.Selects(sectionIndex == sidebarLabel)) {
             if (headerSearch) {
                 menuSearch.Clear();
             }
@@ -877,6 +1058,7 @@ void Menu::DrawElement() {
             sectionIndex = nextIndex;
         }
     }
+    areaRow.EndArea();
     ImGui::EndChild();
     ImGui::PopFont();
 
@@ -897,8 +1079,9 @@ void Menu::DrawElement() {
     if (!useColumns || (headerSearch && menuSearchText.length() > 0)) {
         ImGui::SameLine();
         ImGui::SetNextWindowSizeConstraints({ sectionWidth, 0 }, { sectionWidth, columnHeight });
-        ImGui::BeginChild(sectionMenuId.c_str(), { sectionWidth, windowHeight * 4 }, ImGuiChildFlags_AutoResizeY,
-                          ImGuiWindowFlags_NoTitleBar);
+        ImGui::BeginChild(sectionMenuId.c_str(), { sectionWidth, windowHeight * 4 },
+                          ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_NavFlattened, ImGuiWindowFlags_NoTitleBar);
+        areaRow.BeginArea();
     }
     if (headerSearch && menuSearchText.length() > 0) {
         ImGui::AlignTextToFramePadding();
@@ -934,15 +1117,18 @@ void Menu::DrawElement() {
             std::string sectionId = spdlog::fmt_lib::format("{} Column {}", sectionMenuId, i);
             if (useColumns) {
                 ImGui::SetNextWindowSizeConstraints({ columnWidth, 0 }, { columnWidth, columnHeight });
-                ImGui::BeginChild(sectionId.c_str(), { columnWidth, windowHeight * 4 }, ImGuiChildFlags_AutoResizeY,
+                ImGui::BeginChild(sectionId.c_str(), { columnWidth, windowHeight * 4 },
+                                  ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_NavFlattened,
                                   ImGuiWindowFlags_NoTitleBar);
+                areaRow.BeginArea();
             }
             // for (auto& entryName : sidebar->at(sectionIndex).sidebarOrder) {
             for (auto& entry : sidebar->at(sectionIndex).columnWidgets.at(i)) {
-                MenuDrawItem(entry, menuThemeIndex);
+                areaRow.Item([&] { MenuDrawItem(entry, menuThemeIndex); });
             }
             //}
             if (useColumns) {
+                areaRow.EndArea();
                 ImGui::EndChild();
             }
             if (i < columns - 1) {
@@ -951,8 +1137,10 @@ void Menu::DrawElement() {
         }
     }
     if (!useColumns || menuSearchText.length() > 0) {
+        areaRow.EndArea();
         ImGui::EndChild();
     }
+    areaRow.End();
 
     if (!popout) {
         ImGui::PopStyleVar();
@@ -965,6 +1153,7 @@ void Menu::DrawElement() {
     if (freshOpen) {
         freshOpen = false;
     }
+    navWindowLastFrame = g.NavWindow ? g.NavWindow->ID : 0;
     ImGui::End();
 }
 } // namespace Ship
