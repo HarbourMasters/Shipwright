@@ -1,4 +1,5 @@
 #include "SohMenu.h"
+#include "soh/Enhancements/audio/SpeechPlayer.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "SohModals.h"
@@ -239,6 +240,20 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yTTS"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Enables text to speech for in-game dialogue"));
+#endif
+#if ESPEAK
+    AddWidget(path, "Speech on a Separate Output", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yTTSSeparateOutput"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().DefaultValue(true).Tooltip(
+            "Plays speech on an output of its own, so it can be sent to a different device than the game and "
+            "keeps its own volume. Turn it off to mix speech into the game's output instead."))
+        .Callback([](WidgetInfo& info) {
+            SOH::SpeechPlayer::Instance().SetSeparateOutput(CVarGetInteger(CVAR_SETTING("A11yTTSSeparateOutput"), 1) !=
+                                                                0,
+                                                            CVarGetString(CVAR_SETTING("A11yTTSOutputDevice"), ""));
+        });
+    AddWidget(path, "Speech Output Device", WIDGET_SPEECH_DEVICE).RaceDisable(false);
 #endif
     AddWidget(path, "Disable Idle Camera Re-Centering", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))

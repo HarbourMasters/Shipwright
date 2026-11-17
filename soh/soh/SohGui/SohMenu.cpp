@@ -55,6 +55,7 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_CVAR_COMBOBOX:
         case WIDGET_AUDIO_BACKEND:
         case WIDGET_VIDEO_BACKEND:
+        case WIDGET_SPEECH_DEVICE:
             widget.options = std::make_shared<ComboboxOptions>();
             break;
         case WIDGET_BUTTON:
