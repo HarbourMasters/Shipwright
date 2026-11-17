@@ -1,0 +1,22 @@
+:config:
+  segments:
+    - [1, vr_NSVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_NSVR_pal_static.yml
+gBombchuShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gBombchuShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gBombchuShopBg2TLUT
+gBombchuShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBombchuShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gBombchuShopBgTLUT

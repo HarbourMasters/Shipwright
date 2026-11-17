@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [1, vr_MLVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_MLVR_pal_static.yml
+gStable2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gStable2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gStableBg2TLUT
+gStable3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gStable3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gStableBg3TLUT
+gStable4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gStable4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gStableBg4TLUT
+gStableBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gStableBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gStableBgTLUT
