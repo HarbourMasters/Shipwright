@@ -2105,33 +2105,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
-        case VB_REPLACE_SHOP_ITEM: {
-            EnGirlA* shop = va_arg(args, EnGirlA*);
-
-            // replace Recovery Hearts in shops with Roc's Feathers when they're consumable
-            if (RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE) &&
-                shop->actor.params == SI_RECOVERY_HEART) {
-                shop->actor.textId = (s16)TEXT_BUY_ROCS_FEATHER_DESC;
-                shop->itemBuyPromptTextId = (s16)TEXT_BUY_ROCS_FEATHER_PROMPT;
-                shop->getItemId = Rando::StaticData::RetrieveItem(RG_ROCS_FEATHER).GetGIEntry_Copy().getItemId;
-                shop->giDrawId = GI_NONE;
-                shop->canBuyFunc = [](PlayState*, EnGirlA*) -> s32 {
-                    if (gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining <
-                        (Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER_COUNT).Get() + 1)) {
-                        return CANBUY_RESULT_SUCCESS;
-                    } else {
-                        return CANBUY_RESULT_CANT_GET_NOW;
-                    }
-                };
-                shop->itemGiveFunc = [](PlayState*, EnGirlA* girlA) {
-                    GetItemEntry replacementItem = Rando::StaticData::RetrieveItem(RG_ROCS_FEATHER).GetGIEntry_Copy();
-                    Randomizer_Item_Give(gPlayState, replacementItem);
-                    Rupees_ChangeBy(-girlA->basePrice);
-                };
-                *should = true;
-            }
-            break;
-        }
         // We need to override the vanilla behavior here because the player might sequence break and get Ruto kidnapped
         // before accessing other checks that require Ruto. So if she's kidnapped we allow her to spawn again
         case VB_RUTO_BE_CONSIDERED_NOT_KIDNAPPED: {

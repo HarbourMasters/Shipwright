@@ -152,6 +152,23 @@ void BuildTriforceMessage(CustomMessage& msg) {
     msg.Format(ITEM_CUSTOM);
 }
 
+void BuildRocsFeatherMessage(CustomMessage& msg) {
+    u8 max = (Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER_COUNT).Get() + 1);
+    bool consumable = Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE);
+    u8& current = gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining;
+    u8& total = gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired;
+    msg = CustomMessage("You got %bRoc's Feather%w!&You now have %b[[d]]%w |use|uses| of it!",
+                        "Du erhältst %bGreifenfeder%w!&Du kannst sie nun %b[[d]]%w-mal einsetzen!",
+                        "Vous obtenez la %bPlume de Roc%w!&Vous pouvez l'utiliser %b[[d]]%w fois!");
+
+    if (consumable) {
+        msg.InsertNumber(current < max ? current + 1 : current);
+    } else {
+        msg.InsertNumber(total < max ? total + 1 : total);
+    }
+    msg.AutoFormat(ITEM_ROCS_FEATHER);
+}
+
 void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     int16_t rgid;
     msg = CustomMessage("You found [[article]][[color]][[name]]%w!", "Du hast [[article]][[color]][[name]]%w gefunden!",
@@ -248,6 +265,8 @@ void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
         BuildTriforcePieceMessage(msg);
     } else if (player->getItemEntry.getItemId == RG_TRIFORCE) {
         BuildTriforceMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_ROCS_FEATHER) {
+        BuildRocsFeatherMessage(msg);
     } else {
         BuildCustomItemMessage(player, msg);
     }

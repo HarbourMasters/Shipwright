@@ -1527,16 +1527,20 @@
             "rocs_feather": {
                 "name": "Roc's Feather",
                 "description": [
-                    "Off - Roc's Feather will not be shuffled. No changes will be made to item pool.\n\n",
-                    "On - Adds Roc's Feather to the item pool. Roc's Feather is a custom item granting the player a jump on demand. ",
-                    "Increasing the number of Feathers will allow successive jumps for each feather found.\n\n",
-                    "Consumable - Adds numerous consumable Roc's Feathers to the item pool. Recovery heart refills in shops will be replaced with feather refills.\n\n"
+                    "Off - Roc's Feather will not be shuffled. No changes will be made to the item pool.\n\n",
+                    "On - Adds Roc's Feather to the item pool. Roc's Feather is a custom item granting the ",
+                    "player a jump on demand. Increasing Quantity will allow an additional, consecutive ",
+                    "jump with each feather found.\n\n",
+                    "Consumable - Adds a variable number of consumable Roc's Feathers to the item pool, matching ",
+                    "Max Capacity at an absolute minimum.\n\n",
+                    "Roc's Feather is not considered by logic."
                 ]
             },
             "rocs_feather_count": {
                 "name": "Roc's Feather Quantity / Max Capacity",
                 "description": [
-                    "If Roc's Feather is 'On' this will be the number of feathers in the pool. If Roc's Feather is 'Consumable' this will be the maximum you can carry at once."
+                    "If Roc's Feather is 'On' this will be the number of feathers obtainable in the pool. ",
+                    "If Roc's Feather is 'Consumable' this will be the maximum you can carry at once."
                 ]
             },
             "nayrus_love_uses": {
