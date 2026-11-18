@@ -4206,4 +4206,11 @@ typedef enum {
     // - none
     VB_EMPTY_BOTTLE_OI,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    VB_SET_TRANSITION_TYPE,
 } GIVanillaBehavior;
