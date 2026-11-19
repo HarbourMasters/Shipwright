@@ -444,6 +444,7 @@ static const char* MarginCvarList[]{
     CVAR_COSMETIC("HUD.Minimap"),       CVAR_COSMETIC("HUD.SmallKey"),       CVAR_COSMETIC("HUD.Rupees"),
     CVAR_COSMETIC("HUD.Carrots"),       CVAR_COSMETIC("HUD.Timers"),         CVAR_COSMETIC("HUD.ArcheryScore"),
     CVAR_COSMETIC("HUD.TitleCard.Map"), CVAR_COSMETIC("HUD.TitleCard.Boss"), CVAR_COSMETIC("HUD.IGT"),
+    CVAR_COSMETIC("Ivan.CButtons"),     CVAR_COSMETIC("Ivan.Dpad"),
 };
 
 static const char* MarginCvarNonAnchor[]{
@@ -1753,6 +1754,46 @@ void Draw_Placements() {
             DrawPositionSlider(CVAR_COSMETIC("HUD.Dpad"), 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2),
                                Min_X_Dpad, Max_X_Dpad);
             DrawScaleSlider(CVAR_COSMETIC("HUD.Dpad"), 1.0f);
+            ImGui::EndTable();
+        }
+    }
+    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0) &&
+        CVarGetInteger(CVAR_ENHANCEMENT("IvanSeparateLoadout"), 0) &&
+        ImGui::CollapsingHeader("Ivan C Buttons position")) {
+        if (ImGui::BeginTable("tableivancbuttons", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Ivan C Buttons settings", FlagsCell, TablesCellsWidth);
+            Table_InitHeader(false);
+            DrawUseMarginsSlider("Ivan C Buttons", CVAR_COSMETIC("Ivan.CButtons"));
+            DrawPositionsRadioBoxes(CVAR_COSMETIC("Ivan.CButtons"));
+            s16 Min_X_IvanC = 0;
+            s16 Max_X_IvanC = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2);
+            if (CVarGetInteger(CVAR_COSMETIC("Ivan.CButtons.PosType"), 0) == ANCHOR_RIGHT) {
+                Max_X_IvanC = 290;
+            } else if (CVarGetInteger(CVAR_COSMETIC("Ivan.CButtons.PosType"), 0) == HIDDEN) {
+                Min_X_IvanC = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2) * -1;
+            }
+            DrawPositionSlider(CVAR_COSMETIC("Ivan.CButtons"), 0,
+                               static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2), Min_X_IvanC, Max_X_IvanC);
+            ImGui::EndTable();
+        }
+    }
+    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0) &&
+        CVarGetInteger(CVAR_ENHANCEMENT("IvanSeparateLoadout"), 0) &&
+        CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) && ImGui::CollapsingHeader("Ivan DPad position")) {
+        if (ImGui::BeginTable("tableivandpad", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Ivan DPad settings", FlagsCell, TablesCellsWidth);
+            Table_InitHeader(false);
+            DrawUseMarginsSlider("Ivan DPad", CVAR_COSMETIC("Ivan.Dpad"));
+            DrawPositionsRadioBoxes(CVAR_COSMETIC("Ivan.Dpad"));
+            s16 Min_X_IvanD = 0;
+            s16 Max_X_IvanD = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2);
+            if (CVarGetInteger(CVAR_COSMETIC("Ivan.Dpad.PosType"), 0) == ANCHOR_RIGHT) {
+                Max_X_IvanD = 290;
+            } else if (CVarGetInteger(CVAR_COSMETIC("Ivan.Dpad.PosType"), 0) == HIDDEN) {
+                Min_X_IvanD = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2) * -1;
+            }
+            DrawPositionSlider(CVAR_COSMETIC("Ivan.Dpad"), 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2),
+                               Min_X_IvanD, Max_X_IvanD);
             ImGui::EndTable();
         }
     }

@@ -6370,6 +6370,8 @@ void Interface_Draw(PlayState* play) {
                 }
             }
         }
+
+        GameInteractor_ExecuteOnInterfaceDraw();
     }
 
     if (pauseCtx->debugState == 3) {
