@@ -1,0 +1,12 @@
+// Generated from game-lang/*.json. Edit the JSON, not this build output.
+#include <nlohmann/json.hpp>
+#include <iterator>
+
+namespace CustomMessages {
+nlohmann::json GetBuiltinGameCatalogs() {
+@SOH_GAME_CATALOG_DATA@
+    nlohmann::json result = nlohmann::json::object();
+@SOH_GAME_CATALOG_LOAD@
+    return result;
+}
+} // namespace CustomMessages

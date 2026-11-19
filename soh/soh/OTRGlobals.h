@@ -61,11 +61,15 @@ class OTRGlobals {
     ImFont* fontMonoLarger = nullptr;
     ImFont* fontMonoLargest = nullptr;
     ImFont* fontJapanese = nullptr;
+    ImFont* fontJapaneseNormal = nullptr;
+    ImFont* fontJapaneseLarger = nullptr;
 
     OTRGlobals();
     ~OTRGlobals();
 
     void ScaleImGui();
+    ImFont* GetGuiFont(ImFont* westernFont) const;
+    void UpdateGuiFont();
     void Initialize();
     void RunExtract(int argc, char* argv[]);
     bool HasMasterQuest();

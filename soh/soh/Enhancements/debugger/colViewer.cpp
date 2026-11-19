@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <ship/window/Window.h>
 
 #include "colViewer.h"
@@ -60,82 +61,111 @@ void ColViewerWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     CheckboxOptions checkOpt = CheckboxOptions().Color(THEME_COLOR);
     ComboboxOptions comboOpt = ComboboxOptions().Color(THEME_COLOR);
-    CVarCheckbox("Enabled", CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), checkOpt);
+    CVarCheckbox(Lang::UILabel("ui.text.enhancements.debugger.colviewer.enabled", "Enabled"),
+                 CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), checkOpt);
 
-    CVarCombobox("Scene", CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), ColRenderSettingNames, comboOpt);
-    CVarCombobox("Bg Actors", CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), ColRenderSettingNames, comboOpt);
-    CVarCombobox("Col Check", CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), ColRenderSettingNames, comboOpt);
-    CVarCombobox("Waterbox", CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), ColRenderSettingNames, comboOpt);
-    CVarCombobox("Scarecrow Spawn", CVAR_DEVELOPER_TOOLS("ColViewer.ScarecrowSpawn"), ColRenderSettingNames, comboOpt);
+    CVarCombobox(Lang::UILabel("ui.text.enhancements.debugger.colviewer.scene", "Scene"),
+                 CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), ColRenderSettingNames,
+                 UIWidgets::ComboboxOptions(comboOpt).TranslationScope("ui.text.enhancements.debugger.colviewer"));
+    CVarCombobox(Lang::UILabel("ui.text.enhancements.debugger.colviewer.bg_actors", "Bg Actors"),
+                 CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), ColRenderSettingNames,
+                 UIWidgets::ComboboxOptions(comboOpt).TranslationScope("ui.text.enhancements.debugger.colviewer"));
+    CVarCombobox(Lang::UILabel("ui.text.enhancements.debugger.colviewer.col_check", "Col Check"),
+                 CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), ColRenderSettingNames,
+                 UIWidgets::ComboboxOptions(comboOpt).TranslationScope("ui.text.enhancements.debugger.colviewer"));
+    CVarCombobox(Lang::UILabel("ui.text.enhancements.debugger.colviewer.waterbox", "Waterbox"),
+                 CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), ColRenderSettingNames,
+                 UIWidgets::ComboboxOptions(comboOpt).TranslationScope("ui.text.enhancements.debugger.colviewer"));
+    CVarCombobox(Lang::UILabel("ui.text.enhancements.debugger.colviewer.scarecrow_spawn", "Scarecrow Spawn"),
+                 CVAR_DEVELOPER_TOOLS("ColViewer.ScarecrowSpawn"), ColRenderSettingNames,
+                 UIWidgets::ComboboxOptions(comboOpt).TranslationScope("ui.text.enhancements.debugger.colviewer"));
 
-    CVarCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"),
-                 checkOpt.DefaultValue(true).Tooltip(
+    CVarCheckbox(Lang::UILabel("ui.text.enhancements.debugger.colviewer.apply_as_decal", "Apply as decal"),
+                 CVAR_DEVELOPER_TOOLS("ColViewer.Decal"),
+                 checkOpt.DefaultValue(true).Tooltip(Lang::UIString(
+                     "ui.text.enhancements.debugger.colviewer.applies_the_collision_as_a_decal_display_this_can_be_"
+                     "useful_if_there_is_z_fighting_occurring_with_th",
                      "Applies the collision as a decal display. This can be useful if there is z-fighting occurring "
-                     "with the scene geometry, but can cause other artifacts."));
-    CVarCheckbox("Shaded", CVAR_DEVELOPER_TOOLS("ColViewer.Shaded"),
-                 checkOpt.DefaultValue(false).Tooltip("Applies the scene's shading to the collision display."));
+                     "with the scene geometry, but can cause other artifacts.")));
+    CVarCheckbox(Lang::UILabel("ui.text.enhancements.debugger.colviewer.shaded", "Shaded"),
+                 CVAR_DEVELOPER_TOOLS("ColViewer.Shaded"),
+                 checkOpt.DefaultValue(false).Tooltip(Lang::UIString(
+                     "ui.text.enhancements.debugger.colviewer.applies_the_scene_s_shading_to_the_collision_display",
+                     "Applies the scene's shading to the collision display.")));
 
     // This has to be duplicated in both code paths due to the nature of ImGui::IsItemHovered()
     const std::string colorHelpText = "View and change the colors used for collision display.";
     PushStyleHeader(THEME_COLOR);
-    if (ImGui::TreeNode("Colors")) {
+    if (ImGui::TreeNode(Lang::UILabel("ui.text.enhancements.debugger.colviewer.colors", "Colors"))) {
         UIWidgets::Tooltip(colorHelpText.c_str());
 
-        if (CVarColorPicker("Normal", CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal"), { 255, 255, 255, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.normal", "Normal"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal"), { 255, 255, 255, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             scene_col =
                 VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal"), { 255, 255, 255, 255 }));
         }
-        if (CVarColorPicker("Hookshot", CVAR_DEVELOPER_TOOLS("ColViewer.ColorHookshot"), { 128, 128, 255, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.hookshot", "Hookshot"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorHookshot"), { 128, 128, 255, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             hookshot_col =
                 VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorHookshot"), { 128, 128, 255, 255 }));
         }
-        if (CVarColorPicker("Entrance", CVAR_DEVELOPER_TOOLS("ColViewer.ColorEntrance"), { 0, 255, 0, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.entrance", "Entrance"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorEntrance"), { 0, 255, 0, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             entrance_col =
                 VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorEntrance"), { 0, 255, 0, 255 }));
         }
-        if (CVarColorPicker("Special Surface (Grass/Sand/Etc)", CVAR_DEVELOPER_TOOLS("ColViewer.ColorSpecialSurface"),
-                            { 192, 255, 192, 255 }, false, ColorPickerResetButton | ColorPickerRandomButton,
-                            THEME_COLOR)) {
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.special_surface_grass_sand_etc",
+                                          "Special Surface (Grass/Sand/Etc)"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorSpecialSurface"), { 192, 255, 192, 255 }, false,
+                            ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             specialSurface_col = VecFromRGBA8(
                 CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSpecialSurface"), { 192, 255, 192, 255 }));
         }
-        if (CVarColorPicker("Interactable (Vines/Crawlspace/Etc)", CVAR_DEVELOPER_TOOLS("ColViewer.ColorInteractable"),
-                            { 192, 0, 192, 255 }, false, ColorPickerResetButton | ColorPickerRandomButton,
-                            THEME_COLOR)) {
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.interactable_vines_crawlspace_etc",
+                                          "Interactable (Vines/Crawlspace/Etc)"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorInteractable"), { 192, 0, 192, 255 }, false,
+                            ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             interactable_col =
                 VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorInteractable"), { 192, 0, 192, 255 }));
         }
-        if (CVarColorPicker("Slope", CVAR_DEVELOPER_TOOLS("ColViewer.ColorSlope"), { 255, 255, 128, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.slope", "Slope"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorSlope"), { 255, 255, 128, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             slope_col =
                 VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSlope"), { 255, 255, 128, 255 }));
         }
-        if (CVarColorPicker("Void", CVAR_DEVELOPER_TOOLS("ColViewer.ColorVoid"), { 255, 0, 0, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.void", "Void"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorVoid"), { 255, 0, 0, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             void_col = VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorVoid"), { 255, 0, 0, 255 }));
         }
-        if (CVarColorPicker("OC", CVAR_DEVELOPER_TOOLS("ColViewer.ColorOC"), { 255, 255, 255, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.oc", "OC"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorOC"), { 255, 255, 255, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             oc_col = VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorOC"), { 255, 255, 255, 255 }));
         }
-        if (CVarColorPicker("AC", CVAR_DEVELOPER_TOOLS("ColViewer.ColorAC"), { 0, 0, 255, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.ac", "AC"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorAC"), { 0, 0, 255, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             ac_col = VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAC"), { 0, 0, 255, 255 }));
         }
-        if (CVarColorPicker("AT", CVAR_DEVELOPER_TOOLS("ColViewer.ColorAT"), { 255, 0, 0, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.at", "AT"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorAT"), { 255, 0, 0, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             at_col = VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAT"), { 255, 0, 0, 255 }));
         }
-        if (CVarColorPicker("Waterbox", CVAR_DEVELOPER_TOOLS("ColViewer.ColorWaterbox"), { 0, 0, 255, 255 }, false,
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.waterbox", "Waterbox"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorWaterbox"), { 0, 0, 255, 255 }, false,
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             waterbox_col =
                 VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorWaterbox"), { 0, 0, 255, 255 }));
         }
-        if (CVarColorPicker("Scarecrow Spawn", CVAR_DEVELOPER_TOOLS("ColViewer.ColorScarecrow"), { 255, 128, 0, 200 },
-                            false, ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
+        if (CVarColorPicker(Lang::UILabel("ui.text.enhancements.debugger.colviewer.scarecrow_spawn", "Scarecrow Spawn"),
+                            CVAR_DEVELOPER_TOOLS("ColViewer.ColorScarecrow"), { 255, 128, 0, 200 }, false,
+                            ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             scarecrow_col =
                 VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorScarecrow"), { 255, 128, 0, 200 }));
         }

@@ -10,7 +10,7 @@
 
 #include <ship/controller/controldevice/controller/mapping/ControllerAxisDirectionMapping.h>
 #include <ship/controller/controldevice/controller/mapping/ControllerRumbleMapping.h>
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 
 typedef CONTROLLERBUTTONS_T N64ButtonMask;
 
@@ -20,9 +20,9 @@ typedef struct {
     N64ButtonMask defaultBtn;
 } CustomButtonMap;
 
-class SohInputEditorWindow final : public Ship::GuiWindow {
+class SohInputEditorWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
     ~SohInputEditorWindow();
 
     void DrawButton(const char* label, int32_t n64Btn, int32_t currentPort, int32_t* btnReading);

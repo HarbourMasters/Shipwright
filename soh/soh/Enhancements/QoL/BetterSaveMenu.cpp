@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/custom-message/CustomMessageManager.h"
@@ -18,13 +19,9 @@ extern PlayState* gPlayState;
 #define CVAR_BETTERSAVE CVAR_ENHANCEMENT("BetterSaveMenu")
 #define CVAR_BETTERSAVE_DEFAULT 0
 #define CVAR_BETTERSAVE_VALUE CVarGetInteger(CVAR_BETTERSAVE, CVAR_BETTERSAVE_DEFAULT)
-static CustomMessage saveMsg = CustomMessage(
-    "\x08Would you like to save?&&" + CustomMessage::TWO_WAY_CHOICE() + "%gYes&No%w\x09", TEXTBOX_TYPE_BLUE);
-static CustomMessage continueOverworldMsg = CustomMessage(
-    "\x08 Continue?&&" + CustomMessage::TWO_WAY_CHOICE() + "%gContinue&Return to Spawn%w\x09", TEXTBOX_TYPE_BLUE);
-static CustomMessage continueDungeonMsg =
-    CustomMessage("\x08 Continue?&" + CustomMessage::THREE_WAY_CHOICE() + "%gContinue&Restart&Return to Spawn%w\x09",
-                  TEXTBOX_TYPE_BLUE);
+static CustomMessage saveMsg;
+static CustomMessage continueOverworldMsg;
+static CustomMessage continueDungeonMsg;
 
 extern "C" uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
@@ -192,6 +189,9 @@ void HandleSaveMenu(bool* should, PlayState* play) {
 }
 
 void RegisterBetterSave() {
+    saveMsg = CustomMessages::CreateMessage("enhancements.better_save_menu.messages.0", TEXTBOX_TYPE_BLUE);
+    continueOverworldMsg = CustomMessages::CreateMessage("enhancements.better_save_menu.messages.1", TEXTBOX_TYPE_BLUE);
+    continueDungeonMsg = CustomMessages::CreateMessage("enhancements.better_save_menu.messages.2", TEXTBOX_TYPE_BLUE);
     saveMsg.Format();
     continueOverworldMsg.Format();
     continueDungeonMsg.Format();

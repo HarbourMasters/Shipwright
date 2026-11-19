@@ -1,3 +1,6 @@
+#include "soh/Enhancements/Lang/GameLanguage.h"
+#include "soh/Enhancements/Lang/Lang.h"
+#include <algorithm>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
@@ -81,7 +84,7 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
 }
 
 const char* GetLanguageCode() {
-    switch (CVarGetInteger(CVAR_SETTING("Languages"), 0)) {
+    switch (GameLanguage_GetConfigured()) {
         case LANGUAGE_FRA:
             return "fr-FR";
         case LANGUAGE_GER:
@@ -837,7 +840,7 @@ void RegisterOnUpdateMainMenuSelection() {
         [](uint8_t optionIndex, uint8_t optionValue) {
             if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
                 return;
-            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
+            uint8_t language = GameLanguage_GetLegacyText();
 
             auto optionName = BossRush_GetSettingName(optionIndex, language);
             auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, language);
@@ -849,10 +852,10 @@ void RegisterOnUpdateMainMenuSelection() {
         [](uint8_t optionIndex) {
             if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
                 return;
-            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
-
-            auto optionName = SohFileSelect_GetSettingText(optionIndex, language);
-            SpeechSynthesizer::Instance->Speak(optionName, GetLanguageCode());
+            const auto* optionName = SohFileSelect_GetSettingText(optionIndex);
+            std::string voice = Lang::GetUILanguage();
+            std::replace(voice.begin(), voice.end(), '_', '-');
+            SpeechSynthesizer::Instance->Speak(optionName, voice.c_str());
         });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileNameSelection>([](int16_t charCode) {
@@ -1122,7 +1125,7 @@ void RegisterOnDialogMessageHook() {
 
 void InitTTSBank() {
     std::string languageSuffix = "_eng.json";
-    switch (CVarGetInteger(CVAR_SETTING("Languages"), 0)) {
+    switch (GameLanguage_GetConfigured()) {
         case LANGUAGE_FRA:
             languageSuffix = "_fra.json";
             break;
@@ -1162,7 +1165,7 @@ void RegisterOnSetGameLanguageHook() {
 void RegisterOnSetDoAction() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSetDoAction>([](uint16_t action) {
         if (CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) {
-            uint8_t language = CVarGetInteger(CVAR_SETTING("Languages"), 0);
+            uint8_t language = GameLanguage_GetConfigured();
             const char* text;
             switch (action) {
                 case DO_ACTION_CHECK:

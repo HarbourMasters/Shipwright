@@ -4,11 +4,15 @@
 #include <exception>
 #include <vector>
 #include <string>
+#include <map>
+#include <functional>
+#include <optional>
 
 #include "../../../include/z64item.h"
 #include "../../../include/z64.h"
 #include "../../../include/message_data_textbox_types.h"
 #include "text.h"
+#include "soh/Enhancements/Lang/MessageLanguage.h"
 
 #undef MESSAGE_END
 
@@ -68,8 +72,16 @@ class CustomMessage {
     const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;
     const std::string GetGerman(MessageFormat format = MF_FORMATTED) const;
     const std::string GetForCurrentLanguage(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetForUILanguage(MessageFormat format = MF_CLEAN) const;
     const std::string GetForLanguage(uint8_t language, MessageFormat format = MF_FORMATTED) const;
     const std::vector<std::string> GetAllMessages(MessageFormat format = MF_FORMATTED) const;
+    void SetForLocale(const std::string& locale, std::string text);
+    std::string GetForLocale(const std::string& locale, MessageFormat format = MF_FORMATTED) const;
+    const std::map<std::string, std::string>& GetLocales() const;
+    bool HasLocale(const std::string& locale) const;
+    // Layout belongs to the complete message, not inserted item-name fragments.
+    void SetAlignment(const std::string& locale, MessageAlignment alignment);
+    MessageAlignment GetAlignment(const std::string& locale) const;
     void ProcessMessageFormat(std::string& str, MessageFormat format) const;
     const std::vector<std::string>& GetColors() const;
     void SetColors(std::vector<std::string> colors_);
@@ -89,6 +101,7 @@ class CustomMessage {
     bool operator!=(const CustomMessage& right) const;
 
     void LoadIntoFont();
+    void LoadIntoFont(const std::string& locale);
 
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage
@@ -230,6 +243,12 @@ class CustomMessage {
 
   private:
     std::vector<std::string> messages = { "", TODO_TRANSLATE, TODO_TRANSLATE };
+    std::map<std::string, std::string> locales;
+    std::map<std::string, MessageAlignment> alignments;
+    std::vector<std::reference_wrapper<std::string>> AllMessages();
+    void IncludeLocales(const CustomMessage& other);
+    void FormatUnicode(std::string& text, const std::string& locale,
+                       std::optional<uint8_t> itemIcon = std::nullopt) const;
     TextBoxType type = TEXTBOX_TYPE_BLACK;
     TextBoxPosition position = TEXTBOX_POS_BOTTOM;
     std::vector<std::string> colors = {};

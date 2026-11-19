@@ -1,3 +1,5 @@
+#include "soh/SohGui/LocalizedWindow.h"
+#include "soh/Enhancements/Lang/Lang.h"
 #include <fast/Fast3dGui.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <ship/Context.h>
@@ -183,13 +185,14 @@ void TimeDisplayWindow::Draw() {
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
 
-    ImGui::Begin("TimerDisplay", nullptr,
+    ImGui::Begin(SohGui::LocalizedWindowTitle("ui.text.enhancements.timedisplay.timedisplay", "TimerDisplay"), nullptr,
                  ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoFocusOnAppearing |
                      ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
                      ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
     ImGui::SetWindowFontScale(fontScale);
     if (activeTimers.size() == 0) {
-        ImGui::Text("No Enabled Timers...");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.timedisplay.timedisplay.no_enabled_timers", "No Enabled Timers..."));
     } else {
         ImGui::BeginTable("Timer List", 2, ImGuiTableFlags_NoClip);
         for (auto& timers : activeTimers) {

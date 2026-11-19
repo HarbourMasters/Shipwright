@@ -2025,7 +2025,6 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     } else if (this->configMode == CM_SETTINGS_MENU && IS_SPEEDRUN) {
         FileChoose_DrawSpeedrunMenuWindowContents(this);
     } else if (this->configMode == CM_SETTINGS_MENU) {
-        uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
         uint8_t textAlpha = this->randomizerUIAlpha;
 
         for (uint8_t index = 0; index <= RSM_OPEN_RANDOMIZER_SETTINGS; index++) {
@@ -2045,23 +2044,22 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 textColorR = textColorG = textColorB = 100;
             }
 
-            Interface_DrawTextLine(this->state.gfxCtx, SohFileSelect_GetSettingText(index, language), 70,
-                                   (80 + (index * 16)), textColorR, textColorG, textColorB, textAlpha, 0.8f, true);
+            SohFileSelect_DrawSettingText(this->state.gfxCtx, index, 70, (80 + (index * 16)), textColorR, textColorG,
+                                          textColorB, textAlpha, 0.8f, true);
         }
 
         // Show text to indicate randomizer is being generated.
         if (generating) {
-            Interface_DrawTextLine(this->state.gfxCtx, SohFileSelect_GetSettingText(RSM_GENERATING, language), 70,
-                                   (80 + 64), 255, 255, 255, textAlpha, 0.8f, true);
+            SohFileSelect_DrawSettingText(this->state.gfxCtx, RSM_GENERATING, 70, (80 + 64), 255, 255, 255, textAlpha,
+                                          0.8f, true);
         }
 
         // If no randomizer is generated and "start randomizer" is selected, show text to explain why user can't start
         // the randomizer.
         if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() &&
             this->randomizerIndex == RSM_START_RANDOMIZER) {
-            Interface_DrawTextLine(this->state.gfxCtx,
-                                   SohFileSelect_GetSettingText(RSM_NO_RANDOMIZER_GENERATED, language), 70, (80 + 64),
-                                   240, 80, 80, textAlpha, 0.8f, true);
+            SohFileSelect_DrawSettingText(this->state.gfxCtx, RSM_NO_RANDOMIZER_GENERATED, 70, (80 + 64), 240, 80, 80,
+                                          textAlpha, 0.8f, true);
         }
 
         FileChoose_DrawListCursorArrow(this, textAlpha, 62, 85 + 16 * this->randomizerIndex, false);

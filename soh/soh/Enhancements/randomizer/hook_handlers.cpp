@@ -1,4 +1,5 @@
-﻿#include "soh/OTRGlobals.h"
+﻿#include "soh/Enhancements/Lang/GameLanguage.h"
+#include "soh/OTRGlobals.h"
 
 #include <ship/window/Window.h>
 
@@ -13,7 +14,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SohGui/ImGuiUtils.h"
-#include "soh/Notification/Notification.h"
+#include "soh/Notification/PickupNotification.h"
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ObjectExtension/ObjectExtension.h"
@@ -1347,56 +1348,11 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 }
 
                 if (item00->itemEntry.modIndex == MOD_NONE) {
-                    std::string message;
-
-                    switch (gSaveContext.language) {
-                        case LANGUAGE_FRA:
-                            message = "Vous obtenez: ";
-                            break;
-                        case LANGUAGE_GER:
-                            message = "Du erhältst: ";
-                            break;
-                        case LANGUAGE_ENG:
-                        default:
-                            message = "You found ";
-                            break;
-                    }
-
-                    Notification::Emit({
-                        .itemIcon = GetTextureForItemId(item00->itemEntry.itemId),
-                        .message = message,
-                        .suffix = SohUtils::GetItemName(item00->itemEntry.itemId),
-                    });
+                    Notification::Emit(Notification::MakePickup(SohUtils::GetItemName(item00->itemEntry.itemId),
+                                                                GetTextureForItemId(item00->itemEntry.itemId)));
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
-                    std::string message;
-                    std::string itemName;
-
-                    switch (gSaveContext.language) {
-                        case LANGUAGE_FRA:
-                            message = "Vous obtenez: ";
-                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
-                                           .GetName()
-                                           .french;
-                            break;
-                        case LANGUAGE_GER:
-                            message = "Du erhältst: ";
-                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
-                                           .GetName()
-                                           .german;
-                            break;
-                        case LANGUAGE_ENG:
-                        default:
-                            message = "You found ";
-                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
-                                           .GetName()
-                                           .english;
-                            break;
-                    }
-
-                    Notification::Emit({
-                        .message = message,
-                        .suffix = itemName,
-                    });
+                    const auto& item = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId);
+                    Notification::Emit(Notification::MakePickup(item.GetNameForUI()));
                 }
 
                 // This is typically called when you close the text box after getting an item, in case a previous

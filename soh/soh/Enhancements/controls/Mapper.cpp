@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include "Mapper.h"
 
 #include <algorithm>
@@ -1226,7 +1227,7 @@ bool MapperWindow::IsBindingLive(int32_t binding) const {
 
 void MapperWindow::DrawDeviceSelector() {
     ImGui::AlignTextToFramePadding();
-    ImGui::Text("Device");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.controls.mapper.device", "Device"));
     ImGui::SameLine();
 
     std::string preview = "No joysticks detected";
@@ -1252,23 +1253,33 @@ void MapperWindow::DrawDeviceSelector() {
     ImGui::EndDisabled();
 
     if (mSelectedDevice < 0 || mSelectedDevice >= (int32_t)mDevices.size()) {
-        ImGui::TextDisabled("Connect a gamepad to get started.");
+        ImGui::TextDisabled("%s",
+                            Lang::UIString("ui.text.enhancements.controls.mapper.connect_a_gamepad_to_get_started",
+                                           "Connect a gamepad to get started."));
         return;
     }
 
     const DeviceInfo& device = mDevices[mSelectedDevice];
-    ImGui::TextDisabled("GUID %s", device.guid.c_str());
+    ImGui::TextDisabled(Lang::UIFormat("ui.text.enhancements.controls.mapper.guid_s", "GUID %s"), device.guid.c_str());
     if (mJoystick != nullptr) {
         ImGui::SameLine();
-        ImGui::TextDisabled("| %d buttons, %d axes, %d hats", SDL_JoystickNumButtons(mJoystick),
-                            SDL_JoystickNumAxes(mJoystick), SDL_JoystickNumHats(mJoystick));
+        ImGui::TextDisabled(Lang::UIFormat("ui.text.enhancements.controls.mapper.d_buttons_d_axes_d_hats",
+                                           "| %d buttons, %d axes, %d hats"),
+                            SDL_JoystickNumButtons(mJoystick), SDL_JoystickNumAxes(mJoystick),
+                            SDL_JoystickNumHats(mJoystick));
     }
 
     if (!device.hasMapping) {
-        ImGui::TextColored(ImVec4(1.0f, 0.75f, 0.2f, 1.0f),
-                           "This device has no SDL mapping, so the game cannot see it yet. Map it below.");
+        ImGui::TextColored(
+            ImVec4(1.0f, 0.75f, 0.2f, 1.0f), "%s",
+            Lang::UIString("ui.text.enhancements.controls.mapper.this_device_has_no_sdl_mapping_so_the_game_cannot_see_"
+                           "it_yet_map_it_below",
+                           "This device has no SDL mapping, so the game cannot see it yet. Map it below."));
     } else if (device.hasUserMapping) {
-        ImGui::TextColored(ImVec4(0.4f, 0.85f, 0.4f, 1.0f), "Using a mapping from %s.", kUserMappingsFileName);
+        ImGui::TextColored(
+            ImVec4(0.4f, 0.85f, 0.4f, 1.0f),
+            Lang::UIFormat("ui.text.enhancements.controls.mapper.using_a_mapping_from_s", "Using a mapping from %s."),
+            kUserMappingsFileName);
     }
 }
 
@@ -1414,7 +1425,7 @@ void MapperWindow::DrawDiagram() {
         return;
     }
 
-    ImGui::SeparatorText("Extra buttons");
+    ImGui::SeparatorText(Lang::UIString("ui.text.enhancements.controls.mapper.extra_buttons", "Extra buttons"));
     for (int32_t i = 0; i < (int32_t)IM_ARRAYSIZE(kExtraBindings); i++) {
         const int32_t binding = kExtraBindings[i];
         const ExtendedBind& bind = mSession.IsActive() ? mSession.GetBinding(binding) : mBindings[binding];
@@ -1454,21 +1465,27 @@ void MapperWindow::DrawSessionPrompt() {
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.16f, 0.14f, 0.06f, 1.0f));
     ImGui::BeginChild("##mapperPrompt", ImVec2(0.0f, promptHeight), true, ImGuiWindowFlags_NoScrollbar);
 
-    ImGui::Text("Press or move: %s", binding >= 0 ? BindingName(binding) : "?");
+    ImGui::Text(Lang::UIFormat("ui.text.enhancements.controls.mapper.press_or_move_s", "Press or move: %s"),
+                binding >= 0 ? BindingName(binding) : "?");
     if (mSession.StepCount() > 1) {
         ImGui::SameLine();
         ImGui::TextDisabled("(%d / %d)", mSession.CurrentStep() + 1, mSession.StepCount());
     }
-    ImGui::TextDisabled("Sticks and triggers: push all the way, then let go. Space skips, Escape cancels.");
+    ImGui::TextDisabled(
+        "%s", Lang::UIString("ui.text.enhancements.controls.mapper.sticks_and_triggers_push_all_the_way_then_let_go_"
+                             "space_skips_escape_cancels",
+                             "Sticks and triggers: push all the way, then let go. Space skips, Escape cancels."));
 
     PushStyleButton(THEME_COLOR);
-    const bool skip = ImGui::Button("Skip") || ImGui::IsKeyPressed(ImGuiKey_Space, false);
+    const bool skip = ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.skip", "Skip")) ||
+                      ImGui::IsKeyPressed(ImGuiKey_Space, false);
     ImGui::SameLine();
     ImGui::BeginDisabled(mSession.CurrentStep() == 0);
-    const bool back = ImGui::Button("Back");
+    const bool back = ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.back", "Back"));
     ImGui::EndDisabled();
     ImGui::SameLine();
-    const bool cancel = ImGui::Button("Cancel") || ImGui::IsKeyPressed(ImGuiKey_Escape, false);
+    const bool cancel = ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.cancel", "Cancel")) ||
+                        ImGui::IsKeyPressed(ImGuiKey_Escape, false);
     PopStyleButton();
 
     ImGui::EndChild();
@@ -1497,7 +1514,8 @@ void MapperWindow::DrawActionButtons() {
     ImGui::BeginDisabled(busy || !haveDevice);
     PushStyleInput(THEME_COLOR);
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * 0.45f);
-    if (ImGui::InputText("Controller Name", nameBuffer, sizeof(nameBuffer))) {
+    if (ImGui::InputText(Lang::UILabel("ui.text.enhancements.controls.mapper.controller_name", "Controller Name"),
+                         nameBuffer, sizeof(nameBuffer))) {
         mCustomName = nameBuffer;
         mDirty = true;
     }
@@ -1507,7 +1525,7 @@ void MapperWindow::DrawActionButtons() {
 
     ImGui::BeginDisabled(busy || !haveDevice);
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button("Map All")) {
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.map_all", "Map All"))) {
         std::vector<int32_t> order(std::begin(kCoreBindingOrder), std::end(kCoreBindingOrder));
         if (mIncludeExtraButtons) {
             order.insert(order.end(), std::begin(kExtraBindings), std::end(kExtraBindings));
@@ -1521,7 +1539,7 @@ void MapperWindow::DrawActionButtons() {
     ImGui::SameLine();
     ImGui::BeginDisabled(busy || !haveDevice || !mDirty);
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button("Save Mapping")) {
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.save_mapping", "Save Mapping"))) {
         char guidString[33] = "";
         SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(mJoystick), guidString, sizeof(guidString));
 
@@ -1556,7 +1574,7 @@ void MapperWindow::DrawActionButtons() {
     ImGui::SameLine();
     ImGui::BeginDisabled(busy || !haveDevice);
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button("Revert")) {
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.revert", "Revert"))) {
         LoadBindingsForDevice();
         mDirty = false;
         mStatusMessage = "Reverted to the mapping SDL is currently using.";
@@ -1568,7 +1586,7 @@ void MapperWindow::DrawActionButtons() {
     ImGui::SameLine();
     ImGui::BeginDisabled(busy || !haveDevice);
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button("Clear All Bindings")) {
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.clear_all_bindings", "Clear All Bindings"))) {
         ClearBindings(mBindings);
         mDirty = true;
     }
@@ -1580,7 +1598,8 @@ void MapperWindow::DrawActionButtons() {
 
     ImGui::BeginDisabled(busy || !haveUserMapping);
     PushStyleButton(Colors::DarkRed);
-    if (ImGui::Button("Delete Saved Mapping")) {
+    if (ImGui::Button(
+            Lang::UILabel("ui.text.enhancements.controls.mapper.delete_saved_mapping", "Delete Saved Mapping"))) {
         if (DeleteUserMapping(mDevices[mSelectedDevice].guid)) {
             mStatusMessage = StringHelper::Sprintf("Removed from %s. Restart to fall back to gamecontrollerdb.txt.",
                                                    kUserMappingsFileName);
@@ -1596,7 +1615,7 @@ void MapperWindow::DrawActionButtons() {
     ImGui::SameLine();
     ImGui::BeginDisabled(busy);
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button("Reload From File")) {
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.reload_from_file", "Reload From File"))) {
         if (LoadUserMappings()) {
             LoadBindingsForDevice();
             mDirty = false;
@@ -1611,23 +1630,28 @@ void MapperWindow::DrawActionButtons() {
 
     ImGui::SameLine();
     ImGui::BeginDisabled(busy);
-    Checkbox("Include extra buttons", &mIncludeExtraButtons,
+    Checkbox(Lang::UILabel("ui.text.enhancements.controls.mapper.include_extra_buttons", "Include extra buttons"),
+             &mIncludeExtraButtons,
              CheckboxOptions()
                  .Color(THEME_COLOR)
-                 .Tooltip("Adds Guide, Misc and paddle/touchpad buttons - which most pads do not have - to the "
-                          "diagram and the Map All walk."));
+                 .Tooltip(Lang::UIString(
+                     "ui.text.enhancements.controls.mapper.adds_guide_misc_and_paddle_touchpad_buttons_which_most_pads_"
+                     "do_not_have_to_the_diagram_and_the_map_a",
+                     "Adds Guide, Misc and paddle/touchpad buttons - which most pads do not have - to the "
+                     "diagram and the Map All walk.")));
     ImGui::EndDisabled();
 }
 
 void MapperWindow::DrawMappingStringPreview() {
-    if (mJoystick == nullptr || !ImGui::CollapsingHeader("Mapping string")) {
+    if (mJoystick == nullptr || !ImGui::CollapsingHeader(Lang::UILabel(
+                                    "ui.text.enhancements.controls.mapper.mapping_string", "Mapping string"))) {
         return;
     }
 
     const std::string mapping = GenerateMappingString(mJoystick, mBindings, mCustomName);
     ImGui::TextWrapped("%s", mapping.c_str());
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button("Copy to Clipboard")) {
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.mapper.copy_to_clipboard", "Copy to Clipboard"))) {
         ImGui::SetClipboardText(mapping.c_str());
         mStatusMessage = "Mapping string copied to the clipboard.";
     }
@@ -1645,7 +1669,7 @@ void MapperWindow::DrawElement() {
         }
     }
 
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImGui::PushFont(OTRGlobals::Instance->GetGuiFont(OTRGlobals::Instance->fontMonoLarger));
 
     DrawDeviceSelector();
     Separator();
@@ -1655,7 +1679,8 @@ void MapperWindow::DrawElement() {
     DrawActionButtons();
 
     if (mDirty) {
-        ImGui::TextColored(ImVec4(1.0f, 0.75f, 0.2f, 1.0f), "Unsaved changes.");
+        ImGui::TextColored(ImVec4(1.0f, 0.75f, 0.2f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.controls.mapper.unsaved_changes", "Unsaved changes."));
     }
     if (!mStatusMessage.empty()) {
         ImGui::TextWrapped("%s", mStatusMessage.c_str());
@@ -1674,15 +1699,18 @@ static void RegisterMapperWidgets() {
     Ship::Context::GetRawInstance()->GetWindow()->GetGui()->AddGuiWindow(
         std::make_shared<MapperWindow>(CVAR_WINDOW("GamepadMapper"), "Gamepad Mapper", ImVec2(1280, 820)));
     WidgetPath path = { "Settings", "Controls", SECTION_COLUMN_2 };
-    SohGui::mSohMenu->AddWidget(path, "Gamepad Mapper", WIDGET_SEPARATOR_TEXT);
+    SohGui::mSohMenu->AddWidget(path, "Gamepad Mapper", WIDGET_SEPARATOR_TEXT)
+        .Translation("ui.panels.mapper.gamepad_mapper");
     SohGui::mSohMenu->AddWidget(path, "Open Gamepad Mapper", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("GamepadMapper"))
         .RaceDisable(false)
         .WindowName("Gamepad Mapper")
         .HideInSearch(true)
         .Options(WindowButtonOptions()
-                     .Tooltip("Build an SDL mapping for a gamepad the game does not recognize, or fix one that is "
-                              "mapped wrong. Saves to usergamepadmappings.txt.")
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gOpenWindows.GamepadMapper.description",
+                         "Build an SDL mapping for a gamepad the game does not recognize, or fix one that is "
+                         "mapped wrong. Saves to usergamepadmappings.txt."))
                      .EmbedWindow(false));
 }
 

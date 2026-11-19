@@ -1,4 +1,5 @@
 #pragma once
+#include "soh/Enhancements/Lang/Lang.h"
 
 #include "UIWidgetOptions.hpp"
 
@@ -100,6 +101,13 @@ void Separator(bool padTop = true, bool padBottom = true, float extraVerticalTop
 
 float CalcComboWidth(const char* preview_value, ImGuiComboFlags flags);
 
+inline const char* ChoiceText(const ComboboxOptions& options, const char* canonical) {
+    return options.translationScope.empty() ? canonical : Lang::UIVariant(options.translationScope, canonical);
+}
+inline std::string ChoiceLabel(const ComboboxOptions& options, const char* canonical, int32_t value) {
+    return std::string(ChoiceText(options, canonical)) + "###Choice." + std::to_string(value);
+}
+
 template <typename T>
 bool Combobox(std::string label, T* value, const std::map<T, const char*>& comboMap,
               const ComboboxOptions& options = {}) {
@@ -126,11 +134,11 @@ bool Combobox(std::string label, T* value, const std::map<T, const char*>& combo
     PushStyleCombobox(options.color);
 
     const char* longest = "";
-    size_t length = 0;
+    float length = 0;
     for (auto& [index, string] : comboMap) {
-        size_t len = strlen(string);
+        float len = ImGui::CalcTextSize(ChoiceText(options, string)).x;
         if (len > length) {
-            longest = string;
+            longest = ChoiceText(options, string);
             length = len;
         }
     }
@@ -156,11 +164,12 @@ bool Combobox(std::string label, T* value, const std::map<T, const char*>& combo
     }
 
     ImGui::SetNextItemWidth(comboWidth);
-    if (ImGui::BeginCombo(invisibleLabel, comboMap.at(*value), options.flags)) {
+    if (ImGui::BeginCombo(invisibleLabel, ChoiceText(options, comboMap.at(*value)), options.flags)) {
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
         for (const auto& pair : comboMap) {
-            if (strlen(pair.second) > 1) {
-                if (ImGui::Selectable(pair.second, pair.first == *value)) {
+            if (pair.second[0] != '\0') {
+                if (ImGui::Selectable(ChoiceLabel(options, pair.second, static_cast<int32_t>(pair.first)).c_str(),
+                                      pair.first == *value)) {
                     *value = pair.first;
                     dirty = true;
                 }
@@ -176,7 +185,8 @@ bool Combobox(std::string label, T* value, const std::map<T, const char*>& combo
                 ImGui::SameLine();
                 ImGui::Text("%s", trueLabel.c_str());
             } else if (options.labelPosition == LabelPositions::Far) {
-                float width = ImGui::CalcTextSize(comboMap.at(*value)).x + ImGui::GetStyle().FramePadding.x * 2;
+                float width = ImGui::CalcTextSize(ChoiceText(options, comboMap.at(*value))).x +
+                              ImGui::GetStyle().FramePadding.x * 2;
                 ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
                 ImGui::Text("%s", trueLabel.c_str());
             }
@@ -209,11 +219,11 @@ bool Combobox(std::string label, T* value, const std::vector<const char*>& combo
     PushStyleCombobox(options.color);
 
     const char* longest = "";
-    size_t length = 0;
+    float length = 0;
     for (auto& string : comboVector) {
-        size_t len = strlen(string);
+        float len = ImGui::CalcTextSize(ChoiceText(options, string)).x;
         if (len > length) {
-            longest = string;
+            longest = ChoiceText(options, string);
             length = len;
         }
     }
@@ -239,12 +249,13 @@ bool Combobox(std::string label, T* value, const std::vector<const char*>& combo
     }
 
     ImGui::SetNextItemWidth(comboWidth);
-    if (ImGui::BeginCombo(invisibleLabel, comboVector.at(currentValueIndex), options.flags)) {
+    if (ImGui::BeginCombo(invisibleLabel, ChoiceText(options, comboVector.at(currentValueIndex)), options.flags)) {
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
         for (size_t i = 0; i < comboVector.size(); ++i) {
             auto newValue = static_cast<T>(i);
-            if (strlen(comboVector.at(i)) > 1) {
-                if (ImGui::Selectable(comboVector.at(i), newValue == *value)) {
+            if (comboVector.at(i)[0] != '\0') {
+                if (ImGui::Selectable(ChoiceLabel(options, comboVector.at(i), static_cast<int32_t>(i)).c_str(),
+                                      newValue == *value)) {
                     *value = newValue;
                     dirty = true;
                 }
@@ -260,7 +271,8 @@ bool Combobox(std::string label, T* value, const std::vector<const char*>& combo
                 ImGui::SameLine();
                 ImGui::Text("%s", trueLabel.c_str());
             } else if (options.labelPosition == LabelPositions::Far) {
-                float width = ImGui::CalcTextSize(comboVector.at(*value)).x + ImGui::GetStyle().FramePadding.x * 2;
+                float width = ImGui::CalcTextSize(ChoiceText(options, comboVector.at(*value))).x +
+                              ImGui::GetStyle().FramePadding.x * 2;
                 ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
                 ImGui::Text("%s", trueLabel.c_str());
             }
@@ -294,11 +306,11 @@ bool Combobox(std::string label, T* value, const std::vector<std::string>& combo
     PushStyleCombobox(options.color);
 
     const char* longest = "";
-    size_t length = 0;
+    float length = 0;
     for (auto& string : comboVector) {
-        size_t len = string.length();
+        float len = ImGui::CalcTextSize(ChoiceText(options, string.c_str())).x;
         if (len > length) {
-            longest = string.c_str();
+            longest = ChoiceText(options, string.c_str());
             length = len;
         }
     }
@@ -324,12 +336,14 @@ bool Combobox(std::string label, T* value, const std::vector<std::string>& combo
     }
 
     ImGui::SetNextItemWidth(comboWidth);
-    if (ImGui::BeginCombo(invisibleLabel, comboVector.at(currentValueIndex).c_str(), options.flags)) {
+    if (ImGui::BeginCombo(invisibleLabel, ChoiceText(options, comboVector.at(currentValueIndex).c_str()),
+                          options.flags)) {
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
         for (size_t i = 0; i < comboVector.size(); ++i) {
             auto newValue = static_cast<T>(i);
-            if (comboVector.at(i).length() > 1) {
-                if (ImGui::Selectable(comboVector.at(i).c_str(), newValue == *value)) {
+            if (!comboVector.at(i).empty()) {
+                if (ImGui::Selectable(ChoiceLabel(options, comboVector.at(i).c_str(), static_cast<int32_t>(i)).c_str(),
+                                      newValue == *value)) {
                     *value = newValue;
                     dirty = true;
                 }
@@ -345,8 +359,8 @@ bool Combobox(std::string label, T* value, const std::vector<std::string>& combo
                 ImGui::SameLine();
                 ImGui::Text("%s", trueLabel.c_str());
             } else if (options.labelPosition == LabelPositions::Far) {
-                float width =
-                    ImGui::CalcTextSize(comboVector.at(*value).c_str()).x + ImGui::GetStyle().FramePadding.x * 2;
+                float width = ImGui::CalcTextSize(ChoiceText(options, comboVector.at(*value).c_str())).x +
+                              ImGui::GetStyle().FramePadding.x * 2;
                 ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
                 ImGui::Text("%s", trueLabel.c_str());
             }
@@ -382,11 +396,11 @@ bool Combobox(std::string label, T* value, const char* (&comboArray)[N], const C
     PushStyleCombobox(options.color);
 
     const char* longest = "";
-    size_t length = 0;
+    float length = 0;
     for (size_t i = 0; i < N; i++) {
-        size_t len = strlen(comboArray[i]);
+        float len = ImGui::CalcTextSize(ChoiceText(options, comboArray[i])).x;
         if (len > length) {
-            longest = comboArray[i];
+            longest = ChoiceText(options, comboArray[i]);
             length = len;
         }
     }
@@ -412,12 +426,13 @@ bool Combobox(std::string label, T* value, const char* (&comboArray)[N], const C
     }
 
     ImGui::SetNextItemWidth(comboWidth);
-    if (ImGui::BeginCombo(invisibleLabel, comboArray[currentValueIndex], options.flags)) {
+    if (ImGui::BeginCombo(invisibleLabel, ChoiceText(options, comboArray[currentValueIndex]), options.flags)) {
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
         for (size_t i = 0; i < N; ++i) {
             auto newValue = static_cast<T>(i);
-            if (strlen(comboArray[i]) > 1) {
-                if (ImGui::Selectable(comboArray[i], newValue == *value)) {
+            if (comboArray[i][0] != '\0') {
+                if (ImGui::Selectable(ChoiceLabel(options, comboArray[i], static_cast<int32_t>(i)).c_str(),
+                                      newValue == *value)) {
                     *value = newValue;
                     dirty = true;
                 }
@@ -433,7 +448,8 @@ bool Combobox(std::string label, T* value, const char* (&comboArray)[N], const C
                 ImGui::SameLine();
                 ImGui::Text("%s", trueLabel.c_str());
             } else if (options.labelPosition == LabelPositions::Far) {
-                float width = ImGui::CalcTextSize(comboArray[*value]).x + ImGui::GetStyle().FramePadding.x * 2;
+                float width = ImGui::CalcTextSize(ChoiceText(options, comboArray[*value])).x +
+                              ImGui::GetStyle().FramePadding.x * 2;
                 ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
                 ImGui::Text("%s", trueLabel.c_str());
             }

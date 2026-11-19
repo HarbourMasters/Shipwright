@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/GameLanguage.h"
 #include "file_choose.h"
 #include "textures/title_static/title_static.h"
 #include "assets/overlays/ovl_File_Choose/ovl_file_choose.h"
@@ -721,6 +722,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     }
 
     uint8_t languageChanged = 0;
+    uint8_t pendingLanguage = GameLanguage_Get();
     uint8_t versionIndex = ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal();
     uint8_t isPalN64 = ResourceMgr_GetGameRegion(versionIndex) == GAME_REGION_PAL &&
                        ResourceMgr_GetGamePlatform(versionIndex) == GAME_PLATFORM_N64;
@@ -737,10 +739,10 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
                 gSaveContext.audioSetting = FS_AUDIO_SURROUND;
             }
         } else if (sSelectedSetting == FS_SETTING_LANGUAGE) {
-            gSaveContext.language--;
+            pendingLanguage--;
 
-            if (gSaveContext.language > 0xF0) {
-                gSaveContext.language = LANGUAGE_FRA;
+            if (pendingLanguage > 0xF0) {
+                pendingLanguage = LANGUAGE_FRA;
             }
 
             languageChanged = 1;
@@ -758,10 +760,10 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
                 gSaveContext.audioSetting = FS_AUDIO_STEREO;
             }
         } else if (sSelectedSetting == FS_SETTING_LANGUAGE) {
-            gSaveContext.language++;
+            pendingLanguage++;
 
-            if (gSaveContext.language > LANGUAGE_FRA) {
-                gSaveContext.language = LANGUAGE_ENG;
+            if (pendingLanguage > LANGUAGE_FRA) {
+                pendingLanguage = LANGUAGE_ENG;
             }
 
             languageChanged = 1;
@@ -772,8 +774,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
 
     // Persist the new language so it is not overridden on the next frame
     if (languageChanged) {
-        CVarSetInteger(CVAR_SETTING("Languages"), gSaveContext.language);
-        GameInteractor_ExecuteOnSetGameLanguage();
+        GameLanguage_Set(pendingLanguage);
     }
 
     // NTSC and GC only has two rows and can just flip the setting bit
@@ -827,9 +828,9 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         }
     } else {
         // offset to detect switching between modes
-        u8 optionOffset = gSaveContext.language + FS_AUDIO_SURROUND + FS_TARGET_HOLD + FS_SETTING_LANGUAGE;
+        u8 optionOffset = pendingLanguage + FS_AUDIO_SURROUND + FS_TARGET_HOLD + FS_SETTING_LANGUAGE;
         if (sLastOptionButtonIndex != optionOffset) {
-            GameInteractor_ExecuteOnUpdateFileLanguageSelection(gSaveContext.language);
+            GameInteractor_ExecuteOnUpdateFileLanguageSelection(pendingLanguage);
             sLastOptionButtonIndex = optionOffset;
         }
     }

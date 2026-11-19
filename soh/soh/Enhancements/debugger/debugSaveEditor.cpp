@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <algorithm>
 #include <array>
 #include <bit>
@@ -274,7 +275,7 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
             ImGui::CloseCurrentPopup();
         }
         PopStyleButton();
-        UIWidgets::Tooltip("None");
+        UIWidgets::Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.none", "None"));
 
         std::vector<ItemMapEntry> possibleItems;
         // Use shouldShowItem helper to filter items based on mode and button type
@@ -368,7 +369,8 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
                 }
                 ImGui::CloseCurrentPopup();
             }
-            UIWidgets::Tooltip("Roc's Feather");
+            UIWidgets::Tooltip(
+                Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.roc_s_feather", "Roc's Feather"));
         }
 
         ImGui::PopStyleVar();
@@ -526,19 +528,24 @@ void DrawGeneralTab() {
     // Show status message when not in game
     bool canEditName = true;
     if (gSaveContext.gameMode == GAMEMODE_TITLE_SCREEN) {
-        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Title Screen");
+        ImGui::TextColored(
+            ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "%s",
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.title_screen", "Title Screen"));
         canEditName = false;
     } else if (gSaveContext.gameMode == GAMEMODE_FILE_SELECT) {
-        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "File Select");
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.file_select", "File Select"));
         canEditName = false;
     } else if (gPlayState == nullptr) {
-        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Game Inactive");
+        ImGui::TextColored(
+            ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "%s",
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.game_inactive", "Game Inactive"));
         canEditName = false;
     } else {
         // Show file number as text when in game
         const char* fileName =
             (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) ? fileNumMap[gSaveContext.fileNum] : "Debug";
-        ImGui::Text("File: %s", fileName);
+        ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.debugsaveeditor.file_s", "File: %s"), fileName);
     }
 
     ImGui::Spacing();
@@ -587,16 +594,34 @@ void DrawGeneralTab() {
     const bool hasNTSC = (sJpnMessageEntryTablePtr != nullptr);
     const uint8_t oldNameLanguage = gSaveContext.ship.filenameLanguage;
     if (hasPAL && hasNTSC) {
-        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
-                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+        Combobox(
+            Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.player_name_language", "Player Name Language"),
+            &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+            UIWidgets::ComboboxOptions(
+                comboboxOptionsBase.Tooltip(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.encoding_used_for_player_name",
+                                   "Encoding used for Player Name")))
+                .TranslationScope("ui.text.enhancements.debugger.debugsaveeditor"));
     } else if (hasNTSC && (gSaveContext.ship.filenameLanguage != NAME_LANGUAGE_PAL)) {
-        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMapNTSCOnly,
-                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+        Combobox(
+            Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.player_name_language", "Player Name Language"),
+            &gSaveContext.ship.filenameLanguage, filenameLanguageMapNTSCOnly,
+            UIWidgets::ComboboxOptions(
+                comboboxOptionsBase.Tooltip(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.encoding_used_for_player_name",
+                                   "Encoding used for Player Name")))
+                .TranslationScope("ui.text.enhancements.debugger.debugsaveeditor"));
     } else {
         // PAL only (read only)
         ImGui::BeginDisabled();
-        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
-                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+        Combobox(
+            Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.player_name_language", "Player Name Language"),
+            &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+            UIWidgets::ComboboxOptions(
+                comboboxOptionsBase.Tooltip(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.encoding_used_for_player_name",
+                                   "Encoding used for Player Name")))
+                .TranslationScope("ui.text.enhancements.debugger.debugsaveeditor"));
         ImGui::EndDisabled();
     }
     if (canEditName && gSaveContext.ship.filenameLanguage != oldNameLanguage) {
@@ -609,24 +634,39 @@ void DrawGeneralTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("healthCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Health");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.health", "Health"));
     ImGui::Spacing();
 
-    if (Button("Max Health",
-               ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red).Tooltip("Set max health and double defense"))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.max_health", "Max Health"),
+               ButtonOptions()
+                   .Size(ImVec2(0, 0))
+                   .Color(Colors::Red)
+                   .Tooltip(
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.set_max_health_and_double_defense",
+                                      "Set max health and double defense")))) {
         gSaveContext.isDoubleDefenseAcquired = 1;
         gSaveContext.inventory.defenseHearts = 20;
         gSaveContext.healthCapacity = gSaveContext.health = 20 * 16;
     }
     ImGui::SameLine();
-    if (Button("Reset", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Reset health to default"))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.reset", "Reset"),
+               ButtonOptions()
+                   .Size(ImVec2(0, 0))
+                   .Color(THEME_COLOR)
+                   .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.reset_health_to_default",
+                                           "Reset health to default")))) {
         gSaveContext.isDoubleDefenseAcquired = 0;
         gSaveContext.inventory.defenseHearts = 0;
         gSaveContext.healthCapacity = gSaveContext.health = 3 * 16;
     }
     ImGui::SameLine();
     bool isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired != 0;
-    if (Checkbox("DD", &isDoubleDefenseAcquired, CheckboxOptions().Color(Colors::DarkRed).Tooltip("Double Defense"))) {
+    if (Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.dd", "DD"), &isDoubleDefenseAcquired,
+                 CheckboxOptions()
+                     .Color(Colors::DarkRed)
+                     .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.double_defense",
+                                             "Double Defense")))) {
         gSaveContext.isDoubleDefenseAcquired = isDoubleDefenseAcquired;
         gSaveContext.inventory.defenseHearts = isDoubleDefenseAcquired ? 20 : 0;
     }
@@ -653,17 +693,28 @@ void DrawGeneralTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("magicCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Magic");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.magic", "Magic"));
     ImGui::Spacing();
 
-    if (Button("Max Magic", ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::DarkGreen).Tooltip("Set max magic"))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.max_magic", "Max Magic"),
+               ButtonOptions()
+                   .Size(ImVec2(0, 0))
+                   .Color(Colors::DarkGreen)
+                   .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.set_max_magic",
+                                           "Set max magic")))) {
         gSaveContext.magicCapacity = gSaveContext.magic = 0x60;
         gSaveContext.magicLevel = 2;
         gSaveContext.isMagicAcquired = true;
         gSaveContext.isDoubleMagicAcquired = true;
     }
     ImGui::SameLine();
-    if (Button("Reset", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Reset magic"))) {
+    if (Button(
+            Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.reset", "Reset"),
+            ButtonOptions()
+                .Size(ImVec2(0, 0))
+                .Color(THEME_COLOR)
+                .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.reset_magic", "Reset magic")))) {
         gSaveContext.magicCapacity = gSaveContext.magic = 0;
         gSaveContext.magicLevel = 0;
         gSaveContext.isMagicAcquired = false;
@@ -671,7 +722,11 @@ void DrawGeneralTab() {
     }
     ImGui::SameLine();
     bool hasMagic = gSaveContext.isMagicAcquired;
-    Checkbox("Has Magic", &hasMagic, CheckboxOptions().Color(Colors::DarkGreen).Tooltip("Magic acquired"));
+    Checkbox(
+        Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.has_magic", "Has Magic"), &hasMagic,
+        CheckboxOptions()
+            .Color(Colors::DarkGreen)
+            .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.magic_acquired", "Magic acquired")));
     if (ImGui::IsItemEdited()) {
         gSaveContext.isMagicAcquired = hasMagic;
         if (!hasMagic) {
@@ -704,17 +759,27 @@ void DrawGeneralTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("rupeesCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Rupees");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.rupees", "Rupees"));
     ImGui::Spacing();
 
     int8_t walletLevelMax = (IS_RANDO) ? WALLET_LEVEL_MAX : WALLET_LEVEL_MAX - 1;
-    if (Button("Max Rupees",
-               ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Green).Tooltip("Set max rupees and wallet"))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.max_rupees", "Max Rupees"),
+               ButtonOptions()
+                   .Size(ImVec2(0, 0))
+                   .Color(Colors::Green)
+                   .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.set_max_rupees_and_wallet",
+                                           "Set max rupees and wallet")))) {
         Inventory_ChangeUpgrade(UPG_WALLET, walletLevelMax);
         gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
     }
     ImGui::SameLine();
-    if (Button("Reset", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Reset rupees and wallet"))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.reset", "Reset"),
+               ButtonOptions()
+                   .Size(ImVec2(0, 0))
+                   .Color(THEME_COLOR)
+                   .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.reset_rupees_and_wallet",
+                                           "Reset rupees and wallet")))) {
         gSaveContext.rupees = 0;
         Inventory_ChangeUpgrade(UPG_WALLET, 0);
     }
@@ -741,25 +806,32 @@ void DrawGeneralTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("timeCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Time");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.time", "Time"));
     ImGui::Spacing();
 
-    SliderInt("Time of Day", (int32_t*)&gSaveContext.dayTime,
-              IntSliderOptions().Min(0).Max(0xFFFF).Format("%d").Tooltip("Time of day"));
+    SliderInt(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.time_of_day", "Time of Day"),
+              (int32_t*)&gSaveContext.dayTime,
+              IntSliderOptions().Min(0).Max(0xFFFF).Format("%d").Tooltip(
+                  Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.time_of_day_2", "Time of day")));
 
-    if (Button("Dawn", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.dawn", "Dawn"),
+               ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
         gSaveContext.dayTime = 0x4000;
     }
     ImGui::SameLine();
-    if (Button("Noon", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.noon", "Noon"),
+               ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
         gSaveContext.dayTime = 0x8000;
     }
     ImGui::SameLine();
-    if (Button("Sunset", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.sunset", "Sunset"),
+               ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
         gSaveContext.dayTime = 0xC001;
     }
     ImGui::SameLine();
-    if (Button("Midnight", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.midnight", "Midnight"),
+               ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
         gSaveContext.dayTime = 0;
     }
 
@@ -768,29 +840,35 @@ void DrawGeneralTab() {
     Tooltip("Total number of days elapsed since the start of the game");
     PopStyleInput();
     ImGui::SameLine();
-    ImGui::Text("Days");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.days", "Days"));
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("equipmentCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Equipment");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.equipment", "Equipment"));
     ImGui::Spacing();
 
-    ImGui::Text("Deaths");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.deaths", "Deaths"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##Deaths", ImGuiDataType_U16, &gSaveContext.deaths);
     Tooltip("Total number of deaths");
     PopStyleInput();
 
-    Checkbox("Has BGS", (bool*)&gSaveContext.bgsFlag,
-             CheckboxOptions().Color(THEME_COLOR).Tooltip("Is Biggoron sword unlocked?"));
+    Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.has_bgs", "Has BGS"),
+             (bool*)&gSaveContext.bgsFlag,
+             CheckboxOptions()
+                 .Color(THEME_COLOR)
+                 .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.is_biggoron_sword_unlocked",
+                                         "Is Biggoron sword unlocked?")));
 
-    ImGui::Text("Sword Health");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.sword_health", "Sword Health"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##SwordHealth", ImGuiDataType_U16, &gSaveContext.swordHealth);
     Tooltip("Giant's knife health. Default is 8. Must be >0 for Biggoron sword to work");
     PopStyleInput();
 
-    ImGui::Text("BGS Days");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.bgs_days", "BGS Days"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##BgsDayCount", ImGuiDataType_S32, &gSaveContext.bgsDayCount);
     Tooltip("Total number of days elapsed since receiving claim check from Biggoron");
@@ -798,16 +876,19 @@ void DrawGeneralTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("locationCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Location");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.location", "Location"));
     ImGui::Spacing();
 
-    ImGui::Text("Entrance Index");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.entrance_index", "Entrance Index"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##EntranceIndex", ImGuiDataType_S32, &gSaveContext.entranceIndex);
     Tooltip("From which entrance did Link arrive?");
     PopStyleInput();
 
-    ImGui::Text("Cutscene Index");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.cutscene_index", "Cutscene Index"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##CutsceneIndex", ImGuiDataType_S32, &gSaveContext.cutsceneIndex);
     Tooltip("Which cutscene is this?");
@@ -815,34 +896,38 @@ void DrawGeneralTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("timersCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Timers");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.timers", "Timers"));
     ImGui::Spacing();
 
-    ImGui::Text("Navi Timer");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.navi_timer", "Navi Timer"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##NaviTimer", ImGuiDataType_U16, &gSaveContext.naviTimer);
     Tooltip("Navi wants to talk at 600 units, decides not to at 3000.");
     PopStyleInput();
 
-    ImGui::Text("Timer State");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.timer_state", "Timer State"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##TimerState", ImGuiDataType_S16, &gSaveContext.timerState);
     Tooltip("Heat timer, race timer, etc. Has white font");
     PopStyleInput();
 
-    ImGui::Text("Timer Seconds");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.timer_seconds", "Timer Seconds"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##TimerSeconds", ImGuiDataType_S16, &gSaveContext.timerSeconds, &INPUT_ONE, NULL);
     Tooltip("Time, in seconds");
     PopStyleInput();
 
-    ImGui::Text("Sub Timer State");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.sub_timer_state", "Sub Timer State"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##SubTimerState", ImGuiDataType_S16, &gSaveContext.subTimerState);
     Tooltip("Trade timer, Ganon collapse timer, etc. Has yellow font");
     PopStyleInput();
 
-    ImGui::Text("Sub Timer Seconds");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.sub_timer_seconds", "Sub Timer Seconds"));
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("##SubTimerSeconds", ImGuiDataType_S16, &gSaveContext.subTimerSeconds, &INPUT_ONE, NULL);
     Tooltip("Time, in seconds");
@@ -850,22 +935,38 @@ void DrawGeneralTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("settingsCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Settings");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.settings", "Settings"));
     ImGui::Spacing();
 
-    Combobox("Audio", &gSaveContext.audioSetting, audioMap, comboboxOptionsBase.Tooltip("Sound setting"));
+    Combobox(
+        Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.audio", "Audio"), &gSaveContext.audioSetting,
+        audioMap,
+        UIWidgets::ComboboxOptions(comboboxOptionsBase.Tooltip(Lang::UIString(
+                                       "ui.text.enhancements.debugger.debugsaveeditor.sound_setting", "Sound setting")))
+            .TranslationScope("ui.text.enhancements.debugger.debugsaveeditor"));
 
-    Checkbox("64 DD file?", (bool*)&gSaveContext.n64ddFlag,
-             CheckboxOptions().Color(Colors::Orange).Tooltip("WARNING! If you save, your file may be locked!"));
+    Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.64_dd_file", "64 DD file?"),
+             (bool*)&gSaveContext.n64ddFlag,
+             CheckboxOptions()
+                 .Color(Colors::Orange)
+                 .Tooltip(Lang::UIString(
+                     "ui.text.enhancements.debugger.debugsaveeditor.warning_if_you_save_your_file_may_be_locked",
+                     "WARNING! If you save, your file may be locked!")));
 
-    Combobox("Z Target Mode", &gSaveContext.zTargetSetting, zTargetMap,
-             comboboxOptionsBase.Tooltip("Z-Targeting behavior"));
+    Combobox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.z_target_mode", "Z Target Mode"),
+             &gSaveContext.zTargetSetting, zTargetMap,
+             UIWidgets::ComboboxOptions(
+                 comboboxOptionsBase.Tooltip(Lang::UIString(
+                     "ui.text.enhancements.debugger.debugsaveeditor.z_targeting_behavior", "Z-Targeting behavior")))
+                 .TranslationScope("ui.text.enhancements.debugger.debugsaveeditor"));
 
     // Triforce Pieces editor moved to the "Randomizer Specific" card in DrawEquipmentTab().
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("minigamesCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Minigames");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.minigames", "Minigames"));
     ImGui::Spacing();
 
     static std::array<const char*, 7> minigameHS = { "Horseback Archery", "Big Poe Points",
@@ -875,8 +976,9 @@ void DrawGeneralTab() {
 
     for (int i = 0; i < 7; i++) {
         if (i == 2) {
-            if (ImGui::TreeNode("Fishing")) {
-                ImGui::Text("Child Size");
+            if (ImGui::TreeNode(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.fishing", "Fishing"))) {
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.child_size", "Child Size"));
                 u8 fishSize = gSaveContext.highScores[i] & FishingBits::CHILD_SIZE_MASK;
                 PushStyleInput(THEME_COLOR);
                 if (ImGui::InputScalar("##ChildSize", ImGuiDataType_U8, &fishSize)) {
@@ -889,13 +991,20 @@ void DrawGeneralTab() {
                 PopStyleInput();
 
                 bool FishBool = gSaveContext.highScores[i] & FishingBits::CHILD_CHEATED_MASK;
-                if (Checkbox("Cheated (Child)", &FishBool,
-                             CheckboxOptions().Color(THEME_COLOR).Tooltip("Used the Sinking lure"))) {
+                if (Checkbox(
+                        Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.cheated_child", "Cheated (Child)"),
+                        &FishBool,
+                        CheckboxOptions()
+                            .Color(THEME_COLOR)
+                            .Tooltip(
+                                Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.used_the_sinking_lure",
+                                               "Used the Sinking lure")))) {
                     gSaveContext.highScores[i] &= ~FishingBits::CHILD_CHEATED_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::CHILD_CHEATED_MASK * FishBool);
                 }
 
-                ImGui::Text("Adult Size");
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.adult_size", "Adult Size"));
                 fishSize = (gSaveContext.highScores[i] & FishingBits::ADULT_SIZE_MASK) >> FishingBits::ADULT_SIZE_SHIFT;
                 PushStyleInput(THEME_COLOR);
                 if (ImGui::InputScalar("##AdultSize", ImGuiDataType_U8, &fishSize)) {
@@ -908,39 +1017,62 @@ void DrawGeneralTab() {
                 PopStyleInput();
 
                 FishBool = gSaveContext.highScores[i] & FishingBits::ADULT_CHEATED_MASK;
-                if (Checkbox("Cheated (Adult)", &FishBool,
-                             CheckboxOptions().Color(THEME_COLOR).Tooltip("Used the Sinking lure"))) {
+                if (Checkbox(
+                        Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.cheated_adult", "Cheated (Adult)"),
+                        &FishBool,
+                        CheckboxOptions()
+                            .Color(THEME_COLOR)
+                            .Tooltip(
+                                Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.used_the_sinking_lure",
+                                               "Used the Sinking lure")))) {
                     gSaveContext.highScores[i] &= ~FishingBits::ADULT_CHEATED_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::ADULT_CHEATED_MASK * FishBool);
                 }
                 FishBool = gSaveContext.highScores[i] & FishingBits::CHILD_PLAYED_MASK;
-                if (Checkbox("Played (Child)", &FishBool,
-                             CheckboxOptions().Color(THEME_COLOR).Tooltip("Played as child"))) {
+                if (Checkbox(
+                        Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.played_child", "Played (Child)"),
+                        &FishBool,
+                        CheckboxOptions()
+                            .Color(THEME_COLOR)
+                            .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.played_as_child",
+                                                    "Played as child")))) {
                     gSaveContext.highScores[i] &= ~FishingBits::CHILD_PLAYED_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::CHILD_PLAYED_MASK * FishBool);
                 }
                 FishBool = gSaveContext.highScores[i] & FishingBits::ADULT_PLAYED_MASK;
-                if (Checkbox("Played (Adult)", &FishBool,
-                             CheckboxOptions().Color(THEME_COLOR).Tooltip("Played as adult"))) {
+                if (Checkbox(
+                        Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.played_adult", "Played (Adult)"),
+                        &FishBool,
+                        CheckboxOptions()
+                            .Color(THEME_COLOR)
+                            .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.played_as_adult",
+                                                    "Played as adult")))) {
                     gSaveContext.highScores[i] &= ~FishingBits::ADULT_PLAYED_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::ADULT_PLAYED_MASK * FishBool);
                 }
                 FishBool = gSaveContext.highScores[i] & FishingBits::CHILD_PRIZE_MASK;
-                if (Checkbox("Got Prize (Child)", &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
+                if (Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.got_prize_child",
+                                           "Got Prize (Child)"),
+                             &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
                     gSaveContext.highScores[i] &= ~FishingBits::CHILD_PRIZE_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::CHILD_PRIZE_MASK * FishBool);
                 }
                 FishBool = gSaveContext.highScores[i] & FishingBits::ADULT_PRIZE_MASK;
-                if (Checkbox("Got Prize (Adult)", &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
+                if (Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.got_prize_adult",
+                                           "Got Prize (Adult)"),
+                             &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
                     gSaveContext.highScores[i] &= ~FishingBits::ADULT_PRIZE_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::ADULT_PRIZE_MASK * FishBool);
                 }
                 FishBool = gSaveContext.highScores[i] & FishingBits::STOLE_HAT_MASK;
-                if (Checkbox("Stole Owner's Hat", &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
+                if (Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.stole_owner_s_hat",
+                                           "Stole Owner's Hat"),
+                             &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
                     gSaveContext.highScores[i] &= ~FishingBits::STOLE_HAT_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::STOLE_HAT_MASK * FishBool);
                 }
-                ImGui::Text("Times Played");
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.times_played", "Times Played"));
                 fishSize =
                     (gSaveContext.highScores[i] & FishingBits::TIMES_PLAYED_MASK) >> FishingBits::TIMES_PLAYED_SHIFT;
                 PushStyleInput(THEME_COLOR);
@@ -1000,7 +1132,8 @@ void DrawInventoryTab() {
 
     // Items grid card (force to column 0)
     UIWidgets::BeginCard("inventoryGridCard", 0);
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Items");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.items", "Items"));
     ImGui::Spacing();
 
     static InventorySlot selectedIndex = SLOT_NONE;
@@ -1011,9 +1144,14 @@ void DrawInventoryTab() {
     bool dpadEnabled = CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0);
 
     static bool syncButtons = true;
-    Checkbox("Keep C/D-pad buttons in sync", &syncButtons,
-             checkboxOptionsBase.Tooltip("Refresh a C or D-pad button when its inventory slot is edited. Disable to "
-                                         "leave a slot and its button out of sync (e.g. to set up RBA)."));
+    Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.keep_c_d_pad_buttons_in_sync",
+                           "Keep C/D-pad buttons in sync"),
+             &syncButtons,
+             checkboxOptionsBase.Tooltip(
+                 Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.refresh_a_c_or_d_pad_button_when_its_"
+                                "inventory_slot_is_edited_disable_to_leave_a_slot_and_its_button",
+                                "Refresh a C or D-pad button when its inventory slot is edited. Disable to "
+                                "leave a slot and its button out of sync (e.g. to set up RBA).")));
 
     for (int y = 0; y < 4; y++) {
         for (int x = 0; x < 6; x++) {
@@ -1127,7 +1265,7 @@ void DrawInventoryTab() {
                     ImGui::CloseCurrentPopup();
                 }
                 PopStyleButton();
-                UIWidgets::Tooltip("None");
+                UIWidgets::Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.none", "None"));
 
                 std::vector<ItemMapEntry> possibleItems;
                 bool addRocsFeather = false;
@@ -1185,7 +1323,8 @@ void DrawInventoryTab() {
                         gSaveContext.inventory.items[selectedIndex] = ITEM_ROCS_FEATHER;
                         ImGui::CloseCurrentPopup();
                     }
-                    UIWidgets::Tooltip("Roc's Feather");
+                    UIWidgets::Tooltip(
+                        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.roc_s_feather", "Roc's Feather"));
                 }
 
                 ImGui::EndPopup();
@@ -1200,16 +1339,27 @@ void DrawInventoryTab() {
 
     // Action buttons card (force to column 0)
     UIWidgets::BeginCard("inventoryActionsCard", 0);
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Actions");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.actions", "Actions"));
     ImGui::Spacing();
 
-    Checkbox("Restrict to valid items", &restrictToValid,
-             CheckboxOptions()
-                 .Color(THEME_COLOR)
-                 .Tooltip("Restricts items and ammo to only what is possible to legally acquire in-game"));
+    Checkbox(
+        Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.restrict_to_valid_items",
+                      "Restrict to valid items"),
+        &restrictToValid,
+        CheckboxOptions()
+            .Color(THEME_COLOR)
+            .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.restricts_items_and_ammo_to_only_"
+                                    "what_is_possible_to_legally_acquire_in_game",
+                                    "Restricts items and ammo to only what is possible to legally acquire in-game")));
     ImGui::Spacing();
 
-    if (Button("Give All", ButtonOptions().Color(Colors::Green).Tooltip("Give all valid items for each slot"))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.give_all", "Give All"),
+               ButtonOptions()
+                   .Color(Colors::Green)
+                   .Tooltip(Lang::UIString(
+                       "ui.text.enhancements.debugger.debugsaveeditor.give_all_valid_items_for_each_slot",
+                       "Give all valid items for each slot")))) {
         for (int32_t y = 0; y < 4; y++) {
             for (int32_t x = 0; x < 6; x++) {
                 int32_t index = x + y * 6;
@@ -1233,7 +1383,11 @@ void DrawInventoryTab() {
 
     ImGui::Spacing();
 
-    if (Button("Reset", ButtonOptions().Color(Colors::Red).Tooltip("Remove all items"))) {
+    if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.reset", "Reset"),
+               ButtonOptions()
+                   .Color(Colors::Red)
+                   .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.remove_all_items",
+                                           "Remove all items")))) {
         for (int32_t i = 0; i < 24; i++) {
             gSaveContext.inventory.items[i] = ITEM_NONE;
         }
@@ -1250,7 +1404,8 @@ void DrawInventoryTab() {
 
     // Button Items card (N64 C button layout - force to column 1)
     UIWidgets::BeginCard("buttonItemsCard", 1);
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Button Items");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.button_items", "Button Items"));
     ImGui::Spacing();
 
     // Determine button colors based on color scheme
@@ -1301,7 +1456,8 @@ void DrawInventoryTab() {
     // D-Pad Items card (D-Pad layout - force to column 1)
     if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0)) {
         UIWidgets::BeginCard("dpadItemsCard", 1);
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "D-Pad Items");
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.d_pad_items", "D-Pad Items"));
         ImGui::Spacing();
 
         Colors dpadColor = Colors::LightGray; // Light grey for D-pad buttons (not placeholders)
@@ -1332,7 +1488,9 @@ void DrawInventoryTab() {
     // Trade quest items card (only shown in rando when trade shuffle is enabled)
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
         UIWidgets::BeginCard("tradeQuestCard");
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Adult Trade Quest Items");
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.adult_trade_quest_items",
+                                          "Adult Trade Quest Items"));
         ImGui::Spacing();
         for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
             DrawBGSItemFlag(i);
@@ -1373,7 +1531,8 @@ void DrawFlagArrayWithTooltips(const std::string& name, T& flags, Colors color, 
         // Show tooltip with state name
         if (ImGui::IsItemHovered() && flagIndex < (int32_t)names.size()) {
             ImGui::BeginTooltip();
-            ImGui::Text("Bit %d: %s", flagIndex, names[flagIndex].c_str());
+            ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.debugsaveeditor.bit_d_s", "Bit %d: %s"),
+                        flagIndex, names[flagIndex].c_str());
             ImGui::EndTooltip();
         }
         ImGui::PopID();
@@ -1450,9 +1609,12 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
             if (hasDescription) {
-                ImGui::Text("0x%02X: %s", index, UIWidgets::WrappedText(desc, 60).c_str());
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.debugsaveeditor.0x_02x_s", "0x%02X: %s"),
+                            index, UIWidgets::WrappedText(desc, 60).c_str());
             } else {
-                ImGui::Text("0x%02X: %s (Bit %d)", index, flagTable.name, flagIndex);
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.debugsaveeditor.0x_02x_s_bit_d",
+                                           "0x%02X: %s (Bit %d)"),
+                            index, flagTable.name, flagIndex);
             }
             ImGui::EndTooltip();
         }
@@ -1464,12 +1626,14 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
 
 // Helper to draw "Set All / Clear All" button pair with flag array
 void DrawFlagButtons(const char* name, uint32_t& flags, UIWidgets::Colors color) {
-    if (UIWidgets::Button(spdlog::fmt_lib::format("Set All##{}", name).c_str(),
+    if (UIWidgets::Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.set_all",
+                                        spdlog::fmt_lib::format("Set All##{}", name).c_str()),
                           UIWidgets::ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Green))) {
         flags = UINT32_MAX;
     }
     ImGui::SameLine();
-    if (UIWidgets::Button(spdlog::fmt_lib::format("Clear All##{}", name).c_str(),
+    if (UIWidgets::Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.clear_all",
+                                        spdlog::fmt_lib::format("Clear All##{}", name).c_str()),
                           UIWidgets::ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red))) {
         flags = 0;
     }
@@ -1551,9 +1715,12 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
             if (ImGui::IsItemHovered()) {
                 ImGui::BeginTooltip();
                 if (hasDescription) {
-                    ImGui::Text("0x%02X: %s", index, UIWidgets::WrappedText(desc, 60).c_str());
+                    ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.debugsaveeditor.0x_02x_s", "0x%02X: %s"),
+                                index, UIWidgets::WrappedText(desc, 60).c_str());
                 } else {
-                    ImGui::Text("0x%02X: %s (Bit %d)", index, flagTable.name, flagIndex);
+                    ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.debugsaveeditor.0x_02x_s_bit_d",
+                                               "0x%02X: %s (Bit %d)"),
+                                index, flagTable.name, flagIndex);
                 }
                 ImGui::EndTooltip();
             }
@@ -1561,9 +1728,11 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
             ImGui::SameLine();
             ImVec2 labelPos = ImGui::GetCursorScreenPos();
             if (hasDescription) {
-                ImGui::TextWrapped("0x%02X: %s", index, desc);
+                ImGui::TextWrapped(
+                    Lang::UIFormat("ui.text.enhancements.debugger.debugsaveeditor.0x_02x_s", "0x%02X: %s"), index,
+                    desc);
             } else {
-                ImGui::Text("0x%02X", index);
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.debugsaveeditor.0x_02x", "0x%02X"), index);
             }
 
             ImGui::SetCursorScreenPos(labelPos);
@@ -1576,7 +1745,9 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
     }
 
     if (!hasMatches) {
-        ImGui::Text("No flags match the current search.");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.no_flags_match_the_current_search",
+                           "No flags match the current search."));
     }
 }
 
@@ -1652,25 +1823,29 @@ void DrawFlagsTab() {
             uint8_t fsMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
             if (flagTable.flagTableType == RANDOMIZER_INF && fsMode != RO_FISHSANITY_OFF &&
                 fsMode != RO_FISHSANITY_OVERWORLD) {
-                if (ImGui::Button("Catch All (Child)")) {
+                if (ImGui::Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.catch_all_child",
+                                                "Catch All (Child)"))) {
                     for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
                         Flags_SetRandomizerInf((RandomizerInf)k);
                     }
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Uncatch All (Child)")) {
+                if (ImGui::Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.uncatch_all_child",
+                                                "Uncatch All (Child)"))) {
                     for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
                         Flags_UnsetRandomizerInf((RandomizerInf)k);
                     }
                 }
 
-                if (ImGui::Button("Catch All (Adult)")) {
+                if (ImGui::Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.catch_all_adult",
+                                                "Catch All (Adult)"))) {
                     for (int k = RAND_INF_ADULT_FISH_1; k <= RAND_INF_ADULT_LOACH; k++) {
                         Flags_SetRandomizerInf((RandomizerInf)k);
                     }
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Uncatch All (Adult)")) {
+                if (ImGui::Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.uncatch_all_adult",
+                                                "Uncatch All (Adult)"))) {
                     for (int k = RAND_INF_ADULT_FISH_1; k <= RAND_INF_ADULT_LOACH; k++) {
                         Flags_UnsetRandomizerInf((RandomizerInf)k);
                     }
@@ -1691,67 +1866,84 @@ void DrawFlagsTab() {
 
     // Current Scene Section
     UIWidgets::BeginCard("currentSceneCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Current Scene");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.current_scene", "Current Scene"));
     ImGui::Spacing();
     if (gPlayState != nullptr) {
         ActorContext* act = &gPlayState->actorCtx;
 
-        ImGui::Text("Switch");
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.switch", "Switch"));
         InsertHelpHoverText("Permanently-saved switch flags");
         DrawFlagButtons("swch", act->flags.swch, THEME_COLOR);
 
         ImGui::Spacing();
-        ImGui::Text("Temp Switch");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.temp_switch", "Temp Switch"));
         InsertHelpHoverText("Temporary switch flags. Unset on scene transitions");
         DrawFlagButtons("tempSwch", act->flags.tempSwch, THEME_COLOR);
 
         ImGui::Spacing();
-        ImGui::Text("Clear");
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.clear", "Clear"));
         InsertHelpHoverText("Permanently-saved room-clear flags");
         DrawFlagButtons("clear", act->flags.clear, THEME_COLOR);
 
         ImGui::Spacing();
-        ImGui::Text("Temp Clear");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.temp_clear", "Temp Clear"));
         InsertHelpHoverText("Temporary room-clear flags. Unset on scene transitions");
         DrawFlagButtons("tempClear", act->flags.tempClear, THEME_COLOR);
 
         ImGui::Spacing();
-        ImGui::Text("Collect");
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.collect", "Collect"));
         InsertHelpHoverText("Permanently-saved collect flags");
         DrawFlagButtons("collect", act->flags.collect, THEME_COLOR);
 
         ImGui::Spacing();
-        ImGui::Text("Temp Collect");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.temp_collect", "Temp Collect"));
         InsertHelpHoverText("Temporary collect flags. Unset on scene transitions");
         DrawFlagButtons("tempCollect", act->flags.tempCollect, THEME_COLOR);
 
         ImGui::Spacing();
-        ImGui::Text("Chest");
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.chest", "Chest"));
         InsertHelpHoverText("Permanently-saved chest flags");
         DrawFlagButtons("chest", act->flags.chest, THEME_COLOR);
 
         ImGui::Spacing();
         ImGui::BeginGroup();
 
-        if (Button(
-                "Reload Flags",
-                ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Load flags from saved scene flags"))) {
+        if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.reload_flags", "Reload Flags"),
+                   ButtonOptions()
+                       .Size(ImVec2(0, 0))
+                       .Color(THEME_COLOR)
+                       .Tooltip(Lang::UIString(
+                           "ui.text.enhancements.debugger.debugsaveeditor.load_flags_from_saved_scene_flags",
+                           "Load flags from saved scene flags")))) {
             act->flags.swch = gSaveContext.sceneFlags[gPlayState->sceneNum].swch;
             act->flags.clear = gSaveContext.sceneFlags[gPlayState->sceneNum].clear;
             act->flags.collect = gSaveContext.sceneFlags[gPlayState->sceneNum].collect;
             act->flags.chest = gSaveContext.sceneFlags[gPlayState->sceneNum].chest;
         }
 
-        if (Button("Save Flags",
-                   ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Save current scene flags"))) {
+        if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.save_flags", "Save Flags"),
+                   ButtonOptions()
+                       .Size(ImVec2(0, 0))
+                       .Color(THEME_COLOR)
+                       .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.save_current_scene_flags",
+                                               "Save current scene flags")))) {
             gSaveContext.sceneFlags[gPlayState->sceneNum].swch = act->flags.swch;
             gSaveContext.sceneFlags[gPlayState->sceneNum].clear = act->flags.clear;
             gSaveContext.sceneFlags[gPlayState->sceneNum].collect = act->flags.collect;
             gSaveContext.sceneFlags[gPlayState->sceneNum].chest = act->flags.chest;
         }
 
-        if (Button("Clear Flags",
-                   ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red).Tooltip("Clear current scene flags"))) {
+        if (Button(
+                Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.clear_flags", "Clear Flags"),
+                ButtonOptions()
+                    .Size(ImVec2(0, 0))
+                    .Color(Colors::Red)
+                    .Tooltip(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.clear_current_scene_flags",
+                                            "Clear current scene flags")))) {
             act->flags.swch = 0;
             act->flags.clear = 0;
             act->flags.collect = 0;
@@ -1760,13 +1952,17 @@ void DrawFlagsTab() {
 
         ImGui::EndGroup();
     } else {
-        ImGui::Text("Current game state does not have an active scene");
+        ImGui::TextUnformatted(Lang::UIString(
+            "ui.text.enhancements.debugger.debugsaveeditor.current_game_state_does_not_have_an_active_scene",
+            "Current game state does not have an active scene"));
     }
     UIWidgets::EndCard();
 
     // Saved Scene Flags Card
     UIWidgets::BeginCard("savedSceneCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Saved Scene Flags");
+    ImGui::TextColored(
+        ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.saved_scene_flags", "Saved Scene Flags"));
     ImGui::Spacing();
 
     static uint32_t selectedSceneFlagMap = 0;
@@ -1774,7 +1970,7 @@ void DrawFlagsTab() {
         selectedSceneFlagMap = 0;
     }
     ImGui::AlignTextToFramePadding();
-    ImGui::Text("Map");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.map", "Map"));
     ImGui::SameLine();
     PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##Map", SohUtils::GetSceneName(selectedSceneFlagMap).c_str())) {
@@ -1790,8 +1986,13 @@ void DrawFlagsTab() {
     // Don't show current scene button if there is no current scene
     if (gPlayState != nullptr) {
         ImGui::SameLine();
-        if (Button("Current",
-                   ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Open flags for current scene"))) {
+        if (Button(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.current", "Current"),
+                   ButtonOptions()
+                       .Size(ImVec2(0, 0))
+                       .Color(THEME_COLOR)
+                       .Tooltip(
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.open_flags_for_current_scene",
+                                          "Open flags for current scene")))) {
             if (gPlayState->sceneNum < SCENE_ID_MAX) {
                 selectedSceneFlagMap = gPlayState->sceneNum;
             }
@@ -1799,33 +2000,35 @@ void DrawFlagsTab() {
     }
 
     ImGui::Spacing();
-    ImGui::Text("Switch");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.switch", "Switch"));
     DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch, THEME_COLOR);
 
     ImGui::Spacing();
-    ImGui::Text("Clear");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.clear", "Clear"));
     DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear, THEME_COLOR);
 
     ImGui::Spacing();
-    ImGui::Text("Collect");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.collect", "Collect"));
     DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect, THEME_COLOR);
 
     ImGui::Spacing();
-    ImGui::Text("Chest");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.chest", "Chest"));
     DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest, THEME_COLOR);
 
     ImGui::Spacing();
-    ImGui::Text("Rooms");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.rooms", "Rooms"));
     DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms, THEME_COLOR);
 
     ImGui::Spacing();
-    ImGui::Text("Floors");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.floors", "Floors"));
     DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors, THEME_COLOR);
     UIWidgets::EndCard();
 
     // Gold Skulltulas Card
     UIWidgets::BeginCard("gsCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Gold Skulltulas");
+    ImGui::TextColored(
+        ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.gold_skulltulas", "Gold Skulltulas"));
     ImGui::Spacing();
 
     PushStyleCombobox(THEME_COLOR);
@@ -1844,7 +2047,7 @@ void DrawFlagsTab() {
     PopStyleCombobox();
 
     ImGui::AlignTextToFramePadding();
-    ImGui::Text("Flags");
+    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.flags", "Flags"));
     uint32_t currentFlags = GET_GS_FLAGS(selectedGsMap);
     uint32_t allFlags = gAreaGsFlags[selectedGsMap];
     uint32_t setMask = 1;
@@ -1880,10 +2083,15 @@ void DrawFlagsTab() {
     if (!(IS_RANDO &&
           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
         static bool keepGsCountUpdated = true;
-        Checkbox("Keep GS Count Updated", &keepGsCountUpdated,
+        Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.keep_gs_count_updated",
+                               "Keep GS Count Updated"),
+                 &keepGsCountUpdated,
                  CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Automatically adjust the number of gold skulltula tokens acquired based on set flags."));
+                     .Tooltip(Lang::UIString(
+                         "ui.text.enhancements.debugger.debugsaveeditor.automatically_adjust_the_number_of_gold_"
+                         "skulltula_tokens_acquired_based_on_set_flags",
+                         "Automatically adjust the number of gold skulltula tokens acquired based on set flags.")));
         int32_t gsCount = 0;
         if (keepGsCountUpdated) {
             for (int32_t gsFlagIndex = 0; gsFlagIndex < 6; gsFlagIndex++) {
@@ -1985,7 +2193,8 @@ void DrawEquipmentTab() {
         { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
     UIWidgets::BeginCard("equipmentCard", 0); // Force to column 0
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Equipment");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.equipment", "Equipment"));
     ImGui::Spacing();
 
     // Get currently equipped items if in game
@@ -2060,7 +2269,8 @@ void DrawEquipmentTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("upgradesCard", 0); // Force to column 0 (under Equipment)
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Upgrades");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.upgrades", "Upgrades"));
     ImGui::Spacing();
 
     const std::vector<uint8_t> bulletBagValues = {
@@ -2123,7 +2333,8 @@ void DrawEquipmentTab() {
     const char* STICK_LEVEL_NAMES[4] = { "None", "10 Sticks", "20 Sticks", "30 Sticks" };
     constexpr int8_t STICK_LEVEL_MAX = 3;
     int8_t stickLevel = CUR_UPG_VALUE(UPG_STICKS);
-    ImGui::Text("Deku Stick Capacity");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.deku_stick_capacity", "Deku Stick Capacity"));
     PushStyleSlider(THEME_COLOR);
     static const int8_t STICK_LEVEL_MAX_VAR = STICK_LEVEL_MAX;
     if (ImGui::SliderScalar("##stickLevelSlider", ImGuiDataType_S8, &stickLevel, &U8_ZERO, &STICK_LEVEL_MAX_VAR,
@@ -2136,7 +2347,8 @@ void DrawEquipmentTab() {
     const char* NUT_LEVEL_NAMES[4] = { "None", "20 Nuts", "30 Nuts", "40 Nuts" };
     constexpr int8_t NUT_LEVEL_MAX = 3;
     int8_t nutLevel = CUR_UPG_VALUE(UPG_NUTS);
-    ImGui::Text("Deku Nut Capacity");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.deku_nut_capacity", "Deku Nut Capacity"));
     PushStyleSlider(THEME_COLOR);
     static const int8_t NUT_LEVEL_MAX_VAR = NUT_LEVEL_MAX;
     if (ImGui::SliderScalar("##nutLevelSlider", ImGuiDataType_S8, &nutLevel, &U8_ZERO, &NUT_LEVEL_MAX_VAR,
@@ -2167,7 +2379,9 @@ void DrawEquipmentTab() {
 
         if (bombchuProgressive || triforceHunt || anyAbilityShuffle) {
             UIWidgets::BeginCard("randomizerSpecificCard", 0);
-            ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Randomizer Specific");
+            ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                               Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.randomizer_specific",
+                                              "Randomizer Specific"));
             ImGui::Spacing();
 
             // (a) Bombchu Bag Capacity
@@ -2200,7 +2414,8 @@ void DrawEquipmentTab() {
 
             // (b) Triforce Pieces (moved from the General settings card)
             if (triforceHunt) {
-                ImGui::Text("Triforce Pieces");
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.triforce_pieces", "Triforce Pieces"));
                 PushStyleInput(Colors::Purple);
                 ImGui::InputScalar("##TriforcePieces", ImGuiDataType_U8,
                                    &gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
@@ -2332,7 +2547,9 @@ void DrawQuestStatusTab() {
         { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
     UIWidgets::BeginCard("medallionsStonesCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Medallions & Stones");
+    ImGui::TextColored(
+        ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.medallions_stones", "Medallions & Stones"));
     ImGui::Spacing();
 
     for (int32_t i = QUEST_MEDALLION_FOREST; i < QUEST_MEDALLION_LIGHT + 1; i++) {
@@ -2361,7 +2578,8 @@ void DrawQuestStatusTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("songsCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Songs");
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.songs", "Songs"));
     ImGui::Spacing();
 
     for (const auto& [quest, entry] : songMapping) {
@@ -2389,7 +2607,9 @@ void DrawQuestStatusTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("gsTokensCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Gold Skulltula Tokens");
+    ImGui::TextColored(
+        ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.gold_skulltula_tokens", "Gold Skulltula Tokens"));
     ImGui::Spacing();
 
     static const int16_t GS_MIN = 0;
@@ -2404,7 +2624,8 @@ void DrawQuestStatusTab() {
 
     uint32_t bitMask = 1 << QUEST_SKULL_TOKEN;
     bool gsUnlocked = (bitMask & gSaveContext.inventory.questItems) != 0;
-    if (Checkbox("GS unlocked", &gsUnlocked, CheckboxOptions().Color(THEME_COLOR))) {
+    if (Checkbox(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.gs_unlocked", "GS unlocked"), &gsUnlocked,
+                 CheckboxOptions().Color(THEME_COLOR))) {
         if (gsUnlocked) {
             gSaveContext.inventory.questItems |= bitMask;
         } else {
@@ -2415,7 +2636,9 @@ void DrawQuestStatusTab() {
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("pohCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Pieces of Heart");
+    ImGui::TextColored(
+        ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.pieces_of_heart", "Pieces of Heart"));
     ImGui::Spacing();
 
     static const char* pohNames[4] = { "0", "1", "2", "3" };
@@ -2431,7 +2654,8 @@ void DrawQuestStatusTab() {
         ImGui::EndCombo();
     }
     ImGui::SameLine();
-    ImGui::Text("Pieces of Heart");
+    ImGui::TextUnformatted(
+        Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.pieces_of_heart", "Pieces of Heart"));
     Tooltip("The number of pieces of heart acquired towards the next heart container");
     PopStyleCombobox();
     UIWidgets::EndCard();
@@ -2514,7 +2738,8 @@ void DrawDungeonItemsTab() {
                 int8_t keys = keyCount;
                 int8_t maxKeys = GetMaxKeysForDungeon(dungeonIndex);
                 int8_t negOne = -1;
-                ImGui::Text("Small Keys");
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.small_keys", "Small Keys"));
                 ImGui::PushItemWidth(150.0f);
                 PushStyleInput(THEME_COLOR);
                 if (ImGui::SliderScalar(keySliderId.c_str(), ImGuiDataType_S8, &keys, &negOne, &maxKeys, "Count: %d")) {
@@ -2558,7 +2783,8 @@ void DrawPlayerTab() {
 
         // Position Card
         UIWidgets::BeginCard("positionCard");
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Position");
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.position", "Position"));
         ImGui::Spacing();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 12);
         PushStyleInput(Colors::Red);
@@ -2578,7 +2804,8 @@ void DrawPlayerTab() {
 
         // Rotation Card
         UIWidgets::BeginCard("rotationCard");
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Rotation");
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.rotation", "Rotation"));
         ImGui::Spacing();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 12);
         PushStyleInput(Colors::Red);
@@ -2598,7 +2825,9 @@ void DrawPlayerTab() {
 
         // Model Rotation Card
         UIWidgets::BeginCard("modelRotationCard");
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Model Rotation");
+        ImGui::TextColored(
+            ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.model_rotation", "Model Rotation"));
         ImGui::Spacing();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 12);
         PushStyleInput(Colors::Red);
@@ -2618,7 +2847,8 @@ void DrawPlayerTab() {
 
         // Velocity Card
         UIWidgets::BeginCard("velocityCard");
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Velocity");
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.velocity", "Velocity"));
         ImGui::Spacing();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 12);
         PushStyleInput(THEME_COLOR);
@@ -2634,7 +2864,8 @@ void DrawPlayerTab() {
 
         // Physics Card
         UIWidgets::BeginCard("physicsCard");
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Physics");
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.physics", "Physics"));
         ImGui::Spacing();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 12);
         PushStyleInput(THEME_COLOR);
@@ -2650,15 +2881,18 @@ void DrawPlayerTab() {
 
         // Age Card
         UIWidgets::BeginCard("ageCard");
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Age");
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+                           Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.age", "Age"));
         ImGui::Spacing();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
         PushStyleCombobox(THEME_COLOR);
-        if (ImGui::BeginCombo("Link Age on Load", gPlayState->linkAgeOnLoad == 0 ? "Adult" : "Child")) {
-            if (ImGui::Selectable("Adult")) {
+        if (ImGui::BeginCombo(
+                Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.link_age_on_load", "Link Age on Load"),
+                gPlayState->linkAgeOnLoad == 0 ? "Adult" : "Child")) {
+            if (ImGui::Selectable(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.adult", "Adult"))) {
                 gPlayState->linkAgeOnLoad = 0;
             }
-            if (ImGui::Selectable("Child")) {
+            if (ImGui::Selectable(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.child", "Child"))) {
                 gPlayState->linkAgeOnLoad = 1;
             }
             ImGui::EndCombo();
@@ -2669,7 +2903,9 @@ void DrawPlayerTab() {
 
         // Player State Card
         UIWidgets::BeginCard("playerStateCard");
-        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Player State");
+        ImGui::TextColored(
+            ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%s",
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.player_state", "Player State"));
         ImGui::Spacing();
 
         ImGui::SetNextItemWidth(ImGui::GetFontSize() * 16);
@@ -2683,11 +2919,13 @@ void DrawPlayerTab() {
             hasMatches |= DrawStateSearchResults("State 2", player->stateFlags2, state2, playerStateFilter);
             hasMatches |= DrawStateSearchResults("State 3", player->stateFlags3, state3, playerStateFilter);
             if (!hasMatches) {
-                ImGui::Text("No flags match the current search.");
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.no_flags_match_the_current_search",
+                                   "No flags match the current search."));
             }
         } else {
             // State Flags 1
-            ImGui::Text("State 1");
+            ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.state_1", "State 1"));
             DrawFlagArrayWithTooltips("State1", player->stateFlags1, THEME_COLOR, state1);
 
             // Show active State 1 flags
@@ -2696,7 +2934,7 @@ void DrawPlayerTab() {
 
             ImGui::Spacing();
             // State Flags 2
-            ImGui::Text("State 2");
+            ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.state_2", "State 2"));
             DrawFlagArrayWithTooltips("State2", player->stateFlags2, THEME_COLOR, state2);
 
             // Show active State 2 flags
@@ -2705,7 +2943,7 @@ void DrawPlayerTab() {
 
             ImGui::Spacing();
             // State Flags 3
-            ImGui::Text("State 3");
+            ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.state_3", "State 3"));
             DrawFlagArrayWithTooltips("State3", player->stateFlags3, THEME_COLOR, state3);
 
             // Show active State 3 flags
@@ -2715,11 +2953,13 @@ void DrawPlayerTab() {
 
         ImGui::Spacing();
         // Rotation Flags (unk_6AE_rotFlags)
-        ImGui::Text("Rotation Flags");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.rotation_flags", "Rotation Flags"));
         DrawFlagArray16("Rotation", player->unk_6AE_rotFlags, THEME_COLOR);
 
         ImGui::Spacing();
-        ImGui::Text("Sword State");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.debugger.debugsaveeditor.sword_state", "Sword State"));
         PushStyleCombobox(THEME_COLOR);
         std::string currentSword = "None";
         switch (player->meleeWeaponState) {
@@ -2743,15 +2983,19 @@ void DrawPlayerTab() {
                 break;
         }
         if (ImGui::BeginCombo("##SwordState", currentSword.c_str())) {
-            if (ImGui::Selectable("None"))
+            if (ImGui::Selectable(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.none", "None")))
                 player->meleeWeaponState = 0;
-            if (ImGui::Selectable("Kokiri Sword"))
+            if (ImGui::Selectable(
+                    Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.kokiri_sword", "Kokiri Sword")))
                 player->meleeWeaponState = 1;
-            if (ImGui::Selectable("Master Sword"))
+            if (ImGui::Selectable(
+                    Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.master_sword", "Master Sword")))
                 player->meleeWeaponState = 2;
-            if (ImGui::Selectable("Biggoron's Sword"))
+            if (ImGui::Selectable(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.biggoron_s_sword",
+                                                "Biggoron's Sword")))
                 player->meleeWeaponState = 3;
-            if (ImGui::Selectable("Broken Giant's Knife"))
+            if (ImGui::Selectable(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.broken_giant_s_knife",
+                                                "Broken Giant's Knife")))
                 player->meleeWeaponState = 4;
             ImGui::EndCombo();
         }
@@ -2778,48 +3022,52 @@ void ResetBaseOptions() {
 
 void SaveEditorWindow::DrawElement() {
     PushStyleTabs(THEME_COLOR);
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImGui::PushFont(OTRGlobals::Instance->GetGuiFont(OTRGlobals::Instance->fontMonoLarger));
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         ResetBaseOptions();
-        if (ImGui::BeginTabItem("General")) {
+        if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.general", "General"))) {
             DrawGeneralTab();
             ImGui::EndTabItem();
         }
 
         ResetBaseOptions();
-        if (ImGui::BeginTabItem("Inventory")) {
+        if (ImGui::BeginTabItem(
+                Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.inventory", "Inventory"))) {
             DrawInventoryTab();
             ImGui::EndTabItem();
         }
 
         ResetBaseOptions();
-        if (ImGui::BeginTabItem("Equipment")) {
+        if (ImGui::BeginTabItem(
+                Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.equipment", "Equipment"))) {
             DrawEquipmentTab();
             ImGui::EndTabItem();
         }
 
         ResetBaseOptions();
-        if (ImGui::BeginTabItem("Quest Status")) {
+        if (ImGui::BeginTabItem(
+                Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.quest_status", "Quest Status"))) {
             DrawQuestStatusTab();
             ImGui::EndTabItem();
         }
 
         ResetBaseOptions();
-        if (ImGui::BeginTabItem("Dungeon Items")) {
+        if (ImGui::BeginTabItem(
+                Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.dungeon_items", "Dungeon Items"))) {
             DrawDungeonItemsTab();
             ImGui::EndTabItem();
         }
 
         ResetBaseOptions();
-        if (ImGui::BeginTabItem("Flags")) {
+        if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.flags", "Flags"))) {
             DrawFlagsTab();
             ImGui::EndTabItem();
         }
 
         ResetBaseOptions();
-        if (ImGui::BeginTabItem("Player")) {
+        if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.debugger.debugsaveeditor.player", "Player"))) {
             DrawPlayerTab();
             ImGui::EndTabItem();
         }

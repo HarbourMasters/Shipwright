@@ -18,6 +18,9 @@ struct TrickName {
     Text article;
 };
 TrickName GetTrapName(RandomizerGet id, RandoIceTrapNames iceTrapNamesOption, uint64_t* state = nullptr);
+// Recover catalog translations missing from old saves/seeds without rerolling
+// the disguise or replacing explicit locale overrides. Unknown custom names stay intact.
+bool RestoreTrapNameTranslations(RandomizerGet id, Text& name, Text& article);
 RandomizerGet GetTrapTrickModel(uint64_t* state = nullptr);
 bool ShouldJunkItemBeTrap();
 void BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemEntry);

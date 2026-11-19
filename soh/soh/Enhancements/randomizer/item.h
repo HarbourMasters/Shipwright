@@ -43,6 +43,7 @@ class Item {
     void UndoEffect() const;
 
     const Text& GetName() const;
+    std::string GetNameForUI() const;
     const Text& GetArticle() const;
     const std::string& GetColor() const;
     bool IsAdvancement() const;

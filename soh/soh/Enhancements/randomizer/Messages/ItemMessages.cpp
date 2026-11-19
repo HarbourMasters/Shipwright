@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 /**
  * This file handles custom messages relating to Items,
  * such as Get Item messages for non-vanilla items,
@@ -6,11 +7,13 @@
  */
 
 #include <cstdarg>
+#include "soh/Enhancements/Lang/MessageLanguage.h"
 #include <algorithm>
 
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
 #include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/item.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -44,37 +47,24 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
 
     // If we reach wincon, we win!
     if (current == wincon) {
-        msg = { "You completed the %yTriforce of Courage%w! %gGG%w!",
-                "Das %yTriforce des Mutes%w! Alle Splitter gefunden. %gGut gemacht%w!",
-                "Vous avez complété la %yTriforce du Courage%w! %gFélicitations%w!" };
+        msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.0");
         // otherwise prioritise the different triggers
     } else if (current == bridge) {
-        msg = {
-            "You made your wish to the %yTriforce%w! %rTh%ye R%gai%cnb%bow %pBr%rid%yge %gha%cs r%bai%psed%w!",
-            "Du hast deinen Wunsch an das %yTriforce%w gerichtet! Die %rRe%ggen%cbo%bgen%pbr%yücke%w wurde errichtet!",
-            TODO_TRANSLATE
-        };
+        msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.1");
     } else if (current == GBK) {
-        msg = { "You completed the %yTriforce of Power%w! %rThe Key to Evil is yours%w!",
-                "Das %yTriforce der Kraft%w! %rDer Schlüssel zum Bösen gehört dir%w!", TODO_TRANSLATE };
+        msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.2");
     } else if (current == soul) {
-        msg = { "You completed the %yTriforce of Wisdom%w! %bGanon's soul is reclaimed%w!",
-                "Das %yTriforce der Weisheit%w! %bGanons Seele ist zurückerlangt%w!", TODO_TRANSLATE };
+        msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.3");
         // if everything is zero, then there's no goal...
     } else if (bridge + wincon + GBK + soul == 0) {
-        msg = { "You found a %yTriforce Piece%w! But it's %puseless%w...",
-                "Du hast einen %yTriforce-Splitter%w gefunden! Aber er ist %pnutzlos%w...", TODO_TRANSLATE };
+        msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.4");
     } else {
         // if nothing is complete, we need to check is we have more than we need
         uint8_t highest = std::max({ current, bridge, wincon, GBK, soul });
         if (highest == current) {
             // RANDOTODO TODO_TRANSLATE you could maybe make this sound cleaner because InsertNumber allows for dynamic
             // plurals
-            msg = { "You found a spare %yTriforce Piece%w! You only needed %c[[d]]%w, but you have %g[[current]]%w!",
-                    "Ein übriger %yTriforce-Splitter%w! Du hast nun %g[[current]]%w, obwohl du nur %c[[d]]%w benötigt "
-                    "hast!",
-                    "Vous avez trouvé un %yFragment de Triforce%w en plus! Vous n'aviez besoin que de %c[[d]]%w, "
-                    "mais vous en avez %g[[current]]%w en tout!" };
+            msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.5");
             msg.InsertNumber(std::max({ bridge, wincon, GBK, soul }));
         } else {
             // find the next goal by setting everything below current (including failed conditions set to 0 before)
@@ -98,44 +88,27 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
             float percentageCollected = (float)current / (float)next;
 
             if (percentageCollected <= 0.25) {
-                msg = { "You found a %yTriforce Piece%w! %g[[current]]%w down, %c[[d]]%w more and you [[condition]]! "
-                        "It's a start!",
-                        "Du hast einen %yTriforce-Splitter%w gefunden! %g[[current]]%w geschafft, noch %c[[d]]%w, dann "
-                        "[[condition]]! "
-                        "Ein Anfang!",
-                        TODO_TRANSLATE };
+                msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.6");
             } else if (percentageCollected <= 0.5) {
-                msg = { "You found a %yTriforce Piece%w! that makes %g[[current]]%w, %c[[d]]%w to go until you "
-                        "[[condition]]! Progress!",
-                        "Du hast einen %yTriforce-Splitter%w gefunden! Du hast nun %g[[current]]%w und brauchst noch "
-                        "%c[[d]]%w, "
-                        "um [[condition]]! Es geht voran!",
-                        TODO_TRANSLATE };
+                msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.7");
             } else if (percentageCollected <= 0.75) {
-                msg = { "You found a %yTriforce Piece%w! You have %g[[current]]%w and need %c[[d]]%w more and you "
-                        "[[condition]]! Over half-way there!",
-                        "Du hast einen %yTriforce-Splitter%w gefunden! Du hast nun %g[[current]]%w und brauchst noch "
-                        "%c[[d]]%w, "
-                        "um [[condition]]! Mehr als die Hälfte geschafft!",
-                        TODO_TRANSLATE };
+                msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.8");
             } else if (percentageCollected < 1.0) {
-                msg = { "You found a %yTriforce Piece%w! %g[[current]]%w down, %c[[d]]%w left until you [[condition]]! "
-                        "Almost done!",
-                        "Du hast einen %yTriforce-Splitter%w gefunden! %g[[current]]%w geschafft, noch %c[[d]]%w, "
-                        "um [[condition]]! Fast geschafft!",
-                        TODO_TRANSLATE };
+                msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.9");
             }
 
             // default condition is soul
-            CustomMessage condition = { "%brelease Ganons Soul%w", "%bGanons Seele zu befreien%w", TODO_TRANSLATE };
+            CustomMessage condition =
+                CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.10");
             if (next == wincon) {
-                condition = { "%gWin the game%w", "%gdas Spiel zu gewinnen%w", TODO_TRANSLATE };
+                condition =
+                    CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.11");
             } else if (next == bridge) {
-                condition = { "%csummon the Rainbow Bridge%w", "%cdie Regenbogenbrücke zu beschwören%w",
-                              TODO_TRANSLATE };
+                condition =
+                    CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.12");
             } else if (next == GBK) {
-                condition = { "%rfind the key to Ganondorf's Lair%w",
-                              "%rden Schlüssel zu Ganondorfs Versteck zu finden%w", TODO_TRANSLATE };
+                condition =
+                    CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_piece_message.13");
             }
             msg.Replace("[[condition]]", condition);
             msg.InsertNumber(remaining);
@@ -146,31 +119,29 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
 }
 
 void BuildTriforceMessage(CustomMessage& msg) {
-    msg = { "You completed the %yTriforce of&Courage%w! %gGG%w!",
-            "Das %yTriforce des Mutes%w! Du hast&alle Splitter gefunden. %gGut gemacht%w!",
-            "Vous avez complété la %yTriforce&du Courage%w! %gFélicitations%w!" };
+    msg = CustomMessages::CreateMessage("randomizer.messages.item_messages.build_triforce_message.0");
     msg.Format(ITEM_CUSTOM);
 }
 
 void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     int16_t rgid;
-    msg = CustomMessage("You found [[article]][[color]][[name]]%w!", "Du hast [[article]][[color]][[name]]%w gefunden!",
-                        "Vous avez trouvé [[article]][[color]][[name]]%w!", TEXTBOX_TYPE_BLUE);
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
         rgid = player->getItemEntry.getItemId;
     } else {
         rgid = player->getItemId;
     }
-    CustomMessage name =
-        CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetName(), TEXTBOX_TYPE_BLUE);
+    const std::string itemKey(EnumToString(static_cast<RandomizerGet>(rgid)));
+    msg = CustomMessages::GetMessage("randomizer.get_item.items." + itemKey, "randomizer.get_item.default",
+                                     TEXTBOX_TYPE_BLUE);
+    CustomMessage name = CustomMessages::GetMessageOrDefault(
+        "randomizer.item_names." + itemKey,
+        CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetName(), TEXTBOX_TYPE_BLUE));
     if (rgid == RG_OPEN_CHEST &&
         OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE)) {
         // message is built before the item is given, so the flags still say which copy this is
         name = Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST)
-                   ? CustomMessage("Open Big Chests", "Große Truhen öffnen", "Ouvrir les grands coffres",
-                                   TEXTBOX_TYPE_BLUE)
-                   : CustomMessage("Open Small Chests", "Kleine Truhen öffnen", "Ouvrir les petits coffres",
-                                   TEXTBOX_TYPE_BLUE);
+                   ? CustomMessages::GetMessage("randomizer.open_chest.big", TEXTBOX_TYPE_BLUE)
+                   : CustomMessages::GetMessage("randomizer.open_chest.small", TEXTBOX_TYPE_BLUE);
     }
     CustomMessage article = CustomMessage(
         Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetArticle(), TEXTBOX_TYPE_BLUE);
@@ -184,7 +155,7 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     }
 }
 
-void LoadCustomItemIcon(bool displayAsEnglish) {
+void LoadCustomItemIcon(bool /* legacy English-fallback hook argument */) {
     Player* player = GET_PLAYER(gPlayState);
     const char* customIcon = nullptr;
     CustomIconSize iconSize = ICON_SIZE_32;
@@ -201,7 +172,8 @@ void LoadCustomItemIcon(bool displayAsEnglish) {
         static int16_t sIconItem32XOffsets[] = { 74, 74, 74, 54 };
         static int16_t sIconItem24XOffsets[] = { 72, 72, 72, 50 };
         MessageContext* msgCtx = &gPlayState->msgCtx;
-        uint8_t language = displayAsEnglish ? LANGUAGE_ENG : (Language)gSaveContext.language;
+        const uint8_t language =
+            MessageLanguage_UsesUnicode() ? static_cast<uint8_t>(LANGUAGE_JPN) : MessageLanguage_Get();
         if (iconSize == ICON_SIZE_32) {
             R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[language];
             R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 6;
@@ -258,9 +230,9 @@ void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
 void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
     GetItemEntry itemEntry = GET_PLAYER(gPlayState)->getItemEntry;
     auto ctx = OTRGlobals::Instance->gRandoContext;
+    const std::string itemKey(EnumToString(static_cast<RandomizerGet>(itemEntry.getItemId)));
     CustomMessage msg =
-        CustomMessage("You found the %g[[name]]%w! [[typeHint]]", "Du erhältst %g[[name]]%w! [[typeHint]]",
-                      "Vous obtenez %g[[name]]%w! [[typeHint]]", TEXTBOX_TYPE_BLUE);
+        CustomMessages::GetMessage("randomizer.get_item.maps." + itemKey, "randomizer.get_item.map", TEXTBOX_TYPE_BLUE);
     int sceneNum = -1;
     switch (itemEntry.getItemId) {
         case RG_DEKU_TREE_MAP:
@@ -301,7 +273,7 @@ void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
         (ctx->GetOption(RSK_MQ_DUNGEON_RANDOM).Is(RO_MQ_DUNGEONS_SET_NUMBER) &&
          ctx->GetOption(RSK_MQ_DUNGEON_COUNT).Is(MAX_MQ_DUNGEON_COUNT))) {
         msg.Replace("[[typeHint]]", "");
-    } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
+    } else if (ResourceMgr_IsSceneMasterQuest(static_cast<int16_t>(sceneNum))) {
         msg.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_MASTERFUL].GetHintMessage());
     } else {
         msg.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_ORDINARY].GetHintMessage());

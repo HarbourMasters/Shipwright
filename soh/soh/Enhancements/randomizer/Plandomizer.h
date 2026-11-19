@@ -8,13 +8,13 @@ extern "C" {
 }
 #endif
 
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 #include "soh/Enhancements/randomizer/item.h"
 
 #ifdef __cplusplus
-class PlandomizerWindow final : public Ship::GuiWindow {
+class PlandomizerWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
     void InitElement() override;
     void DrawElement() override;

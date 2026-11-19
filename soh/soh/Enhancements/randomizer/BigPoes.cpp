@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/custom-message/CustomMessageManager.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
@@ -11,7 +12,8 @@ extern PlayState* gPlayState;
 }
 
 void BuildBigPoeCollectedMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage("You have #" + CustomMessage::POINTS("\x01") + "# points.", { QM_RED });
+    CustomMessage msg =
+        CustomMessages::CreateMessage("randomizer.messages.big_poes.build_big_poe_collected_message.0", { QM_RED });
     msg.AutoFormat();
     *loadFromMessageTable = false;
     msg.LoadIntoFont();

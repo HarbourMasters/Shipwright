@@ -1,0 +1,10 @@
+// Generated from ui-lang/en_US.json. Edit the JSON, not this build output.
+#include "soh/Enhancements/Lang/BuiltinUICatalog.h"
+
+#include <nlohmann/json.hpp>
+#include <iterator>
+
+nlohmann::json Lang::GetBuiltinUICatalog() {
+    static const unsigned char data[] = { @SOH_UI_ENGLISH_BYTES@ };
+    return nlohmann::json::parse(std::begin(data), std::end(data));
+}

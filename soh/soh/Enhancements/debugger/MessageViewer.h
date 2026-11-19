@@ -3,7 +3,7 @@
 #include "z64.h"
 
 #ifdef __cplusplus
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 
 extern "C" {
 #endif
@@ -25,10 +25,10 @@ void MessageDebug_DisplayCustomMessage(const char* customMessage);
 #ifdef __cplusplus
 }
 
-class MessageViewer final : public Ship::GuiWindow {
+class MessageViewer final : public SohGui::LocalizedWindow {
   public:
     static inline const char* TABLE_ID = "MessageViewer";
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
     void InitElement() override;
     void DrawElement() override;

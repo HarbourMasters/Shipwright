@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 /**
  * This file handles the custom messages for Gossip Stone
  * hints.
@@ -50,7 +51,8 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
         }
     }
     if (stoneHint == RH_NONE) {
-        msg = CustomMessage("INVALID STONE. PARAMS: " + std::to_string(hintParams));
+        msg = CustomMessages::CreateMessage("randomizer.messages.gossip_stone_hints.invalid_stone");
+        msg.Replace("[[params]]", std::to_string(hintParams));
     } else {
         msg = ReadHintMessage(stoneHint, MF_AUTO_FORMAT);
     }

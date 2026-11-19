@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/GameLanguage.h"
 #include <ship/Context.h>
 #include <fstream>
 #include <filesystem>
@@ -18,6 +19,7 @@
 #include "Enhancements/randomizer/entrance.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/randomizer/trial.h"
+#include "Enhancements/randomizer/Traps.h"
 #include "soh/util.h"
 #include "Enhancements/randomizer/hint.h"
 #include "soh/Enhancements/randomizer/settings.h"
@@ -234,19 +236,13 @@ void SaveManager::LoadRandomizer() {
             RandomizerGet rg = RG_NONE;
             SaveManager::Instance->LoadData("fakeRgID", rg, RG_NONE);
             if (rg != RG_NONE) {
-                randoContext->overrides.emplace(static_cast<RandomizerCheck>(i),
-                                                Rando::ItemOverride(static_cast<RandomizerCheck>(i), rg));
-                SaveManager::Instance->LoadStruct("trickName", [&]() {
-                    SaveManager::Instance->LoadData("english", randoContext->GetItemOverride(i).GetTrickName().english);
-                    SaveManager::Instance->LoadData("german", randoContext->GetItemOverride(i).GetTrickName().german);
-                    SaveManager::Instance->LoadData("french", randoContext->GetItemOverride(i).GetTrickName().french);
-                });
-                SaveManager::Instance->LoadStruct("trickArticle", [&]() {
-                    Text& article = randoContext->GetItemOverride(i).GetTrickArticle();
-                    SaveManager::Instance->LoadData("english", article.english);
-                    SaveManager::Instance->LoadData("german", article.german);
-                    SaveManager::Instance->LoadData("french", article.french);
-                });
+                randoContext->overrides.insert_or_assign(static_cast<RandomizerCheck>(i),
+                                                         Rando::ItemOverride(static_cast<RandomizerCheck>(i), rg));
+                auto& itemOverride = randoContext->GetItemOverride(i);
+                SaveManager::Instance->LoadData("trickName", itemOverride.GetTrickName());
+                SaveManager::Instance->LoadData("trickArticle", itemOverride.GetTrickArticle());
+                Rando::Traps::RestoreTrapNameTranslations(rg, itemOverride.GetTrickName(),
+                                                          itemOverride.GetTrickArticle());
             }
             uint16_t price = 0;
             SaveManager::Instance->LoadData("price", price, (uint16_t)0);
@@ -373,22 +369,8 @@ void SaveManager::SaveRandomizer(const SaveContext& saveContext, int sectionID, 
             SaveManager::Instance->SaveData("rgID", randoContext->GetItemLocation(i)->GetPlacedRandomizerGet());
             if (randoContext->GetItemLocation(i)->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
                 SaveManager::Instance->SaveData("fakeRgID", randoContext->GetItemOverride(i).LooksLike());
-                SaveManager::Instance->SaveStruct("trickName", [&]() {
-                    SaveManager::Instance->SaveData("english",
-                                                    randoContext->GetItemOverride(i).GetTrickName().GetEnglish());
-                    SaveManager::Instance->SaveData("german",
-                                                    randoContext->GetItemOverride(i).GetTrickName().GetGerman());
-                    SaveManager::Instance->SaveData("french",
-                                                    randoContext->GetItemOverride(i).GetTrickName().GetFrench());
-                });
-                SaveManager::Instance->SaveStruct("trickArticle", [&]() {
-                    SaveManager::Instance->SaveData("english",
-                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetEnglish());
-                    SaveManager::Instance->SaveData("german",
-                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetGerman());
-                    SaveManager::Instance->SaveData("french",
-                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetFrench());
-                });
+                SaveManager::Instance->SaveData("trickName", randoContext->GetItemOverride(i).GetTrickName());
+                SaveManager::Instance->SaveData("trickArticle", randoContext->GetItemOverride(i).GetTrickArticle());
             }
             if (randoContext->GetItemLocation(i)->IsExcluded()) {
                 SaveManager::Instance->SaveData("excluded", true);
@@ -588,6 +570,7 @@ void SaveManager::Init() {
                 LoadData("audioSetting", gSaveContext.audioSetting);
                 LoadData("zTargetSetting", gSaveContext.zTargetSetting);
                 LoadData("language", gSaveContext.language);
+                gSaveContext.language = LanguagePolicy_Normalize(gSaveContext.language);
                 break;
             default:
                 SPDLOG_WARN("Global save has a unrecognized version. We are reconstructing it.");
@@ -852,7 +835,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && GameLanguage_Get() != LANGUAGE_JPN) {
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = 0x3E;
         }
@@ -862,7 +845,7 @@ void SaveManager::InitFileNormal() {
             gSaveContext.playerName[i] = 0xDF;
         }
         gSaveContext.ship.filenameLanguage =
-            (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
+            (GameLanguage_Get() == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
     gSaveContext.healthCapacity = STARTING_HEALTH;
     gSaveContext.health = STARTING_HEALTH;
@@ -1038,14 +1021,14 @@ static void InitDebugSave() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && GameLanguage_Get() != LANGUAGE_JPN) {
         const static std::array<u8, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
 
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
-    } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
+    } else if (GameLanguage_Get() == LANGUAGE_JPN) { // Japanese
         const static std::array<u8, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
 
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
@@ -1059,7 +1042,7 @@ static void InitDebugSave() {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage =
-            (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
+            (GameLanguage_Get() == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
     gSaveContext.healthCapacity = 0xE0;
     gSaveContext.health = 0xE0;
@@ -1344,7 +1327,7 @@ void SaveManager::SaveGlobal() {
     globalBlock["version"] = 1;
     globalBlock["audioSetting"] = gSaveContext.audioSetting;
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
-    globalBlock["language"] = gSaveContext.language;
+    globalBlock["language"] = GameLanguage_Get();
 
     const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
@@ -1510,7 +1493,7 @@ int SaveManager::GetSaveSectionID(std::string& sectionName) {
 void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;
-    gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
+    gSaveContext.language = GameLanguage_GetConfigured();
 
     SaveGlobal();
 }
@@ -2848,7 +2831,7 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
     if (gSaveContext.language >= LANGUAGE_MAX) {
-        gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
+        gSaveContext.language = GameLanguage_GetConfigured();
     }
     SaveGlobal();
 

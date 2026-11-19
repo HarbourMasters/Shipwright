@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <vector>
 
 #include <fast/Fast3dGui.h>
@@ -85,7 +86,7 @@ static void StartingItemTiered(RandomizerSettingKey rsk, const std::vector<uint3
                 ImGui::CloseCurrentPopup();
             }
             PopStyleButton();
-            Tooltip(option.GetOptionText(i + 1).c_str());
+            Tooltip(option.GetUIOptionText(i + 1).c_str());
         }
         ImGui::EndPopup();
     }
@@ -133,7 +134,7 @@ static void StartingItemCount(RandomizerSettingKey rsk, uint32_t itemId) {
                       .Min(0)
                       .Max(static_cast<int32_t>(option.GetOptionCount()) - 1)
                       .DefaultValue(option.GetMenuOptionDefault())
-                      .Format(option.GetOptionText(value).c_str())
+                      .Format(option.GetUIOptionText(value).c_str())
                       .LabelPosition(LabelPositions::Near));
     ImGui::PopID();
 }
@@ -143,10 +144,11 @@ static void StartingItemCombobox(RandomizerSettingKey rsk) {
     Rando::Option& option = Rando::Settings::GetInstance()->GetOption(rsk);
     std::vector<const char*> entries;
     for (size_t i = 0; i < option.GetOptionCount(); i++) {
-        entries.push_back(option.GetOptionText(i).c_str());
+        entries.push_back(option.GetUIOptionText(i).c_str());
     }
     CVarCombobox(option.GetName().c_str(), option.GetCVarName().c_str(), entries,
-                 ComboboxOptions().Color(THEME_COLOR).LabelPosition(LabelPositions::Above));
+                 UIWidgets::ComboboxOptions(ComboboxOptions().Color(THEME_COLOR).LabelPosition(LabelPositions::Above))
+                     .TranslationScope("ui.text.sohgui.sohmenustartingitems"));
 }
 
 void DrawStartingItemsMenu(WidgetInfo& info) {
@@ -154,7 +156,7 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
 
-    ImGui::SeparatorText("Equipment");
+    ImGui::SeparatorText(Lang::UIString("ui.text.sohgui.sohmenustartingitems.equipment", "Equipment"));
     StartingItemToggle(RSK_STARTING_KOKIRI_SWORD, ITEM_SWORD_KOKIRI);
     ImGui::SameLine();
     StartingItemToggle(RSK_STARTING_MASTER_SWORD, ITEM_SWORD_MASTER);
@@ -187,7 +189,9 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemTiered(RSK_STARTING_STRENGTH, { ITEM_BRACELET, ITEM_GAUNTLETS_SILVER, ITEM_GAUNTLETS_GOLD });
     ImGui::EndDisabled();
     if (grabShuffled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-        ImGui::SetTooltip("Disabled because Shuffle Grab is on.");
+        ImGui::SetTooltip("%s",
+                          Lang::UIString("ui.text.sohgui.sohmenustartingitems.disabled_because_shuffle_grab_is_on",
+                                         "Disabled because Shuffle Grab is on."));
     }
     ImGui::SameLine();
     bool swimShuffled =
@@ -196,7 +200,9 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemTiered(RSK_STARTING_SCALE, { ITEM_SCALE_SILVER, ITEM_SCALE_GOLDEN });
     ImGui::EndDisabled();
     if (swimShuffled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-        ImGui::SetTooltip("Disabled because Shuffle Swim is on.");
+        ImGui::SetTooltip("%s",
+                          Lang::UIString("ui.text.sohgui.sohmenustartingitems.disabled_because_shuffle_swim_is_on",
+                                         "Disabled because Shuffle Swim is on."));
     }
     ImGui::SameLine();
     StartingItemTiered(RSK_STARTING_MAGIC_METER, { ITEM_MAGIC_SMALL, ITEM_MAGIC_LARGE });
@@ -208,10 +214,12 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemTiered(RSK_STARTING_WALLET, { ITEM_WALLET_ADULT, ITEM_WALLET_GIANT });
     ImGui::EndDisabled();
     if (childsWalletShuffled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-        ImGui::SetTooltip("Disabled because Shuffle Child's Wallet is on.");
+        ImGui::SetTooltip(
+            "%s", Lang::UIString("ui.text.sohgui.sohmenustartingitems.disabled_because_shuffle_child_s_wallet_is_on",
+                                 "Disabled because Shuffle Child's Wallet is on."));
     }
 
-    ImGui::SeparatorText("Items");
+    ImGui::SeparatorText(Lang::UIString("ui.text.sohgui.sohmenustartingitems.items", "Items"));
     bool stickBagShuffled =
         CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).GetCVarName().c_str(),
                        0) != 0;
@@ -219,7 +227,10 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemToggle(RSK_STARTING_STICKS, ITEM_STICK, stickBagShuffled);
     ImGui::EndDisabled();
     if (stickBagShuffled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-        ImGui::SetTooltip("Disabled because the Deku Stick Bag is being shuffled.");
+        ImGui::SetTooltip(
+            "%s",
+            Lang::UIString("ui.text.sohgui.sohmenustartingitems.disabled_because_the_deku_stick_bag_is_being_shuffled",
+                           "Disabled because the Deku Stick Bag is being shuffled."));
     }
     ImGui::SameLine();
     bool nutBagShuffled =
@@ -229,7 +240,10 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemToggle(RSK_STARTING_NUTS, ITEM_NUT, nutBagShuffled);
     ImGui::EndDisabled();
     if (nutBagShuffled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-        ImGui::SetTooltip("Disabled because the Deku Nut Bag is being shuffled.");
+        ImGui::SetTooltip(
+            "%s",
+            Lang::UIString("ui.text.sohgui.sohmenustartingitems.disabled_because_the_deku_nut_bag_is_being_shuffled",
+                           "Disabled because the Deku Nut Bag is being shuffled."));
     }
     ImGui::SameLine();
     StartingItemTiered(RSK_STARTING_BOMB_BAG, { ITEM_BOMB_BAG_20, ITEM_BOMB_BAG_30, ITEM_BOMB_BAG_40 });
@@ -258,7 +272,11 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
             StartingItemToggle(RSK_STARTING_BOMBCHU_BAG, ITEM_BOMBCHU, true);
             ImGui::EndDisabled();
             if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-                ImGui::SetTooltip("Enable the Bombchu Bag setting to start with bombchus.");
+                ImGui::SetTooltip(
+                    "%s",
+                    Lang::UIString(
+                        "ui.text.sohgui.sohmenustartingitems.enable_the_bombchu_bag_setting_to_start_with_bombchus",
+                        "Enable the Bombchu Bag setting to start with bombchus."));
             }
         }
     }
@@ -298,7 +316,10 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemToggle(RSK_STARTING_WEIRD_EGG, ITEM_WEIRD_EGG, !weirdEggShuffled);
     ImGui::EndDisabled();
     if (!weirdEggShuffled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-        ImGui::SetTooltip("Enable Shuffle Weird Egg to start with the Weird Egg.");
+        ImGui::SetTooltip(
+            "%s",
+            Lang::UIString("ui.text.sohgui.sohmenustartingitems.enable_shuffle_weird_egg_to_start_with_the_weird_egg",
+                           "Enable Shuffle Weird Egg to start with the Weird Egg."));
     }
     ImGui::SameLine();
     bool zeldasLetterShuffled =
@@ -307,13 +328,19 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemToggle(RSK_STARTING_ZELDAS_LETTER, ITEM_LETTER_ZELDA);
     if (ImGui::IsItemHovered()) {
         if (zeldasLetterShuffled) {
-            ImGui::SetTooltip("Start with Zelda's Letter\n\n"
-                              "The Kakariko gate starts open.");
+            ImGui::SetTooltip(
+                "%s", Lang::UIString(
+                          "ui.text.sohgui.sohmenustartingitems.start_with_zelda_s_letter_the_kakariko_gate_starts_open",
+                          "Start with Zelda's Letter\n\n"
+                          "The Kakariko gate starts open."));
         } else {
-            ImGui::SetTooltip("Start with Zelda's Letter\n\n"
-                              "The Kakariko gate starts open.\n"
-                              "While the letter isn't shuffled this also skips child Zelda:\n"
-                              "you get the item Impa would give and skip everything up to meeting Zelda.");
+            ImGui::SetTooltip(
+                "%s", Lang::UIString("ui.text.sohgui.sohmenustartingitems.start_with_zelda_s_letter_the_kakariko_gate_"
+                                     "starts_open_while_the_letter_isn_t_shuffled_this_also_sk",
+                                     "Start with Zelda's Letter\n\n"
+                                     "The Kakariko gate starts open.\n"
+                                     "While the letter isn't shuffled this also skips child Zelda:\n"
+                                     "you get the item Impa would give and skip everything up to meeting Zelda."));
         }
     }
     StartingItemToggle(RSK_STARTING_KEATON_MASK, ITEM_MASK_KEATON);
@@ -332,7 +359,7 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     ImGui::SameLine();
     StartingItemToggle(RSK_STARTING_MASK_OF_TRUTH, ITEM_MASK_TRUTH);
 
-    ImGui::SeparatorText("Songs");
+    ImGui::SeparatorText(Lang::UIString("ui.text.sohgui.sohmenustartingitems.songs", "Songs"));
     StartingSongToggle(RSK_STARTING_ZELDAS_LULLABY, QUEST_SONG_LULLABY);
     ImGui::SameLine();
     StartingSongToggle(RSK_STARTING_EPONAS_SONG, QUEST_SONG_EPONA);
@@ -359,7 +386,7 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     ImGui::SameLine();
     StartingSongToggle(RSK_STARTING_SCARECROWS_SONG, "RG_SCARECROWS_SONG", "RG_SCARECROWS_SONG_Faded");
 
-    ImGui::SeparatorText("Other");
+    ImGui::SeparatorText(Lang::UIString("ui.text.sohgui.sohmenustartingitems.other", "Other"));
     StartingItemCombobox(RSK_LINKS_POCKET);
     // The reward type only applies when Link's Pocket grants a dungeon reward.
     if (CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_LINKS_POCKET).GetCVarName().c_str(),

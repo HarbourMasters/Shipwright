@@ -3,7 +3,7 @@
 #ifdef __cplusplus
 
 #include <nlohmann/json.hpp>
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 
 typedef enum {
     TYPE_S8,
@@ -78,9 +78,9 @@ typedef enum {
     VVE_MAX,
 } ValueViewerEntry;
 
-class ValueViewerWindow final : public Ship::GuiWindow {
+class ValueViewerWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
     void InitElement() override;
     void DrawElement() override;

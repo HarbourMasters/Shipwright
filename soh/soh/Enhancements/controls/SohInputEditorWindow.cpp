@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <ship/controller/controldeck/ControlDeck.h>
 #include <ship/utils/StringHelper.h>
 #include <fast/Fast3dWindow.h>
@@ -176,7 +177,8 @@ void SohInputEditorWindow::DrawAnalogPreview(const char* label, ImVec2 stick, fl
     if (!gyro) {
         ImGui::SetCursorPos(
             ImVec2(ImGui::GetCursorPos().x - SCALE_IMGUI_SIZE(8), ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(72)));
-        ImGui::Text("X:%3d, Y:%3d", static_cast<int32_t>(stick.x), static_cast<int32_t>(stick.y));
+        ImGui::Text(Lang::UIFormat("ui.text.enhancements.controls.sohinputeditorwindow.x_3d_y_3d", "X:%3d, Y:%3d"),
+                    static_cast<int32_t>(stick.x), static_cast<int32_t>(stick.y));
     }
     ImGui::EndChild();
 }
@@ -248,8 +250,10 @@ void SohInputEditorWindow::DrawButtonLineAddMappingButton(uint8_t port, N64Butto
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         mInputEditorPopupOpen = true;
-        ImGui::Text("Press any button,\nmove any axis,\nor press any key\nto add mapping");
-        if (ImGui::Button("Cancel")) {
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.press_any_button_"
+                                              "move_any_axis_or_press_any_key_to_add_mapping",
+                                              "Press any button,\nmove any axis,\nor press any key\nto add mapping"));
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
             mInputEditorPopupOpen = false;
             ImGui::CloseCurrentPopup();
         }
@@ -312,8 +316,10 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         mInputEditorPopupOpen = true;
-        ImGui::Text("Press any button,\nmove any axis,\nor press any key\nto edit mapping");
-        if (ImGui::Button("Cancel")) {
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.press_any_button_"
+                                              "move_any_axis_or_press_any_key_to_edit_mapping",
+                                              "Press any button,\nmove any axis,\nor press any key\nto edit mapping"));
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
             mInputEditorPopupOpen = false;
             ImGui::CloseCurrentPopup();
         }
@@ -346,7 +352,9 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
             ImGui::OpenPopup(popupId.c_str());
         }
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
-            ImGui::SetTooltip("Edit axis threshold");
+            ImGui::SetTooltip("%s",
+                              Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.edit_axis_threshold",
+                                             "Edit axis threshold"));
         }
         ImGui::PopStyleColor();
         ImGui::PopStyleColor();
@@ -354,13 +362,18 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
 
         if (ImGui::BeginPopup(popupId.c_str())) {
             mInputEditorPopupOpen = true;
-            ImGui::Text("Axis Threshold\n\nThe extent to which the joystick\nmust be moved or the trigger\npressed to "
-                        "initiate the assigned\nbutton action.");
+            ImGui::TextUnformatted(Lang::UIString(
+                "ui.text.enhancements.controls.sohinputeditorwindow.axis_threshold_the_extent_to_which_the_joystick_"
+                "must_be_moved_or_the_trigger_pressed_to_initiate_the",
+                "Axis Threshold\n\nThe extent to which the joystick\nmust be moved or the trigger\npressed to "
+                "initiate the assigned\nbutton action."));
 
             auto globalSettings = Ship::Context::GetRawInstance()->GetControlDeck()->GetGlobalSDLDeviceSettings();
 
             if (sdlAxisDirectionToButtonMapping->AxisIsStick()) {
-                ImGui::Text("Stick axis threshold:");
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.stick_axis_threshold",
+                                   "Stick axis threshold:"));
 
                 int32_t stickAxisThreshold = globalSettings->GetStickAxisThresholdPercentage();
                 if (stickAxisThreshold == 0) {
@@ -398,7 +411,9 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
             }
 
             if (sdlAxisDirectionToButtonMapping->AxisIsTrigger()) {
-                ImGui::Text("Trigger axis threshold:");
+                ImGui::TextUnformatted(
+                    Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.trigger_axis_threshold",
+                                   "Trigger axis threshold:"));
 
                 int32_t triggerAxisThreshold = globalSettings->GetTriggerAxisThresholdPercentage();
                 if (triggerAxisThreshold == 0) {
@@ -435,7 +450,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
                 }
             }
 
-            if (ImGui::Button("Close")) {
+            if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.close", "Close"))) {
                 mInputEditorPopupOpen = false;
                 ImGui::CloseCurrentPopup();
             }
@@ -491,8 +506,10 @@ void SohInputEditorWindow::DrawStickDirectionLineAddMappingButton(uint8_t port, 
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         mInputEditorPopupOpen = true;
-        ImGui::Text("Press any button,\nmove any axis,\nor press any key\nto add mapping");
-        if (ImGui::Button("Cancel")) {
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.press_any_button_"
+                                              "move_any_axis_or_press_any_key_to_add_mapping",
+                                              "Press any button,\nmove any axis,\nor press any key\nto add mapping"));
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
             mInputEditorPopupOpen = false;
             ImGui::CloseCurrentPopup();
         }
@@ -577,8 +594,10 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         mInputEditorPopupOpen = true;
-        ImGui::Text("Press any button,\nmove any axis,\nor press any key\nto edit mapping");
-        if (ImGui::Button("Cancel")) {
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.press_any_button_"
+                                              "move_any_axis_or_press_any_key_to_edit_mapping",
+                                              "Press any button,\nmove any axis,\nor press any key\nto edit mapping"));
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
             mInputEditorPopupOpen = false;
             ImGui::CloseCurrentPopup();
         }
@@ -675,7 +694,8 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
     ImGui::EndGroup();
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode(StringHelper::Sprintf("Analog Stick Options##%d", id).c_str())) {
-        ImGui::Text("Sensitivity:");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.sensitivity", "Sensitivity:"));
 
         int32_t sensitivityPercentage = controllerStick->GetSensitivityPercentage();
         if (sensitivityPercentage == 0) {
@@ -709,12 +729,15 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
         }
         if (!controllerStick->SensitivityIsDefault()) {
             ImGui::SameLine();
-            if (ImGui::Button(StringHelper::Sprintf("Reset to Default###resetStickSensitivity%d", id).c_str())) {
+            if (ImGui::Button(
+                    Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.reset_to_default",
+                                  StringHelper::Sprintf("Reset to Default###resetStickSensitivity%d", id).c_str()))) {
                 controllerStick->ResetSensitivityToDefault();
             }
         }
 
-        ImGui::Text("Deadzone:");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.deadzone", "Deadzone:"));
 
         int32_t deadzonePercentage = controllerStick->GetDeadzonePercentage();
         if (deadzonePercentage == 0) {
@@ -748,12 +771,15 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
         }
         if (!controllerStick->DeadzoneIsDefault()) {
             ImGui::SameLine();
-            if (ImGui::Button(StringHelper::Sprintf("Reset to Default###resetStickDeadzone%d", id).c_str())) {
+            if (ImGui::Button(
+                    Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.reset_to_default",
+                                  StringHelper::Sprintf("Reset to Default###resetStickDeadzone%d", id).c_str()))) {
                 controllerStick->ResetDeadzoneToDefault();
             }
         }
 
-        ImGui::Text("Notch Snap Angle:");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.notch_snap_angle", "Notch Snap Angle:"));
         int32_t notchSnapAngle = controllerStick->GetNotchSnapAngle();
         if (notchSnapAngle == 0) {
             ImGui::BeginDisabled();
@@ -786,7 +812,9 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
         }
         if (!controllerStick->NotchSnapAngleIsDefault()) {
             ImGui::SameLine();
-            if (ImGui::Button(StringHelper::Sprintf("Reset to Default###resetStickSnap%d", id).c_str())) {
+            if (ImGui::Button(
+                    Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.reset_to_default",
+                                  StringHelper::Sprintf("Reset to Default###resetStickSnap%d", id).c_str()))) {
                 controllerStick->ResetNotchSnapAngleToDefault();
             }
         }
@@ -857,8 +885,10 @@ void SohInputEditorWindow::DrawAddRumbleMappingButton(uint8_t port) {
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         mInputEditorPopupOpen = true;
-        ImGui::Text("Press any button\nor move any axis\nto add rumble device");
-        if (ImGui::Button("Cancel")) {
+        ImGui::TextUnformatted(Lang::UIString(
+            "ui.text.enhancements.controls.sohinputeditorwindow.press_any_button_or_move_any_axis_to_add_rumble_device",
+            "Press any button\nor move any axis\nto add rumble device"));
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
             mInputEditorPopupOpen = false;
             ImGui::CloseCurrentPopup();
         }
@@ -922,7 +952,8 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
             }
         }
         if (open) {
-            ImGui::Text("Small Motor Intensity:");
+            ImGui::TextUnformatted(Lang::UIString(
+                "ui.text.enhancements.controls.sohinputeditorwindow.small_motor_intensity", "Small Motor Intensity:"));
 
             int32_t smallMotorIntensity = mapping->GetHighFrequencyIntensityPercentage();
             if (smallMotorIntensity == 0) {
@@ -959,13 +990,16 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
             }
             if (!mapping->HighFrequencyIntensityIsDefault()) {
                 ImGui::SameLine();
-                if (ImGui::Button(StringHelper::Sprintf("Reset to Default###resetHighFrequencyIntensity%s", id.c_str())
-                                      .c_str())) {
+                if (ImGui::Button(Lang::UILabel(
+                        "ui.text.enhancements.controls.sohinputeditorwindow.reset_to_default",
+                        StringHelper::Sprintf("Reset to Default###resetHighFrequencyIntensity%s", id.c_str())
+                            .c_str()))) {
                     mapping->ResetHighFrequencyIntensityToDefault();
                 }
             }
 
-            ImGui::Text("Large Motor Intensity:");
+            ImGui::TextUnformatted(Lang::UIString(
+                "ui.text.enhancements.controls.sohinputeditorwindow.large_motor_intensity", "Large Motor Intensity:"));
 
             int32_t largeMotorIntensity = mapping->GetLowFrequencyIntensityPercentage();
             if (largeMotorIntensity == 0) {
@@ -1002,8 +1036,10 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
             }
             if (!mapping->LowFrequencyIntensityIsDefault()) {
                 ImGui::SameLine();
-                if (ImGui::Button(
-                        StringHelper::Sprintf("Reset to Default###resetLowFrequencyIntensity%s", id.c_str()).c_str())) {
+                if (ImGui::Button(Lang::UILabel(
+                        "ui.text.enhancements.controls.sohinputeditorwindow.reset_to_default",
+                        StringHelper::Sprintf("Reset to Default###resetLowFrequencyIntensity%s", id.c_str())
+                            .c_str()))) {
                     mapping->ResetLowFrequencyIntensityToDefault();
                 }
             }
@@ -1014,7 +1050,8 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
     }
 
     ImGui::AlignTextToFramePadding();
-    ImGui::BulletText("Add rumble device");
+    ImGui::BulletText("%s", Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.add_rumble_device",
+                                           "Add rumble device"));
     DrawAddRumbleMappingButton(port);
 }
 
@@ -1040,8 +1077,10 @@ void SohInputEditorWindow::DrawAddLEDMappingButton(uint8_t port) {
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         mInputEditorPopupOpen = true;
-        ImGui::Text("Press any button\nor move any axis\nto add LED device");
-        if (ImGui::Button("Cancel")) {
+        ImGui::TextUnformatted(Lang::UIString(
+            "ui.text.enhancements.controls.sohinputeditorwindow.press_any_button_or_move_any_axis_to_add_led_device",
+            "Press any button\nor move any axis\nto add LED device"));
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
             mInputEditorPopupOpen = false;
             ImGui::CloseCurrentPopup();
         }
@@ -1068,7 +1107,8 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
         DrawRemoveLEDMappingButton(port, id);
         if (open) {
             ImGui::AlignTextToFramePadding();
-            ImGui::Text("LED Color:");
+            ImGui::TextUnformatted(
+                Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.led_color", "LED Color:"));
             ImGui::SameLine();
             ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(80.0f));
             int32_t colorSource = mapping->GetColorSource();
@@ -1095,15 +1135,21 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom"
                 };
                 CVarCombobox(
-                    "Source", CVAR_SETTING("LEDColorSource"), ledSources,
-                    UIWidgets::ComboboxOptions()
-                        .Color(THEME_COLOR)
-                        .DefaultIndex(LED_SOURCE_TUNIC_ORIGINAL)
-                        .Tooltip("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
-                                 "health < 40%. Green otherwise.\n\n"
-                                 "Tunics: colors will mirror currently equipped tunic, whether original or the current "
-                                 "values in Cosmetics Editor.\n\n"
-                                 "Custom: single, solid color"));
+                    Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.source", "Source"),
+                    CVAR_SETTING("LEDColorSource"), ledSources,
+                    UIWidgets::ComboboxOptions(
+                        UIWidgets::ComboboxOptions()
+                            .Color(THEME_COLOR)
+                            .DefaultIndex(LED_SOURCE_TUNIC_ORIGINAL)
+                            .Tooltip(Lang::UIString(
+                                "ui.text.enhancements.controls.sohinputeditorwindow.health_red_when_health_critical_13_"
+                                "20_depending_on_max_health_yellow_when_health_40_green_otherwise_",
+                                "Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
+                                "health < 40%. Green otherwise.\n\n"
+                                "Tunics: colors will mirror currently equipped tunic, whether original or the current "
+                                "values in Cosmetics Editor.\n\n"
+                                "Custom: single, solid color")))
+                        .TranslationScope("ui.text.enhancements.controls.sohinputeditorwindow"));
                 if (CVarGetInteger(CVAR_SETTING("LEDColorSource"), 1) == LED_SOURCE_CUSTOM) {
                     UIWidgets::Spacer(3);
                     auto port1Color = CVarGetColor24(CVAR_SETTING("LEDPort1Color"), { 255, 255, 255 });
@@ -1119,31 +1165,42 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                     ImGui::SameLine();
-                    ImGui::Text("Custom Color");
+                    ImGui::TextUnformatted(Lang::UIString(
+                        "ui.text.enhancements.controls.sohinputeditorwindow.custom_color", "Custom Color"));
                 }
-                CVarSliderFloat("Brightness: %.1f %%", CVAR_SETTING("LEDBrightness"),
-                                FloatSliderOptions()
-                                    .IsPercentage()
-                                    .Min(0.0f)
-                                    .Max(1.0f)
-                                    .DefaultValue(1.0f)
-                                    .ShowButtons(true)
-                                    .Tooltip("Sets the brightness of controller LEDs. 0% brightness = LEDs off."));
+                CVarSliderFloat(
+                    Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.brightness_1f",
+                                  "Brightness: %.1f %%"),
+                    CVAR_SETTING("LEDBrightness"),
+                    FloatSliderOptions()
+                        .IsPercentage()
+                        .Min(0.0f)
+                        .Max(1.0f)
+                        .DefaultValue(1.0f)
+                        .ShowButtons(true)
+                        .Tooltip(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.sets_the_"
+                                                "brightness_of_controller_leds_0_brightness_leds_off",
+                                                "Sets the brightness of controller LEDs. 0% brightness = LEDs off.")));
                 CVarCheckbox(
-                    "Critical Health Override", CVAR_SETTING("LEDCriticalOverride"),
+                    Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.critical_health_override",
+                                  "Critical Health Override"),
+                    CVAR_SETTING("LEDCriticalOverride"),
                     CheckboxOptions({ { .disabled = CVarGetInteger(CVAR_SETTING("LEDColorSource"),
                                                                    LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH,
                                         .disabledTooltip = "Override redundant for health source." } })
                         .DefaultValue(true)
-                        .Tooltip(
-                            "Shows red color when health is critical, otherwise displays according to color source."));
+                        .Tooltip(Lang::UIString(
+                            "ui.text.enhancements.controls.sohinputeditorwindow.shows_red_color_when_health_is_"
+                            "critical_otherwise_displays_according_to_color_source",
+                            "Shows red color when health is critical, otherwise displays according to color source.")));
             }
             ImGui::TreePop();
         }
     }
 
     ImGui::AlignTextToFramePadding();
-    ImGui::BulletText("Add LED device");
+    ImGui::BulletText(
+        "%s", Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.add_led_device", "Add LED device"));
     DrawAddLEDMappingButton(port);
 }
 
@@ -1169,8 +1226,10 @@ void SohInputEditorWindow::DrawAddGyroMappingButton(uint8_t port) {
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         mInputEditorPopupOpen = true;
-        ImGui::Text("Press any button\nor move any axis\nto add gyro device");
-        if (ImGui::Button("Cancel")) {
+        ImGui::TextUnformatted(Lang::UIString(
+            "ui.text.enhancements.controls.sohinputeditorwindow.press_any_button_or_move_any_axis_to_add_gyro_device",
+            "Press any button\nor move any axis\nto add gyro device"));
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
             mInputEditorPopupOpen = false;
             ImGui::CloseCurrentPopup();
         }
@@ -1214,7 +1273,8 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
             ImVec2(ImGui::GetCursorPos().x + SCALE_IMGUI_SIZE(8), ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(8)));
 
         ImGui::BeginGroup();
-        ImGui::Text("Sensitivity:");
+        ImGui::TextUnformatted(
+            Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.sensitivity", "Sensitivity:"));
 
         int32_t sensitivity = mapping->GetSensitivityPercent();
         if (sensitivity == 0) {
@@ -1252,13 +1312,16 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
 
         if (!mapping->SensitivityIsDefault()) {
             ImGui::SameLine();
-            if (ImGui::Button(StringHelper::Sprintf("Reset to Default###resetGyroSensitivity%s", id.c_str()).c_str())) {
+            if (ImGui::Button(Lang::UILabel(
+                    "ui.text.enhancements.controls.sohinputeditorwindow.reset_to_default",
+                    StringHelper::Sprintf("Reset to Default###resetGyroSensitivity%s", id.c_str()).c_str()))) {
                 mapping->ResetSensitivityToDefault();
             }
         }
 
         ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x, ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(8)));
-        if (ImGui::Button("Recalibrate")) {
+        if (ImGui::Button(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.recalibrate", "Recalibrate"))) {
             mapping->Recalibrate();
             mapping->SaveToConfig();
         }
@@ -1266,7 +1329,8 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
         ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - SCALE_IMGUI_SIZE(8)));
     } else {
         ImGui::AlignTextToFramePadding();
-        ImGui::BulletText("Add gyro device");
+        ImGui::BulletText("%s", Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.add_gyro_device",
+                                               "Add gyro device"));
         DrawAddGyroMappingButton(port);
     }
 }
@@ -1347,14 +1411,16 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
     CheckboxOptions checkOpt = CheckboxOptions().Color(THEME_COLOR);
     SohGui::mSohMenu->MenuDrawItem(dpadOcarina, THEME_COLOR);
     SohGui::mSohMenu->MenuDrawItem(rightStickOcarina, THEME_COLOR);
-    CVarCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"), checkOpt);
+    CVarCheckbox(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.customize_ocarina_controls",
+                               "Customize Ocarina Controls"),
+                 CVAR_SETTING("CustomOcarina.Enabled"), checkOpt);
 
     if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
         ImGui::BeginDisabled();
     }
 
     ImGui::AlignTextToFramePadding();
-    ImGui::BulletText("Notes");
+    ImGui::BulletText("%s", Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.notes", "Notes"));
     DrawButtonLine("A (D4)", 0, BTN_CUSTOM_OCARINA_NOTE_D4);
     DrawButtonLine(ICON_FA_ARROW_DOWN " (F4)", 0, BTN_CUSTOM_OCARINA_NOTE_F4);
     DrawButtonLine(ICON_FA_ARROW_RIGHT " (A4)", 0, BTN_CUSTOM_OCARINA_NOTE_A4);
@@ -1362,11 +1428,12 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
     DrawButtonLine(ICON_FA_ARROW_UP " (D5)", 0, BTN_CUSTOM_OCARINA_NOTE_D5);
 
     ImGui::AlignTextToFramePadding();
-    ImGui::BulletText("Disable song detection");
+    ImGui::BulletText("%s", Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.disable_song_detection",
+                                           "Disable song detection"));
     DrawButtonLine(ICON_FA_BAN "##DisableSongDetection", 0, BTN_CUSTOM_OCARINA_DISABLE_SONGS);
 
     ImGui::AlignTextToFramePadding();
-    ImGui::BulletText("Pitch");
+    ImGui::BulletText("%s", Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.pitch", "Pitch"));
     DrawButtonLine(ICON_FA_ARROW_UP "##Pitch", 0, BTN_CUSTOM_OCARINA_PITCH_UP);
     DrawButtonLine(ICON_FA_ARROW_DOWN "##Pitch", 0, BTN_CUSTOM_OCARINA_PITCH_DOWN);
 
@@ -1387,39 +1454,85 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     SohGui::mSohMenu->MenuDrawItem(mouseDisableThirdPerson, THEME_COLOR);
 
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
-    CVarCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"),
-                 CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming"));
-    CVarCheckbox("Allow moving while in first-person mode", CVAR_SETTING("MoveInFirstPerson"),
-                 CheckboxOptions({ { .disabled = !CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0),
-                                     .disabledTooltip = "Forced off because Right Stick Aiming is disabled." } })
-                     .Color(THEME_COLOR)
-                     .Tooltip("Changes the left stick to move the player while in first-person mode"));
-    CVarCheckbox("Invert Aiming X Axis", CVAR_SETTING("Controls.InvertAimingXAxis"),
-                 CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming"));
-    CVarCheckbox("Invert Aiming Y Axis", CVAR_SETTING("Controls.InvertAimingYAxis"),
+    CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.right_stick_aiming", "Right Stick Aiming"),
+        CVAR_SETTING("Controls.RightStickAim"),
+        CheckboxOptions()
+            .Color(THEME_COLOR)
+            .Tooltip(
+                Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.allows_for_aiming_with_the_right_"
+                               "stick_in_first_person_c_up_view_weapon_aiming",
+                               "Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming")));
+    CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.allow_moving_while_in_first_person_mode",
+                      "Allow moving while in first-person mode"),
+        CVAR_SETTING("MoveInFirstPerson"),
+        CheckboxOptions({ { .disabled = !CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0),
+                            .disabledTooltip = "Forced off because Right Stick Aiming is disabled." } })
+            .Color(THEME_COLOR)
+            .Tooltip(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.changes_the_left_stick_to_move_"
+                                    "the_player_while_in_first_person_mode",
+                                    "Changes the left stick to move the player while in first-person mode")));
+    CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.invert_aiming_x_axis",
+                      "Invert Aiming X Axis"),
+        CVAR_SETTING("Controls.InvertAimingXAxis"),
+        CheckboxOptions()
+            .Color(THEME_COLOR)
+            .Tooltip(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.inverts_the_camera_x_axis_in_"
+                                    "first_person_c_up_view_weapon_aiming",
+                                    "Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming")));
+    CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.invert_aiming_y_axis",
+                      "Invert Aiming Y Axis"),
+        CVAR_SETTING("Controls.InvertAimingYAxis"),
+        CheckboxOptions()
+            .Color(THEME_COLOR)
+            .DefaultValue(true)
+            .Tooltip(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.inverts_the_camera_y_axis_in_"
+                                    "first_person_c_up_view_weapon_aiming",
+                                    "Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming")));
+    CVarCheckbox(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.invert_shield_aiming_x_axis",
+                               "Invert Shield Aiming X Axis"),
+                 CVAR_SETTING("Controls.InvertShieldAimingXAxis"),
                  CheckboxOptions()
                      .Color(THEME_COLOR)
                      .DefaultValue(true)
-                     .Tooltip("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming"));
-    CVarCheckbox("Invert Shield Aiming X Axis", CVAR_SETTING("Controls.InvertShieldAimingXAxis"),
-                 CheckboxOptions().Color(THEME_COLOR).DefaultValue(true).Tooltip("Inverts the Shield Aiming X Axis"));
-    CVarCheckbox("Invert Shield Aiming Y Axis", CVAR_SETTING("Controls.InvertShieldAimingYAxis"),
-                 CheckboxOptions().Color(THEME_COLOR).Tooltip("Inverts the Shield Aiming Y Axis"));
-    CVarCheckbox("Invert Z-Weapon Aiming Y Axis", CVAR_SETTING("Controls.InvertZAimingYAxis"),
+                     .Tooltip(Lang::UIString(
+                         "ui.text.enhancements.controls.sohinputeditorwindow.inverts_the_shield_aiming_x_axis",
+                         "Inverts the Shield Aiming X Axis")));
+    CVarCheckbox(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.invert_shield_aiming_y_axis",
+                               "Invert Shield Aiming Y Axis"),
+                 CVAR_SETTING("Controls.InvertShieldAimingYAxis"),
                  CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .DefaultValue(true)
-                     .Tooltip("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming"));
-    CVarCheckbox("Disable Auto-Centering in First-Person View", CVAR_SETTING("DisableFirstPersonAutoCenterView"),
-                 CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming"));
-    if (CVarCheckbox("Enable Custom Aiming/First-Person sensitivity",
-                     CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), CheckboxOptions().Color(THEME_COLOR))) {
+                     .Tooltip(Lang::UIString(
+                         "ui.text.enhancements.controls.sohinputeditorwindow.inverts_the_shield_aiming_y_axis",
+                         "Inverts the Shield Aiming Y Axis")));
+    CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.invert_z_weapon_aiming_y_axis",
+                      "Invert Z-Weapon Aiming Y Axis"),
+        CVAR_SETTING("Controls.InvertZAimingYAxis"),
+        CheckboxOptions()
+            .Color(THEME_COLOR)
+            .DefaultValue(true)
+            .Tooltip(Lang::UIString(
+                "ui.text.enhancements.controls.sohinputeditorwindow.inverts_the_camera_y_axis_in_z_weapon_aiming",
+                "Inverts the Camera Y Axis in:\n-Z-Weapon Aiming")));
+    CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.disable_auto_centering_in_first_person_view",
+                      "Disable Auto-Centering in First-Person View"),
+        CVAR_SETTING("DisableFirstPersonAutoCenterView"),
+        CheckboxOptions()
+            .Color(THEME_COLOR)
+            .Tooltip(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.prevents_the_c_up_view_from_"
+                                    "auto_centering_allowing_for_gyro_aiming",
+                                    "Prevents the C-Up view from auto-centering, allowing for Gyro Aiming")));
+    if (CVarCheckbox(
+            Lang::UILabel(
+                "ui.text.enhancements.controls.sohinputeditorwindow.enable_custom_aiming_first_person_sensitivity",
+                "Enable Custom Aiming/First-Person sensitivity"),
+            CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), CheckboxOptions().Color(THEME_COLOR))) {
         if (!CVarGetInteger(CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), 0)) {
             CVarClear(CVAR_SETTING("FirstPersonCameraSensitivity.X"));
             CVarClear(CVAR_SETTING("FirstPersonCameraSensitivity.Y"));
@@ -1427,24 +1540,30 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
         }
     }
     if (CVarGetInteger(CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), 0)) {
-        CVarSliderFloat("Aiming/First-Person Horizontal Sensitivity: %.0f %%",
-                        CVAR_SETTING("FirstPersonCameraSensitivity.X"),
-                        FloatSliderOptions()
-                            .Color(THEME_COLOR)
-                            .IsPercentage()
-                            .Min(0.01f)
-                            .Max(5.0f)
-                            .DefaultValue(1.0f)
-                            .ShowButtons(true));
-        CVarSliderFloat("Aiming/First-Person Vertical Sensitivity: %.0f %%",
-                        CVAR_SETTING("FirstPersonCameraSensitivity.Y"),
-                        FloatSliderOptions()
-                            .Color(THEME_COLOR)
-                            .IsPercentage()
-                            .Min(0.01f)
-                            .Max(5.0f)
-                            .DefaultValue(1.0f)
-                            .ShowButtons(true));
+        CVarSliderFloat(
+            Lang::UILabel(
+                "ui.text.enhancements.controls.sohinputeditorwindow.aiming_first_person_horizontal_sensitivity_0f",
+                "Aiming/First-Person Horizontal Sensitivity: %.0f %%"),
+            CVAR_SETTING("FirstPersonCameraSensitivity.X"),
+            FloatSliderOptions()
+                .Color(THEME_COLOR)
+                .IsPercentage()
+                .Min(0.01f)
+                .Max(5.0f)
+                .DefaultValue(1.0f)
+                .ShowButtons(true));
+        CVarSliderFloat(
+            Lang::UILabel(
+                "ui.text.enhancements.controls.sohinputeditorwindow.aiming_first_person_vertical_sensitivity_0f",
+                "Aiming/First-Person Vertical Sensitivity: %.0f %%"),
+            CVAR_SETTING("FirstPersonCameraSensitivity.Y"),
+            FloatSliderOptions()
+                .Color(THEME_COLOR)
+                .IsPercentage()
+                .Min(0.01f)
+                .Max(5.0f)
+                .DefaultValue(1.0f)
+                .ShowButtons(true));
     }
     Ship::GuiWindow::EndGroupPanel(0);
 
@@ -1453,37 +1572,64 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     Ship::GuiWindow::BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
 
     SohGui::mSohMenu->MenuDrawItem(freeLook, THEME_COLOR);
-    CVarCheckbox("Invert Camera X Axis", CVAR_SETTING("FreeLook.InvertXAxis"),
-                 CheckboxOptions().Color(THEME_COLOR).Tooltip("Inverts the Camera X Axis in:\n-Free look"));
-    CVarCheckbox(
-        "Invert Camera Y Axis", CVAR_SETTING("FreeLook.InvertYAxis"),
-        CheckboxOptions().Color(THEME_COLOR).DefaultValue(true).Tooltip("Inverts the Camera Y Axis in:\n-Free look"));
-    CVarSliderFloat("Third-Person Horizontal Sensitivity: %.0f %%", CVAR_SETTING("FreeLook.CameraSensitivity.X"),
-                    FloatSliderOptions()
-                        .Color(THEME_COLOR)
-                        .IsPercentage()
-                        .Min(0.01f)
-                        .Max(5.0f)
-                        .DefaultValue(1.0f)
-                        .ShowButtons(true));
-    CVarSliderFloat("Third-Person Vertical Sensitivity: %.0f %%", CVAR_SETTING("FreeLook.CameraSensitivity.Y"),
-                    FloatSliderOptions()
-                        .Color(THEME_COLOR)
-                        .IsPercentage()
-                        .Min(0.01f)
-                        .Max(5.0f)
-                        .DefaultValue(1.0f)
-                        .ShowButtons(true));
-    CVarCheckbox("Follow Default Camera Distance", CVAR_SETTING("FreeLook.UseGameDistance"),
+    CVarCheckbox(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.invert_camera_x_axis",
+                               "Invert Camera X Axis"),
+                 CVAR_SETTING("FreeLook.InvertXAxis"),
                  CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Lets the free camera pull in and out using the game's default distance for the "
-                              "current situation instead of a fixed distance."));
+                     .Tooltip(Lang::UIString(
+                         "ui.text.enhancements.controls.sohinputeditorwindow.inverts_the_camera_x_axis_in_free_look",
+                         "Inverts the Camera X Axis in:\n-Free look")));
+    CVarCheckbox(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.invert_camera_y_axis",
+                               "Invert Camera Y Axis"),
+                 CVAR_SETTING("FreeLook.InvertYAxis"),
+                 CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .DefaultValue(true)
+                     .Tooltip(Lang::UIString(
+                         "ui.text.enhancements.controls.sohinputeditorwindow.inverts_the_camera_y_axis_in_free_look",
+                         "Inverts the Camera Y Axis in:\n-Free look")));
+    CVarSliderFloat(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.third_person_horizontal_sensitivity_0f",
+                      "Third-Person Horizontal Sensitivity: %.0f %%"),
+        CVAR_SETTING("FreeLook.CameraSensitivity.X"),
+        FloatSliderOptions()
+            .Color(THEME_COLOR)
+            .IsPercentage()
+            .Min(0.01f)
+            .Max(5.0f)
+            .DefaultValue(1.0f)
+            .ShowButtons(true));
+    CVarSliderFloat(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.third_person_vertical_sensitivity_0f",
+                      "Third-Person Vertical Sensitivity: %.0f %%"),
+        CVAR_SETTING("FreeLook.CameraSensitivity.Y"),
+        FloatSliderOptions()
+            .Color(THEME_COLOR)
+            .IsPercentage()
+            .Min(0.01f)
+            .Max(5.0f)
+            .DefaultValue(1.0f)
+            .ShowButtons(true));
+    CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.follow_default_camera_distance",
+                      "Follow Default Camera Distance"),
+        CVAR_SETTING("FreeLook.UseGameDistance"),
+        CheckboxOptions()
+            .Color(THEME_COLOR)
+            .Tooltip(Lang::UIString("ui.text.enhancements.controls.sohinputeditorwindow.lets_the_free_camera_pull_in_"
+                                    "and_out_using_the_game_s_default_distance_for_the_current_situation_ins",
+                                    "Lets the free camera pull in and out using the game's default distance for the "
+                                    "current situation instead of a fixed distance.")));
     if (!CVarGetInteger(CVAR_SETTING("FreeLook.UseGameDistance"), 0)) {
-        CVarSliderInt("Camera Distance: %d", CVAR_SETTING("FreeLook.MaxCameraDistance"),
+        CVarSliderInt(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.camera_distance_d",
+                                    "Camera Distance: %d"),
+                      CVAR_SETTING("FreeLook.MaxCameraDistance"),
                       IntSliderOptions().Color(THEME_COLOR).Min(100).Max(900).DefaultValue(185).ShowButtons(true));
     }
-    CVarSliderInt("Camera Transition Speed: %d", CVAR_SETTING("FreeLook.TransitionSpeed"),
+    CVarSliderInt(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.camera_transition_speed_d",
+                                "Camera Transition Speed: %d"),
+                  CVAR_SETTING("FreeLook.TransitionSpeed"),
                   IntSliderOptions().Color(THEME_COLOR).Min(0).Max(900).DefaultValue(25).ShowButtons(true));
     Ship::GuiWindow::EndGroupPanel(0);
 }
@@ -1499,11 +1645,16 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
         ImGui::BeginDisabled();
     }
 
-    CVarCheckbox("D-pad hold change", CVAR_SETTING("DpadHoldChange"),
-                 CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .DefaultValue(true)
-                     .Tooltip("The cursor will only move a single space no matter how long a D-pad direction is held"));
+    CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.d_pad_hold_change", "D-pad hold change"),
+        CVAR_SETTING("DpadHoldChange"),
+        CheckboxOptions()
+            .Color(THEME_COLOR)
+            .DefaultValue(true)
+            .Tooltip(Lang::UIString(
+                "ui.text.enhancements.controls.sohinputeditorwindow.the_cursor_will_only_move_a_single_space_no_matter_"
+                "how_long_a_d_pad_direction_is_held",
+                "The cursor will only move a single space no matter how long a D-pad direction is held")));
 
     if (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CVarGetInteger(CVAR_SETTING("DpadInText"), 0)) {
         ImGui::EndDisabled();
@@ -1564,7 +1715,8 @@ void SohInputEditorWindow::DrawDeviceToggles(uint8_t portIndex) {
 
 void SohInputEditorWindow::DrawLinkTab() {
     uint8_t portIndex = 0;
-    if (ImGui::BeginTabItem(StringHelper::Sprintf("Link (P1)###port%d", portIndex).c_str())) {
+    if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.link_p1",
+                                          StringHelper::Sprintf("Link (P1)###port%d", portIndex).c_str()))) {
         DrawClearAllButton(portIndex);
         DrawSetDefaultsButton(portIndex);
         DrawDeviceToggles(portIndex);
@@ -1576,7 +1728,9 @@ void SohInputEditorWindow::DrawLinkTab() {
         ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
         ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-        if (ImGui::CollapsingHeader("Buttons", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.buttons", "Buttons"), NULL,
+                ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawButtonLine("A", portIndex, BTN_A, CHIP_COLOR_N64_BLUE);
             DrawButtonLine("B", portIndex, BTN_B, CHIP_COLOR_N64_GREEN);
             DrawButtonLine("Start", portIndex, BTN_START, CHIP_COLOR_N64_RED);
@@ -1593,43 +1747,52 @@ void SohInputEditorWindow::DrawLinkTab() {
                            CHIP_COLOR_N64_YELLOW);
         }
 
-        if (ImGui::CollapsingHeader("D-Pad", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.d_pad", "D-Pad"),
+                                    NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawButtonLine(StringHelper::Sprintf("D %s", ICON_FA_ARROW_UP).c_str(), portIndex, BTN_DUP);
             DrawButtonLine(StringHelper::Sprintf("D %s", ICON_FA_ARROW_DOWN).c_str(), portIndex, BTN_DDOWN);
             DrawButtonLine(StringHelper::Sprintf("D %s", ICON_FA_ARROW_LEFT).c_str(), portIndex, BTN_DLEFT);
             DrawButtonLine(StringHelper::Sprintf("D %s", ICON_FA_ARROW_RIGHT).c_str(), portIndex, BTN_DRIGHT);
         }
 
-        if (ImGui::CollapsingHeader("Analog Stick", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.analog_stick", "Analog Stick"), NULL,
+                ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawStickSection(portIndex, Ship::LEFT, 0);
         }
 
-        if (ImGui::CollapsingHeader("Additional (\"Right\") Stick")) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.additional_right_stick",
+                              "Additional (\"Right\") Stick"))) {
             DrawStickSection(portIndex, Ship::RIGHT, 1, CHIP_COLOR_N64_YELLOW);
         }
 
-        if (ImGui::CollapsingHeader("Rumble")) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.rumble", "Rumble"))) {
             DrawRumbleSection(portIndex);
         }
 
-        if (ImGui::CollapsingHeader("Gyro")) {
+        if (ImGui::CollapsingHeader(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.gyro", "Gyro"))) {
             DrawGyroSection(portIndex);
         }
 
-        if (ImGui::CollapsingHeader("LEDs")) {
+        if (ImGui::CollapsingHeader(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.leds", "LEDs"))) {
             DrawLEDSection(portIndex);
         }
 
-        if (ImGui::CollapsingHeader("Modifier Buttons")) {
+        if (ImGui::CollapsingHeader(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.modifier_buttons",
+                                                  "Modifier Buttons"))) {
             DrawButtonLine("M1", portIndex, BTN_CUSTOM_MODIFIER1);
             DrawButtonLine("M2", portIndex, BTN_CUSTOM_MODIFIER2);
         }
 
-        if (ImGui::CollapsingHeader("Ocarina Controls")) {
+        if (ImGui::CollapsingHeader(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.ocarina_controls",
+                                                  "Ocarina Controls"))) {
             DrawOcarinaControlPanel();
         }
 
-        if (ImGui::CollapsingHeader("Camera Controls")) {
+        if (ImGui::CollapsingHeader(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.camera_controls",
+                                                  "Camera Controls"))) {
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
@@ -1639,7 +1802,8 @@ void SohInputEditorWindow::DrawLinkTab() {
             ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
         }
 
-        if (ImGui::CollapsingHeader("D-Pad Controls")) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.d_pad_controls", "D-Pad Controls"))) {
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
@@ -1663,7 +1827,8 @@ void SohInputEditorWindow::DrawIvanTab() {
     }
 
     uint8_t portIndex = 1;
-    if (ImGui::BeginTabItem(StringHelper::Sprintf("Ivan (P2)###port%d", portIndex).c_str())) {
+    if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.ivan_p2",
+                                          StringHelper::Sprintf("Ivan (P2)###port%d", portIndex).c_str()))) {
         DrawClearAllButton(portIndex);
         DrawSetDefaultsButton(portIndex);
         DrawDeviceToggles(portIndex);
@@ -1675,7 +1840,9 @@ void SohInputEditorWindow::DrawIvanTab() {
         ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
         ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-        if (ImGui::CollapsingHeader("Buttons", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.buttons", "Buttons"), NULL,
+                ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawButtonLine("A", portIndex, BTN_A, CHIP_COLOR_N64_BLUE);
             DrawButtonLine("B", portIndex, BTN_B, CHIP_COLOR_N64_GREEN);
             DrawButtonLine("Z", portIndex, BTN_Z);
@@ -1689,14 +1856,17 @@ void SohInputEditorWindow::DrawIvanTab() {
                            CHIP_COLOR_N64_YELLOW);
         }
 
-        if (ImGui::CollapsingHeader("D-Pad", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.d_pad", "D-Pad"),
+                                    NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_UP).c_str(), portIndex, BTN_DUP);
             DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_DOWN).c_str(), portIndex, BTN_DDOWN);
             DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_LEFT).c_str(), portIndex, BTN_DLEFT);
             DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_RIGHT).c_str(), portIndex, BTN_DRIGHT);
         }
 
-        if (ImGui::CollapsingHeader("Analog Stick", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.analog_stick", "Analog Stick"), NULL,
+                ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawStickSection(portIndex, Ship::LEFT, 0);
         }
 
@@ -1720,7 +1890,9 @@ void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string custo
 
         PushStyleHeader(THEME_COLOR);
 
-        if (ImGui::CollapsingHeader("Buttons", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.buttons", "Buttons"), NULL,
+                ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawButtonLine("A", portIndex, BTN_A, CHIP_COLOR_N64_BLUE);
             DrawButtonLine("B", portIndex, BTN_B, CHIP_COLOR_N64_GREEN);
             DrawButtonLine("Start", portIndex, BTN_START, CHIP_COLOR_N64_RED);
@@ -1736,14 +1908,17 @@ void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string custo
             DrawButtonLine(StringHelper::Sprintf("C %s", ICON_FA_ARROW_RIGHT).c_str(), portIndex, BTN_CRIGHT,
                            CHIP_COLOR_N64_YELLOW);
         }
-        if (ImGui::CollapsingHeader("D-Pad", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.d_pad", "D-Pad"),
+                                    NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_UP).c_str(), portIndex, BTN_DUP);
             DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_DOWN).c_str(), portIndex, BTN_DDOWN);
             DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_LEFT).c_str(), portIndex, BTN_DLEFT);
             DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_RIGHT).c_str(), portIndex, BTN_DRIGHT);
         }
 
-        if (ImGui::CollapsingHeader("Analog Stick", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::CollapsingHeader(
+                Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.analog_stick", "Analog Stick"), NULL,
+                ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawStickSection(portIndex, Ship::LEFT, 0);
         }
 
@@ -1754,17 +1929,25 @@ void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string custo
 
 void SohInputEditorWindow::DrawClearAllButton(uint8_t portIndex) {
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button("Clear All", ImGui::CalcTextSize("Clear All") * 2)) {
-        ImGui::OpenPopup("Clear All##clearAllPopup");
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.clear_all", "Clear All"),
+                      ImGui::CalcTextSize("Clear All") * 2)) {
+        ImGui::OpenPopup(
+            Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.clear_all", "Clear All##clearAllPopup"));
     }
     PopStyleButton();
-    if (ImGui::BeginPopupModal("Clear All##clearAllPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::Text("This will clear all mappings for port %d.\n\nContinue?", portIndex + 1);
+    if (ImGui::BeginPopupModal(
+            Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.clear_all", "Clear All##clearAllPopup"),
+            NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text(
+            Lang::UIFormat(
+                "ui.text.enhancements.controls.sohinputeditorwindow.this_will_clear_all_mappings_for_port_d_continue",
+                "This will clear all mappings for port %d.\n\nContinue?"),
+            portIndex + 1);
         PushStyleButton(THEME_COLOR);
-        if (ImGui::Button("Cancel")) {
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
             ImGui::CloseCurrentPopup();
         }
-        if (ImGui::Button("Clear All")) {
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.clear_all", "Clear All"))) {
             Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(portIndex)->ClearAllMappings();
             ImGui::CloseCurrentPopup();
         }
@@ -1777,7 +1960,8 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
     ImGui::SameLine();
     auto popupId = StringHelper::Sprintf("setDefaultsPopup##%d", portIndex);
     PushStyleButton(THEME_COLOR);
-    if (ImGui::Button(StringHelper::Sprintf("Set Defaults##%d", portIndex).c_str(),
+    if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.set_defaults",
+                                    StringHelper::Sprintf("Set Defaults##%d", portIndex).c_str()),
                       ImVec2(ImGui::CalcTextSize("Set Defaults") * 2))) {
         ImGui::OpenPopup(popupId.c_str());
     }
@@ -1787,17 +1971,26 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
         bool shouldClose = false;
         PushStyleButton(BUTTON_COLOR_KEYBOARD_BEIGE);
         if (ImGui::Button(StringHelper::Sprintf("%s Keyboard", ICON_FA_KEYBOARD_O).c_str())) {
-            ImGui::OpenPopup("Set Defaults for Keyboard");
+            ImGui::OpenPopup(
+                Lang::UILabel("ui.text.libultraship.window.gui.inputeditorwindow.set_defaults_for_keyboard",
+                              "Set Defaults for Keyboard"));
         }
         PopStyleButton();
-        if (ImGui::BeginPopupModal("Set Defaults for Keyboard", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("This will clear all existing mappings for\nKeyboard on port %d.\n\nContinue?", portIndex + 1);
+        if (ImGui::BeginPopupModal(
+                Lang::UILabel("ui.text.libultraship.window.gui.inputeditorwindow.set_defaults_for_keyboard",
+                              "Set Defaults for Keyboard"),
+                NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text(Lang::UIFormat("ui.text.enhancements.controls.sohinputeditorwindow.this_will_clear_all_"
+                                       "existing_mappings_for_keyboard_on_port_d_continue",
+                                       "This will clear all existing mappings for\nKeyboard on port %d.\n\nContinue?"),
+                        portIndex + 1);
             PushStyleButton(THEME_COLOR);
-            if (ImGui::Button("Cancel")) {
+            if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
                 shouldClose = true;
                 ImGui::CloseCurrentPopup();
             }
-            if (ImGui::Button("Set defaults")) {
+            if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.set_defaults_2",
+                                            "Set defaults"))) {
                 Ship::Context::GetRawInstance()
                     ->GetControlDeck()
                     ->GetControllerByPort(portIndex)
@@ -1816,18 +2009,27 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
         GetButtonColorsForDeviceType(Ship::PhysicalDeviceType::SDLGamepad, buttonColor, buttonHoveredColor);
         PushStyleButton(buttonColor);
         if (ImGui::Button(StringHelper::Sprintf("%s %s", ICON_FA_GAMEPAD, "Gamepad (SDL)").c_str())) {
-            ImGui::OpenPopup("Set Defaults for Gamepad (SDL)");
+            ImGui::OpenPopup(
+                Lang::UILabel("ui.text.libultraship.window.gui.inputeditorwindow.set_defaults_for_gamepad_sdl",
+                              "Set Defaults for Gamepad (SDL)"));
         }
         PopStyleButton();
-        if (ImGui::BeginPopupModal("Set Defaults for Gamepad (SDL)", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("This will clear all existing mappings for\nGamepad (SDL) on port %d.\n\nContinue?",
-                        portIndex + 1);
+        if (ImGui::BeginPopupModal(
+                Lang::UILabel("ui.text.libultraship.window.gui.inputeditorwindow.set_defaults_for_gamepad_sdl",
+                              "Set Defaults for Gamepad (SDL)"),
+                NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text(
+                Lang::UIFormat("ui.text.enhancements.controls.sohinputeditorwindow.this_will_clear_all_existing_"
+                               "mappings_for_gamepad_sdl_on_port_d_continue",
+                               "This will clear all existing mappings for\nGamepad (SDL) on port %d.\n\nContinue?"),
+                portIndex + 1);
             PushStyleButton(THEME_COLOR);
-            if (ImGui::Button("Cancel")) {
+            if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel"))) {
                 shouldClose = true;
                 ImGui::CloseCurrentPopup();
             }
-            if (ImGui::Button("Set defaults")) {
+            if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.set_defaults_2",
+                                            "Set defaults"))) {
                 Ship::Context::GetRawInstance()
                     ->GetControlDeck()
                     ->GetControllerByPort(portIndex)
@@ -1842,7 +2044,8 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
         }
 
         PushStyleButton(THEME_COLOR);
-        if (ImGui::Button("Cancel") || shouldClose) {
+        if (ImGui::Button(Lang::UILabel("ui.text.enhancements.controls.sohinputeditorwindow.cancel", "Cancel")) ||
+            shouldClose) {
             ImGui::CloseCurrentPopup();
         }
         PopStyleButton();
@@ -1852,7 +2055,7 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
 }
 
 void SohInputEditorWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImGui::PushFont(OTRGlobals::Instance->GetGuiFont(OTRGlobals::Instance->fontMonoLarger));
     ImVec4 themeColor = ColorValues.at(THEME_COLOR);
     ImGui::PushStyleColor(ImGuiCol_Tab, ImVec4(themeColor.x, themeColor.y, themeColor.z, 0.8f));
     ImGui::PushStyleColor(ImGuiCol_TabHovered, ImVec4(themeColor.x, themeColor.y, themeColor.z, 0.6f));
@@ -1879,11 +2082,12 @@ void RegisterInputEditorWidgets() {
         .Options(
             CheckboxOptions()
                 .Color(THEME_COLOR)
-                .Tooltip(
+                .Tooltip(Lang::UIString(
+                    "ui.widgets.gSettings.FreeLook.Enabled.description",
                     "Enables free look camera control\nNote: You must remap C buttons off of the right stick in the "
                     "controller config menu, and map the camera stick to the right stick.\n"
                     "Doesn't work in areas were the game locks the camera.\n"
-                    "Scene reload may be necessary to enable."));
+                    "Scene reload may be necessary to enable.")));
     SohGui::mSohMenu->AddSearchWidget({ freeLook, "Settings", "Controls", "Camera Controls" });
 
     mouseControl = { .name = "Enable Mouse Controls", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
@@ -1894,12 +2098,13 @@ void RegisterInputEditorWidgets() {
             auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetRawInstance()->GetWindow());
             wnd->SetAutoCaptureMouse(enabled);
         })
-        .Options(
-            CheckboxOptions()
-                .Color(THEME_COLOR)
-                .Tooltip("Allows for using the mouse to control the camera (must enable Free Look), "
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gSettings.EnableMouse.description",
+                         "Allows for using the mouse to control the camera (must enable Free Look), "
                          "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)\n"
-                         "Press F2 to toggle mouse capture manually."));
+                         "Press F2 to toggle mouse capture manually.")));
     SohGui::mSohMenu->AddSearchWidget({ mouseControl, "Settings", "Controls", "Camera Controls" });
 
     mouseAutoCapture = { .name = "Auto Capture Mouse Input", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
@@ -1912,9 +2117,11 @@ void RegisterInputEditorWidgets() {
         })
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("When Mouse Controls are enabled, this toggles whether the program will automatically "
-                              "hide the cursor "
-                              "and capture mouse input when closing the menu."));
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gSettings.AutoCaptureMouse.description",
+                         "When Mouse Controls are enabled, this toggles whether the program will automatically "
+                         "hide the cursor "
+                         "and capture mouse input when closing the menu.")));
     SohGui::mSohMenu->AddSearchWidget({ mouseAutoCapture, "Settings", "Controls", "Camera Controls" });
 
     mouseDisableThirdPerson = { .name = "Disable Third-Person Mouse Controls",
@@ -1926,8 +2133,10 @@ void RegisterInputEditorWidgets() {
         })
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Stops the mouse from moving the third-person camera and from triggering quickspins, "
-                              "while still allowing mouse control for first-person aiming and the shield."));
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gSettings.DisableThirdPersonMouse.description",
+                         "Stops the mouse from moving the third-person camera and from triggering quickspins, "
+                         "while still allowing mouse control for first-person aiming and the shield.")));
     SohGui::mSohMenu->AddSearchWidget({ mouseDisableThirdPerson, "Settings", "Controls", "Camera Controls" });
 
     rightStickOcarina = { .name = "Right Stick Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
@@ -1938,16 +2147,20 @@ void RegisterInputEditorWidgets() {
     dpadPause.CVar(CVAR_SETTING("DPadOnPause"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold "
-                              "C-Up to equip instead of navigate"));
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gSettings.DPadOnPause.description",
+                         "Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold "
+                         "C-Up to equip instead of navigate")));
     SohGui::mSohMenu->AddSearchWidget({ dpadPause, "Settings", "Controls", "Dpad Controls" });
 
     dpadText = { .name = "D-pad Support in Text Boxes", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     dpadText.CVar(CVAR_SETTING("DpadInText"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry "
-                              "screens with the D-pad"));
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gSettings.DpadInText.description",
+                         "Navigate choices in text boxes, shop item selection, and the file select / name entry "
+                         "screens with the D-pad")));
     SohGui::mSohMenu->AddSearchWidget({ dpadText, "Settings", "Controls", "Dpad Controls" });
 }
 

@@ -1,3 +1,5 @@
+#include "soh/SohGui/LocalizedWindow.h"
+#include "soh/Enhancements/Lang/Lang.h"
 #include "randomizer_tracker_windows.h"
 
 #include <cstring>
@@ -9,7 +11,7 @@
 
 namespace Trackers {
 bool IsDockedToMainDeck(const std::string& UniqueName) {
-    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
+    ImGuiWindow* window = ImGui::FindWindowByName(("###" + UniqueName).c_str());
     if (window == NULL) {
         return false;
     }
@@ -48,7 +50,9 @@ bool BeginFloatWindows(const std::string& UniqueName, bool* open, const Color_RG
     ImGui::PushStyleColor(ImGuiCol_WindowBg, bgColVec);
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
-    return ImGui::Begin(UniqueName.c_str(), open, windowFlags);
+    return ImGui::Begin(SohGui::LocalizedWindowTitle("ui.text.sohgui.sohgui", UniqueName,
+                                                     "ui.text.enhancements.randomizer.randomizer_item_tracker"),
+                        open, windowFlags);
 }
 
 void EndFloatWindows() {

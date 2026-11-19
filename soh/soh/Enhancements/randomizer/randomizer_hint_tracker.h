@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 
 typedef enum {
     // Every hint location grouped by area, with unread hint text masked.
@@ -11,9 +11,9 @@ typedef enum {
 
 namespace HintTracker {
 
-class HintTrackerSettingsWindow final : public Ship::GuiWindow {
+class HintTrackerSettingsWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
   protected:
     void InitElement() override{};

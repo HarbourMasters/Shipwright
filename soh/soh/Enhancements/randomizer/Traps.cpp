@@ -1,3 +1,6 @@
+#include "soh/Enhancements/Lang/TranslationCatalog.h"
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
+#include "soh/Enhancements/Lang/GameLanguage.h"
 #include "Traps.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/randomizer/SeedContext.h"
@@ -21,1549 +24,1804 @@ bool initTrickNames = false; // Indicates if trick ice trap names have been init
    english, french, german // spanish */
 static void InitTrickNames() {
     trickNameTable[RG_KOKIRI_SWORD] = {
-        { Text{ "Korok Sword", "Épée Korok", "Korok-Schwert" }, Text{ "the ", "l'", "das " } }, // "Espada Korok"
-        { Text{ "Hero's Sword", "Épée du Héros", "Heroenschwert" },
-          Text{ "the ", "l'", "das " } },                                                        // "Espada del héroe"
-        { Text{ "Razor Sword", "Lame Rasoir", "Elfenschwert" }, Text{ "the ", "la ", "das " } }, // "Espada de esmeril"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_SWORD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada Korok"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_SWORD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada del héroe"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_SWORD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Espada de esmeril"
     };
     trickNameTable[RG_MASTER_SWORD] = {
-        { Text{ "Goddess Sword", "Épée de la déesse", "Schwert der Göttin" },
-          Text{ "the ", "l'", "das " } }, // "Espada Divina"
-        { Text{ "Gilded Sword", "Excalibur", "Schmirgelklinge" },
-          Text{ "the ", "", "die " } }, // "Espada de los Sabios"
-        { Text{ "Magical Sword", "Lame dorée", "Magisches Schwert" }, Text{ "the ", "la ", "das " } }, // "Fay"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASTER_SWORD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada Divina"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASTER_SWORD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.2") }, // "Espada de los Sabios"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASTER_SWORD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Fay"
     };
     trickNameTable[RG_GIANTS_KNIFE] = {
-        { Text{ "Medigoron's Sword", "l'Épée de Medigoron", "Medigoron-Schwert" },
-          Text{ "the ", "", "das " } }, // "La espada de Medigoron"
-        { Text{ "Razor Sword", "Lame Rasoir", "Elfenschwert" }, Text{ "the ", "la ", "das " } }, // "Espada de esmeril"
-        { Text{ "Royal Claymore", "Claymore Royale", "Königs-Zweihänder" },
-          Text{ "the ", "la ", "den " } }, // "Royal Claymore"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GIANTS_KNIFE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.3") }, // "La espada de Medigoron"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GIANTS_KNIFE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Espada de esmeril"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GIANTS_KNIFE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Royal Claymore"
     };
     trickNameTable[RG_BIGGORON_SWORD] = {
-        { Text{ "Power Sword", "Épée de Puissance", "Schwert der Macht" },
-          Text{ "the ", "l'", "das " } }, // "Espada de poder",
-        { Text{ "Fierce Deity Sword", "Épée du dieu démon", "Schwert der grimmischen Gottheit" },
-          Text{ "the ", "l'", "das " } }, // "Espada de la Fiera Deidad"
-        { Text{ "Tempered Sword", "Épée de Légende Nv.2", "Master-Schwert Lv.2" },
-          Text{ "the ", "l'", "das " } }, // "Espada Maestra mejorada"
-        { Text{ "Biggoron's Knife", "Lame de Grogoron", "Biggoron-Messer" },
-          Text{ "the ", "la ", "das " } }, // "Daga de Biggoron"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BIGGORON_SWORD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada de poder",
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BIGGORON_SWORD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada de la Fiera Deidad"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BIGGORON_SWORD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada Maestra mejorada"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BIGGORON_SWORD.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Daga de Biggoron"
     };
     trickNameTable[RG_DEKU_SHIELD] = {
-        { Text{ "Boko Shield", "Bouclier Boko", "Bokschild" }, Text{ "a ", "un ", "einen " } }, // "Escudo Boko"
-        { Text{ "Ordon Shield", "Bouclier de Toal", "Ordon-Schild" },
-          Text{ "an ", "un ", "einen " } }, // "Escudo de Ordon"
-        { Text{ "Wooden Shield", "Bouclier de Bois", "Holzschild" },
-          Text{ "a ", "un ", "einen " } }, // "Escudo de madera"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DEKU_SHIELD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Escudo Boko"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DEKU_SHIELD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.an.0") }, // "Escudo de Ordon"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DEKU_SHIELD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Escudo de madera"
     };
     trickNameTable[RG_HYLIAN_SHIELD] = {
-        { Text{ "Hyrule Shield", "Bouclier d'Hyrule", "Hyrule-Schild" },
-          Text{ "a ", "un ", "einen " } }, // "Escudo Hylian"
-        { Text{ "Goddess Shield", "Bouclier Sacré", "Göttlicher Schild" },
-          Text{ "a ", "un ", "einen " } }, // "Escudo Divino"
-        { Text{ "Hero's Shield", "Bouclier du Héros", "Heroenschild" },
-          Text{ "a ", "un ", "einen " } }, // "Escudo del héroe"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HYLIAN_SHIELD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Escudo Hylian"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HYLIAN_SHIELD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Escudo Divino"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HYLIAN_SHIELD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Escudo del héroe"
     };
     trickNameTable[RG_MIRROR_SHIELD] = {
-        { Text{ "Magic Mirror", "Miroir Magique", "Magiespiegel" }, Text{ "the ", "le ", "den " } }, // "Escudo mágico"
-        { Text{ "Magical Shield", "Bouclier Magique", "Magischer Schild" },
-          Text{ "the ", "le ", "den " } }, // "Escudo arcano"
-        { Text{ "Mirror of Twilight", "Miroir des Ombres", "Schattenspiegel" },
-          Text{ "the ", "le ", "den " } }, // "Espejo del Crepúsculo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MIRROR_SHIELD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Escudo mágico"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MIRROR_SHIELD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Escudo arcano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MIRROR_SHIELD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Espejo del Crepúsculo"
     };
     trickNameTable[RG_GORON_TUNIC] = {
-        { Text{ "Gerudo Top", "Tunique Gerudo", "Damengewand" }, Text{ "a ", "une ", "ein " } }, // "Pechera gerudo"
-        { Text{ "Flamebreaker Armor", "Armure de Pierre", "Anti-Feuer-Rüstung" },
-          Text{ "a ", "une ", "eine " } },                                                       // "Armadura ignífuga"
-        { Text{ "Red Mail", "Habits Rouges", "Rotes Gewand" }, Text{ "the ", "les ", "das " } }, // "Ropas rojas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_TUNIC.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Pechera gerudo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_TUNIC.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Armadura ignífuga"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_TUNIC.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.6") }, // "Ropas rojas"
     };
     trickNameTable[RG_ZORA_TUNIC] = {
-        { Text{ "Rito Tunic", "Tunique Rito", "Orni-Gewand" }, Text{ "a ", "une ", "ein " } }, // "Sayo rito"
-        { Text{ "Mermaid Suit", "Costume de sirène", "Nixenanzug" },
-          Text{ "a ", "un ", "einen " } },                                                      // "Costume de sirène"
-        { Text{ "Zora Armor", "Armure Zora", "Zora-Panzer" }, Text{ "a ", "une ", "einen " } }, // "Túnica Zora"
-        { Text{ "Blue Mail", "Habits Bleus", "Blaues Gewand" }, Text{ "the ", "les ", "das " } }, // "Ropas azules"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_TUNIC.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Sayo rito"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_TUNIC.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Costume de sirène"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_TUNIC.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.3") }, // "Túnica Zora"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_TUNIC.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.6") }, // "Ropas azules"
     };
     trickNameTable[RG_IRON_BOOTS] = {
-        { Text{ "Iron Hoofs", "Patins de Plomb", "Eisenhufe€" }, Text{ "the ", "les ", "die " } }, // "Botas férreas"
-        { Text{ "Snow Boots", "Bottes de Neige", "Schneestiefel€" },
-          Text{ "the ", "les ", "die " } },                                                        // "Botas de nieve"
-        { Text{ "Red Boots", "Bottes rouges", "Rote Stiefel€" }, Text{ "the ", "les ", "die " } }, // "Botas rojas"
-        { Text{ "Zora Greaves", "Bottes Zora", "Zora-Beinschutz" }, Text{ "the ", "les ", "den " } }, // "Zora Greaves"
-        { Text{ "Boots of Power", "Bottes de Puissance", "Stärkestiefel€" },
-          Text{ "the ", "les ", "die " } }, // "Botas de plomo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_IRON_BOOTS.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Botas férreas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_IRON_BOOTS.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Botas de nieve"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_IRON_BOOTS.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Botas rojas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_IRON_BOOTS.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.8") }, // "Zora Greaves"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_IRON_BOOTS.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Botas de plomo"
     };
     trickNameTable[RG_HOVER_BOOTS] = {
-        { Text{ "Hover Hoofs", "Patins des airs", "Gleithufe€" },
-          Text{ "the ", "les ", "die " } }, // "Botas flotadoras"
-        { Text{ "Golden Boots", "Bottes dorées", "Goldstiefel€" }, Text{ "the ", "les ", "die " } }, // "Botas de Oro"
-        { Text{ "Pegasus Boots", "Bottes pégase", "Pegasus-Stiefel€" },
-          Text{ "the ", "les ", "die " } }, // "Botas de Pegaso"
-        { Text{ "Boots of Speed", "Bottes de vitesse", "Tempostiefel€" },
-          Text{ "the ", "les ", "die " } }, // "Botas del desierto"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HOVER_BOOTS.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Botas flotadoras"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HOVER_BOOTS.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Botas de Oro"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HOVER_BOOTS.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Botas de Pegaso"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HOVER_BOOTS.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Botas del desierto"
     };
     trickNameTable[RG_WEIRD_EGG] = {
-        { Text{ "Poached Egg", "Oeuf à la coque", "Spiegelei" }, Text{ "the ", "l'", "das " } }, // "Huevo pasado"
-        { Text{ "Lon Lon Egg", "Oeuf Lon Lon", "Lon Lon-Ei" }, Text{ "the ", "l'", "das " } },   // "Huevo Lon Lon"
-        { Text{ "Zora Egg", "Oeuf Zora", "Zora-Ei" }, Text{ "the ", "l'", "das " } },            // "Huevo Zora"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WEIRD_EGG.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Huevo pasado"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WEIRD_EGG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Huevo Lon Lon"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WEIRD_EGG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Huevo Zora"
     };
     trickNameTable[RG_ZELDAS_LETTER] = {
-        { Text{ "Ruto's Letter", "Lettre de Ruto", "Rutos Brief" }, Text{ "", "la ", "" } }, // "Carta de Ruto"
-        { Text{ "Royal Letter", "Lettre Eoyale", "Royaler Brief" },
-          Text{ "the ", "la ", "den " } }, // "Carta para Kafei"
-        { Text{ "Zelda's Business Card", "Carte d'affaires de Zelda", "Zeldas Visitenkarte" },
-          Text{ "", "la ", "" } }, // "Carta"
-        { Text{ "Letter to Kafei", "Lettre pour Kafei", "Brief an Kafei" },
-          Text{ "the ", "la ", "den " } }, // "Carta para Kafei"
-        { Text{ "Goat's Letter", "Lettre de la Chèvre", "Brief der Ziege" },
-          Text{ "the ", "la ", "den " } }, // "Carta de la Cabra"
-        { Text{ "Maggie's Letter", "Lettre de Maggy", "Dolores' Brief" }, Text{ "", "la ", "" } }, // "Carta de Dolores"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LETTER.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Carta de Ruto"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LETTER.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Carta para Kafei"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LETTER.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Carta"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LETTER.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Carta para Kafei"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LETTER.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Carta de la Cabra"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LETTER.5"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Carta de Dolores"
     };
     trickNameTable[RG_BOOMERANG] = {
-        { Text{ "Banana", "Banane", "Banane" }, Text{ "a ", "une ", "eine " } },                           // "Plátano"
-        { Text{ "Prank Fetch Toy", "Inséparable Bâtonnet", "Boomerang" }, Text{ "a ", "un ", "einen " } }, // "Bumerang"
-        { Text{ "Gale Boomerang", "Boomerang Tornade", "Sturmbumerang" },
-          Text{ "the ", "le ", "den " } }, // "Bumerán tornado"
-        { Text{ "Magic Boomerang", "Boomerang Magique", "Magischer Bumerang" },
-          Text{ "the ", "le ", "den " } }, // "Bumerán mágico"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOOMERANG.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Plátano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOOMERANG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Bumerang"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOOMERANG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Bumerán tornado"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOOMERANG.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Bumerán mágico"
     };
     trickNameTable[RG_LENS_OF_TRUTH] = {
-        { Text{ "Sheikah-leidoscope", "Sheikah-léidoscope", "Shiekah-leidoskop" },
-          Text{ "the ", "le ", "das " } }, // "Monóculo de la Verdad"
-        { Text{ "Sheikah Sensor", "Sonar Sheikah", "Shiekah-Sensor" },
-          Text{ "the ", "le ", "den " } }, // "Sensor Sheikah"
-        { Text{ "Crystal of Vision", "Cristal de Vision", "Kristall der Sicht" },
-          Text{ "the ", "le ", "den " } },                                                      // "Cristal de Visión"
-        { Text{ "Magnifying Lens", "Loupe", "Magische Lupe" }, Text{ "the ", "la ", "die " } }, // "Lente Aumentadora"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LENS_OF_TRUTH.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Monóculo de la Verdad"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LENS_OF_TRUTH.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Sensor Sheikah"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LENS_OF_TRUTH.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Cristal de Visión"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LENS_OF_TRUTH.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Lente Aumentadora"
     };
     trickNameTable[RG_MEGATON_HAMMER] = {
-        { Text{ "Goron Gavel", "Masse Perforatrice", "Goronen-Hammer" },
-          Text{ "the ", "la ", "den " } }, // "Mazo Goron"
-        { Text{ "Magic Hammer", "Marteau Magique", "Magischer Hammer" },
-          Text{ "the ", "le ", "den " } }, // "Martillo mágico"
-        { Text{ "Skull Hammer", "Maillet Ressort", "Schädel-Hammer" },
-          Text{ "the ", "le ", "den " } }, // "Martillo de hierro"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MEGATON_HAMMER.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Mazo Goron"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MEGATON_HAMMER.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Martillo mágico"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MEGATON_HAMMER.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Martillo de hierro"
     };
     trickNameTable[RG_STONE_OF_AGONY] = {
-        { Text{ "Cave Charm", "Charme de grotte", "Höhlenamulett" },
-          Text{ "the ", "le ", "das " } }, // "Amuleto de la cueva"
-        { Text{ "Stone of Agahnim", "Fragment d'Agahnim", "Stein des Agahnim" },
-          Text{ "the ", "le ", "den " } }, // "Piedra de Agahnim"
-        { Text{ "Shard of Agony", "Fragment de Souffrance", "Scherbe des Wissens" },
-          Text{ "the ", "le ", "die " } }, // "Piedra de la Agonía"
-        { Text{ "Pirate's Charm", "Pierre de Pirate", "Links Talisman" },
-          Text{ "the ", "la ", "" } }, // "Amuleto Pirata"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_STONE_OF_AGONY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Amuleto de la cueva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_STONE_OF_AGONY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Piedra de Agahnim"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_STONE_OF_AGONY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") }, // "Piedra de la Agonía"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_STONE_OF_AGONY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") }, // "Amuleto Pirata"
     };
     trickNameTable[RG_DINS_FIRE] = {
-        { Text{ "Eldin's Fire", "Feu d'Eldin", "Eldins Feuerinferno" }, Text{ "", "le ", "" } }, // "Fuego de Eldin"
-        { Text{ "Din's Blaze", "Flamme de Din", "Dins Flammen" }, Text{ "", "la ", "" } },       // "Poder de Din"
-        { Text{ "Magic Lantern", "Lanterne Magique", "Magische Laterne" },
-          Text{ "the ", "la ", "die " } }, // "Linterna mágica"
-        { Text{ "Ether Medallion", "Médaillon d'Éther", "Luft-Medaillon" },
-          Text{ "the ", "le ", "das " } }, // "Medallón de Tesoro"
-        { Text{ "Bombos Medallion", "Médaillon des Flammes", "Feuer-Medaillon" },
-          Text{ "the ", "le ", "das " } }, // "Medallón del Temblor"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DINS_FIRE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Fuego de Eldin"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DINS_FIRE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Poder de Din"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DINS_FIRE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Linterna mágica"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DINS_FIRE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medallón de Tesoro"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DINS_FIRE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medallón del Temblor"
     };
     trickNameTable[RG_FARORES_WIND] = {
-        { Text{ "Faron's Wind", "Vent de Firone", "Phirones Donnersturm" },
-          Text{ "", "le ", "" } }, // "Viento de Farone"
-        { Text{ "Farore's Windfall", "Zéphyr de Farore", "Farores Wind" }, Text{ "", "le ", "" } }, // "Valor de Farore"
-        { Text{ "Tingle Air", "Tingle de aire", "Tingle Luft" }, Text{ "", "le ", "" } },           // "Tingle Air"
-        { Text{ "Travel Medallion", "Amulette de téléportation", "Teleport-Medaillon" },
-          Text{ "the ", "l'", "das " } },                                                  // "Medallón Maligno"
-        { Text{ "Irene's Taxi", "Le taxi d'Aëline", "Irenes Taxi" }, Text{ "", "", "" } }, // "El taxi de Airín"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FARORES_WIND.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Viento de Farone"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FARORES_WIND.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Valor de Farore"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FARORES_WIND.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Tingle Air"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FARORES_WIND.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Medallón Maligno"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FARORES_WIND.4"),
+          Text{ "", "", "" } }, // "El taxi de Airín"
     };
     trickNameTable[RG_NAYRUS_LOVE] = {
-        { Text{ "Lanayru's Love", "Amour de Lanelle", "Ranelles Umarmung" },
-          Text{ "", "l'", "" } }, // "Amor de Lanayru"
-        { Text{ "Nayru's Passion", "Passion de Nayru", "Nayrus Hingabe" },
-          Text{ "", "la ", "" } }, // "Sabiduría de Nayru"
-        { Text{ "Tingle Shield", "Bouclier Tingle", "Tingleschild" },
-          Text{ "the ", "le ", "den " } }, // "Escudo de hormigueo"
-        { Text{ "Shield Spell", "Bouclier Magique", "Schildzauber" },
-          Text{ "the ", "le ", "den " } }, // "Hechizo de Protección"
-        { Text{ "Magic Armor", "Armure Magique", "Magie-Rüstung" }, Text{ "the ", "l'", "die " } }, // "Armadura mágica"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_NAYRUS_LOVE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.2") }, // "Amor de Lanayru"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_NAYRUS_LOVE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Sabiduría de Nayru"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_NAYRUS_LOVE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Escudo de hormigueo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_NAYRUS_LOVE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Hechizo de Protección"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_NAYRUS_LOVE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.13") }, // "Armadura mágica"
     };
     trickNameTable[RG_FIRE_ARROWS] = {
-        { Text{ "Fire Rod", "Baguette de feu", "Feuerstab" }, Text{ "the ", "la ", "den " } }, // "Cetro de fuego"
-        { Text{ "Bomb Arrow", "Flèche-Bombe", "Bomben-Pfeile€" }, Text{ "", "la ", "" } },     // "Flecha bomba"
-        { Text{ "Red Candle", "Bougie Rouge", "Rote Kerze" }, Text{ "the ", "la ", "die " } }, // "Vela roja"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_ARROWS.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Cetro de fuego"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_ARROWS.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Flecha bomba"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_ARROWS.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Vela roja"
     };
     trickNameTable[RG_ICE_ARROWS] = {
-        { Text{ "Ice Rod", "Baguette des Glaces", "Eisstab" }, Text{ "the ", "la ", "den " } }, // "Cetro de Hielo"
-        { Text{ "Ancient Arrow", "Flèche Archéonique", "Antike Pfeile€" },
-          Text{ "", "la ", "" } }, // "Flecha ancestral"
-        { Text{ "Ice Trap Arrow", "Flèche de Piège de Glace", "Eisfallen-Pfeile€" },
-          Text{ "", "la ", "" } }, // "Cetro de hielo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ICE_ARROWS.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Cetro de Hielo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ICE_ARROWS.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Flecha ancestral"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ICE_ARROWS.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Cetro de hielo"
     };
     trickNameTable[RG_LIGHT_ARROWS] = {
-        { Text{ "Wind Arrow", "Flèche de Vent", "Wind-Pfeile€" }, Text{ "", "la ", "" } }, // "Flecha del Viento"
-        { Text{ "Wand of Gamelon", "Baguette de Gamelon", "Zauberstab von Gamelon" },
-          Text{ "the ", "la ", "den " } }, // "Varita de Gamelón"
-        { Text{ "Shock Arrow", "Flèches Électriques", "Elektro-Pfeile€" },
-          Text{ "", "les ", "" } },                                                               // "Flecha eléctrica"
-        { Text{ "Silver Arrow", "Flèches d'Argent", "Silber-Pfeile€" }, Text{ "", "les ", "" } }, // "Flecha de plata"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LIGHT_ARROWS.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Flecha del Viento"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LIGHT_ARROWS.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Varita de Gamelón"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LIGHT_ARROWS.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.3") }, // "Flecha eléctrica"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LIGHT_ARROWS.3"),
+          CustomMessages::CreateText("randomizer.article_forms.none.3") }, // "Flecha de plata"
     };
     trickNameTable[RG_GERUDO_MEMBERSHIP_CARD] = {
-        { Text{ "Desert Title Deed", "Abonnement Gerudo", "Wüsten-Urkunde" },
-          Text{ "the ", "l'", "die " } }, // "Escritura del desierto"
-        { Text{ "Sickle Moon Flag", "Drapeau du croissant de lune", "Mondsichel-Fahne" },
-          Text{ "the ", "le ", "die " } }, // "Bandera de la Luna Creciente"
-        { Text{ "Complimentary ID", "Bon de félicitation", "Laudatio-Schein" },
-          Text{ "the ", "le ", "den " } },                                                          // "Cupón especial"
-        { Text{ "Gerudo's Card", "Carte Goron", "Gerudo-Symbol" }, Text{ "the ", "la ", "das " } }, // "Tóken Gerudo"
-        { Text{ "Gerudo's Membership Card", "Autographe de Nabooru", "Gerudo-Mitgliedskarte" },
-          Text{ "the ", "l'", "die " } }, // "Tarjeta Gerudo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_MEMBERSHIP_CARD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.13") }, // "Escritura del desierto"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_MEMBERSHIP_CARD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") }, // "Bandera de la Luna Creciente"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_MEMBERSHIP_CARD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Cupón especial"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_MEMBERSHIP_CARD.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Tóken Gerudo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_MEMBERSHIP_CARD.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.13") }, // "Tarjeta Gerudo"
     };
 
     trickNameTable[RG_MAGIC_BEAN_PACK] = {
-        { Text{ "Funky Bean Pack", "Paquet de Fèves Magiques", "Wunderbohnen-Packung" },
-          Text{ "the ", "le ", "die " } }, // "Lote de frijoles mágicos"
-        { Text{ "Grapple Berries", "Baies de grappin", "Grapple-Beeren€" },
-          Text{ "the ", "les ", "die " } }, // "Bayas de garfio"
-        { Text{ "Crenel Bean Pack", "Paquet de Haricots Gonggle", "Gongolerbsen-Packung" },
-          Text{ "the ", "le ", "die " } }, // "Lote de alubias mágicas"
-        { Text{ "Mystical Seed Pack", "Pack de graines mystiques", "Saatbeutel" },
-          Text{ "the ", "le ", "den " } }, // "Paquete de semillas místicas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MAGIC_BEAN_PACK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") }, // "Lote de frijoles mágicos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MAGIC_BEAN_PACK.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Bayas de garfio"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MAGIC_BEAN_PACK.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") }, // "Lote de alubias mágicas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MAGIC_BEAN_PACK.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Paquete de semillas místicas"
     };
     trickNameTable[RG_DOUBLE_DEFENSE] = {
-        { Text{ "Diamond Hearts", "Coeurs de Diamant", "Diamantherzen€" },
-          Text{ "the ", "les ", "die " } }, // "Contenedor de diamante"
-        { Text{ "Double Damage", "Double Souffrance", "Doppelte Angriffskraft" },
-          Text{ "", "la ", "die " } }, // "Doble daño receptivo"
-        { Text{ "Quadruple Defence", "Quadruple Défence", "Vierfache Verteidigung" },
-          Text{ "", "la ", "die " } }, // "Defensa cuádruple"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DOUBLE_DEFENSE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Contenedor de diamante"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DOUBLE_DEFENSE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.4") }, // "Doble daño receptivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DOUBLE_DEFENSE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.4") }, // "Defensa cuádruple"
     };
 
     trickNameTable[RG_POCKET_EGG] = {
-        { Text{ "Arpagos Egg", "Oeuf d'Arpagos", "Arpagos-Ei" }, Text{ "the ", "l'", "das " } }, // "Huevo de Arpagos"
-        { Text{ "Lon Lon Egg", "oeuf Lon Lon", "Lon Lon-Ei" }, Text{ "the ", "l'", "das " } },   // "Huevo Lon Lon"
-        { Text{ "Zora Egg", "oeuf Zora", "Zora-Ei" }, Text{ "the ", "l'", "das " } }, // "Huevo del Pez Viento"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POCKET_EGG.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Huevo de Arpagos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POCKET_EGG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Huevo Lon Lon"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POCKET_EGG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Huevo del Pez Viento"
     };
     trickNameTable[RG_POCKET_EGG] = {
-        { Text{ "D.I.Y. Alarm Clock", "Réveille-matin improvisé", "Improvisierter Wecker" },
-          Text{ "the ", "le ", "den " } }, // "Alarma emplumada portátil"
-        { Text{ "Kakariko Cucco", "Cocotte Cocorico", "Kakariko-Huhn" },
-          Text{ "the ", "la ", "das " } }, // "Cuco de Kakariko"
-        { Text{ "Hatched Cucco", "Cocotte éclose", "Geschlüpftes Küken" },
-          Text{ "the ", "la ", "das " } }, // "Pollo de bolsillo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POCKET_EGG.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Alarma emplumada portátil"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POCKET_EGG.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Cuco de Kakariko"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POCKET_EGG.5"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Pollo de bolsillo"
     };
     trickNameTable[RG_COJIRO] = {
-        { Text{ "Blucco", "Chair-Qui-Poule", "Blenni" }, Text{ "the ", "la ", "den " } },          // "Cucazul"
-        { Text{ "Piyoko", "Piyoko", "Piyoko" }, Text{ "", "", "" } },                              // "Piyoko"
-        { Text{ "Dark Cucco", "Cocotte Sombre", "Dunkles Huhn" }, Text{ "the ", "la ", "das " } }, // "Cucco oscuro"
-        { Text{ "Grog's Cucco", "Cocotte de Grog", "Grogs Huhn" }, Text{ "", "la ", "" } },        // "Cuco de Grog"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_COJIRO.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") },                         // "Cucazul"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_COJIRO.1"), Text{ "", "", "" } }, // "Piyoko"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_COJIRO.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Cucco oscuro"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_COJIRO.3"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Cuco de Grog"
     };
     trickNameTable[RG_ODD_MUSHROOM] = {
-        { Text{ "Magic Mushroom", "Champignon magique", "Magischer Pilz" },
-          Text{ "the ", "le ", "den " } }, // "Champiñón mágico"
-        { Text{ "Endura Shroom", "Champi Vigueur", "Fittling" },
-          Text{ "the ", "le ", "den " } }, // "Champiñón del bosque"
-        { Text{ "Sleepy Toadstool", "Crapaud Fatigué", "Schlummermorchel" },
-          Text{ "the ", "le ", "die " } },                                           // "Seta durmiente"
-        { Text{ "Mushroom", "Champignon", "Pilz" }, Text{ "the ", "le ", "den " } }, // "Seta"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_MUSHROOM.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Champiñón mágico"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_MUSHROOM.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Champiñón del bosque"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_MUSHROOM.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") }, // "Seta durmiente"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_MUSHROOM.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Seta"
     };
     trickNameTable[RG_ODD_POTION] = {
-        { Text{ "Odd Medicine", "Élixir suspect", "Moderpaket" }, Text{ "the ", "l'", "das " } }, // "Poción rara"
-        { Text{ "Granny's Poultice", "Mixture de Granny", "Omas Mixtur" },
-          Text{ "", "la ", "" } }, // "Medicina de la abuela"
-        { Text{ "Mushroom Poultice", "Mixture de champignon", "Pilzumschlag" },
-          Text{ "the ", "la ", "den " } }, // "Medicina de champiñones"
-        { Text{ "Secret Medicine", "Médicament", "Geheime Medizin" },
-          Text{ "the ", "le ", "die " } }, // "Pócima secreta"
-        { Text{ "Mushroom Spores", "Spores de Champignons", "Pilzsporen" },
-          Text{ "the ", "les ", "die " } },                                                      // "Esporas de hongos"
-        { Text{ "Hanyu Spore", "Hanyu Spore", "Hanyu-Sporen" }, Text{ "the ", "la ", "die " } }, // "Espora Hanyu"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_POTION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Poción rara"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_POTION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Medicina de la abuela"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_POTION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Medicina de champiñones"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_POTION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") }, // "Pócima secreta"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_POTION.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") }, // "Esporas de hongos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ODD_POTION.5"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Espora Hanyu"
     };
     trickNameTable[RG_POACHERS_SAW] = {
-        { Text{ "Carpenter's Saw", "Scie du charpentier", "Zimmermannssäge" },
-          Text{ "the ", "la ", "die " } }, // "Sierra del carpintero"
-        { Text{ "Poacher's Sword", "Hache du chasseur", "Wildererschwert" },
-          Text{ "the ", "la ", "das " } }, // "Espada del capataz"
-        { Text{ "Ancient Bladesaw", "Longue Épée Archéonique", "Antike Großsäge" },
-          Text{ "the ", "la ", "die " } }, // "Mandoble ancestral"
-        { Text{ "Woodcutter's Axe", "Hache du Bûcheron", "Holzfälleraxt" },
-          Text{ "the ", "la ", "die " } },                                             // "Hacha de leñador"
-        { Text{ "Grog's Saw", "Scie de Grog", "Grogs Säge" }, Text{ "", "la ", "" } }, // "Sierra del Cazador Furtivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POACHERS_SAW.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Sierra del carpintero"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POACHERS_SAW.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Espada del capataz"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POACHERS_SAW.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Mandoble ancestral"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POACHERS_SAW.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Hacha de leñador"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_POACHERS_SAW.4"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Sierra del Cazador Furtivo"
     };
     trickNameTable[RG_BROKEN_SWORD] = {
-        { Text{ "Broken Biggoron's Sword", "Épée brisée de Grogoron", "Zerbr. Biggoron-Schwert" },
-          Text{ "the ", "l'", "das " } }, // "Espada de Biggoron rota"
-        { Text{ "Broken Giant's Knife", "Lame des Géants brisée", "Zerbr. Langschwert" },
-          Text{ "the ", "la ", "das " } }, // "Daga gigante rota"
-        { Text{ "Broken Noble Sword", "Épée noble brisée", "Zerbr. Edelschwert" },
-          Text{ "the ", "l'", "das " } }, // "Espada noble rota"
-        { Text{ "Broken Picori Blade", "Épée Minish brisée", "Zerbr. Schwert der Minish" },
-          Text{ "the ", "l'", "das " } }, // "Espada minish rota"
-        { Text{ "Decayed Master Sword", "Épée de légende pourrie", "Zerf. Master-Schwert" },
-          Text{ "the ", "l'", "das " } }, // "Espada decadente de leyenda"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BROKEN_SWORD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada de Biggoron rota"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BROKEN_SWORD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Daga gigante rota"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BROKEN_SWORD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada noble rota"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BROKEN_SWORD.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada minish rota"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BROKEN_SWORD.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Espada decadente de leyenda"
     };
     trickNameTable[RG_PRESCRIPTION] = {
-        { Text{ "Biggoron's Prescription", "Ordonnance de Grogoron", "Biggorons Rezept" },
-          Text{ "", "l'", "" } }, // "Receta de Biggoron"
-        { Text{ "Eyedrop Prescription", "Ordonnance de gouttes", "Augentropfen-Rezept" },
-          Text{ "the ", "l'", "das " } }, // "Receta ocular"
-        { Text{ "Urgent Prescription", "Ordonnance urgente", "Dringendes Rezept" },
-          Text{ "the ", "l'", "das " } }, // "Prescripción"
-        { Text{ "Swordsman's Scroll", "Précis d'escrime", "Schwert-Rolle" },
-          Text{ "the ", "le ", "die " } }, // "Esgrimidorium"
-        { Text{ "Portrait of Oren", "Portrait d'Orlène", "Portrait von Oreen" },
-          Text{ "the ", "le ", "das " } }, // "Retrato de Oren"
-        { Text{ "Letter to King Zora", "Lettre au roi Zora", "Brief an König Zora" },
-          Text{ "the ", "la ", "den " } }, // "Carta al Rey Zora"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRESCRIPTION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.2") }, // "Receta de Biggoron"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRESCRIPTION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Receta ocular"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRESCRIPTION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Prescripción"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRESCRIPTION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") }, // "Esgrimidorium"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRESCRIPTION.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Retrato de Oren"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRESCRIPTION.5"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Carta al Rey Zora"
     };
     trickNameTable[RG_EYEBALL_FROG] = {
-        { Text{ "Don Gero", "Don Gero", "Don Gero" }, Text{ "", "", "" } }, // "Don Gero"
-        { Text{ "Hot-Footed Frog", "Grenouille à pieds chauds", "Spurtkröte" },
-          Text{ "the ", "la ", "die " } }, // "Rana de patas calientes"
-        { Text{ "Lost Swordsmith", "Forgeron perdu", "Vermisster Schmied" },
-          Text{ "the ", "le ", "den " } }, // "Espadachín perdido"
-        { Text{ "Eyedrop Frog", "Grenouille-qui-louche", "Augentropfen-Frosch" },
-          Text{ "the ", "la ", "den " } }, // "Globo Ocular de Rana"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEBALL_FROG.0"), Text{ "", "", "" } }, // "Don Gero"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEBALL_FROG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Rana de patas calientes"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEBALL_FROG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Espadachín perdido"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEBALL_FROG.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Globo Ocular de Rana"
     };
     trickNameTable[RG_EYEDROPS] = {
-        { Text{ "Biggoron's Eyedrops", "Gouttes de Grogoron", "Biggorons Augentropfen" },
-          Text{ "", "les ", "" } }, // "Gotas de Biggoron"
-        { Text{ "Hyrule's Finest Eyedrops", "Eau du Lac Hylia", "Hyrules beste Augentropfen" },
-          Text{ "", "l'", "" } },                                                               // "Gotas oculares"
-        { Text{ "Moon's Tear", "Larme de Lune", "Mondträne" }, Text{ "the ", "la ", "die " } }, // "Lágrima de Luna"
-        { Text{ "Engine Grease", "Graisse moteur", "Schmierfett" },
-          Text{ "the ", "la ", "das " } },                                                       // "Grasa del motor"
-        { Text{ "Zora Perfume", "Parfum Zora", "Zora-Parfüm" }, Text{ "the ", "le ", "das " } }, // "Perfume Zora"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEDROPS.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.3") }, // "Gotas de Biggoron"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEDROPS.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.2") }, // "Gotas oculares"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEDROPS.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Lágrima de Luna"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEDROPS.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Grasa del motor"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EYEDROPS.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Perfume Zora"
     };
     trickNameTable[RG_CLAIM_CHECK] = {
-        { Text{ "Clay Check", "Certificat Grogoron", "Berg-Urkunde" },
-          Text{ "the ", "le ", "die " } }, // "Comprobant e de Reclamación"
-        { Text{ "Ancient Tablet", "Stèle ancienne", "Alte Steintafel" },
-          Text{ "the ", "la ", "die " } }, // "Litografía arcana"
-        { Text{ "Sheikah Slate", "Tablette Sheikah", "Shiekah-Stein" },
-          Text{ "the ", "la ", "den " } }, // "Piedra Sheikah"
-        { Text{ "Cyclone Slate", "Ardoise des tornades", "Froschkompass" },
-          Text{ "the ", "l'", "den " } }, // "Pizarra de los Torbellinos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_CLAIM_CHECK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") }, // "Comprobant e de Reclamación"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_CLAIM_CHECK.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") }, // "Litografía arcana"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_CLAIM_CHECK.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Piedra Sheikah"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_CLAIM_CHECK.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.14") }, // "Pizarra de los Torbellinos"
     };
 
     trickNameTable[RG_GOLD_SKULLTULA_TOKEN] = {
-        { Text{ "Skulltula Token", "Bon de Skulltula dorée", "Skulltula-Beweis" },
-          Text{ "a ", "un ", "einen " } }, // "Símbolo de Skulltula"
-        { Text{ "Golden Skulltula Spirit", "Pièce de Skulltula dorée", "Skulltula-Seele" },
-          Text{ "a ", "une ", "eine " } }, // "Tóken de Skulltula Dorada"
-        { Text{ "Gold Walltula Token", "Jeton de Walltula dorée", "Walltula-Symbol" },
-          Text{ "a ", "un ", "ein " } },                                            // "Skulltula dorada"
-        { Text{ "Maiamai", "Ti'gorneau", "Maimai" }, Text{ "a ", "un ", "ein " } }, // "Maimai"
-        { Text{ "Gratitude Crystal", "Cristal de gratitude", "Juwel der Güte" },
-          Text{ "a ", "un ", "ein " } },                                                       // "Gema de gratitud"
-        { Text{ "Korok Seed", "Noix korogu", "Krog-Samen" }, Text{ "a ", "une ", "einen " } }, // "Semilla de kolog"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOLD_SKULLTULA_TOKEN.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Símbolo de Skulltula"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOLD_SKULLTULA_TOKEN.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Tóken de Skulltula Dorada"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOLD_SKULLTULA_TOKEN.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Skulltula dorada"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOLD_SKULLTULA_TOKEN.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Maimai"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOLD_SKULLTULA_TOKEN.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Gema de gratitud"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOLD_SKULLTULA_TOKEN.5"),
+          CustomMessages::CreateText("randomizer.article_forms.a.3") }, // "Semilla de kolog"
     };
 
     trickNameTable[RG_PROGRESSIVE_HOOKSHOT] = {
-        { Text{ "Progressive Grappling Hook", "Lance-chaîne (prog.)", "Enterhaken (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Garra progresiva"
-        { Text{ "Progressive Clawshot", "Grappin-griffe (prog.)", "Greifhaken (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Zarpa progresiva"
-        { Text{ "Progressive Gripshot", "Grappince (prog.)", "Tauschhaken (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Enganchador progresivo"
-        { Text{ "Progressive Rope", "Corde (prog.)", "Giftwurm (prog.)" },
-          Text{ "a ", "une ", "einen " } }, // "Cuerda progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_HOOKSHOT.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Garra progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_HOOKSHOT.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Zarpa progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_HOOKSHOT.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Enganchador progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_HOOKSHOT.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.3") }, // "Cuerda progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_STRENGTH] = {
-        { Text{ "Power Glove", "Gant de Puissance (prog.)", "Krafthandschuh (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Guanteletes progresivos"
-        { Text{ "Darunia's Bracelet", "Bracelet de Darunia (prog.)", "Darunias Armband (prog.)" },
-          Text{ "", "le ", "" } }, // "Brasaletes progresivos"
-        { Text{ "Magic Bracelet", "Bracelet Magique (prog.)", "Magiearmband (prog.)" },
-          Text{ "a ", "un ", "ein " } }, // "Manoplas progresivas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_STRENGTH.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Guanteletes progresivos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_STRENGTH.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Brasaletes progresivos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_STRENGTH.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Manoplas progresivas"
     };
     trickNameTable[RG_PROGRESSIVE_BOMB_BAG] = {
-        { Text{ "Progressive Bomb Capacity", "Capacité de bombes (prog.)", "Bomben-Kapazität (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de bombas"
-        { Text{ "Progressive Bomb Pack", "Paquet de bombes (prog.)", "Bombenrucksack (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Zurrón de bombas progresivo"
-        { Text{ "Progressive Bomb Box", "Boîte à bombes (prog.)", "Bombenschachtel (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Bolsa de bombas progresiva"
-        { Text{ "Progressive Blast Mask", "Masque d'Explosion (prog.)", "Ka-Bumm-Maske (prog.)" },
-          Text{ "a ", "un ", "eine " } }, // "Máscara explosiva progresiva"
-        { Text{ "Progressive Powder Kegs", "Baril de Poudre (prog.)", "Pulverfass (prog.)" },
-          Text{ "", "un ", "ein " } }, // "Barril de polvo progresivo"
-        { Text{ "Progressive Remote Bombs", "Bombes à distance (prog.)", "Fernzünderbomben (prog.)€" },
-          Text{ "", "des ", "" } }, // "Bombas remotas progresivas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMB_BAG.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Mayor capacidad de bombas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMB_BAG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Zurrón de bombas progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMB_BAG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Bolsa de bombas progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMB_BAG.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Máscara explosiva progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMB_BAG.4"),
+          CustomMessages::CreateText("randomizer.article_forms.none.5") }, // "Barril de polvo progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMB_BAG.5"),
+          CustomMessages::CreateText("randomizer.article_forms.none.6") }, // "Bombas remotas progresivas"
     };
     trickNameTable[RG_PROGRESSIVE_BOW] = {
-        { Text{ "Progressive Arrow Capacity", "Capacité de flèches (prog.)", "Pfeil-Kapazität (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de flechas"
-        { Text{ "Progressive Hero's Bow", "Arc du héros (prog.)", "Heroenbogen (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Arco del héroe progresivo"
-        { Text{ "Progressive Arrow Holder", "Arbalète (prog.)", "Köcher (prog.)" },
-          Text{ "a ", "une ", "einen " } }, // "Ballesta progresiva"
-        { Text{ "Progressive Crossbow", "Arbalète (prog.)", "Armbrust (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Ballesta progresiva"
-        { Text{ "Progressive Sacred Bow", "Arc sacré (prog)", "Heiliger Bogen (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Arco Sagrado Progresivo"
-        { Text{ "Progressive Lynel Bow", "Arc de Lynel (prog.)", "Leunenbogen (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Arco de centaleón Progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOW.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Mayor capacidad de flechas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOW.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Arco del héroe progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOW.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.3") }, // "Ballesta progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOW.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Ballesta progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOW.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Arco Sagrado Progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOW.5"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Arco de centaleón Progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_SLINGSHOT] = {
-        { Text{ "Progressive Seed Capacity", "Capacité de graines (prog.)", "Kern-Kapazität (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de semillas"
-        { Text{ "Progressive Catapult", "Catapulte (prog.)", "Katapult (prog.)" },
-          Text{ "a ", "une ", "ein " } }, // "Catapulta progresiva"
-        { Text{ "Progressive Scattershot", "Lance-Pierre rafale (prog.)", "Streuschleuder (prog.)" },
-          Text{ "a ", "un ", "eine " } }, // "Resortera múltiple progresiva"
-        { Text{ "Progressive Seed Launcher", "Lanceur de semences (prog.)", "Blasrohr (prog.)" },
-          Text{ "a ", "un ", "ein " } }, // "Lanzador de semillas progresivo"
-        { Text{ "Progressive Seed Satchel", "Sac de graines (prog.)", "Saatbeutel (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Bolsa de semillas progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SLINGSHOT.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Mayor capacidad de semillas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SLINGSHOT.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Catapulta progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SLINGSHOT.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Resortera múltiple progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SLINGSHOT.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Lanzador de semillas progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SLINGSHOT.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Bolsa de semillas progresiva"
     };
     trickNameTable[RG_PROGRESSIVE_WALLET] = {
-        { Text{ "Progressive Rupee Capacity", "Capacité de rubis (prog.)", "Rubin-Kapazität (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de rupias"
-        { Text{ "Progressive Purse", "Sacoche (prog.)", "Portemonnaie (prog.)" },
-          Text{ "a ", "une ", "ein " } }, // "Cartera de rupias progresiva"
-        { Text{ "Progressive Rupee Bag", "Sac à rubis (prog.)", "Rubintasche (prog.)" },
-          Text{ "a ", "un ", "eine " } }, // "Zurrón de rupias progresivo"
-        { Text{ "Progressive Rupoor Capacity", "Capacité de Roupir (prog.)", "Rubinfalle (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Capacidad progresiva Rupobre"
-        { Text{ "Progressive Spoils Bag", "Sac à Butin (prog.)", "Beutetasche (prog.)" },
-          Text{ "a ", "un ", "eine " } }, // "Bolsa de trofeos progresiva"
-        { Text{ "Progressive Ruby Bag", "Capacité du sac Ruby (prog.)", "Rubytasche (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Bolso Ruby progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_WALLET.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Mayor capacidad de rupias"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_WALLET.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Cartera de rupias progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_WALLET.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Zurrón de rupias progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_WALLET.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Capacidad progresiva Rupobre"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_WALLET.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Bolsa de trofeos progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_WALLET.5"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Bolso Ruby progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_SCALE] = {
-        { Text{ "Progressive Flippers", "Palmes de Zora (prog.)", "Schwimmflossen (prog.)€" },
-          Text{ "", "des ", "" } }, // "Aletas de zora progresiva"
-        { Text{ "Progressive Dragon's Scale", "Écaille du dragon d'eau (prog.)", "Drachen-Schuppe (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Escama dragón acuático progresiva"
-        { Text{ "Progressive Diving Ability", "Plongée (prog.)", "Tauchfähigkeit (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Buceo progresivo"
-        { Text{ "Progressive Pearl", "Perle (prog.)", "Perle (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Perla progresiva"
-        { Text{ "Progressive Scute", "Bulle (prog.)", "Schuppe (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Fragmento Zora progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SCALE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.6") }, // "Aletas de zora progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SCALE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Escama dragón acuático progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SCALE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Buceo progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SCALE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Perla progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_SCALE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Fragmento Zora progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_NUT_UPGRADE] = {
-        { Text{ "Progressive Nut Pack", "Paquet de noix (prog.)", "Nußrucksack (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Mayor capacidad de semillas"
-        { Text{ "Progressive Bait Bag", "Sac à Appâts (prog.)", "Futtertasche (prog.)" },
-          Text{ "a ", "un ", "eine " } }, // "Bolsa de cebo progresiva"
-        { Text{ "Progressive Pear Capacity", "Capacité de poire (prog.)", "Putput-Kapazität (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Capacidad progresiva de pera"
-        { Text{ "Progressive Nut Bag", "Sac de noix (prog.)", "Nußbeutel (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Bolsa de nueces progresiva"
-        { Text{ "Progressive Husk Capacity", "Capacité de noisettes (prog.)", "Schalen-Kapazität (prog.)€" },
-          Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de castañas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_NUT_UPGRADE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Mayor capacidad de semillas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_NUT_UPGRADE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Bolsa de cebo progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_NUT_UPGRADE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Capacidad progresiva de pera"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_NUT_UPGRADE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Bolsa de nueces progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_NUT_UPGRADE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Mayor capacidad de castañas"
     };
     trickNameTable[RG_PROGRESSIVE_STICK_UPGRADE] = {
-        { Text{ "Progressive Stick Bag", "Sac de bâtons (prog.)", "Stabbeutel (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Mayor capacidad de ramas deku"
-        { Text{ "Progressive Stick Pack", "Paquet de bâtons Mojo (prog.)", "Stabrucksack (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Mayor capacidad de bastones"
-        { Text{ "Progressive Branch Capacity", "Capacité de la succursale (prog.)", "Ast-Kapazität (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Capacidad progresiva de la sucursal"
-        { Text{ "Progressive Rod Capacity", "Capacité de tiges (prog.)", "Stock-Kapazität (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de cetros deku"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_STICK_UPGRADE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Mayor capacidad de ramas deku"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_STICK_UPGRADE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Mayor capacidad de bastones"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_STICK_UPGRADE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Capacidad progresiva de la sucursal"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_STICK_UPGRADE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Mayor capacidad de cetros deku"
     };
     trickNameTable[RG_PROGRESSIVE_BOMBCHU_BAG] = {
-        { Text{ "Progressive Bomblings", "Bombinsectes (prog.)", "Bombenmäuse (prog.)€" },
-          Text{ "", "des ", "" } }, // "Bombinsectos progresivos"
-        { Text{ "Progressive Sentrobe Bombs", "Bombe de Sphérodrone (prog.)", "Rokopterbomben (prog.)€" },
-          Text{ "", "une ", "" } }, // "Bomba de helicobot progresivo"
-        { Text{ "Progressive Bomb-ombs", "Bombe Soldat (prog.)", "Bob-omb (prog.)" },
-          Text{ "", "une ", "einen " } }, // "Soldado bomba progresivo"
-        { Text{ "Progressive Missiles", "Missiles (prog.)", "Missiles (prog.)€" },
-          Text{ "", "des ", "" } }, // "Misiles progresivos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMBCHU_BAG.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.6") }, // "Bombinsectos progresivos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMBCHU_BAG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.7") }, // "Bomba de helicobot progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMBCHU_BAG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.8") }, // "Soldado bomba progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_BOMBCHU_BAG.3"),
+          CustomMessages::CreateText("randomizer.article_forms.none.6") }, // "Misiles progresivos"
     };
     trickNameTable[RG_PROGRESSIVE_MAGIC_METER] = {
-        { Text{ "Progressive Stamina Meter", "Jauge d'endurance (prog.)", "Ausdauer (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Medidor de vigor progresivo"
-        { Text{ "Progressive Energy Gauge", "Jauge d'énergie (prog.)", "Energie (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Medidor de energía progresivo"
-        { Text{ "Progressive Magic Powder", "Poudre magique (prog.)", "Zauberpulver (prog.)" },
-          Text{ "a ", "une ", "ein " } }, // "Medidor de carga progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_MAGIC_METER.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Medidor de vigor progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_MAGIC_METER.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Medidor de energía progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_MAGIC_METER.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Medidor de carga progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_OCARINA] = {
-        { Text{ "Progressive Memento", "Souvenir (prog.)", "Souvenir (prog.)" },
-          Text{ "a ", "un ", "ein " } }, // "Silbato progresivo"
-        { Text{ "Progressive Whistle", "Siffler (prog.)", "Pfeife (prog.)" },
-          Text{ "a ", "un ", "eine " } }, // "Silbido progresivo"
-        { Text{ "Progressive Flute", "Flûte (prog.)", "Flöte (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Flauta progresiva"
-        { Text{ "Progressive Recorder", "Harmonica (prog.)", "Rekorder (prog.)" },
-          Text{ "a ", "un ", "einen " } }, // "Armónica progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_OCARINA.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Silbato progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_OCARINA.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Silbido progresivo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_OCARINA.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Flauta progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_OCARINA.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Armónica progresiva"
     };
     trickNameTable[RG_PROGRESSIVE_GORONSWORD] = {
-        { Text{ "Progressive Titan Blade", "Lame des Titans (prog.)", "Titanenklinge (prog.)" },
-          Text{ "a ", "une ", "eine " } }, // "Hoja del Titán progresiva"
-        { Text{ "Progressive Goron Knife", "Lame Goron (prog.)", "Goronenmesser (prog.)" },
-          Text{ "a ", "une ", "ein " } }, // "Daga Goron progresiva"
-        { Text{ "Progressive Giant Sword", "Épée géante (prog.)", "Riesenschwert (prog.)" },
-          Text{ "a ", "une ", "ein " } }, // "Espada gigante progresiva"
-        { Text{ "Progressive Darknut Sword", "Épée de Darknut (prog.)", "Gardeschwert (prog.)" },
-          Text{ "a ", "une ", "ein " } }, // "Espada Darknut progresiva"
-        { Text{ "Progressive Power Sword", "Épée de Puissance (prog.)", "Schwert der Macht (prog.)" },
-          Text{ "a ", "une ", "ein " } }, // "Espada de poder progresiva"
-        { Text{ "Progressive Big Stabby", "Gros coup de poignard (prog.)", "Großschwert (prog.)" },
-          Text{ "a ", "un ", "ein " } }, // "Gran puñalada progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_GORONSWORD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Hoja del Titán progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_GORONSWORD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Daga Goron progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_GORONSWORD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Espada gigante progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_GORONSWORD.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Espada Darknut progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_GORONSWORD.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Espada de poder progresiva"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PROGRESSIVE_GORONSWORD.5"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Gran puñalada progresiva"
     };
 
     trickNameTable[RG_EMPTY_BOTTLE] = {
-        { Text{ "Empty Canteen", "Cantine vide", "Leere Feldflasche" },
-          Text{ "an ", "une ", "eine " } }, // "cantimplora vacía"
-        { Text{ "Vial of Winds", "Fiole de vents", "Phiole der Winde" },
-          Text{ "a ", "une ", "eine " } }, // "Vial de Vientos"
-        { Text{ "Tingle Bottle", "Flacon de Tingle", "Tingle-Flasche" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de Tingle"
-        { Text{ "Magic Bottle", "Flacon magique", "Magische Flasche" },
-          Text{ "a ", "un ", "eine " } }, // "Frasco feérico"
-        { Text{ "Glass Bottle", "Flacon de verre", "Glasflasche" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de cristal"
-        { Text{ "Bottle with Water", "Flacon d'eau", "Flasche (Wasser)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella Tingle"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EMPTY_BOTTLE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.an.1") }, // "cantimplora vacía"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EMPTY_BOTTLE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.2") }, // "Vial de Vientos"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EMPTY_BOTTLE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de Tingle"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EMPTY_BOTTLE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Frasco feérico"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EMPTY_BOTTLE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de cristal"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EMPTY_BOTTLE.5"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella Tingle"
     };
     trickNameTable[RG_BOTTLE_WITH_MILK] = {
-        { Text{ "Bottle with Chateau Romani", "Flacon de cuvée Romani", "Flasche (Chateau Romani)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de Reserva Romani"
-        { Text{ "Bottle with Premium Milk", "Flacon avec lait de qualité supérieure", "Flasche (Vollmilch)" },
-          Text{ "a ", "un ", "eine " } }, // "Biberón con leche Premium"
-        { Text{ "Bottle with Mystery Milk", "Flacon de lait grand cru", "Flasche (Verdächtige Milch)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de leche extra"
-        { Text{ "Bottle with Fresh Milk", "Flacon de lait frais", "Flasche (Frische Milch)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de leche fresca"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_MILK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de Reserva Romani"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_MILK.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Biberón con leche Premium"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_MILK.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de leche extra"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_MILK.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de leche fresca"
     };
     trickNameTable[RG_BOTTLE_WITH_RED_POTION] = {
-        { Text{ "Bottle with Red Chu Jelly", "Flacon de gelée Chuchu rouge", "Flasche (Rotes Schleim-Gelee)" },
-          Text{ "a ", "un ", "eine " } }, // "Jugo de Chuchu Rojo"
-        { Text{ "Bottle with Hibiscus Potion", "Flacon de potion de Hibiscus", "Flasche (Hibiskus-Trank)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de poción de Hibisco"
-        { Text{ "Bottle with Medicine of Life", "Flacon d'élixir rouge", "Flasche (Roter Trank)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de medicina de la vida"
-        { Text{ "Bottle with Heart Potion", "Flacon de potion de soin", "Flasche (Herztrank)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de poción de salud"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_RED_POTION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Jugo de Chuchu Rojo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_RED_POTION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de poción de Hibisco"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_RED_POTION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de medicina de la vida"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_RED_POTION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de poción de salud"
     };
     trickNameTable[RG_BOTTLE_WITH_GREEN_POTION] = {
-        { Text{ "Bottle with Green Chu Jelly", "Flacon de gelée Chuchu verte", "Flasche (Grünes Schleim-Gelee)" },
-          Text{ "a ", "un ", "eine " } }, // "Jugo de Chuchu Verde"
-        { Text{ "Bottle with Lamp Oil", "Flacon de Huile à lanterne", "Flasche (Lampenöl)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de Aceite de candil"
-        { Text{ "Bottle with Medicine of Magic", "Flacon d'élixir vert", "Flasche (Grüner Trank)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de medicina mágica"
-        { Text{ "Bottle with Stamina Potion", "Flacon d'Endurol", "Flasche (Ausdauertrank)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de elixir vigorizante"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_GREEN_POTION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Jugo de Chuchu Verde"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_GREEN_POTION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de Aceite de candil"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_GREEN_POTION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de medicina mágica"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_GREEN_POTION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de elixir vigorizante"
     };
     trickNameTable[RG_BOTTLE_WITH_BLUE_POTION] = {
-        { Text{ "Bottle with Blue Chu Jelly", "Flacon de gelée Chuchu bleue", "Flasche (Blaues Schleim-Gelee)" },
-          Text{ "a ", "un ", "eine " } }, // "Jugo de Chuchu Azul"
-        { Text{ "Bottle with Water of Life", "Flacon d'élixir bleu", "Flasche (Blauer Trank)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de agua de la vida"
-        { Text{ "Bottle with Air Potion", "Flacon de potion d'oxygène", "Flasche (Lufttrank)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de oxígeno"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BLUE_POTION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Jugo de Chuchu Azul"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BLUE_POTION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de agua de la vida"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BLUE_POTION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de oxígeno"
     };
     trickNameTable[RG_BOTTLE_WITH_FAIRY] = {
-        { Text{ "Bottle with Forest Firefly", "Flacon avec une luciole", "Flasche (Glühwürmchen)" },
-          Text{ "a ", "un ", "eine " } }, // "Luciérnaga del bosque"
-        { Text{ "Bottle with Deku Princess", "Flacon avec Deku Princess", "Flasche (Deku-Prinzessin)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella con Deku Princess"
-        { Text{ "Bottle with Stray Fairy", "Flacon avec une fée perdue", "Flasche (Verirrte Fee)" },
-          Text{ "a ", "un ", "eine " } }, // "Hada perdida en una botella"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_FAIRY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Luciérnaga del bosque"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_FAIRY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella con Deku Princess"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_FAIRY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Hada perdida en una botella"
     };
     trickNameTable[RG_BOTTLE_WITH_FISH] = {
-        { Text{ "Bottle with Small Jabu-Jabu", "Flacon avec mini Jabu-Jabu", "Flasche (Baby Jabu)" },
-          Text{ "a ", "un ", "eine " } }, // "Lord Chapu-Chapu embotellado"
-        { Text{ "Bottle with Reekfish", "Flacon avec Reekfish", "Flasche (Dunstforelle)" },
-          Text{ "a ", "un ", "eine " } }, // "Reekfish embotellada"
-        { Text{ "Bottle with Hyrule Bass", "Flacon avec perche d'Hyrule", "Flasche (Hyrulebarsch)" },
-          Text{ "a ", "un ", "eine " } }, // "Locha de Hyrule embotellada"
-        { Text{ "Bottle with Hyrule Loach", "Flacon avec loche d'Hyrule", "Flasche (Hylianische Forelle)" },
-          Text{ "a ", "un ", "eine " } }, // "Perca de Términa embotellada"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_FISH.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Lord Chapu-Chapu embotellado"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_FISH.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Reekfish embotellada"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_FISH.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Locha de Hyrule embotellada"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_FISH.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Perca de Términa embotellada"
     };
     trickNameTable[RG_BOTTLE_WITH_BLUE_FIRE] = {
-        { Text{ "Bottle with Will-O-Wisp", "Flacon avec feu follet", "Flasche (Rotes Feuer)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de llama azul"
-        { Text{ "Bottle with Ancient Flame", "Flacon de flamme ancienne", "Flasche (Antike Flamme)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de fuego ancestral"
-        { Text{ "Bottle with a Blue Candle", "Flacon avec une bougie bleue", "Flasche (Blaue Kerze)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella con una vela azul"
-        { Text{ "Bottle with Red Ice", "Flacon de Glace Rouge", "Flasche (Rotes Eis)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de Hielo rojo"
-        { Text{ "Bottle with Nayru's Flame", "Flacon de flamme de Nayru", "Flasche (Nayrus Flamme)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella de llamas de Nayru"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BLUE_FIRE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de llama azul"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BLUE_FIRE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de fuego ancestral"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BLUE_FIRE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella con una vela azul"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BLUE_FIRE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de Hielo rojo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BLUE_FIRE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella de llamas de Nayru"
     };
     trickNameTable[RG_BOTTLE_WITH_BUGS] = {
-        { Text{ "Bottle with Baby Tektites", "Flacon de bébé Araknon", "Flasche (Baby Arachno)" },
-          Text{ "a ", "un ", "eine " } }, // "Tektites en una botella"
-        { Text{ "Bottle with A Beetle", "Flacon avec un scarabée", "Flasche (Wanze)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella con un escarabajo"
-        { Text{ "Bottle with Lanayru Ants", "Flacon de fourmis de Lanelle", "Flasche (Ranelle-Ameise)" },
-          Text{ "a ", "un ", "eine " } }, // "Celestarabajo embotellado"
-        { Text{ "Bottle with Insects", "Flacon de bibittes", "Flasche (Insekt)" },
-          Text{ "a ", "un ", "eine " } }, // "Saltabosques embotellados"
-        { Text{ "Bottle with a Golden Bee", "Flacon avec une abeille dorée", "Flasche (Goldene Biene)" },
-          Text{ "a ", "un ", "eine " } }, // "Botella con una abeja dorada"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BUGS.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Tektites en una botella"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BUGS.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella con un escarabajo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BUGS.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Celestarabajo embotellado"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BUGS.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Saltabosques embotellados"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BUGS.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Botella con una abeja dorada"
     };
     trickNameTable[RG_BOTTLE_WITH_POE] = {
-        { Text{ "Bottle with Ghini", "Flacon avec Ghini", "Flasche (Ghini)" },
-          Text{ "a ", "un ", "eine " } }, // "Ghini en una botella"
-        { Text{ "Bottle with Reapling", "Flacon avec Âme Damnée", "Flasche (Zombie)" },
-          Text{ "a ", "un ", "eine " } }, // "Reapling en una botella"
-        { Text{ "Bottle with Imp Poe", "Flacon avec Spectre", "Flasche (Geist)" },
-          Text{ "a ", "un ", "eine " } }, // "Espectro en una botella"
-        { Text{ "Bottle with Anti-Fairy", "Flacon avec Tetdoss", "Flasche (Knochenfratze)" },
-          Text{ "a ", "un ", "eine " } }, // "Whisp en una botella"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_POE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Ghini en una botella"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_POE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Reapling en una botella"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_POE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Espectro en una botella"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_POE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Whisp en una botella"
     };
 
     trickNameTable[RG_RUTOS_LETTER] = {
-        { Text{ "Bottle with Maggie's Letter", "Flacon avec lettre de Maggy", "Flasche (Dolores' Brief)" },
-          Text{ "a ", "un ", "eine " } }, // "Carta de Dolores"
-        { Text{ "Bottle with Letter to Kafei", "Flacon avec lettre pour Kafei", "Flasche (Brief an Kafei)" },
-          Text{ "a ", "un ", "eine " } }, // "Carta para Kafei"
-        { Text{ "Bottle with Zelda's Letter", "Flacon avec Lettre de Zelda", "Flasche (Zeldas Brief)" },
-          Text{ "a ", "un ", "eine " } }, // "Carta náutica"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RUTOS_LETTER.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Carta de Dolores"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RUTOS_LETTER.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Carta para Kafei"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RUTOS_LETTER.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Carta náutica"
     };
     trickNameTable[RG_BOTTLE_WITH_BIG_POE] = {
-        { Text{ "Bottle with Composer Brother", "Flacon avec un compositeur", "Flasche (Ludwig Brahmstein)" },
-          Text{ "a ", "un ", "eine " } }, // "Hermana Poe embotellada"
-        { Text{ "Bottle with Jalhalla", "Flacon avec Jalhalla", "Flasche (Jalhalla)" },
-          Text{ "a ", "un ", "eine " } }, // "Yaihalla embotellado"
-        { Text{ "Bottle with Grim Repoe", "Flacon avec le Faucheur", "Flasche (Tagschwärmer)" },
-          Text{ "a ", "un ", "eine " } }, // "Bubble en una botella"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BIG_POE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Hermana Poe embotellada"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BIG_POE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Yaihalla embotellado"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTLE_WITH_BIG_POE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Bubble en una botella"
     };
 
     trickNameTable[RG_ZELDAS_LULLABY] = {
-        { Text{ "Ballad of the Goddess", "Chant de la déesse", "Hymne der Göttin" },
-          Text{ "", "le ", "" } }, // "Cántico de la Diosa"
-        { Text{ "Song of Healing", "Chant de l'apaisement", "Lied der Befreiung" },
-          Text{ "", "le ", "" } }, // "Canción de curación"
-        { Text{ "Song of the Hero", "Chant du héros", "Heldenlied" }, Text{ "", "le ", "" } }, // "Canción del héroe"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LULLABY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Cántico de la Diosa"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LULLABY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Canción de curación"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZELDAS_LULLABY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Canción del héroe"
     };
     trickNameTable[RG_EPONAS_SONG] = {
-        { Text{ "Song of Birds", "Chant des oiseaux", "Vogelruf" }, Text{ "", "le ", "" } }, // "Cantar del ave"
-        { Text{ "Song of Soaring", "Chant de l'envol", "Lied der Schwingen" },
-          Text{ "", "le ", "" } }, // "Canción del viento"
-        { Text{ "Song of Horse", "Chant du cheval", "Lied des Pferdes" }, Text{ "", "le ", "" } }, // "Chant du cheval"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EPONAS_SONG.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Cantar del ave"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EPONAS_SONG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Canción del viento"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_EPONAS_SONG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Chant du cheval"
     };
     trickNameTable[RG_SARIAS_SONG] = {
-        { Text{ "Mido's Song", "La chanson de Mido", "Midos Lied" }, Text{ "", "", "" } },   // "La canción de Mido"
-        { Text{ "Kass' Theme", "Le thème de Kass", "Kashiwas Thema" }, Text{ "", "", "" } }, // "El tema de Kass"
-        { Text{ "Tune of Echoes", "Chant des Échos ", "Melodie des Echos" },
-          Text{ "", "le ", "" } }, // "Melodía del Eco"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SARIAS_SONG.0"),
+          Text{ "", "", "" } }, // "La canción de Mido"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SARIAS_SONG.1"),
+          Text{ "", "", "" } }, // "El tema de Kass"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SARIAS_SONG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Melodía del Eco"
     };
     trickNameTable[RG_SUNS_SONG] = {
-        { Text{ "Song of Passing", "Mambo de Manbo", "Kleine Tag- und Nachtmusik" },
-          Text{ "", "le ", "" } }, // "Melodía del transcurrir"
-        { Text{ "Command Melody", "Air du marionnettiste", "Sonate des Puppenspielers" },
-          Text{ "", "l'", "" } }, // "Cara al Sol"
-        { Text{ "Moon's Song", "La chanson de Moon", "Lied des Mondes" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SUNS_SONG.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Melodía del transcurrir"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SUNS_SONG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.2") }, // "Cara al Sol"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SUNS_SONG.2"),
           Text{ "", "", "" } }, // "La canción de la luna"
     };
     trickNameTable[RG_SONG_OF_TIME] = {
-        { Text{ "Song of Double Time", "Chant accéléré", "Thema der Zeit im Wind" },
-          Text{ "", "le ", "" } }, // "Canción del doble tiempo"
-        { Text{ "Inverted Song of Time", "Chant du temps inversé", "Ballade des Kronos" },
-          Text{ "", "le ", "" } }, // "Canción del tiempo invertida"
-        { Text{ "Tune of Ages", "Chant du Temps", "Melodie der Zeit" }, Text{ "", "le ", "" } }, // "Melodía del Tiempo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SONG_OF_TIME.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Canción del doble tiempo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SONG_OF_TIME.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Canción del tiempo invertida"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SONG_OF_TIME.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Melodía del Tiempo"
     };
     trickNameTable[RG_SONG_OF_STORMS] = {
-        { Text{ "Ballad of Gales", "Requiem de la tornade", "Kanon des Sturmes" },
-          Text{ "", "le ", "" } }, // "Melodía del Tornado"
-        { Text{ "Frog's Song of Soul", "Rap des grenouilles", "Krötenrap" },
-          Text{ "", "le ", "" } }, // "Canción del alma de la rana"
-        { Text{ "Wind's Requiem", "Mélodie du vent", "Lied des Windes" },
-          Text{ "", "la ", "" } }, // "Melodía del Viento"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SONG_OF_STORMS.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Melodía del Tornado"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SONG_OF_STORMS.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Canción del alma de la rana"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SONG_OF_STORMS.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Melodía del Viento"
     };
     trickNameTable[RG_MINUET_OF_FOREST] = {
-        { Text{ "Saria's Karaoke", "Karaoké de Saria", "Salias Karaoke" },
-          Text{ "", "le ", "" } }, // "Dueto del bosque"
-        { Text{ "Sonata of Awakening", "Sonate de l'éveil", "Sonate des Erwachens" },
-          Text{ "", "la ", "" } }, // "Sonata del despertar"
-        { Text{ "Wind God's Aria", "Hymne du dieu du vent", "Hymne des Zephirgottes" },
-          Text{ "", "l'", "" } }, // "Melodía del Espíritu del Viento"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MINUET_OF_FOREST.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Dueto del bosque"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MINUET_OF_FOREST.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Sonata del despertar"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MINUET_OF_FOREST.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.2") }, // "Melodía del Espíritu del Viento"
     };
     trickNameTable[RG_BOLERO_OF_FIRE] = {
-        { Text{ "Darunia's Tango", "Tango de Darunia", "Darunias Tango" }, Text{ "", "le ", "" } }, // "Coro del fuego"
-        { Text{ "Tune of Currents", "Chants des Flux", "Lied des Zeitstroms" },
-          Text{ "", "les ", "" } }, // "Melodía de las Corrientes"
-        { Text{ "Goron Lullaby", "Berceuse des Gorons", "Goronisches Schlummerlied" },
-          Text{ "", "la ", "" } }, // "Nana goron"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOLERO_OF_FIRE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Coro del fuego"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOLERO_OF_FIRE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.3") }, // "Melodía de las Corrientes"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOLERO_OF_FIRE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Nana goron"
     };
     trickNameTable[RG_SERENADE_OF_WATER] = {
-        { Text{ "Ruto's Blues", "Blues de Ruto", "Rutos Blues" }, Text{ "", "le ", "" } }, // "Sonata del agua"
-        { Text{ "New Wave Bossa Nova", "Bossa-nova des flots", "Bossa Nova der Kaskaden" },
-          Text{ "", "la ", "" } },                                                            // "Bossanova de las olas"
-        { Text{ "Manbo's Mambo", "Mambo de Manbo", "Manbos Mambo" }, Text{ "", "le ", "" } }, // "Mambo de Manbo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SERENADE_OF_WATER.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Sonata del agua"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SERENADE_OF_WATER.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Bossanova de las olas"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SERENADE_OF_WATER.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Mambo de Manbo"
     };
     trickNameTable[RG_REQUIEM_OF_SPIRIT] = {
-        { Text{ "Nabooru's Reggae", "Reggae de Nabooru", "Naborus Reggae" },
-          Text{ "", "le ", "" } }, // "Reggae del espíritu"
-        { Text{ "Elegy of Emptiness", "Hymne du vide", "Elegie des leeren Herzens" },
-          Text{ "", "l'", "" } }, // "Elegía al vacío"
-        { Text{ "Earth God's Lyric", "Hymne du dieu de la terre", "Hymne des Terragottes" },
-          Text{ "", "l'", "" } }, // "Melodía del Espíritu de la Tierra"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_REQUIEM_OF_SPIRIT.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Reggae del espíritu"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_REQUIEM_OF_SPIRIT.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.2") }, // "Elegía al vacío"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_REQUIEM_OF_SPIRIT.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.2") }, // "Melodía del Espíritu de la Tierra"
     };
     trickNameTable[RG_NOCTURNE_OF_SHADOW] = {
-        { Text{ "Impa's Death Metal", "Death métal d'Impa", "Impas Death Metal" },
-          Text{ "", "le ", "" } }, // "Diurno de la sombra"
-        { Text{ "Oath to Order", "Ode de l'appel", "Gesang des Himmels" }, Text{ "", "l'", "" } }, // "Oda al orden"
-        { Text{ "Song of Discovery", "Chant des secrets", "Schatzsucherlied" },
-          Text{ "", "le ", "" } }, // "Canto revelador"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_NOCTURNE_OF_SHADOW.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Diurno de la sombra"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_NOCTURNE_OF_SHADOW.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.2") }, // "Oda al orden"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_NOCTURNE_OF_SHADOW.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Canto revelador"
     };
     trickNameTable[RG_PRELUDE_OF_LIGHT] = {
-        { Text{ "Rauru's Sing-Along", "Chansonnette de Rauru", "Raurus Singalong" },
-          Text{ "", "la ", "" } }, // "Predulio de luz"
-        { Text{ "Ballad of the Wind Fish", "Ballade sur Poisson-Rêve", "Ballade vom Windfisch" },
-          Text{ "", "la ", "" } }, // "Balada del Piez Viento"
-        { Text{ "Song of Light", "Chant de la lumière", "Lied des Lichts" },
-          Text{ "", "le ", "" } }, // "Sonidos de la luz"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRELUDE_OF_LIGHT.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Predulio de luz"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRELUDE_OF_LIGHT.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Balada del Piez Viento"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PRELUDE_OF_LIGHT.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Sonidos de la luz"
     };
 
     trickNameTable[RG_KOKIRI_EMERALD] = {
-        { Text{ "Pendant of Courage", "Pendentif du courage", "Amulett des Mutes" },
-          Text{ "the ", "le ", "das " } }, // "Colgante del valor"
-        { Text{ "Farore's Pearl", "Perle de Farore", "Farores Deamont" }, Text{ "", "la ", "" } }, // "Orbe de Farore"
-        { Text{ "Aquanine", "Smaragdine", "Smaragdstahl" }, Text{ "the ", "la ", "den " } },       // "Yerbánida"
-        { Text{ "Farore's Emerald", "Émeraude de Farore", "Farore-Smaragd" },
-          Text{ "", "l'", "den " } }, // "Esmeralda de Farore"
-        { Text{ "Kokiri's Peridot", "Péridot Kokiri", "Kokiri-Peridot" },
-          Text{ "the ", "le ", "den " } }, // "Ágata de los Kokiri"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_EMERALD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Colgante del valor"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_EMERALD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Orbe de Farore"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_EMERALD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Yerbánida"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_EMERALD.3"),
+          CustomMessages::CreateText("randomizer.article_forms.none.9") }, // "Esmeralda de Farore"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_EMERALD.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Ágata de los Kokiri"
     };
     trickNameTable[RG_GORON_RUBY] = {
-        { Text{ "Pendant of Power", "Pendentif de la force", "Amulett der Stärke" },
-          Text{ "the ", "le ", "das " } },                                                    // "Colgante del poder"
-        { Text{ "Din's Pearl", "Perle de Din", "Dins Deamont" }, Text{ "", "la ", "" } },     // "Orbe de Din"
-        { Text{ "Crimsonine", "Alzanine", "Scharlachstahl" }, Text{ "the ", "l'", "den " } }, // "Bermellina"
-        { Text{ "Din's Ruby", "Rubis de Din", "Din-Rubin" }, Text{ "", "le ", "den " } },     // "Rubí de Din"
-        { Text{ "Goron's Garnet", "Grenat Goron", "Goronen-Granat" },
-          Text{ "the ", "le ", "den " } }, // "Topacio de los Goron"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_RUBY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Colgante del poder"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_RUBY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Orbe de Din"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_RUBY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.14") }, // "Bermellina"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_RUBY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.none.10") }, // "Rubí de Din"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_RUBY.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Topacio de los Goron"
     };
     trickNameTable[RG_ZORA_SAPPHIRE] = {
-        { Text{ "Pendant of Wisdom", "Pendentif de la sagesse", "Amulett der Weisheit" },
-          Text{ "the ", "le ", "das " } }, // "Colgante de la sabiduría"
-        { Text{ "Nayru's Pearl", "Perle de Nayru", "Nayrus Deamont" }, Text{ "", "la ", "" } }, // "Orbe de Nayru"
-        { Text{ "Azurine", "Aquanine", "Azurstahl" }, Text{ "the ", "l'", "den " } },           // "Azurina"
-        { Text{ "Nayru's Sapphire", "Saphir de Nayru", "Nayru-Saphir" },
-          Text{ "", "le ", "den " } }, // "Zafiro de Nayru"
-        { Text{ "Zora's Aquamarine", "Aquamarine Zora", "Zora-Aquamarin" },
-          Text{ "the ", "l'", "den " } }, // "Lapislázuli de los Zora"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_SAPPHIRE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Colgante de la sabiduría"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_SAPPHIRE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "Orbe de Nayru"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_SAPPHIRE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.14") }, // "Azurina"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_SAPPHIRE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.none.10") }, // "Zafiro de Nayru"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_SAPPHIRE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.14") }, // "Lapislázuli de los Zora"
     };
     trickNameTable[RG_FOREST_MEDALLION] = {
-        { Text{ "Wind Medallion", "Médaillon du vent", "Amulett des Windes" },
-          Text{ "the ", "le ", "das " } }, // "Medallón del Viento"
-        { Text{ "Wind Element", "Elément Vent", "Wind-Element" }, Text{ "the ", "l'", "das " } }, // "Elemento de aire"
-        { Text{ "Saria's Medallion", "Médaillon de Saria", "Salias Amulett" },
-          Text{ "", "le ", "" } }, // "Medallón de Saria"
-        { Text{ "Sign of Air", "Glyphe de l'air", "Zeichen der Luft" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de aire"
-        { Text{ "Medallion of Forest", "Médaillon du Temple de la Forêt", "Medaillon des Waldes" },
-          Text{ "the ", "le ", "das " } }, // "Medalla del Bosque"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_MEDALLION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medallón del Viento"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_MEDALLION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Elemento de aire"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_MEDALLION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Medallón de Saria"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_MEDALLION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Glifo de aire"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_MEDALLION.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medalla del Bosque"
     };
     trickNameTable[RG_FIRE_MEDALLION] = {
-        { Text{ "Fire Element", "Elément Feu", "Flammen-Element" },
-          Text{ "the ", "l'", "das " } }, // "Elemento de fuego"
-        { Text{ "Darunia's Medallion", "Médaillon de Darunia", "Darunias Amulett" },
-          Text{ "", "le ", "" } }, // "Medallón de Darunia"
-        { Text{ "Sign of Fire", "Glyphe de feu", "Zeichen des Feuers" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de fuego"
-        { Text{ "Medallion of Fire", "Médaillon du Temple du Feu", "Medaillon des Feuers" },
-          Text{ "the ", "le ", "das " } }, // "Medalla del Fuego"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_MEDALLION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Elemento de fuego"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_MEDALLION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Medallón de Darunia"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_MEDALLION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Glifo de fuego"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_MEDALLION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medalla del Fuego"
     };
     trickNameTable[RG_WATER_MEDALLION] = {
-        { Text{ "Water Element", "Elément Eau", "Tropfen-Element" },
-          Text{ "the ", "l'", "das " } }, // "Elemento de agua"
-        { Text{ "Ice Medallion", "Médaillon de glace", "Amulett des Eises" },
-          Text{ "the ", "le ", "das " } }, // "Medallón Helado"
-        { Text{ "Ruto's Medallion", "Médaillon de Ruto", "Rutos Amulett" },
-          Text{ "", "le ", "" } }, // "Medallón de Ruto"
-        { Text{ "Sign of Water", "Glyphe de l'eau", "Zeichen des Wassers" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de agua"
-        { Text{ "Medallion of Water", "Médaillon du Temple de l'Eau", "Medaillon des Wassers" },
-          Text{ "the ", "le ", "das " } }, // "Medalla del Agua"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_MEDALLION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Elemento de agua"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_MEDALLION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medallón Helado"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_MEDALLION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Medallón de Ruto"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_MEDALLION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Glifo de agua"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_MEDALLION.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medalla del Agua"
     };
     trickNameTable[RG_SPIRIT_MEDALLION] = {
-        { Text{ "Earth Element", "Elément Terre", "Erd-Element" },
-          Text{ "the ", "l'", "das " } }, // "Elemento de tierra"
-        { Text{ "Nabooru's Medallion", "Médaillon de Nabooru", "Naborus Amulett" },
-          Text{ "", "le ", "" } }, // "Medallón de Nabooru"
-        { Text{ "Sign of Earth", "Glyphe de la Terre", "Zeichen der Erde" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de la tierra"
-        { Text{ "Medallion of Spirit", "Médaillon du Temple de l'Esprit", "Medaillon der Geister" },
-          Text{ "the ", "le ", "das " } }, // "Medalla del Espíritu"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_MEDALLION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.0") }, // "Elemento de tierra"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_MEDALLION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Medallón de Nabooru"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_MEDALLION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Glifo de la tierra"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_MEDALLION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medalla del Espíritu"
     };
     trickNameTable[RG_SHADOW_MEDALLION] = {
-        { Text{ "Fused Shadow", "Cristal d'ombre", "Schattenkristall" },
-          Text{ "the ", "le ", "den " } }, // "Sombra Fundida"
-        { Text{ "Impa's Medallion", "Médaillon d'Impa", "Impas Amulett" },
-          Text{ "", "le ", "" } }, // "Medallón de Impa"
-        { Text{ "Sign of Illusion", "Glyphe de l'illusion", "Zeichen der Illusionen" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de ilusión"
-        { Text{ "Medallion of Shadow", "Médaillon du Temple de l'Ombre", "Medaillon des Schattens" },
-          Text{ "the ", "le ", "das " } }, // "Medalla de la Sombra"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_MEDALLION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") }, // "Sombra Fundida"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_MEDALLION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Medallón de Impa"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_MEDALLION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Glifo de ilusión"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_MEDALLION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medalla de la Sombra"
     };
     trickNameTable[RG_LIGHT_MEDALLION] = {
-        { Text{ "Compass of Light", "Boussole de lumière", "Licht-Kompaß" },
-          Text{ "the ", "la ", "den " } }, // "Brújula de Luz"
-        { Text{ "Rauru's Medallion", "Médaillon de Rauru", "Raurus Amulett" },
-          Text{ "", "le ", "" } }, // "Medallón de Rauru"
-        { Text{ "Sign of Destiny", "Glyphe du destin", "Zeichen des Schicksals" },
-          Text{ "the ", "la ", "das " } }, // "Glifo del destino"
-        { Text{ "Medallion of Light", "Médaillon du temple de lumière", "Medaillon des Lichts" },
-          Text{ "the ", "le ", "das " } }, // "Medalla de la Luz"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LIGHT_MEDALLION.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") }, // "Brújula de Luz"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LIGHT_MEDALLION.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") }, // "Medallón de Rauru"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LIGHT_MEDALLION.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.1") }, // "Glifo del destino"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LIGHT_MEDALLION.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") }, // "Medalla de la Luz"
     };
 
     trickNameTable[RG_RECOVERY_HEART] = {
-        { Text{ "Love", "Bisou", "Liebe" }, Text{ "", "un ", "" } }, // "Te amo"
-        { Text{ "Life", "Vie", "Leben" }, Text{ "", "la ", "" } },   // "vida"
-        { Text{ "HP", "PV", "KP" }, Text{ "", "des ", "" } },        // "VP"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RECOVERY_HEART.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.11") }, // "Te amo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RECOVERY_HEART.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") }, // "vida"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RECOVERY_HEART.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.6") }, // "VP"
     };
     trickNameTable[RG_GREEN_RUPEE] = {
-        { Text{ "Rupee (1)", "Rubis (1)", "Rubin (1)" }, Text{ "a ", "un ", "einen " } },       // "Peso hyliano"
-        { Text{ "One Ruby", "Un rubis", "ein Ruby" }, Text{ "", "", "" } },                     // "Un rubí"
-        { Text{ "One Rupee", "Un rubis", "ein Rubin" }, Text{ "", "", "" } },                   // "Guaraní hyliano"
-        { Text{ "False Greg", "Faux Greg", "falscher Greg" }, Text{ "a ", "un ", "einen " } },  // "Falso Greg"
-        { Text{ "Rupoor (1)", "Roupir (1)", "Rubinfalle (1)" }, Text{ "a ", "un ", "eine " } }, // "Rupobre (1)"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREEN_RUPEE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") },                                // "Peso hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREEN_RUPEE.1"), Text{ "", "", "" } }, // "Un rubí"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREEN_RUPEE.2"),
+          Text{ "", "", "" } }, // "Guaraní hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREEN_RUPEE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Falso Greg"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREEN_RUPEE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Rupobre (1)"
     };
     trickNameTable[RG_BLUE_RUPEE] = {
-        { Text{ "Blupee", "Bleubi", "Fünfer" }, Text{ "a ", "un ", "einen " } },                // "Azupia"
-        { Text{ "Five Rubies", "Cinq Rubys", "fünf Rubies€" }, Text{ "", "", "" } },            // "Cinco rubíes"
-        { Text{ "Five Rupees", "Cinq rubis", "fünf Rubine€" }, Text{ "", "", "" } },            // "Bolívar hyliano"
-        { Text{ "Rupee (5)", "Rubis (5)", "Rubin (5)" }, Text{ "a ", "un ", "einen " } },       // "Peso hyliano"
-        { Text{ "Rupoor (5)", "Roupir (5)", "Rubinfalle (5)" }, Text{ "a ", "un ", "eine " } }, // "Rupobre (5)"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BLUE_RUPEE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") },                               // "Azupia"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BLUE_RUPEE.1"), Text{ "", "", "" } }, // "Cinco rubíes"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BLUE_RUPEE.2"),
+          Text{ "", "", "" } }, // "Bolívar hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BLUE_RUPEE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Peso hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BLUE_RUPEE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Rupobre (5)"
     };
     trickNameTable[RG_RED_RUPEE] = {
-        { Text{ "Big 20", "Grand 20", "Zwanni" }, Text{ "a ", "un ", "einen " } },                 // "Los 20 grandes"
-        { Text{ "Twenty Rubies", "vingt rubis", "zwanzig Rubies€" }, Text{ "", "", "" } },         // "Veinte rubíes"
-        { Text{ "Twenty Rupees", "Vingt rubis", "zwanzig Rubine€" }, Text{ "", "", "" } },         // "Colon hyliano"
-        { Text{ "Rupee (20)", "Rubis (20)", "Rubin (20)" }, Text{ "a ", "un ", "einen " } },       // "Peso hyliano"
-        { Text{ "Rupoor (20)", "Roupir (20)", "Rubinfalle (20)" }, Text{ "a ", "un ", "eine " } }, // "Rupobre (20)"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RED_RUPEE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") },                              // "Los 20 grandes"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RED_RUPEE.1"), Text{ "", "", "" } }, // "Veinte rubíes"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RED_RUPEE.2"), Text{ "", "", "" } }, // "Colon hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RED_RUPEE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Peso hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RED_RUPEE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Rupobre (20)"
     };
     trickNameTable[RG_PURPLE_RUPEE] = {
-        { Text{ "Purpee", "Pourbi", "Fuffi" }, Text{ "a ", "un ", "einen " } },               // "morupiua"
-        { Text{ "Fifty Rubies", "Cinquante rubis", "fünfzig Rubies€" }, Text{ "", "", "" } }, // "Cincuenta rubíes"
-        { Text{ "Fifty Rupees", "Cinquante rubis", "fünfzig Rubine€" }, Text{ "", "", "" } }, // "Balboa hyliano"
-        { Text{ "Rupee (50)", "Rubis (50)", "Rubin (50)" }, Text{ "a ", "un ", "einen " } },  // "Peso hyliano"
-        { Text{ "Rupoor (50)", "Roupir (50)", "Rubinfalle (50)" }, Text{ "a ", "un ", "eine " } }, // "Rupobre (50)"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PURPLE_RUPEE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "morupiua"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PURPLE_RUPEE.1"),
+          Text{ "", "", "" } }, // "Cincuenta rubíes"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PURPLE_RUPEE.2"),
+          Text{ "", "", "" } }, // "Balboa hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PURPLE_RUPEE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Peso hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PURPLE_RUPEE.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") }, // "Rupobre (50)"
     };
     trickNameTable[RG_HUGE_RUPEE] = {
-        { Text{ "Hugo", "Or Rubi", "zwei Hunnis€" }, Text{ "a ", "un ", "" } }, // "Oro Rubi"
-        { Text{ "Two Hundred Rubies", "Deux cents rubis", "zweihundert Rubies€" },
-          Text{ "", "", "" } },                                                                // "Doscientos rubíes"
-        { Text{ "Diamond", "Diamant", "Diamant" }, Text{ "a ", "un ", "einen " } },            // "Diamante"
-        { Text{ "Huge Ruby", "Énorme rubis", "großer Ruby" }, Text{ "a ", "un ", "einen " } }, // "Rubi gigante"
-        { Text{ "Two Hundred Rupees", "Deux cent rubis", "zweihundert Rubine€" },
-          Text{ "", "", "" } },                                                                 // "Euro hyliano"
-        { Text{ "Rupee (200)", "Rubis (200)", "Rubin (200)" }, Text{ "a ", "un ", "einen " } }, // "Dólar hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HUGE_RUPEE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.6") }, // "Oro Rubi"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HUGE_RUPEE.1"),
+          Text{ "", "", "" } }, // "Doscientos rubíes"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HUGE_RUPEE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Diamante"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HUGE_RUPEE.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") },                               // "Rubi gigante"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HUGE_RUPEE.4"), Text{ "", "", "" } }, // "Euro hyliano"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HUGE_RUPEE.5"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Dólar hyliano"
     };
     trickNameTable[RG_PIECE_OF_HEART] = {
-        { Text{ "Pizza Heart", "Fromage de cœur", "Harzteil" }, Text{ "a ", "un ", "ein " } },   // "Pieza de Chorizo"
-        { Text{ "Little Bit Of Love", "Un peu d'amour", "etwas Liebe" }, Text{ "a ", "", "" } }, // "Un poco de amor"
-        { Text{ "Rare Peach Stone", "Pierre de pêche rare", "ein seltener Pfirsichstein" },
-          Text{ "a ", "une ", "" } }, // "Pierre de pêche rare"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PIECE_OF_HEART.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Pieza de Chorizo"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PIECE_OF_HEART.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.7") }, // "Un poco de amor"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PIECE_OF_HEART.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") }, // "Pierre de pêche rare"
     };
     trickNameTable[RG_HEART_CONTAINER] = {
-        { Text{ "Crystal Heart", "Cœur de cristal", "Kristallherz" },
-          Text{ "a ", "un ", "ein " } },                                                    // "Corazón de cristal"
-        { Text{ "Life Heart", "Cœur de vie", "Lebensherz" }, Text{ "a ", "un ", "ein " } }, // "Vida Corazón"
-        { Text{ "Lots of Love", "Beaucoup d'amour", "viel Liebe" }, Text{ "", "", "" } },   // "Mucho amor"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HEART_CONTAINER.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Corazón de cristal"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HEART_CONTAINER.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Vida Corazón"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HEART_CONTAINER.2"),
+          Text{ "", "", "" } }, // "Mucho amor"
     };
     trickNameTable[RG_TRIFORCE_PIECE] = {
-        { Text{ "Piece of Cheese", "Morceau de Fromage", "Käseteil" },
-          Text{ "a ", "un ", "ein " } }, // "Piece of Cheese"
-        { Text{ "Triforce Shard", "Éclat de Triforce", "Triforce-Fragment" },
-          Text{ "a ", "un ", "ein " } }, // "Triforce Shard"
-        { Text{ "Shiny Rock", "Caillou Brillant", "glänzender Stein" }, Text{ "a ", "un ", "einen " } }, // "Shiny Rock"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TRIFORCE_PIECE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Piece of Cheese"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TRIFORCE_PIECE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.4") }, // "Triforce Shard"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TRIFORCE_PIECE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") }, // "Shiny Rock"
     };
     trickNameTable[RG_TRIFORCE] = {
-        { Text{ "Cheese Triangle", TODO_TRANSLATE, "Käse" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Triumph Fork", TODO_TRANSLATE, "Chaos Emerald" }, Text{ "the ", TODO_TRANSLATE, "Das " } },
-        { Text{ "Force Gem", TODO_TRANSLATE, "Dragonball" }, Text{ "a ", TODO_TRANSLATE, "ein " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TRIFORCE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TRIFORCE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.15") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TRIFORCE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.10") },
     };
     trickNameTable[RG_ROCS_FEATHER] = {
-        { Text{ "Chicken Wing", "Chicken Wing", "Hähnchenschenkel" }, Text{ "a ", "une ", "ein " } }, // "Chicken Wing"
-        { Text{ "Roc's Leg", "Roc's Leg", "Greifenfuß" }, Text{ "", "la ", "ein " } },                // "Roc's Leg"
-        { Text{ "Roc's Flapper", "Roc's Flapper", "Greifenflügel" }, Text{ "", "le ", "ein " } },     // "Roc's Flapper"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ROCS_FEATHER.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.1") }, // "Chicken Wing"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ROCS_FEATHER.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.12") }, // "Roc's Leg"
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ROCS_FEATHER.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.13") }, // "Roc's Flapper"
     };
     trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
-        { Text{ "Volcano Seed Spirit", TODO_TRANSLATE, "Vulkanbohnen-Seele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Bolero Sprout Platform", TODO_TRANSLATE, "Bolero-Spross" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL] = {
-        { Text{ "Dodongo's Seed Spirit", TODO_TRANSLATE, "Dodongo-Erbsenseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Boulder Sprout Platform", TODO_TRANSLATE, "Felsbrocken-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_DESERT_COLOSSUS_BEAN_SOUL] = {
-        { Text{ "Spirit Temple Seed Spirit", TODO_TRANSLATE, "Geistertempel-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Colossus Arch Sprout Platform", TODO_TRANSLATE, "Koloss-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DESERT_COLOSSUS_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DESERT_COLOSSUS_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_GERUDO_VALLEY_BEAN_SOUL] = {
-        { Text{ "Waterfall Seed Spirit", TODO_TRANSLATE, "Wasserfall-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Gerudo Cow Sprout Platform", TODO_TRANSLATE, "Gerudo-Kuh-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_VALLEY_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_VALLEY_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_GRAVEYARD_BEAN_SOUL] = {
-        { Text{ "GY Crate Seed Spirit", TODO_TRANSLATE, "Friedhof-Erbsenseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Dampe's Sprout Platform", TODO_TRANSLATE, "Boris Sprossseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GRAVEYARD_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GRAVEYARD_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_KOKIRI_FOREST_BEAN_SOUL] = {
-        { Text{ "Rupee Ledge Seed Spirit", TODO_TRANSLATE, "Walddorf-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "KF Shop Sprout Platform", TODO_TRANSLATE, "Kokiri-Laden-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_FOREST_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KOKIRI_FOREST_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_LAKE_HYLIA_BEAN_SOUL] = {
-        { Text{ "Hylia Lab Seed Spirit", TODO_TRANSLATE, "Labor-Erbsenseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Fishing Sprout Platform", TODO_TRANSLATE, "Angel-Sprossseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LAKE_HYLIA_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LAKE_HYLIA_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_LOST_WOODS_BRIDGE_BEAN_SOUL] = {
-        { Text{ "LW Bridge Seed Spirit", TODO_TRANSLATE, "Brücken-Erbsenseele" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Skull Kid Sprout Platform", TODO_TRANSLATE, "Horror Kid Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LOST_WOODS_BRIDGE_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LOST_WOODS_BRIDGE_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_LOST_WOODS_BEAN_SOUL] = {
-        { Text{ "Deku Theatre Seed Spirit", TODO_TRANSLATE, "Theater-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Deku Scrubs Sprout Platform", TODO_TRANSLATE, "Wald-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LOST_WOODS_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_LOST_WOODS_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_ZORAS_RIVER_BEAN_SOUL] = {
-        { Text{ "River Ride Seed Spirit", TODO_TRANSLATE, "Fluß-Weg-Erbsenseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Bean Salesman Sprout Platform", TODO_TRANSLATE, "Erbsenhändler-Sprossseele" },
-          Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORAS_RIVER_BEAN_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORAS_RIVER_BEAN_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_GOHMA_SOUL] = {
-        { Text{ "Spider Sense", "Sens de l'Araignée", "Spinnensinn" }, Text{ "the ", "le ", "den " } },
-        { Text{ "Deku Spirit", "Parasite Mojo", "Deku Geist" }, Text{ "the ", "le ", "den " } },
-        { Text{ "Ghost of Ghoma", "Fantôme de Gohma", "Gohmas Geist" }, Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOHMA_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOHMA_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GOHMA_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_KING_DODONGO_SOUL] = {
-        { Text{ "Lizard Soul", "Âme d'un Lézard", "Reptilienseele" }, Text{ "the ", "l'", "die " } },
-        { Text{ "Regal Remains", "Restes Délicieux", "royale Überreste€" }, Text{ "the ", "les ", "die " } },
-        { Text{ "Dodongo's Core", "Coeur de Dodongo", "Dodongos Kern" }, Text{ "", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KING_DODONGO_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.13") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KING_DODONGO_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KING_DODONGO_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") },
     };
     trickNameTable[RG_BARINADE_SOUL] = {
-        { Text{ "Parasitic Poltergeist", "Poltergeist Parasite", "infektiöser Poltergeist" },
-          Text{ "the ", "le ", "den " } },
-        { Text{ "Jabu Insides", "Entrailles de Jabu-Jabu", "Jabus Innereien" }, Text{ "the ", "les ", "" } },
-        { Text{ "Barinade Bacteria", "Bactérie de Barinade", "Barinades Bakterien" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BARINADE_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BARINADE_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.18") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BARINADE_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_PHANTOM_GANON_SOUL] = {
-        { Text{ "Bigger Poe", "Âme Gigantesque", "ein großer Nachtschwärmer" }, Text{ "a ", "une ", "" } },
-        { Text{ "Sacred Forest Pine Tree", "Grande Perche du Bosquet Sacré", "Kiefer der Heiligen Lichtung" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ganon's Phantom", "Fantôme de Ganon", "Ganons Phantom" }, Text{ "", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PHANTOM_GANON_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PHANTOM_GANON_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_PHANTOM_GANON_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") },
     };
     trickNameTable[RG_VOLVAGIA_SOUL] = {
-        { Text{ "Dragon Roast", "Friture du Dragon", "Drachenbraten" }, Text{ "the ", "la ", "den " } },
-        { Text{ "Hot n' Ready", "Sauce Barbecue", "Barbecue Sauce" }, Text{ "", "la ", "die " } },
-        { Text{ "Volvagia's Vitality", "Vitalité de Volcania", "Volvagias Vitalität" }, Text{ "", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_VOLVAGIA_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_VOLVAGIA_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.none.4") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_VOLVAGIA_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") },
     };
     trickNameTable[RG_MORPHA_SOUL] = {
-        { Text{ "Dihydrogen Monoxide", "Monoxyde de Dihydrogène", "Dihydrogenmonoxid" }, Text{ "", "le ", "das " } },
-        { Text{ "Morpha Molecules", "Molécule de Morpha", "Morphas Moleküle" }, Text{ "the ", "la ", "" } },
-        { Text{ "Wet Stuff", "Truc Mouillé", "nasses Zeug" }, Text{ "", "le ", "das " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MORPHA_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.14") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MORPHA_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MORPHA_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.14") },
     };
     trickNameTable[RG_BONGO_BONGO_SOUL] = {
-        { Text{ "Shadow Soul", "Âme de l'Ombre", "Schattenseele" }, Text{ "the ", "l'", "die " } },
-        { Text{ "Dark Essence", "Essence Sombre", "Dunkle Essenz" }, Text{ "the ", "l'", "die " } },
-        { Text{ "Bongo Bongo's Bongo", "Bongo de Bongo Bongo", "Bongo Bongos Bongo" }, Text{ "", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BONGO_BONGO_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.13") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BONGO_BONGO_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.13") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BONGO_BONGO_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") },
     };
     trickNameTable[RG_TWINROVA_SOUL] = {
-        { Text{ "Sandy Ashes", "Cendres des Vieilles", "Sandige Asche" }, Text{ "the ", "les ", "die " } },
-        { Text{ "Spiritual Spirit", "Esprit Spirituel", "Geisterhafter Geist" }, Text{ "the ", "l'", "den " } },
-        { Text{ "Twin Rovers", "Duo Angélique", "Twinrovas Seile" }, Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TWINROVA_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.7") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TWINROVA_SOUL.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.14") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TWINROVA_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_GANON_SOUL] = {
-        { Text{ "Pure Evil", "Mal Incarné", "Das pure Böse" }, Text{ "", "le ", "" } },
-        { Text{ "Ganon's Ghost", "Le Malin", "Ganons Geist" }, Text{ "", "", "" } },
-        { Text{ "Pork", "Porc", "Schweinefleisch" }, Text{ "", "le ", "das " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANON_SOUL.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.1") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANON_SOUL.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANON_SOUL.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.14") },
     };
     trickNameTable[RG_FISHING_POLE] = {
-        { Text{ "Fish Tickler", "Fish Tickler", "Fischkitzler" }, Text{ "a ", "un ", "einen " } },
-        { Text{ "Floating Lure", "Floating Lure", "Schwimmer" }, Text{ "a ", "un ", "einen " } },
-        { Text{ "Fishing Reel", "Fishing Reel", "Angelschnur" }, Text{ "a ", "un ", "eine " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FISHING_POLE.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FISHING_POLE.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.0") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FISHING_POLE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.5") },
     };
     trickNameTable[RG_SCARECROWS_SONG] = {
-        { Text{ "Pierre's Polka", "Polka de Pierre", "Pierres Polka" }, Text{ "", "la ", "" } },
-        { Text{ "Crow's Song", "Chant du corbeau", "Krähenlied" }, Text{ "the ", "le ", "das " } },
-        { Text{ "Bonooru's Ballad", "Ballade de Bonooru", "Bonoorus Ballade" }, Text{ "", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SCARECROWS_SONG.0"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SCARECROWS_SONG.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SCARECROWS_SONG.2"),
+          CustomMessages::CreateText("randomizer.article_forms.none.0") },
     };
     trickNameTable[RG_SKELETON_KEY] = {
-        { Text{ "Stalfos Key", TODO_TRANSLATE, "Stalfos-Schlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Nightmare Key", TODO_TRANSLATE, "Albtraumschlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Graveyard Key", TODO_TRANSLATE, "Gruftschlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "King's Key", TODO_TRANSLATE, "Königsschlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Hero's Key", TODO_TRANSLATE, "Heldenschlüssel" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKELETON_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKELETON_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKELETON_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKELETON_KEY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKELETON_KEY.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_CLIMB] = {
-        { Text{ "Cling", TODO_TRANSLATE, "Klammern" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_CLIMB.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_CRAWL] = {
-        { Text{ "Crouch", TODO_TRANSLATE, "Ducken" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_CRAWL.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_OPEN_CHEST] = {
-        { Text{ "Open Cheats", TODO_TRANSLATE, "Truhenplünderer" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OPEN_CHEST.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
 
     trickNameTable[RG_OCARINA_A_BUTTON] = {
-        { Text{ "Ocarina J Button", "Touche Ha de l'Ocarina", "J-Taste der Okarina" }, Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina Ayy Button", "Touche Ah de l'Ocarina", "A-Taste der Flöte" }, Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina A Trigger", "Bumper A de l'Ocarina", "A-Trigger der Okarina" },
-          Text{ "the ", "le ", "den " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_A_BUTTON.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_A_BUTTON.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_A_BUTTON.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.5") },
     };
     trickNameTable[RG_OCARINA_C_UP_BUTTON] = {
-        { Text{ "Ocarina C North Button", "Touche C Nord de l'Ocarina", "C-Nord-Taste der Okarina" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina C App Button", "Touche C'est Haut de l'Ocarina", "C-Oben-Taste des Rekorders" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina Sup Button", "Touche O de l'Ocarina", "C-Oben-Trigger der Okarina" },
-          Text{ "the ", "la ", "den " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_UP_BUTTON.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_UP_BUTTON.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_UP_BUTTON.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") },
     };
     trickNameTable[RG_OCARINA_C_DOWN_BUTTON] = {
-        { Text{ "Ocarina C South Button", "Touche C Sud de l'Ocarina", "C-Süd-Taste der Okarina" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina Z Down Button", "Touche Z Bas de l'Ocarina", "Z-Unten-Taste der Okarina" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina See Down Button", "Touche C'est Bas de l'Ocarina", "C-Unten-Taste der Harfe" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina C Dawn Button", "Touche Séba de l'Ocarina", "C-Unten-Trigger der Okarina" },
-          Text{ "the ", "la ", "den " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_DOWN_BUTTON.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_DOWN_BUTTON.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_DOWN_BUTTON.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_DOWN_BUTTON.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") },
     };
     trickNameTable[RG_OCARINA_C_LEFT_BUTTON] = {
-        { Text{ "Ocarina C West Button", "Touche C Ouest de l'Ocarina", "C-West-Taste der Okarina" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina Sea Left Button", "Touche Cégoche de L'Ocarina", "C-Links-Taste der Nixenglocke" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina C Lift Button", "Touche C'est Gauche de l'Ocarina", "C-Zelda-Taste der Okarina" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina Rewind Button", "Touche Rembobiner de l'Ocarina", "C-Links-Trigger der Okarina" },
-          Text{ "the ", "la ", "den " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_LEFT_BUTTON.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_LEFT_BUTTON.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_LEFT_BUTTON.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_LEFT_BUTTON.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") },
     };
     trickNameTable[RG_OCARINA_C_RIGHT_BUTTON] = {
-        { Text{ "Ocarina C East Button", "Touche C Est de l'Ocarina", "C-Ost-Taste der Okarina" },
-          Text{ "the ", "la ", "die " } },
-        { Text{ "Ocarina C Wright Button", "Touche C'est Droite de l'Ocarina", "C-Rechts-Trigger der Okarina" },
-          Text{ "the ", "la ", "den " } },
-        { Text{ "Overworld C Right Button", "Trou Droit de l'Ocarina", "C-Rechts-Taste der E-Gitarre" },
-          Text{ "the ", "le ", "die " } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_RIGHT_BUTTON.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.10") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_RIGHT_BUTTON.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.4") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_OCARINA_C_RIGHT_BUTTON.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.11") },
     };
 
     trickNameTable[RG_GREG_RUPEE] = {
-        { Text{ "Morshu the Green Ruby", TODO_TRANSLATE, "Morshu, der weiße Rubin" }, Text{ "", "", "" } },
-        { Text{ "Geoffrey the Gray Rupoor", TODO_TRANSLATE, "Geoffrey, der graue Rupon" }, Text{ "", "", "" } },
-        { Text{ "Validation Rupee", TODO_TRANSLATE, "Bestätigungs Robin" }, Text{ "a ", "un ", "" } },
-        { Text{ "Gary, just Gary", TODO_TRANSLATE, "Gary, einfach Gary" }, Text{ "", "", "" } },
-        { Text{ "Ike the Indigo Ice Trap", TODO_TRANSLATE, "Herzog Onkleds Rubin" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREG_RUPEE.0"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREG_RUPEE.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREG_RUPEE.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.6") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREG_RUPEE.3"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GREG_RUPEE.4"), Text{ "", "", "" } },
     };
 
     trickNameTable[RG_FOREST_TEMPLE_SMALL_KEY] = {
-        { Text{ "Wind Temple Smol Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Windtempel" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Woodfall Temple Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Dämmerwald" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Skull Woods Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Sumpftempel" },
-          Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
     trickNameTable[RG_FIRE_TEMPLE_SMALL_KEY] = {
-        { Text{ "Ice Cavern Small Keese", TODO_TRANSLATE, "Brecheisen für die Eishöhle" }, Text{ "a ", "une ", "" } },
-        { Text{ "Goron Temple Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Goronentempel" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Eldin Temple Salmon Koi", TODO_TRANSLATE, "Mini Schlüssel für den Eldintempel" },
-          Text{ "a ", "un ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.6") },
     };
     trickNameTable[RG_WATER_TEMPLE_SMALL_KEY] = {
-        { Text{ "Swamp Palace Small Keese", TODO_TRANSLATE, "Mini Schlüssel für den Sumpf-Palast" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Great Bay Temple Small Key", TODO_TRANSLATE, "Brecheisen für die Schädelbucht-Tempel" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Lakebed Temple Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Seeschrein" },
-          Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
     trickNameTable[RG_SPIRIT_TEMPLE_SMALL_KEY] = {
-        { Text{ "Light Temple Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Lichttempel" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Lightning Temple Smol Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Blitztempel" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Desert Palace Small Key", TODO_TRANSLATE, "Mini Schlüssel für den Wüstentempel" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Stone Tower Small Keese", TODO_TRANSLATE, "Brecheisen für den Felsenturm-Tempel" },
-          Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_SMALL_KEY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
     trickNameTable[RG_SHADOW_TEMPLE_SMALL_KEY] = {
-        { Text{ "Palace of Darkness Small Key", TODO_TRANSLATE, "Brecheisen für den Palast der Dunkelheit" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Shrine of Illusion Salmon Koi", TODO_TRANSLATE, "Kleiner Schlüssel für den Terratempel" },
-          Text{ "a ", "un ", "" } },
-        { Text{ "Palace of Twilight Small Key", TODO_TRANSLATE, "Mini Schlüssel für den Schattenpalast" },
-          Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.6") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
     trickNameTable[RG_BOTTOM_OF_THE_WELL_SMALL_KEY] = {
-        { Text{ "Top of the Wall Small Key", TODO_TRANSLATE, "Mini Schlüssel für den Bereich über dem Brunnen" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Breath of the Wild Small Key", TODO_TRANSLATE, "Brecheisen für die Windmühle" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Beneath the Well Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für den Bereich unter dem Brunnen" },
-          Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTOM_OF_THE_WELL_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTOM_OF_THE_WELL_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTOM_OF_THE_WELL_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
     trickNameTable[RG_GERUDO_TRAINING_GROUND_SMALL_KEY] = {
-        { Text{ "Gerudo Sanctum Small Key", TODO_TRANSLATE, "Brecheisen für das Gerudo-Sanktum" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Lady's Lair Small Keese", TODO_TRANSLATE, "Kleiner Schlüssel für die Ritterakademie" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Knight Acadamy Small Key", TODO_TRANSLATE, "Mini Schlüssel für das Dojo" }, Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_TRAINING_GROUND_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_TRAINING_GROUND_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_TRAINING_GROUND_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
     trickNameTable[RG_GERUDO_FORTRESS_SMALL_KEY] = {
-        { Text{ "Fortress of Winds Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für die Piratenfestung" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Thieves' Town Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für das Gerudoversteck" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Fortress Centrum Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für die verlassene Festung" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Forsaken Fortress Smol Key", TODO_TRANSLATE, "Brecheisen für das Festungszentrum" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Pirate's Fortress Small Key", TODO_TRANSLATE, "Mini Schlüssel für das Frauenversteck" },
-          Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_SMALL_KEY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_SMALL_KEY.4"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
     trickNameTable[RG_GANONS_CASTLE_SMALL_KEY] = {
-        { Text{ "Hyrule Castle Salmon Koi", TODO_TRANSLATE, "Mini Schlüssel für das Schloß Hyrule" },
-          Text{ "a ", "un ", "" } },
-        { Text{ "Onox's Castle Small Key", TODO_TRANSLATE, "Kleiner Schlüssel für das Verans Schloß" },
-          Text{ "a ", "une ", "" } },
-        { Text{ "Vaati's Palace Small Key", TODO_TRANSLATE, "Brecheisen für den Agahnims Palast" },
-          Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.6") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
 
     trickNameTable[RG_TREASURE_GAME_SMALL_KEY] = {
-        { Text{ "Chest Game Salmon Koi", TODO_TRANSLATE, "Truhen-Spiel Kartoffel" }, Text{ "a ", "un ", "" } },
-        { Text{ "Shell Game Small Key", TODO_TRANSLATE, "Triforce-Spiel Schlüssel" }, Text{ "a ", "une ", "" } },
-        { Text{ "Treasure Hunt Small Key", TODO_TRANSLATE, "Dönerbuden Schlüssel" }, Text{ "a ", "une ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_GAME_SMALL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.6") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_GAME_SMALL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_GAME_SMALL_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.8") },
     };
 
     trickNameTable[RG_FOREST_TEMPLE_KEY_RING] = {
-        { Text{ "Wind Temple Key Ring", TODO_TRANSLATE, "Schlüsselbund des Windtempels" }, Text{ "the ", "le ", "" } },
-        { Text{ "Woodfall Temple Key Ring", TODO_TRANSLATE, "Dietrich des Waldtempels" }, Text{ "the ", "le ", "" } },
-        { Text{ "Skull Woods Key Ring", TODO_TRANSLATE, "Schlüsselset des Sumpftempels" }, Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_FIRE_TEMPLE_KEY_RING] = {
-        { Text{ "Ice Cavern Keese Ring", TODO_TRANSLATE, "Schlüsselset der Eishöhle" }, Text{ "the ", "le ", "" } },
-        { Text{ "Goron Temple Key Ring", TODO_TRANSLATE, "Dietrich des Feuertempels" }, Text{ "the ", "le ", "" } },
-        { Text{ "Eldin Temple Koi Ray", TODO_TRANSLATE, "Schlüsselbund des Eldintempels" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_WATER_TEMPLE_KEY_RING] = {
-        { Text{ "Swamp Palace Keese Ring", TODO_TRANSLATE, "Schlüsselset des Sumpfpalasts" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Great Bay Temple Key Ring", TODO_TRANSLATE, "Dietrich des Wassertempels" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Lakebed Temple Key Ring", TODO_TRANSLATE, "Schlüsselbund des Seeschreins" },
-          Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_SPIRIT_TEMPLE_KEY_RING] = {
-        { Text{ "Light Temple Key Ring", TODO_TRANSLATE, "Schlüsselset des Lichttempels" }, Text{ "the ", "le ", "" } },
-        { Text{ "Lightning Temple Key Ring", TODO_TRANSLATE, "Dietrich des Geistertempels" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Desert Palace Key Ring", TODO_TRANSLATE, "Schlüsselbund des Wüstentempels" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Stone Tower Keese Ring", TODO_TRANSLATE, "Schlüsselhaufen des Felsenturm-Tempels" },
-          Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_KEY_RING.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_SHADOW_TEMPLE_KEY_RING] = {
-        { Text{ "Palace of Darkness Key Ring", TODO_TRANSLATE, "Schlüsselset des Palasts der Dunkelheit" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Shrine of Illusion Koi Ray", TODO_TRANSLATE, "Dietrich des Schattentempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Palace of Twilight Key Ring", TODO_TRANSLATE, "Schlüsselbund des Schattenpalasts" },
-          Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_BOTTOM_OF_THE_WELL_KEY_RING] = {
-        { Text{ "Top of the Wall Key Ring", TODO_TRANSLATE, "Schlüsselset für Über dem Brunnen" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Breath of the Wild Key Ring", TODO_TRANSLATE, "Dietrich für Grund des Brunnens" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Beneath the Well Key Ring", TODO_TRANSLATE, "Schlüsselbund für Unter dem Brunnen" },
-          Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTOM_OF_THE_WELL_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTOM_OF_THE_WELL_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTTOM_OF_THE_WELL_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_GERUDO_TRAINING_GROUND_KEY_RING] = {
-        { Text{ "Gerudo Sanctum Key Ring", TODO_TRANSLATE, "Schlüsselset des Gerudo-Sanktums" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Lady's Lair Keese Ring", TODO_TRANSLATE, "Dietrich der Gerudo-Trainingsarena" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Knight Acadamy Key Ring", TODO_TRANSLATE, "Schlüsselbund des Dojos" }, Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_TRAINING_GROUND_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_TRAINING_GROUND_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_TRAINING_GROUND_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_GERUDO_FORTRESS_KEY_RING] = {
-        { Text{ "Fortress of Winds Key Ring", TODO_TRANSLATE, "Schlüsselset der Piratenfestung" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Thieves' Town Key Ring", TODO_TRANSLATE, "Dietrich des Diebesverstecks" }, Text{ "the ", "le ", "" } },
-        { Text{ "Fortress Centrum Key Ring", TODO_TRANSLATE, "Schlüsselbund der verlassenen Festung" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Forsaken Fortress Key Ring", TODO_TRANSLATE, "Schlüsselhaufen des Festungszentrums" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Pirate's Fortress Key Ring", TODO_TRANSLATE, "Schlüsselpaket des Frauenverstecks" },
-          Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_KEY_RING.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_FORTRESS_KEY_RING.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
     trickNameTable[RG_GANONS_CASTLE_KEY_RING] = {
-        { Text{ "Hyrule Castle Koi Ray", TODO_TRANSLATE, "Schlüsselset für Schloß Hyrule" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Onox's Castle Key Ring", TODO_TRANSLATE, "Dietrich für Ganons Schloß" }, Text{ "the ", "le ", "" } },
-        { Text{ "Vaati's Palace Key Ring", TODO_TRANSLATE, "Schlüsselbund für Verans Palast" },
-          Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
 
     trickNameTable[RG_TREASURE_GAME_KEY_RING] = {
-        { Text{ "Chest Game Koi Ray", TODO_TRANSLATE, "Schlüsselset für Kartoffel-Spiel" }, Text{ "the ", "la ", "" } },
-        { Text{ "Shell Game Key Ring", TODO_TRANSLATE, "Schlüsselpaket für Dönerbude" }, Text{ "the ", "le ", "" } },
-        { Text{ "Treasure Hunt Key Ring", TODO_TRANSLATE, "Schlüsselhaufen für das Triforce-Spiel" },
-          Text{ "the ", "le ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_GAME_KEY_RING.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_GAME_KEY_RING.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_GAME_KEY_RING.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
     };
 
     trickNameTable[RG_FOREST_TEMPLE_BOSS_KEY] = {
-        { Text{ "Wind Temple Boss Key", TODO_TRANSLATE, "Admin-Schlüssel des Windtempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Woodfall Temple Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Dämmerwalds" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Skull Woods Boss Key", TODO_TRANSLATE, "Geschäftsführer-Schlüssel des Sumpftempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Phantom Ganon's Key", TODO_TRANSLATE, "LKW-Schlüssel für Phantom Ganon" }, Text{ "", "", "" } },
-        { Text{ "Deku Tree's Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Deku-Baums" },
-          Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_BOSS_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_BOSS_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_BOSS_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_BOSS_KEY.3"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FOREST_TEMPLE_BOSS_KEY.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_FIRE_TEMPLE_BOSS_KEY] = {
-        { Text{ "Ice Cavern Boss Keese", TODO_TRANSLATE, "Master-Schlüssel der Eishöhle" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goron Temple Boss Key", TODO_TRANSLATE, "Admin-Schlüssel des Goronentempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Eldin Temple Boss Koi", TODO_TRANSLATE, "Geschäftsführer-Schlüssel des Eldintempels" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Volvagia's Key", TODO_TRANSLATE, "PKW-Schlüssel für Volvagia" }, Text{ "", "", "" } },
-        { Text{ "Dodongo's Cavern Boss Key", TODO_TRANSLATE, "Master-Schlüssel für Dodongos Höhle" },
-          Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_BOSS_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_BOSS_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_BOSS_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_BOSS_KEY.3"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FIRE_TEMPLE_BOSS_KEY.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_WATER_TEMPLE_BOSS_KEY] = {
-        { Text{ "Swamp Palace Boss Keese", TODO_TRANSLATE, "Master-Schlüssel des Sumpfpalasts" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Great Bay Temple Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Schädelbucht-Tempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Lakebed Temple Boss Key", TODO_TRANSLATE, "Geschäftsführer-Schlüssel des Seeschreins" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Morpha's Key", TODO_TRANSLATE, "Admin-Schlüssel für Morpha" }, Text{ "", "", "" } },
-        { Text{ "Jabu Jabu's Belly Boss Key", TODO_TRANSLATE, "Master-Schlüssel von Jabu-Jabus Bauch" },
-          Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_BOSS_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_BOSS_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_BOSS_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_BOSS_KEY.3"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WATER_TEMPLE_BOSS_KEY.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_SPIRIT_TEMPLE_BOSS_KEY] = {
-        { Text{ "Light Temple Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Lichttempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Lightning Temple Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Blitztempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Desert Palace Boss Key", TODO_TRANSLATE, "Admin-Schlüssel des Wüstentempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Stone Tower Boss Keese", TODO_TRANSLATE, "Master-Schlüssel des Felsenturm-Tempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Twinrova's Key", TODO_TRANSLATE, "Geschäftsführer-Schlüssel für Twinrova" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_BOSS_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_BOSS_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_BOSS_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_BOSS_KEY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_TEMPLE_BOSS_KEY.4"), Text{ "", "", "" } },
     };
     trickNameTable[RG_SHADOW_TEMPLE_BOSS_KEY] = {
-        { Text{ "Palace of Darkness Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Palasts der Dunkelheit" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Shrine of Illusion Bass Koi", TODO_TRANSLATE, "Geschäftsführer-Schlüssel des Terratempels" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Palace of Twilight Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Schattenpalasts" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Bongo Bongo's Key", TODO_TRANSLATE, "Admin-Schlüssel für Bongo Bongo" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_BOSS_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_BOSS_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_BOSS_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_TEMPLE_BOSS_KEY.3"), Text{ "", "", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_BOSS_KEY] = {
-        { Text{ "Hyrule Castle Bass Koi", TODO_TRANSLATE, "Master-Schlüssel für Schloß Hyrule" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Onox's Castle Boss Key", TODO_TRANSLATE, "Admin-Schlüssel für Verans Schloß" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Vaati's Palace Boss Key", TODO_TRANSLATE, "Master-Schlüssel für Agahnims Palast" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Ganondorf's Key", TODO_TRANSLATE, "Geschäftsführer-Schlüssel für Ganondorf" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_BOSS_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_BOSS_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_BOSS_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_BOSS_KEY.3"), Text{ "", "", "" } },
     };
 
     trickNameTable[RG_KEATON_MASK] = {
-        { Text{ "Korok Mask", TODO_TRANSLATE, "Krog-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Lynel Mask", TODO_TRANSLATE, "Leunen-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Cucco Mask", TODO_TRANSLATE, "Hühner-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Remlit Mask", TODO_TRANSLATE, "Lemurin-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KEATON_MASK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KEATON_MASK.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KEATON_MASK.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KEATON_MASK.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_SKULL_MASK] = {
-        { Text{ "Darknut Mask", TODO_TRANSLATE, "Eisenprinz-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Stalfos Mask", TODO_TRANSLATE, "Stalfos-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Captain's Hat", TODO_TRANSLATE, "Helm des Hauptmanns" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKULL_MASK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKULL_MASK.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKULL_MASK.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_SPOOKY_MASK] = {
-        { Text{ "Gibdo Mask", TODO_TRANSLATE, "Gibdo-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Garo's Mask", TODO_TRANSLATE, "Garo-Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Redead mask", TODO_TRANSLATE, "Zombie-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPOOKY_MASK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPOOKY_MASK.1"), Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPOOKY_MASK.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_BUNNY_HOOD] = {
-        { Text{ "Bunny Mask", TODO_TRANSLATE, "Hasen-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Bremen Mask", TODO_TRANSLATE, "Bremer Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Rabbit Hood", TODO_TRANSLATE, "Hasenkapuze" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BUNNY_HOOD.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BUNNY_HOOD.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BUNNY_HOOD.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_MASK_OF_TRUTH] = {
-        { Text{ "Feirce Diety Mask", TODO_TRANSLATE, "Grimmige Gottheit-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Majora's Mask", TODO_TRANSLATE, "Majoras Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Hero's Charm", TODO_TRANSLATE, "Heldenamulett" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASK_OF_TRUTH.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASK_OF_TRUTH.1"), Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASK_OF_TRUTH.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_GORON_MASK] = {
-        { Text{ "Stone Mask", TODO_TRANSLATE, "Fels-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Darmani's Mask", TODO_TRANSLATE, "Darmani-Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Goron Garb", TODO_TRANSLATE, "Dodongo-Fressmaske" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_MASK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_MASK.1"), Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GORON_MASK.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
     trickNameTable[RG_ZORA_MASK] = {
-        { Text{ "Zora Costume", TODO_TRANSLATE, "Sidon-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Don Gero's Mask", TODO_TRANSLATE, "Don-Gero-Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Mikau's Mask", TODO_TRANSLATE, "Mikau-Maske" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_MASK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_MASK.1"), Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ZORA_MASK.2"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GERUDO_MASK] = {
-        { Text{ "Great Fairy Mask", TODO_TRANSLATE, "Feen-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Romani's Mask", TODO_TRANSLATE, "Romanis Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Gerudo Veil", TODO_TRANSLATE, "Damenschleier" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_MASK.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_MASK.1"), Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GERUDO_MASK.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.16") },
     };
 
     trickNameTable[RG_SPEAK_DEKU] = {
-        { Text{ "Picori Jabber Nut", TODO_TRANSLATE, "Minish Quasselkopf" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Kikwi Blabber Nut", TODO_TRANSLATE, "Kyu Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Talking Deku Nut", TODO_TRANSLATE, "Grüne Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_DEKU.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_DEKU.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_DEKU.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
     };
     trickNameTable[RG_SPEAK_GERUDO] = {
-        { Text{ "Gerudo Tuni Nut", TODO_TRANSLATE, "Krieger Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Twili Jabber Nut", TODO_TRANSLATE, "Gerudo Laberbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Zuna Blabber Nut", TODO_TRANSLATE, "Zuna Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_GERUDO.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_GERUDO.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_GERUDO.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
     };
     trickNameTable[RG_SPEAK_GORON] = {
-        { Text{ "Cobble Jabber Nut", TODO_TRANSLATE, "Daiku Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Mogma Blabber Nut", TODO_TRANSLATE, "Mogma Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Goron Speak Stone", TODO_TRANSLATE, "Goronen Sprechstein" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_GORON.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_GORON.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_GORON.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
     };
     trickNameTable[RG_SPEAK_HYLIAN] = {
-        { Text{ "Human Jingle Nut", TODO_TRANSLATE, "Menschen Laberbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Sheikah Jabber Nut", TODO_TRANSLATE, "Shiekah Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Lorulean Blabber Nut", TODO_TRANSLATE, "Lorulia Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_HYLIAN.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_HYLIAN.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_HYLIAN.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
     };
     trickNameTable[RG_SPEAK_KOKIRI] = {
-        { Text{ "Korok Blabber Nut", TODO_TRANSLATE, "Krog Sprechstein" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Minish Jabber Nut", TODO_TRANSLATE, "Kokiri Laberbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Fairy Jingle Nut", TODO_TRANSLATE, "Feen Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_KOKIRI.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_KOKIRI.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_KOKIRI.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
     };
     trickNameTable[RG_SPEAK_ZORA] = {
-        { Text{ "Parella Jabber Nut", TODO_TRANSLATE, "Parakwa Sprechstein" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Fishman Jabber Nut", TODO_TRANSLATE, "Neptunos Laberbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Zora Jabu Nut", TODO_TRANSLATE, "Zora Quasselkopf" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Rito Jingle Nut", TODO_TRANSLATE, "Orni Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_ZORA.0"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_ZORA.1"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_ZORA.2"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPEAK_ZORA.3"),
+          CustomMessages::CreateText("randomizer.article_forms.a.9") },
     };
 
     trickNameTable[RG_GUARD_HOUSE_KEY] = {
-        { Text{ "Pot Room Key", TODO_TRANSLATE, "Schlüssel (Pot Raum)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Poe Shop Keese", TODO_TRANSLATE, "Schlüssel (Geister Shop)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Pot Collectors Club Key", TODO_TRANSLATE, "Schlüssel (Ritterschule)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GUARD_HOUSE_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GUARD_HOUSE_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GUARD_HOUSE_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_MARKET_BAZAAR_KEY] = {
-        { Text{ "Malo Mart Key", TODO_TRANSLATE, "Schlüssel (Maromarkt)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Zora Shop Key", TODO_TRANSLATE, "Schlüssel (Zeiras Laden)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goronu General Store Key", TODO_TRANSLATE, "Schlüssel (Goronenladen)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Chudly's Fine Goods Key", TODO_TRANSLATE, "Schlüssel (Chudleys Laden)" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_BAZAAR_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_BAZAAR_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_BAZAAR_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_BAZAAR_KEY.3"), Text{ "", "", "" } },
     };
     trickNameTable[RG_MARKET_POTION_SHOP_KEY] = {
-        { Text{ "Market Medicine Shop Koi", TODO_TRANSLATE, "Schlüssel (Kumulaladen)" }, Text{ "the ", "le ", "" } },
-        { Text{ "Market Pharmacy Key", TODO_TRANSLATE, "Schlüssel (REWE)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Market Drug Store Keese", TODO_TRANSLATE, "Schlüssel (Edeka)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_POTION_SHOP_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_POTION_SHOP_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_POTION_SHOP_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_MASK_SHOP_KEY] = {
-        { Text{ "Masked Ship Koi", TODO_TRANSLATE, "Schlüssel (Schuhladen)" }, Text{ "the ", "le ", "" } },
-        { Text{ "Madame Couture's Key", TODO_TRANSLATE, "Schlüssel (Madame Couture)" }, Text{ "", "", "" } },
-        { Text{ "South Clock Town Key", TODO_TRANSLATE, "Schlüssel (Unruh-Stadt)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASK_SHOP_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASK_SHOP_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MASK_SHOP_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_MARKET_SHOOTING_GALLERY_KEY] = {
-        { Text{ "Swamp Shooting Gallery Key", TODO_TRANSLATE, "Schlüssel (Lynna-Schießbude)" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Koume's Target Shooting Key", TODO_TRANSLATE, "Schlüssel (Koumes Zielschießen)" },
-          Text{ "", "", "" } },
-        { Text{ "Pumpkin Pull Key", TODO_TRANSLATE, "Schlüssel (Goronen-Schießbude)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_SHOOTING_GALLERY_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_SHOOTING_GALLERY_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_MARKET_SHOOTING_GALLERY_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_BOMBCHU_BOWLING_KEY] = {
-        { Text{ "Bombchu Gallery Key", TODO_TRANSLATE, "Schlüssel (Bowling-Bahn)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Cucco Bowling Ally Key", TODO_TRANSLATE, "Schlüssel (Hühner-Jagd)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Snowball Bowling Key", TODO_TRANSLATE, "Schlüssel (Schneeball-Kegeln)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Bombsketball Key", TODO_TRANSLATE, "Schlüssel (Bombenkorb)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOMBCHU_BOWLING_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOMBCHU_BOWLING_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOMBCHU_BOWLING_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOMBCHU_BOWLING_KEY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_TREASURE_CHEST_GAME_BUILDING_KEY] = {
-        { Text{ "Lucky Treasure Game Koi", TODO_TRANSLATE, "Schlüssel ('Zur Schatzkiste')" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "1 in 32 Key", TODO_TRANSLATE, "Schlüssel (Blackjack)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Fortune's Coice Key", TODO_TRANSLATE, "Schlüssel (Casino)" }, Text{ "", "", "" } },
-        { Text{ "Money Making Game Key", TODO_TRANSLATE, "Schlüssel (Spielothek)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Trading Card Game Key", TODO_TRANSLATE, "Schlüssel (Ene mene muh...)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_CHEST_GAME_BUILDING_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_CHEST_GAME_BUILDING_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_CHEST_GAME_BUILDING_KEY.2"),
+          Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_CHEST_GAME_BUILDING_KEY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TREASURE_CHEST_GAME_BUILDING_KEY.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_BOMBCHU_SHOP_KEY] = {
-        { Text{ "Curiosity Shop Key", TODO_TRANSLATE, "Schlüssel (Kuriositätenladen)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Barnes Bomb Shop Key", TODO_TRANSLATE, "Schlüssel (Barnes' Bombenladen)" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Bomb Flower Shop Key", TODO_TRANSLATE, "Schlüssel (Donnerblumenladen)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOMBCHU_SHOP_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOMBCHU_SHOP_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOMBCHU_SHOP_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_RICHARDS_HOUSE_KEY] = {
-        { Text{ "Stockwell's House Key", TODO_TRANSLATE, "Schlüssel (Hunde-Haus)" }, Text{ "", "", "" } },
-        { Text{ "Blue Dog's House Key", TODO_TRANSLATE, "Schlüssel (Mamamu Yan)" }, Text{ "", "", "" } },
-        { Text{ "Barkle's House Key", TODO_TRANSLATE, "Schlüssel (Wuff-Haus)" }, Text{ "", "", "" } },
-        { Text{ "Chimimi's House Key", TODO_TRANSLATE, "Schlüssel (Reichards Haus)" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RICHARDS_HOUSE_KEY.0"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RICHARDS_HOUSE_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RICHARDS_HOUSE_KEY.2"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_RICHARDS_HOUSE_KEY.3"), Text{ "", "", "" } },
     };
     trickNameTable[RG_ALLEY_HOUSE_KEY] = {
-        { Text{ "Mido's House Key", TODO_TRANSLATE, "Schlüssel (Nachbarschaft)" }, Text{ "", "", "" } },
-        { Text{ "Saria's House Key", TODO_TRANSLATE, "Schlüssel (Salias Haus)" }, Text{ "", "", "" } },
-        { Text{ "@'s House Key", TODO_TRANSLATE, "Schlüssel (Zeldas Wohnung)" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ALLEY_HOUSE_KEY.0"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ALLEY_HOUSE_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ALLEY_HOUSE_KEY.2"), Text{ "", "", "" } },
     };
     trickNameTable[RG_KAK_BAZAAR_KEY] = {
-        { Text{ "Skyloft Bazaar Key", TODO_TRANSLATE, "Schlüssel (Ausrüstungsladen)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Harlequin Bazaar Key", TODO_TRANSLATE, "Schlüssel (Waffenladen)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Kokiri Shop Key", TODO_TRANSLATE, "Schlüssel (Rüstkammer)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goron Shop Key", TODO_TRANSLATE, "Schlüssel (Schießpulverladen)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_BAZAAR_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_BAZAAR_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_BAZAAR_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_BAZAAR_KEY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_KAK_POTION_SHOP_KEY] = {
-        { Text{ "Kak Medicine Shop Keep", TODO_TRANSLATE, "Schlüssel (Medizinladen)" }, Text{ "the ", "le ", "" } },
-        { Text{ "Kak Pharmacy Key", TODO_TRANSLATE, "Schlüssel (Apotheke)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Kak Drug Store Keese", TODO_TRANSLATE, "Schlüssel (Rossmann)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_POTION_SHOP_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.17") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_POTION_SHOP_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_POTION_SHOP_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_BOSS_HOUSE_KEY] = {
-        { Text{ "Kakariko Village Boss Key", TODO_TRANSLATE, "Schlüssel (Adminhaus)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Lord Kohga's House Key", TODO_TRANSLATE, "Schlüssel (Kafeis Haus)" }, Text{ "", "", "" } },
-        { Text{ "Twinrova's House Key", TODO_TRANSLATE, "Schlüssel (Molgeras Apartment)" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOSS_HOUSE_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOSS_HOUSE_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOSS_HOUSE_KEY.2"), Text{ "", "", "" } },
     };
     trickNameTable[RG_GRANNYS_POTION_SHOP_KEY] = {
-        { Text{ "Grandpa's Potion Shop Key", TODO_TRANSLATE, "Schlüssel (Omas Hexenküche)" }, Text{ "", "", "" } },
-        { Text{ "Witch's Hut Key", TODO_TRANSLATE, "Schlüssel (Hexenstube)" }, Text{ "", "", "" } },
-        { Text{ "Hags's Potion Shop Key", TODO_TRANSLATE, "Schlüssel (Marthas Zauberladen)" }, Text{ "", "", "" } },
-        { Text{ "Syrup's Potion Shop Key", TODO_TRANSLATE, "Schlüssel (Syrups Hexenküche)" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GRANNYS_POTION_SHOP_KEY.0"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GRANNYS_POTION_SHOP_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GRANNYS_POTION_SHOP_KEY.2"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GRANNYS_POTION_SHOP_KEY.3"), Text{ "", "", "" } },
     };
     trickNameTable[RG_SKULLTULA_HOUSE_KEY] = {
-        { Text{ "Town Spider House Key", TODO_TRANSLATE, "Schlüssel (Spinnenhaus)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Jovani's House Key", TODO_TRANSLATE, "Schlüssel (1-Zimmer-Wohnung)" }, Text{ "", "", "" } },
-        { Text{ "Maiamai House Key", TODO_TRANSLATE, "Schlüssel (Revalis Wohnung)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKULLTULA_HOUSE_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKULLTULA_HOUSE_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SKULLTULA_HOUSE_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_IMPAS_HOUSE_KEY] = {
-        { Text{ "Zelda's House Key", TODO_TRANSLATE, "Schlüssel (Shieks Versteck)" }, Text{ "", "", "" } },
-        { Text{ "Sheik's House Key", TODO_TRANSLATE, "Schlüssel (Urbosas Wohnsitz)" }, Text{ "", "", "" } },
-        { Text{ "Purah's House Key", TODO_TRANSLATE, "Schlüssel (Tingles Haus)" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_IMPAS_HOUSE_KEY.0"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_IMPAS_HOUSE_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_IMPAS_HOUSE_KEY.2"), Text{ "", "", "" } },
     };
     trickNameTable[RG_WINDMILL_KEY] = {
-        { Text{ "Wind Switch Key", TODO_TRANSLATE, "Schlüssel (Ventilatorhaus)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Weather Vane Key", TODO_TRANSLATE, "Schlüssel (Musik-Haus)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WINDMILL_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_WINDMILL_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_KAK_SHOOTING_GALLERY_KEY] = {
-        { Text{ "Firing Range Key", TODO_TRANSLATE, "Schlüssel (Schießbude von Unruh-Stadt)" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Crossbow Training Key", TODO_TRANSLATE, "Schlüssel (Crossbow Training)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goron Target Range Key", TODO_TRANSLATE, "Schlüssel (Kokiri-Schießbude)" },
-          Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_SHOOTING_GALLERY_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_SHOOTING_GALLERY_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_KAK_SHOOTING_GALLERY_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_DAMPES_HUT_KEY] = {
-        { Text{ "Dampe's Grave Key", TODO_TRANSLATE, "Schlüssel (Einsames Haus)" }, Text{ "", "", "" } },
-        { Text{ "Dampe Studio Key", TODO_TRANSLATE, "Schlüssel (Grabräuberkeller)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Old Man's Cabin Key", TODO_TRANSLATE, "Schlüssel (Trauerhütte)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DAMPES_HUT_KEY.0"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DAMPES_HUT_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DAMPES_HUT_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_TALONS_HOUSE_KEY] = {
-        { Text{ "Malon's House Koi", TODO_TRANSLATE, "Schlüssel (Malons Haus)" }, Text{ "", "", "" } },
-        { Text{ "Ingo's House Keese", TODO_TRANSLATE, "Schlüssel (Ingos Gefängnis)" }, Text{ "", "", "" } },
-        { Text{ "Mario's House Key", TODO_TRANSLATE, "Schlüssel (Marios Eigentum)" }, Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TALONS_HOUSE_KEY.0"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TALONS_HOUSE_KEY.1"), Text{ "", "", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_TALONS_HOUSE_KEY.2"), Text{ "", "", "" } },
     };
     trickNameTable[RG_STABLES_KEY] = {
-        { Text{ "Corral Key", TODO_TRANSLATE, "Schlüssel (Malons Stall)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Foothill Stable Key", TODO_TRANSLATE, "Schlüssel (Heuhof)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goat Barn Key", TODO_TRANSLATE, "Schlüssel (Ingos Arbeitsplatz)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_STABLES_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_STABLES_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_STABLES_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_BACK_TOWER_KEY] = {
-        { Text{ "Tower of Hera Key", TODO_TRANSLATE, "Schlüssel (Heras Turm)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Clock Tower Key", TODO_TRANSLATE, "Schlüssel (Uhrturm)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Tingle Tower Key", TODO_TRANSLATE, "Schlüssel (Tingles Turm)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Skyview Tower Key", TODO_TRANSLATE, "Schlüssel (Ambis Turm)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Sheikah Tower Key", TODO_TRANSLATE, "Schlüssel (Shiekah-Turm)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BACK_TOWER_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BACK_TOWER_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BACK_TOWER_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BACK_TOWER_KEY.3"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BACK_TOWER_KEY.4"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_HYLIA_LAB_KEY] = {
-        { Text{ "Marine Research Lab Key", TODO_TRANSLATE, "Schlüssel (Maritimes Forschungslabor)" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Hateno Tech Lab Key", TODO_TRANSLATE, "Schlüssel (Akkala-Institut)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Tough Mango Lab Key", TODO_TRANSLATE, "Schlüssel (Experimentenhaus)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HYLIA_LAB_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HYLIA_LAB_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_HYLIA_LAB_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
     trickNameTable[RG_FISHING_HOLE_KEY] = {
-        { Text{ "Swamp Fishing Hole Key", TODO_TRANSLATE, "Schlüssel (Nordsee)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Beaver Race Key", TODO_TRANSLATE, "Schlüssel (Biber-Brüder)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Squid-Hunt Key", TODO_TRANSLATE, "Schlüssel (Schiffe versenken)" }, Text{ "the ", "la ", "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FISHING_HOLE_KEY.0"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FISHING_HOLE_KEY.1"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_FISHING_HOLE_KEY.2"),
+          CustomMessages::CreateText("randomizer.article_forms.the.12") },
     };
 
     trickNameTable[RG_SHADOW_SILVER_BLADES] = {
-        { Text{ "Shadow Silver: Bladders", TODO_TRANSLATE, "Schatten-Silber: Mach3" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_SILVER_BLADES.0"),
+          Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_SHADOW_SILVER_PIT] = {
-        { Text{ "Shadow Silver: Bit", TODO_TRANSLATE, "Schatten-Silber: Bude" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_SILVER_PIT.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_SHADOW_SILVER_SPIKES] = {
-        { Text{ "Shadow Silver: Spines", TODO_TRANSLATE, "Schatten-Silber: Vögel" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_SILVER_SPIKES.0"),
+          Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_SPIRIT_SILVER_CHILD] = {
-        { Text{ "Spirit Silver: Chill", TODO_TRANSLATE, "Geister-Silber: Baby" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_SILVER_CHILD.0"),
+          Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_SPIRIT_SILVER_SUN] = {
-        { Text{ "Spirit Silver: Son", TODO_TRANSLATE, "Geister-Silber: Pluto" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_SILVER_SUN.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_SPIRIT_SILVER_BOULDERS] = {
-        { Text{ "Spirit Silver: Bounders", TODO_TRANSLATE, "Geister-Silber: Quadrate" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_SILVER_BOULDERS.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_BOTW_SILVER] = {
-        { Text{ "Bottom of the Well Slipper", TODO_TRANSLATE, "Brunnen-Gold" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_BOTW_SILVER.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_ICE_CAVERN_SILVER_BLADES] = {
-        { Text{ "Ice Cavern Silver: Blaze", TODO_TRANSLATE, "Eishöhlen-Silber: Turbo" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ICE_CAVERN_SILVER_BLADES.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_ICE_CAVERN_SILVER_BLOCK] = {
-        { Text{ "Ice Cavern Silver: Black", TODO_TRANSLATE, "Eishöhlen-Platin: Block" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_ICE_CAVERN_SILVER_BLOCK.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GTG_SILVER_SLOPE] = {
-        { Text{ "Training Ground Silver: Snope", TODO_TRANSLATE, "Trainingshalle-Bronze: Abhang" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GTG_SILVER_SLOPE.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GTG_SILVER_LAVA] = {
-        { Text{ "Traning Ground Silver: Love", TODO_TRANSLATE, "Trainingshalle-Silber: Blitz" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GTG_SILVER_LAVA.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GTG_SILVER_WATER] = {
-        { Text{ "Training Pound Silver: Water", TODO_TRANSLATE, "Trainingshalle-Diamant: Wasser" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GTG_SILVER_WATER.0"), Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_SILVER_LIGHT] = {
-        { Text{ "Ganon's Castle Silver: Lighter", TODO_TRANSLATE, "Ganons-Schloß Silber: Unlicht" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_SILVER_LIGHT.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_SILVER_FOREST] = {
-        { Text{ "Ganon's Castle Silver: Frost", TODO_TRANSLATE, "Ganons-Schloß Silber: Dschungel" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_SILVER_FOREST.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_SILVER_FIRE] = {
-        { Text{ "Ganon's Castle Silver: Free", TODO_TRANSLATE, "Ganons-Schloß Silber: Erdkruste" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_SILVER_FIRE.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_SILVER_SPIRIT] = {
-        { Text{ "Ganon's Castle Silver: Sprite", TODO_TRANSLATE, "Ganons-Schloß Silber: Abnormal" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_SILVER_SPIRIT.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_DODONGOS_CAVERN_MQ_SILVER] = {
-        { Text{ "Dodongo's Cave Silver", TODO_TRANSLATE, "Dodongos zu Hause Silber" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_DODONGOS_CAVERN_MQ_SILVER.0"),
+          Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES] = {
-        { Text{ "Shadow Silver: Invisible", TODO_TRANSLATE, "Schatten-Silber: Unsichtbare Löffel" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_SPIRIT_MQ_SILVER_LOBBY] = {
-        { Text{ "Spirit Silver: Foyer", TODO_TRANSLATE, "Geister-Silber: Keller" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_MQ_SILVER_LOBBY.0"),
+          Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_SPIRIT_MQ_SILVER_BIG_WALL] = {
-        { Text{ "Spirit Silver: Brick", TODO_TRANSLATE, "Geister-Silber: VR-Brille" }, Text{ "", TODO_TRANSLATE, "" } },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_SPIRIT_MQ_SILVER_BIG_WALL.0"),
+          Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_MQ_SILVER_WATER] = {
-        { Text{ "Ganon's Castle Silver: Wheat", TODO_TRANSLATE, "Ganons-Schloß Gold: Wasser" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_MQ_SILVER_WATER.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_MQ_SILVER_SHADOW] = {
-        { Text{ "Ganon's Castle Silver: Shabom", TODO_TRANSLATE, "Ganons-Schloß Silber: Paranormal" },
+        { CustomMessages::CreateText("randomizer.traps.names.RG_GANONS_CASTLE_MQ_SILVER_SHADOW.0"),
           Text{ "", TODO_TRANSLATE, "" } },
     };
     /*
@@ -1798,6 +2056,60 @@ Rando::Traps::TrickName Rando::Traps::GetTrapName(RandomizerGet id, RandoIceTrap
     return { name, article };
 }
 
+static bool MatchesSavedName(const Text& saved, const Text& candidate) {
+    if (saved.GetEnglish().empty())
+        return false;
+    if (saved.GetEnglish() == candidate.GetEnglish() || saved.GetEnglish() == candidate.GetFrench() ||
+        saved.GetEnglish() == candidate.GetGerman())
+        return true;
+    for (const auto& [locale, value] : candidate.GetLocales())
+        if (saved.GetEnglish() == value)
+            return true;
+    return false;
+}
+
+static void RestoreTextTranslations(Text& saved, const Text& candidate, bool localizedString) {
+    // Old seed files may store one localized string in every legacy slot.
+    // Existing independent French/German translations and explicit locales win.
+    const bool collapsed = saved.GetFrench() == saved.GetEnglish() && saved.GetGerman() == saved.GetEnglish();
+    if (localizedString && collapsed)
+        saved.SetForLocale("en_US", candidate.GetEnglish());
+    if (collapsed) {
+        saved.SetForLocale("fr_FR", candidate.GetFrench());
+        saved.SetForLocale("de_DE", candidate.GetGerman());
+    }
+    for (const auto& [locale, value] : candidate.GetLocales())
+        if (!saved.GetLocales().contains(locale))
+            saved.SetForLocale(locale, value);
+}
+
+bool Rando::Traps::RestoreTrapNameTranslations(RandomizerGet id, Text& name, Text& article) {
+    if (id <= RG_NONE || id >= RG_MAX)
+        return false;
+    if (!initTrickNames) {
+        InitTrickNames();
+        initTrickNames = true;
+    }
+    const auto restore = [&](const TrickName& candidate) {
+        if (!MatchesSavedName(name, candidate.name))
+            return false;
+        const bool localizedString = name.GetEnglish() != candidate.name.GetEnglish();
+        RestoreTextTranslations(name, candidate.name, localizedString);
+        RestoreTextTranslations(article, candidate.article, localizedString);
+        return true;
+    };
+    for (const auto& candidate : trickNameTable[id])
+        if (restore(candidate))
+            return true;
+    // Unchanged/revealed trap names use the real item rather than the joke pool.
+    for (const auto itemId : { id, RG_ICE_TRAP }) {
+        const auto& item = Rando::StaticData::RetrieveItem(itemId);
+        if (restore({ item.GetName(), item.GetArticle() }))
+            return true;
+    }
+    return false;
+}
+
 RandomizerGet Rando::Traps::GetTrapTrickModel(uint64_t* state) {
     auto ctx = Rando::Context::GetInstance();
     RandomizerGet trickModel = ShipUtils::RandomElementFromSet(ctx->possibleIceTrapModels, state);
@@ -1822,396 +2134,35 @@ bool Rando::Traps::ShouldJunkItemBeTrap() {
             Random(0, 100) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get());
 }
 
-static const char* const englishIceTrapMessages[] = {
-    "You are a #FOOL#!",
-    "You are a #FOWL#!",
-    "#FOOL#!",
-    "You just got #PUNKED#!",
-    "Stay #frosty#, @.",
-    "Take a #chill pill#, @.",
-    "#Winter# is coming.",
-    "#ICE# to see you, @.",
-    "Feeling a little %rhot%w under the collar? #Let's fix that#.",
-    "It's a #cold day# in the Evil Realm.",
-    "Getting #cold feet#?",
-    "Say hello to the #Zoras# for me!",
-    "Can you keep a #cool head#?",
-    "Ganondorf used #Ice Trap#!&It's super effective!",
-    "Allow me to break the #ice#!",
-    "#Cold pun#.",
-    "The #Titanic# would be scared of you, @.",
-    "Oh no!",
-    "Uh oh!",
-    "What killed the dinosaurs?&The #ICE# age!",
-    "Knock knock. Who's there? Ice. Ice who? Ice see that you're a #FOOL#.",
-    "Never gonna #give you up#. Never gonna #let you down#. Never gonna run around and #desert you#.",
-    "Thank you #@#! But your item is in another castle!",
-    "#FREEZE#! Don't move!",
-    "Wouldn't it be #ice# if we were colder?",
-    "Greetings from #Snowhead#! Wish you were here.",
-    "Too #cool# for you?",
-    "#Ice#, #ice#, baby...",
-    "Time to break the #ice#.",
-    "We wish that you would read this... We wish that you would read this... But we set our bar low.",
-    "#Freeze# and put your hands in the air!",
-    "#Ice# to meet you!",
-    "Do you want to #freeze# a snowman?",
-    "Isn't there a #mansion# around here?",
-    "Now you know how #King Zora# feels.",
-    "May the #Frost# be with you.",
-    "Carpe diem. #Freeze# the day.",
-    "There #snow# place like home.",
-    "That'll do, #ice#. That'll do.",
-    "All that is #cold# does not glitter. Not all those who wander are #frost#.",
-    "I Used To Be An Adventurer Like You. Then I Took An #Icetrap# To The Knee.",
-    "Would you like #ice# with that?",
-    "You have obtained the #Ice# Medallion!",
-    "Quick, do a #Zora# impression!",
-    "One %r${itemName}%w #on the rocks#!",
-    "How much does a polar bear weigh?&Enough to break the #ice#.",
-    "You got Din's #Ice#!",
-    "You got Nayru's #Cold#!",
-    "You got Farore's #Freeze#!",
-    "KEKW",
-    "You just got #ICE TRAPPED#! Tag your friends to totally #ICE TRAP# them!",
-    "Are you okay, @? You're being #cold# today.",
-    "In a moment, your game might experience some #freezing#.",
-    "Breeze? Trees? Squeeze? No, it's a #freeze#!",
-    "After collecting this item, @ was assaulted in #cold# blood.",
-    "Only #chill# vibes around here!",
-    "Here's a #cool# gift for you!",
-    "Aha! You THOUGHT.",
-    "Stay hydrated and brush your teeth!",
-    "Isn't it too hot here? Let's turn the #AC# on.",
-    "One serving of #cold# @, coming right up!",
-    "Is it #cold# in here or is that just me?",
-    "Yahaha! You found me!",
-    "You'd make a great #ice#-tronaut!",
-    "That's just the tip of the #iceberg#!",
-    "It's the triforce!&No, just kidding, it's an #ice trap#.",
-    "WINNER!",
-    "LOSER!",
-    "Greetings from #Cold Miser#!",
-    "Pardon me while I turn up the #AC#.",
-    "If you can't stand the #cold#, get out of the #freezer#.",
-    "Oh, goodie! #Frozen @# for the main course!",
-    "You have #freeze# power!",
-    "You obtained the #Ice Beam#! No wait, wrong game.",
-    "Here's to another lousy millenium!",
-    "You've activated my #trap card#!",
-    "I love #refrigerators#!",
-    "You expected an item,&BUT IT WAS I, AN #ICE TRAP#!",
-    "It's dangerous to go alone! Take #this#!",
-    "soh.exe has #stopped responding#.",
-    "Enough! My #Ice Trap# thaws in the morning!",
-    "Nobody expects the span-#ice# inquisition!",
-    "This is one #cool# item!",
-    "Say hello to my #little friend#!",
-    "We made you an offer you #can't refuse#.",
-    "Hyrule? More like #Hycool#!",
-    "Ice puns are #snow# problem!",
-    "This #ice# is #snow# joke!",
-    "There's no business like #snow# business!",
-    "No, dude.",
-    "N#ice# trap ya got here!",
-    "Quick do your best impression of #Zoras Domain#!",
-    "Ganon used #ice beam#, it's super effective!",
-    "I was #frozen# today.",
-    "You're not in a #hurry#, right?",
-    "It's a #trap#!",
-    "At least it's not a VC crash and only Link is #frozen#!",
-    "Oh no! #BRAIN FREEZE#!",
-    "Looks like your game #froze#! Nope just you!",
-    "PK #FREEZE#!",
-    "May I interest you in some #iced# Tea?",
-    "Time for some Netflix and #chill#.",
-    "I know, I know... #FREEZE#!",
-    "#Ice# of you to drop by!",
-    "STOP!&You violated the #Thaw#!",
-    "I wanted to give you a treasure, but it looks like you got #cold feet#.",
-    "You told me you wanted to deliver #just ice# to Ganondorf!",
-    "You got the triforce!&This ancient artifact of divine power can grant any- wait, no, sorry, it's just an ice "
-    "trap. My bad.",
-    "Time to #cool off#!",
-    "The #Ice Cavern# sends its regards.",
-    "Loading item, please #wait#...",
-    "Mash A+B to not #die#.",
-    "Sorry, your %r${itemName}%w is in another location.",
-    "You only wish this was %gGreg%w.",
-    "Do you want to drink a hot chocolate?",
-    "The #cold# never bothered me anyway.",
-    "Hope you're too school for #cool#!",
-    "Be thankful this isn't #absolute zero#.",
-    "Did you know the F in ZFG stands for #Freeze#?",
-    "You got #Ice Age (2002)#!",
-    "Now you can cast a #spell# you don't know.",
-    "How's about a hero #on the rocks#?",
-    "Ain't no tunic for #this#!",
-    "I knew you were #part metroid#!",
-    "That's just the #icing on the cake#!",
-    "You're so #cool#, @!",
-    "You found #disappointment#!",
-    "You got #FOOLED#!",
-    "Start Mashing.",
-    "This item will #self-destruct# in 5 seconds...",
-    "Remember, there may be some momentary #discomfort#.",
-    "In a perfect world #ice traps# like me would not exist, but this is not a perfect world.",
-    "Gee, it sure is #cold# around here.",
-    "You tested the %r${itemName}%w with your #ice detector#, it beeped.",
-    "You have found the way of the zero. The #sub-zero#.",
-    "Mweep... mweep... mweep...",
-    "Scum, #freezebag#! I mean #freeze#, scumbag!",
-    "Is it #chilly# in here or is it just #you#?",
-    "#Proceed#.",
-    "WHAT'S SHE GONNA DO, MAKE ME AN #[Ice Cream]#!?",
-    "You've met with a #terrible fate#, haven't you?",
-    "So I heard you like the Shining, here's how it #ends#.",
-    "Minor routing mistake. #I win#.",
-    "Hold this #L#, @.",
-    "#SKILL ISSUE#.",
-    "All your heat are belong to us.",
-    "Wait a second, don't you already have #this item#?",
-    "#Freeze#! We have you surrounded!",
-    "Error 404 - Item not #found#.",
-    "Hydration break! Hey, who #froze# my water?",
-    "Oops, wrong #item model#.",
-    "Whoops! You have to put the item #in your inventory#.",
-    "You dropped the %r${itemName}%w, shattering it into #shards of ice#!",
-    "Is this... golden age Simpsons?&BECAUSE I'M ABOUT TO #CHOKE A CHILD#.",
-    "You are the weakest @, #goodbye#!",
-    "Ugh... Why did we even randomize #this item#?",
-    "The #Frost Moon# is rising...",
-    "According to all known laws of physics and biology, there is no way that @ should be able to survive #getting "
-    "fully encased in ice#. The cells in @'s body would all die by the time they #unthaw#. Of course, this is a video "
-    "game, so @ survives anyway... #Probably#.",
-    "Okay, so stop me if you've heard this one - a gamer and a bottle of #liquid nitrogen# walk into a milk bar...",
-    "Lástima, es una #trampa de hielo#...&&Nobody expects the Spanish #ice trap#!",
-    "Gee, it sure is #BURR#ing around here.",
-    "Navi? Oh! I thought she was called #Névé#!",
-    "It's fine, @ knew this was a #trap#, they're just using it to take damage intentionally to manipulate RNG.",
-    "Unfortunately, the %r${itemName}%w has #stopped#.",
-    "This %r${itemName}%w is #not available# in your country.",
-    "#Ice# try. #;)#",
-    "D'oh, I #missed#!",
-    "Where is my #super suit#?",
-    "#Titanic's revenge#.",
-};
+static const std::vector<std::string>& GetEnglishIceTrapMessages() {
+    static const auto names = CustomMessages::GetGameTextPool("en_US", "randomizer.traps.messages");
+    return names;
+}
 
-static const char* const germanIceTrapMessages[] = {
-    "Du bist ein #DUMMKOPF#!",
-    "Du bist eine #Frostbeule#!",
-    "#NARR#!",
-    "Du wurdest #eiskalt# erwischt!",
-    "Es läuft Dir #eiskalt# den Rücken hinunter, @.",
-    "Bleib #cool#, @.",
-    "Der #Winter# naht.",
-    "Alles #cool# im Pool?",
-    "#Abkühlung gefällig#?",
-    "Es ist ein #kalter# Tag im Herzen von Hyrule.",
-    "Bekommst Du etwa #kalte# Füße?",
-    "Sag den #Zoras# viele Grüße von mir!",
-    "Bewahre einen #kühlen#! Kopf.",
-    "Ganondorf setzt #Eisstrahl# ein. Das ist sehr effektiv!",
-    "Ein Lächeln ist der beste Weg, um das #Eis# zu brechen!",
-    "#Eiskalt# lässt Du meine Seele erfrier'n.",
-    "Die #Titanic# hätte Angst vor Dir, @.",
-    "Oh nein!",
-    "Was die Dinosaurier getötet hat?&Die #Eiszeit#!",
-    "Nachts ist es #kälter# als draußen.",
-    "Never gonna #give you up#. Never gonna #let you down#. Never gonna run around and #desert you#.",
-    "Danke #@#! Aber der Gegenstand ist in einem anderem Schloß!",
-    "Kalt. Kalt. Kälter. #EISKALT#!",
-    "Von wegen #Belohnung#!",
-    "Ganon lacht dich aus.",
-    "Zelda wartet... aber nicht auf Dich!",
-    "Hyrule braucht Dich... aber nicht so!",
-    "Master-Schmerz statt Master-Schwert.",
-    "Das passiert wenn man alles looten möchte!",
-    "Ein kleiner Vorgeschmack auf Ganons Kühlschrank.",
-    "Ich hoffe, Du hast gespeichert.",
-    "Dein Gesicht, als Du die Truhe geöffnet hast... unbezahlbar.",
-    "Tut mir leid, aber das Item befindet sich in einer anderen Truhe.",
-    "Noch 5 solcher Truhen und Du bist abgehärtet.",
-    "Keine sorge. Ich bin genau so enttäuscht wie Du.",
-    "Epona läuft gerade ohne Dich los.",
-    "Wow! Ein echtes Nichts!",
-    "Du bist sowas von bereit für den Endboss. Nicht!",
-    "Loot? Nur für Gewinner!",
-    "Pure Enttäuschung.",
-    "RNG meint es nicht gut mit dir...",
-    "Link.exe hat ein Problem erkannt. Spiel wird heruntergefahren.",
-    "Die Truhe war leer, dein Verstand ebenso.",
-    "Hier für Dich, lecker #Eis#.",
-    "Das ist kein Item - das ist Karma.",
-    "Und wieder hat Dich 'ne Kiste besiegt.",
-    "Rauru lacht Dich aus.",
-    "Salia hat sich gerade entfreundet.",
-    "Prinzessin Ruto hat die Verlobung aufgelöst.",
-    "Kein Seed, kein Ärger!",
-    "Diese Truhe wurde Ihnen präsentiert von: ABSICHT!",
-    "Nicht heute.",
-    "Nächster Halt, #Frosthausen#!",
-    "Genau so nützlich wie Navi im Bosskampf.",
-    "Zelda? Die kennt Dich nicht.",
-    "Zufall? Nein. Absicht!",
-    "Karma.exe erfolgreich ausgeführt.",
-    "Manchmal gewinnt man, aber Du gehörst nicht dazu.",
-    "#Eiskalt# versagt.",
-    "Tingle lacht Dich aus.",
-    "Du hörst Ganondorf dir folgendes zuflüstern.. \"Danke fürs Öffnen, aber das war mein #Müll#!\"",
-    "Navi: 'Hey, hör zu! Da ist... absolut #nichts# drin.",
-    "Truhe geöffnet, Hoffnung zerstört. Willkommen in Hyrule.",
-    "Die Truhe enthält: Eine pure #Enttäuschung#.",
-    "Na? Wieder zu viel von Malons #Mentos# genascht?",
-    "Du wurdest #eiskalt# beim Öffnen der Truhe erwischt.",
-    "Grats, Du hast Ganons alten #Eiswürfelvorrat# gefunden.",
-    "Die Truhe ist kälter als #Zoras Reich#.",
-    "#Eis#? Klar, das ist der #kalte# Hauch der Enttäuschung!",
-    "Die Truhe ist so leer, sogar der #Yeti# aus Twilight Princess lacht.",
-    "Die Truhe enthält: Eine #gefrorene# Hoffnungslosigkeit.",
-    "Du hast eine Truhe geöffnet und den #Kälterekord# in Hyrule gebrochen.",
-    "Du hast TM16 erhalten: #Eissturm#!",
-    "Controller Disconnect, jetzt bist Du #gefreezed#.",
-    "Noch drei solcher Truhen, und dein Spielstand wird gelöscht.",
-    "Gengar setzt Schlecker ein! Du bist vollständig #paralysiert#!",
-    "Mumbo Jumbo verwandelt Dich in einen #Eisblock#. Haste jetzt 'nen coolen Look.",
-    "Willkommen in Donkey Kong Country: Tropical #Freeze#!",
-    "Gratuliere! Du hast das Spiel #gefreezed#.",
-    "Triforce des Mutes und trotzdem bekommst Du kalte Füße.",
-    "Fortschritt #eingefroren#. Bitte blasen Sie in die Cartridge.",
-    "Du bist nicht soft-locked. Du bist #frost-locked#.",
-    "Ein #frostiger# Wind weht durch die Truhe... leer, als hätte Kirby den ganzen Inhalt eingesaugt.",
-    "Ein #eisiger# Hauch weht dir entgegen.... Doch die Truhe bleibt #kalt# und leer.",
-    "Die Truhe ist von #Frost# versiegelt... drinnen nichts als eine #kalte#, #frostige# Enttäuschung!",
-    "#Frost# knistert bedrohlich in der Truhe - kein Schatz, nur ein #eisiger# Hohn!",
-    "Diese Falle zu finden ist so #frostig# wie Fangen spielen mit Chill Penguin.",
-    "#Eis# kann funkeln, was kannst Du?",
-    "Niete, selbst die Prinzessin ist enttäuscht.",
-    "Herzteil? Nein, #Eiskalt#!",
-    "Ratet mal wer wieder zu gierig war? Richtig... DU!",
-    "Ganondorf bedankt sich persönlich für deine Inkompetenz.",
-    "Der Spind von Davy Jones!",
-    "Herzog Onkled lacht Dich aus.",
-    "GEWINNER!",
-    "VERLIERER!",
-    "Drücke B, Unten und Select um zu überleben.",
-    "#Chill# mal jetzt.",
-    "Hier, halte mal eben.",
-    "Sony lacht Dich aus!",
-    "Dieses Item ist nicht in deinem Land verfügbar.",
-    "Es ist wichtig, die #Kühltruhe# mal für einen Tag auszuschalten.",
-    "#Kacknoob#!",
-    "Insert Rupee to continue...",
-};
+static const std::vector<std::string>& GetGermanIceTrapMessages() {
+    static const auto names = CustomMessages::GetGameTextPool("de_DE", "randomizer.traps.messages");
+    return names;
+}
 
-static const char* const frenchIceTrapMessages[] = {
-    "#Pauvre fou#...",
-    "Tu es un #glaçon#, Harry!",
-    "#Sot# que tu es.",
-    "Ça me #glace# le sang!",
-    "#Reste au frais#, @.",
-    "Et c'est la douche #froide#!",
-    "L'#hiver# vient.",
-    "#Glacier#!",
-    "Ça en jette un #froid#.",
-    "Est-ce que tu as déjà eu des sueurs #froides#?",
-    "La vengeance est un plat qui se mange #froid#!",
-    "Dit bonjour aux #Zoras# pour moi!",
-    "Il faut parfois savoir garder la tête #froide#!",
-    "Ganondorf utilise #Piège de Glace#! C'est super efficace!",
-    "Laisse moi briser la #glace#!",
-    "Balance man..., Cadence man..., Trace la #glace#..., c'est le Cooooolllll Rasta!",
-    "Le #Titanic# aurait peur de toi, @.",
-    "Oh non!",
-    "Qu'est-ce qui a tué les dinosaures?&L'ère #glacière#!",
-    "L'imbécile réfléchit uniquement quand il s'observe dans la #glace#.",
-    "Never gonna #give you up#. Never gonna #let you down#. Never gonna run around and #desert you#.",
-    "Merci #@#! Mais ton objet est dans un autre château!",
-    "J'espère que ça ne te fait ni chaud, ni #froid#.",
-    "Je voulais t'offrir un trésor, mais il semble que tu aies eu #froid aux pieds#",
-    "Tu m'as dit que tu voulais livrer #de la glace# à Ganondorf!",
-    "Tu as obtenu la Triforce!&Cet ancien artefact divin peut exaucer n'importe quel... ah non, désolé, c'est juste un "
-    "piège de glace.",
-    "Il est temps de #te rafraîchir#!",
-    "La #Caverne Polaire# te passe le bonjour.",
-    "Chargement de l'objet, veuillez #patienter#...",
-    "Martèle A+B pour ne pas #mourir#.",
-    "Désolé, ton objet est à un autre endroit.", // would be better if it could have the name of the item
-    "Tu espérais que ce soit %gGreg%w.",
-    "Tu veux boire un chocolat chaud?",
-    "Le #froid# ne m'a jamais dérangé, de toute façon.",
-    "J'espère que tu es trop cool pour être #cool#!",
-    "Sois reconnaissant que ce n'est pas le #zéro absolu#.",
-    "Tu savais que le G de ZFG signifie #Glace#?",
-    "Tu as obtenu #L'Âge de Glace (2002)#!",
-    "Maintenant, tu peux lancer un #sort# que tu ne connais pas.",
-    "Que dirais-tu d'un héros #sur glace#?",
-    "Pas de tunique pour #ça#!",
-    "Je savais que tu étais #partiellement Metroid#!",
-    "Voilà juste la #cerise sur le gâteau#!",
-    "Tu es tellement #cool#, @!",
-    "Tu as trouvé de la #déception#!",
-    "Tu t'es fait #BERNER#!",
-    "Commence à marteler.",
-    "Cet objet va #s'autodétruire# dans 5 secondes...",
-    "Souviens-toi, il pourrait y avoir un léger #inconfort#.",
-    "Dans un monde parfait, les #pièges de glace# comme moi n'existeraient pas, mais ce n'est pas un monde parfait.",
-    "Mon dieu qu'il fait #froid# ici.",
-    "Tu as testé l'objet avec ton #détecteur de glace#, il a bipé.", // would be better if it could have the name of the
-                                                                     // item
-    "Tu as découvert le chemin du zéro. Le #sub-zéro#.",
-    "Mweep... mweep... mweep...",
-    "Gelé, #sac à glace#! Je veux dire #gèle-toi#, racaille!",
-    "Est-ce qu'il fait #frais# ici ou est-ce juste #toi#?",
-    "#Continue#",
-    "QU'EST-CE QU'ELLE VA FAIRE, ME FAIRE UNE #[Glace]#!?",
-    "Tu as rencontré un #terrible destin#, n'est-ce pas?",
-    "Alors comme ça, tu aimes Shining? Voici comment ça #finit#.",
-    "Petite erreur de trajectoire. #Je gagne#.",
-    "Prends ce #L#, @.",
-    "#Problème de compétence#",
-    "Tout ton chauffage nous appartient.",
-    "Attends une seconde, tu as déjà #cet objet#, non?",
-    "#Gèle#! Tu es entouré !",
-    "Erreur 404 - Objet non #trouvé#.",
-    "Pause hydratation ! Hé, qui a #gelé# mon eau?",
-    "Oups, mauvais #modèle d'objet#.",
-    "Oups! Tu dois mettre l'objet #dans ton inventaire#.",
-    "Tu as fait tomber l'objet, le brisant en #éclats de glace#!", // would be better if it could have the name of the
-                                                                   // item
-    "Tu es le maillon faible @, #au revoir#!",
-    "Ugh... Pourquoi avons-nous même randomisé #cet objet#?",
-    "La #Lune de Givre# se lève...",
-    "Selon toutes les lois connues de la physique et de la biologie, @ ne devrait pas survivre à #être complètement "
-    "enfermé dans la glace#. Les cellules de @ mourraient avant qu'elles ne #dégèlent#. Mais c'est un jeu vidéo, alors "
-    "@ survit... #Probablement#.",
-    "OK, arrête-moi si tu l'as déjà entendue - un joueur et une bouteille de #nitrogène liquide# entrent dans un bar à "
-    "lait...",
-    "Lástima, c'est un #piège de glace#...&&Personne ne s'attend à un #piège de glace espagnol#!",
-    "Mon dieu qu'il fait #GLAGLA# ici.",
-    "C'est bon, @ savait que c'était un #piège#, il l'utilise juste pour prendre des dégâts intentionnellement et "
-    "manipuler la RNG.",
-    "Cet objet n'est #pas disponible# dans votre pays.", // would be better if it could have the name of the item
-    "#Bonne# tentative. #;)#",
-    "Où est mon #Super Costume#?",
-    "#La revanche du Titanic#.",
-};
+static const std::vector<std::string>& GetFrenchIceTrapMessages() {
+    static const auto names = CustomMessages::GetGameTextPool("fr_FR", "randomizer.traps.messages");
+    return names;
+}
 
 extern "C" SaveContext gSaveContext;
 
-static std::string ReplaceItemName(const char* c_str, GetItemEntry getItemEntry) {
+static std::string ReplaceItemName(const char* c_str, GetItemEntry getItemEntry, uint8_t language) {
     const static std::string placeholder = "${itemName}";
 
     std::string str = std::string(c_str);
 
-    std::string name = "item";
+    std::string name = CustomMessages::GetEnglishText("randomizer.traps.unknown_item");
 
     if (getItemEntry.drawModIndex == MOD_NONE) {
-        name = SohUtils::GetItemName(getItemEntry.drawItemId);
+        name = SohUtils::GetGameItemName(getItemEntry.drawItemId, language);
     } else if (getItemEntry.drawModIndex == MOD_RANDOMIZER) {
-        name = Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.drawItemId)
-                   .GetName()
-                   .GetForLanguage(gSaveContext.language);
+        name =
+            Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.drawItemId).GetName().GetForLanguage(language);
     } else {
         assert(false);
     }
@@ -2233,15 +2184,34 @@ static std::string ReplaceItemName(const char* c_str, GetItemEntry getItemEntry)
 
 void Rando::Traps::BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemEntry) {
     if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
-        msg = CustomMessage(
-            /*english*/ "This year for Christmas, all you get is #COAL#!",
-            /*german*/ "Dieses Jahr gibt es nur #SOCKEN#! %rFröhliche Weihnachten%w!",
-            /*french*/ "Pour Noël, cette année, tu n'auras que du #CHARBON#! %rJoyeux Noël%w!", { QM_BLUE });
+        msg = CustomMessages::CreateMessage("randomizer.traps.christmas", { QM_BLUE });
     } else {
-        msg = CustomMessage(ReplaceItemName(ShipUtils::RandomElement(englishIceTrapMessages), getItemEntry),
-                            ReplaceItemName(ShipUtils::RandomElement(germanIceTrapMessages), getItemEntry),
-                            ReplaceItemName(ShipUtils::RandomElement(frenchIceTrapMessages), getItemEntry),
-                            { QM_BLUE, QM_BLUE, QM_BLUE });
+        msg = CustomMessage(
+            ReplaceItemName(ShipUtils::RandomElement(GetEnglishIceTrapMessages()).c_str(), getItemEntry, LANGUAGE_ENG),
+            ReplaceItemName(ShipUtils::RandomElement(GetGermanIceTrapMessages()).c_str(), getItemEntry, LANGUAGE_GER),
+            ReplaceItemName(ShipUtils::RandomElement(GetFrenchIceTrapMessages()).c_str(), getItemEntry, LANGUAGE_FRA),
+            { QM_BLUE, QM_BLUE, QM_BLUE });
+        for (const auto& locale : CustomMessages::GetGameTextCatalog().GetLanguages()) {
+            if (locale == "en_US" || locale == "de_DE" || locale == "fr_FR")
+                continue;
+            auto text = ShipUtils::RandomElement(CustomMessages::GetGameTextPool(locale, "randomizer.traps.messages"));
+            std::string name = CustomMessages::GetGameText(locale, "randomizer.traps.unknown_item");
+            if (getItemEntry.drawModIndex == MOD_NONE) {
+                if (const auto* value = CustomMessages::GetGameTextCatalog().Find(
+                        locale, "messages.vanilla.item_names." + std::to_string(getItemEntry.drawItemId)))
+                    name = *value;
+            } else if (getItemEntry.drawModIndex == MOD_RANDOMIZER) {
+                name = Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.drawItemId)
+                           .GetName()
+                           .GetForLocale(locale);
+            }
+            size_t cursor = 0;
+            while ((cursor = text.find("${itemName}", cursor)) != std::string::npos) {
+                text.replace(cursor, 11, name);
+                cursor += name.size();
+            }
+            msg.SetForLocale(locale, std::move(text));
+        }
     }
 
     msg.AutoFormat();

@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <spdlog/spdlog.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 
@@ -1188,39 +1189,45 @@ void RegisterEnemyRandomizerWidgets() {
     SohGui::mSohMenu->AddWidget(path, "Enemy Randomizer", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemies"))
         .Callback([](WidgetInfo& info) { UpdateSelectedEnemies(); })
-        .Options(
-            UIWidgets::ComboboxOptions()
-                .DefaultIndex(ENEMY_RANDOMIZER_OFF)
-                .ComboMap(enemyRandomizerModes)
-                .Tooltip("Replaces fixed enemies throughout the game with a random enemy. Bosses, Mini-Bosses and a "
+        .Options(UIWidgets::ComboboxOptions()
+                     .DefaultIndex(ENEMY_RANDOMIZER_OFF)
+                     .ComboMap(enemyRandomizerModes)
+                     .Tooltip(Lang::UIString(
+                         "ui.widgets.gEnhancements.RandomizedEnemies.description",
+                         "Replaces fixed enemies throughout the game with a random enemy. Bosses, Mini-Bosses and a "
                          "few specific regular enemies are excluded.\n"
                          "Enemies that need more than Deku Nuts & either Deku Sticks or a sword to kill are excluded "
                          "from spawning in \"clear enemy\" rooms.\n\n"
                          "- Random: Enemies are randomized every time you load a room.\n"
-                         "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file.\n"));
+                         "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file.\n")));
 
     SohGui::mSohMenu->AddWidget(path, "Randomized Enemy Sizes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemySizes"))
-        .Options(UIWidgets::CheckboxOptions().Tooltip("Enemies and Bosses spawn with random sizes."));
+        .Options(UIWidgets::CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gEnhancements.RandomizedEnemySizes.description",
+                           "Enemies and Bosses spawn with random sizes.")));
 
     SohGui::mSohMenu->AddWidget(path, "Scale Health with Size", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EnemySizeScalesHealth"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0);
         })
-        .Options(UIWidgets::CheckboxOptions().Tooltip("Scales normal enemies Health with their randomized size.\n"
-                                                      "*This will NOT affect Bosses!*"));
+        .Options(UIWidgets::CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gEnhancements.EnemySizeScalesHealth.description",
+                           "Scales normal enemies Health with their randomized size.\n"
+                           "*This will NOT affect Bosses!*")));
 
     SohGui::mSohMenu->AddWidget(path, "Enemies Walk over Voidout Pits", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EnemyRandomizerAirWalkVoidouts"))
-        .Options(
-            UIWidgets::CheckboxOptions().Tooltip("Ground enemies will air walk over pits/floors that void out Link\n"
-                                                 "to prevent softlocks. Can be toggled to make enemies fall down\n"
-                                                 "or fly back up from a void pit."));
+        .Options(UIWidgets::CheckboxOptions().Tooltip(
+            Lang::UIString("ui.widgets.gEnhancements.EnemyRandomizerAirWalkVoidouts.description",
+                           "Ground enemies will air walk over pits/floors that void out Link\n"
+                           "to prevent softlocks. Can be toggled to make enemies fall down\n"
+                           "or fly back up from a void pit.")));
 
-    SohGui::mSohMenu->AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
-        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
-    });
+    SohGui::mSohMenu->AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT)
+        .Translation("ui.panels.enemyrandomizer.enemy_list")
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); });
 
     SohGui::mSohMenu->AddWidget(path, "Select all Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemyList.All"))

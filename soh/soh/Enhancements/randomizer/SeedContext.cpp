@@ -285,7 +285,7 @@ void Context::AddExcludedOptions() {
         Option* excludedOption = loc.GetExcludedOption();
         auto& areaOptions = Settings::GetInstance()->GetExcludeOptionsForArea(loc.GetArea());
         const bool alreadyAdded = std::any_of(areaOptions.begin(), areaOptions.end(), [&](const Option* option) {
-            return option->GetName() == excludedOption->GetName();
+            return option->GetKey() == excludedOption->GetKey();
         });
         if (!alreadyAdded) {
             areaOptions.push_back(excludedOption);
@@ -437,27 +437,50 @@ void Context::ParseHashIconIndexesJson(const nlohmann::json& spoilerFileJson) {
     }
 }
 
+static RandomizerGet FindSpoilerItemName(const std::string& name) {
+    if (const auto found = Rando::StaticData::itemNameToEnum.find(name);
+        found != Rando::StaticData::itemNameToEnum.end())
+        return found->second;
+    // Older Japanese exports used display names as identifiers. Accept a
+    // localized alias only when it identifies one item unambiguously.
+    RandomizerGet resolved = RG_MAX;
+    for (const auto& item : Rando::StaticData::GetItemTable()) {
+        for (const auto& [locale, value] : item.GetName().GetLocales()) {
+            if (value.empty() || value != name)
+                continue;
+            const auto id = item.GetRandomizerGet();
+            if (resolved != RG_MAX && resolved != id)
+                throw std::invalid_argument("Ambiguous item name in seed: " + name);
+            resolved = id;
+        }
+    }
+    if (resolved == RG_MAX)
+        throw std::invalid_argument("Unknown item name in seed: " + name);
+    return resolved;
+}
+
 void Context::ParseItemLocationsJson(const nlohmann::json& spoilerFileJson) {
     nlohmann::json locationsJson = spoilerFileJson.value("locations", nlohmann::json());
     for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
         RandomizerCheck rc = StaticData::locationNameToEnum[it.key()];
         if (it->is_structured()) {
-            nlohmann::json itemJson = *it;
-            for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
-                if (itemit.key() == "item") {
-                    itemLocationTable[rc].SetPlacedItem(StaticData::itemNameToEnum[itemit.value().get<std::string>()]);
-                } else if (itemit.key() == "price") {
-                    itemLocationTable[rc].SetCustomPrice(itemit.value().get<uint16_t>());
-                } else if (itemit.key() == "model") {
-                    overrides[rc] = ItemOverride(rc, StaticData::itemNameToEnum[itemit.value().get<std::string>()]);
-                } else if (itemit.key() == "trickName") {
-                    overrides[rc].SetTrickName(Text(itemit.value().get<std::string>()));
-                } else if (itemit.key() == "trickArticle") {
-                    overrides[rc].SetTrickArticle(Text(itemit.value().get<std::string>()));
-                }
+            const auto& itemJson = *it;
+            if (itemJson.contains("item"))
+                itemLocationTable[rc].SetPlacedItem(FindSpoilerItemName(itemJson.at("item").get<std::string>()));
+            if (itemJson.contains("price"))
+                itemLocationTable[rc].SetCustomPrice(itemJson.at("price").get<uint16_t>());
+            if (itemJson.contains("model")) {
+                const auto model = FindSpoilerItemName(itemJson.at("model").get<std::string>());
+                auto& itemOverride = overrides[rc] = ItemOverride(rc, model);
+                itemOverride.SetTrickName(
+                    itemJson.value("trickNameTranslations", itemJson.value("trickName", nlohmann::json())).get<Text>());
+                itemOverride.SetTrickArticle(
+                    itemJson.value("trickArticleTranslations", itemJson.value("trickArticle", nlohmann::json()))
+                        .get<Text>());
+                Traps::RestoreTrapNameTranslations(model, itemOverride.GetTrickName(), itemOverride.GetTrickArticle());
             }
         } else {
-            itemLocationTable[rc].SetPlacedItem(StaticData::itemNameToEnum[it.value().get<std::string>()]);
+            itemLocationTable[rc].SetPlacedItem(FindSpoilerItemName(it.value().get<std::string>()));
         }
     }
 }

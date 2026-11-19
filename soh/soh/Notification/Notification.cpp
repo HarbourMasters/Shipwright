@@ -98,11 +98,11 @@ void Window::Draw() {
         }
         if (!notification.prefix.empty()) {
             ImGui::TextColored(notification.prefixColor, "%s", notification.prefix.c_str());
-            ImGui::SameLine();
+            ImGui::SameLine(0.0f, notification.joinText ? 0.0f : -1.0f);
         }
         ImGui::TextColored(notification.messageColor, "%s", notification.message.c_str());
         if (!notification.suffix.empty()) {
-            ImGui::SameLine();
+            ImGui::SameLine(0.0f, notification.joinText ? 0.0f : -1.0f);
             ImGui::TextColored(notification.suffixColor, "%s", notification.suffix.c_str());
         }
 

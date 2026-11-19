@@ -1,4 +1,5 @@
-﻿#include "OTRGlobals.h"
+﻿#include "soh/Enhancements/custom-message/MessageCatalog.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <algorithm>
 #include <atomic>
@@ -79,6 +80,8 @@
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "Enhancements/Restorations/GetItemManipulation.h"
 #include "Enhancements/Lang/Lang.h"
+#include "Enhancements/Lang/UIFont.h"
+#include "Enhancements/custom-message/MessageCatalog.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
@@ -301,6 +304,8 @@ OTRGlobals::OTRGlobals() {
     }));
     context->InitControlDeck(controlDeck);
     context->InitResourceManager({ portArchivePath }, {}, 3, true);
+    // Menu registration and font setup may translate text before Initialize().
+    Lang::PrepareUICatalogs();
     context->InitConsole();
 
     auto sohInputEditorWindow =
@@ -325,8 +330,10 @@ OTRGlobals::OTRGlobals() {
         fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
         fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
         fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
+        fontJapaneseNormal = CreateFontWithSize(16.0f, "fonts/NotoSansJP-Regular.ttf", true);
+        fontJapaneseLarger = CreateFontWithSize(20.0f, "fonts/NotoSansJP-Regular.ttf", true);
         fontJapanese = CreateFontWithSize(24.0f, "fonts/NotoSansJP-Regular.ttf", true);
-        ImGui::GetIO().FontDefault = fontStandardLarger;
+        UpdateGuiFont();
     }
 
     previousImGuiScaleIndex = -1;
@@ -765,6 +772,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
         if (!wnd->IsFrameReady()) {
             continue;
         }
+        // Extraction runs before Graph_StartFrame, which normally selects the UI font.
+        UpdateGuiFont();
         gui->StartDraw();
         sohFast3dWindow->StartFrame();
         sohFast3dWindow->RunGuiOnly();
@@ -784,8 +793,10 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                 }
                 extractionTask.reset();
             } else {
-                if (!ImGui::IsPopupOpen("ROM Extraction")) {
-                    ImGui::OpenPopup("ROM Extraction");
+                const char* extractionTitle =
+                    Lang::UILabel("ui.text.otrglobals.rom_extraction_title", "ROM Extraction");
+                if (!ImGui::IsPopupOpen(extractionTitle)) {
+                    ImGui::OpenPopup(extractionTitle);
                 }
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
@@ -793,16 +804,21 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                 ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.6f));
                 ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(color.x, color.y, color.z, 1.0f));
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
-                if (ImGui::BeginPopupModal("ROM Extraction", NULL,
+                if (ImGui::BeginPopupModal(extractionTitle, NULL,
                                            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
                                                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
                                                ImGuiWindowFlags_NoSavedSettings)) {
                     float progress = (totalExtract > 0.0f ? (float)extractCount / (float)totalExtract : 0) * 100.0f;
-                    auto filename = std::filesystem::path(file).filename().string();
-                    ImGui::Text("Extracting %s...%s", filename.c_str(),
-                                roundf(progress) == 100.0f ? " Done. Finishing up." : "");
-                    std::string overlay =
-                        extractCount > 0 ? spdlog::fmt_lib::format("{:.0f}%", progress) : "Starting Up";
+                    const auto filenameUtf8 = std::filesystem::path(file).filename().u8string();
+                    const std::string filename(reinterpret_cast<const char*>(filenameUtf8.data()), filenameUtf8.size());
+                    ImGui::Text(Lang::UIFormat("ui.text.otrglobals.extracting_file", "Extracting %s...%s"),
+                                filename.c_str(),
+                                roundf(progress) == 100.0f
+                                    ? Lang::UIString("ui.text.otrglobals.finishing_up", " Done. Finishing up.")
+                                    : "");
+                    std::string overlay = extractCount > 0
+                                              ? spdlog::fmt_lib::format("{:.0f}%", progress)
+                                              : Lang::UIString("ui.text.otrglobals.starting_up", "Starting Up");
                     ImGui::ProgressBar(progress / 100.0f, ImVec2(600.0f, 50.0f), overlay.c_str());
                     ImGui::EndPopup();
                 }
@@ -886,6 +902,7 @@ void OTRGlobals::Initialize() {
 
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion,
                 (char*)gGitBranch, (char*)gGitCommitHash);
+    SPDLOG_INFO("Port archive in use: {}", portArchivePath);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
     loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY,
@@ -961,6 +978,7 @@ void OTRGlobals::Initialize() {
                                     "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
 
     Lang::LoadLangs();
+    CustomMessages::LoadCatalog();
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext->InitStaticData();
@@ -1024,6 +1042,30 @@ void OTRGlobals::Initialize() {
 }
 
 OTRGlobals::~OTRGlobals() {
+}
+
+ImFont* OTRGlobals::GetGuiFont(ImFont* westernFont) const {
+    if (Lang::GetUIResourceLanguage() != LANGUAGE_JPN || fontJapaneseLarger == nullptr || westernFont == nullptr) {
+        return westernFont;
+    }
+    // FontSize is populated when ImGui builds the atlas. Startup dialogs can
+    // select a font earlier, so recognize our configured sizes by identity too.
+    if (westernFont == fontMonoLargest || westernFont == fontStandardLargest) {
+        return fontJapanese;
+    }
+    if (westernFont == fontMonoLarger || westernFont == fontStandardLarger) {
+        return fontJapaneseLarger;
+    }
+    if (westernFont->FontSize <= 16.0f) {
+        return fontJapaneseNormal;
+    }
+    return westernFont->FontSize < 24.0f ? fontJapaneseLarger : fontJapanese;
+}
+
+void OTRGlobals::UpdateGuiFont() {
+    if (fontStandardLarger != nullptr) {
+        ImGui::GetIO().FontDefault = GetGuiFont(fontStandardLarger);
+    }
 }
 
 void OTRGlobals::ScaleImGui() {
@@ -1691,6 +1733,7 @@ extern "C" uint64_t GetUnixTimestamp() {
 }
 
 extern "C" void Graph_StartFrame() {
+    OTRGlobals::Instance->UpdateGuiFont();
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
 #ifndef __WIIU__
     using Ship::KbScancode;
@@ -1943,7 +1986,7 @@ ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath, bool is
             Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(fontPath, false, initData));
         ImFontConfig fontConf;
         fontConf.FontDataOwnedByAtlas = false;
-        const ImWchar* glyph_ranges = isJapaneseFont ? mImGuiIo->Fonts->GetGlyphRangesJapanese() : nullptr;
+        const ImWchar* glyph_ranges = isJapaneseFont ? Lang::GetUIFontGlyphRanges() : nullptr;
         font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, static_cast<int>(fontData->DataSize), size,
                                                      &fontConf, glyph_ranges);
     }
@@ -2309,54 +2352,6 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
 
     // rumble
     return 1;
-}
-
-extern "C" size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBufferSize) {
-    CustomMessage customMessage("\x04\x1A\x08"
-                                "Would you like to equip it now?"
-                                "\x09&&"
-                                "\x1B%g"
-                                "Yes"
-                                "&"
-                                "No"
-                                "%w\x02",
-                                "\x04\x1A\x08"
-                                "M"
-                                "\x9A"
-                                "chtest Du es jetzt ausr\x9Esten?"
-                                "\x09&&"
-                                "\x1B%g"
-                                "Ja!"
-                                "&"
-                                "Nein!"
-                                "%w\x02",
-                                "\x04\x1A\x08"
-                                "D\x96sirez-vous l'\x96quiper maintenant?"
-                                "\x09&&"
-                                "\x1B%g"
-                                "Oui"
-                                "&"
-                                "Non"
-                                "%w\x02");
-    customMessage.Format();
-
-    std::string postfix = customMessage.GetForCurrentLanguage();
-    std::string str;
-    std::string FixedBaseStr(src);
-    size_t RemoveControlChar = FixedBaseStr.find_first_of("\x02");
-
-    if (RemoveControlChar != std::string::npos) {
-        FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);
-    }
-    str = FixedBaseStr + postfix;
-
-    if (!str.empty()) {
-        memset(buffer, 0, maxBufferSize);
-        const size_t copiedCharLen = std::min<size_t>(maxBufferSize - 1, str.length());
-        memcpy(buffer, str.c_str(), copiedCharLen);
-        return copiedCharLen;
-    }
-    return 0;
 }
 
 extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {

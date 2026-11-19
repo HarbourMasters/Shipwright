@@ -1,4 +1,5 @@
 #pragma once
+#include "soh/SohGui/LocalizedWindow.h"
 
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
@@ -6,9 +7,9 @@
 
 namespace CheckTracker {
 
-class CheckTrackerSettingsWindow final : public Ship::GuiWindow {
+class CheckTrackerSettingsWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
     ~CheckTrackerSettingsWindow(){};
 
   protected:

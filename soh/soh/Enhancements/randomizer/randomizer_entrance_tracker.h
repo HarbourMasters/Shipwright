@@ -8,7 +8,7 @@
 #include <nlohmann/json_fwd.hpp>
 #include <libultraship/color.h>
 #include <libultraship/libultra.h>
-#include <ship/window/gui/GuiWindow.h>
+#include "soh/SohGui/LocalizedWindow.h"
 #include "randomizerEnums.h"
 
 typedef enum {
@@ -64,6 +64,8 @@ typedef struct {
     TrackerEntranceType type;
     std::string metaTag;
     uint8_t oneExit;
+    // Display text is independent of the canonical destination identity above.
+    std::string gameDestinationKey;
 } EntranceData;
 
 typedef enum {
@@ -116,9 +118,9 @@ s16 GetCurrentGrottoId();
 const EntranceData* GetEntranceData(s16);
 void LoadFromPreset(const nlohmann::json& info);
 
-class EntranceTrackerSettingsWindow final : public Ship::GuiWindow {
+class EntranceTrackerSettingsWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
   protected:
     void InitElement() override{};

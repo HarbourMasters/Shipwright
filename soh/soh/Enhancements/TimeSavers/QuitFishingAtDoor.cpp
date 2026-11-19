@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -11,11 +12,7 @@
 void BuildQuitFishingMessage(uint16_t* textId, bool* loadFromMessageTable) {
     // TODO: See about loading the vanilla message and manipulating that instead of
     // a brand new one. Might not be worth it.
-    CustomMessage msg = CustomMessage(
-        "Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?\x1B%gYes&No%w",
-        "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest Du "
-        "aufhören?\x1B%gJa&Nein%w",
-        "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous arrêter?\x1B%gOui&Non%w");
+    CustomMessage msg = CustomMessages::CreateMessage("enhancements.quit_fishing_at_door.build_quit_fishing_message.0");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;

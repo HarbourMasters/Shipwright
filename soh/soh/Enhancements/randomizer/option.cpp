@@ -80,10 +80,11 @@ const static std::string trickPrefix = "randomizer.tricks.";
 const static std::string empty = "";
 const static std::string error = "[ERROR]";
 
-static const std::string& MakeSettingName(RandomizerSettingKey key) {
+static const std::string& MakeSettingName(RandomizerSettingKey key, const char* language = nullptr) {
     std::string settingNamePart(EnumToString(key).substr(4));
     std::transform(settingNamePart.begin(), settingNamePart.end(), settingNamePart.begin(), ::tolower);
-    return Lang::Translate((settingPrefix + settingNamePart + namePostfix).c_str());
+    const std::string path = settingPrefix + settingNamePart + namePostfix;
+    return language ? Lang::TranslateForLanguage(path.c_str(), language) : Lang::Translate(path.c_str());
 }
 
 static const std::string& MakeSettingDescription(RandomizerSettingKey key) {
@@ -100,10 +101,11 @@ static const std::string& MakeSettingDescription(RandomizerSettingKey key) {
     }
 }
 
-static const std::string& MakeTrickName(RandomizerTrick key) {
+static const std::string& MakeTrickName(RandomizerTrick key, const char* language = nullptr) {
     std::string trickNamePart(EnumToString(key).substr(3));
     std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
-    return Lang::Translate((trickPrefix + trickNamePart + namePostfix).c_str());
+    const std::string path = trickPrefix + trickNamePart + namePostfix;
+    return language ? Lang::TranslateForLanguage(path.c_str(), language) : Lang::Translate(path.c_str());
 }
 
 static const std::string& MakeTrickDescription(RandomizerTrick key) {
@@ -121,6 +123,21 @@ const std::string& Option::GetName() const {
             return MakeSettingName(static_cast<RandomizerSettingKey>(this->key));
         case OptionCategory::Trick:
             return MakeTrickName(static_cast<RandomizerTrick>(this->key));
+        case OptionCategory::LocationExclusion:
+            return StaticData::GetLocation(static_cast<RandomizerCheck>(this->key))->GetName();
+        default:
+            assert(false);
+            return error;
+    }
+}
+
+const std::string& Option::GetCanonicalName() const {
+    switch (this->GetCategory()) {
+        case OptionCategory::Setting:
+        case OptionCategory::Toggle:
+            return MakeSettingName(static_cast<RandomizerSettingKey>(this->key), "en_US");
+        case OptionCategory::Trick:
+            return MakeTrickName(static_cast<RandomizerTrick>(this->key), "en_US");
         case OptionCategory::LocationExclusion:
             return StaticData::GetLocation(static_cast<RandomizerCheck>(this->key))->GetName();
         default:
@@ -153,6 +170,32 @@ uint8_t Option::GetMenuOptionDefault() const {
 }
 
 const std::string& Option::GetOptionText(size_t index) const {
+    return GetCanonicalOptionText(index);
+}
+
+const std::string& Option::GetUIOptionText(size_t index) const {
+    const auto& fallback = GetCanonicalOptionText(index);
+    if (options.empty())
+        return fallback;
+    index = std::min(index, options.size() - 1);
+    std::string path;
+    if (GetCategory() == OptionCategory::Setting || GetCategory() == OptionCategory::Toggle)
+        path = settingPrefix + std::string(EnumToString(static_cast<RandomizerSettingKey>(key)).substr(4));
+    else if (GetCategory() == OptionCategory::Trick)
+        path = trickPrefix + std::string(EnumToString(static_cast<RandomizerTrick>(key)).substr(3));
+    else
+        return fallback;
+    for (auto& c : path)
+        if (c >= 'A' && c <= 'Z')
+            c += 'a' - 'A';
+    path += ".options." + std::to_string(index);
+    const auto translated = Lang::TryTranslate(path.c_str());
+    if (const auto* value = std::get_if<std::reference_wrapper<const std::string>>(&translated))
+        return value->get();
+    return fallback;
+}
+
+const std::string& Option::GetCanonicalOptionText(size_t index) const {
     if (options.empty()) {
         return empty;
     }
@@ -278,9 +321,23 @@ Option::Option(size_t key_, std::vector<std::string> options_, OptionCategory ca
 }
 
 void Option::AddWidget(WidgetPath& path) {
-    auto widget = SohGui::mSohMenu->AddWidget(path, this->GetName() + "##Randomizer", widgetType)
+    const std::string widgetId =
+        "###RandomizerOption." + std::to_string(static_cast<int>(GetCategory())) + "." + std::to_string(key);
+    std::string translationKey;
+    if (GetCategory() == OptionCategory::Trick) {
+        translationKey = trickPrefix + std::string(EnumToString(static_cast<RandomizerTrick>(key)).substr(3));
+    } else if (GetCategory() == OptionCategory::Setting || GetCategory() == OptionCategory::Toggle) {
+        translationKey = settingPrefix + std::string(EnumToString(static_cast<RandomizerSettingKey>(key)).substr(4));
+    }
+    for (auto& character : translationKey) {
+        if (character >= 'A' && character <= 'Z') {
+            character += 'a' - 'A';
+        }
+    }
+    auto widget = SohGui::mSohMenu->AddWidget(path, this->GetName() + widgetId, widgetType)
                       .Callback(callback)
-                      .PreFunc([this](WidgetInfo& info) {
+                      .PreFunc([this, widgetId](WidgetInfo& info) {
+                          info.name = this->GetName() + widgetId;
                           info.isHidden = this->IsHidden();
                           info.options->disabled = this->disabled;
                           info.options->disabledTooltip = this->disabledText.c_str();
@@ -297,10 +354,11 @@ void Option::AddWidget(WidgetPath& path) {
                               if (this->GetOptionIndex() > maxIndex) {
                                   CVarSetInteger(cvarName.c_str(), static_cast<int32_t>(maxIndex));
                               }
-                              sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
+                              sliderOpts->Format(this->GetUIOptionText(this->GetOptionIndex()).c_str());
                           }
                       })
                       .CVar(cvarName.c_str())
+                      .Translation(translationKey)
                       .Options(widgetOptions)
                       .SameLine(imFlags & IMFLAG_SAME_LINE);
     widgetInfo = widget;
@@ -436,7 +494,9 @@ void OptionGroup::AddWidgets(WidgetPath& path) const {
     }
     if (mContainerType == WidgetContainerType::SECTION || mContainerType == WidgetContainerType::COLUMN) {
         if (!mName.empty()) {
-            SohGui::mSohMenu->AddWidget(path, mName.c_str(), WIDGET_SEPARATOR_TEXT);
+            SohGui::mSohMenu->AddWidget(path, mName.c_str(), WIDGET_SEPARATOR_TEXT).PreFunc([this](WidgetInfo& info) {
+                info.name = Lang::UIVariant("ui.text.enhancements.randomizer.settings", mName.c_str());
+            });
         }
     }
     if (mContainsType == OptionGroupType::SUBGROUP) {

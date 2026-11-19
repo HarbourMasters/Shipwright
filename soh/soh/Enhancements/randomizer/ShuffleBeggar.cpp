@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -46,13 +47,8 @@ void BuildEnHyMessage_BlueFire(uint16_t* textId, bool* loadFromMessageTable) {
         return;
     }
 
-    CustomMessage msg = CustomMessage(
-        "%cBlue Fire%w! I'll trade you %rsomething special%w for it. No returns! I get new "
-        "special inventory %bevery 7 years or so%w...",
-        "%cBlaues Feuer%w! Ich tausche es gegen %retwas Besonderes%w. Und nicht feilschen, okay! Ich bekomme neue "
-        "besondere Ware %balle 7 Jahre oder so%w...",
-        "%cFeu bleu%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je reçois de nouveaux "
-        "articles spéciaux %btous les 7 ans environ%w...");
+    CustomMessage msg =
+        CustomMessages::CreateMessage("randomizer.messages.shuffle_beggar.build_en_hy_message__blue_fire.0");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -62,13 +58,7 @@ void BuildEnHyMessage_Fish(uint16_t* textId, bool* loadFromMessageTable) {
     if (!EnHy_RandomizerHoldsItem(TEXT_BEGGAR_BUY_FISH)) {
         return;
     }
-    CustomMessage msg = CustomMessage(
-        "A %pfish%w! I'll trade you %rsomething special%w for it. No returns! I get new "
-        "special inventory %bevery 7 years or so%w...",
-        "Ein %pFisch%w! Ich tausche ihn gegen %retwas Besonderes%w. Und nicht feilschen, okay! Ich bekomme neue "
-        "besondere Ware %balle 7 Jahre oder so%w...",
-        "Un %ppoisson%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je reçois de nouveaux "
-        "articles spéciaux %btous les 7 ans environ%w...");
+    CustomMessage msg = CustomMessages::CreateMessage("randomizer.messages.shuffle_beggar.build_en_hy_message__fish.0");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -78,15 +68,7 @@ void BuildEnHyMessage_Bug(uint16_t* textId, bool* loadFromMessageTable) {
     if (!EnHy_RandomizerHoldsItem(TEXT_BEGGAR_BUY_BUGS)) {
         return;
     }
-    CustomMessage msg =
-        CustomMessage("A tiny %gbug%w! I'll trade you %rsomething special%w for it. No returns! I get new "
-                      "special inventory %bevery 7 years or so%w...",
-                      "Ein kleiner %gKäfer%w! Ich tausche ihn gegen %retwas Besonderes%w. Und nicht feilschen, okay! "
-                      "Ich bekomme neue "
-                      "besondere Ware %balle 7 Jahre oder so%w...",
-                      "Un petit %ginsecte%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je "
-                      "reçois de nouveaux "
-                      "articles spéciaux %btous les 7 ans environ%w...");
+    CustomMessage msg = CustomMessages::CreateMessage("randomizer.messages.shuffle_beggar.build_en_hy_message__bug.0");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;

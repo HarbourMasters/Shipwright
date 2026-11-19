@@ -1,3 +1,5 @@
+#include "soh/SohGui/LocalizedWindow.h"
+#include "soh/Enhancements/Lang/Lang.h"
 #include <ship/window/gui/IconsFontAwesome4.h>
 
 #include "Anchor.h"
@@ -22,7 +24,7 @@ void AnchorRoomWindow::Draw() {
     auto vp = ImGui::GetMainViewport();
     ImGui::SetNextWindowViewport(vp->ID);
 
-    ImGui::Begin("Anchor Room", nullptr,
+    ImGui::Begin(SohGui::LocalizedWindowTitle("ui.text.network.anchor.anchorroomwindow", "Anchor Room"), nullptr,
                  ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoFocusOnAppearing |
                      ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
                      ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
@@ -45,7 +47,8 @@ void AnchorRoomWindow::DrawElement() {
                 activeClients++;
             }
         }
-        ImGui::Text("Players Online: %d", activeClients);
+        ImGui::Text(Lang::UIFormat("ui.text.network.anchor.anchorroomwindow.players_online_d", "Players Online: %d"),
+                    activeClients);
         return;
     }
 
@@ -75,7 +78,9 @@ void AnchorRoomWindow::DrawElement() {
             if (client.self) {
                 ImGui::TextColored(ImVec4(0.8f, 1.0f, 0.8f, 1.0f), "%s", CVarGetString(CVAR_REMOTE_ANCHOR("Name"), ""));
             } else if (!client.online) {
-                ImGui::TextColored(ImVec4(1, 1, 1, 0.3f), "%s - offline", client.name.c_str());
+                ImGui::TextColored(ImVec4(1, 1, 1, 0.3f),
+                                   Lang::UIFormat("ui.text.network.anchor.anchorroomwindow.s_offline", "%s - offline"),
+                                   client.name.c_str());
                 ImGui::PopID();
                 continue;
             } else {
@@ -106,9 +111,13 @@ void AnchorRoomWindow::DrawElement() {
                 ImGui::TextColored(ImVec4(1, 0, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE);
                 if (ImGui::IsItemHovered()) {
                     ImGui::BeginTooltip();
-                    ImGui::Text("Incompatible version! Will not work together!");
-                    ImGui::Text("Yours: %s", Anchor::clientVersion.c_str());
-                    ImGui::Text("Theirs: %s", client.clientVersion.c_str());
+                    ImGui::TextUnformatted(Lang::UIString(
+                        "ui.text.network.anchor.anchorroomwindow.incompatible_version_will_not_work_together",
+                        "Incompatible version! Will not work together!"));
+                    ImGui::Text(Lang::UIFormat("ui.text.network.anchor.anchorroomwindow.yours_s", "Yours: %s"),
+                                Anchor::clientVersion.c_str());
+                    ImGui::Text(Lang::UIFormat("ui.text.network.anchor.anchorroomwindow.theirs_s", "Theirs: %s"),
+                                client.clientVersion.c_str());
                     ImGui::EndTooltip();
                 }
             }
@@ -119,9 +128,12 @@ void AnchorRoomWindow::DrawElement() {
                 ImGui::TextColored(ImVec4(1, 0, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE);
                 if (ImGui::IsItemHovered()) {
                     ImGui::BeginTooltip();
-                    ImGui::Text("Seed mismatch! Continuing will break things!");
-                    ImGui::Text("Yours: %u", seed);
-                    ImGui::Text("Theirs: %u", client.seed);
+                    ImGui::TextUnformatted(Lang::UIString(
+                        "ui.text.network.anchor.anchorroomwindow.seed_mismatch_continuing_will_break_things",
+                        "Seed mismatch! Continuing will break things!"));
+                    ImGui::Text(Lang::UIFormat("ui.text.network.anchor.anchorroomwindow.yours_u", "Yours: %u"), seed);
+                    ImGui::Text(Lang::UIFormat("ui.text.network.anchor.anchorroomwindow.theirs_u", "Theirs: %u"),
+                                client.seed);
                     ImGui::EndTooltip();
                 }
             }

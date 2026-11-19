@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/randomizer/entrance.h"
@@ -159,8 +160,9 @@ void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
                 s16 overrideIndex = entranceCtx->entranceOverrides[i].override;
                 Entrance_SetEntranceDiscovered(entrance, false);
                 auto data = EntranceTracker::GetEntranceData(overrideIndex);
-                CustomMessage msg = CustomMessage("[[name]]");
-                msg.Replace("[[name]]", data->destination);
+                CustomMessage msg =
+                    CustomMessages::CreateMessage("randomizer.messages.entrance_hints.build_entrance_hint_message.0");
+                msg.Replace("[[name]]", CustomMessages::GetEnglishText(data->gameDestinationKey));
                 msg.SetTextBoxType(TEXTBOX_TYPE_WOODEN);
                 msg.SetTextBoxPosition(TEXTBOX_POS_BOTTOM);
                 *loadFromMessageTable = false;

@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <map>
 #include <string>
 
@@ -88,9 +89,11 @@ void DLViewerWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     // Debounce the search field as listing otr files is expensive
     UIWidgets::PushStyleInput(THEME_COLOR);
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImGui::PushFont(OTRGlobals::Instance->GetGuiFont(OTRGlobals::Instance->fontMonoLarger));
 
-    if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
+    if (ImGui::InputText(
+            Lang::UILabel("ui.text.enhancements.debugger.dlviewer.search_display_lists", "Search Display Lists"),
+            searchString, ARRAY_COUNT(searchString))) {
         doSearch = true;
         searchDebounceFrames = 30;
     }
@@ -106,7 +109,9 @@ void DLViewerWindow::DrawElement() {
     }
 
     UIWidgets::PushStyleCombobox(THEME_COLOR);
-    if (ImGui::BeginCombo("Active Display List", activeDisplayList.c_str())) {
+    if (ImGui::BeginCombo(
+            Lang::UILabel("ui.text.enhancements.debugger.dlviewer.active_display_list", "Active Display List"),
+            activeDisplayList.c_str())) {
         for (size_t i = 0; i < displayListSearchResults.size(); i++) {
             if (ImGui::Selectable(displayListSearchResults[i].c_str())) {
                 activeDisplayList = displayListSearchResults[i];
@@ -128,13 +133,17 @@ void DLViewerWindow::DrawElement() {
             Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(activeDisplayList));
 
         if (res->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
-            ImGui::Text("Resource type is not a Display List. Please choose another.");
+            ImGui::TextUnformatted(Lang::UIString(
+                "ui.text.enhancements.debugger.dlviewer.resource_type_is_not_a_display_list_please_choose_another",
+                "Resource type is not a Display List. Please choose another."));
             ImGui::PopFont();
             ImGui::EndDisabled();
             return;
         }
 
-        ImGui::Text("Total Instruction Size: %lu", res->Instructions.size());
+        ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.total_instruction_size_lu",
+                                   "Total Instruction Size: %lu"),
+                    res->Instructions.size());
 
         for (size_t i = 0; i < res->Instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
@@ -211,37 +220,52 @@ void DLViewerWindow::DrawElement() {
             }
             if (cmd == G_SETTILE) {
                 ImGui::SameLine();
-                ImGui::Text("FMT: %u", _SHIFTR(gfx->words.w0, 21, 3));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.fmt_u", "FMT: %u"),
+                            _SHIFTR(gfx->words.w0, 21, 3));
                 ImGui::SameLine();
-                ImGui::Text("SIZ: %u", _SHIFTR(gfx->words.w0, 19, 2));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.siz_u", "SIZ: %u"),
+                            _SHIFTR(gfx->words.w0, 19, 2));
                 ImGui::SameLine();
-                ImGui::Text("LINE: %u", _SHIFTR(gfx->words.w0, 9, 9));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.line_u", "LINE: %u"),
+                            _SHIFTR(gfx->words.w0, 9, 9));
                 ImGui::SameLine();
-                ImGui::Text("TMEM: %u", _SHIFTR(gfx->words.w0, 0, 9));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.tmem_u", "TMEM: %u"),
+                            _SHIFTR(gfx->words.w0, 0, 9));
                 ImGui::SameLine();
-                ImGui::Text("TILE: %u", _SHIFTR(gfx->words.w1, 24, 3));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.tile_u", "TILE: %u"),
+                            _SHIFTR(gfx->words.w1, 24, 3));
                 ImGui::SameLine();
-                ImGui::Text("PAL: %u", _SHIFTR(gfx->words.w1, 20, 4));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.pal_u", "PAL: %u"),
+                            _SHIFTR(gfx->words.w1, 20, 4));
                 ImGui::SameLine();
-                ImGui::Text("CMT: %u", _SHIFTR(gfx->words.w1, 18, 2));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.cmt_u", "CMT: %u"),
+                            _SHIFTR(gfx->words.w1, 18, 2));
                 ImGui::SameLine();
-                ImGui::Text("MASKT: %u", _SHIFTR(gfx->words.w1, 14, 4));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.maskt_u", "MASKT: %u"),
+                            _SHIFTR(gfx->words.w1, 14, 4));
                 ImGui::SameLine();
-                ImGui::Text("SHIFT: %u", _SHIFTR(gfx->words.w1, 10, 4));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.shift_u", "SHIFT: %u"),
+                            _SHIFTR(gfx->words.w1, 10, 4));
                 ImGui::SameLine();
-                ImGui::Text("CMS: %u", _SHIFTR(gfx->words.w1, 8, 2));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.cms_u", "CMS: %u"),
+                            _SHIFTR(gfx->words.w1, 8, 2));
                 ImGui::SameLine();
-                ImGui::Text("MASKS: %u", _SHIFTR(gfx->words.w1, 4, 4));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.masks_u", "MASKS: %u"),
+                            _SHIFTR(gfx->words.w1, 4, 4));
                 ImGui::SameLine();
-                ImGui::Text("SHIFTS: %u", _SHIFTR(gfx->words.w1, 0, 4));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.shifts_u", "SHIFTS: %u"),
+                            _SHIFTR(gfx->words.w1, 0, 4));
             }
             if (cmd == G_SETTIMG) {
                 ImGui::SameLine();
-                ImGui::Text("FMT: %u", _SHIFTR(gfx->words.w0, 21, 3));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.fmt_u", "FMT: %u"),
+                            _SHIFTR(gfx->words.w0, 21, 3));
                 ImGui::SameLine();
-                ImGui::Text("SIZ: %u", _SHIFTR(gfx->words.w0, 19, 2));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.siz_u", "SIZ: %u"),
+                            _SHIFTR(gfx->words.w0, 19, 2));
                 ImGui::SameLine();
-                ImGui::Text("WIDTH: %u", _SHIFTR(gfx->words.w0, 0, 10));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.width_u", "WIDTH: %u"),
+                            _SHIFTR(gfx->words.w0, 0, 10));
                 ImGui::SameLine();
             }
             if (cmd == G_SETTIMG_OTR_HASH) {
@@ -251,31 +275,41 @@ void DLViewerWindow::DrawElement() {
 
                 gfx--;
                 ImGui::SameLine();
-                ImGui::Text("FMT: %u", _SHIFTR(gfx->words.w0, 21, 3));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.fmt_u", "FMT: %u"),
+                            _SHIFTR(gfx->words.w0, 21, 3));
                 ImGui::SameLine();
-                ImGui::Text("SIZ: %u", _SHIFTR(gfx->words.w0, 19, 2));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.siz_u", "SIZ: %u"),
+                            _SHIFTR(gfx->words.w0, 19, 2));
                 ImGui::SameLine();
-                ImGui::Text("WIDTH: %u", _SHIFTR(gfx->words.w0, 0, 10));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.width_u", "WIDTH: %u"),
+                            _SHIFTR(gfx->words.w0, 0, 10));
                 ImGui::SameLine();
-                ImGui::Text("Texture Name: %s", fileName);
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.texture_name_s", "Texture Name: %s"),
+                            fileName);
             }
             if (cmd == G_SETTIMG_OTR_FILEPATH) {
                 char* fileName = (char*)gfx->words.w1;
                 gfx++;
                 ImGui::SameLine();
-                ImGui::Text("FMT: %u", _SHIFTR(gfx->words.w0, 21, 3));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.fmt_u", "FMT: %u"),
+                            _SHIFTR(gfx->words.w0, 21, 3));
                 ImGui::SameLine();
-                ImGui::Text("SIZ: %u", _SHIFTR(gfx->words.w0, 19, 2));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.siz_u", "SIZ: %u"),
+                            _SHIFTR(gfx->words.w0, 19, 2));
                 ImGui::SameLine();
-                ImGui::Text("WIDTH: %u", _SHIFTR(gfx->words.w0, 0, 10));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.width_u", "WIDTH: %u"),
+                            _SHIFTR(gfx->words.w0, 0, 10));
                 ImGui::SameLine();
-                ImGui::Text("Texture Name: %s", fileName);
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.texture_name_s", "Texture Name: %s"),
+                            fileName);
             }
             if (cmd == G_VTX) {
                 ImGui::SameLine();
-                ImGui::Text("Num VTX: %u", _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.num_vtx_u", "Num VTX: %u"),
+                            _SHIFTR(gfx->words.w0, 12, 8));
                 ImGui::SameLine();
-                ImGui::Text("Offset: %u", _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.offset_u", "Offset: %u"),
+                            _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
             }
             if (cmd == G_VTX_OTR_HASH) {
                 gfx++;
@@ -284,24 +318,30 @@ void DLViewerWindow::DrawElement() {
 
                 gfx--;
                 ImGui::SameLine();
-                ImGui::Text("Num VTX: %u", _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.num_vtx_u", "Num VTX: %u"),
+                            _SHIFTR(gfx->words.w0, 12, 8));
                 ImGui::SameLine();
-                ImGui::Text("Offset: %u", _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.offset_u", "Offset: %u"),
+                            _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
 
                 ImGui::SameLine();
-                ImGui::Text("Vertex Name: %s", fileName);
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.vertex_name_s", "Vertex Name: %s"),
+                            fileName);
             }
             if (cmd == G_VTX_OTR_FILEPATH) {
                 char* fileName = (char*)gfx->words.w1;
 
                 gfx++;
                 ImGui::SameLine();
-                ImGui::Text("Num VTX: %u", _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.num_vtx_u", "Num VTX: %u"),
+                            _SHIFTR(gfx->words.w0, 12, 8));
                 ImGui::SameLine();
-                ImGui::Text("Offset: %u", _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.offset_u", "Offset: %u"),
+                            _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
 
                 ImGui::SameLine();
-                ImGui::Text("Vertex Name: %s", fileName);
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.vertex_name_s", "Vertex Name: %s"),
+                            fileName);
             }
             if (cmd == G_DL) {}
             if (cmd == G_DL_OTR_HASH) {
@@ -309,23 +349,30 @@ void DLViewerWindow::DrawElement() {
                 uint64_t hash = ((uint64_t)gfx->words.w0 << 32) + (uint64_t)gfx->words.w1;
                 const char* fileName = ResourceGetNameByCrc(hash);
                 ImGui::SameLine();
-                ImGui::Text("DL Name: %s", fileName);
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.dl_name_s", "DL Name: %s"),
+                            fileName);
             }
             if (cmd == G_DL_OTR_FILEPATH) {
                 char* fileName = (char*)gfx->words.w1;
                 ImGui::SameLine();
-                ImGui::Text("DL Name: %s", fileName);
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.dl_name_s", "DL Name: %s"),
+                            fileName);
             }
 
             // Skip second half of instructions that are over 128-bit wide
             if (cmd == G_SETTIMG_OTR_HASH || cmd == G_DL_OTR_HASH || cmd == G_VTX_OTR_HASH || cmd == G_BRANCH_Z_OTR ||
                 cmd == G_MARKER || cmd == G_MTX_OTR) {
                 i++;
-                ImGui::Text("%lu - Reserved - Second half of %s", i, cmdLabel.c_str());
+                ImGui::Text(Lang::UIFormat("ui.text.enhancements.debugger.dlviewer.lu_reserved_second_half_of_s",
+                                           "%lu - Reserved - Second half of %s"),
+                            i, cmdLabel.c_str());
             }
             ImGui::EndGroup();
         }
-    } catch ([[maybe_unused]] const std::exception& e) { ImGui::Text("Error displaying DL instructions."); }
+    } catch ([[maybe_unused]] const std::exception& e) {
+        ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.dlviewer.error_displaying_dl_instructions",
+                                              "Error displaying DL instructions."));
+    }
 
     ImGui::PopFont();
     ImGui::EndDisabled();

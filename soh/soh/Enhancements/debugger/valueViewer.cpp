@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include "valueViewer.h"
 #include <ship/config/Config.h>
 #include <ship/Context.h>
@@ -177,7 +178,9 @@ static RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
 
 void ValueViewerWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-    UIWidgets::CVarCheckbox("Enable Printing", CVAR_NAME, UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.debugger.valueviewer.enable_printing", "Enable Printing"), CVAR_NAME,
+        UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
     ImGui::BeginGroup();
     static size_t selectedElement = SIZE_MAX;
@@ -276,12 +279,16 @@ void ValueViewerWindow::DrawElement() {
         ImGui::SameLine();
         UIWidgets::PushStyleCheckbox(THEME_COLOR);
         if (element.type <= TYPE_U32) {
-            if (ImGui::Checkbox(("Hex##" + std::string(element.name)).c_str(), &setting.typeFormat)) {
+            if (ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.valueviewer.hex",
+                                              ("Hex##" + std::string(element.name)).c_str()),
+                                &setting.typeFormat)) {
                 SaveValueConfig();
             }
             ImGui::SameLine();
         } else if (element.type == TYPE_FLOAT) {
-            if (ImGui::Checkbox(("Trim##" + std::string(element.name)).c_str(), &setting.typeFormat)) {
+            if (ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.valueviewer.trim",
+                                              ("Trim##" + std::string(element.name)).c_str()),
+                                &setting.typeFormat)) {
                 SaveValueConfig();
             }
             ImGui::SameLine();
@@ -291,7 +298,9 @@ void ValueViewerWindow::DrawElement() {
         ImGui::BeginGroup();
         if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
             UIWidgets::PushStyleCheckbox(THEME_COLOR);
-            if (ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &setting.isPrinted)) {
+            if (ImGui::Checkbox(Lang::UILabel("ui.text.enhancements.debugger.valueviewer.print",
+                                              ("Print##" + std::string(element.name)).c_str()),
+                                &setting.isPrinted)) {
                 SaveValueConfig();
             }
             UIWidgets::PopStyleCheckbox();
@@ -300,7 +309,9 @@ void ValueViewerWindow::DrawElement() {
                 ImGui::SameLine();
                 ImGui::SetNextItemWidth(80.0f);
                 UIWidgets::PushStyleInput(THEME_COLOR);
-                if (ImGui::InputText(("Prefix##" + std::string(element.name)).c_str(), prefix, 10)) {
+                if (ImGui::InputText(Lang::UILabel("ui.text.enhancements.debugger.valueviewer.prefix",
+                                                   ("Prefix##" + std::string(element.name)).c_str()),
+                                     prefix, 10)) {
                     setting.prefix = prefix;
                     SaveValueConfig();
                 }
@@ -313,15 +324,18 @@ void ValueViewerWindow::DrawElement() {
                 }
                 ImGui::SameLine();
                 UIWidgets::PushStyleCheckbox(THEME_COLOR);
-                if (ImGui::Button(("Position##" + std::string(element.name)).c_str())) {
+                if (ImGui::Button(Lang::UILabel("ui.text.enhancements.debugger.valueviewer.position",
+                                                ("Position##" + std::string(element.name)).c_str()))) {
                     ImGui::OpenPopup(("Position Picker##" + std::string(element.name)).c_str());
                 }
                 UIWidgets::PopStyleCheckbox();
                 if (ImGui::BeginPopup(("Position Picker##" + std::string(element.name)).c_str())) {
-                    if (ImGui::DragInt("X", (int*)&setting.x, 1.0f, 0, 44)) {
+                    if (ImGui::DragInt(Lang::UILabel("ui.text.enhancements.debugger.valueviewer.x", "X"),
+                                       (int*)&setting.x, 1.0f, 0, 44)) {
                         SaveValueConfig();
                     }
-                    if (ImGui::DragInt("Y", (int*)&setting.y, 1.0f, 0, 29)) {
+                    if (ImGui::DragInt(Lang::UILabel("ui.text.enhancements.debugger.valueviewer.y", "Y"),
+                                       (int*)&setting.y, 1.0f, 0, 29)) {
                         SaveValueConfig();
                     }
                     ImGui::EndPopup();

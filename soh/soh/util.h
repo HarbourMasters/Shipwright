@@ -18,6 +18,9 @@ const std::string& GetSceneName(int32_t scene);
 
 const std::string& GetItemName(int32_t item);
 
+// For game-message constructors: independent of the UI language.
+const std::string& GetGameItemName(int32_t item, uint8_t language);
+
 const std::string& GetQuestItemName(int32_t item);
 
 const std::string& GetRandomizerCheckAreaPrefix(int32_t rcarea);

@@ -1,3 +1,4 @@
+#include "soh/Enhancements/custom-message/MessageCatalog.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -13,12 +14,7 @@ extern "C" {
 
 void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg =
-        CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r[[d]]%w |token|tokens|&in total!",
-                      "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[d]]&%w|Goldenes "
-                      "Skulltula-Symbol|Goldene Skulltula-Symbole|&gesammelt!",
-                      "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[d]]%w |symbole|symboles| "
-                      "en tout!",
-                      TEXTBOX_TYPE_BLUE);
+        CustomMessages::CreateMessage("enhancements.inject_item_counts.build_skulltula_message.0", TEXTBOX_TYPE_BLUE);
     // The freeze text cannot be manually dismissed and must be auto-dismissed.
     // This is fine and even wanted when skull tokens are not shuffled, but when
     // when they are shuffled we don't want to be able to manually dismiss the box.
@@ -42,10 +38,8 @@ void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildHeartContainerMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage(
-        "You got a %rHeart Container%w!&You've collected %r[[heartContainerCount]]%w containers&in total!",
-        "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r[[heartContainerCount]]%w&Herzcontainer gesammelt!",
-        "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r[[heartContainerCount]]%w en tout!");
+    CustomMessage msg =
+        CustomMessages::CreateMessage("enhancements.inject_item_counts.build_heart_container_message.0");
     msg.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.ship.stats.heartContainers + 1));
     msg.AutoFormat(ITEM_HEART_CONTAINER);
     msg.LoadIntoFont();
@@ -54,10 +48,7 @@ void BuildHeartContainerMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void BuildHeartPieceMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg =
-        CustomMessage("You got a %rHeart Piece%w!&You've collected %r[[heartPieceCount]]%w pieces&in total!",
-                      "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herzteile gesammelt!",
-                      "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r[[heartPieceCount]]%w en tout!",
-                      TEXTBOX_TYPE_BLUE);
+        CustomMessages::CreateMessage("enhancements.inject_item_counts.build_heart_piece_message.0", TEXTBOX_TYPE_BLUE);
     msg.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.ship.stats.heartPieces + 1));
     msg.AutoFormat(ITEM_HEART_PIECE);
     msg.LoadIntoFont();

@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include <string>
 
 #include <ship/window/Window.h>
@@ -436,7 +437,8 @@ const char* ResolveSceneID(int sceneID, int roomID) {
 void DrawGameplayStatsHeader() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
-    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.gameplaystats.stat", "stat"),
+                            ImGuiTableColumnFlags_WidthStretch);
     // if tag is empty (not a release build)
     if (gGitCommitTag[0] == 0) {
         GameplayStatsRow("Git Branch:", (char*)gGitBranch);
@@ -485,7 +487,8 @@ void DrawGameplayStatsTimestampsTab() {
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsTimestamps", 1, ImGuiTableFlags_BordersOuter);
-    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.gameplaystats.stat", "stat"),
+                            ImGuiTableColumnFlags_WidthStretch);
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         // To be shown, the entry must have a non-zero time and a string for its display name
         if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 24) > 1) {
@@ -522,12 +525,14 @@ void DrawGameplayStatsCountsTab() {
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsCounts", 1, ImGuiTableFlags_BordersOuter);
-    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.gameplaystats.stat", "stat"),
+                            ImGuiTableColumnFlags_WidthStretch);
     GameplayStatsRow("Enemies Defeated:", formatIntGameplayStat(enemiesDefeated));
     if (enemiesDefeated > 0) {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        if (ImGui::TreeNodeEx("Enemy Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+        if (ImGui::TreeNodeEx(Lang::UILabel("ui.text.enhancements.gameplaystats.enemy_details", "Enemy Details..."),
+                              ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
             for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
                 if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
                     GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i] / 3));
@@ -545,7 +550,8 @@ void DrawGameplayStatsCountsTab() {
     if (ammoUsed > 0) {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        if (ImGui::TreeNodeEx("Ammo Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+        if (ImGui::TreeNodeEx(Lang::UILabel("ui.text.enhancements.gameplaystats.ammo_details", "Ammo Details..."),
+                              ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
             for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
                 GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i]));
             }
@@ -571,7 +577,8 @@ void DrawGameplayStatsCountsTab() {
     if (buttonPresses > 0) {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        if (ImGui::TreeNodeEx("Buttons...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+        if (ImGui::TreeNodeEx(Lang::UILabel("ui.text.enhancements.gameplaystats.buttons", "Buttons..."),
+                              ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
             for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
                 GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i]));
             }
@@ -603,7 +610,8 @@ void DrawGameplayStatsBreakdownTab() {
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsCounts", 1, ImGuiTableFlags_BordersOuter);
-    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.gameplaystats.stat", "stat"),
+                            ImGuiTableColumnFlags_WidthStretch);
     for (u32 i = 0; i < gSaveContext.ship.stats.tsIdx; i++) {
         TimestampInfo tsInfo = sceneTimestampDisplay[i];
         bool canShow = !tsInfo.isRoom || CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0);
@@ -625,50 +633,65 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets::CVarCheckbox("Show in-game total timer", CVAR_GAMEPLAY_STATS("ShowIngameTimer"),
-                            UIWidgets::CheckboxOptions()
-                                .Tooltip("Keep track of the timer as an in-game HUD element. The position of the "
-                                         "timer can be changed in the Cosmetics Editor.")
-                                .Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("Show latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
+    UIWidgets::CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.gameplaystats.show_in_game_total_timer", "Show in-game total timer"),
+        CVAR_GAMEPLAY_STATS("ShowIngameTimer"),
+        UIWidgets::CheckboxOptions()
+            .Tooltip(Lang::UIString("ui.text.enhancements.gameplaystats.keep_track_of_the_timer_as_an_in_game_hud_"
+                                    "element_the_position_of_the_timer_can_be_changed_in_the_co",
+                                    "Keep track of the timer as an in-game HUD element. The position of the "
+                                    "timer can be changed in the Cosmetics Editor."))
+            .Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox(Lang::UILabel("ui.text.enhancements.gameplaystats.show_latest_timestamps_on_top",
+                                          "Show latest timestamps on top"),
+                            CVAR_GAMEPLAY_STATS("ReverseTimestamps"), UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.gameplaystats.room_breakdown", "Room Breakdown"),
+        CVAR_GAMEPLAY_STATS("RoomBreakdown"),
+        UIWidgets::CheckboxOptions()
+            .Tooltip(Lang::UIString(
+                "ui.text.enhancements.gameplaystats.allows_a_more_in_depth_perspective_of_time_spent_in_a_certain_map",
+                "Allows a more in-depth perspective of time spent in a certain map."))
+            .Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox(
+        Lang::UILabel("ui.text.enhancements.gameplaystats.rta_timing_on_new_files", "RTA Timing on new files"),
+        CVAR_GAMEPLAY_STATS("RTATiming"),
+        UIWidgets::CheckboxOptions()
+            .Tooltip(Lang::UIString("ui.text.enhancements.gameplaystats.timestamps_are_relative_to_starting_timestamp_"
+                                    "rather_than_in_game_time_usually_necessary_for_races_s",
+                                    "Timestamps are relative to starting timestamp rather than in game time, "
+                                    "usually necessary for races/speedruns.\n\n"
+                                    "Starting timestamp is on first non-C-up input after intro cutscene.\n\n"
+                                    "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT"))
+            .Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox(Lang::UILabel("ui.text.enhancements.gameplaystats.show_additional_detail_timers",
+                                          "Show additional detail timers"),
+                            CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"),
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("Room Breakdown", CVAR_GAMEPLAY_STATS("RoomBreakdown"),
-                            UIWidgets::CheckboxOptions()
-                                .Tooltip("Allows a more in-depth perspective of time spent in a certain map.")
-                                .Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("RTA Timing on new files", CVAR_GAMEPLAY_STATS("RTATiming"),
-                            UIWidgets::CheckboxOptions()
-                                .Tooltip("Timestamps are relative to starting timestamp rather than in game time, "
-                                         "usually necessary for races/speedruns.\n\n"
-                                         "Starting timestamp is on first non-C-up input after intro cutscene.\n\n"
-                                         "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT")
-                                .Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"),
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("Show Debug Info", CVAR_GAMEPLAY_STATS("ShowDebugInfo"),
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox(Lang::UILabel("ui.text.enhancements.gameplaystats.show_debug_info", "Show Debug Info"),
+                            CVAR_GAMEPLAY_STATS("ShowDebugInfo"), UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 }
 
 void GameplayStatsWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImGui::PushFont(OTRGlobals::Instance->GetGuiFont(OTRGlobals::Instance->fontMonoLarger));
     DrawGameplayStatsHeader();
 
     UIWidgets::PushStyleTabs(THEME_COLOR);
 
     if (ImGui::BeginTabBar("Stats", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-        if (ImGui::BeginTabItem("Timestamps")) {
+        if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.gameplaystats.timestamps", "Timestamps"))) {
             DrawGameplayStatsTimestampsTab();
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Counts")) {
+        if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.gameplaystats.counts", "Counts"))) {
             DrawGameplayStatsCountsTab();
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Breakdown")) {
+        if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.gameplaystats.breakdown", "Breakdown"))) {
             DrawGameplayStatsBreakdownTab();
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Options")) {
+        if (ImGui::BeginTabItem(Lang::UILabel("ui.text.enhancements.gameplaystats.options", "Options"))) {
             DrawGameplayStatsOptionsTab();
             ImGui::EndTabItem();
         }
@@ -678,7 +701,10 @@ void GameplayStatsWindow::DrawElement() {
     UIWidgets::PopStyleTabs();
     ImGui::PopFont();
 
-    ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
+    ImGui::TextUnformatted(Lang::UIString(
+        "ui.text.enhancements.gameplaystats.note_gameplay_stats_are_saved_to_the_current_file_and_will_be_lost_if_you_"
+        "quit_without_saving",
+        "Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving."));
 }
 void InitStats(bool isDebug) {
     int debugFile = isDebug ? CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) : 0;

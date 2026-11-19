@@ -1,3 +1,4 @@
+#include "soh/Enhancements/Lang/Lang.h"
 #include "hookDebugger.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -18,19 +19,27 @@ void DrawHookRegisteringInfos(const char* hookName) {
     size_t numHooks = (*hookData[hookName]).size();
 
     if (numHooks == 0) {
-        ImGui::TextColored(grey, "No hooks found");
+        ImGui::TextColored(
+            grey, "%s", Lang::UIString("ui.text.enhancements.debugger.hookdebugger.no_hooks_found", "No hooks found"));
         return;
     }
 
-    ImGui::Text("Total Registered: %zu", numHooks);
+    ImGui::Text(
+        Lang::UIFormat("ui.text.enhancements.debugger.hookdebugger.total_registered_zu", "Total Registered: %zu"),
+        numHooks);
 
     if (ImGui::BeginTable(("Table##" + std::string(hookName)).c_str(), 4,
                           ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable |
                               ImGuiTableFlags_Borders | ImGuiTableFlags_SizingFixedFit)) {
-        ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed);
-        ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed);
-        ImGui::TableSetupColumn("Registration Info", ImGuiTableColumnFlags_WidthStretch);
-        ImGui::TableSetupColumn("# Calls", ImGuiTableColumnFlags_WidthFixed);
+        ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.debugger.hookdebugger.id", "ID"),
+                                ImGuiTableColumnFlags_WidthFixed);
+        ImGui::TableSetupColumn(Lang::UILabel("ui.text.enhancements.debugger.hookdebugger.type", "Type"),
+                                ImGuiTableColumnFlags_WidthFixed);
+        ImGui::TableSetupColumn(
+            Lang::UILabel("ui.text.enhancements.debugger.hookdebugger.registration_info", "Registration Info"),
+            ImGuiTableColumnFlags_WidthStretch);
+        ImGui::TableSetupColumn(Lang::UILabel("ui.text.ship.window.gui.eventdebuggerwindow.calls", "# Calls"),
+                                ImGuiTableColumnFlags_WidthFixed);
         ImGui::TableHeadersRow();
         for (auto& [id, hookInfo] : (*hookData[hookName])) {
             ImGui::TableNextRow();
@@ -41,19 +50,22 @@ void DrawHookRegisteringInfos(const char* hookName) {
             ImGui::TableNextColumn();
             switch (hookInfo.registering.type) {
                 case HOOK_TYPE_NORMAL:
-                    ImGui::Text("Normal");
+                    ImGui::TextUnformatted(
+                        Lang::UIString("ui.text.enhancements.debugger.hookdebugger.normal", "Normal"));
                     break;
                 case HOOK_TYPE_ID:
-                    ImGui::Text("ID");
+                    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.hookdebugger.id", "ID"));
                     break;
                 case HOOK_TYPE_PTR:
-                    ImGui::Text("Ptr");
+                    ImGui::TextUnformatted(Lang::UIString("ui.text.enhancements.debugger.hookdebugger.ptr", "Ptr"));
                     break;
                 case HOOK_TYPE_FILTER:
-                    ImGui::Text("Filter");
+                    ImGui::TextUnformatted(
+                        Lang::UIString("ui.text.enhancements.debugger.hookdebugger.filter", "Filter"));
                     break;
                 default:
-                    ImGui::TextColored(red, "[UNKNOWN]");
+                    ImGui::TextColored(
+                        red, "%s", Lang::UIString("ui.text.enhancements.debugger.hookdebugger.unknown", "[UNKNOWN]"));
                     break;
             }
 
@@ -69,7 +81,9 @@ void DrawHookRegisteringInfos(const char* hookName) {
                 ImGui::TextWrapped("%s(%d:%d) <-\u00A0%s", hookInfo.registering.file, hookInfo.registering.line,
                                    hookInfo.registering.column, parentFunction.c_str());
             } else {
-                ImGui::TextColored(yellow, "[Unavailable]");
+                ImGui::TextColored(
+                    yellow, "%s",
+                    Lang::UIString("ui.text.enhancements.debugger.hookdebugger.unavailable", "[Unavailable]"));
             }
 
             ImGui::TableNextColumn();
@@ -85,23 +99,27 @@ void HookDebuggerWindow::DrawElement() {
 
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 #ifndef __cpp_lib_source_location
-    ImGui::TextColored(yellow, "Some features of the Hook Debugger are unavailable because SoH was compiled "
-                               "without \"<source_location>\" support "
-                               "(\"__cpp_lib_source_location\" not defined in \"<version>\").");
+    ImGui::TextColored(yellow, "%s",
+                       Lang::UIString("ui.text.enhancements.debugger.hookdebugger.some_features_of_the_hook_debugger_"
+                                      "are_unavailable_because_soh_was_compiled_without_source_location_",
+                                      "Some features of the Hook Debugger are unavailable because SoH was compiled "
+                                      "without \"<source_location>\" support "
+                                      "(\"__cpp_lib_source_location\" not defined in \"<version>\")."));
 #endif
 
-    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
+    if (UIWidgets::Button(Lang::UILabel("ui.text.enhancements.debugger.hookdebugger.expand_all", "Expand All"),
+                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         hookOptCollapseAll = false;
         hookOptExpandAll = true;
     }
     ImGui::SameLine();
-    if (UIWidgets::Button("Collapse All",
+    if (UIWidgets::Button(Lang::UILabel("ui.text.enhancements.debugger.hookdebugger.collapse_all", "Collapse All"),
                           UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         hookOptExpandAll = false;
         hookOptCollapseAll = true;
     }
 
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImGui::PushFont(OTRGlobals::Instance->GetGuiFont(OTRGlobals::Instance->fontMonoLarger));
 
     for (auto& [hookName, _] : hookData) {
         if (doingCollapseOrExpand) {

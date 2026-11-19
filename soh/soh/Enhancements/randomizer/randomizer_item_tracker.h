@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ship/window/gui/GuiWindow.h"
+#include "soh/SohGui/LocalizedWindow.h"
 #include <nlohmann/json_fwd.hpp>
 #include <string>
 #include <vector>
@@ -72,9 +72,9 @@ static std::array<const char*, 16> itemTrackerWindowIDs = { "Item Tracker",
                                                             "Total Checks" };
 void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo);
 
-class ItemTrackerSettingsWindow final : public Ship::GuiWindow {
+class ItemTrackerSettingsWindow final : public SohGui::LocalizedWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LocalizedWindow::LocalizedWindow;
 
   protected:
     void InitElement() override{};
