@@ -834,7 +834,8 @@ void RandomizerOnDialogMessageHandler() {
             case TEXT_MASK_SHOP_SIGN:
                 if (ctx->GetOption(RSK_MASK_SHOP_HINT)) {
                     auto itemSkull_loc = ctx->GetItemLocation(RC_DEKU_THEATER_SKULL_MASK);
-                    if (itemSkull_loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+                    if (itemSkull_loc->GetCheckStatus() == RCSHOW_UNCHECKED ||
+                        itemSkull_loc->GetCheckStatus() == RCSHOW_DISCOVERED) {
                         itemSkull_loc->SetCheckStatus(RCSHOW_IDENTIFIED);
                     }
                     reveal = RC_DEKU_THEATER_MASK_OF_TRUTH;
@@ -866,7 +867,8 @@ void RandomizerOnDialogMessageHandler() {
             case TEXT_HBA_ALREADY_HAVE_1000:
                 if (ctx->GetOption(RSK_HBA_HINT)) {
                     auto item1000_loc = ctx->GetItemLocation(RC_GF_HBA_1000_POINTS);
-                    if (item1000_loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+                    if (item1000_loc->GetCheckStatus() == RCSHOW_UNCHECKED ||
+                        item1000_loc->GetCheckStatus() == RCSHOW_DISCOVERED) {
                         item1000_loc->SetCheckStatus(RCSHOW_IDENTIFIED);
                     }
                     reveal = RC_GF_HBA_1500_POINTS;
@@ -917,7 +919,8 @@ void RandomizerOnDialogMessageHandler() {
                 if (ctx->GetOption(RSK_OOT_HINT) && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME &&
                     !ctx->GetItemLocation(RC_SONG_FROM_OCARINA_OF_TIME)->HasObtained()) {
                     auto itemoot_loc = ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM);
-                    if (itemoot_loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+                    if (itemoot_loc->GetCheckStatus() == RCSHOW_UNCHECKED ||
+                        itemoot_loc->GetCheckStatus() == RCSHOW_DISCOVERED) {
                         itemoot_loc->SetCheckStatus(RCSHOW_IDENTIFIED);
                     }
                     reveal = RC_SONG_FROM_OCARINA_OF_TIME;
@@ -939,7 +942,7 @@ void RandomizerOnDialogMessageHandler() {
 
     if (reveal != RC_UNKNOWN_CHECK) {
         auto item_loc = ctx->GetItemLocation(reveal);
-        if (item_loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+        if (item_loc->GetCheckStatus() == RCSHOW_UNCHECKED || item_loc->GetCheckStatus() == RCSHOW_DISCOVERED) {
             item_loc->SetCheckStatus(RCSHOW_IDENTIFIED);
         }
     }
