@@ -3,6 +3,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -12,7 +13,6 @@ extern "C" {
 #include "functions.h"
 
 extern PlayState* gPlayState;
-uint64_t osGetTime(void);
 }
 
 // SoH [Enhancement] Majora's Mask style star field, ported from the 2S2H "some_love_for_stars" branch.
@@ -62,8 +62,7 @@ static constexpr f32 SKYBOX_STAR_SIMPLE_TIP_RADIUS = 0.52f;
 static constexpr f32 SKYBOX_STAR_REFERENCE_INTENSITY = 0.5f; // intensity the shape alphas are tuned for
 static constexpr f32 SKYBOX_STAR_TWINKLE_MAX_FREQUENCY = 2.0f;
 static constexpr f32 SKYBOX_STAR_TWINKLE_MIN_RATIO = 0.15f;
-static constexpr f32 SKYBOX_STAR_TWINKLE_DEPTH = 0.5f;            // 0.5 dips to half brightness, 1.0 to invisible
-static constexpr f32 SKYBOX_STAR_CYCLES_PER_SECOND = 46875000.0f; // osGetTime() counts N64 cycles
+static constexpr f32 SKYBOX_STAR_TWINKLE_DEPTH = 0.5f; // 0.5 dips to half brightness, 1.0 to invisible
 static constexpr f32 SKYBOX_STAR_FADE_SECONDS = 2.0f;
 static constexpr f32 SKYBOX_STAR_FADE_MAX_STEP = 0.25f; // a long stall must not swallow the whole fade
 
@@ -97,9 +96,8 @@ static f32 sSkyboxSimpleStarAlphaScale = -1.0f;
 
 // The branch point must land after the skybox and before the sun and moon, so the moon still covers the stars.
 static void MajoraStarField_Setup(PlayState* play) {
-    const u64 now = osGetTime();
-    const f32 elapsed =
-        (sSkyboxStarFadeTime != 0) ? (f32)(now - sSkyboxStarFadeTime) / SKYBOX_STAR_CYCLES_PER_SECOND : 0.0f;
+    const u64 now = GetUnixTimestamp();
+    const f32 elapsed = (sSkyboxStarFadeTime != 0) ? (f32)(now - sSkyboxStarFadeTime) / 1000.0f : 0.0f;
     f32 blend = (f32)play->envCtx.skyboxBlend / 255.0f;
     f32 alpha = 0.0f;
     bool starry = false;
@@ -369,11 +367,11 @@ static u32 Ship_SkyboxStarHash(u32 seed, s32 starNum) {
 }
 
 // Per star twinkle factor, oscillating between (1 - SKYBOX_STAR_TWINKLE_DEPTH) and 1
-static f32 Ship_SkyboxStarTwinkle(u32 seed, s32 starNum, f32 time, f32 maxFrequency) {
+static f32 Ship_SkyboxStarTwinkle(u32 seed, s32 starNum, f64 time, f32 maxFrequency) {
     u32 hash = Ship_SkyboxStarHash(seed, starNum);
     f32 frequency;
-    f32 turns;
-    f32 fraction;
+    f64 turns;
+    f64 fraction;
     f32 halfDepth;
 
     // A maximum of 0 means no twinkling
@@ -385,7 +383,7 @@ static f32 Ship_SkyboxStarTwinkle(u32 seed, s32 starNum, f32 time, f32 maxFreque
                                 ((1.0f - SKYBOX_STAR_TWINKLE_MIN_RATIO) * ((f32)(hash & 0xFF) / 255.0f)));
     // Random phase, in turns
     turns = (frequency * time) + ((f32)((hash >> 8) & 0xFFFF) / 65536.0f);
-    fraction = turns - floorf(turns);
+    fraction = turns - floor(turns);
     halfDepth = SKYBOX_STAR_TWINKLE_DEPTH * 0.5f;
 
     // Math_SinS takes a 16 bit angle where a full turn is 0x10000
@@ -528,7 +526,7 @@ static void DrawSkyboxStarsImpl(PlayState* play, Gfx** gfxP) {
     f32 telescopeStarAlphaScale;
     s32 twinkleStars;
     f32 twinkleMaxFrequency;
-    f32 twinkleTime;
+    f64 twinkleTime;
     u32 starSeed;
     Color_RGBA8 starColor;
     bool primColorChanged;
@@ -544,7 +542,7 @@ static void DrawSkyboxStarsImpl(PlayState* play, Gfx** gfxP) {
     twinkleStars = CVarGetInteger(CVAR_STAR_TWINKLE, 0);
     twinkleMaxFrequency =
         CLAMP(CVarGetFloat(CVAR_STAR_TWINKLE_FREQUENCY, 1.0f), 0.0f, SKYBOX_STAR_TWINKLE_MAX_FREQUENCY);
-    twinkleTime = (f32)(osGetTime() / SKYBOX_STAR_CYCLES_PER_SECOND);
+    twinkleTime = (f64)GetUnixTimestamp() / 1000.0;
     starCountMultiplier = CLAMP(CVarGetFloat(CVAR_STAR_COUNT, SKYBOX_STAR_COUNT_MULTIPLIER_MIN),
                                 SKYBOX_STAR_COUNT_MULTIPLIER_MIN, SKYBOX_STAR_COUNT_MULTIPLIER_MAX);
     starCount = (s32)(sEnvSkyboxNumStars * starCountMultiplier);
