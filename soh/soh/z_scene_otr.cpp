@@ -19,6 +19,7 @@
 #include "soh/resource/type/scenecommand/SetMesh.h"
 #include "soh/resource/type/scenecommand/SetObjectList.h"
 #include "soh/resource/type/scenecommand/SetLightList.h"
+#include "soh/resource/type/scenecommand/SetLightingSettings.h"
 #include "soh/resource/type/scenecommand/SetPathways.h"
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "soh/resource/type/scenecommand/SetSkyboxSettings.h"
@@ -221,6 +222,8 @@ bool Scene_CommandTransitionActorList(PlayState* play, SOH::ISceneCommand* cmd) 
 //}
 
 bool Scene_CommandLightSettingsList(PlayState* play, SOH::ISceneCommand* cmd) {
+    SOH::SetLightingSettings* cmdLight = (SOH::SetLightingSettings*)cmd;
+    play->envCtx.numLightSettings = static_cast<uint8_t>(cmdLight->settings.size());
     play->envCtx.lightSettingsList = (EnvLightSettings*)cmd->GetRawPointer();
 
     return false;

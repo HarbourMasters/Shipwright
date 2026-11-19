@@ -65,6 +65,7 @@ std::set<SkyboxId> skyboxIdControlList = {
     SKYBOX_ZORA_SHOP,
     SKYBOX_POTION_SHOP_KAKARIKO,
     SKYBOX_POTION_SHOP_MARKET,
+    SKYBOX_BOMBCHU_SHOP,
     SKYBOX_HOUSE_RICHARD,
     SKYBOX_HOUSE_IMPA,
     SKYBOX_TENT,
@@ -94,6 +95,7 @@ void Register3DPreRenderedScenes() {
 
         // Replace skybox with normal sky
         SyncSkyboxTimeToCurrentTime();
+        gSaveContext.skyboxTime = gSaveContext.dayTime;
         gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
         // Apply the always cloudy skybox as an adult for Temple of Time and the Market
         if (sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
@@ -106,24 +108,32 @@ void Register3DPreRenderedScenes() {
     COND_HOOK(OnPlayDrawBegin, CVAR_VALUE, []() {
         const auto sceneNum = static_cast<SceneID>(gPlayState->sceneNum);
         if (InRuinedMarketScenes(sceneNum)) {
-            gPlayState->view.zFar = 8800;
-            gPlayState->lightCtx.fogColor[0] = 24;
-            gPlayState->lightCtx.fogColor[1] = 9;
-            gPlayState->lightCtx.fogColor[2] = 24;
-            gPlayState->lightCtx.fogNear = 946;
-            gPlayState->lightCtx.fogFar = 8800;
-            return;
+            // Only activate fog control if the scene is flagged as indoors (market scenes are in vanilla)
+            if (gPlayState->envCtx.indoors) {
+                gPlayState->view.zFar = 8800;
+                gPlayState->lightCtx.fogColor[0] = 24;
+                gPlayState->lightCtx.fogColor[1] = 9;
+                gPlayState->lightCtx.fogColor[2] = 24;
+                gPlayState->lightCtx.fogNear = 946;
+                gPlayState->lightCtx.fogFar = 8800;
+            }
         }
 
         if (!fogControlList.contains(sceneNum)) {
             return;
         }
 
+        gPlayState->envCtx.sunMoonDisabled = false;
+        gSaveContext.skyboxTime = gSaveContext.dayTime;
+
         if ((HREG(80) != 10) || (HREG(82) != 0)) {
-            // Furthest possible fog and zFar
-            gPlayState->view.zFar = 12800;
-            gPlayState->lightCtx.fogNear = 1000;
-            gPlayState->lightCtx.fogFar = 12800;
+            // Only activate fog control if the scene is flagged as indoors (market scenes are in vanilla)
+            if (gPlayState->envCtx.indoors) {
+                // Furthest possible fog and zFar
+                gPlayState->view.zFar = 12800;
+                gPlayState->lightCtx.fogNear = 1000;
+                gPlayState->lightCtx.fogFar = 12800;
+            }
         }
     });
 
