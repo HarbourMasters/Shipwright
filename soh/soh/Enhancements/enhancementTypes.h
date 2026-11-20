@@ -27,6 +27,12 @@ typedef enum {
 } BunnyHoodMode;
 
 typedef enum {
+    DASH_AFTER_ROLL_OFF,
+    DASH_AFTER_ROLL_ON,
+    DASH_AFTER_ROLL_STACK,
+} DashAfterRollMode;
+
+typedef enum {
     MIRRORED_WORLD_OFF,
     MIRRORED_WORLD_ALWAYS,
     MIRRORED_WORLD_RANDOM,
