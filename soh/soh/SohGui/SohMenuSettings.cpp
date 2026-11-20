@@ -5,6 +5,7 @@
 #include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "UIWidgets.hpp"
 #include <ship/controller/controldeck/ControlDeck.h>
 #include <ship/Context.h>
@@ -239,6 +240,30 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yTTS"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Enables text to speech for in-game dialogue"));
+    AddWidget(path, "Speech Rate: %d%%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("A11yTTSRate"))
+        .RaceDisable(false)
+        .Options(IntSliderOptions()
+                     .Min(SPEECH_RATE_MIN)
+                     .Max(SPEECH_RATE_MAX)
+                     .DefaultValue(100)
+                     .ShowButtons(true)
+                     .Format("")
+                     .Tooltip("Speaking speed, as a percentage of the speech engine's normal rate."))
+        .Callback([](WidgetInfo& info) { SpeechSynthesizer::Instance->ApplySettings(); });
+    AddWidget(path, "Speech Volume: %d%%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("A11yTTSVolume"))
+        .RaceDisable(false)
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format("").Tooltip(
+            "Speech volume. The speech engine plays outside the game's mixer, so this is separate from the "
+            "volume sliders above."))
+        .Callback([](WidgetInfo& info) { SpeechSynthesizer::Instance->ApplySettings(); });
+    AddWidget(path, "Speech Pitch: %d", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("A11yTTSPitch"))
+        .RaceDisable(false)
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(50).ShowButtons(true).Format("").Tooltip(
+            "Base pitch of the speaking voice. 50 is the engine's normal pitch."))
+        .Callback([](WidgetInfo& info) { SpeechSynthesizer::Instance->ApplySettings(); });
 #endif
     AddWidget(path, "Disable Idle Camera Re-Centering", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
@@ -288,11 +313,11 @@ void SohMenu::AddMenuSettings() {
     path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Audio", 3);
 
-    AddWidget(path, "Master Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Master Volume: %d%%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.Master"))
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(40).ShowButtons(true).Format(""));
-    AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Main Music Volume: %d%%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.MainMusic"))
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""))
@@ -300,7 +325,7 @@ void SohMenu::AddMenuSettings() {
             Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN,
                                 ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
         });
-    AddWidget(path, "Sub Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Sub Music Volume: %d%%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.SubMusic"))
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""))
@@ -308,7 +333,7 @@ void SohMenu::AddMenuSettings() {
             Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB,
                                 ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
         });
-    AddWidget(path, "Fanfare Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Fanfare Volume: %d%%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.Fanfare"))
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""))
@@ -316,7 +341,7 @@ void SohMenu::AddMenuSettings() {
             Audio_SetGameVolume(SEQ_PLAYER_FANFARE,
                                 ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
         });
-    AddWidget(path, "Sound Effects Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Sound Effects Volume: %d%%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.SFX"))
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""))
