@@ -311,6 +311,7 @@ typedef enum {
     /* 0x9B */ ITEM_NUT_UPGRADE_40,
     /* 0x9C */ ITEM_CUSTOM,
     /* 0x9D */ ITEM_ROCS_FEATHER,
+    /* 0x9E */ ITEM_BOMBCHU_1,
     /* 0xFC */ ITEM_LAST_USED = 0xFC,
     /* 0xFE */ ITEM_NONE_FE = 0xFE,
     /* 0xFF */ ITEM_NONE = 0xFF
