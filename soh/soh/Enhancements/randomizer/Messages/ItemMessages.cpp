@@ -136,16 +136,16 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
 
             // default condition is soul
             CustomMessage condition = { "%brelease Ganons Soul%w", "%bGanons Seele zu befreien%w",
-                                        "%bLibérer l'Âme de Ganon%w" };
+                                        "%blibérer l'Âme de Ganon%w" };
             if (next == wincon) {
-                condition = { "%gWin the game%w", "%gdas Spiel zu gewinnen%w", "%gGagner la partie%w" };
+                condition = { "%gWin the game%w", "%gdas Spiel zu gewinnen%w", "%ggagner la partie%w" };
             } else if (next == bridge) {
                 condition = { "%csummon the Rainbow Bridge%w", "%cdie Regenbogenbrücke zu beschwören%w",
-                              "%cFaire apparaître le Pont Arc-en-ciel%w" };
+                              "%cfaire apparaître le Pont Arc-en-ciel%w" };
             } else if (next == GBK) {
                 condition = { "%rfind the key to Ganondorf's Lair%w",
                               "%rden Schlüssel zu Ganondorfs Versteck zu finden%w",
-                              "%rTrouver la clé du Repaire de Ganondorf%w" };
+                              "%rtrouver la clé du Repaire de Ganondorf%w" };
             }
             msg.Replace("[[condition]]", condition);
             msg.InsertNumber(remaining);
