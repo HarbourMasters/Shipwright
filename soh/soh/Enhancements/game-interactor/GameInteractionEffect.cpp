@@ -11,6 +11,7 @@ have functions to both enable and disable said effect.
 #include "GameInteractionEffect.h"
 #include "GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
+#include "soh/Enhancements/SwitchAge.h"
 
 extern "C" {
 #include <z64.h>
@@ -479,6 +480,32 @@ GameInteractionEffectQueryResult SetTimeOfDay::CanBeApplied() {
 }
 void SetTimeOfDay::_Apply() {
     GameInteractor::RawAction::SetTimeOfDay(parameters[0]);
+}
+
+// MARK: - PlaySfx
+GameInteractionEffectQueryResult PlaySfx::CanBeApplied() {
+    if (!GameInteractor::IsSaveLoaded(true)) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else {
+        return GameInteractionEffectQueryResult::Possible;
+    }
+}
+void PlaySfx::_Apply() {
+    GameInteractor::RawAction::PlaySfx(parameters[0]);
+}
+
+// MARK: - SwitchAge
+// Talking and other cutscenes don't block it: the scene reload ends them
+GameInteractionEffectQueryResult SwitchAge::CanBeApplied() {
+    if (!GameInteractor::IsSaveLoaded(true) || gPlayState->pauseCtx.state != 0 ||
+        gPlayState->transitionTrigger != TRANS_TRIGGER_OFF) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else {
+        return GameInteractionEffectQueryResult::Possible;
+    }
+}
+void SwitchAge::_Apply() {
+    ::SwitchAge();
 }
 
 // MARK: - SetCollisionViewer
