@@ -1914,6 +1914,31 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             if (item == ITEM_NAYRUS_LOVE) {
                 *should = RAND_GET_OPTION(RSK_NAYRUS_LOVE_USES).Get() > 0;
+            } else if (item == ITEM_ROCS_FEATHER) {
+                *should = RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE) ||
+                          gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired != 1;
+            }
+            break;
+        }
+        case VB_OVERRIDE_AMMO_COUNT: {
+            s16 item = *va_arg(args, s16*);
+            s16* ammo = va_arg(args, s16*);
+            if (item == ITEM_ROCS_FEATHER) {
+                if (RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE) ||
+                    gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired != 1) {
+                    *should = false;
+                    *ammo = gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining;
+                } else {
+                    *should = true;
+                }
+            }
+            break;
+        }
+        case VB_COLOR_AMMO_GREEN: {
+            int item = va_arg(args, int);
+            if (item == ITEM_ROCS_FEATHER) {
+                *should = gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired ==
+                          gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining;
             }
             break;
         }

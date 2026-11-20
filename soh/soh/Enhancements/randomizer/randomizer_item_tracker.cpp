@@ -807,7 +807,8 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
             // These items have a static capacity, so display ammo instead
             (item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN) ||
             (item.kind == ITEM_KIND_ITEM && (item.id == ITEM_BEAN || item.id == ITEM_NAYRUS_LOVE ||
-                                             item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE));
+                                             item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE)) ||
+            item.id == ITEM_ROCS_FEATHER;
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
                                   trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);
@@ -850,44 +851,69 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
-    } else if (item.kind == ITEM_KIND_RG && item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
-               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0)) {
+    } else if (item.kind == ITEM_KIND_RG) {
         std::string currentString = "";
         std::string requiredString = "";
         std::string maxString = "";
-        uint8_t piecesTotal = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL);
-        uint8_t piecesRequired = OTRGlobals::Instance->gRandomizer->GetTriforcePiecesRequired();
-        // If no trigger uses Triforce Pieces they're just filler; gauge progress against the whole pool.
-        if (piecesRequired == 0) {
-            piecesRequired = piecesTotal;
-        }
-        ImU32 currentColor = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >= piecesRequired
-                                 ? IM_COL_GREEN
-                                 : IM_COL_WHITE;
+        ImU32 currentColor = IM_COL_GRAY;
         ImU32 maxColor = IM_COL_GREEN;
-        int32_t trackerTriforcePieceNumberDisplayMode =
-            CVarGetInteger(CVAR_TRACKER_ITEM("TriforcePieceCounts"), TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
 
-        currentString += std::to_string(gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
-        currentString += "/";
-        // gItemTrackerTriforcePieceTrack
-        if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX) {
-            currentString += std::to_string(piecesRequired);
+        if (item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
+            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0)) {
+            uint8_t piecesTotal =
+                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL);
+            uint8_t piecesRequired = OTRGlobals::Instance->gRandomizer->GetTriforcePiecesRequired();
+            // If no trigger uses Triforce Pieces they're just filler; gauge progress against the whole pool.
+            if (piecesRequired == 0) {
+                piecesRequired = piecesTotal;
+            }
+            currentColor = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >= piecesRequired
+                               ? IM_COL_GREEN
+                               : IM_COL_WHITE;
+            int32_t trackerTriforcePieceNumberDisplayMode =
+                CVarGetInteger(CVAR_TRACKER_ITEM("TriforcePieceCounts"), TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
+
+            currentString += std::to_string(gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
             currentString += "/";
-            maxString += std::to_string(piecesTotal);
-        } else if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED) {
-            maxString += std::to_string(piecesRequired);
+            // gItemTrackerTriforcePieceTrack
+            if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX) {
+                currentString += std::to_string(piecesRequired);
+                currentString += "/";
+                maxString += std::to_string(piecesTotal);
+            } else if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED) {
+                maxString += std::to_string(piecesRequired);
+            }
+        } else if (item.id == RG_ROCS_FEATHER && !(RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_OFF))) {
+            const uint8_t maxUses = RAND_GET_OPTION(RSK_ROCS_FEATHER_COUNT).Get() + 1;
+            maxString += std::to_string(maxUses);
+
+            if (RAND_GET_OPTION(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_ON)) {
+                currentString = std::to_string(gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired);
+                currentColor = gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired == maxUses ? IM_COL_GREEN
+                                                                                                       : IM_COL_WHITE;
+            } else {
+                currentString += std::to_string(gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining);
+                currentColor = gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining == maxUses ? IM_COL_GREEN
+                                                                                                        : IM_COL_WHITE;
+            }
+            currentString += "/";
         }
 
-        ImGui::SetCursorScreenPos(
-            ImVec2(p.x + (iconSize >> 1) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
-        ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
-        ImGui::Text("%s", currentString.c_str());
-        ImGui::PopStyleColor();
-        ImGui::SameLine(0, 0.0f);
-        ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
-        ImGui::Text("%s", maxString.c_str());
-        ImGui::PopStyleColor();
+        // skip draw if there's no counts to draw :)
+        if (currentString == "" && requiredString == "") {
+            ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
+            ImGui::TextUnformatted("");
+        } else {
+            ImGui::SetCursorScreenPos(ImVec2(
+                p.x + (iconSize >> 1) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
+            ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
+            ImGui::Text("%s", currentString.c_str());
+            ImGui::PopStyleColor();
+            ImGui::SameLine(0, 0.0f);
+            ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
+            ImGui::Text("%s", maxString.c_str());
+            ImGui::PopStyleColor();
+        }
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
         ImGui::TextUnformatted("");
@@ -1011,6 +1037,11 @@ void DrawItem(ItemTrackerItem item) {
                 itemName = "Triforce Piece";
                 break;
             case RG_ROCS_FEATHER:
+                if (Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE)) {
+                    hasItem = gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining > 0;
+                } else {
+                    hasItem = gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired > 0;
+                }
                 itemName = "Roc's Feather";
                 break;
             case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:

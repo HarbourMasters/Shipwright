@@ -1,4 +1,7 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -8,18 +11,66 @@ extern "C" {
 #include "variables.h"
 #include "macros.h"
 extern PlayState* gPlayState;
+extern SaveContext gSaveContext;
 }
 
-#define MAX_ROCS_USES 1
-
-static uint8_t rocsUseCount = 0;
 static uint8_t groundTimer = 0;
 static f32 effectsScale = 1.0f;
+static bool rocsConsumable = true;
+
+static u8& RocsFeathersAcquired() {
+    return gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired;
+}
+
+static u8& RocsFeathersRemaining() {
+    return gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining;
+}
+
+void UseRocsFeather(PlayState* playState, Player* player) {
+    if (RocsFeathersRemaining() > 0) {
+        RocsFeathersRemaining()--;
+
+        func_80838940(player, (LinkAnimationHeader*)&gPlayerAnim_link_rocs_feather_jump, 5.8f, playState, 0);
+
+        // Actionvar needed to prevent weird animation morph
+        player->av2.actionVar2 = 1;
+
+        // Move player forward on Roc's use
+        player->linearVelocity = 5.0f;
+        player->actor.world.rot.y = player->yaw = player->actor.shape.rot.y;
+
+        if (gSaveContext.linkAge == LINK_AGE_CHILD) {
+            player->actor.velocity.y = 7.0f;
+            effectsScale = 1.0f;
+        } else {
+            player->actor.velocity.y = 7.5f;
+            effectsScale = 1.5f;
+        }
+
+        Vec3f effectsPos = player->actor.home.pos;
+        effectsPos.y += 3;
+
+        EffectSsGRipple_Spawn(playState, &effectsPos, static_cast<s16>(200 * effectsScale),
+                              static_cast<s16>(300 * effectsScale), 1);
+        EffectSsGSplash_Spawn(playState, &effectsPos, NULL, NULL, 0, static_cast<s16>(150 * effectsScale));
+
+        // Remove hopping state when using Roc's after sidehop/backflip to allow grabbing ledges again
+        player->stateFlags2 &= ~(PLAYER_STATE2_HOPPING);
+
+        Player_PlaySfx(&player->actor, NA_SE_PL_SKIP);
+    } else {
+        Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+    }
+}
 
 void RegisterRocsFeather() {
     // Always register hooks - they only activate when ITEM_ROCS_FEATHER is actually used
     // Rando-specific logic (item pool, accessibility, etc.) is handled elsewhere
     bool shouldRegister = true;
+
+    COND_HOOK(OnLoadFile, shouldRegister, [](int32_t fileNum) {
+        rocsConsumable = Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE);
+    });
 
     COND_HOOK(OnPlayerUpdate, shouldRegister, []() {
         Player* player = GET_PLAYER(gPlayState);
@@ -33,8 +84,8 @@ void RegisterRocsFeather() {
             groundTimer = 0;
         }
 
-        if (groundTimer >= 3) {
-            rocsUseCount = 0;
+        if (!rocsConsumable && groundTimer >= 3) {
+            RocsFeathersRemaining() = RocsFeathersAcquired();
         }
     });
 
@@ -45,40 +96,9 @@ void RegisterRocsFeather() {
         if (usedItem == ITEM_ROCS_FEATHER) {
             *should = false;
 
-            if (rocsUseCount < MAX_ROCS_USES) {
-                rocsUseCount++;
+            Player* player = GET_PLAYER(gPlayState);
 
-                Player* player = GET_PLAYER(gPlayState);
-
-                func_80838940(player, (LinkAnimationHeader*)&gPlayerAnim_link_rocs_feather_jump, 5.8f, gPlayState, 0);
-
-                // Actionvar needed to prevent weird animation morph
-                player->av2.actionVar2 = 1;
-
-                // Move player forward on Roc's use
-                player->linearVelocity = 5.0f;
-                player->actor.world.rot.y = player->yaw = player->actor.shape.rot.y;
-
-                if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                    player->actor.velocity.y = 7.0f;
-                    effectsScale = 1.0f;
-                } else {
-                    player->actor.velocity.y = 7.5f;
-                    effectsScale = 1.5f;
-                }
-
-                Vec3f effectsPos = player->actor.home.pos;
-                effectsPos.y += 3;
-
-                EffectSsGRipple_Spawn(gPlayState, &effectsPos, static_cast<s16>(200 * effectsScale),
-                                      static_cast<s16>(300 * effectsScale), 1);
-                EffectSsGSplash_Spawn(gPlayState, &effectsPos, NULL, NULL, 0, static_cast<s16>(150 * effectsScale));
-
-                // Remove hopping state when using Roc's after sidehop/backflip to allow grabbing ledges again
-                player->stateFlags2 &= ~(PLAYER_STATE2_HOPPING);
-
-                Player_PlaySfx(&player->actor, NA_SE_PL_SKIP);
-            }
+            UseRocsFeather(gPlayState, player);
         }
     });
 

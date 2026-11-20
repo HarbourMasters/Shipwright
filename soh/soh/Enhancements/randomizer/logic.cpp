@@ -2127,7 +2127,6 @@ static constexpr std::pair<RandomizerGet, uint32_t> randInfTable[] = {
     { RG_SPEAK_ZORA, RAND_INF_CAN_SPEAK_ZORA },
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
     { RG_SCARECROWS_SONG, RAND_INF_HAS_SCARECROWS_SONG },
-    { RG_ROCS_FEATHER, RAND_INF_OBTAINED_ROCS_FEATHER },
     { RG_GUARD_HOUSE_KEY, RAND_INF_GUARD_HOUSE_KEY_OBTAINED },
     { RG_MARKET_BAZAAR_KEY, RAND_INF_MARKET_BAZAAR_KEY_OBTAINED },
     { RG_MARKET_POTION_SHOP_KEY, RAND_INF_MARKET_POTION_SHOP_KEY_OBTAINED },
@@ -2639,6 +2638,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
                         SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                     }
+                    break;
+                case RG_ROCS_FEATHER:
+                    OTRGlobals::Instance->gRandoContext->HandleGetRocsFeather();
                     break;
                 default:
                     break;

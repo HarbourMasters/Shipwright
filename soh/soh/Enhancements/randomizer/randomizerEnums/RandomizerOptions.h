@@ -134,6 +134,13 @@ RANDO_ENUM_ITEM(RO_SCRUBS_ONE_TIME_ONLY)
 RANDO_ENUM_ITEM(RO_SCRUBS_ALL)
 RANDO_ENUM_END(RandoOptionScrubsanity)
 
+// Roc's Feather settings (off, permanent, consumable)
+RANDO_ENUM_BEGIN(RandoOptionRocsFeather)
+RANDO_ENUM_ITEM(RO_ROCS_FEATHER_OFF)
+RANDO_ENUM_ITEM(RO_ROCS_FEATHER_ON)
+RANDO_ENUM_ITEM(RO_ROCS_FEATHER_CONSUMABLE)
+RANDO_ENUM_END(RandoOptionRocsFeather)
+
 // Ammo drop settings (on, "on+bombchu", off)
 RANDO_ENUM_BEGIN(RandoOptionAmmoDrops)
 RANDO_ENUM_ITEM(RO_AMMO_DROPS_OFF)
