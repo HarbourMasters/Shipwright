@@ -1,12 +1,14 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "z64.h"
 #include "macros.h"
 #include "variables.h"
+#include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 extern s32 Player_GetItemOnButton(PlayState*, s32);
 extern void Inventory_ChangeEquipment(s16, u16);
 extern void Player_SetEquipmentData(PlayState*, Player*);
@@ -15,6 +17,22 @@ extern PlayState* gPlayState;
 }
 
 static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
+
+#define CVAR_CYCLE_KOKIRI_NAME CVAR_ENHANCEMENT("CycleKokiriTunicsAndBoots")
+#define CVAR_CYCLE_KOKIRI_VALUE CVarGetInteger(CVAR_CYCLE_KOKIRI_NAME, 0)
+
+// With the Kokiri Tunic/Boots on a button, each press moves on to the next tunic/boots Link owns and can wear at his
+// current age (Kokiri -> Goron -> Zora, Kokiri -> Iron -> Hover), wrapping back around to Kokiri
+static u16 GetNextWearableEquipValue(s16 equipType) {
+    s32 current = CUR_EQUIP_VALUE(equipType);
+    for (s32 offset = 1; offset <= 3; offset++) {
+        s32 value = ((current - 1 + offset + 3) % 3) + 1;
+        if (CHECK_OWNED_EQUIP(equipType, value - 1) && CHECK_AGE_REQ_EQUIP(equipType, value)) {
+            return value;
+        }
+    }
+    return current;
+}
 
 static void UseTunicBoots(Player* player, PlayState* play, Input* input) {
     // Boots and tunics equip despite state
@@ -35,7 +53,14 @@ static void UseTunicBoots(Player* player, PlayState* play, Input* input) {
     if (item >= ITEM_SHIELD_DEKU && item <= ITEM_BOOTS_HOVER) {
         if (item >= ITEM_BOOTS_KOKIRI) {
             u16 bootsValue = item - ITEM_BOOTS_KOKIRI + 1;
-            if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
+            if (item == ITEM_BOOTS_KOKIRI && CVAR_CYCLE_KOKIRI_VALUE) {
+                u16 nextBoots = GetNextWearableEquipValue(EQUIP_TYPE_BOOTS);
+                // Nothing else to switch to, so don't re-equip or play the sound
+                if (nextBoots == CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS)) {
+                    return;
+                }
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, nextBoots);
+            } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
                 Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
             } else {
                 Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
@@ -45,7 +70,14 @@ static void UseTunicBoots(Player* player, PlayState* play, Input* input) {
                                                                                               : NA_SE_PL_CHANGE_ARMS);
         } else if (item >= ITEM_TUNIC_KOKIRI) {
             u16 tunicValue = item - ITEM_TUNIC_KOKIRI + 1;
-            if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
+            if (item == ITEM_TUNIC_KOKIRI && CVAR_CYCLE_KOKIRI_VALUE) {
+                u16 nextTunic = GetNextWearableEquipValue(EQUIP_TYPE_TUNIC);
+                // Nothing else to switch to, so don't re-equip or play the sound
+                if (nextTunic == CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
+                    return;
+                }
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, nextTunic);
+            } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
                 Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
             } else {
                 Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);

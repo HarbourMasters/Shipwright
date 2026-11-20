@@ -912,6 +912,14 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Assignable Shields, Tunics and Boots", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"))
         .Options(CheckboxOptions().Tooltip("Allows equipping Shields, Tunics and Boots to C-Buttons/D-pad."));
+    AddWidget(path, "Kokiri Tunic/Boots Cycle All Types", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("CycleKokiriTunicsAndBoots"))
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 0); })
+        .Options(CheckboxOptions().Tooltip(
+            "When the Kokiri Tunic or Kokiri Boots are assigned to a button, each press switches to the next tunic "
+            "(Kokiri, Goron, Zora) or boots (Kokiri, Iron, Hover) you own and can wear, instead of only putting "
+            "the Kokiri ones on."));
     // TODO: Revist strength toggle, it's currently separate but should probably be locked behind the
     // Equipment toggle settings or be absorbed by it completely.
     AddWidget(path, "Equipment Toggle", WIDGET_CVAR_CHECKBOX)
