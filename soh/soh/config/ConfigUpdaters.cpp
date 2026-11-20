@@ -1468,6 +1468,12 @@ static const Migration version7Migrations[] = {
     { nullptr, nullptr },
 };
 
+static const Migration version8Migrations[] = {
+    { "gEnhancements.TimeSavers.SleepingWaterfall", "gEnhancements.TimeSavers.SleeplessWaterfall" },
+    { "gRandoSettings.SleepingWaterfall", "gRandoSettings.SleeplessWaterfall" },
+    { nullptr, nullptr },
+};
+
 static void ApplyMigrationActions(const Migration* migrations) {
     while (migrations->from != nullptr) {
         if (migrations->to != nullptr) {
@@ -1491,6 +1497,8 @@ ConfigVersion5Updater::ConfigVersion5Updater() : ConfigVersionUpdater(5) {
 ConfigVersion6Updater::ConfigVersion6Updater() : ConfigVersionUpdater(6) {
 }
 ConfigVersion7Updater::ConfigVersion7Updater() : ConfigVersionUpdater(7) {
+}
+ConfigVersion8Updater::ConfigVersion8Updater() : ConfigVersionUpdater(8) {
 }
 
 void ConfigVersion1Updater::Update(Ship::Config* conf) {
@@ -1702,13 +1710,17 @@ void ConfigVersion7Updater::Update(Ship::Config* conf) {
     CVarClear("gRandoSettings.CompleteMaskQuest");
 }
 
+void ConfigVersion8Updater::Update(Ship::Config* conf) {
+    ApplyMigrationActions(version8Migrations);
+}
+
 // v4+ also run on dropped configs and presets
 static const auto& GetVersionUpdaters() {
-    static const std::array<std::shared_ptr<Ship::ConfigVersionUpdater>, 7> updaters = {
+    static const std::array<std::shared_ptr<Ship::ConfigVersionUpdater>, 8> updaters = {
         std::make_shared<ConfigVersion1Updater>(), std::make_shared<ConfigVersion2Updater>(),
         std::make_shared<ConfigVersion3Updater>(), std::make_shared<ConfigVersion4Updater>(),
         std::make_shared<ConfigVersion5Updater>(), std::make_shared<ConfigVersion6Updater>(),
-        std::make_shared<ConfigVersion7Updater>(),
+        std::make_shared<ConfigVersion7Updater>(), std::make_shared<ConfigVersion8Updater>(),
     };
     return updaters;
 }

@@ -45,6 +45,12 @@ class ConfigVersion7Updater final : public Ship::ConfigVersionUpdater {
     void Update(Ship::Config* conf);
 };
 
+class ConfigVersion8Updater final : public Ship::ConfigVersionUpdater {
+  public:
+    ConfigVersion8Updater();
+    void Update(Ship::Config* conf);
+};
+
 void RegisterVersionUpdaters(Ship::Config* conf);
 
 void RunVersionUpdatesFrom(uint32_t fromVersion);

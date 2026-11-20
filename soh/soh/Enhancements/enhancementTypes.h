@@ -115,7 +115,7 @@ typedef enum {
     WATERFALL_ALWAYS,
     WATERFALL_ONCE,
     WATERFALL_NEVER,
-} SleepingWaterfallType;
+} SleeplessWaterfallType;
 
 typedef enum {
     INGO_RACE_TWICE,
