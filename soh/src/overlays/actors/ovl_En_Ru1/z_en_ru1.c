@@ -858,13 +858,10 @@ void func_80AEC780(EnRu1* this, PlayState* play) {
     s32 pad;
     Player* player = GET_PLAYER(play);
 
-    if (GameInteractor_Should(
-            VB_PLAY_CHILD_RUTO_INTRO,
-            (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) &&
-                (!(player->stateFlags1 &
-                   (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_CLIMBING_LADDER))) &&
-                (player->actor.bgCheckFlags & 1),
-            this)) {
+    if ((func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) &&
+        (!(player->stateFlags1 &
+           (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_CLIMBING_LADDER))) &&
+        (player->actor.bgCheckFlags & 1)) {
 
         play->csCtx.segment = &D_80AF0880;
         gSaveContext.cutsceneTrigger = 1;
@@ -1611,10 +1608,7 @@ s32 func_80AEE6D0(EnRu1* this, PlayState* play) {
     s32 pad;
     s8 curRoomNum = play->roomCtx.curRoom.num;
 
-    if (GameInteractor_Should(VB_RUTO_WANT_TO_BE_TOSSED_TO_SAPPHIRE,
-                              !Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE) &&
-                                  (func_80AEB124(play) != 0),
-                              this)) {
+    if (!Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE) && (func_80AEB124(play) != 0)) {
         if (!Player_InCsMode(play)) {
             Animation_Change(&this->skelAnime, &gRutoChildSeesSapphireAnim, 1.0f, 0,
                              Animation_GetLastFrame(&gRutoChildSquirmAnim), ANIMMODE_LOOP, -8.0f);
