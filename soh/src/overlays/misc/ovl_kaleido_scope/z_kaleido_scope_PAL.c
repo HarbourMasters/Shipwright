@@ -1391,6 +1391,10 @@ Gfx* KaleidoScope_DrawPageSections(Gfx* gfx, Vtx* vertices, void** textures) {
     s32 i;
     s32 j;
 
+    if (!GameInteractor_Should(VB_DRAW_PAUSE_PAGE_SECTIONS, true, &gfx, vertices, textures)) {
+        return gfx;
+    }
+
     gSPVertex(gfx++, vertices, 32, 0);
 
     i = 0;
