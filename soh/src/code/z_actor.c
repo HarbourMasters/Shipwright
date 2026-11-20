@@ -2802,7 +2802,29 @@ void Actor_Draw(PlayState* play, Actor* actor) {
         }
     }
 
+    // #region SOH [Randomizer] NPC soul statues are drawn in greyscale
+    // A handler may also pin the frame counters for this draw (statues stop swaying); they're restored below.
+    u32 savedFrames = play->state.frames;
+    u32 savedGameplayFrames = play->gameplayFrames;
+    u8 drawGrayscale = GameInteractor_Should(VB_DRAW_ACTOR_IN_GRAYSCALE, false, actor);
+    if (drawGrayscale) {
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, 170, 170, 165, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
+        gDPSetGrayscaleColor(POLY_XLU_DISP++, 170, 170, 165, 255);
+        gSPGrayscale(POLY_XLU_DISP++, true);
+    }
+    // #endregion
+
     actor->draw(actor, play);
+
+    // #region SOH [Randomizer]
+    if (drawGrayscale) {
+        gSPGrayscale(POLY_OPA_DISP++, false);
+        gSPGrayscale(POLY_XLU_DISP++, false);
+        play->state.frames = savedFrames;
+        play->gameplayFrames = savedGameplayFrames;
+    }
+    // #endregion
 
     if (actor->colorFilterTimer != 0) {
         if (actor->colorFilterParams & 0x2000) {

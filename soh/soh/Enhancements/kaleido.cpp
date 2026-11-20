@@ -5,6 +5,7 @@
 
 #include "kaleido.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 #include "soh/OTRGlobals.h"
@@ -20,6 +21,7 @@ extern "C" {
 #include <textures/parameter_static/parameter_static.h>
 #include "soh_assets.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "textures/icon_item_24_static/icon_item_24_static.h"
 extern PlayState* gPlayState;
 void KaleidoScope_MoveCursorToSpecialPos(PlayState* play, u16 specialPos);
 }
@@ -236,6 +238,13 @@ Kaleido::Kaleido() {
             mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
                 gItemIconMagicBeanTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
                 FlagType::FLAG_RANDOMIZER_INF, i, std::move(beanSoulName)));
+        }
+    }
+    for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+        if (Rando::IsNpcSoulShuffled(soul)) {
+            mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+                gQuestIconGoldSkulltulaTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, Color_RGBA8{ 255, 90, 90, 255 },
+                FlagType::FLAG_RANDOMIZER_INF, soul.randInf, Rando::GetNpcSoulItemName(soul)));
         }
     }
     if (ctx->GetOption(RSK_ROCS_FEATHER)) {

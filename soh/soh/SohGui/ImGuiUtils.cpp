@@ -239,6 +239,14 @@ void RegisterImGuiItemIcons() {
         gui->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
     }
 
+    // NPC souls share one icon: the gold skulltula, tinted soul red to match their pickup model
+    // and the pause menu entries.
+    ImVec4 npcSoulRed = ImVec4(1.0f, 90.0f / 255.0f, 90.0f / 255.0f, 1.0f);
+    ImVec4 npcSoulRedFaded = npcSoulRed;
+    npcSoulRedFaded.w = 0.3f;
+    gui->LoadGuiTexture("RG_NPC_SOUL", dgQuestIconGoldSkulltulaTex, "", npcSoulRed);
+    gui->LoadGuiTexture("RG_NPC_SOUL_Faded", dgQuestIconGoldSkulltulaTex, "", npcSoulRedFaded);
+
     for (const auto& entry : jabbernutMapping) {
         gui->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
         gui->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));

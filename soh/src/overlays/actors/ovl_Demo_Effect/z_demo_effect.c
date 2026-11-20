@@ -12,6 +12,7 @@
 #include <assert.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -2123,6 +2124,9 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
                     rc = RC_TOT_LIGHT_ARROWS_CUTSCENE;
                     rg = RG_LIGHT_ARROWS;
                     break;
+            }
+            if (!GameInteractor_Should(VB_DRAW_CUTSCENE_REWARD_ITEM, true, rc)) {
+                return;
             }
             getItemEntry = Randomizer_GetItemFromKnownCheck(rc, rg);
             if (getItemEntry.getItemId != GI_NONE) {

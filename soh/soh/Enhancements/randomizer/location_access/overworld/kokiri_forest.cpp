@@ -9,7 +9,7 @@ void RegionTable_Init_KokiriForest() {
         //Events
         EVENT_ACCESS(LOGIC_PLANT_KOKIRI_FOREST_BEAN,     CanPlantBean(RG_KOKIRI_FOREST_BEAN_SOUL)),
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
-        EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
+        EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_MIDO_SOUL) && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
     }, {
         //Locations
         LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE,                  logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanGetNightTimeGS()),
@@ -98,7 +98,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_WONDER_PLATFORMS_1,                    logic->IsChild),
         LOCATION(RC_KF_WONDER_PLATFORMS_2,                    logic->IsChild),
         //Technically bad logic, because we can move Mido out of logic, but then we already have KSword...
-        LOCATION(RC_MIDO_HINT,                                !ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) && logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI)),
+        LOCATION(RC_MIDO_HINT,                                !ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) && logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_MIDO_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_KF_BOULDER_LOOP,       logic->CanUse(RG_CRAWL)),
@@ -113,7 +113,7 @@ void RegionTable_Init_KokiriForest() {
         ENTRANCE(RR_KF_OUTSIDE_DEKU_TREE,  (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR))) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD)),
         ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)))),
         ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN)),
-        ENTRANCE(RR_LW_BRIDGE_FROM_FOREST, logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || logic->Get(LOGIC_DEKU_TREE_CLEAR)),
+        ENTRANCE(RR_LW_BRIDGE_FROM_FOREST, logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || (logic->Get(LOGIC_DEKU_TREE_CLEAR) && logic->HasItem(RG_KOKIRI_SOUL))),
     });
 
     areaTable[RR_KF_OUTSIDE_LOST_WOODS] = Region("KF Outside Lost Woods", SCENE_KOKIRI_FOREST, {
@@ -174,7 +174,7 @@ void RegionTable_Init_KokiriForest() {
         EVENT_ACCESS(LOGIC_STICK_ACCESS,                 logic->CanGetDekuBabaSticks()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,                   logic->CanGetDekuBabaNuts()),
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->CallGossipFairyExceptSuns()),
-        EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
+        EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_MIDO_SOUL) && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
     }, {
         //Locations
         LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
@@ -210,7 +210,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_MIDOS_TOP_RIGHT_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_KF_MIDOS_BOTTOM_LEFT_CHEST,  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_KF_MIDOS_BOTTOM_RIGHT_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_MIDO_HINT,                   logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD) && logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI)),
+        LOCATION(RC_MIDO_HINT,                   logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD) && logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_MIDO_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST, true),
@@ -247,14 +247,14 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_KOKIRI_SHOP] = Region("KF Kokiri Shop", SCENE_KOKIRI_SHOP, {}, {
         //Locations
-        LOCATION(RC_KF_SHOP_ITEM_1, logic->HasItem(RG_SPEAK_KOKIRI) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KF_SHOP_ITEM_2, logic->HasItem(RG_SPEAK_KOKIRI) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KF_SHOP_ITEM_3, logic->HasItem(RG_SPEAK_KOKIRI) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KF_SHOP_ITEM_4, logic->HasItem(RG_SPEAK_KOKIRI) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KF_SHOP_ITEM_5, logic->HasItem(RG_SPEAK_KOKIRI) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KF_SHOP_ITEM_6, logic->HasItem(RG_SPEAK_KOKIRI) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KF_SHOP_ITEM_7, logic->HasItem(RG_SPEAK_KOKIRI) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KF_SHOP_ITEM_8, logic->HasItem(RG_SPEAK_KOKIRI) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_1, logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_KOKIRI_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_2, logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_KOKIRI_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_3, logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_KOKIRI_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_4, logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_KOKIRI_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_5, logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_KOKIRI_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_6, logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_KOKIRI_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_7, logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_KOKIRI_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_8, logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_KOKIRI_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_KF_WONDER_SHOP, true),
     }, {
         //Exits

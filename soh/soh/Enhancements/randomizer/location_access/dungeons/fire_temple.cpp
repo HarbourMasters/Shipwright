@@ -28,7 +28,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_ROOM] = Region("Fire Temple Near Boss Room", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_CHEST, logic->FireTimer() >= 16 && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_GORON, logic->FireTimer() >= 16 && logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_GORON, logic->FireTimer() >= 16 && (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
         //It's plausible to get the pots with rang from the larger square platform, but it's a blind shot that likely needs a setup
         //and I've only been able to get the nearest 2, regardless it's a trick and probably a specific one like GY crate freestanding with rang
     }, {
@@ -113,7 +113,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_LOOP_GORON_CAGE] = Region("Fire Temple Loop Goron Cage", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_BOSS_KEY_CHEST, logic->CanOpenLargeChest()),
-        LOCATION(RC_FIRE_TEMPLE_BOSS_KEY_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_BOSS_KEY_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_LOOP_CAGE_SWITCH,     logic->Get(LOGIC_FIRE_LOOP_SWITCH)),
@@ -150,7 +150,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_1F_CURVED_CAGE] = Region("Fire Temple 1F Curved Cage", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_BIG_LAVA_ROOM, true),
@@ -169,7 +169,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_STRAIGHTFORWARD_CAGE] = Region("Fire Temple Straightforward Cage", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_BIG_LAVA_ROOM, true),
@@ -227,7 +227,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_SHORTCUT_ROOM,      true),
@@ -237,7 +237,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER] = Region("Fire Temple Boulder Maze Lower", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
         LOCATION(RC_FIRE_TEMPLE_GS_BOULDER_MAZE,          logic->HasExplosives() && (logic->IsAdult || logic->HookshotOrBoomerang() || logic->CanGroundJumpslash())),
     }, {
         //Exits
@@ -250,7 +250,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_3F_CURVED_CAGE] = Region("Fire Temple 3F Curved Cage", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, true),
@@ -312,7 +312,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER] = Region("Fire Temple Boulder Maze Upper", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_SHORTCUT_CLIMB,       logic->HasExplosives()),
@@ -418,7 +418,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_SOT_CAGE_SWITCH] = Region("Fire Temple Sot Cage Switch", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST, (logic->CanUse(RG_SONG_OF_TIME) || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanUse(RG_MEGATON_HAMMER) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_HIGHEST_GORON, (logic->CanUse(RG_SONG_OF_TIME) || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanUse(RG_MEGATON_HAMMER) && logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_HIGHEST_GORON, (logic->CanUse(RG_SONG_OF_TIME) || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanUse(RG_MEGATON_HAMMER) && (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,       false),
@@ -601,7 +601,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_LOOP_GORON_CAGE] = Region("Fire Temple MQ Loop Goron Cage", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_MAP_CHEST, logic->CanOpenLargeChest()),
-        LOCATION(RC_FIRE_TEMPLE_MQ_MAP_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_MQ_MAP_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_LOOP_CAGE_SWITCH,     logic->Get(LOGIC_FIRE_OPENED_LOWEST_GORON_CAGE)),
@@ -718,7 +718,7 @@ void RegionTable_Init_FireTemple() {
         //Locations
         //implies CanGetEnemyDrop(RE_GOLD_SKULLTULA)
         LOCATION(RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR, logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_OPEN_DOOR_GORON, logic->CanUse(RG_MEGATON_HAMMER) && logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_OPEN_DOOR_GORON, logic->CanUse(RG_MEGATON_HAMMER) && (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM, true),
@@ -727,7 +727,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_TORCH_LOCKED_CAGE] = Region("Fire Temple MQ Torch Locked Cage", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, logic->HasFireSource() && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_GORON, logic->HasFireSource() && logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_GORON, logic->HasFireSource() && (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_BIG_LAVA_BLOCKED_DOOR, true),
@@ -841,7 +841,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_3F_CURVED_CAGE] = Region("Fire Temple MQ 3F Curved Cage", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_GORON, logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_GORON, (logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_GORONS_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_MAZE_SWITCH_DOOR, true),
@@ -1219,7 +1219,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         // Locations
         LOCATION(RC_FIRE_TEMPLE_VOLVAGIA_HEART, logic->Get(LOGIC_FIRE_TEMPLE_CLEAR)),
-        LOCATION(RC_VOLVAGIA,                   logic->Get(LOGIC_FIRE_TEMPLE_CLEAR)),
+        LOCATION(RC_VOLVAGIA,                   logic->Get(LOGIC_FIRE_TEMPLE_CLEAR) && logic->SageHandsOverReward(RG_DARUNIA_SOUL)),
     }, {
         // Exits
         ENTRANCE(RR_FIRE_TEMPLE_BOSS_ENTRYWAY, false),

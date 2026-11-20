@@ -2,6 +2,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
 #include "soh/ShipUtils.h"
 
 #include "soh/Enhancements/randomizer/rng.h"
@@ -1757,6 +1758,15 @@ static void InitTrickNames() {
         Text{"Eye of Truth", "oeil de vérité", "Auge der Wahrheit" }, // "Ojo de la Verdad"
     };
     */
+
+    // NPC souls: near-miss spellings of the real item name.
+    for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+        trickNameTable[soul.rg] = {
+            { Rando::GetNpcSoulItemText(soul, "Sole", "Sohle", "Lame"), Text{ "" } },
+            { Rando::GetNpcSoulItemText(soul, "Seoul", "Seelchen", "Âne"), Text{ "" } },
+            { Rando::GetNpcSoulItemText(soul, "Spirit", "Geist", "Esprit"), Text{ "" } },
+        };
+    }
 }
 
 /// @brief Gets the "trick name" for an Ice Trap
@@ -1808,6 +1818,18 @@ RandomizerGet Rando::Traps::GetTrapTrickModel(uint64_t* state) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::overworldKeys, state);
     } else if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::beanSouls, state);
+    } else if (trickModel == Rando::GetNpcSouls().front().rg) {
+        // One NPC soul stands in for all of them in the model pool; pick a random one of the souls this seed
+        // shuffles, so a trap never looks like a soul that can't be found.
+        std::vector<RandomizerGet> shuffledSouls;
+        for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+            if (Rando::IsNpcSoulShuffled(soul)) {
+                shuffledSouls.push_back(soul.rg);
+            }
+        }
+        if (!shuffledSouls.empty()) {
+            trickModel = ShipUtils::RandomElement(shuffledSouls, state);
+        }
     } else if (trickModel == RG_SHADOW_SILVER_BLADES) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::silverRupees);
     }

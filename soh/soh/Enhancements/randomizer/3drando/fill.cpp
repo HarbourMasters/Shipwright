@@ -1,6 +1,7 @@
 #include "fill.hpp"
 
 #include "../dungeon.h"
+#include "../npc_souls.h"
 #include "../SeedContext.h"
 #include "item_pool.hpp"
 #include "starting_inventory.hpp"
@@ -12,6 +13,7 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 #include "soh/util.h"
 
+#include <algorithm>
 #include <bitset>
 #include <vector>
 #include <list>
@@ -891,6 +893,11 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
 
         // shuffle the order of items to place
         Shuffle(itemsToPlace);
+        // Items are placed from the back. Placing NPC souls first, while early locations are still free, keeps
+        // start-gating souls (Mido, the Kokiri exit guard, the Deku Scrubs) from running out of room late in the
+        // fill. Souls still go to any reachable location; without NPC souls in the pool this changes nothing.
+        std::stable_partition(itemsToPlace.begin(), itemsToPlace.end(),
+                              [](RandomizerGet i) { return Rando::GetNpcSoul(i) == nullptr; });
         while (!itemsToPlace.empty()) {
             RandomizerGet item = std::move(itemsToPlace.back());
             Rando::StaticData::RetrieveItem(item).SetAsPlaythrough();
