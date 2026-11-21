@@ -1488,83 +1488,83 @@ static void InitTrickNames() {
     };
 
     trickNameTable[RG_SHADOW_SILVER_BLADES] = {
-        { Text{ "Shadow Silver: Bladders", TODO_TRANSLATE, "Schatten-Silber: Mach3" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Shadow Silver: Bladders", "Argent de l'Ombre: Couteaux", "Schatten-Silber: Mach3" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_SHADOW_SILVER_PIT] = {
-        { Text{ "Shadow Silver: Bit", TODO_TRANSLATE, "Schatten-Silber: Bude" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Shadow Silver: Bit", "Argent de l'Ombre: Rigole", "Schatten-Silber: Bude" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_SHADOW_SILVER_SPIKES] = {
-        { Text{ "Shadow Silver: Spines", TODO_TRANSLATE, "Schatten-Silber: Vögel" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Shadow Silver: Spines", "Argent de l'Ombre: Cure-Dents", "Schatten-Silber: Vögel" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_SPIRIT_SILVER_CHILD] = {
-        { Text{ "Spirit Silver: Chill", TODO_TRANSLATE, "Geister-Silber: Baby" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Spirit Silver: Chill", "Argent de l'Esprit: Môme", "Geister-Silber: Baby" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_SPIRIT_SILVER_SUN] = {
-        { Text{ "Spirit Silver: Son", TODO_TRANSLATE, "Geister-Silber: Pluto" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Spirit Silver: Son", "Argent de l'Esprit: Lune", "Geister-Silber: Pluto" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_SPIRIT_SILVER_BOULDERS] = {
-        { Text{ "Spirit Silver: Bounders", TODO_TRANSLATE, "Geister-Silber: Quadrate" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Spirit Silver: Bounders", "Argent de l'Esprit: Roger", "Geister-Silber: Quadrate" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_BOTW_SILVER] = {
-        { Text{ "Bottom of the Well Slipper", TODO_TRANSLATE, "Brunnen-Gold" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Bottom of the Well Slipper", "Argent de la Citerne Sheikah", "Brunnen-Gold" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_ICE_CAVERN_SILVER_BLADES] = {
-        { Text{ "Ice Cavern Silver: Blaze", TODO_TRANSLATE, "Eishöhlen-Silber: Turbo" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Ice Cavern Silver: Blaze", "Argent de la Caverne Polaire: Couteaux", "Eishöhlen-Silber: Turbo" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_ICE_CAVERN_SILVER_BLOCK] = {
-        { Text{ "Ice Cavern Silver: Black", TODO_TRANSLATE, "Eishöhlen-Platin: Block" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Ice Cavern Silver: Black", "Argent de la Caverne Polaire: Cloc", "Eishöhlen-Platin: Block" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GTG_SILVER_SLOPE] = {
-        { Text{ "Training Ground Silver: Snope", TODO_TRANSLATE, "Trainingshalle-Bronze: Abhang" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Training Ground Silver: Snope", "Platine du Gymnase: Pente", "Trainingshalle-Bronze: Abhang" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GTG_SILVER_LAVA] = {
-        { Text{ "Traning Ground Silver: Love", TODO_TRANSLATE, "Trainingshalle-Silber: Blitz" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Traning Ground Silver: Love", "Argent du Gymnase: Bave", "Trainingshalle-Silber: Blitz" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GTG_SILVER_WATER] = {
-        { Text{ "Training Pound Silver: Water", TODO_TRANSLATE, "Trainingshalle-Diamant: Wasser" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Training Pound Silver: Water", "Argent du Gymnase: Poissons", "Trainingshalle-Diamant: Wasser" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_SILVER_LIGHT] = {
-        { Text{ "Ganon's Castle Silver: Lighter", TODO_TRANSLATE, "Ganons-Schloß Silber: Unlicht" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Ganon's Castle Silver: Lighter", "Argent du Château de Ganon: Lueur", "Ganons-Schloß Silber: Unlicht" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_SILVER_FOREST] = {
-        { Text{ "Ganon's Castle Silver: Frost", TODO_TRANSLATE, "Ganons-Schloß Silber: Dschungel" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Ganon's Castle Silver: Frost", "Argent du Château de Ganon: Bosquet", "Ganons-Schloß Silber: Dschungel" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_SILVER_FIRE] = {
-        { Text{ "Ganon's Castle Silver: Free", TODO_TRANSLATE, "Ganons-Schloß Silber: Erdkruste" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Ganon's Castle Silver: Free", "Argent du Château de Ganon: Flamme", "Ganons-Schloß Silber: Erdkruste" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_SILVER_SPIRIT] = {
-        { Text{ "Ganon's Castle Silver: Sprite", TODO_TRANSLATE, "Ganons-Schloß Silber: Abnormal" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Ganon's Castle Silver: Sprite", "Argent du Château de Ganon: Âme", "Ganons-Schloß Silber: Abnormal" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_DODONGOS_CAVERN_MQ_SILVER] = {
-        { Text{ "Dodongo's Cave Silver", TODO_TRANSLATE, "Dodongos zu Hause Silber" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Dodongo's Cave Silver", "Argent du Repaire Dodongo", "Dodongos zu Hause Silber" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES] = {
-        { Text{ "Shadow Silver: Invisible", TODO_TRANSLATE, "Schatten-Silber: Unsichtbare Löffel" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Shadow Silver: Invisible", "Argent de l'Ombre: Lames Furtives", "Schatten-Silber: Unsichtbare Löffel" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_SPIRIT_MQ_SILVER_LOBBY] = {
-        { Text{ "Spirit Silver: Foyer", TODO_TRANSLATE, "Geister-Silber: Keller" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Spirit Silver: Foyer", "Argent de l'Esprit: Ventrée", "Geister-Silber: Keller" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_SPIRIT_MQ_SILVER_BIG_WALL] = {
-        { Text{ "Spirit Silver: Brick", TODO_TRANSLATE, "Geister-Silber: VR-Brille" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Spirit Silver: Brick", "Argent de l'Esprit: Briques", "Geister-Silber: VR-Brille" }, Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_MQ_SILVER_WATER] = {
-        { Text{ "Ganon's Castle Silver: Wheat", TODO_TRANSLATE, "Ganons-Schloß Gold: Wasser" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Ganon's Castle Silver: Wheat", "Argent du Château de Ganon: Peau", "Ganons-Schloß Gold: Wasser" },
+          Text{ "", "un ", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_MQ_SILVER_SHADOW] = {
-        { Text{ "Ganon's Castle Silver: Shabom", TODO_TRANSLATE, "Ganons-Schloß Silber: Paranormal" },
-          Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Ganon's Castle Silver: Shabom", "Argent du Château de Ganon: Ombrelle", "Ganons-Schloß Silber: Paranormal" },
+          Text{ "", "un ", "" } },
     };
     /*
     //Names for individual upgrades, in case progressive names are replaced
