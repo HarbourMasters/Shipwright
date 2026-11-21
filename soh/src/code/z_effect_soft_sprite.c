@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 
 EffectSsInfo sEffectSsInfo = { 0 }; // "EffectSS2Info"
@@ -184,6 +185,9 @@ void EffectSs_Spawn(PlayState* play, s32 type, s32 priority, void* initParams) {
     }
 
     sEffectSsInfo.searchStartIndex = index + 1;
+    if (!GameInteractor_Should(VB_EFFECT_FITS_IN_HEAP, true, type)) {
+        return;
+    }
     overlaySize = (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart;
 
     if (overlayEntry->vramStart == NULL) {

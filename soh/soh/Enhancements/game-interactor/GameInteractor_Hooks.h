@@ -58,6 +58,10 @@ void GameInteractor_ExecuteOnPlayDestroy();
 void GameInteractor_ExecuteOnPlayDrawBegin();
 void GameInteractor_ExecuteOnPlayDrawAfterSkyboxFilters();
 void GameInteractor_ExecuteOnPlayDrawEnd();
+void GameInteractor_ExecuteOnZeldaArenaInit();
+void GameInteractor_ExecuteOnZeldaArenaAlloc(void* ptr, size_t size, const char* file, bool reverse);
+void GameInteractor_ExecuteOnZeldaArenaFree(void* ptr);
+void GameInteractor_ExecuteOnCutsceneScriptLoad(uint8_t** script);
 bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 
 // MARK: -  Save Files

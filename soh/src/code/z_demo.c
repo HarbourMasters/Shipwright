@@ -1709,6 +1709,7 @@ void Cutscene_ProcessCommands(PlayState* play, CutsceneContext* csCtx, u8* cutsc
 
     if (ResourceMgr_OTRSigCheck(cutscenePtr))
         cutscenePtr = ResourceMgr_LoadCSByName(cutscenePtr);
+    GameInteractor_ExecuteOnCutsceneScriptLoad(&cutscenePtr);
 
     memcpy(&totalEntries, cutscenePtr, sizeof(CutsceneData));
     cutscenePtr += sizeof(CutsceneData);
