@@ -1147,64 +1147,64 @@ static void InitTrickNames() {
     trickNameTable[RG_FIRE_TEMPLE_KEY_RING] = {
         { Text{ "Ice Cavern Keese Ring", "Trousseau du Temple Brûlant", "Schlüsselset der Eishöhle" }, Text{ "the ", "le ", "" } },
         { Text{ "Goron Temple Key Ring", "Trousseau du Temple Goron", "Dietrich des Feuertempels" }, Text{ "the ", "le ", "" } },
-        { Text{ "Eldin Temple Koi Ray", "Trousseau Magmatique", "Schlüsselbund des Eldintempels" }, Text{ "the ", "la ", "" } },
+        { Text{ "Eldin Temple Koi Ray", "Trousseau Magmatique", "Schlüsselbund des Eldintempels" }, Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_WATER_TEMPLE_KEY_RING] = {
-        { Text{ "Swamp Palace Keese Ring", TODO_TRANSLATE, "Schlüsselset des Sumpfpalasts" },
+        { Text{ "Swamp Palace Keese Ring", "Trousseau des Marais", "Schlüsselset des Sumpfpalasts" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Great Bay Temple Key Ring", TODO_TRANSLATE, "Dietrich des Wassertempels" },
+        { Text{ "Great Bay Temple Key Ring", "Trousseau de la Grande Baie", "Dietrich des Wassertempels" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Lakebed Temple Key Ring", TODO_TRANSLATE, "Schlüsselbund des Seeschreins" },
+        { Text{ "Lakebed Temple Key Ring", "Trousseau du Temple Zora", "Schlüsselbund des Seeschreins" },
           Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_SPIRIT_TEMPLE_KEY_RING] = {
-        { Text{ "Light Temple Key Ring", TODO_TRANSLATE, "Schlüsselset des Lichttempels" }, Text{ "the ", "le ", "" } },
-        { Text{ "Lightning Temple Key Ring", TODO_TRANSLATE, "Dietrich des Geistertempels" },
+        { Text{ "Light Temple Key Ring", "Trousseau du Temple de Lumière", "Schlüsselset des Lichttempels" }, Text{ "the ", "le ", "" } },
+        { Text{ "Lightning Temple Key Ring", "Trousseau du Temple Sablonneux", "Dietrich des Geistertempels" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Desert Palace Key Ring", TODO_TRANSLATE, "Schlüsselbund des Wüstentempels" },
+        { Text{ "Desert Palace Key Ring", "Trousseau du Palais du Désert", "Schlüsselbund des Wüstentempels" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Stone Tower Keese Ring", TODO_TRANSLATE, "Schlüsselhaufen des Felsenturm-Tempels" },
+        { Text{ "Stone Tower Keese Ring", "Trousseau de la Tour de Pierre", "Schlüsselhaufen des Felsenturm-Tempels" },
           Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_SHADOW_TEMPLE_KEY_RING] = {
-        { Text{ "Palace of Darkness Key Ring", TODO_TRANSLATE, "Schlüsselset des Palasts der Dunkelheit" },
+        { Text{ "Palace of Darkness Key Ring", "Trousseau du Palais des Ténèbres", "Schlüsselset des Palasts der Dunkelheit" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Shrine of Illusion Koi Ray", TODO_TRANSLATE, "Dietrich des Schattentempels" },
-          Text{ "the ", "la ", "" } },
-        { Text{ "Palace of Twilight Key Ring", TODO_TRANSLATE, "Schlüsselbund des Schattenpalasts" },
+        { Text{ "Shrine of Illusion Koi Ray", "Trousseau du Tombeau de l'Ombre", "Dietrich des Schattentempels" },
+          Text{ "the ", "le ", "" } },
+        { Text{ "Palace of Twilight Key Ring", "Trousseau du Temple du Crépuscule", "Schlüsselbund des Schattenpalasts" },
           Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_BOTTOM_OF_THE_WELL_KEY_RING] = {
-        { Text{ "Top of the Wall Key Ring", TODO_TRANSLATE, "Schlüsselset für Über dem Brunnen" },
+        { Text{ "Top of the Wall Key Ring", "Trousseau de l'Eau de Cocorico", "Schlüsselset für Über dem Brunnen" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Breath of the Wild Key Ring", TODO_TRANSLATE, "Dietrich für Grund des Brunnens" },
+        { Text{ "Breath of the Wild Key Ring", "Trousseau de la Citerne Sheikah", "Dietrich für Grund des Brunnens" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Beneath the Well Key Ring", TODO_TRANSLATE, "Schlüsselbund für Unter dem Brunnen" },
+        { Text{ "Beneath the Well Key Ring", "Trousseau de la Source du Moulin", "Schlüsselbund für Unter dem Brunnen" },
           Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_GERUDO_TRAINING_GROUND_KEY_RING] = {
-        { Text{ "Gerudo Sanctum Key Ring", TODO_TRANSLATE, "Schlüsselset des Gerudo-Sanktums" },
+        { Text{ "Gerudo Sanctum Key Ring", "Trousseau du Vestiaire Gerudo", "Schlüsselset des Gerudo-Sanktums" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Lady's Lair Keese Ring", TODO_TRANSLATE, "Dietrich der Gerudo-Trainingsarena" },
+        { Text{ "Lady's Lair Keese Ring", "Trousseau du Repaire des Dames", "Dietrich der Gerudo-Trainingsarena" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Knight Acadamy Key Ring", TODO_TRANSLATE, "Schlüsselbund des Dojos" }, Text{ "the ", "le ", "" } },
+        { Text{ "Knight Acadamy Key Ring", "Trousseau de l'Académie Féminine", "Schlüsselbund des Dojos" }, Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_GERUDO_FORTRESS_KEY_RING] = {
-        { Text{ "Fortress of Winds Key Ring", TODO_TRANSLATE, "Schlüsselset der Piratenfestung" },
+        { Text{ "Fortress of Winds Key Ring", "Trousseau de la Forteresse des Grains", "Schlüsselset der Piratenfestung" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Thieves' Town Key Ring", TODO_TRANSLATE, "Dietrich des Diebesverstecks" }, Text{ "the ", "le ", "" } },
-        { Text{ "Fortress Centrum Key Ring", TODO_TRANSLATE, "Schlüsselbund der verlassenen Festung" },
+        { Text{ "Thieves' Town Key Ring", "Trousseau de Bandit City", "Dietrich des Diebesverstecks" }, Text{ "the ", "le ", "" } },
+        { Text{ "Fortress Centrum Key Ring", "Trousseau de la Forteresse des Sables", "Schlüsselbund der verlassenen Festung" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Forsaken Fortress Key Ring", TODO_TRANSLATE, "Schlüsselhaufen des Festungszentrums" },
+        { Text{ "Forsaken Fortress Key Ring", "Trousseau de la Forteresse Interdite", "Schlüsselhaufen des Festungszentrums" },
           Text{ "the ", "le ", "" } },
-        { Text{ "Pirate's Fortress Key Ring", TODO_TRANSLATE, "Schlüsselpaket des Frauenverstecks" },
+        { Text{ "Pirate's Fortress Key Ring", "Trousseau du Repaire des Pirates", "Schlüsselpaket des Frauenverstecks" },
           Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_KEY_RING] = {
-        { Text{ "Hyrule Castle Koi Ray", TODO_TRANSLATE, "Schlüsselset für Schloß Hyrule" },
+        { Text{ "Hyrule Castle Koi Ray", "Trousseau du Château d'Hyrule", "Schlüsselset für Schloß Hyrule" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Onox's Castle Key Ring", TODO_TRANSLATE, "Dietrich für Ganons Schloß" }, Text{ "the ", "le ", "" } },
-        { Text{ "Vaati's Palace Key Ring", TODO_TRANSLATE, "Schlüsselbund für Verans Palast" },
+        { Text{ "Onox's Castle Key Ring", "Trousseau du Château d'Onox", "Dietrich für Ganons Schloß" }, Text{ "the ", "le ", "" } },
+        { Text{ "Vaati's Palace Key Ring", "Trousseau du Palais de Vaati", "Schlüsselbund für Verans Palast" },
           Text{ "the ", "le ", "" } },
     };
 
