@@ -1352,85 +1352,85 @@ static void InitTrickNames() {
     };
 
     trickNameTable[RG_GUARD_HOUSE_KEY] = {
-        { Text{ "Pot Room Key", TODO_TRANSLATE, "Schlüssel (Pot Raum)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Poe Shop Keese", TODO_TRANSLATE, "Schlüssel (Geister Shop)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Pot Collectors Club Key", TODO_TRANSLATE, "Schlüssel (Ritterschule)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Pot Room Key", "Clé de la Salle aux Pots", "Schlüssel (Pot Raum)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Poe Shop Keese", "Clé du Marchand d'Armes", "Schlüssel (Geister Shop)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Pot Collectors Club Key", "Clé du Club Ô Mille Pots", "Schlüssel (Ritterschule)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_MARKET_BAZAAR_KEY] = {
-        { Text{ "Malo Mart Key", TODO_TRANSLATE, "Schlüssel (Maromarkt)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Zora Shop Key", TODO_TRANSLATE, "Schlüssel (Zeiras Laden)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goronu General Store Key", TODO_TRANSLATE, "Schlüssel (Goronenladen)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Chudly's Fine Goods Key", TODO_TRANSLATE, "Schlüssel (Chudleys Laden)" }, Text{ "", "", "" } },
+        { Text{ "Malo Mart Key", "Clé de Hyrule Market", "Schlüssel (Maromarkt)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Zora Shop Key", "Clé de l'Épicerie Hyrule", "Schlüssel (Zeiras Laden)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Goronu General Store Key", "Clé du Magasin eRule", "Schlüssel (Goronenladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Chudly's Fine Goods Key", "Clé de la Superette Hyrule", "Schlüssel (Chudleys Laden)" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_MARKET_POTION_SHOP_KEY] = {
-        { Text{ "Market Medicine Shop Koi", TODO_TRANSLATE, "Schlüssel (Kumulaladen)" }, Text{ "the ", "le ", "" } },
-        { Text{ "Market Pharmacy Key", TODO_TRANSLATE, "Schlüssel (REWE)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Market Drug Store Keese", TODO_TRANSLATE, "Schlüssel (Edeka)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Market Medicine Shop Koi", "Clé de la Droguerie du Marché", "Schlüssel (Kumulaladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Market Pharmacy Key", "Clé de Pharmacie d'Hyrule", "Schlüssel (REWE)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Market Drug Store Keese", "Clé du Coffee Shop d'Hyrule", "Schlüssel (Edeka)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_MASK_SHOP_KEY] = {
-        { Text{ "Masked Ship Koi", TODO_TRANSLATE, "Schlüssel (Schuhladen)" }, Text{ "the ", "le ", "" } },
-        { Text{ "Madame Couture's Key", TODO_TRANSLATE, "Schlüssel (Madame Couture)" }, Text{ "", "", "" } },
-        { Text{ "South Clock Town Key", TODO_TRANSLATE, "Schlüssel (Unruh-Stadt)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Masked Ship Koi", "Clé du Masqué", "Schlüssel (Schuhladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Madame Couture's Key", "Clé de Madame Couture", "Schlüssel (Madame Couture)" }, Text{ "", "la ", "" } },
+        { Text{ "South Clock Town Key", "Clé du Chapelier", "Schlüssel (Unruh-Stadt)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_MARKET_SHOOTING_GALLERY_KEY] = {
-        { Text{ "Swamp Shooting Gallery Key", TODO_TRANSLATE, "Schlüssel (Lynna-Schießbude)" },
+        { Text{ "Swamp Shooting Gallery Key", "Clé de l'Armurerie du Marché", "Schlüssel (Lynna-Schießbude)" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Koume's Target Shooting Key", TODO_TRANSLATE, "Schlüssel (Koumes Zielschießen)" },
-          Text{ "", "", "" } },
-        { Text{ "Pumpkin Pull Key", TODO_TRANSLATE, "Schlüssel (Goronen-Schießbude)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Koume's Target Shooting Key", "Clé du Stand de Tir de Koume", "Schlüssel (Koumes Zielschießen)" },
+          Text{ "", "la ", "" } },
+        { Text{ "Pumpkin Pull Key", "Clé du 360 no-scope du Marché", "Schlüssel (Goronen-Schießbude)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_BOMBCHU_BOWLING_KEY] = {
-        { Text{ "Bombchu Gallery Key", TODO_TRANSLATE, "Schlüssel (Bowling-Bahn)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Cucco Bowling Ally Key", TODO_TRANSLATE, "Schlüssel (Hühner-Jagd)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Snowball Bowling Key", TODO_TRANSLATE, "Schlüssel (Schneeball-Kegeln)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Bombsketball Key", TODO_TRANSLATE, "Schlüssel (Bombenkorb)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Bombchu Gallery Key", "Clé du Curling Teigneux", "Schlüssel (Bowling-Bahn)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Cucco Bowling Ally Key", "Clé de la Cocotte Teigneuse", "Schlüssel (Hühner-Jagd)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Snowball Bowling Key", "Clé du Bowling Souris", "Schlüssel (Schneeball-Kegeln)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Bombsketball Key", "Clé du Basketbombe", "Schlüssel (Bombenkorb)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_TREASURE_CHEST_GAME_BUILDING_KEY] = {
-        { Text{ "Lucky Treasure Game Koi", TODO_TRANSLATE, "Schlüssel ('Zur Schatzkiste')" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "1 in 32 Key", TODO_TRANSLATE, "Schlüssel (Blackjack)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Fortune's Coice Key", TODO_TRANSLATE, "Schlüssel (Casino)" }, Text{ "", "", "" } },
-        { Text{ "Money Making Game Key", TODO_TRANSLATE, "Schlüssel (Spielothek)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Trading Card Game Key", TODO_TRANSLATE, "Schlüssel (Ene mene muh...)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Lucky Treasure Game Koi", "Clé du Coffre Chanceux", "Schlüssel ('Zur Schatzkiste')" },
+          Text{ "the ", "la ", "" } },
+        { Text{ "1 in 32 Key", "Clé de 1 chance sur 32 de Gagner", "Schlüssel (Blackjack)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Fortune's Coice Key", "Clé du Coffre de la Fortune", "Schlüssel (Casino)" }, Text{ "", "la ", "" } },
+        { Text{ "Money Making Game Key", "Clé du Cash-Coffre", "Schlüssel (Spielothek)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Trading Card Game Key", "Clé du Magasin TCG", "Schlüssel (Ene mene muh...)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_BOMBCHU_SHOP_KEY] = {
-        { Text{ "Curiosity Shop Key", TODO_TRANSLATE, "Schlüssel (Kuriositätenladen)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Barnes Bomb Shop Key", TODO_TRANSLATE, "Schlüssel (Barnes' Bombenladen)" },
+        { Text{ "Curiosity Shop Key", "Clé du Magasin Bombes Choux", "Schlüssel (Kuriositätenladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Barnes Bomb Shop Key", "Clé du Magasin Explosif", "Schlüssel (Barnes' Bombenladen)" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Bomb Flower Shop Key", TODO_TRANSLATE, "Schlüssel (Donnerblumenladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Bomb Flower Shop Key", "Clé du Magasin Fleur Bombe", "Schlüssel (Donnerblumenladen)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_RICHARDS_HOUSE_KEY] = {
-        { Text{ "Stockwell's House Key", TODO_TRANSLATE, "Schlüssel (Hunde-Haus)" }, Text{ "", "", "" } },
-        { Text{ "Blue Dog's House Key", TODO_TRANSLATE, "Schlüssel (Mamamu Yan)" }, Text{ "", "", "" } },
-        { Text{ "Barkle's House Key", TODO_TRANSLATE, "Schlüssel (Wuff-Haus)" }, Text{ "", "", "" } },
-        { Text{ "Chimimi's House Key", TODO_TRANSLATE, "Schlüssel (Reichards Haus)" }, Text{ "", "", "" } },
+        { Text{ "Stockwell's House Key", "Clé de chez Toutou", "Schlüssel (Hunde-Haus)" }, Text{ "", "la ", "" } },
+        { Text{ "Blue Dog's House Key", "Clé de Maman Toutou", "Schlüssel (Mamamu Yan)" }, Text{ "", "la ", "" } },
+        { Text{ "Barkle's House Key", "Clé de chez Petit Cabot", "Schlüssel (Wuff-Haus)" }, Text{ "", "la ", "" } },
+        { Text{ "Chimimi's House Key", "Clé de Ouaf-Ouaf", "Schlüssel (Reichards Haus)" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_ALLEY_HOUSE_KEY] = {
-        { Text{ "Mido's House Key", TODO_TRANSLATE, "Schlüssel (Nachbarschaft)" }, Text{ "", "", "" } },
-        { Text{ "Saria's House Key", TODO_TRANSLATE, "Schlüssel (Salias Haus)" }, Text{ "", "", "" } },
-        { Text{ "@'s House Key", TODO_TRANSLATE, "Schlüssel (Zeldas Wohnung)" }, Text{ "", "", "" } },
+        { Text{ "Mido's House Key", "Clé de chez Mido", "Schlüssel (Nachbarschaft)" }, Text{ "", "la ", "" } },
+        { Text{ "Saria's House Key", "Clé de chez Saria", "Schlüssel (Salias Haus)" }, Text{ "", "la ", "" } },
+        { Text{ "@'s House Key", "Clé de chez @", "Schlüssel (Zeldas Wohnung)" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_KAK_BAZAAR_KEY] = {
-        { Text{ "Skyloft Bazaar Key", TODO_TRANSLATE, "Schlüssel (Ausrüstungsladen)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Harlequin Bazaar Key", TODO_TRANSLATE, "Schlüssel (Waffenladen)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Kokiri Shop Key", TODO_TRANSLATE, "Schlüssel (Rüstkammer)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goron Shop Key", TODO_TRANSLATE, "Schlüssel (Schießpulverladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Skyloft Bazaar Key", "Clé de Cocorico Market", "Schlüssel (Ausrüstungsladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Harlequin Bazaar Key", "Clé de l'Épicerie Cocorico", "Schlüssel (Waffenladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Kokiri Shop Key", "Clé du Magasin Cocoriki", "Schlüssel (Rüstkammer)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Goron Shop Key", "Clé du Magasin Goronu", "Schlüssel (Schießpulverladen)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_KAK_POTION_SHOP_KEY] = {
-        { Text{ "Kak Medicine Shop Keep", TODO_TRANSLATE, "Schlüssel (Medizinladen)" }, Text{ "the ", "le ", "" } },
-        { Text{ "Kak Pharmacy Key", TODO_TRANSLATE, "Schlüssel (Apotheke)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Kak Drug Store Keese", TODO_TRANSLATE, "Schlüssel (Rossmann)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Kak Medicine Shop Keep", "Clé du Médecin de Cocorico", "Schlüssel (Medizinladen)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Kak Pharmacy Key", "Clé de la Pharmacie de Cocorico", "Schlüssel (Apotheke)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Kak Drug Store Keese", "Clé du Coffee Shop de Cocorico", "Schlüssel (Rossmann)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_BOSS_HOUSE_KEY] = {
-        { Text{ "Kakariko Village Boss Key", TODO_TRANSLATE, "Schlüssel (Adminhaus)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Lord Kohga's House Key", TODO_TRANSLATE, "Schlüssel (Kafeis Haus)" }, Text{ "", "", "" } },
-        { Text{ "Twinrova's House Key", TODO_TRANSLATE, "Schlüssel (Molgeras Apartment)" }, Text{ "", "", "" } },
+        { Text{ "Kakariko Village Boss Key", "Clé d'Or du Village Cocorico", "Schlüssel (Adminhaus)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Lord Kohga's House Key", "Clé du Chef Yigas", "Schlüssel (Kafeis Haus)" }, Text{ "", "la ", "" } },
+        { Text{ "Twinrova's House Key", "Clé de chez Twinrova", "Schlüssel (Molgeras Apartment)" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_GRANNYS_POTION_SHOP_KEY] = {
-        { Text{ "Grandpa's Potion Shop Key", TODO_TRANSLATE, "Schlüssel (Omas Hexenküche)" }, Text{ "", "", "" } },
-        { Text{ "Witch's Hut Key", TODO_TRANSLATE, "Schlüssel (Hexenstube)" }, Text{ "", "", "" } },
-        { Text{ "Hags's Potion Shop Key", TODO_TRANSLATE, "Schlüssel (Marthas Zauberladen)" }, Text{ "", "", "" } },
-        { Text{ "Syrup's Potion Shop Key", TODO_TRANSLATE, "Schlüssel (Syrups Hexenküche)" }, Text{ "", "", "" } },
+        { Text{ "Grandpa's Potion Shop Key", "Clé du Magasin de Grand-Père", "Schlüssel (Omas Hexenküche)" }, Text{ "", "la ", "" } },
+        { Text{ "Witch's Hut Key", "Clé de la Hutte de Sorcière", "Schlüssel (Hexenstube)" }, Text{ "", "la ", "" } },
+        { Text{ "Hags's Potion Shop Key", "Clé de chez Shadow Hag", "Schlüssel (Marthas Zauberladen)" }, Text{ "", "la ", "" } },
+        { Text{ "Syrup's Potion Shop Key", "Clé de la Boutique de Syrup", "Schlüssel (Syrups Hexenküche)" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_SKULLTULA_HOUSE_KEY] = {
         { Text{ "Town Spider House Key", TODO_TRANSLATE, "Schlüssel (Spinnenhaus)" }, Text{ "the ", "la ", "" } },
