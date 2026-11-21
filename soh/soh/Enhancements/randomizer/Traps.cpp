@@ -1209,146 +1209,146 @@ static void InitTrickNames() {
     };
 
     trickNameTable[RG_TREASURE_GAME_KEY_RING] = {
-        { Text{ "Chest Game Koi Ray", TODO_TRANSLATE, "Schlüsselset für Kartoffel-Spiel" }, Text{ "the ", "la ", "" } },
-        { Text{ "Shell Game Key Ring", TODO_TRANSLATE, "Schlüsselpaket für Dönerbude" }, Text{ "the ", "le ", "" } },
-        { Text{ "Treasure Hunt Key Ring", TODO_TRANSLATE, "Schlüsselhaufen für das Triforce-Spiel" },
+        { Text{ "Chest Game Koi Ray", "Trousseau du Jeu des Malles", "Schlüsselset für Kartoffel-Spiel" }, Text{ "the ", "le ", "" } },
+        { Text{ "Shell Game Key Ring", "Trousseau du Jeu des Boîtes", "Schlüsselpaket für Dönerbude" }, Text{ "the ", "le ", "" } },
+        { Text{ "Treasure Hunt Key Ring", "Trousseau du Jeu Fouille-Coffre", "Schlüsselhaufen für das Triforce-Spiel" },
           Text{ "the ", "le ", "" } },
     };
 
     trickNameTable[RG_FOREST_TEMPLE_BOSS_KEY] = {
-        { Text{ "Wind Temple Boss Key", TODO_TRANSLATE, "Admin-Schlüssel des Windtempels" },
+        { Text{ "Wind Temple Boss Key", "Clé d'Or du Temple du Vent", "Admin-Schlüssel des Windtempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Woodfall Temple Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Dämmerwalds" },
+        { Text{ "Woodfall Temple Boss Key", "Clé d'Or du Temple Boisé", "Master-Schlüssel des Dämmerwalds" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Skull Woods Boss Key", TODO_TRANSLATE, "Geschäftsführer-Schlüssel des Sumpftempels" },
+        { Text{ "Skull Woods Boss Key", "Clé d'Or du Temple des Bois", "Geschäftsführer-Schlüssel des Sumpftempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Phantom Ganon's Key", TODO_TRANSLATE, "LKW-Schlüssel für Phantom Ganon" }, Text{ "", "", "" } },
-        { Text{ "Deku Tree's Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Deku-Baums" },
+        { Text{ "Phantom Ganon's Key", "Clé d'Or de Ganon Spectral", "LKW-Schlüssel für Phantom Ganon" }, Text{ "", "la ", "" } },
+        { Text{ "Deku Tree's Boss Key", "Clé d'Or de l'Arbre Mojo", "Master-Schlüssel des Deku-Baums" },
           Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_FIRE_TEMPLE_BOSS_KEY] = {
-        { Text{ "Ice Cavern Boss Keese", TODO_TRANSLATE, "Master-Schlüssel der Eishöhle" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goron Temple Boss Key", TODO_TRANSLATE, "Admin-Schlüssel des Goronentempels" },
+        { Text{ "Ice Cavern Boss Keese", "Clé d'Or du Volcan", "Master-Schlüssel der Eishöhle" }, Text{ "the ", "la ", "" } },
+        { Text{ "Goron Temple Boss Key", "Clé d'Or du Temple Goron", "Admin-Schlüssel des Goronentempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Eldin Temple Boss Koi", TODO_TRANSLATE, "Geschäftsführer-Schlüssel des Eldintempels" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Volvagia's Key", TODO_TRANSLATE, "PKW-Schlüssel für Volvagia" }, Text{ "", "", "" } },
-        { Text{ "Dodongo's Cavern Boss Key", TODO_TRANSLATE, "Master-Schlüssel für Dodongos Höhle" },
+        { Text{ "Eldin Temple Boss Koi", "Clé d'Or du Grand Dragon", "Geschäftsführer-Schlüssel des Eldintempels" },
+          Text{ "the ", "la ", "" } },
+        { Text{ "Volvagia's Key", "Clé d'Or de Vulcania", "PKW-Schlüssel für Volvagia" }, Text{ "", "la ", "" } },
+        { Text{ "Dodongo's Cavern Boss Key", "Clé d'Or de la Caverne Dodongo", "Master-Schlüssel für Dodongos Höhle" },
           Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_WATER_TEMPLE_BOSS_KEY] = {
-        { Text{ "Swamp Palace Boss Keese", TODO_TRANSLATE, "Master-Schlüssel des Sumpfpalasts" },
+        { Text{ "Swamp Palace Boss Keese", "Clé d'Or du Marais", "Master-Schlüssel des Sumpfpalasts" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Great Bay Temple Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Schädelbucht-Tempels" },
+        { Text{ "Great Bay Temple Boss Key", "Clé d'Or de la Grande Baie", "Master-Schlüssel des Schädelbucht-Tempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Lakebed Temple Boss Key", TODO_TRANSLATE, "Geschäftsführer-Schlüssel des Seeschreins" },
+        { Text{ "Lakebed Temple Boss Key", "Clé d'Or du Temple Zora", "Geschäftsführer-Schlüssel des Seeschreins" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Morpha's Key", TODO_TRANSLATE, "Admin-Schlüssel für Morpha" }, Text{ "", "", "" } },
-        { Text{ "Jabu Jabu's Belly Boss Key", TODO_TRANSLATE, "Master-Schlüssel von Jabu-Jabus Bauch" },
+        { Text{ "Morpha's Key", "Clé d'Or de Morpha", "Admin-Schlüssel für Morpha" }, Text{ "", "la ", "" } },
+        { Text{ "Jabu Jabu's Belly Boss Key", "Clé d'Or du Ventre de Jabu-Jabu", "Master-Schlüssel von Jabu-Jabus Bauch" },
           Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_SPIRIT_TEMPLE_BOSS_KEY] = {
-        { Text{ "Light Temple Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Lichttempels" },
+        { Text{ "Light Temple Boss Key", "Clé d'Or du Temple de Lumière", "Master-Schlüssel des Lichttempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Lightning Temple Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Blitztempels" },
+        { Text{ "Lightning Temple Boss Key", "Clé d'Or du Temple Sablonneux", "Master-Schlüssel des Blitztempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Desert Palace Boss Key", TODO_TRANSLATE, "Admin-Schlüssel des Wüstentempels" },
+        { Text{ "Desert Palace Boss Key", "Clé d'Or du Palais des Sables", "Admin-Schlüssel des Wüstentempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Stone Tower Boss Keese", TODO_TRANSLATE, "Master-Schlüssel des Felsenturm-Tempels" },
+        { Text{ "Stone Tower Boss Keese", "Clé d'Or de la Tour de Pierre", "Master-Schlüssel des Felsenturm-Tempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Twinrova's Key", TODO_TRANSLATE, "Geschäftsführer-Schlüssel für Twinrova" }, Text{ "", "", "" } },
+        { Text{ "Twinrova's Key", "Clé d'Or de Twinrova", "Geschäftsführer-Schlüssel für Twinrova" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_SHADOW_TEMPLE_BOSS_KEY] = {
-        { Text{ "Palace of Darkness Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Palasts der Dunkelheit" },
+        { Text{ "Palace of Darkness Boss Key", "Clé d'Or du Palais des Ombres", "Master-Schlüssel des Palasts der Dunkelheit" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Shrine of Illusion Bass Koi", TODO_TRANSLATE, "Geschäftsführer-Schlüssel des Terratempels" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Palace of Twilight Boss Key", TODO_TRANSLATE, "Master-Schlüssel des Schattenpalasts" },
+        { Text{ "Shrine of Illusion Bass Koi", "Clé d'Or du Tombeau de l'Ombre", "Geschäftsführer-Schlüssel des Terratempels" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Bongo Bongo's Key", TODO_TRANSLATE, "Admin-Schlüssel für Bongo Bongo" }, Text{ "", "", "" } },
+        { Text{ "Palace of Twilight Boss Key", "Clé d'Or du Palais du Crépuscule", "Master-Schlüssel des Schattenpalasts" },
+          Text{ "the ", "la ", "" } },
+        { Text{ "Bongo Bongo's Key", "Clé d'Or de Bongo-Bongo", "Admin-Schlüssel für Bongo Bongo" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_GANONS_CASTLE_BOSS_KEY] = {
-        { Text{ "Hyrule Castle Bass Koi", TODO_TRANSLATE, "Master-Schlüssel für Schloß Hyrule" },
-          Text{ "the ", "le ", "" } },
-        { Text{ "Onox's Castle Boss Key", TODO_TRANSLATE, "Admin-Schlüssel für Verans Schloß" },
+        { Text{ "Hyrule Castle Bass Koi", "Clé d'Or du Château d'Hyrule", "Master-Schlüssel für Schloß Hyrule" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Vaati's Palace Boss Key", TODO_TRANSLATE, "Master-Schlüssel für Agahnims Palast" },
+        { Text{ "Onox's Castle Boss Key", "Clé d'Or de Onox", "Admin-Schlüssel für Verans Schloß" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Ganondorf's Key", TODO_TRANSLATE, "Geschäftsführer-Schlüssel für Ganondorf" }, Text{ "", "", "" } },
+        { Text{ "Vaati's Palace Boss Key", "Clé d'Or du Palais de Vaati", "Master-Schlüssel für Agahnims Palast" },
+          Text{ "the ", "la ", "" } },
+        { Text{ "Ganondorf's Key", "Clé d'Or de Ganondorf", "Geschäftsführer-Schlüssel für Ganondorf" }, Text{ "", "la ", "" } },
     };
 
     trickNameTable[RG_KEATON_MASK] = {
-        { Text{ "Korok Mask", TODO_TRANSLATE, "Krog-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Lynel Mask", TODO_TRANSLATE, "Leunen-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Cucco Mask", TODO_TRANSLATE, "Hühner-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Remlit Mask", TODO_TRANSLATE, "Lemurin-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Korok Mask", "Masque de Korogu", "Krog-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Lynel Mask", "Masque de Lynel", "Leunen-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Cucco Mask", "Masque de Cocotte", "Hühner-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Remlit Mask", "Masque de Lémurien", "Lemurin-Maske" }, Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_SKULL_MASK] = {
-        { Text{ "Darknut Mask", TODO_TRANSLATE, "Eisenprinz-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Stalfos Mask", TODO_TRANSLATE, "Stalfos-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Captain's Hat", TODO_TRANSLATE, "Helm des Hauptmanns" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Darknut Mask", "Masque de Darknut", "Eisenprinz-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Stalfos Mask", "Masque de Stalfos", "Stalfos-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Captain's Hat", "Chapeau du Capitaine", "Helm des Hauptmanns" }, Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_SPOOKY_MASK] = {
-        { Text{ "Gibdo Mask", TODO_TRANSLATE, "Gibdo-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Garo's Mask", TODO_TRANSLATE, "Garo-Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Redead mask", TODO_TRANSLATE, "Zombie-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Gibdo Mask", "Masque Flippant", "Gibdo-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Garo's Mask", "Masque de Garo", "Garo-Maske" }, Text{ "", "le ", "" } },
+        { Text{ "Redead mask", "Masque de Belle-Maman", "Zombie-Maske" }, Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_BUNNY_HOOD] = {
-        { Text{ "Bunny Mask", TODO_TRANSLATE, "Hasen-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Bremen Mask", TODO_TRANSLATE, "Bremer Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Rabbit Hood", TODO_TRANSLATE, "Hasenkapuze" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Bunny Mask", "Masque Lapinou", "Hasen-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Bremen Mask", "Masque de Brême", "Bremer Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Rabbit Hood", "Masque du Lièvre", "Hasenkapuze" }, Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_MASK_OF_TRUTH] = {
-        { Text{ "Feirce Diety Mask", TODO_TRANSLATE, "Grimmige Gottheit-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Majora's Mask", TODO_TRANSLATE, "Majoras Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Hero's Charm", TODO_TRANSLATE, "Heldenamulett" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Feirce Diety Mask", "Masque de Oni Link", "Grimmige Gottheit-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Majora's Mask", "Masque de Majora", "Majoras Maske" }, Text{ "", "le ", "" } },
+        { Text{ "Hero's Charm", "Déguisement du Héros", "Heldenamulett" }, Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_GORON_MASK] = {
-        { Text{ "Stone Mask", TODO_TRANSLATE, "Fels-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Darmani's Mask", TODO_TRANSLATE, "Darmani-Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Goron Garb", TODO_TRANSLATE, "Dodongo-Fressmaske" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Stone Mask", "Masque de Pierre", "Fels-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Darmani's Mask", "Masque de Darunia", "Darmani-Maske" }, Text{ "", "le ", "" } },
+        { Text{ "Goron Garb", "Masque de Biggoron", "Dodongo-Fressmaske" }, Text{ "the ", "le ", "" } },
     };
     trickNameTable[RG_ZORA_MASK] = {
-        { Text{ "Zora Costume", TODO_TRANSLATE, "Sidon-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Don Gero's Mask", TODO_TRANSLATE, "Don-Gero-Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Mikau's Mask", TODO_TRANSLATE, "Mikau-Maske" }, Text{ "", TODO_TRANSLATE, "" } },
+        { Text{ "Zora Costume", "Costume Zora", "Sidon-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Don Gero's Mask", "Masque de Don Gero", "Don-Gero-Maske" }, Text{ "", "le ", "" } },
+        { Text{ "Mikau's Mask", "Masque de Poisson", "Mikau-Maske" }, Text{ "", "le ", "" } },
     };
     trickNameTable[RG_GERUDO_MASK] = {
-        { Text{ "Great Fairy Mask", TODO_TRANSLATE, "Feen-Maske" }, Text{ "the ", TODO_TRANSLATE, "" } },
-        { Text{ "Romani's Mask", TODO_TRANSLATE, "Romanis Maske" }, Text{ "", TODO_TRANSLATE, "" } },
-        { Text{ "Gerudo Veil", TODO_TRANSLATE, "Damenschleier" }, Text{ "the ", TODO_TRANSLATE, "" } },
+        { Text{ "Great Fairy Mask", "Masque de Grande Fée", "Feen-Maske" }, Text{ "the ", "le ", "" } },
+        { Text{ "Romani's Mask", "Masque de Romani", "Romanis Maske" }, Text{ "", "le ", "" } },
+        { Text{ "Gerudo Veil", "Voile Gerudo", "Damenschleier" }, Text{ "the ", "le ", "" } },
     };
 
     trickNameTable[RG_SPEAK_DEKU] = {
-        { Text{ "Picori Jabber Nut", TODO_TRANSLATE, "Minish Quasselkopf" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Kikwi Blabber Nut", TODO_TRANSLATE, "Kyu Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Talking Deku Nut", TODO_TRANSLATE, "Grüne Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { Text{ "Picori Jabber Nut", "Noix Blabla Baba", "Minish Quasselkopf" }, Text{ "a ", "la ", "" } },
+        { Text{ "Kikwi Blabber Nut", "Noix Blabla Tikwi", "Kyu Quatschbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Talking Deku Nut", "Noix Mojo Parlante", "Grüne Quatschbirne" }, Text{ "a ", "la ", "" } },
     };
     trickNameTable[RG_SPEAK_GERUDO] = {
-        { Text{ "Gerudo Tuni Nut", TODO_TRANSLATE, "Krieger Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Twili Jabber Nut", TODO_TRANSLATE, "Gerudo Laberbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Zuna Blabber Nut", TODO_TRANSLATE, "Zuna Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { Text{ "Gerudo Tuni Nut", "Noix Papote Gerudo", "Krieger Quatschbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Twili Jabber Nut", "Noix Baratin Gerudo", "Gerudo Laberbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Zuna Blabber Nut", "Noix Bobards Gerudo", "Zuna Quatschbirne" }, Text{ "a ", "la ", "" } },
     };
     trickNameTable[RG_SPEAK_GORON] = {
-        { Text{ "Cobble Jabber Nut", TODO_TRANSLATE, "Daiku Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Mogma Blabber Nut", TODO_TRANSLATE, "Mogma Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Goron Speak Stone", TODO_TRANSLATE, "Goronen Sprechstein" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { Text{ "Cobble Jabber Nut", "Noix Blabla Rocailleuse", "Daiku Quatschbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Mogma Blabber Nut", "Noix Papote Subrosien", "Mogma Quatschbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Goron Speak Stone", "Noix Baratin Goron", "Goronen Sprechstein" }, Text{ "a ", "la ", "" } },
     };
     trickNameTable[RG_SPEAK_HYLIAN] = {
-        { Text{ "Human Jingle Nut", TODO_TRANSLATE, "Menschen Laberbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Sheikah Jabber Nut", TODO_TRANSLATE, "Shiekah Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Lorulean Blabber Nut", TODO_TRANSLATE, "Lorulia Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { Text{ "Human Jingle Nut", "Noix Blabla Humaine", "Menschen Laberbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Sheikah Jabber Nut", "Noix Blabla Sheikah", "Shiekah Quatschbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Lorulean Blabber Nut", "Noix Papote Lorulienne", "Lorulia Quatschbirne" }, Text{ "a ", "la ", "" } },
     };
     trickNameTable[RG_SPEAK_KOKIRI] = {
-        { Text{ "Korok Blabber Nut", TODO_TRANSLATE, "Krog Sprechstein" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Minish Jabber Nut", TODO_TRANSLATE, "Kokiri Laberbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Fairy Jingle Nut", TODO_TRANSLATE, "Feen Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { Text{ "Korok Blabber Nut", "Noix Blabla Korogu", "Krog Sprechstein" }, Text{ "a ", "la ", "" } },
+        { Text{ "Minish Jabber Nut", "Noix Blabla Minish", "Kokiri Laberbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Fairy Jingle Nut", "Noix Papote Enfant", "Feen Quatschbirne" }, Text{ "a ", "la ", "" } },
     };
     trickNameTable[RG_SPEAK_ZORA] = {
-        { Text{ "Parella Jabber Nut", TODO_TRANSLATE, "Parakwa Sprechstein" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Fishman Jabber Nut", TODO_TRANSLATE, "Neptunos Laberbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Zora Jabu Nut", TODO_TRANSLATE, "Zora Quasselkopf" }, Text{ "a ", TODO_TRANSLATE, "" } },
-        { Text{ "Rito Jingle Nut", TODO_TRANSLATE, "Orni Quatschbirne" }, Text{ "a ", TODO_TRANSLATE, "" } },
+        { Text{ "Parella Jabber Nut", "Noix Blabla Poisson", "Parakwa Sprechstein" }, Text{ "a ", "la ", "" } },
+        { Text{ "Fishman Jabber Nut", "Noix Blabla Sirène", "Neptunos Laberbirne" }, Text{ "a ", "la ", "" } },
+        { Text{ "Zora Jabu Nut", "Noix Papote Jabu", "Zora Quasselkopf" }, Text{ "a ", "la ", "" } },
+        { Text{ "Rito Jingle Nut", "Noix Papote Mikau", "Orni Quatschbirne" }, Text{ "a ", "la ", "" } },
     };
 
     trickNameTable[RG_GUARD_HOUSE_KEY] = {
