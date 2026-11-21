@@ -91,10 +91,6 @@ inline bool spirit_certain_access(RandomizerRegion region) {
     return SpiritCertainAccess(region);
 }
 
-inline bool can_use(const RandomizerGet item) {
-    return logic->CanUse(item);
-}
-
 inline bool can_plant_bean(const RandomizerRegion reg, const RandomizerGet bean) {
     return CanPlantBean(reg, bean);
 }
