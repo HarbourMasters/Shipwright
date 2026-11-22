@@ -36,12 +36,7 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_SPIRIT_TRIAL_BEAMOS_ROOM,    !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SPIRIT_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_LIGHT_TRIAL_CHESTS_ROOM,     (!ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_LIGHT_MEDALLION)) &&
                                                                logic->CanUse(RG_GOLDEN_GAUNTLETS)),
-        ENTRANCE(RR_GANONS_TOWER_ENTRYWAY,                     (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
-                                                               (logic->Get(LOGIC_FIRE_TRIAL_CLEAR)   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
-                                                               (logic->Get(LOGIC_WATER_TRIAL_CLEAR)  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
-                                                               (logic->Get(LOGIC_SHADOW_TRIAL_CLEAR) || ctx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
-                                                               (logic->Get(LOGIC_SPIRIT_TRIAL_CLEAR) || ctx->GetTrial(TK_SPIRIT_TRIAL)->IsSkipped()) &&
-                                                               (logic->Get(LOGIC_LIGHT_TRIAL_CLEAR)  || ctx->GetTrial(TK_LIGHT_TRIAL)->IsSkipped())),
+        ENTRANCE(RR_GANONS_TOWER_ENTRYWAY,                     true),
         ENTRANCE(RR_GANONS_CASTLE_DEKU_SCRUBS,  ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH)),
     });
 
@@ -487,12 +482,7 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   AnyAgeTime([]{return (!ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) ||
                                                                   logic->HasItem(RG_LIGHT_MEDALLION)) && logic->CanUse(RG_GOLDEN_GAUNTLETS);})),
         //RANDOTODO could we just set these events automatically based on the setting?
-        ENTRANCE(RR_GANONS_TOWER_ENTRYWAY,                        (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
-                                                                  (logic->Get(LOGIC_FIRE_TRIAL_CLEAR)   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
-                                                                  (logic->Get(LOGIC_WATER_TRIAL_CLEAR)  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
-                                                                  (logic->Get(LOGIC_SHADOW_TRIAL_CLEAR) || ctx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
-                                                                  (logic->Get(LOGIC_SPIRIT_TRIAL_CLEAR) || ctx->GetTrial(TK_SPIRIT_TRIAL)->IsSkipped()) &&
-                                                                  (logic->Get(LOGIC_LIGHT_TRIAL_CLEAR)  || ctx->GetTrial(TK_LIGHT_TRIAL)->IsSkipped())),
+        ENTRANCE(RR_GANONS_TOWER_ENTRYWAY,                        true),
         ENTRANCE(RR_GANONS_CASTLE_MQ_DEKU_SCRUBS,                 ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)),
     });
 
@@ -945,7 +935,12 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_LOBBY,   ctx->GetDungeon(GANONS_CASTLE)->IsVanilla()),
         ENTRANCE(RR_GANONS_CASTLE_MQ_MAIN, ctx->GetDungeon(GANONS_CASTLE)->IsMQ()),
-        ENTRANCE(RR_GANONS_TOWER_STAIRS_1, true),
+        ENTRANCE(RR_GANONS_TOWER_STAIRS_1, (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
+                                           (logic->Get(LOGIC_FIRE_TRIAL_CLEAR)   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
+                                           (logic->Get(LOGIC_WATER_TRIAL_CLEAR)  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
+                                           (logic->Get(LOGIC_SHADOW_TRIAL_CLEAR) || ctx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
+                                           (logic->Get(LOGIC_SPIRIT_TRIAL_CLEAR) || ctx->GetTrial(TK_SPIRIT_TRIAL)->IsSkipped()) &&
+                                           (logic->Get(LOGIC_LIGHT_TRIAL_CLEAR)  || ctx->GetTrial(TK_LIGHT_TRIAL)->IsSkipped())),
     });
 
     areaTable[RR_GANONS_TOWER_STAIRS_1] = Region("Ganon's Tower Stairs 1", SCENE_GANONS_TOWER, {}, {}, {
