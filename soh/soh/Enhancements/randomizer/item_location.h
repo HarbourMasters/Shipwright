@@ -15,6 +15,8 @@ class ItemLocation {
     void RemoveFromPool();
     const Item& GetPlacedItem() const;
     const Text& GetPlacedItemName() const;
+    HintText GetPlacedItemHintText() const;
+    const std::string& GetPlacedItemColor() const;
     RandomizerGet GetPlacedRandomizerGet() const;
     void SetPlacedItem(RandomizerGet item);
     RandomizerGet& RefPlacedItem();

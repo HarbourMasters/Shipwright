@@ -140,7 +140,7 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
     } else {
         return;
     }
-    Rando::Item& item = Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(rc)->GetPlacedRandomizerGet());
+    Rando::ItemLocation* itemLoc = RAND_GET_ITEM_LOC(rc);
     CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y[[d]] Spiders of the "
                                       "Curse%w and I will give you [[color]][[1]]%w!",
                                       /*german*/
@@ -150,8 +150,8 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
                                       "Yeaaarrgh! Je suis maudit!^Détruit encore %y[[d]] Araignées de la Malédiction%w "
                                       "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
     msg.InsertNumber(count);
-    msg.Replace("[[color]]", item.GetColor());
-    msg.InsertNames({ item.GetHint().GetHintMessage() });
+    msg.Replace("[[color]]", itemLoc->GetPlacedItemColor());
+    msg.InsertNames({ itemLoc->GetPlacedItemHintText().GetHintMessage() });
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -166,10 +166,9 @@ void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
                                       /*french*/
                                       "Yeaaarrgh! Je suis maudit!^Détruit encore %y100 Araignées de la Malédiction%w "
                                       "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
-    Rando::Item& item =
-        Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet());
-    msg.Replace("[[color]]", item.GetColor());
-    msg.InsertNames({ item.GetHint().GetHintMessage() });
+    Rando::ItemLocation* itemLoc = RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD);
+    msg.Replace("[[color]]", itemLoc->GetPlacedItemColor());
+    msg.InsertNames({ itemLoc->GetPlacedItemHintText().GetHintMessage() });
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
