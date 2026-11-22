@@ -88,7 +88,7 @@ static const std::map<int32_t, const char*> getItemManipulationOptions = {
     { GIM_MZX_PAL, "MZX PAL 1.1" },
 };
 
-static const std::map<int32_t, const char*> sleepingWaterfallOptions = {
+static const std::map<int32_t, const char*> sleeplessWaterfallOptions = {
     { WATERFALL_ALWAYS, "Always" },
     { WATERFALL_ONCE, "Once" },
     { WATERFALL_NEVER, "Never" },
@@ -396,18 +396,18 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("CowOfTime"))
         .Options(CheckboxOptions().Tooltip(
             "Allows the Lon Lon Ranch Obstacle Course reward to be shared across time periods."));
-    AddWidget(path, "Play Zelda's Lullaby to Open Sleeping Waterfall", WIDGET_CVAR_COMBOBOX)
-        .CVar(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"))
+    AddWidget(path, "Play Zelda's Lullaby to Open Sleepless Waterfall", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SleeplessWaterfall"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
                 IS_RANDO &&
-                OTRGlobals::Instance->gRandoContext->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN);
+                OTRGlobals::Instance->gRandoContext->GetOption(RSK_SLEEPLESS_WATERFALL).Is(RO_WATERFALL_OPEN);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomizer savefile with "
-                                            "\"Sleeping Waterfall: Open\" is loaded.";
+                                            "\"Sleepless Waterfall: Open\" is loaded.";
         })
         .Options(
             ComboboxOptions()
-                .ComboMap(sleepingWaterfallOptions)
+                .ComboMap(sleeplessWaterfallOptions)
                 .DefaultIndex(WATERFALL_ALWAYS)
                 .Tooltip(
                     "Always: Link must always play Zelda's Lullaby to open the waterfall entrance to Zora's Domain.\n"
