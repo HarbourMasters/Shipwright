@@ -2114,13 +2114,13 @@ void StaticData::HintTable_Init_Item() {
                                               }, {
                                               CustomMessage("sack of mice", /*german*/"ein Sack Mäuse", /*french*/"un Sac rempli de souris")});
 
-    hintTextTable[RHT_SILVER_RUPEE_DODONGOS_CAVERN] = HintText(CustomMessage("a Dodongo's Cavern Silver Rupee", /*german*/ "ein Silberner Rubin aus Dodongos Höhle", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_SHADOW_TEMPLE] = HintText(CustomMessage("a Shadow Temple Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Schattentempel", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_SPIRIT_TEMPLE] = HintText(CustomMessage("a Spirit Temple Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Geistertempel", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_BOTW] = HintText(CustomMessage("a Bottom of the Well Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Brunnen", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_ICE_CAVERN] = HintText(CustomMessage("an Ice Cavern Silver Rupee", /*german*/ "ein Silberner Rubin aus der Eishöhle", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_GTG] = HintText(CustomMessage("a Gerudo Training Ground Silver Rupee", /*german*/ "ein Silberner Rubin aus der Trainingshalle", /*french*/ TODO_TRANSLATE));
-    hintTextTable[RHT_SILVER_RUPEE_GANONS_CASTLE] = HintText(CustomMessage("a Ganon's Castle Silver Rupee", /*german*/ "ein Silberner Rubin aus Ganons Schloß", /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_DODONGOS_CAVERN] = HintText(CustomMessage("a Dodongo's Cavern Silver Rupee", /*german*/ "ein Silberner Rubin aus Dodongos Höhle", /*french*/ "un Rubis Argenté de la Caverne Dodongo"));
+    hintTextTable[RHT_SILVER_RUPEE_SHADOW_TEMPLE] = HintText(CustomMessage("a Shadow Temple Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Schattentempel", /*french*/ "un Rubis Argenté du Temple de l'Ombre"));
+    hintTextTable[RHT_SILVER_RUPEE_SPIRIT_TEMPLE] = HintText(CustomMessage("a Spirit Temple Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Geistertempel", /*french*/ "un Rubis Argenté du Temple de l'Esprit"));
+    hintTextTable[RHT_SILVER_RUPEE_BOTW] = HintText(CustomMessage("a Bottom of the Well Silver Rupee", /*german*/ "ein Silberner Rubin aus dem Brunnen", /*french*/ "un Rubis Argenté du Puits"));
+    hintTextTable[RHT_SILVER_RUPEE_ICE_CAVERN] = HintText(CustomMessage("an Ice Cavern Silver Rupee", /*german*/ "ein Silberner Rubin aus der Eishöhle", /*french*/ "un Rubis Argenté de la Caverne Polaire"));
+    hintTextTable[RHT_SILVER_RUPEE_GTG] = HintText(CustomMessage("a Gerudo Training Ground Silver Rupee", /*german*/ "ein Silberner Rubin aus der Trainingshalle", /*french*/ "un Rubis Argenté du Gymnase Gerudo"));
+    hintTextTable[RHT_SILVER_RUPEE_GANONS_CASTLE] = HintText(CustomMessage("a Ganon's Castle Silver Rupee", /*german*/ "ein Silberner Rubin aus Ganons Schloß", /*french*/ "un Rubis Argenté du Château de Ganon"));
 
     hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "der Skelettschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
@@ -2134,7 +2134,7 @@ void StaticData::HintTable_Init_Item() {
     //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
     hintTextTable[RHT_CLIMB] = HintText(CustomMessage("the ability to climb", /*german*/"die Fähigkeit zu klettern", /*french*/"la capacité de grimper"));
     hintTextTable[RHT_CRAWL] = HintText(CustomMessage("the ability to crawl", /*german*/"die Fähigkeit zu kriechen", /*french*/"la capacité de ramper"));
-    hintTextTable[RHT_OPEN_CHEST] = HintText(CustomMessage("the ability to open chests", /*german*/"die Fähigkeit, Truhen zu öffnen", /*french*/TODO_TRANSLATE));
+    hintTextTable[RHT_OPEN_CHEST] = HintText(CustomMessage("the ability to open chests", /*german*/"die Fähigkeit, Truhen zu öffnen", /*french*/"la capacité d'ouvrir les coffres"));
     hintTextTable[RHT_SPEAK] = HintText(CustomMessage("the ability to speak",  /*german*/"die Fähigkeit zu sprechen", /*french*/"la faculté de parler"));
 
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"der unendliche Köcher", /*french*/"un Carquois Infini"));

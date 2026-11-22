@@ -52,18 +52,22 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
         msg = {
             "You made your wish to the %yTriforce%w! %rTh%ye R%gai%cnb%bow %pBr%rid%yge %gha%cs r%bai%psed%w!",
             "Du hast deinen Wunsch an das %yTriforce%w gerichtet! Die %rRe%ggen%cbo%bgen%pbr%yücke%w wurde errichtet!",
-            TODO_TRANSLATE
+            "Vous avez fait votre voeu auprès de la %yTriforce%w! %rLe %yPo%gnt%c Ar%bc-%pen-%rci%yel %gest "
+            "%cou%bve%prt%w!"
         };
     } else if (current == GBK) {
         msg = { "You completed the %yTriforce of Power%w! %rThe Key to Evil is yours%w!",
-                "Das %yTriforce der Kraft%w! %rDer Schlüssel zum Bösen gehört dir%w!", TODO_TRANSLATE };
+                "Das %yTriforce der Kraft%w! %rDer Schlüssel zum Bösen gehört dir%w!",
+                "Vous avez complété la %yTriforce du Pouvoir%w! %rÀ vous la Clé du Malin%w!" };
     } else if (current == soul) {
         msg = { "You completed the %yTriforce of Wisdom%w! %bGanon's soul is reclaimed%w!",
-                "Das %yTriforce der Weisheit%w! %bGanons Seele ist zurückerlangt%w!", TODO_TRANSLATE };
+                "Das %yTriforce der Weisheit%w! %bGanons Seele ist zurückerlangt%w!",
+                "Vous avez complété la %yTriforce de la Sagesse%w! %bL'âme de Ganon vous appartient désormais%w!" };
         // if everything is zero, then there's no goal...
     } else if (bridge + wincon + GBK + soul == 0) {
         msg = { "You found a %yTriforce Piece%w! But it's %puseless%w...",
-                "Du hast einen %yTriforce-Splitter%w gefunden! Aber er ist %pnutzlos%w...", TODO_TRANSLATE };
+                "Du hast einen %yTriforce-Splitter%w gefunden! Aber er ist %pnutzlos%w...",
+                "Vous avez trouvé un %yFragment de Triforce%w! Ce n'est %ppas très utile en l'état%w..." };
     } else {
         // if nothing is complete, we need to check is we have more than we need
         uint8_t highest = std::max({ current, bridge, wincon, GBK, soul });
@@ -103,39 +107,45 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
                         "Du hast einen %yTriforce-Splitter%w gefunden! %g[[current]]%w geschafft, noch %c[[d]]%w, dann "
                         "[[condition]]! "
                         "Ein Anfang!",
-                        TODO_TRANSLATE };
+                        "Vous avez trouvé un %yFragment de Triforce%w! %g[[current]]%w de trouvé(s), encore %c[[d]]%w "
+                        "pour [[condition]]!" };
             } else if (percentageCollected <= 0.5) {
                 msg = { "You found a %yTriforce Piece%w! that makes %g[[current]]%w, %c[[d]]%w to go until you "
                         "[[condition]]! Progress!",
                         "Du hast einen %yTriforce-Splitter%w gefunden! Du hast nun %g[[current]]%w und brauchst noch "
                         "%c[[d]]%w, "
                         "um [[condition]]! Es geht voran!",
-                        TODO_TRANSLATE };
+                        "Vous avez trouvé un %yFragment de Triforce%w! Cela vous en fait %g[[current]]%w, encore "
+                        "%c[[d]]%w pour [[condition]]! Continuez comme ça!" };
             } else if (percentageCollected <= 0.75) {
                 msg = { "You found a %yTriforce Piece%w! You have %g[[current]]%w and need %c[[d]]%w more and you "
                         "[[condition]]! Over half-way there!",
                         "Du hast einen %yTriforce-Splitter%w gefunden! Du hast nun %g[[current]]%w und brauchst noch "
                         "%c[[d]]%w, "
                         "um [[condition]]! Mehr als die Hälfte geschafft!",
-                        TODO_TRANSLATE };
+                        "Vous avez trouvé un %yFragment de Triforce%w! Vous voilà déjà avec %g[[current]]%w, encore "
+                        "%c[[d]]%w pour [[condition]]! Plus de la moitié de faite!" };
             } else if (percentageCollected < 1.0) {
                 msg = { "You found a %yTriforce Piece%w! %g[[current]]%w down, %c[[d]]%w left until you [[condition]]! "
                         "Almost done!",
                         "Du hast einen %yTriforce-Splitter%w gefunden! %g[[current]]%w geschafft, noch %c[[d]]%w, "
                         "um [[condition]]! Fast geschafft!",
-                        TODO_TRANSLATE };
+                        "Vous avez trouvé un %yFragment de Triforce%w! %g[[current]]%w de trouvés, encore %c[[d]]%w à "
+                        "trouver avant de [[condition]]! Vous y êtes presque!" };
             }
 
             // default condition is soul
-            CustomMessage condition = { "%brelease Ganons Soul%w", "%bGanons Seele zu befreien%w", TODO_TRANSLATE };
+            CustomMessage condition = { "%brelease Ganons Soul%w", "%bGanons Seele zu befreien%w",
+                                        "%blibérer l'Âme de Ganon%w" };
             if (next == wincon) {
-                condition = { "%gWin the game%w", "%gdas Spiel zu gewinnen%w", TODO_TRANSLATE };
+                condition = { "%gWin the game%w", "%gdas Spiel zu gewinnen%w", "%ggagner la partie%w" };
             } else if (next == bridge) {
                 condition = { "%csummon the Rainbow Bridge%w", "%cdie Regenbogenbrücke zu beschwören%w",
-                              TODO_TRANSLATE };
+                              "%cfaire apparaître le Pont Arc-en-ciel%w" };
             } else if (next == GBK) {
                 condition = { "%rfind the key to Ganondorf's Lair%w",
-                              "%rden Schlüssel zu Ganondorfs Versteck zu finden%w", TODO_TRANSLATE };
+                              "%rden Schlüssel zu Ganondorfs Versteck zu finden%w",
+                              "%rtrouver la clé du Repaire de Ganondorf%w" };
             }
             msg.Replace("[[condition]]", condition);
             msg.InsertNumber(remaining);
