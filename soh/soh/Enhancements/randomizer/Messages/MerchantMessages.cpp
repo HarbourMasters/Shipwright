@@ -33,7 +33,7 @@ void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc, bool mysteriou
     auto location = RAND_GET_ITEM(rc);
     RandomizerGet rgid = location->GetPlacedRandomizerGet();
     CustomMessage itemName;
-    std::string color = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetColor();
+    std::string color = location->GetPlacedItemColor();
     // Shop lists want a bare name, everyone else speaks in sentences and wants an article
     bool inShop = Rando::StaticData::GetLocation(rc)->IsShop();
     if (mysterious) {
@@ -42,19 +42,12 @@ void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc, bool mysteriou
             itemName = CustomMessage("a ", "einen ", "un ") + itemName;
         }
         color = "%g";
-    } else if (rgid == RG_ICE_TRAP) {
-        rgid = RAND_GET_OVERRIDE(rc).LooksLike();
-        Text trickName = RAND_GET_OVERRIDE(rc).GetTrickName();
-        if (!inShop) {
-            trickName = RAND_GET_OVERRIDE(rc).GetTrickArticle() + trickName;
-        }
-        itemName = CustomMessage(trickName);
-        color = "%g";
     } else if (inShop) {
-        itemName = CustomMessage(Rando::StaticData::RetrieveItem(rgid).GetName());
+        itemName = CustomMessage(rgid == RG_ICE_TRAP ? RAND_GET_OVERRIDE(rc).GetTrickName()
+                                                     : Rando::StaticData::RetrieveItem(rgid).GetName());
     } else {
         // Hint text brings its own article
-        itemName = Rando::StaticData::RetrieveItem(rgid).GetHint().GetHintMessage();
+        itemName = location->GetPlacedItemHintText().GetHintMessage();
     }
     msg.Replace("[[color]]", color);
     msg.InsertNames({ itemName, CustomMessage(std::to_string(location->GetPrice())) });

@@ -39,6 +39,22 @@ const Text& ItemLocation::GetPlacedItemName() const {
     return StaticData::RetrieveItem(placedItem).GetName();
 }
 
+HintText ItemLocation::GetPlacedItemHintText() const {
+    if (placedItem == RG_ICE_TRAP) {
+        // item hints read as sentences, so the fake name needs its article like a real item's hint has
+        ItemOverride& itemOverride = Context::GetInstance()->overrides[rc];
+        return HintText(CustomMessage(itemOverride.GetTrickArticle() + itemOverride.GetTrickName()));
+    }
+    return GetPlacedItem().GetHint();
+}
+
+const std::string& ItemLocation::GetPlacedItemColor() const {
+    if (placedItem == RG_ICE_TRAP) {
+        return StaticData::RetrieveItem(Context::GetInstance()->overrides[rc].LooksLike()).GetColor();
+    }
+    return GetPlacedItem().GetColor();
+}
+
 RandomizerGet ItemLocation::GetPlacedRandomizerGet() const {
     return placedItem;
 }

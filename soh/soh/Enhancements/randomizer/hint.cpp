@@ -512,17 +512,10 @@ void Hint::logHint(oJson& jsonData) {
 const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
     // RANDOTODO make unreliant on locations, or make Hint accept ItemLocation
     auto ctx = Rando::Context::GetInstance();
-    RandomizerCheck hintedCheck = locations[slot];
-    RandomizerGet targetRG = ctx->GetItemLocation(hintedCheck)->GetPlacedRandomizerGet();
     if (mysterious) {
         return StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM];
-    } else if (targetRG == RG_ICE_TRAP) { // RANDOTODO store in item hint instead of item
-        // item hints read as sentences, so the fake name needs its article like a real item's hint has
-        return HintText(CustomMessage(
-            { ctx->overrides[hintedCheck].GetTrickArticle() + ctx->overrides[hintedCheck].GetTrickName() }));
-    } else {
-        return ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint();
     }
+    return ctx->GetItemLocation(locations[slot])->GetPlacedItemHintText();
 }
 
 const HintText Hint::GetAreaHintText(uint8_t slot) const {
