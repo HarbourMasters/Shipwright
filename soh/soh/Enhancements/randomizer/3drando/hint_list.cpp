@@ -2319,7 +2319,7 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_BOSS_KEY_HINT] = HintText(CustomMessage("%c@! I can hear Rauru's guidance! He's saying the %ykey for this door%c is in %w[[1]]%c!",
                                                    /*german*/ TODO_TRANSLATE,
-                                                   /*french*/ TODO_TRANSLATE));
+                                                   /*french*/ "%c@! J'entends Rauru me parler! Il dit que %w[[1]]%c est là où tu trouveras la %yclé de cette porte%c!"));
 
     hintTextTable[RHT_DAMPE_DIARY] = HintText(CustomMessage("Whoever reads this, please enter #[[1]]#. I will let you have my #stretching, shrinking keepsake#.^I'm waiting for you.&--Dampé",
                                                  /*german*/ "Wer immer dies liest, der möge #[[1]]# nach meinem #langen, kurzen Schatz# suchen.^Ich warte!&Boris",

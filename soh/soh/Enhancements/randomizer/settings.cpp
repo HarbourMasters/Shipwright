@@ -191,7 +191,7 @@ void Settings::CreateOptions() {
         HandleStartingAgeUI();
     });
     OPT_U8(RSK_ZORAS_FOUNTAIN, {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ZorasFountain"));
-    OPT_U8(RSK_SLEEPING_WATERFALL, {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SleepingWaterfall"));
+    OPT_U8(RSK_SLEEPLESS_WATERFALL, {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SleeplessWaterfall"));
     OPT_U8(RSK_JABU_OPEN, {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("JabuJabu"));
     OPT_BOOL(RSK_LOCK_OVERWORLD_DOORS, CVAR_RANDOMIZER_SETTING("LockOverworldDoors"));
     OPT_U8(RSK_GERUDO_FORTRESS, {"Normal", "Fast", "Free"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("FortressCarpenters"));
@@ -1934,7 +1934,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_FOREST],
                                   &mOptions[RSK_DOOR_OF_TIME],
                                   &mOptions[RSK_ZORAS_FOUNTAIN],
-                                  &mOptions[RSK_SLEEPING_WATERFALL],
+                                  &mOptions[RSK_SLEEPLESS_WATERFALL],
                                   &mOptions[RSK_JABU_OPEN],
                                   &mOptions[RSK_LOCK_OVERWORLD_DOORS],
                                   &mOptions[RSK_GERUDO_FORTRESS],
@@ -2186,7 +2186,7 @@ void Settings::CreateOptions() {
                                                                &mOptions[RSK_FOREST],
                                                                &mOptions[RSK_DOOR_OF_TIME],
                                                                &mOptions[RSK_ZORAS_FOUNTAIN],
-                                                               &mOptions[RSK_SLEEPING_WATERFALL],
+                                                               &mOptions[RSK_SLEEPLESS_WATERFALL],
                                                                &mOptions[RSK_JABU_OPEN],
                                                                &mOptions[RSK_LOCK_OVERWORLD_DOORS],
                                                                &mOptions[RSK_GERUDO_FORTRESS],

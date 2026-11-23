@@ -125,7 +125,7 @@
                     "SkipMiscInteractions": 1,
                     "SkipOwlInteractions": 1,
                     "SkipTowerEscape": 1,
-                    "SleepingWaterfall": 1
+                    "SleeplessWaterfall": 1
                 },
                 "ToTMedallionsColors": 1,
                 "ToggleStrength": 1,
@@ -138,5 +138,5 @@
     },
     "presetName": "Enhancements - Curated Randomizer",
     "isBuiltIn": true,
-    "ConfigVersion": 7
+    "ConfigVersion": 8
 }

@@ -1011,7 +1011,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     }
 
     if (actor->id == ACTOR_EN_OWL && gPlayState->sceneNum == SCENE_ZORAS_RIVER &&
-        CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0) == 2) {
+        CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleeplessWaterfall"), 0) == 2) {
         Actor_Kill(actor);
     }
 
@@ -1049,9 +1049,9 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                     return;
                 }
 
-                bool shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) && IS_RANDO;
+                bool shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPLESS_WATERFALL) && IS_RANDO;
                 if (!shouldKeepOpen) {
-                    int enhancement = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0);
+                    int enhancement = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleeplessWaterfall"), 0);
                     shouldKeepOpen =
                         (enhancement == 2 &&
                          ((CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && (INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)))) ||
