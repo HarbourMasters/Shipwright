@@ -875,9 +875,10 @@ static void InitTrickNames() {
         { Text{ "Force Gem", "Sept Boules de Cristal", "Dragonball" }, Text{ "a ", "les ", "ein " } },
     };
     trickNameTable[RG_ROCS_FEATHER] = {
-        { Text{ "Chicken Wing", "Chicken Wing", "Hähnchenschenkel" }, Text{ "a ", "une ", "ein " } }, // "Chicken Wing"
-        { Text{ "Roc's Leg", "Roc's Leg", "Greifenfuß" }, Text{ "", "la ", "ein " } },                // "Roc's Leg"
-        { Text{ "Roc's Flapper", "Roc's Flapper", "Greifenflügel" }, Text{ "", "le ", "ein " } },     // "Roc's Flapper"
+        { Text{ "Chicken Wing", "Aile de Poulet", "Hähnchenschenkel" },
+          Text{ "a ", "une ", "ein " } },                                                      // "Chicken Wing"
+        { Text{ "Roc's Leg", "Patte de Roc", "Greifenfuß" }, Text{ "", "la ", "ein " } },      // "Roc's Leg"
+        { Text{ "Roc's Flapper", "Aile de Roc", "Greifenflügel" }, Text{ "", "l'", "ein " } }, // "Roc's Flapper"
     };
     trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
         { Text{ "Volcano Seed Spirit", "Esprit de Graine du Volcan", "Vulkanbohnen-Seele" }, Text{ "the ", "l'", "" } },
@@ -947,7 +948,7 @@ static void InitTrickNames() {
         { Text{ "Dodongo's Core", "Coeur de Dodongo", "Dodongos Kern" }, Text{ "", "le ", "" } },
     };
     trickNameTable[RG_BARINADE_SOUL] = {
-        { Text{ "Parasitic Poltergeist", "Poltergeist Parasite", "infektiöser Poltergeist" },
+        { Text{ "Parasitic Poltergeist", "Parasite de Poltergeist", "infektiöser Poltergeist" },
           Text{ "the ", "le ", "den " } },
         { Text{ "Jabu Insides", "Entrailles de Jabu-Jabu", "Jabus Innereien" }, Text{ "the ", "les ", "" } },
         { Text{ "Barinade Bacteria", "Bactérie de Barinade", "Barinades Bakterien" }, Text{ "the ", "la ", "" } },
@@ -984,13 +985,13 @@ static void InitTrickNames() {
         { Text{ "Pork", "Porc", "Schweinefleisch" }, Text{ "", "le ", "das " } },
     };
     trickNameTable[RG_FISHING_POLE] = {
-        { Text{ "Fish Tickler", "Fish Tickler", "Fischkitzler" }, Text{ "a ", "un ", "einen " } },
-        { Text{ "Floating Lure", "Floating Lure", "Schwimmer" }, Text{ "a ", "un ", "einen " } },
-        { Text{ "Fishing Reel", "Fishing Reel", "Angelschnur" }, Text{ "a ", "un ", "eine " } },
+        { Text{ "Fish Tickler", "Chatouilleur de Poisson", "Fischkitzler" }, Text{ "a ", "un ", "einen " } },
+        { Text{ "Floating Lure", "Appât Flottant", "Schwimmer" }, Text{ "a ", "un ", "einen " } },
+        { Text{ "Fishing Reel", "Moulinet à Pêche", "Angelschnur" }, Text{ "a ", "un ", "eine " } },
     };
     trickNameTable[RG_SCARECROWS_SONG] = {
         { Text{ "Pierre's Polka", "Polka de Pierre", "Pierres Polka" }, Text{ "", "la ", "" } },
-        { Text{ "Crow's Song", "Chant du corbeau", "Krähenlied" }, Text{ "the ", "le ", "das " } },
+        { Text{ "Crow's Song", "Chant du Corbeau", "Krähenlied" }, Text{ "the ", "le ", "das " } },
         { Text{ "Bonooru's Ballad", "Ballade de Bonooru", "Bonoorus Ballade" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_SKELETON_KEY] = {
