@@ -27,15 +27,15 @@ static void InitTrickNames() {
         { Text{ "Razor Sword", "Lame Rasoir", "Elfenschwert" }, Text{ "the ", "la ", "das " } }, // "Espada de esmeril"
     };
     trickNameTable[RG_MASTER_SWORD] = {
-        { Text{ "Goddess Sword", "Épée de la déesse", "Schwert der Göttin" },
+        { Text{ "Goddess Sword", "Épée de la Déesse", "Schwert der Göttin" },
           Text{ "the ", "l'", "das " } }, // "Espada Divina"
         { Text{ "Gilded Sword", "Excalibur", "Schmirgelklinge" },
           Text{ "the ", "", "die " } }, // "Espada de los Sabios"
-        { Text{ "Magical Sword", "Lame dorée", "Magisches Schwert" }, Text{ "the ", "la ", "das " } }, // "Fay"
+        { Text{ "Magical Sword", "Lame Dorée", "Magisches Schwert" }, Text{ "the ", "la ", "das " } }, // "Fay"
     };
     trickNameTable[RG_GIANTS_KNIFE] = {
-        { Text{ "Medigoron's Sword", "l'Épée de Medigoron", "Medigoron-Schwert" },
-          Text{ "the ", "", "das " } }, // "La espada de Medigoron"
+        { Text{ "Medigoron's Sword", "Épée de Medigoron", "Medigoron-Schwert" },
+          Text{ "the ", "l'", "das " } }, // "La espada de Medigoron"
         { Text{ "Razor Sword", "Lame Rasoir", "Elfenschwert" }, Text{ "the ", "la ", "das " } }, // "Espada de esmeril"
         { Text{ "Royal Claymore", "Claymore Royale", "Königs-Zweihänder" },
           Text{ "the ", "la ", "den " } }, // "Royal Claymore"
@@ -43,7 +43,7 @@ static void InitTrickNames() {
     trickNameTable[RG_BIGGORON_SWORD] = {
         { Text{ "Power Sword", "Épée de Puissance", "Schwert der Macht" },
           Text{ "the ", "l'", "das " } }, // "Espada de poder",
-        { Text{ "Fierce Deity Sword", "Épée du dieu démon", "Schwert der grimmischen Gottheit" },
+        { Text{ "Fierce Deity Sword", "Épée du Dieu Démon", "Schwert der grimmischen Gottheit" },
           Text{ "the ", "l'", "das " } }, // "Espada de la Fiera Deidad"
         { Text{ "Tempered Sword", "Épée de Légende Nv.2", "Master-Schwert Lv.2" },
           Text{ "the ", "l'", "das " } }, // "Espada Maestra mejorada"
@@ -80,7 +80,7 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_ZORA_TUNIC] = {
         { Text{ "Rito Tunic", "Tunique Rito", "Orni-Gewand" }, Text{ "a ", "une ", "ein " } }, // "Sayo rito"
-        { Text{ "Mermaid Suit", "Costume de sirène", "Nixenanzug" },
+        { Text{ "Mermaid Suit", "Costume de Sirène", "Nixenanzug" },
           Text{ "a ", "un ", "einen " } },                                                      // "Costume de sirène"
         { Text{ "Zora Armor", "Armure Zora", "Zora-Panzer" }, Text{ "a ", "une ", "einen " } }, // "Túnica Zora"
         { Text{ "Blue Mail", "Habits Bleus", "Blaues Gewand" }, Text{ "the ", "les ", "das " } }, // "Ropas azules"
@@ -89,30 +89,30 @@ static void InitTrickNames() {
         { Text{ "Iron Hoofs", "Patins de Plomb", "Eisenhufe€" }, Text{ "the ", "les ", "die " } }, // "Botas férreas"
         { Text{ "Snow Boots", "Bottes de Neige", "Schneestiefel€" },
           Text{ "the ", "les ", "die " } },                                                        // "Botas de nieve"
-        { Text{ "Red Boots", "Bottes rouges", "Rote Stiefel€" }, Text{ "the ", "les ", "die " } }, // "Botas rojas"
+        { Text{ "Red Boots", "Bottes Rouges", "Rote Stiefel€" }, Text{ "the ", "les ", "die " } }, // "Botas rojas"
         { Text{ "Zora Greaves", "Bottes Zora", "Zora-Beinschutz" }, Text{ "the ", "les ", "den " } }, // "Zora Greaves"
         { Text{ "Boots of Power", "Bottes de Puissance", "Stärkestiefel€" },
           Text{ "the ", "les ", "die " } }, // "Botas de plomo"
     };
     trickNameTable[RG_HOVER_BOOTS] = {
-        { Text{ "Hover Hoofs", "Patins des airs", "Gleithufe€" },
+        { Text{ "Hover Hoofs", "Patins des Airs", "Gleithufe€" },
           Text{ "the ", "les ", "die " } }, // "Botas flotadoras"
-        { Text{ "Golden Boots", "Bottes dorées", "Goldstiefel€" }, Text{ "the ", "les ", "die " } }, // "Botas de Oro"
-        { Text{ "Pegasus Boots", "Bottes pégase", "Pegasus-Stiefel€" },
+        { Text{ "Golden Boots", "Bottes Dorées", "Goldstiefel€" }, Text{ "the ", "les ", "die " } }, // "Botas de Oro"
+        { Text{ "Pegasus Boots", "Bottes Pégase", "Pegasus-Stiefel€" },
           Text{ "the ", "les ", "die " } }, // "Botas de Pegaso"
-        { Text{ "Boots of Speed", "Bottes de vitesse", "Tempostiefel€" },
+        { Text{ "Boots of Speed", "Bottes de Vitesse", "Tempostiefel€" },
           Text{ "the ", "les ", "die " } }, // "Botas del desierto"
     };
     trickNameTable[RG_WEIRD_EGG] = {
-        { Text{ "Poached Egg", "Oeuf à la coque", "Spiegelei" }, Text{ "the ", "l'", "das " } }, // "Huevo pasado"
+        { Text{ "Poached Egg", "Oeuf à la Coque", "Spiegelei" }, Text{ "the ", "l'", "das " } }, // "Huevo pasado"
         { Text{ "Lon Lon Egg", "Oeuf Lon Lon", "Lon Lon-Ei" }, Text{ "the ", "l'", "das " } },   // "Huevo Lon Lon"
         { Text{ "Zora Egg", "Oeuf Zora", "Zora-Ei" }, Text{ "the ", "l'", "das " } },            // "Huevo Zora"
     };
     trickNameTable[RG_ZELDAS_LETTER] = {
         { Text{ "Ruto's Letter", "Lettre de Ruto", "Rutos Brief" }, Text{ "", "la ", "" } }, // "Carta de Ruto"
-        { Text{ "Royal Letter", "Lettre Eoyale", "Royaler Brief" },
+        { Text{ "Royal Letter", "Lettre Royale", "Royaler Brief" },
           Text{ "the ", "la ", "den " } }, // "Carta para Kafei"
-        { Text{ "Zelda's Business Card", "Carte d'affaires de Zelda", "Zeldas Visitenkarte" },
+        { Text{ "Zelda's Business Card", "Carte d'Affaires de Zelda", "Zeldas Visitenkarte" },
           Text{ "", "la ", "" } }, // "Carta"
         { Text{ "Letter to Kafei", "Lettre pour Kafei", "Brief an Kafei" },
           Text{ "the ", "la ", "den " } }, // "Carta para Kafei"
@@ -146,7 +146,7 @@ static void InitTrickNames() {
           Text{ "the ", "le ", "den " } }, // "Martillo de hierro"
     };
     trickNameTable[RG_STONE_OF_AGONY] = {
-        { Text{ "Cave Charm", "Charme de grotte", "Höhlenamulett" },
+        { Text{ "Cave Charm", "Charme de Grotte", "Höhlenamulett" },
           Text{ "the ", "le ", "das " } }, // "Amuleto de la cueva"
         { Text{ "Stone of Agahnim", "Fragment d'Agahnim", "Stein des Agahnim" },
           Text{ "the ", "le ", "den " } }, // "Piedra de Agahnim"
@@ -169,10 +169,10 @@ static void InitTrickNames() {
         { Text{ "Faron's Wind", "Vent de Firone", "Phirones Donnersturm" },
           Text{ "", "le ", "" } }, // "Viento de Farone"
         { Text{ "Farore's Windfall", "Zéphyr de Farore", "Farores Wind" }, Text{ "", "le ", "" } }, // "Valor de Farore"
-        { Text{ "Tingle Air", "Tingle de aire", "Tingle Luft" }, Text{ "", "le ", "" } },           // "Tingle Air"
-        { Text{ "Travel Medallion", "Amulette de téléportation", "Teleport-Medaillon" },
+        { Text{ "Tingle Air", "Air de Tingle", "Tingle Luft" }, Text{ "", "l'", "" } },           // "Tingle Air"
+        { Text{ "Travel Medallion", "Amulette de Téléportation", "Teleport-Medaillon" },
           Text{ "the ", "l'", "das " } },                                                  // "Medallón Maligno"
-        { Text{ "Irene's Taxi", "Le taxi d'Aëline", "Irenes Taxi" }, Text{ "", "", "" } }, // "El taxi de Airín"
+        { Text{ "Irene's Taxi", "Taxi d'Aëline", "Irenes Taxi" }, Text{ "", "le ", "" } }, // "El taxi de Airín"
     };
     trickNameTable[RG_NAYRUS_LOVE] = {
         { Text{ "Lanayru's Love", "Amour de Lanelle", "Ranelles Umarmung" },
@@ -186,7 +186,7 @@ static void InitTrickNames() {
         { Text{ "Magic Armor", "Armure Magique", "Magie-Rüstung" }, Text{ "the ", "l'", "die " } }, // "Armadura mágica"
     };
     trickNameTable[RG_FIRE_ARROWS] = {
-        { Text{ "Fire Rod", "Baguette de feu", "Feuerstab" }, Text{ "the ", "la ", "den " } }, // "Cetro de fuego"
+        { Text{ "Fire Rod", "Baguette de Feu", "Feuerstab" }, Text{ "the ", "la ", "den " } }, // "Cetro de fuego"
         { Text{ "Bomb Arrow", "Flèche-Bombe", "Bomben-Pfeile€" }, Text{ "", "la ", "" } },     // "Flecha bomba"
         { Text{ "Red Candle", "Bougie Rouge", "Rote Kerze" }, Text{ "the ", "la ", "die " } }, // "Vela roja"
     };
@@ -208,9 +208,9 @@ static void InitTrickNames() {
     trickNameTable[RG_GERUDO_MEMBERSHIP_CARD] = {
         { Text{ "Desert Title Deed", "Abonnement Gerudo", "Wüsten-Urkunde" },
           Text{ "the ", "l'", "die " } }, // "Escritura del desierto"
-        { Text{ "Sickle Moon Flag", "Drapeau du croissant de lune", "Mondsichel-Fahne" },
+        { Text{ "Sickle Moon Flag", "Drapeau du Croissant de Lune", "Mondsichel-Fahne" },
           Text{ "the ", "le ", "die " } }, // "Bandera de la Luna Creciente"
-        { Text{ "Complimentary ID", "Bon de félicitation", "Laudatio-Schein" },
+        { Text{ "Complimentary ID", "Bon de Félicitations", "Laudatio-Schein" },
           Text{ "the ", "le ", "den " } },                                                          // "Cupón especial"
         { Text{ "Gerudo's Card", "Carte Goron", "Gerudo-Symbol" }, Text{ "the ", "la ", "das " } }, // "Tóken Gerudo"
         { Text{ "Gerudo's Membership Card", "Autographe de Nabooru", "Gerudo-Mitgliedskarte" },
@@ -220,11 +220,11 @@ static void InitTrickNames() {
     trickNameTable[RG_MAGIC_BEAN_PACK] = {
         { Text{ "Funky Bean Pack", "Paquet de Fèves Magiques", "Wunderbohnen-Packung" },
           Text{ "the ", "le ", "die " } }, // "Lote de frijoles mágicos"
-        { Text{ "Grapple Berries", "Baies de grappin", "Grapple-Beeren€" },
+        { Text{ "Grapple Berries", "Baies de Grappin", "Grapple-Beeren€" },
           Text{ "the ", "les ", "die " } }, // "Bayas de garfio"
         { Text{ "Crenel Bean Pack", "Paquet de Haricots Gonggle", "Gongolerbsen-Packung" },
           Text{ "the ", "le ", "die " } }, // "Lote de alubias mágicas"
-        { Text{ "Mystical Seed Pack", "Pack de graines mystiques", "Saatbeutel" },
+        { Text{ "Mystical Seed Pack", "Pack de Graines Mystiques", "Saatbeutel" },
           Text{ "the ", "le ", "den " } }, // "Paquete de semillas místicas"
     };
     trickNameTable[RG_DOUBLE_DEFENSE] = {
@@ -238,15 +238,15 @@ static void InitTrickNames() {
 
     trickNameTable[RG_POCKET_EGG] = {
         { Text{ "Arpagos Egg", "Oeuf d'Arpagos", "Arpagos-Ei" }, Text{ "the ", "l'", "das " } }, // "Huevo de Arpagos"
-        { Text{ "Lon Lon Egg", "oeuf Lon Lon", "Lon Lon-Ei" }, Text{ "the ", "l'", "das " } },   // "Huevo Lon Lon"
-        { Text{ "Zora Egg", "oeuf Zora", "Zora-Ei" }, Text{ "the ", "l'", "das " } }, // "Huevo del Pez Viento"
+        { Text{ "Lon Lon Egg", "Oeuf Lon Lon", "Lon Lon-Ei" }, Text{ "the ", "l'", "das " } },   // "Huevo Lon Lon"
+        { Text{ "Zora Egg", "Oeuf Zora", "Zora-Ei" }, Text{ "the ", "l'", "das " } }, // "Huevo del Pez Viento"
     };
     trickNameTable[RG_POCKET_EGG] = {
-        { Text{ "D.I.Y. Alarm Clock", "Réveille-matin improvisé", "Improvisierter Wecker" },
+        { Text{ "D.I.Y. Alarm Clock", "Réveille-matin Improvisé", "Improvisierter Wecker" },
           Text{ "the ", "le ", "den " } }, // "Alarma emplumada portátil"
         { Text{ "Kakariko Cucco", "Cocotte Cocorico", "Kakariko-Huhn" },
           Text{ "the ", "la ", "das " } }, // "Cuco de Kakariko"
-        { Text{ "Hatched Cucco", "Cocotte éclose", "Geschlüpftes Küken" },
+        { Text{ "Hatched Cucco", "Cocotte Éclose", "Geschlüpftes Küken" },
           Text{ "the ", "la ", "das " } }, // "Pollo de bolsillo"
     };
     trickNameTable[RG_COJIRO] = {
@@ -256,7 +256,7 @@ static void InitTrickNames() {
         { Text{ "Grog's Cucco", "Cocotte de Grog", "Grogs Huhn" }, Text{ "", "la ", "" } },        // "Cuco de Grog"
     };
     trickNameTable[RG_ODD_MUSHROOM] = {
-        { Text{ "Magic Mushroom", "Champignon magique", "Magischer Pilz" },
+        { Text{ "Magic Mushroom", "Champignon Magique", "Magischer Pilz" },
           Text{ "the ", "le ", "den " } }, // "Champiñón mágico"
         { Text{ "Endura Shroom", "Champi Vigueur", "Fittling" },
           Text{ "the ", "le ", "den " } }, // "Champiñón del bosque"
@@ -265,10 +265,10 @@ static void InitTrickNames() {
         { Text{ "Mushroom", "Champignon", "Pilz" }, Text{ "the ", "le ", "den " } }, // "Seta"
     };
     trickNameTable[RG_ODD_POTION] = {
-        { Text{ "Odd Medicine", "Élixir suspect", "Moderpaket" }, Text{ "the ", "l'", "das " } }, // "Poción rara"
+        { Text{ "Odd Medicine", "Élixir Suspect", "Moderpaket" }, Text{ "the ", "l'", "das " } }, // "Poción rara"
         { Text{ "Granny's Poultice", "Mixture de Granny", "Omas Mixtur" },
           Text{ "", "la ", "" } }, // "Medicina de la abuela"
-        { Text{ "Mushroom Poultice", "Mixture de champignon", "Pilzumschlag" },
+        { Text{ "Mushroom Poultice", "Mixture de Champignon", "Pilzumschlag" },
           Text{ "the ", "la ", "den " } }, // "Medicina de champiñones"
         { Text{ "Secret Medicine", "Médicament", "Geheime Medizin" },
           Text{ "the ", "le ", "die " } }, // "Pócima secreta"
@@ -277,9 +277,9 @@ static void InitTrickNames() {
         { Text{ "Hanyu Spore", "Hanyu Spore", "Hanyu-Sporen" }, Text{ "the ", "la ", "die " } }, // "Espora Hanyu"
     };
     trickNameTable[RG_POACHERS_SAW] = {
-        { Text{ "Carpenter's Saw", "Scie du charpentier", "Zimmermannssäge" },
+        { Text{ "Carpenter's Saw", "Scie du Charpentier", "Zimmermannssäge" },
           Text{ "the ", "la ", "die " } }, // "Sierra del carpintero"
-        { Text{ "Poacher's Sword", "Hache du chasseur", "Wildererschwert" },
+        { Text{ "Poacher's Sword", "Hache du Chasseur", "Wildererschwert" },
           Text{ "the ", "la ", "das " } }, // "Espada del capataz"
         { Text{ "Ancient Bladesaw", "Longue Épée Archéonique", "Antike Großsäge" },
           Text{ "the ", "la ", "die " } }, // "Mandoble ancestral"
@@ -288,36 +288,36 @@ static void InitTrickNames() {
         { Text{ "Grog's Saw", "Scie de Grog", "Grogs Säge" }, Text{ "", "la ", "" } }, // "Sierra del Cazador Furtivo"
     };
     trickNameTable[RG_BROKEN_SWORD] = {
-        { Text{ "Broken Biggoron's Sword", "Épée brisée de Grogoron", "Zerbr. Biggoron-Schwert" },
+        { Text{ "Broken Biggoron's Sword", "Épée Brisée de Grogoron", "Zerbr. Biggoron-Schwert" },
           Text{ "the ", "l'", "das " } }, // "Espada de Biggoron rota"
-        { Text{ "Broken Giant's Knife", "Lame des Géants brisée", "Zerbr. Langschwert" },
+        { Text{ "Broken Giant's Knife", "Lame des Géants Brisée", "Zerbr. Langschwert" },
           Text{ "the ", "la ", "das " } }, // "Daga gigante rota"
-        { Text{ "Broken Noble Sword", "Épée noble brisée", "Zerbr. Edelschwert" },
+        { Text{ "Broken Noble Sword", "Épée Noble Brisée", "Zerbr. Edelschwert" },
           Text{ "the ", "l'", "das " } }, // "Espada noble rota"
-        { Text{ "Broken Picori Blade", "Épée Minish brisée", "Zerbr. Schwert der Minish" },
+        { Text{ "Broken Picori Blade", "Épée Minish Brisée", "Zerbr. Schwert der Minish" },
           Text{ "the ", "l'", "das " } }, // "Espada minish rota"
-        { Text{ "Decayed Master Sword", "Épée de légende pourrie", "Zerf. Master-Schwert" },
+        { Text{ "Decayed Master Sword", "Épée de Légende Pourrie", "Zerf. Master-Schwert" },
           Text{ "the ", "l'", "das " } }, // "Espada decadente de leyenda"
     };
     trickNameTable[RG_PRESCRIPTION] = {
         { Text{ "Biggoron's Prescription", "Ordonnance de Grogoron", "Biggorons Rezept" },
           Text{ "", "l'", "" } }, // "Receta de Biggoron"
-        { Text{ "Eyedrop Prescription", "Ordonnance de gouttes", "Augentropfen-Rezept" },
+        { Text{ "Eyedrop Prescription", "Ordonnance de Gouttes", "Augentropfen-Rezept" },
           Text{ "the ", "l'", "das " } }, // "Receta ocular"
-        { Text{ "Urgent Prescription", "Ordonnance urgente", "Dringendes Rezept" },
+        { Text{ "Urgent Prescription", "Ordonnance Urgente", "Dringendes Rezept" },
           Text{ "the ", "l'", "das " } }, // "Prescripción"
-        { Text{ "Swordsman's Scroll", "Précis d'escrime", "Schwert-Rolle" },
+        { Text{ "Swordsman's Scroll", "Précis d'Escrime", "Schwert-Rolle" },
           Text{ "the ", "le ", "die " } }, // "Esgrimidorium"
         { Text{ "Portrait of Oren", "Portrait d'Orlène", "Portrait von Oreen" },
           Text{ "the ", "le ", "das " } }, // "Retrato de Oren"
-        { Text{ "Letter to King Zora", "Lettre au roi Zora", "Brief an König Zora" },
+        { Text{ "Letter to King Zora", "Lettre au Roi Zora", "Brief an König Zora" },
           Text{ "the ", "la ", "den " } }, // "Carta al Rey Zora"
     };
     trickNameTable[RG_EYEBALL_FROG] = {
         { Text{ "Don Gero", "Don Gero", "Don Gero" }, Text{ "", "", "" } }, // "Don Gero"
-        { Text{ "Hot-Footed Frog", "Grenouille à pieds chauds", "Spurtkröte" },
+        { Text{ "Hot-Footed Frog", "Grenouille à Pieds Chauds", "Spurtkröte" },
           Text{ "the ", "la ", "die " } }, // "Rana de patas calientes"
-        { Text{ "Lost Swordsmith", "Forgeron perdu", "Vermisster Schmied" },
+        { Text{ "Lost Swordsmith", "Forgeron Perdu", "Vermisster Schmied" },
           Text{ "the ", "le ", "den " } }, // "Espadachín perdido"
         { Text{ "Eyedrop Frog", "Grenouille-qui-louche", "Augentropfen-Frosch" },
           Text{ "the ", "la ", "den " } }, // "Globo Ocular de Rana"
@@ -328,32 +328,32 @@ static void InitTrickNames() {
         { Text{ "Hyrule's Finest Eyedrops", "Eau du Lac Hylia", "Hyrules beste Augentropfen" },
           Text{ "", "l'", "" } },                                                               // "Gotas oculares"
         { Text{ "Moon's Tear", "Larme de Lune", "Mondträne" }, Text{ "the ", "la ", "die " } }, // "Lágrima de Luna"
-        { Text{ "Engine Grease", "Graisse moteur", "Schmierfett" },
+        { Text{ "Engine Grease", "Graisse Moteur", "Schmierfett" },
           Text{ "the ", "la ", "das " } },                                                       // "Grasa del motor"
         { Text{ "Zora Perfume", "Parfum Zora", "Zora-Parfüm" }, Text{ "the ", "le ", "das " } }, // "Perfume Zora"
     };
     trickNameTable[RG_CLAIM_CHECK] = {
         { Text{ "Clay Check", "Certificat Grogoron", "Berg-Urkunde" },
           Text{ "the ", "le ", "die " } }, // "Comprobant e de Reclamación"
-        { Text{ "Ancient Tablet", "Stèle ancienne", "Alte Steintafel" },
+        { Text{ "Ancient Tablet", "Stèle Ancienne", "Alte Steintafel" },
           Text{ "the ", "la ", "die " } }, // "Litografía arcana"
         { Text{ "Sheikah Slate", "Tablette Sheikah", "Shiekah-Stein" },
           Text{ "the ", "la ", "den " } }, // "Piedra Sheikah"
-        { Text{ "Cyclone Slate", "Ardoise des tornades", "Froschkompass" },
+        { Text{ "Cyclone Slate", "Ardoise des Tornades", "Froschkompass" },
           Text{ "the ", "l'", "den " } }, // "Pizarra de los Torbellinos"
     };
 
     trickNameTable[RG_GOLD_SKULLTULA_TOKEN] = {
-        { Text{ "Skulltula Token", "Bon de Skulltula dorée", "Skulltula-Beweis" },
+        { Text{ "Skulltula Token", "Bon de Skulltula Dorée", "Skulltula-Beweis" },
           Text{ "a ", "un ", "einen " } }, // "Símbolo de Skulltula"
-        { Text{ "Golden Skulltula Spirit", "Pièce de Skulltula dorée", "Skulltula-Seele" },
+        { Text{ "Golden Skulltula Spirit", "Pièce de Skulltula Dorée", "Skulltula-Seele" },
           Text{ "a ", "une ", "eine " } }, // "Tóken de Skulltula Dorada"
-        { Text{ "Gold Walltula Token", "Jeton de Walltula dorée", "Walltula-Symbol" },
+        { Text{ "Gold Walltula Token", "Jeton de Walltula Dorée", "Walltula-Symbol" },
           Text{ "a ", "un ", "ein " } },                                            // "Skulltula dorada"
         { Text{ "Maiamai", "Ti'gorneau", "Maimai" }, Text{ "a ", "un ", "ein " } }, // "Maimai"
-        { Text{ "Gratitude Crystal", "Cristal de gratitude", "Juwel der Güte" },
+        { Text{ "Gratitude Crystal", "Cristal de Gratitude", "Juwel der Güte" },
           Text{ "a ", "un ", "ein " } },                                                       // "Gema de gratitud"
-        { Text{ "Korok Seed", "Noix korogu", "Krog-Samen" }, Text{ "a ", "une ", "einen " } }, // "Semilla de kolog"
+        { Text{ "Korok Seed", "Noix Korogu", "Krog-Samen" }, Text{ "a ", "une ", "einen " } }, // "Semilla de kolog"
     };
 
     trickNameTable[RG_PROGRESSIVE_HOOKSHOT] = {
@@ -375,63 +375,63 @@ static void InitTrickNames() {
           Text{ "a ", "un ", "ein " } }, // "Manoplas progresivas"
     };
     trickNameTable[RG_PROGRESSIVE_BOMB_BAG] = {
-        { Text{ "Progressive Bomb Capacity", "Capacité de bombes (prog.)", "Bomben-Kapazität (prog.)" },
+        { Text{ "Progressive Bomb Capacity", "Capacité de Bombes (prog.)", "Bomben-Kapazität (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de bombas"
-        { Text{ "Progressive Bomb Pack", "Paquet de bombes (prog.)", "Bombenrucksack (prog.)" },
+        { Text{ "Progressive Bomb Pack", "Paquet de Bombes (prog.)", "Bombenrucksack (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Zurrón de bombas progresivo"
-        { Text{ "Progressive Bomb Box", "Boîte à bombes (prog.)", "Bombenschachtel (prog.)" },
+        { Text{ "Progressive Bomb Box", "Boîte à Bombes (prog.)", "Bombenschachtel (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Bolsa de bombas progresiva"
         { Text{ "Progressive Blast Mask", "Masque d'Explosion (prog.)", "Ka-Bumm-Maske (prog.)" },
           Text{ "a ", "un ", "eine " } }, // "Máscara explosiva progresiva"
         { Text{ "Progressive Powder Kegs", "Baril de Poudre (prog.)", "Pulverfass (prog.)" },
           Text{ "", "un ", "ein " } }, // "Barril de polvo progresivo"
-        { Text{ "Progressive Remote Bombs", "Bombes à distance (prog.)", "Fernzünderbomben (prog.)€" },
+        { Text{ "Progressive Remote Bombs", "Bombes à Distance (prog.)", "Fernzünderbomben (prog.)€" },
           Text{ "", "des ", "" } }, // "Bombas remotas progresivas"
     };
     trickNameTable[RG_PROGRESSIVE_BOW] = {
-        { Text{ "Progressive Arrow Capacity", "Capacité de flèches (prog.)", "Pfeil-Kapazität (prog.)" },
+        { Text{ "Progressive Arrow Capacity", "Capacité de Flèches (prog.)", "Pfeil-Kapazität (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de flechas"
-        { Text{ "Progressive Hero's Bow", "Arc du héros (prog.)", "Heroenbogen (prog.)" },
+        { Text{ "Progressive Hero's Bow", "Arc du Héros (prog.)", "Heroenbogen (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Arco del héroe progresivo"
         { Text{ "Progressive Arrow Holder", "Arbalète (prog.)", "Köcher (prog.)" },
           Text{ "a ", "une ", "einen " } }, // "Ballesta progresiva"
         { Text{ "Progressive Crossbow", "Arbalète (prog.)", "Armbrust (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Ballesta progresiva"
-        { Text{ "Progressive Sacred Bow", "Arc sacré (prog)", "Heiliger Bogen (prog.)" },
+        { Text{ "Progressive Sacred Bow", "Arc Sacré (prog)", "Heiliger Bogen (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Arco Sagrado Progresivo"
         { Text{ "Progressive Lynel Bow", "Arc de Lynel (prog.)", "Leunenbogen (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Arco de centaleón Progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_SLINGSHOT] = {
-        { Text{ "Progressive Seed Capacity", "Capacité de graines (prog.)", "Kern-Kapazität (prog.)" },
+        { Text{ "Progressive Seed Capacity", "Capacité de Graines (prog.)", "Kern-Kapazität (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de semillas"
         { Text{ "Progressive Catapult", "Catapulte (prog.)", "Katapult (prog.)" },
           Text{ "a ", "une ", "ein " } }, // "Catapulta progresiva"
-        { Text{ "Progressive Scattershot", "Lance-Pierre rafale (prog.)", "Streuschleuder (prog.)" },
+        { Text{ "Progressive Scattershot", "Lance-Pierre Rafale (prog.)", "Streuschleuder (prog.)" },
           Text{ "a ", "un ", "eine " } }, // "Resortera múltiple progresiva"
-        { Text{ "Progressive Seed Launcher", "Lanceur de semences (prog.)", "Blasrohr (prog.)" },
+        { Text{ "Progressive Seed Launcher", "Lanceur de Semences (prog.)", "Blasrohr (prog.)" },
           Text{ "a ", "un ", "ein " } }, // "Lanzador de semillas progresivo"
-        { Text{ "Progressive Seed Satchel", "Sac de graines (prog.)", "Saatbeutel (prog.)" },
+        { Text{ "Progressive Seed Satchel", "Sac de Graines (prog.)", "Saatbeutel (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Bolsa de semillas progresiva"
     };
     trickNameTable[RG_PROGRESSIVE_WALLET] = {
-        { Text{ "Progressive Rupee Capacity", "Capacité de rubis (prog.)", "Rubin-Kapazität (prog.)" },
+        { Text{ "Progressive Rupee Capacity", "Capacité de Rubis (prog.)", "Rubin-Kapazität (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de rupias"
         { Text{ "Progressive Purse", "Sacoche (prog.)", "Portemonnaie (prog.)" },
           Text{ "a ", "une ", "ein " } }, // "Cartera de rupias progresiva"
-        { Text{ "Progressive Rupee Bag", "Sac à rubis (prog.)", "Rubintasche (prog.)" },
+        { Text{ "Progressive Rupee Bag", "Sac à Rubis (prog.)", "Rubintasche (prog.)" },
           Text{ "a ", "un ", "eine " } }, // "Zurrón de rupias progresivo"
         { Text{ "Progressive Rupoor Capacity", "Capacité de Roupir (prog.)", "Rubinfalle (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Capacidad progresiva Rupobre"
         { Text{ "Progressive Spoils Bag", "Sac à Butin (prog.)", "Beutetasche (prog.)" },
           Text{ "a ", "un ", "eine " } }, // "Bolsa de trofeos progresiva"
-        { Text{ "Progressive Ruby Bag", "Capacité du sac Ruby (prog.)", "Rubytasche (prog.)" },
+        { Text{ "Progressive Ruby Bag", "Capacité du Sac Rubis (prog.)", "Rubytasche (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Bolso Ruby progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_SCALE] = {
         { Text{ "Progressive Flippers", "Palmes de Zora (prog.)", "Schwimmflossen (prog.)€" },
           Text{ "", "des ", "" } }, // "Aletas de zora progresiva"
-        { Text{ "Progressive Dragon's Scale", "Écaille du dragon d'eau (prog.)", "Drachen-Schuppe (prog.)" },
+        { Text{ "Progressive Dragon's Scale", "Écaille du Dragon d'Eau (prog.)", "Drachen-Schuppe (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Escama dragón acuático progresiva"
         { Text{ "Progressive Diving Ability", "Plongée (prog.)", "Tauchfähigkeit (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Buceo progresivo"
@@ -441,25 +441,25 @@ static void InitTrickNames() {
           Text{ "a ", "une ", "eine " } }, // "Fragmento Zora progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_NUT_UPGRADE] = {
-        { Text{ "Progressive Nut Pack", "Paquet de noix (prog.)", "Nußrucksack (prog.)" },
+        { Text{ "Progressive Nut Pack", "Paquet de Noix (prog.)", "Nußrucksack (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Mayor capacidad de semillas"
         { Text{ "Progressive Bait Bag", "Sac à Appâts (prog.)", "Futtertasche (prog.)" },
           Text{ "a ", "un ", "eine " } }, // "Bolsa de cebo progresiva"
-        { Text{ "Progressive Pear Capacity", "Capacité de poire (prog.)", "Putput-Kapazität (prog.)" },
+        { Text{ "Progressive Pear Capacity", "Capacité de Poire (prog.)", "Putput-Kapazität (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Capacidad progresiva de pera"
-        { Text{ "Progressive Nut Bag", "Sac de noix (prog.)", "Nußbeutel (prog.)" },
+        { Text{ "Progressive Nut Bag", "Sac de Noix (prog.)", "Nußbeutel (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Bolsa de nueces progresiva"
-        { Text{ "Progressive Husk Capacity", "Capacité de noisettes (prog.)", "Schalen-Kapazität (prog.)€" },
+        { Text{ "Progressive Husk Capacity", "Capacité de Noisettes (prog.)", "Schalen-Kapazität (prog.)€" },
           Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de castañas"
     };
     trickNameTable[RG_PROGRESSIVE_STICK_UPGRADE] = {
-        { Text{ "Progressive Stick Bag", "Sac de bâtons (prog.)", "Stabbeutel (prog.)" },
+        { Text{ "Progressive Stick Bag", "Sac de Bâtons (prog.)", "Stabbeutel (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Mayor capacidad de ramas deku"
-        { Text{ "Progressive Stick Pack", "Paquet de bâtons Mojo (prog.)", "Stabrucksack (prog.)" },
+        { Text{ "Progressive Stick Pack", "Paquet de Bâtons Mojo (prog.)", "Stabrucksack (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Mayor capacidad de bastones"
-        { Text{ "Progressive Branch Capacity", "Capacité de la succursale (prog.)", "Ast-Kapazität (prog.)" },
+        { Text{ "Progressive Branch Capacity", "Capacité de la Succursale (prog.)", "Ast-Kapazität (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Capacidad progresiva de la sucursal"
-        { Text{ "Progressive Rod Capacity", "Capacité de tiges (prog.)", "Stock-Kapazität (prog.)" },
+        { Text{ "Progressive Rod Capacity", "Capacité de Tiges (prog.)", "Stock-Kapazität (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Mayor capacidad de cetros deku"
     };
     trickNameTable[RG_PROGRESSIVE_BOMBCHU_BAG] = {
@@ -473,17 +473,17 @@ static void InitTrickNames() {
           Text{ "", "des ", "" } }, // "Misiles progresivos"
     };
     trickNameTable[RG_PROGRESSIVE_MAGIC_METER] = {
-        { Text{ "Progressive Stamina Meter", "Jauge d'endurance (prog.)", "Ausdauer (prog.)" },
+        { Text{ "Progressive Stamina Meter", "Jauge d'Endurance (prog.)", "Ausdauer (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Medidor de vigor progresivo"
-        { Text{ "Progressive Energy Gauge", "Jauge d'énergie (prog.)", "Energie (prog.)" },
+        { Text{ "Progressive Energy Gauge", "Jauge d'Énergie (prog.)", "Energie (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Medidor de energía progresivo"
-        { Text{ "Progressive Magic Powder", "Poudre magique (prog.)", "Zauberpulver (prog.)" },
+        { Text{ "Progressive Magic Powder", "Poudre Magique (prog.)", "Zauberpulver (prog.)" },
           Text{ "a ", "une ", "ein " } }, // "Medidor de carga progresivo"
     };
     trickNameTable[RG_PROGRESSIVE_OCARINA] = {
         { Text{ "Progressive Memento", "Souvenir (prog.)", "Souvenir (prog.)" },
           Text{ "a ", "un ", "ein " } }, // "Silbato progresivo"
-        { Text{ "Progressive Whistle", "Siffler (prog.)", "Pfeife (prog.)" },
+        { Text{ "Progressive Whistle", "Sifflet (prog.)", "Pfeife (prog.)" },
           Text{ "a ", "un ", "eine " } }, // "Silbido progresivo"
         { Text{ "Progressive Flute", "Flûte (prog.)", "Flöte (prog.)" },
           Text{ "a ", "une ", "eine " } }, // "Flauta progresiva"
@@ -495,131 +495,131 @@ static void InitTrickNames() {
           Text{ "a ", "une ", "eine " } }, // "Hoja del Titán progresiva"
         { Text{ "Progressive Goron Knife", "Lame Goron (prog.)", "Goronenmesser (prog.)" },
           Text{ "a ", "une ", "ein " } }, // "Daga Goron progresiva"
-        { Text{ "Progressive Giant Sword", "Épée géante (prog.)", "Riesenschwert (prog.)" },
+        { Text{ "Progressive Giant Sword", "Épée Géante (prog.)", "Riesenschwert (prog.)" },
           Text{ "a ", "une ", "ein " } }, // "Espada gigante progresiva"
         { Text{ "Progressive Darknut Sword", "Épée de Darknut (prog.)", "Gardeschwert (prog.)" },
           Text{ "a ", "une ", "ein " } }, // "Espada Darknut progresiva"
         { Text{ "Progressive Power Sword", "Épée de Puissance (prog.)", "Schwert der Macht (prog.)" },
           Text{ "a ", "une ", "ein " } }, // "Espada de poder progresiva"
-        { Text{ "Progressive Big Stabby", "Gros coup de poignard (prog.)", "Großschwert (prog.)" },
+        { Text{ "Progressive Big Stabby", "Gros Coup de Poignard (prog.)", "Großschwert (prog.)" },
           Text{ "a ", "un ", "ein " } }, // "Gran puñalada progresiva"
     };
 
     trickNameTable[RG_EMPTY_BOTTLE] = {
-        { Text{ "Empty Canteen", "Cantine vide", "Leere Feldflasche" },
+        { Text{ "Empty Canteen", "Gourde Vide", "Leere Feldflasche" },
           Text{ "an ", "une ", "eine " } }, // "cantimplora vacía"
-        { Text{ "Vial of Winds", "Fiole de vents", "Phiole der Winde" },
+        { Text{ "Vial of Winds", "Fiole de Vents", "Phiole der Winde" },
           Text{ "a ", "une ", "eine " } }, // "Vial de Vientos"
         { Text{ "Tingle Bottle", "Flacon de Tingle", "Tingle-Flasche" },
           Text{ "a ", "un ", "eine " } }, // "Botella de Tingle"
-        { Text{ "Magic Bottle", "Flacon magique", "Magische Flasche" },
+        { Text{ "Magic Bottle", "Flacon Magique", "Magische Flasche" },
           Text{ "a ", "un ", "eine " } }, // "Frasco feérico"
-        { Text{ "Glass Bottle", "Flacon de verre", "Glasflasche" },
+        { Text{ "Glass Bottle", "Flacon de Verre", "Glasflasche" },
           Text{ "a ", "un ", "eine " } }, // "Botella de cristal"
-        { Text{ "Bottle with Water", "Flacon d'eau", "Flasche (Wasser)" },
+        { Text{ "Bottle with Water", "Flacon d'Eau", "Flasche (Wasser)" },
           Text{ "a ", "un ", "eine " } }, // "Botella Tingle"
     };
     trickNameTable[RG_BOTTLE_WITH_MILK] = {
-        { Text{ "Bottle with Chateau Romani", "Flacon de cuvée Romani", "Flasche (Chateau Romani)" },
+        { Text{ "Bottle with Chateau Romani", "Flacon de Cuvée Romani", "Flasche (Chateau Romani)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de Reserva Romani"
-        { Text{ "Bottle with Premium Milk", "Flacon avec lait de qualité supérieure", "Flasche (Vollmilch)" },
+        { Text{ "Bottle with Premium Milk", "Flacon avec Lait de Qualité Supérieure", "Flasche (Vollmilch)" },
           Text{ "a ", "un ", "eine " } }, // "Biberón con leche Premium"
-        { Text{ "Bottle with Mystery Milk", "Flacon de lait grand cru", "Flasche (Verdächtige Milch)" },
+        { Text{ "Bottle with Mystery Milk", "Flacon de Lait Grand Cru", "Flasche (Verdächtige Milch)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de leche extra"
-        { Text{ "Bottle with Fresh Milk", "Flacon de lait frais", "Flasche (Frische Milch)" },
+        { Text{ "Bottle with Fresh Milk", "Flacon de Lait Frais", "Flasche (Frische Milch)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de leche fresca"
     };
     trickNameTable[RG_BOTTLE_WITH_RED_POTION] = {
-        { Text{ "Bottle with Red Chu Jelly", "Flacon de gelée Chuchu rouge", "Flasche (Rotes Schleim-Gelee)" },
+        { Text{ "Bottle with Red Chu Jelly", "Flacon de Gelée Chuchu Rouge", "Flasche (Rotes Schleim-Gelee)" },
           Text{ "a ", "un ", "eine " } }, // "Jugo de Chuchu Rojo"
-        { Text{ "Bottle with Hibiscus Potion", "Flacon de potion de Hibiscus", "Flasche (Hibiskus-Trank)" },
+        { Text{ "Bottle with Hibiscus Potion", "Flacon de Potion de Hibiscus", "Flasche (Hibiskus-Trank)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de poción de Hibisco"
-        { Text{ "Bottle with Medicine of Life", "Flacon d'élixir rouge", "Flasche (Roter Trank)" },
+        { Text{ "Bottle with Medicine of Life", "Flacon d'Élixir Rouge", "Flasche (Roter Trank)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de medicina de la vida"
-        { Text{ "Bottle with Heart Potion", "Flacon de potion de soin", "Flasche (Herztrank)" },
+        { Text{ "Bottle with Heart Potion", "Flacon de Potion de Soin", "Flasche (Herztrank)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de poción de salud"
     };
     trickNameTable[RG_BOTTLE_WITH_GREEN_POTION] = {
-        { Text{ "Bottle with Green Chu Jelly", "Flacon de gelée Chuchu verte", "Flasche (Grünes Schleim-Gelee)" },
+        { Text{ "Bottle with Green Chu Jelly", "Flacon de Gelée Chuchu Verte", "Flasche (Grünes Schleim-Gelee)" },
           Text{ "a ", "un ", "eine " } }, // "Jugo de Chuchu Verde"
-        { Text{ "Bottle with Lamp Oil", "Flacon de Huile à lanterne", "Flasche (Lampenöl)" },
+        { Text{ "Bottle with Lamp Oil", "Flacon de Huile à Lanterne", "Flasche (Lampenöl)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de Aceite de candil"
-        { Text{ "Bottle with Medicine of Magic", "Flacon d'élixir vert", "Flasche (Grüner Trank)" },
+        { Text{ "Bottle with Medicine of Magic", "Flacon d'Élixir Vert", "Flasche (Grüner Trank)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de medicina mágica"
         { Text{ "Bottle with Stamina Potion", "Flacon d'Endurol", "Flasche (Ausdauertrank)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de elixir vigorizante"
     };
     trickNameTable[RG_BOTTLE_WITH_BLUE_POTION] = {
-        { Text{ "Bottle with Blue Chu Jelly", "Flacon de gelée Chuchu bleue", "Flasche (Blaues Schleim-Gelee)" },
+        { Text{ "Bottle with Blue Chu Jelly", "Flacon de Gelée Chuchu Bleue", "Flasche (Blaues Schleim-Gelee)" },
           Text{ "a ", "un ", "eine " } }, // "Jugo de Chuchu Azul"
-        { Text{ "Bottle with Water of Life", "Flacon d'élixir bleu", "Flasche (Blauer Trank)" },
+        { Text{ "Bottle with Water of Life", "Flacon d'Élixir Bleu", "Flasche (Blauer Trank)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de agua de la vida"
-        { Text{ "Bottle with Air Potion", "Flacon de potion d'oxygène", "Flasche (Lufttrank)" },
+        { Text{ "Bottle with Air Potion", "Flacon de Potion d'Oxygène", "Flasche (Lufttrank)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de oxígeno"
     };
     trickNameTable[RG_BOTTLE_WITH_FAIRY] = {
-        { Text{ "Bottle with Forest Firefly", "Flacon avec une luciole", "Flasche (Glühwürmchen)" },
+        { Text{ "Bottle with Forest Firefly", "Flacon avec une Luciole", "Flasche (Glühwürmchen)" },
           Text{ "a ", "un ", "eine " } }, // "Luciérnaga del bosque"
-        { Text{ "Bottle with Deku Princess", "Flacon avec Deku Princess", "Flasche (Deku-Prinzessin)" },
+        { Text{ "Bottle with Deku Princess", "Flacon avec la Princesse Mojo", "Flasche (Deku-Prinzessin)" },
           Text{ "a ", "un ", "eine " } }, // "Botella con Deku Princess"
-        { Text{ "Bottle with Stray Fairy", "Flacon avec une fée perdue", "Flasche (Verirrte Fee)" },
+        { Text{ "Bottle with Stray Fairy", "Flacon avec une Fée Perdue", "Flasche (Verirrte Fee)" },
           Text{ "a ", "un ", "eine " } }, // "Hada perdida en una botella"
     };
     trickNameTable[RG_BOTTLE_WITH_FISH] = {
-        { Text{ "Bottle with Small Jabu-Jabu", "Flacon avec mini Jabu-Jabu", "Flasche (Baby Jabu)" },
+        { Text{ "Bottle with Small Jabu-Jabu", "Flacon avec Mini Jabu-Jabu", "Flasche (Baby Jabu)" },
           Text{ "a ", "un ", "eine " } }, // "Lord Chapu-Chapu embotellado"
         { Text{ "Bottle with Reekfish", "Flacon avec Reekfish", "Flasche (Dunstforelle)" },
           Text{ "a ", "un ", "eine " } }, // "Reekfish embotellada"
-        { Text{ "Bottle with Hyrule Bass", "Flacon avec perche d'Hyrule", "Flasche (Hyrulebarsch)" },
+        { Text{ "Bottle with Hyrule Bass", "Flacon avec une Perche d'Hyrule", "Flasche (Hyrulebarsch)" },
           Text{ "a ", "un ", "eine " } }, // "Locha de Hyrule embotellada"
-        { Text{ "Bottle with Hyrule Loach", "Flacon avec loche d'Hyrule", "Flasche (Hylianische Forelle)" },
+        { Text{ "Bottle with Hyrule Loach", "Flacon avec une Loche d'Hyrule", "Flasche (Hylianische Forelle)" },
           Text{ "a ", "un ", "eine " } }, // "Perca de Términa embotellada"
     };
     trickNameTable[RG_BOTTLE_WITH_BLUE_FIRE] = {
-        { Text{ "Bottle with Will-O-Wisp", "Flacon avec feu follet", "Flasche (Rotes Feuer)" },
+        { Text{ "Bottle with Will-O-Wisp", "Flacon avec un Feu Follet", "Flasche (Rotes Feuer)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de llama azul"
-        { Text{ "Bottle with Ancient Flame", "Flacon de flamme ancienne", "Flasche (Antike Flamme)" },
+        { Text{ "Bottle with Ancient Flame", "Flacon de Flamme Ancienne", "Flasche (Antike Flamme)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de fuego ancestral"
-        { Text{ "Bottle with a Blue Candle", "Flacon avec une bougie bleue", "Flasche (Blaue Kerze)" },
+        { Text{ "Bottle with a Blue Candle", "Flacon avec une Bougie Bleue", "Flasche (Blaue Kerze)" },
           Text{ "a ", "un ", "eine " } }, // "Botella con una vela azul"
         { Text{ "Bottle with Red Ice", "Flacon de Glace Rouge", "Flasche (Rotes Eis)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de Hielo rojo"
-        { Text{ "Bottle with Nayru's Flame", "Flacon de flamme de Nayru", "Flasche (Nayrus Flamme)" },
+        { Text{ "Bottle with Nayru's Flame", "Flacon de Flamme de Nayru", "Flasche (Nayrus Flamme)" },
           Text{ "a ", "un ", "eine " } }, // "Botella de llamas de Nayru"
     };
     trickNameTable[RG_BOTTLE_WITH_BUGS] = {
-        { Text{ "Bottle with Baby Tektites", "Flacon de bébé Araknon", "Flasche (Baby Arachno)" },
+        { Text{ "Bottle with Baby Tektites", "Flacon de Bébé Araknon", "Flasche (Baby Arachno)" },
           Text{ "a ", "un ", "eine " } }, // "Tektites en una botella"
-        { Text{ "Bottle with A Beetle", "Flacon avec un scarabée", "Flasche (Wanze)" },
+        { Text{ "Bottle with A Beetle", "Flacon avec un Scarabée", "Flasche (Wanze)" },
           Text{ "a ", "un ", "eine " } }, // "Botella con un escarabajo"
-        { Text{ "Bottle with Lanayru Ants", "Flacon de fourmis de Lanelle", "Flasche (Ranelle-Ameise)" },
+        { Text{ "Bottle with Lanayru Ants", "Flacon de Fourmis de Lanelle", "Flasche (Ranelle-Ameise)" },
           Text{ "a ", "un ", "eine " } }, // "Celestarabajo embotellado"
-        { Text{ "Bottle with Insects", "Flacon de bibittes", "Flasche (Insekt)" },
+        { Text{ "Bottle with Insects", "Flacon de Bibittes", "Flasche (Insekt)" },
           Text{ "a ", "un ", "eine " } }, // "Saltabosques embotellados"
-        { Text{ "Bottle with a Golden Bee", "Flacon avec une abeille dorée", "Flasche (Goldene Biene)" },
+        { Text{ "Bottle with a Golden Bee", "Flacon avec une Abeille Dorée", "Flasche (Goldene Biene)" },
           Text{ "a ", "un ", "eine " } }, // "Botella con una abeja dorada"
     };
     trickNameTable[RG_BOTTLE_WITH_POE] = {
         { Text{ "Bottle with Ghini", "Flacon avec Ghini", "Flasche (Ghini)" },
           Text{ "a ", "un ", "eine " } }, // "Ghini en una botella"
-        { Text{ "Bottle with Reapling", "Flacon avec Âme Damnée", "Flasche (Zombie)" },
+        { Text{ "Bottle with Reapling", "Flacon avec une Âme Damnée", "Flasche (Zombie)" },
           Text{ "a ", "un ", "eine " } }, // "Reapling en una botella"
-        { Text{ "Bottle with Imp Poe", "Flacon avec Spectre", "Flasche (Geist)" },
+        { Text{ "Bottle with Imp Poe", "Flacon avec un Spectre", "Flasche (Geist)" },
           Text{ "a ", "un ", "eine " } }, // "Espectro en una botella"
-        { Text{ "Bottle with Anti-Fairy", "Flacon avec Tetdoss", "Flasche (Knochenfratze)" },
+        { Text{ "Bottle with Anti-Fairy", "Flacon avec un Tetdoss", "Flasche (Knochenfratze)" },
           Text{ "a ", "un ", "eine " } }, // "Whisp en una botella"
     };
 
     trickNameTable[RG_RUTOS_LETTER] = {
-        { Text{ "Bottle with Maggie's Letter", "Flacon avec lettre de Maggy", "Flasche (Dolores' Brief)" },
+        { Text{ "Bottle with Maggie's Letter", "Flacon avec une Lettre de Maggy", "Flasche (Dolores' Brief)" },
           Text{ "a ", "un ", "eine " } }, // "Carta de Dolores"
-        { Text{ "Bottle with Letter to Kafei", "Flacon avec lettre pour Kafei", "Flasche (Brief an Kafei)" },
+        { Text{ "Bottle with Letter to Kafei", "Flacon avec une Lettre pour Kafei", "Flasche (Brief an Kafei)" },
           Text{ "a ", "un ", "eine " } }, // "Carta para Kafei"
-        { Text{ "Bottle with Zelda's Letter", "Flacon avec Lettre de Zelda", "Flasche (Zeldas Brief)" },
+        { Text{ "Bottle with Zelda's Letter", "Flacon avec une Lettre de Zelda", "Flasche (Zeldas Brief)" },
           Text{ "a ", "un ", "eine " } }, // "Carta náutica"
     };
     trickNameTable[RG_BOTTLE_WITH_BIG_POE] = {
-        { Text{ "Bottle with Composer Brother", "Flacon avec un compositeur", "Flasche (Ludwig Brahmstein)" },
+        { Text{ "Bottle with Composer Brother", "Flacon avec un Compositeur", "Flasche (Ludwig Brahmstein)" },
           Text{ "a ", "un ", "eine " } }, // "Hermana Poe embotellada"
         { Text{ "Bottle with Jalhalla", "Flacon avec Jalhalla", "Flasche (Jalhalla)" },
           Text{ "a ", "un ", "eine " } }, // "Yaihalla embotellado"
@@ -628,53 +628,53 @@ static void InitTrickNames() {
     };
 
     trickNameTable[RG_ZELDAS_LULLABY] = {
-        { Text{ "Ballad of the Goddess", "Chant de la déesse", "Hymne der Göttin" },
+        { Text{ "Ballad of the Goddess", "Chant de la Déesse", "Hymne der Göttin" },
           Text{ "", "le ", "" } }, // "Cántico de la Diosa"
-        { Text{ "Song of Healing", "Chant de l'apaisement", "Lied der Befreiung" },
+        { Text{ "Song of Healing", "Chant de l'Apaisement", "Lied der Befreiung" },
           Text{ "", "le ", "" } }, // "Canción de curación"
-        { Text{ "Song of the Hero", "Chant du héros", "Heldenlied" }, Text{ "", "le ", "" } }, // "Canción del héroe"
+        { Text{ "Song of the Hero", "Chant du Héros", "Heldenlied" }, Text{ "", "le ", "" } }, // "Canción del héroe"
     };
     trickNameTable[RG_EPONAS_SONG] = {
-        { Text{ "Song of Birds", "Chant des oiseaux", "Vogelruf" }, Text{ "", "le ", "" } }, // "Cantar del ave"
-        { Text{ "Song of Soaring", "Chant de l'envol", "Lied der Schwingen" },
+        { Text{ "Song of Birds", "Chant des Oiseaux", "Vogelruf" }, Text{ "", "le ", "" } }, // "Cantar del ave"
+        { Text{ "Song of Soaring", "Chant de l'Envol", "Lied der Schwingen" },
           Text{ "", "le ", "" } }, // "Canción del viento"
-        { Text{ "Song of Horse", "Chant du cheval", "Lied des Pferdes" }, Text{ "", "le ", "" } }, // "Chant du cheval"
+        { Text{ "Song of Horse", "Chant du Cheval", "Lied des Pferdes" }, Text{ "", "le ", "" } }, // "Chant du cheval"
     };
     trickNameTable[RG_SARIAS_SONG] = {
-        { Text{ "Mido's Song", "La chanson de Mido", "Midos Lied" }, Text{ "", "", "" } },   // "La canción de Mido"
-        { Text{ "Kass' Theme", "Le thème de Kass", "Kashiwas Thema" }, Text{ "", "", "" } }, // "El tema de Kass"
+        { Text{ "Mido's Song", "Chanson de Mido", "Midos Lied" }, Text{ "", "la ", "" } },   // "La canción de Mido"
+        { Text{ "Kass' Theme", "Thème de Kass", "Kashiwas Thema" }, Text{ "", "le ", "" } }, // "El tema de Kass"
         { Text{ "Tune of Echoes", "Chant des Échos ", "Melodie des Echos" },
           Text{ "", "le ", "" } }, // "Melodía del Eco"
     };
     trickNameTable[RG_SUNS_SONG] = {
         { Text{ "Song of Passing", "Mambo de Manbo", "Kleine Tag- und Nachtmusik" },
           Text{ "", "le ", "" } }, // "Melodía del transcurrir"
-        { Text{ "Command Melody", "Air du marionnettiste", "Sonate des Puppenspielers" },
+        { Text{ "Command Melody", "Air du Marionnettiste", "Sonate des Puppenspielers" },
           Text{ "", "l'", "" } }, // "Cara al Sol"
-        { Text{ "Moon's Song", "La chanson de Moon", "Lied des Mondes" },
-          Text{ "", "", "" } }, // "La canción de la luna"
+        { Text{ "Moon's Song", "Chanson de Moon", "Lied des Mondes" },
+          Text{ "", "la ", "" } }, // "La canción de la luna"
     };
     trickNameTable[RG_SONG_OF_TIME] = {
-        { Text{ "Song of Double Time", "Chant accéléré", "Thema der Zeit im Wind" },
+        { Text{ "Song of Double Time", "Chant Accéléré", "Thema der Zeit im Wind" },
           Text{ "", "le ", "" } }, // "Canción del doble tiempo"
-        { Text{ "Inverted Song of Time", "Chant du temps inversé", "Ballade des Kronos" },
+        { Text{ "Inverted Song of Time", "Chant du Temps Inversé", "Ballade des Kronos" },
           Text{ "", "le ", "" } }, // "Canción del tiempo invertida"
         { Text{ "Tune of Ages", "Chant du Temps", "Melodie der Zeit" }, Text{ "", "le ", "" } }, // "Melodía del Tiempo"
     };
     trickNameTable[RG_SONG_OF_STORMS] = {
-        { Text{ "Ballad of Gales", "Requiem de la tornade", "Kanon des Sturmes" },
+        { Text{ "Ballad of Gales", "Requiem de la Tornade", "Kanon des Sturmes" },
           Text{ "", "le ", "" } }, // "Melodía del Tornado"
-        { Text{ "Frog's Song of Soul", "Rap des grenouilles", "Krötenrap" },
+        { Text{ "Frog's Song of Soul", "Rap des Grenouilles", "Krötenrap" },
           Text{ "", "le ", "" } }, // "Canción del alma de la rana"
-        { Text{ "Wind's Requiem", "Mélodie du vent", "Lied des Windes" },
+        { Text{ "Wind's Requiem", "Mélodie du Vent", "Lied des Windes" },
           Text{ "", "la ", "" } }, // "Melodía del Viento"
     };
     trickNameTable[RG_MINUET_OF_FOREST] = {
         { Text{ "Saria's Karaoke", "Karaoké de Saria", "Salias Karaoke" },
           Text{ "", "le ", "" } }, // "Dueto del bosque"
-        { Text{ "Sonata of Awakening", "Sonate de l'éveil", "Sonate des Erwachens" },
+        { Text{ "Sonata of Awakening", "Sonate de l'Éveil", "Sonate des Erwachens" },
           Text{ "", "la ", "" } }, // "Sonata del despertar"
-        { Text{ "Wind God's Aria", "Hymne du dieu du vent", "Hymne des Zephirgottes" },
+        { Text{ "Wind God's Aria", "Hymne du Dieu du Vent", "Hymne des Zephirgottes" },
           Text{ "", "l'", "" } }, // "Melodía del Espíritu del Viento"
     };
     trickNameTable[RG_BOLERO_OF_FIRE] = {
@@ -686,23 +686,23 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_SERENADE_OF_WATER] = {
         { Text{ "Ruto's Blues", "Blues de Ruto", "Rutos Blues" }, Text{ "", "le ", "" } }, // "Sonata del agua"
-        { Text{ "New Wave Bossa Nova", "Bossa-nova des flots", "Bossa Nova der Kaskaden" },
+        { Text{ "New Wave Bossa Nova", "Bossa-nova des Flots", "Bossa Nova der Kaskaden" },
           Text{ "", "la ", "" } },                                                            // "Bossanova de las olas"
         { Text{ "Manbo's Mambo", "Mambo de Manbo", "Manbos Mambo" }, Text{ "", "le ", "" } }, // "Mambo de Manbo"
     };
     trickNameTable[RG_REQUIEM_OF_SPIRIT] = {
         { Text{ "Nabooru's Reggae", "Reggae de Nabooru", "Naborus Reggae" },
           Text{ "", "le ", "" } }, // "Reggae del espíritu"
-        { Text{ "Elegy of Emptiness", "Hymne du vide", "Elegie des leeren Herzens" },
+        { Text{ "Elegy of Emptiness", "Hymne du Vide", "Elegie des leeren Herzens" },
           Text{ "", "l'", "" } }, // "Elegía al vacío"
-        { Text{ "Earth God's Lyric", "Hymne du dieu de la terre", "Hymne des Terragottes" },
+        { Text{ "Earth God's Lyric", "Hymne du Dieu de la Terre", "Hymne des Terragottes" },
           Text{ "", "l'", "" } }, // "Melodía del Espíritu de la Tierra"
     };
     trickNameTable[RG_NOCTURNE_OF_SHADOW] = {
-        { Text{ "Impa's Death Metal", "Death métal d'Impa", "Impas Death Metal" },
+        { Text{ "Impa's Death Metal", "Death Métal d'Impa", "Impas Death Metal" },
           Text{ "", "le ", "" } }, // "Diurno de la sombra"
-        { Text{ "Oath to Order", "Ode de l'appel", "Gesang des Himmels" }, Text{ "", "l'", "" } }, // "Oda al orden"
-        { Text{ "Song of Discovery", "Chant des secrets", "Schatzsucherlied" },
+        { Text{ "Oath to Order", "Ode de l'Appel", "Gesang des Himmels" }, Text{ "", "l'", "" } }, // "Oda al orden"
+        { Text{ "Song of Discovery", "Chant des Secrets", "Schatzsucherlied" },
           Text{ "", "le ", "" } }, // "Canto revelador"
     };
     trickNameTable[RG_PRELUDE_OF_LIGHT] = {
@@ -715,7 +715,7 @@ static void InitTrickNames() {
     };
 
     trickNameTable[RG_KOKIRI_EMERALD] = {
-        { Text{ "Pendant of Courage", "Pendentif du courage", "Amulett des Mutes" },
+        { Text{ "Pendant of Courage", "Pendentif du Courage", "Amulett des Mutes" },
           Text{ "the ", "le ", "das " } }, // "Colgante del valor"
         { Text{ "Farore's Pearl", "Perle de Farore", "Farores Deamont" }, Text{ "", "la ", "" } }, // "Orbe de Farore"
         { Text{ "Aquanine", "Smaragdine", "Smaragdstahl" }, Text{ "the ", "la ", "den " } },       // "Yerbánida"
@@ -725,7 +725,7 @@ static void InitTrickNames() {
           Text{ "the ", "le ", "den " } }, // "Ágata de los Kokiri"
     };
     trickNameTable[RG_GORON_RUBY] = {
-        { Text{ "Pendant of Power", "Pendentif de la force", "Amulett der Stärke" },
+        { Text{ "Pendant of Power", "Pendentif de la Force", "Amulett der Stärke" },
           Text{ "the ", "le ", "das " } },                                                    // "Colgante del poder"
         { Text{ "Din's Pearl", "Perle de Din", "Dins Deamont" }, Text{ "", "la ", "" } },     // "Orbe de Din"
         { Text{ "Crimsonine", "Alzanine", "Scharlachstahl" }, Text{ "the ", "l'", "den " } }, // "Bermellina"
@@ -734,7 +734,7 @@ static void InitTrickNames() {
           Text{ "the ", "le ", "den " } }, // "Topacio de los Goron"
     };
     trickNameTable[RG_ZORA_SAPPHIRE] = {
-        { Text{ "Pendant of Wisdom", "Pendentif de la sagesse", "Amulett der Weisheit" },
+        { Text{ "Pendant of Wisdom", "Pendentif de la Sagesse", "Amulett der Weisheit" },
           Text{ "the ", "le ", "das " } }, // "Colgante de la sabiduría"
         { Text{ "Nayru's Pearl", "Perle de Nayru", "Nayrus Deamont" }, Text{ "", "la ", "" } }, // "Orbe de Nayru"
         { Text{ "Azurine", "Aquanine", "Azurstahl" }, Text{ "the ", "l'", "den " } },           // "Azurina"
@@ -744,13 +744,13 @@ static void InitTrickNames() {
           Text{ "the ", "l'", "den " } }, // "Lapislázuli de los Zora"
     };
     trickNameTable[RG_FOREST_MEDALLION] = {
-        { Text{ "Wind Medallion", "Médaillon du vent", "Amulett des Windes" },
+        { Text{ "Wind Medallion", "Médaillon du Vent", "Amulett des Windes" },
           Text{ "the ", "le ", "das " } }, // "Medallón del Viento"
         { Text{ "Wind Element", "Elément Vent", "Wind-Element" }, Text{ "the ", "l'", "das " } }, // "Elemento de aire"
         { Text{ "Saria's Medallion", "Médaillon de Saria", "Salias Amulett" },
           Text{ "", "le ", "" } }, // "Medallón de Saria"
-        { Text{ "Sign of Air", "Glyphe de l'air", "Zeichen der Luft" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de aire"
+        { Text{ "Sign of Air", "Glyphe de l'Air", "Zeichen der Luft" },
+          Text{ "the ", "le ", "das " } }, // "Glifo de aire"
         { Text{ "Medallion of Forest", "Médaillon du Temple de la Forêt", "Medaillon des Waldes" },
           Text{ "the ", "le ", "das " } }, // "Medalla del Bosque"
     };
@@ -759,20 +759,20 @@ static void InitTrickNames() {
           Text{ "the ", "l'", "das " } }, // "Elemento de fuego"
         { Text{ "Darunia's Medallion", "Médaillon de Darunia", "Darunias Amulett" },
           Text{ "", "le ", "" } }, // "Medallón de Darunia"
-        { Text{ "Sign of Fire", "Glyphe de feu", "Zeichen des Feuers" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de fuego"
+        { Text{ "Sign of Fire", "Glyphe de Feu", "Zeichen des Feuers" },
+          Text{ "the ", "le ", "das " } }, // "Glifo de fuego"
         { Text{ "Medallion of Fire", "Médaillon du Temple du Feu", "Medaillon des Feuers" },
           Text{ "the ", "le ", "das " } }, // "Medalla del Fuego"
     };
     trickNameTable[RG_WATER_MEDALLION] = {
         { Text{ "Water Element", "Elément Eau", "Tropfen-Element" },
           Text{ "the ", "l'", "das " } }, // "Elemento de agua"
-        { Text{ "Ice Medallion", "Médaillon de glace", "Amulett des Eises" },
+        { Text{ "Ice Medallion", "Médaillon de Glace", "Amulett des Eises" },
           Text{ "the ", "le ", "das " } }, // "Medallón Helado"
         { Text{ "Ruto's Medallion", "Médaillon de Ruto", "Rutos Amulett" },
           Text{ "", "le ", "" } }, // "Medallón de Ruto"
-        { Text{ "Sign of Water", "Glyphe de l'eau", "Zeichen des Wassers" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de agua"
+        { Text{ "Sign of Water", "Glyphe de l'Eau", "Zeichen des Wassers" },
+          Text{ "the ", "le ", "das " } }, // "Glifo de agua"
         { Text{ "Medallion of Water", "Médaillon du Temple de l'Eau", "Medaillon des Wassers" },
           Text{ "the ", "le ", "das " } }, // "Medalla del Agua"
     };
@@ -782,28 +782,28 @@ static void InitTrickNames() {
         { Text{ "Nabooru's Medallion", "Médaillon de Nabooru", "Naborus Amulett" },
           Text{ "", "le ", "" } }, // "Medallón de Nabooru"
         { Text{ "Sign of Earth", "Glyphe de la Terre", "Zeichen der Erde" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de la tierra"
+          Text{ "the ", "le ", "das " } }, // "Glifo de la tierra"
         { Text{ "Medallion of Spirit", "Médaillon du Temple de l'Esprit", "Medaillon der Geister" },
           Text{ "the ", "le ", "das " } }, // "Medalla del Espíritu"
     };
     trickNameTable[RG_SHADOW_MEDALLION] = {
-        { Text{ "Fused Shadow", "Cristal d'ombre", "Schattenkristall" },
+        { Text{ "Fused Shadow", "Cristal d'Ombre", "Schattenkristall" },
           Text{ "the ", "le ", "den " } }, // "Sombra Fundida"
         { Text{ "Impa's Medallion", "Médaillon d'Impa", "Impas Amulett" },
           Text{ "", "le ", "" } }, // "Medallón de Impa"
-        { Text{ "Sign of Illusion", "Glyphe de l'illusion", "Zeichen der Illusionen" },
-          Text{ "the ", "la ", "das " } }, // "Glifo de ilusión"
+        { Text{ "Sign of Illusion", "Glyphe de l'Illusion", "Zeichen der Illusionen" },
+          Text{ "the ", "le ", "das " } }, // "Glifo de ilusión"
         { Text{ "Medallion of Shadow", "Médaillon du Temple de l'Ombre", "Medaillon des Schattens" },
           Text{ "the ", "le ", "das " } }, // "Medalla de la Sombra"
     };
     trickNameTable[RG_LIGHT_MEDALLION] = {
-        { Text{ "Compass of Light", "Boussole de lumière", "Licht-Kompaß" },
+        { Text{ "Compass of Light", "Boussole de Lumière", "Licht-Kompaß" },
           Text{ "the ", "la ", "den " } }, // "Brújula de Luz"
         { Text{ "Rauru's Medallion", "Médaillon de Rauru", "Raurus Amulett" },
           Text{ "", "le ", "" } }, // "Medallón de Rauru"
-        { Text{ "Sign of Destiny", "Glyphe du destin", "Zeichen des Schicksals" },
-          Text{ "the ", "la ", "das " } }, // "Glifo del destino"
-        { Text{ "Medallion of Light", "Médaillon du temple de lumière", "Medaillon des Lichts" },
+        { Text{ "Sign of Destiny", "Glyphe du Destin", "Zeichen des Schicksals" },
+          Text{ "the ", "le ", "das " } }, // "Glifo del destino"
+        { Text{ "Medallion of Light", "Médaillon du Temple de Lumière", "Medaillon des Lichts" },
           Text{ "the ", "le ", "das " } }, // "Medalla de la Luz"
     };
 
@@ -814,53 +814,53 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_GREEN_RUPEE] = {
         { Text{ "Rupee (1)", "Rubis (1)", "Rubin (1)" }, Text{ "a ", "un ", "einen " } },       // "Peso hyliano"
-        { Text{ "One Ruby", "Un rubis", "ein Ruby" }, Text{ "", "", "" } },                     // "Un rubí"
-        { Text{ "One Rupee", "Un rubis", "ein Rubin" }, Text{ "", "", "" } },                   // "Guaraní hyliano"
+        { Text{ "One Ruby", "Un Rubis", "ein Ruby" }, Text{ "", "", "" } },                     // "Un rubí"
+        { Text{ "One Rupee", "Un Roupie", "ein Rubin" }, Text{ "", "", "" } },                   // "Guaraní hyliano"
         { Text{ "False Greg", "Faux Greg", "falscher Greg" }, Text{ "a ", "un ", "einen " } },  // "Falso Greg"
         { Text{ "Rupoor (1)", "Roupir (1)", "Rubinfalle (1)" }, Text{ "a ", "un ", "eine " } }, // "Rupobre (1)"
     };
     trickNameTable[RG_BLUE_RUPEE] = {
         { Text{ "Blupee", "Bleubi", "Fünfer" }, Text{ "a ", "un ", "einen " } },                // "Azupia"
         { Text{ "Five Rubies", "Cinq Rubys", "fünf Rubies€" }, Text{ "", "", "" } },            // "Cinco rubíes"
-        { Text{ "Five Rupees", "Cinq rubis", "fünf Rubine€" }, Text{ "", "", "" } },            // "Bolívar hyliano"
+        { Text{ "Five Rupees", "Cinq Rubis", "fünf Rubine€" }, Text{ "", "", "" } },            // "Bolívar hyliano"
         { Text{ "Rupee (5)", "Rubis (5)", "Rubin (5)" }, Text{ "a ", "un ", "einen " } },       // "Peso hyliano"
         { Text{ "Rupoor (5)", "Roupir (5)", "Rubinfalle (5)" }, Text{ "a ", "un ", "eine " } }, // "Rupobre (5)"
     };
     trickNameTable[RG_RED_RUPEE] = {
         { Text{ "Big 20", "Grand 20", "Zwanni" }, Text{ "a ", "un ", "einen " } },                 // "Los 20 grandes"
-        { Text{ "Twenty Rubies", "vingt rubis", "zwanzig Rubies€" }, Text{ "", "", "" } },         // "Veinte rubíes"
-        { Text{ "Twenty Rupees", "Vingt rubis", "zwanzig Rubine€" }, Text{ "", "", "" } },         // "Colon hyliano"
+        { Text{ "Twenty Rubies", "Vingt Rubis", "zwanzig Rubies€" }, Text{ "", "", "" } },         // "Veinte rubíes"
+        { Text{ "Twenty Rupees", "Vingt Rubis", "zwanzig Rubine€" }, Text{ "", "", "" } },         // "Colon hyliano"
         { Text{ "Rupee (20)", "Rubis (20)", "Rubin (20)" }, Text{ "a ", "un ", "einen " } },       // "Peso hyliano"
         { Text{ "Rupoor (20)", "Roupir (20)", "Rubinfalle (20)" }, Text{ "a ", "un ", "eine " } }, // "Rupobre (20)"
     };
     trickNameTable[RG_PURPLE_RUPEE] = {
         { Text{ "Purpee", "Pourbi", "Fuffi" }, Text{ "a ", "un ", "einen " } },               // "morupiua"
-        { Text{ "Fifty Rubies", "Cinquante rubis", "fünfzig Rubies€" }, Text{ "", "", "" } }, // "Cincuenta rubíes"
-        { Text{ "Fifty Rupees", "Cinquante rubis", "fünfzig Rubine€" }, Text{ "", "", "" } }, // "Balboa hyliano"
+        { Text{ "Fifty Rubies", "Cinquante Rubis", "fünfzig Rubies€" }, Text{ "", "", "" } }, // "Cincuenta rubíes"
+        { Text{ "Fifty Rupees", "Cinquante Rubis", "fünfzig Rubine€" }, Text{ "", "", "" } }, // "Balboa hyliano"
         { Text{ "Rupee (50)", "Rubis (50)", "Rubin (50)" }, Text{ "a ", "un ", "einen " } },  // "Peso hyliano"
         { Text{ "Rupoor (50)", "Roupir (50)", "Rubinfalle (50)" }, Text{ "a ", "un ", "eine " } }, // "Rupobre (50)"
     };
     trickNameTable[RG_HUGE_RUPEE] = {
         { Text{ "Hugo", "Or Rubi", "zwei Hunnis€" }, Text{ "a ", "un ", "" } }, // "Oro Rubi"
-        { Text{ "Two Hundred Rubies", "Deux cents rubis", "zweihundert Rubies€" },
+        { Text{ "Two Hundred Rubies", "Deux Cents Rubis", "zweihundert Rubies€" },
           Text{ "", "", "" } },                                                                // "Doscientos rubíes"
         { Text{ "Diamond", "Diamant", "Diamant" }, Text{ "a ", "un ", "einen " } },            // "Diamante"
-        { Text{ "Huge Ruby", "Énorme rubis", "großer Ruby" }, Text{ "a ", "un ", "einen " } }, // "Rubi gigante"
+        { Text{ "Huge Ruby", "Énorme Rubis", "großer Ruby" }, Text{ "a ", "un ", "einen " } }, // "Rubi gigante"
         { Text{ "Two Hundred Rupees", "Deux cent rubis", "zweihundert Rubine€" },
           Text{ "", "", "" } },                                                                 // "Euro hyliano"
         { Text{ "Rupee (200)", "Rubis (200)", "Rubin (200)" }, Text{ "a ", "un ", "einen " } }, // "Dólar hyliano"
     };
     trickNameTable[RG_PIECE_OF_HEART] = {
-        { Text{ "Pizza Heart", "Fromage de cœur", "Harzteil" }, Text{ "a ", "un ", "ein " } },   // "Pieza de Chorizo"
-        { Text{ "Little Bit Of Love", "Un peu d'amour", "etwas Liebe" }, Text{ "a ", "", "" } }, // "Un poco de amor"
-        { Text{ "Rare Peach Stone", "Pierre de pêche rare", "ein seltener Pfirsichstein" },
+        { Text{ "Pizza Heart", "Fromage de Cœur", "Harzteil" }, Text{ "a ", "un ", "ein " } },   // "Pieza de Chorizo"
+        { Text{ "Little Bit Of Love", "Un Peu d'Amour", "etwas Liebe" }, Text{ "a ", "", "" } }, // "Un poco de amor"
+        { Text{ "Rare Peach Stone", "Pierre de Pêche Rare", "ein seltener Pfirsichstein" },
           Text{ "a ", "une ", "" } }, // "Pierre de pêche rare"
     };
     trickNameTable[RG_HEART_CONTAINER] = {
-        { Text{ "Crystal Heart", "Cœur de cristal", "Kristallherz" },
+        { Text{ "Crystal Heart", "Cœur de Cristal", "Kristallherz" },
           Text{ "a ", "un ", "ein " } },                                                    // "Corazón de cristal"
-        { Text{ "Life Heart", "Cœur de vie", "Lebensherz" }, Text{ "a ", "un ", "ein " } }, // "Vida Corazón"
-        { Text{ "Lots of Love", "Beaucoup d'amour", "viel Liebe" }, Text{ "", "", "" } },   // "Mucho amor"
+        { Text{ "Life Heart", "Cœur de Vie", "Lebensherz" }, Text{ "a ", "un ", "ein " } }, // "Vida Corazón"
+        { Text{ "Lots of Love", "Beaucoup d'Amour", "viel Liebe" }, Text{ "", "", "" } },   // "Mucho amor"
     };
     trickNameTable[RG_TRIFORCE_PIECE] = {
         { Text{ "Piece of Cheese", "Morceau de Fromage", "Käseteil" },
