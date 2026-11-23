@@ -1897,7 +1897,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 }
 
 extern "C" int32_t GfxGetCurrentGameTick() {
-    return gPlayState != nullptr ? static_cast<int32_t>(gPlayState->state.frames) : 0;
+    return gPlayState != nullptr ? static_cast<int32_t>(gPlayState->gameplayFrames) : 0;
 }
 
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
