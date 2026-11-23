@@ -1433,58 +1433,58 @@ static void InitTrickNames() {
         { Text{ "Syrup's Potion Shop Key", "Clé de la Boutique de Syrup", "Schlüssel (Syrups Hexenküche)" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_SKULLTULA_HOUSE_KEY] = {
-        { Text{ "Town Spider House Key", TODO_TRANSLATE, "Schlüssel (Spinnenhaus)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Jovani's House Key", TODO_TRANSLATE, "Schlüssel (1-Zimmer-Wohnung)" }, Text{ "", "", "" } },
-        { Text{ "Maiamai House Key", TODO_TRANSLATE, "Schlüssel (Revalis Wohnung)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Town Spider House Key", "Clé de Villaraignées", "Schlüssel (Spinnenhaus)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Jovani's House Key", "Clé de chez Giovanni", "Schlüssel (1-Zimmer-Wohnung)" }, Text{ "", "la ", "" } },
+        { Text{ "Maiamai House Key", "Clé de la Maison Maiamai", "Schlüssel (Revalis Wohnung)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_IMPAS_HOUSE_KEY] = {
-        { Text{ "Zelda's House Key", TODO_TRANSLATE, "Schlüssel (Shieks Versteck)" }, Text{ "", "", "" } },
-        { Text{ "Sheik's House Key", TODO_TRANSLATE, "Schlüssel (Urbosas Wohnsitz)" }, Text{ "", "", "" } },
-        { Text{ "Purah's House Key", TODO_TRANSLATE, "Schlüssel (Tingles Haus)" }, Text{ "", "", "" } },
+        { Text{ "Zelda's House Key", "Clé de la Maison de Zelda", "Schlüssel (Shieks Versteck)" }, Text{ "", "la ", "" } },
+        { Text{ "Sheik's House Key", "Clé de la Maison de Sheik", "Schlüssel (Urbosas Wohnsitz)" }, Text{ "", "la ", "" } },
+        { Text{ "Purah's House Key", "Clé de chez Purah", "Schlüssel (Tingles Haus)" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_WINDMILL_KEY] = {
-        { Text{ "Wind Switch Key", TODO_TRANSLATE, "Schlüssel (Ventilatorhaus)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Weather Vane Key", TODO_TRANSLATE, "Schlüssel (Musik-Haus)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Wind Switch Key", "Clé de la Maison du Vent", "Schlüssel (Ventilatorhaus)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Weather Vane Key", "Clé de chez Jean Moulin", "Schlüssel (Musik-Haus)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_KAK_SHOOTING_GALLERY_KEY] = {
-        { Text{ "Firing Range Key", TODO_TRANSLATE, "Schlüssel (Schießbude von Unruh-Stadt)" },
+        { Text{ "Firing Range Key", "Clé de l'Armurerie de Cocorico", "Schlüssel (Schießbude von Unruh-Stadt)" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Crossbow Training Key", TODO_TRANSLATE, "Schlüssel (Crossbow Training)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goron Target Range Key", TODO_TRANSLATE, "Schlüssel (Kokiri-Schießbude)" },
+        { Text{ "Crossbow Training Key", "Clé du Stand d'Arbalète", "Schlüssel (Crossbow Training)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Goron Target Range Key", "Clé du Tir-o-flèches Goron", "Schlüssel (Kokiri-Schießbude)" },
           Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_DAMPES_HUT_KEY] = {
-        { Text{ "Dampe's Grave Key", TODO_TRANSLATE, "Schlüssel (Einsames Haus)" }, Text{ "", "", "" } },
-        { Text{ "Dampe Studio Key", TODO_TRANSLATE, "Schlüssel (Grabräuberkeller)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Old Man's Cabin Key", TODO_TRANSLATE, "Schlüssel (Trauerhütte)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Dampe's Grave Key", "Clé du Tombeau d'Ivor", "Schlüssel (Einsames Haus)" }, Text{ "", "la ", "" } },
+        { Text{ "Dampe Studio Key", "Clé du Studio d'Igor", "Schlüssel (Grabräuberkeller)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Old Man's Cabin Key", "Clé du Cabanon du Vieux", "Schlüssel (Trauerhütte)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_TALONS_HOUSE_KEY] = {
-        { Text{ "Malon's House Koi", TODO_TRANSLATE, "Schlüssel (Malons Haus)" }, Text{ "", "", "" } },
-        { Text{ "Ingo's House Keese", TODO_TRANSLATE, "Schlüssel (Ingos Gefängnis)" }, Text{ "", "", "" } },
-        { Text{ "Mario's House Key", TODO_TRANSLATE, "Schlüssel (Marios Eigentum)" }, Text{ "", "", "" } },
+        { Text{ "Malon's House Koi", "Clé de chez Malon", "Schlüssel (Malons Haus)" }, Text{ "", "la ", "" } },
+        { Text{ "Ingo's House Keese", "Clé de chez Ingo", "Schlüssel (Ingos Gefängnis)" }, Text{ "", "la ", "" } },
+        { Text{ "Mario's House Key", "Clé de chez Mario", "Schlüssel (Marios Eigentum)" }, Text{ "", "la ", "" } },
     };
     trickNameTable[RG_STABLES_KEY] = {
-        { Text{ "Corral Key", TODO_TRANSLATE, "Schlüssel (Malons Stall)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Foothill Stable Key", TODO_TRANSLATE, "Schlüssel (Heuhof)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Goat Barn Key", TODO_TRANSLATE, "Schlüssel (Ingos Arbeitsplatz)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Corral Key", "Clé de l'Écurie d'Ingo", "Schlüssel (Malons Stall)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Foothill Stable Key", "Clé de l'Étable d'Ingo", "Schlüssel (Heuhof)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Goat Barn Key", "Clé de la Grange aux Chèvres", "Schlüssel (Ingos Arbeitsplatz)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_BACK_TOWER_KEY] = {
-        { Text{ "Tower of Hera Key", TODO_TRANSLATE, "Schlüssel (Heras Turm)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Clock Tower Key", TODO_TRANSLATE, "Schlüssel (Uhrturm)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Tingle Tower Key", TODO_TRANSLATE, "Schlüssel (Tingles Turm)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Skyview Tower Key", TODO_TRANSLATE, "Schlüssel (Ambis Turm)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Sheikah Tower Key", TODO_TRANSLATE, "Schlüssel (Shiekah-Turm)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Tower of Hera Key", "Clé de la Tour d'Héra", "Schlüssel (Heras Turm)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Clock Tower Key", "Clé de la Tour de l'Horloge", "Schlüssel (Uhrturm)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Tingle Tower Key", "Clé de la Tour de Tingle", "Schlüssel (Tingles Turm)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Skyview Tower Key", "Clé de la Tour Skyview", "Schlüssel (Ambis Turm)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Sheikah Tower Key", "Clé de la Tour Sheikah", "Schlüssel (Shiekah-Turm)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_HYLIA_LAB_KEY] = {
-        { Text{ "Marine Research Lab Key", TODO_TRANSLATE, "Schlüssel (Maritimes Forschungslabor)" },
+        { Text{ "Marine Research Lab Key", "Clé du Labo de Recherche Maritime", "Schlüssel (Maritimes Forschungslabor)" },
           Text{ "the ", "la ", "" } },
-        { Text{ "Hateno Tech Lab Key", TODO_TRANSLATE, "Schlüssel (Akkala-Institut)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Tough Mango Lab Key", TODO_TRANSLATE, "Schlüssel (Experimentenhaus)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Hateno Tech Lab Key", "Clé du Labo d'Elimith", "Schlüssel (Akkala-Institut)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Tough Mango Lab Key", "Clé du Labo Mangue Coriace", "Schlüssel (Experimentenhaus)" }, Text{ "the ", "la ", "" } },
     };
     trickNameTable[RG_FISHING_HOLE_KEY] = {
-        { Text{ "Swamp Fishing Hole Key", TODO_TRANSLATE, "Schlüssel (Nordsee)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Beaver Race Key", TODO_TRANSLATE, "Schlüssel (Biber-Brüder)" }, Text{ "the ", "la ", "" } },
-        { Text{ "Squid-Hunt Key", TODO_TRANSLATE, "Schlüssel (Schiffe versenken)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Swamp Fishing Hole Key", "Clé du Stand de Pêche du Marais", "Schlüssel (Nordsee)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Beaver Race Key", "Clé du Brochet Saillant", "Schlüssel (Biber-Brüder)" }, Text{ "the ", "la ", "" } },
+        { Text{ "Squid-Hunt Key", "Clé de Chasse-Pieuvre", "Schlüssel (Schiffe versenken)" }, Text{ "the ", "la ", "" } },
     };
 
     trickNameTable[RG_SHADOW_SILVER_BLADES] = {
@@ -2195,6 +2195,7 @@ static const char* const frenchIceTrapMessages[] = {
     "#Bonne# tentative. #;)#",
     "Où est mon #Super Costume#?",
     "#La revanche du Titanic#.",
+    "Checkez-moi ça, la #Rafale#!",
 };
 
 extern "C" SaveContext gSaveContext;
