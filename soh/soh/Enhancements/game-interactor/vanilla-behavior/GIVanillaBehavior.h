@@ -1075,7 +1075,15 @@ typedef enum {
     // ```
     // #### `args`
     // - None
-    VB_GIVE_EYEBALL_FROG_EARLY,
+    VB_KING_ZORA_1PT0,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_KING_ZORA_1PT0_TIMER,
 
     // #### `result`
     // ```c
