@@ -257,6 +257,7 @@ Data& append(Op op) {
 struct InterpolateCtx {
     float step;
     float w;
+    float camera_step;
     unordered_map<Mtx*, MtxF> mtx_replacements;
     MtxF tmp_mtxf, tmp_mtxf2;
     Vec3f tmp_vec3f;
@@ -350,6 +351,14 @@ struct InterpolateCtx {
             Data& new_op = new_path->ops[item.first][item.second];
 
             if (item.first == Op::OpenChild) {
+                // Children with a null key are the camera (view and skybox) and the pause menu. They keep
+                // their own step so staggered rounding never applies to the view.
+                const bool camera = new_op.open_child.key.first == nullptr && camera_step != step;
+                const float saved_step = step;
+                if (camera) {
+                    step = camera_step;
+                    w = 1.0f - step;
+                }
                 if (auto it = old_path->children.find(new_op.open_child.key);
                     it != old_path->children.end() && new_op.open_child.idx < it->second.size() &&
                     !dont_interpolate(new_op.open_child.key.first)) {
@@ -358,6 +367,10 @@ struct InterpolateCtx {
                 } else {
                     interpolate_branch(&new_path->children.find(new_op.open_child.key)->second[new_op.open_child.idx],
                                        &new_path->children.find(new_op.open_child.key)->second[new_op.open_child.idx]);
+                }
+                if (camera) {
+                    step = saved_step;
+                    w = 1.0f - step;
                 }
                 continue;
             }
@@ -498,11 +511,28 @@ struct InterpolateCtx {
 } // anonymous namespace
 
 unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step) {
+    return FrameInterpolation_Interpolate(step, step);
+}
+
+unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step, float cameraStep) {
     InterpolateCtx ctx;
     ctx.step = step;
     ctx.w = 1.0f - step;
+    ctx.camera_step = cameraStep;
     ctx.interpolate_branch(&previous_recording.root_path, &current_recording.root_path);
     return ctx.mtx_replacements;
+}
+
+float FrameInterpolation_StaggerStep(float step, float strength) {
+    // Symmetric power ease, s = (2f)^p / 2 below the middle of the tick and mirrored above it. The
+    // display dwells near both real poses (speed falls to zero there) and the biggest jump lands mid-tick.
+    // It depends only on the step, so every frame rate samples the same curve. p = 1 / (1 - strength);
+    // strength 0.63 gives 0, 1/6, 5/6, 1 at 60 FPS.
+    if (strength <= 0.0f || step <= 0.0f || step >= 1.0f) {
+        return step;
+    }
+    const float p = 1.0f / (1.0f - std::min(strength, 0.95f));
+    return step < 0.5f ? 0.5f * powf(2.0f * step, p) : 1.0f - 0.5f * powf(2.0f - 2.0f * step, p);
 }
 
 void FrameInterpolation_StartRecord(void) {

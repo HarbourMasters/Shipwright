@@ -397,6 +397,18 @@ void SohMenu::AddMenuSettings() {
                 info.activeDisables.push_back(DISABLE_FOR_MATCH_REFRESH_RATE_ON);
         })
         .Options(IntSliderOptions().Tooltip(tooltip).Min(20).Max(maxFps).DefaultValue(20).Format(fpsFormat));
+    AddWidget(path, "Staggered Rounding: %d%%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("StaggeredRounding"))
+        .RaceDisable(false)
+        .Options(IntSliderOptions()
+                     .Tooltip("Above 20 FPS, spaces the extra frames unevenly: they linger near the game's real "
+                              "20 Hz poses and move quickly through the middle, keeping more of the original's "
+                              "weight. The camera stays smooth.\n\n"
+                              "0% = even spacing (default). 63% shows 0, 1/6, 5/6, 1 of each step at 60 FPS. "
+                              "Higher values approach the original 20 FPS look.")
+                     .Min(0)
+                     .Max(95)
+                     .DefaultValue(0));
     AddWidget(path, "Match Refresh Rate", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("MatchRefreshRate"))
         .RaceDisable(false)

@@ -7,6 +7,13 @@
 #include <unordered_map>
 
 std::unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step);
+// Same, but camera children (view and skybox) use cameraStep instead of step.
+std::unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step, float cameraStep);
+
+// Staggered rounding: remaps a tick-relative interpolation step (0..1) so in-between frames linger
+// near the real 20 Hz poses and move quickly through the middle of the tick. strength 0 returns step
+// unchanged (linear); strength -> 1 approaches the original 20 FPS holds.
+float FrameInterpolation_StaggerStep(float step, float strength);
 
 extern "C" {
 

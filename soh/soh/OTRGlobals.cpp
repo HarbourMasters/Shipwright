@@ -1809,12 +1809,16 @@ void RunCommands(Gfx* Commands, int time, int step, int denom, int count) {
     for (int i = 0; i < count; i++) {
         time += step;
         const float interpolationStep = (float)time / denom;
+        // Staggered rounding retimes everything except the camera, which stays on the even step.
+        const float worldStep = FrameInterpolation_StaggerStep(
+            interpolationStep, CVarGetInteger(CVAR_SETTING("StaggeredRounding"), 0) / 100.0f);
         std::unordered_map<Mtx*, MtxF> mtx_replacements =
-            (time == denom) ? std::unordered_map<Mtx*, MtxF>() : FrameInterpolation_Interpolate(interpolationStep);
+            (time == denom) ? std::unordered_map<Mtx*, MtxF>()
+                            : FrameInterpolation_Interpolate(worldStep, interpolationStep);
         // Ribbon vertices are shared by every frame of a tick: re-blend them before each run.
-        FrameInterpolation_UpdateRibbonHeads(interpolationStep);
+        FrameInterpolation_UpdateRibbonHeads(worldStep);
         // Skinned vertices are shared by every displayed frame, so blend them before each run
-        FrameInterpolation_UpdateSkinnedVertices(interpolationStep);
+        FrameInterpolation_UpdateSkinnedVertices(worldStep);
         intp->mInterpolationT = interpolationStep;
         wnd->DrawAndRunGraphicsCommands(Commands, mtx_replacements);
         intp->mInterpolationIndex++;
