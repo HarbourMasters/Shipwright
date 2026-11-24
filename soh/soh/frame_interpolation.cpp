@@ -257,6 +257,10 @@ Data& append(Op op) {
 struct InterpolateCtx {
     float step;
     float w;
+    float raw_step;
+    float staggered_step;
+    FrameInterpolationStagger stagger;
+    bool in_camera = false;
     unordered_map<Mtx*, MtxF> mtx_replacements;
     MtxF tmp_mtxf, tmp_mtxf2;
     Vec3f tmp_vec3f;
@@ -267,8 +271,18 @@ struct InterpolateCtx {
         return &mtx_replacements[addr];
     }
 
-    void interpolate_mtxf(MtxF* res, MtxF* o, MtxF* n) {
+    // Selects the step for one component (rotation or translation) of a model pose or other object
+    void use_step(bool modelPose, bool rotation) {
+        bool enabled = in_camera ? stagger.camera : (modelPose ? stagger.modelPoses : stagger.objectMovement);
+        enabled = enabled && (rotation ? stagger.rotations : stagger.translations);
+        step = enabled ? staggered_step : raw_step;
+        w = 1.0f - step;
+    }
+
+    // Rows 0-2 hold rotation and scale, row 3 holds translation
+    void interpolate_mtxf(MtxF* res, MtxF* o, MtxF* n, bool modelPose = false) {
         for (size_t i = 0; i < 4; i++) {
+            use_step(modelPose, i < 3);
             for (size_t j = 0; j < 4; j++) {
                 res->mf[i][j] = w * o->mf[i][j] + step * n->mf[i][j];
             }
@@ -350,6 +364,9 @@ struct InterpolateCtx {
             Data& new_op = new_path->ops[item.first][item.second];
 
             if (item.first == Op::OpenChild) {
+                // Null keys are the camera, skybox and pause menu
+                const bool saved_in_camera = in_camera;
+                in_camera = in_camera || new_op.open_child.key.first == nullptr;
                 if (auto it = old_path->children.find(new_op.open_child.key);
                     it != old_path->children.end() && new_op.open_child.idx < it->second.size() &&
                     !dont_interpolate(new_op.open_child.key.first)) {
@@ -359,6 +376,7 @@ struct InterpolateCtx {
                     interpolate_branch(&new_path->children.find(new_op.open_child.key)->second[new_op.open_child.idx],
                                        &new_path->children.find(new_op.open_child.key)->second[new_op.open_child.idx]);
                 }
+                in_camera = saved_in_camera;
                 continue;
             }
 
@@ -390,6 +408,7 @@ struct InterpolateCtx {
                             break;
 
                         case Op::MatrixTranslate:
+                            use_step(false, false);
                             Matrix_Translate(lerp(old_op.matrix_translate.x, new_op.matrix_translate.x),
                                              lerp(old_op.matrix_translate.y, new_op.matrix_translate.y),
                                              lerp(old_op.matrix_translate.z, new_op.matrix_translate.z),
@@ -397,12 +416,14 @@ struct InterpolateCtx {
                             break;
 
                         case Op::MatrixScale:
+                            use_step(false, true);
                             Matrix_Scale(lerp(old_op.matrix_scale.x, new_op.matrix_scale.x),
                                          lerp(old_op.matrix_scale.y, new_op.matrix_scale.y),
                                          lerp(old_op.matrix_scale.z, new_op.matrix_scale.z), new_op.matrix_scale.mode);
                             break;
 
                         case Op::MatrixRotate1Coord: {
+                            use_step(false, true);
                             float v = interpolate_angle(old_op.matrix_rotate_1_coord.value,
                                                         new_op.matrix_rotate_1_coord.value);
                             u8 mode = new_op.matrix_rotate_1_coord.mode;
@@ -423,6 +444,7 @@ struct InterpolateCtx {
                         }
 
                         case Op::MatrixRotateZYX:
+                            use_step(false, true);
                             Matrix_RotateZYX(interpolate_angle(old_op.matrix_rotate_zyx.x, new_op.matrix_rotate_zyx.x),
                                              interpolate_angle(old_op.matrix_rotate_zyx.y, new_op.matrix_rotate_zyx.y),
                                              interpolate_angle(old_op.matrix_rotate_zyx.z, new_op.matrix_rotate_zyx.z),
@@ -430,16 +452,20 @@ struct InterpolateCtx {
                             break;
 
                         case Op::MatrixTranslateRotateZYX:
+                            use_step(true, false);
                             lerp_vec3f(&tmp_vec3f, &old_op.matrix_translate_rotate_zyx.translation,
                                        &new_op.matrix_translate_rotate_zyx.translation);
+                            use_step(true, true);
                             interpolate_angles(&tmp_vec3s, &old_op.matrix_translate_rotate_zyx.rotation,
                                                &new_op.matrix_translate_rotate_zyx.rotation);
                             Matrix_TranslateRotateZYX(&tmp_vec3f, &tmp_vec3s);
                             break;
 
                         case Op::MatrixSetTranslateRotateYXZ:
+                            use_step(false, true);
                             interpolate_angles(&tmp_vec3s, &old_op.matrix_set_translate_rotate_yxz.rot,
                                                &new_op.matrix_set_translate_rotate_yxz.rot);
+                            use_step(false, false);
                             Matrix_SetTranslateRotateYXZ(lerp(old_op.matrix_set_translate_rotate_yxz.translateX,
                                                               new_op.matrix_set_translate_rotate_yxz.translateX),
                                                          lerp(old_op.matrix_set_translate_rotate_yxz.translateY,
@@ -461,7 +487,7 @@ struct InterpolateCtx {
                         case Op::MatrixToMtx: {
                             //*new_replacement(new_op.matrix_to_mtx.dest) = *Matrix_GetCurrent();
                             if (old_op.matrix_to_mtx.has_adjusted && new_op.matrix_to_mtx.has_adjusted) {
-                                interpolate_mtxf(&tmp_mtxf, &old_op.matrix_to_mtx.src, &new_op.matrix_to_mtx.src);
+                                interpolate_mtxf(&tmp_mtxf, &old_op.matrix_to_mtx.src, &new_op.matrix_to_mtx.src, true);
                                 SkinMatrix_MtxFMtxFMult(&actor_mtx, &tmp_mtxf,
                                                         new_replacement(new_op.matrix_to_mtx.dest));
                             } else if (!old_op.matrix_to_mtx.has_adjusted && !new_op.matrix_to_mtx.has_adjusted) {
@@ -480,6 +506,7 @@ struct InterpolateCtx {
                             break;
 
                         case Op::MatrixRotateAxis:
+                            use_step(false, true);
                             lerp_vec3f(&tmp_vec3f, &old_op.matrix_rotate_axis.axis, &new_op.matrix_rotate_axis.axis);
                             Matrix_RotateAxis(
                                 interpolate_angle(old_op.matrix_rotate_axis.angle, new_op.matrix_rotate_axis.angle),
@@ -497,12 +524,40 @@ struct InterpolateCtx {
 
 } // anonymous namespace
 
-unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step) {
+unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step, const FrameInterpolationStagger& stagger) {
     InterpolateCtx ctx;
     ctx.step = step;
     ctx.w = 1.0f - step;
+    ctx.raw_step = step;
+    ctx.staggered_step = FrameInterpolation_StaggerStep(step, stagger.strength);
+    ctx.stagger = stagger;
     ctx.interpolate_branch(&previous_recording.root_path, &current_recording.root_path);
     return ctx.mtx_replacements;
+}
+
+// Symmetric ease that lingers near the real poses and moves quickly through the middle of the tick.
+// Strength moves the first in-between at 60 FPS from 1/3 (0, linear) toward 0 (1, hold); 0.5 gives
+// 0, 1/6, 5/6, 1. The exponent depends only on strength, so every frame rate samples the same curve.
+float FrameInterpolation_StaggerStep(float step, float strength) {
+    if (strength <= 0.0f || step <= 0.0f || step >= 1.0f) {
+        return step;
+    }
+    const float firstStep = (1.0f - std::min(strength, 0.95f)) / 3.0f;
+    const float exponent = logf(2.0f * firstStep) / logf(2.0f / 3.0f);
+
+    if (step < 0.5f) {
+        return 0.5f * powf(2.0f * step, exponent);
+    }
+    return 1.0f - 0.5f * powf(2.0f - 2.0f * step, exponent);
+}
+
+float FrameInterpolation_StaggerVertexStep(float step, const FrameInterpolationStagger& stagger, bool modelPose) {
+    const bool enabled =
+        modelPose ? stagger.modelPoses && stagger.rotations : stagger.objectMovement && stagger.translations;
+    if (!enabled) {
+        return step;
+    }
+    return FrameInterpolation_StaggerStep(step, stagger.strength);
 }
 
 void FrameInterpolation_StartRecord(void) {
