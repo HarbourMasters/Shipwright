@@ -1832,6 +1832,9 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
     }
 
     GetItemID getItemID = RetrieveGetItemIDFromItemID(itemID);
+    if (getItemID == GI_SWORD_BGS && !gSaveContext.bgsFlag) {
+        getItemID = GI_SWORD_KNIFE;
+    }
     if (getItemID != GI_MAX) {
         // Vanilla ItemID with an associated GetItemID
         return Return_Item_Entry(ItemTable_RetrieveEntry(modId, getItemID), returnItem);
