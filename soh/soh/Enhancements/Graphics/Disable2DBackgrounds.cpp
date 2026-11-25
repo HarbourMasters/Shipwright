@@ -103,6 +103,12 @@ void Register3DPreRenderedScenes() {
             gWeatherMode = 3;
             gSaveContext.retainWeatherMode = 1;
         }
+        if (sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY || sceneNum == SCENE_MARKET_DAY ||
+            sceneNum == SCENE_MARKET_ENTRANCE_DAY || sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT ||
+            sceneNum == SCENE_MARKET_NIGHT || sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
+            gWeatherMode = 0;
+            gSaveContext.retainWeatherMode = 1;
+        }
     });
 
     COND_HOOK(OnPlayDrawBegin, CVAR_VALUE, []() {
