@@ -42,6 +42,14 @@ static const std::set<SceneID> fixedCameraSceneList = {
     SCENE_KAKARIKO_CENTER_GUEST_HOUSE,
     SCENE_CARPENTERS_TENT,
     SCENE_GRAVEKEEPERS_HUT,
+    SCENE_KOKIRI_SHOP,
+    SCENE_GORON_SHOP,
+    SCENE_ZORA_SHOP,
+    SCENE_POTION_SHOP_KAKARIKO,
+    SCENE_POTION_SHOP_MARKET,
+    SCENE_BOMBCHU_SHOP,
+    SCENE_HAPPY_MASK_SHOP,
+    SCENE_BAZAAR,
 };
 
 static int16_t sSetNormalCam = -1;
@@ -50,6 +58,8 @@ static int sCheckItemCamState = -1;
 static s16 sStoreLastCamType = -1;
 static bool sWasEnabled = false;
 static bool sWaitForSceneChange = false;
+
+static Camera sShopCamera;
 
 extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play);
 
@@ -69,6 +79,7 @@ static void DisableFixedCamera_ResetState() {
     sStoreLastCamType = -1;
     sWasEnabled = false;
     sWaitForSceneChange = false;
+    sShopCamera = {};
 }
 
 static void DisableFixedCamera_RestoreAllCameraData() {
@@ -178,6 +189,7 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
     // Only compute player state if we're in a relevant scene
     const bool isInFixedCameraScene = fixedCameraSceneList.contains(static_cast<SceneID>(play->sceneNum));
     if (!isInFixedCameraScene) {
+        sShopCamera = {};
         bool sceneChanged = play->sceneNum != sSetNormalCam;
         if (sceneChanged) {
             sSetNormalCam = play->sceneNum;
@@ -188,6 +200,14 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
         }
         DisableFixedCamera_RestoreCameraData(BgCheck_GetCollisionHeader(&play->colCtx, BGCHECK_SCENE));
         return;
+    }
+
+    Camera& camera = play->mainCamera;
+    if (camera.setting == CAM_SET_NORMAL0 && camera.prevSetting == CAM_SET_PIVOT_SHOP_BROWSING &&
+        sShopCamera.play != nullptr) {
+        camera = sShopCamera;
+    } else if (camera.setting == CAM_SET_NORMAL0) {
+        sShopCamera = camera;
     }
 
     bool sceneChanged = play->sceneNum != sSetNormalCam;
