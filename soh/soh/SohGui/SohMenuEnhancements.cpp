@@ -1543,6 +1543,15 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("CuccosToReturn"))
         .Options(IntSliderOptions().Min(0).Max(7).DefaultValue(7).Format("%d").Tooltip(
             "The amount of cuccos needed to receive the bottle from Anju the Cucco Lady."));
+    AddWidget(path, "Nayru's Love Duration: %d seconds", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("NayrusLoveDuration"))
+        .Options(IntSliderOptions()
+                     .Min(5)
+                     .Max(120)
+                     .DefaultValue(60)
+                     .Format("%d seconds")
+                     .Tooltip("Adjusts the amount of time Nayru's Love will stay active once used.\n"
+                              "Default: 60 seconds"));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Enemies", WIDGET_SEPARATOR_TEXT);
