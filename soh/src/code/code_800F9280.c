@@ -3,6 +3,7 @@
 #include "soh/mixer.h"
 
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/audio/StreamedMusic.h"
 
 typedef struct {
     u8 unk_0;
@@ -43,6 +44,10 @@ void Audio_StartSequence(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
     s32 pad;
 
     if (D_80133408 == 0 || playerIdx == SEQ_PLAYER_SFX) {
+        if (SOH_StreamedMusic_PrepareStart(playerIdx, seqId, arg2 & 0x7F, &fadeTimer)) {
+            return;
+        }
+
         // Resolve here so the full 16-bit id rides in the command (bits 0-15) rather than the shared
         // seqToPlay slot. seqReplaced is set out-of-band by preview/slow load.
         // See AudioEditor_GetReplacementSeq().
@@ -64,6 +69,7 @@ void Audio_StartSequence(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
 
         gActiveSeqs[playerIdx].seqId = seqId | (arg2 << 8);
         gActiveSeqs[playerIdx].prevSeqId = seqId | (arg2 << 8);
+        SOH_StreamedMusic_SequenceStarted(playerIdx, resolvedSeqId);
 
         if (gActiveSeqs[playerIdx].volCur != 1.0f) {
             Audio_QueueCmdF32(0x41000000 | _SHIFTL(playerIdx, 16, 8), gActiveSeqs[playerIdx].volCur);
@@ -86,6 +92,11 @@ void Audio_StartSequence(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
 }
 
 void func_800F9474(u8 playerIdx, u16 arg1) {
+    if (SOH_StreamedMusic_SequenceStopped(playerIdx, arg1)) {
+        gActiveSeqs[playerIdx].seqId = NA_BGM_DISABLED;
+        return;
+    }
+
     Audio_QueueCmdS32(0x83000000 | ((u8)playerIdx << 16),
                       (arg1 * (u16)gAudioContext.audioBufferParameters.updatesPerFrame) / 4);
     gActiveSeqs[playerIdx].seqId = NA_BGM_DISABLED;
@@ -468,6 +479,8 @@ void func_800FA3DC(void) {
     u8 j;
     u8 k;
 
+    SOH_StreamedMusic_Update();
+
     for (playerIdx = 0; playerIdx < 4; playerIdx++) {
         if (gActiveSeqs[playerIdx].isWaitingForFonts != 0) {
             switch (func_800E5E20(&dummy)) {
@@ -702,6 +715,8 @@ u8 func_800FAD34(void) {
 void Audio_ResetActiveSequences(void) {
     u8 seqPlayerIndex;
     u8 scaleIndex;
+
+    SOH_StreamedMusic_Reset();
 
     for (seqPlayerIndex = 0; seqPlayerIndex < 4; seqPlayerIndex++) {
         sNumSeqRequests[seqPlayerIndex] = 0;
