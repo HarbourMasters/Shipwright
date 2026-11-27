@@ -503,7 +503,7 @@ const HintText& Item::GetHint() const {
     return StaticData::hintTextTable[hintKey];
 }
 
-GetItemCategory Item::GetCategory() {
+GetItemCategory Item::GetCategory() const {
     return category;
 }
 
