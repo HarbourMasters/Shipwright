@@ -4,6 +4,9 @@
 
 #include "soh/Enhancements/audio/AudioEditor.h"
 
+// The port's engine has no preemptive thread to run it while the game waits on a reset.
+extern void SOH_Audio_Pump(void);
+
 typedef struct {
     u8 unk_0;
     u8 unk_1; // importance?
@@ -687,9 +690,13 @@ u8 func_800FAD34(void) {
                 D_80133418 = 0;
                 Audio_QueueCmdS8(0x46020000, gSfxChannelLayout);
                 func_800F7170();
+            } else {
+                SOH_Audio_Pump();
             }
         } else if (D_80133418 == 2) {
-            while (func_800E5EDC() != 1) {}
+            while (func_800E5EDC() != 1) {
+                SOH_Audio_Pump();
+            }
             D_80133418 = 0;
             Audio_QueueCmdS8(0x46020000, gSfxChannelLayout);
             func_800F7170();
