@@ -58,6 +58,8 @@ void GameInteractor_ExecuteOnPlayDestroy();
 void GameInteractor_ExecuteOnPlayDrawBegin();
 void GameInteractor_ExecuteOnPlayDrawAfterSkyboxFilters();
 void GameInteractor_ExecuteOnPlayDrawEnd();
+void GameInteractor_ExecuteOnPlayDrawSkyboxEnd();
+void GameInteractor_ExecuteOnPlayDrawViewFinal();
 bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 
 // MARK: -  Save Files
