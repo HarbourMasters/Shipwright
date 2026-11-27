@@ -1896,6 +1896,10 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
          OTRGlobals::Instance->context->lastScancode = -1;*/
 }
 
+extern "C" int32_t GfxGetCurrentGameTick() {
+    return gPlayState != nullptr ? static_cast<int32_t>(gPlayState->gameplayFrames) : 0;
+}
+
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
     auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetRawInstance()->GetWindow());
     if (wnd == nullptr) {
