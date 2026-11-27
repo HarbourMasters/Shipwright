@@ -9,6 +9,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 #include "savestate_serialize.h"
+#include "game-interactor/GameInteractor_Hooks.h"
 
 extern "C" {
 #include "z64.h"
@@ -155,6 +156,10 @@ typedef struct SaveStateInfo {
 
     u8 transitionActorCount_copy;
     s16 transitionActorIds_copy[256];
+
+    // SoH [ShipGZ] Needed for deterministic replays from a state: the game RNG and the controller
+    // history PadMgr derives press / release edges from.
+    Input padMgrInputsCopy[4];
 
 } SaveStateInfo;
 
@@ -450,6 +455,11 @@ void SaveState::Save(void) {
     // Various static data
     SaveOverlayStaticData();
     SaveTransitionActors();
+
+    // ShipGZ extends the savestate only while its GameInteractor subscriber is enabled.
+    GameInteractor_ExecuteOnShipGZBeforeStateSave(&info->rngSeed, info->padMgrInputsCopy,
+                                                  (sizeof(info->padMgrInputsCopy) / sizeof(info->padMgrInputsCopy[0])));
+    GameInteractor_ExecuteOnShipGZStateSaved(this->slot);
 }
 
 void SaveState::Load(void) {
@@ -478,4 +488,9 @@ void SaveState::Load(void) {
     D_801755D0 = info->D_801755D0_copy;
     LoadOverlayStaticData();
     LoadTransitionActors();
+
+    // Restore deterministic state and macro position through GameInteractor subscribers.
+    GameInteractor_ExecuteOnShipGZAfterStateLoad(info->rngSeed, info->padMgrInputsCopy,
+                                                 (sizeof(info->padMgrInputsCopy) / sizeof(info->padMgrInputsCopy[0])));
+    GameInteractor_ExecuteOnShipGZStateLoaded(this->slot);
 }

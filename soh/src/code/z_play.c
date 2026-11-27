@@ -518,7 +518,8 @@ void Play_Init(GameState* thisx) {
     gTrnsnUnkState = 0;
     play->transitionMode = TRANS_MODE_OFF;
     FrameAdvance_Init(&play->frameAdvCtx);
-    Rand_Seed((u32)osGetTime());
+    // Macro RNG seed replacement is handled by GameInteractor; unchanged without an active hook.
+    Rand_Seed(GameInteractor_ExecuteOnShipGZFilterRandSeed((u32)osGetTime()));
     Matrix_Init(&play->state);
     play->state.main = Play_Main;
     play->state.destroy = Play_Destroy;
