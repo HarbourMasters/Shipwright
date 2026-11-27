@@ -228,6 +228,15 @@ set(ALL_FILES
 ################################################################################
 add_executable(${PROJECT_NAME} ${ALL_FILES})
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    option(SOH_PCH "Precompile STL and third-party headers for soh C++ sources" ON)
+    if(SOH_PCH)
+        target_precompile_headers(${PROJECT_NAME} PRIVATE
+            "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/soh/soh_pch.h>"
+        )
+    endif()
+endif()
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 endif()

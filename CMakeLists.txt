@@ -147,6 +147,38 @@ add_compile_options($<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-ffp-contract=off>
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/fp:precise>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/fp:except->)
 
+################################################################################
+# Build speed (Linux)
+################################################################################
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    option(SOH_FAST_LINKER "Link with mold or lld instead of ld.bfd" ON)
+    option(SOH_SPLIT_DWARF "Keep debug info in .dwo files so the linker skips it" ON)
+
+    if(SOH_FAST_LINKER)
+        find_program(SOH_MOLD_PATH NAMES mold)
+        find_program(SOH_LLD_PATH NAMES ld.lld ld.lld-20 ld.lld-19 ld.lld-18 ld.lld-17 ld.lld-16)
+        if(SOH_MOLD_PATH)
+            message(STATUS "Linking with mold: ${SOH_MOLD_PATH}")
+            add_link_options(-fuse-ld=mold)
+        elseif(SOH_LLD_PATH)
+            message(STATUS "Linking with lld: ${SOH_LLD_PATH}")
+            # GCC only finds lld as a binary literally named ld.lld
+            file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/linker)
+            file(CREATE_LINK ${SOH_LLD_PATH} ${CMAKE_BINARY_DIR}/linker/ld.lld SYMBOLIC)
+            add_link_options(-B${CMAKE_BINARY_DIR}/linker -fuse-ld=lld)
+        else()
+            message(STATUS "No mold or lld found, linking with the default linker")
+        endif()
+        if(SOH_MOLD_PATH OR SOH_LLD_PATH)
+            add_link_options($<$<CONFIG:Debug,RelWithDebInfo>:-Wl,--gdb-index>)
+        endif()
+    endif()
+
+    if(SOH_SPLIT_DWARF)
+        add_compile_options($<$<CONFIG:Debug,RelWithDebInfo>:-gsplit-dwarf>)
+    endif()
+endif()
+
 if(NOT CMAKE_BUILD_TYPE )
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
 endif()
