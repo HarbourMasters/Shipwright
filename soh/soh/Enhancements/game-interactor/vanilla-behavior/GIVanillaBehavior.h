@@ -4206,4 +4206,15 @@ typedef enum {
     // - none
     VB_EMPTY_BOTTLE_OI,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether a pause page draws its 15 sections. A handler that draws the page itself sets this to false.
+    // #### `args`
+    // - `**Gfx` (`&gfx`)
+    // - `*Vtx` (the sections' vertices)
+    // - `**void` (the sections' textures)
+    VB_DRAW_PAUSE_PAGE_SECTIONS,
+
 } GIVanillaBehavior;
