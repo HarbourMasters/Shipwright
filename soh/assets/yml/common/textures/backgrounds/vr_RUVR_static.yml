@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [1, vr_RUVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_RUVR_pal_static.yml
+gMarketRuins2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gMarketRuins2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMarketRuinsBg2TLUT
+gMarketRuins3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gMarketRuins3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMarketRuinsBg3TLUT
+gMarketRuins4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gMarketRuins4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMarketRuinsBg4TLUT
+gMarketRuinsBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMarketRuinsBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMarketRuinsBgTLUT

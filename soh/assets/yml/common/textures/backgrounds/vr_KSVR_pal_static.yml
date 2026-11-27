@@ -1,0 +1,18 @@
+:config:
+  segments:
+    - [128, vr_KSVR_pal_static]
+  directory: textures/backgrounds/
+gKokiriShopBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gKokiriShopBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+gKokiriShopBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKokiriShopBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16

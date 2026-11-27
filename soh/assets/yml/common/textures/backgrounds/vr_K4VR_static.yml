@@ -1,0 +1,30 @@
+:config:
+  segments:
+    - [1, vr_K4VR_static]
+  directory: textures/backgrounds/
+  external_files:
+    - common/textures/backgrounds/vr_K4VR_pal_static.yml
+gMidosHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gMidosHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMidosHouseBg2TLUT
+gMidosHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gMidosHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMidosHouseBg3TLUT
+gMidosHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMidosHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMidosHouseBgTLUT
