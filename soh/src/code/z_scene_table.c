@@ -104,6 +104,10 @@ void Scene_SetTransitionForNextEntrance(PlayState* play) {
         }
     }
 
+    if (!GameInteractor_Should(VB_SET_TRANSITION_TYPE, true, play)) {
+        return;
+    }
+
     play->transitionType = ENTRANCE_INFO_START_TRANS_TYPE(gEntranceTable[entranceIndex].field); // Fade out
 }
 
