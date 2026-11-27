@@ -695,6 +695,16 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnBox`
+    // - `s32 limbIndex`
+    // - `**Gfx gfx`
+    VB_DRAW_CHEST_BODY_AND_LID,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `PlayerMask currentMask`
     // - `*PlayState play`
     VB_DRAW_PLAYER_MASK,
