@@ -12,13 +12,13 @@ void RegionTable_Init_ZorasDomain() {
         EVENT_ACCESS(LOGIC_STICK_ACCESS,         logic->IsChild && logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_FISH_ACCESS,          logic->IsChild),
         EVENT_ACCESS(LOGIC_KING_ZORA_THAWED,     logic->IsAdult && logic->BlueFire()),
-        EVENT_ACCESS(LOGIC_DELIVER_RUTOS_LETTER, logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN)),
+        EVENT_ACCESS(LOGIC_DELIVER_RUTOS_LETTER, logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN) && logic->HasItem(RG_KING_ZORA_SOUL)),
     }, {
         //Locations
-        LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_ZORA) && logic->IsChild),
+        LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_DIVING_GAME_ZORA_SOUL) && logic->IsChild),
         LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS) && logic->CanOpenLargeChest()),
-        LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED) && logic->HasItem(RG_SPEAK_ZORA)),
-        LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED) && logic->CanUse(RG_PRESCRIPTION)),
+        LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED) && logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_KING_ZORA_SOUL)),
+        LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->HasItem(RG_KING_ZORA_SOUL) && logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED) && logic->CanUse(RG_PRESCRIPTION)),
         //bad terrain blocks bomb throws, so "inWater" is enabled to simulate that. Chus are also awkward to aim, so might want to be removed as well
         //You normally need spin attack or RT_ZD_GS to kill with melee weapons, simulated by ED_SHORT_JUMPSLASH when that condition is met, as that prohibits hammer like those 2 do
         LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && logic->CanKillEnemy(RE_GOLD_SKULLTULA, logic->CanUse(RG_MAGIC_SINGLE) || ctx->GetTrickOption(RT_ZD_GS) ? ED_SHORT_JUMPSLASH : ED_BOOMERANG, true, 1, false, true) && logic->CanGetNightTimeGS()),
@@ -84,14 +84,14 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZD_SHOP] = Region("ZD Shop", SCENE_ZORA_SHOP, {}, {
         //Locations
-        LOCATION(RC_ZD_SHOP_ITEM_1, logic->HasItem(RG_SPEAK_ZORA) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZD_SHOP_ITEM_2, logic->HasItem(RG_SPEAK_ZORA) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZD_SHOP_ITEM_3, logic->HasItem(RG_SPEAK_ZORA) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZD_SHOP_ITEM_4, logic->HasItem(RG_SPEAK_ZORA) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZD_SHOP_ITEM_5, logic->HasItem(RG_SPEAK_ZORA) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZD_SHOP_ITEM_6, logic->HasItem(RG_SPEAK_ZORA) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZD_SHOP_ITEM_7, logic->HasItem(RG_SPEAK_ZORA) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZD_SHOP_ITEM_8, logic->HasItem(RG_SPEAK_ZORA) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_1, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_ZORA_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_2, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_ZORA_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_3, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_ZORA_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_4, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_ZORA_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_5, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_ZORA_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_6, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_ZORA_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_7, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_ZORA_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_8, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_ZORA_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         ENTRANCE(RR_ZORAS_DOMAIN, true),

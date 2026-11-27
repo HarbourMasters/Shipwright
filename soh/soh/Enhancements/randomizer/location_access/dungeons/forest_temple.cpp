@@ -898,7 +898,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         // Locations
         LOCATION(RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, logic->Get(LOGIC_FOREST_TEMPLE_CLEAR)),
-        LOCATION(RC_PHANTOM_GANON,                     logic->Get(LOGIC_FOREST_TEMPLE_CLEAR)),
+        LOCATION(RC_PHANTOM_GANON,                     logic->Get(LOGIC_FOREST_TEMPLE_CLEAR) && logic->SageHandsOverReward(RG_SARIA_SOUL)),
     }, {
         // Exits
         ENTRANCE(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, false),

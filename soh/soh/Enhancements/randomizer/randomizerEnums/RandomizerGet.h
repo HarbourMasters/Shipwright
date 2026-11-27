@@ -346,6 +346,11 @@ RANDO_ENUM_ITEM(RG_ROCS_FEATHER)
 // Logic Only
 RANDO_ENUM_ITEM(RG_STICKS)
 RANDO_ENUM_ITEM(RG_NUTS)
+// NPC Souls (appended: saves store RandomizerGet values by position)
+#include "NpcSoulList.h"
+#define NPC_SOUL_RG(id, ...) RANDO_ENUM_ITEM(RG_##id##_SOUL)
+NPC_SOUL_LIST(NPC_SOUL_RG)
+#undef NPC_SOUL_RG
 RANDO_ENUM_ITEM(RG_MAX)
 RANDO_ENUM_END(RandomizerGet)
 

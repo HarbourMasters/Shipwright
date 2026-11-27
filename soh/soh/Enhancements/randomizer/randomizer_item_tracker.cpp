@@ -27,6 +27,7 @@
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
 #include "soh/ShipInit.hpp"
 
 #include <fast/Fast3dGui.h>
@@ -65,6 +66,7 @@ static WidgetInfo gregTracking;
 static WidgetInfo triforcePieceTracking;
 static WidgetInfo beanSoulsTracking;
 static WidgetInfo bossSoulsTracking;
+static WidgetInfo npcSoulsTracking;
 static WidgetInfo jabberNutsTracking;
 static WidgetInfo ocarinaButtonTracking;
 static WidgetInfo overworldKeysTracking;
@@ -507,6 +509,19 @@ static void TrackBossSouls(std::vector<ItemTrackerItem>* trackList) {
     for (auto bossSoul : bossSoulItems) {
         if (bossSoul.id == RG_GANON_SOUL ? ganonSoul : bossSouls) {
             trackList->push_back(bossSoul);
+        }
+    }
+}
+
+// Only the souls that are actually in this seed's pool, in list order
+static void TrackNpcSouls(std::vector<ItemTrackerItem>* trackList) {
+    if (!IS_RANDO) {
+        return;
+    }
+    for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+        if (Rando::IsNpcSoulShuffled(soul)) {
+            trackList->push_back({ static_cast<uint32_t>(soul.rg), ITEM_KIND_RG, soul.tracker, "RG_NPC_SOUL",
+                                   "RG_NPC_SOUL_Faded", 0, DrawItem });
         }
     }
 }
@@ -1237,6 +1252,9 @@ void DrawItem(ItemTrackerItem item) {
                 itemName = "Scarecrow's Song";
                 break;
         }
+        if (const Rando::NpcSoul* npcSoul = Rando::GetNpcSoul(static_cast<RandomizerGet>(item.id))) {
+            itemName = Rando::GetNpcSoulItemName(*npcSoul);
+        }
     } else if (item.kind == ITEM_KIND_DUMMY) {
         if (item.id == ITEMTYPE_SILVER) {
             hasItem = false;
@@ -1540,6 +1558,10 @@ static int32_t BossSoulsDisplay() {
                                                RAND_GET_OPTION(RSK_GANONS_SOUL).IsNot(RO_GANONS_SOUL_STARTWITH)));
 }
 
+static int32_t NpcSoulsDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.NpcSouls"), IS_RANDO && Rando::AreNpcSoulsEnabled());
+}
+
 static int32_t JabberNutsDisplay() {
     return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"),
                                   IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SPEAK));
@@ -1743,6 +1765,17 @@ void UpdateVectors() {
 
         // Add boss souls
         TrackBossSouls(&mainWindowItems);
+    }
+
+    // If we're adding NPC souls to the main window...
+    if (NpcSoulsDisplay() == SECTION_DISPLAY_MAIN_WINDOW) {
+        //...start them on their own row
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+        }
+
+        // Add NPC souls
+        TrackNpcSouls(&mainWindowItems);
     }
 
     // If we're adding jabbernuts to the main window...
@@ -1951,6 +1984,14 @@ void ItemTrackerWindow::DrawElement() {
             TrackBossSouls(&shuffledBossSoulItems);
             BeginFloatingWindows("Boss Soul Tracker");
             DrawItemsInRows(shuffledBossSoulItems);
+            Trackers::EndFloatWindows();
+        }
+
+        if (NpcSoulsDisplay() == SECTION_DISPLAY_SEPARATE) {
+            std::vector<ItemTrackerItem> shuffledNpcSoulItems;
+            TrackNpcSouls(&shuffledNpcSoulItems);
+            BeginFloatingWindows("NPC Soul Tracker");
+            DrawItemsInRows(shuffledNpcSoulItems);
             Trackers::EndFloatWindows();
         }
 
@@ -2182,6 +2223,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(beanSoulsTracking, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(npcSoulsTracking, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(jabberNutsTracking, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, THEME_COLOR);
@@ -2319,6 +2361,17 @@ void RegisterItemTrackerWidgets() {
         .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     ;
     SohGui::mSohMenu->AddSearchWidget({ bossSoulsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    npcSoulsTracking = { .name = "NPC Souls", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    npcSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.NpcSouls"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
+    SohGui::mSohMenu->AddSearchWidget({ npcSoulsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 
     jabberNutsTracking = { .name = "Jabber Nuts", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     jabberNutsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"))

@@ -1593,7 +1593,7 @@ void RegionTable_Init_WaterTemple() {
     }, {
         // Locations
         LOCATION(RC_WATER_TEMPLE_MORPHA_HEART, logic->Get(LOGIC_WATER_TEMPLE_CLEAR)),
-        LOCATION(RC_MORPHA,                    logic->Get(LOGIC_WATER_TEMPLE_CLEAR)),
+        LOCATION(RC_MORPHA,                    logic->Get(LOGIC_WATER_TEMPLE_CLEAR) && logic->SageHandsOverReward(RG_RUTO_SOUL)),
     }, {
         // Exits
         ENTRANCE(RR_WATER_TEMPLE_BOSS_ENTRYWAY, false),

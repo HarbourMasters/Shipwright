@@ -10,6 +10,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/settings.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
 
 namespace SohGui {
 
@@ -368,6 +369,29 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     }
     StartingItemCount(RSK_STARTING_SKULLTULA_TOKEN, ITEM_SKULL_TOKEN);
     StartingItemCount(RSK_STARTING_HEARTS, ITEM_HEART_CONTAINER);
+
+    ImGui::SeparatorText("NPC Souls");
+    static const std::pair<Rando::NpcSoulCategory, const char*> soulCategories[] = {
+        { Rando::NpcSoulCategory::STORY, "Story" },         { Rando::NpcSoulCategory::QUESTS, "Quests" },
+        { Rando::NpcSoulCategory::MINIGAMES, "Minigames" }, { Rando::NpcSoulCategory::MERCHANTS, "Merchants" },
+        { Rando::NpcSoulCategory::TOWNSFOLK, "Townsfolk" },
+    };
+    for (const auto& [category, label] : soulCategories) {
+        if (ImGui::TreeNode(label)) {
+            for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+                if (soul.category != category) {
+                    continue;
+                }
+                Rando::Option& option = Rando::Settings::GetInstance()->GetOption(soul.startingSetting);
+                std::string soulLabel = Rando::GetNpcSoulItemName(soul);
+                if (CVarCheckbox(soulLabel.c_str(), option.GetCVarName().c_str(),
+                                 CheckboxOptions().Color(THEME_COLOR))) {
+                    SaveStartingItemCVars();
+                }
+            }
+            ImGui::TreePop();
+        }
+    }
 
     ImGui::EndDisabled();
 }

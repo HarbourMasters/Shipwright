@@ -1,3 +1,4 @@
+#include "soh/Enhancements/randomizer/npc_souls.h"
 #include <algorithm>
 
 #include "item_pool.hpp"
@@ -635,6 +636,22 @@ void GenerateItemPool() {
         AddItemToPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, 2, 1, 1, 1, false);
         AddItemToPool(RG_LOST_WOODS_BEAN_SOUL, 2, 1, 1, 1, false);
         AddItemToPool(RG_ZORAS_RIVER_BEAN_SOUL, 2, 1, 1, 1, false);
+    }
+
+    // NPC souls: one copy of each soul whose category is shuffled, unless the player starts with it. Plentiful
+    // adds a second copy of the souls that gate something, like the other souls; red herrings stay single.
+    {
+        bool anyNpcSoul = false;
+        for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+            if (Rando::IsNpcSoulShuffled(soul)) {
+                AddItemToPool(soul.rg, soul.advancement ? 2 : 1, 1, 1, 1, false);
+                anyNpcSoul = true;
+            }
+        }
+        if (anyNpcSoul) {
+            // Ice traps reroll this into a random NPC soul in Rando::Traps::GetTrapTrickModel
+            ctx->possibleIceTrapModels.insert(Rando::GetNpcSouls().front().rg);
+        }
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_TOKENS).IsNot(RO_TOKENSANITY_OFF) &&

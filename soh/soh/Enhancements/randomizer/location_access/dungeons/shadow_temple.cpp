@@ -993,7 +993,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         // Locations
         LOCATION(RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, logic->Get(LOGIC_SHADOW_TEMPLE_CLEAR)),
-        LOCATION(RC_BONGO_BONGO,                     logic->Get(LOGIC_SHADOW_TEMPLE_CLEAR)),
+        LOCATION(RC_BONGO_BONGO,                     logic->Get(LOGIC_SHADOW_TEMPLE_CLEAR) && logic->SageHandsOverReward(RG_IMPA_SOUL)),
     }, {
         // Exits
         ENTRANCE(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, false),

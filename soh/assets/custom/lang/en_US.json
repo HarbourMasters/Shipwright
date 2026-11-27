@@ -1927,6 +1927,226 @@
                     "\n",
                     "Revealed - Ice Traps will not disguise themselves in text."
                 ]
+            },
+            "shuffle_npc_souls": {
+                "name": "Shuffle NPC Souls",
+                "description": [
+                    "Shuffles the souls of NPCs into the item pool. Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life. Each step adds a group of NPCs to the one before.\n",
+                    "\n",
+                    "Story - Saria, Darunia, Ruto, Nabooru, Zelda, Sheik, Impa, Rauru, the Great Fairies, Mido, King Zora, Talon, Malon and Guru-Guru, who hand over songs and story items or stand in the story's way.\n",
+                    "\n",
+                    "Story & Quests - Also the NPCs of side quests: the trade quests (Grog, Fado, Mutoh, Biggoron), the Happy Mask Salesman, the Poe Collector, the Cursed Family, the Running Man, the frogs, Skull Kid, Anju, Ingo, the scarecrows and more.\n",
+                    "\n",
+                    "Story, Quests & Games - Also the NPCs who run minigames, such as the shooting galleries, bowling, the chest game, the diving game, Dampe and fishing.\n",
+                    "\n",
+                    "All but Townsfolk - Also the shopkeepers and salesmen (including the Bean Salesman, Medigoron, Granny and the Carpet Salesman), the Beggar and the Deku Scrubs.\n",
+                    "\n",
+                    "All - Also the townsfolk: the guards, the carpenters, Kaepora Gaebora and one soul shared by each people (Kokiri, Hylians, Gorons, Zoras, Gerudo)."
+                ]
+            },
+            "npc_souls_sages": {
+                "name": "Sages Hold Dungeon Rewards",
+                "description": [
+                    "With NPC souls shuffled, each sage holds the reward of their dungeons until their soul is found: Darunia for Dodongo's Cavern and the Fire Temple, Ruto for Jabu-Jabu's Belly and the Water Temple, Saria for the Forest Temple, Impa for the Shadow Temple, Nabooru for the Spirit Temple and Rauru for his gift in the Chamber of Sages. The dungeon still counts as cleared, and the reward is handed over as soon as the soul is found."
+                ]
+            },
+            "starting_id_soul": {
+                "name": "Start with Name's Soul"
+            },
+            "starting_kokiri_shopkeeper_soul": {
+                "name": "Start with Kokiri Shopkeeper's Soul"
+            },
+            "starting_potion_shopkeeper_soul": {
+                "name": "Start with Potion Shopkeeper's Soul"
+            },
+            "starting_bazaar_shopkeeper_soul": {
+                "name": "Start with Bazaar Shopkeeper's Soul"
+            },
+            "starting_goron_shopkeeper_soul": {
+                "name": "Start with Goron Shopkeeper's Soul"
+            },
+            "starting_zora_shopkeeper_soul": {
+                "name": "Start with Zora Shopkeeper's Soul"
+            },
+            "starting_bombchu_shopkeeper_soul": {
+                "name": "Start with Bombchu Shopkeeper's Soul"
+            },
+            "starting_mask_salesman_soul": {
+                "name": "Start with Happy Mask Salesman's Soul"
+            },
+            "starting_bean_salesman_soul": {
+                "name": "Start with Bean Salesman's Soul"
+            },
+            "starting_carpet_salesman_soul": {
+                "name": "Start with Carpet Salesman's Soul"
+            },
+            "starting_medigoron_soul": {
+                "name": "Start with Medigoron's Soul"
+            },
+            "starting_granny_soul": {
+                "name": "Start with Granny's Soul"
+            },
+            "starting_beggar_soul": {
+                "name": "Start with Beggar's Soul"
+            },
+            "starting_poe_collector_soul": {
+                "name": "Start with Poe Collector's Soul"
+            },
+            "starting_grog_soul": {
+                "name": "Start with Grog's Soul"
+            },
+            "starting_fado_soul": {
+                "name": "Start with Fado's Soul"
+            },
+            "starting_mutoh_soul": {
+                "name": "Start with Mutoh's Soul"
+            },
+            "starting_biggoron_soul": {
+                "name": "Start with Biggoron's Soul"
+            },
+            "starting_shooting_gallery_man_soul": {
+                "name": "Start with Shooting Gallery Man's Soul"
+            },
+            "starting_bombchu_bowling_lady_soul": {
+                "name": "Start with Bombchu Bowling Lady's Soul"
+            },
+            "starting_treasure_chest_man_soul": {
+                "name": "Start with Treasure Chest Game Man's Soul"
+            },
+            "starting_diving_game_zora_soul": {
+                "name": "Start with Diving Game Zora's Soul"
+            },
+            "starting_dampe_soul": {
+                "name": "Start with Dampe's Soul"
+            },
+            "starting_horseback_archer_soul": {
+                "name": "Start with Horseback Archery Gerudo's Soul"
+            },
+            "starting_fishing_pond_owner_soul": {
+                "name": "Start with Fishing Pond Owner's Soul"
+            },
+            "starting_scientist_soul": {
+                "name": "Start with Lakeside Scientist's Soul"
+            },
+            "starting_hot_rodder_soul": {
+                "name": "Start with Hot Rodder Goron's Soul"
+            },
+            "starting_skull_kid_soul": {
+                "name": "Start with Skull Kid's Soul"
+            },
+            "starting_frogs_soul": {
+                "name": "Start with Soul of the Frogs"
+            },
+            "starting_anju_soul": {
+                "name": "Start with Anju's Soul"
+            },
+            "starting_mido_soul": {
+                "name": "Start with Mido's Soul"
+            },
+            "starting_king_zora_soul": {
+                "name": "Start with King Zora's Soul"
+            },
+            "starting_ichiro_soul": {
+                "name": "Start with Ichiro's Soul"
+            },
+            "starting_sabooro_soul": {
+                "name": "Start with Sabooro's Soul"
+            },
+            "starting_jiro_soul": {
+                "name": "Start with Jiro's Soul"
+            },
+            "starting_shiro_soul": {
+                "name": "Start with Shiro's Soul"
+            },
+            "starting_talon_soul": {
+                "name": "Start with Talon's Soul"
+            },
+            "starting_malon_soul": {
+                "name": "Start with Malon's Soul"
+            },
+            "starting_ingo_soul": {
+                "name": "Start with Ingo's Soul"
+            },
+            "starting_kaepora_gaebora_soul": {
+                "name": "Start with Kaepora Gaebora's Soul"
+            },
+            "starting_saria_soul": {
+                "name": "Start with Saria's Soul"
+            },
+            "starting_darunia_soul": {
+                "name": "Start with Darunia's Soul"
+            },
+            "starting_ruto_soul": {
+                "name": "Start with Ruto's Soul"
+            },
+            "starting_nabooru_soul": {
+                "name": "Start with Nabooru's Soul"
+            },
+            "starting_zelda_soul": {
+                "name": "Start with Zelda's Soul"
+            },
+            "starting_impa_soul": {
+                "name": "Start with Impa's Soul"
+            },
+            "starting_rauru_soul": {
+                "name": "Start with Rauru's Soul"
+            },
+            "starting_great_fairies_soul": {
+                "name": "Start with Soul of the Great Fairies"
+            },
+            "starting_windmill_man_soul": {
+                "name": "Start with Guru-Guru's Soul"
+            },
+            "starting_man_on_roof_soul": {
+                "name": "Start with Man on the Roof's Soul"
+            },
+            "starting_dog_lady_soul": {
+                "name": "Start with Dog Lady's Soul"
+            },
+            "starting_skulltula_family_soul": {
+                "name": "Start with Soul of the Cursed Family"
+            },
+            "starting_hylian_guards_soul": {
+                "name": "Start with Soul of the Hylian Guards"
+            },
+            "starting_running_man_soul": {
+                "name": "Start with Running Man's Soul"
+            },
+            "starting_goron_link_soul": {
+                "name": "Start with Link the Goron's Soul"
+            },
+            "starting_know_it_all_brothers_soul": {
+                "name": "Start with Soul of the Know-It-All Brothers"
+            },
+            "starting_honey_and_darling_soul": {
+                "name": "Start with Honey and Darling's Soul"
+            },
+            "starting_pierre_soul": {
+                "name": "Start with Pierre's Soul"
+            },
+            "starting_bonooru_soul": {
+                "name": "Start with Bonooru's Soul"
+            },
+            "starting_kokiri_soul": {
+                "name": "Start with Soul of the Kokiri"
+            },
+            "starting_hylians_soul": {
+                "name": "Start with Soul of the Hylians"
+            },
+            "starting_gorons_soul": {
+                "name": "Start with Soul of the Gorons"
+            },
+            "starting_zoras_soul": {
+                "name": "Start with Soul of the Zoras"
+            },
+            "starting_gerudo_soul": {
+                "name": "Start with Soul of the Gerudo"
+            },
+            "starting_deku_scrubs_soul": {
+                "name": "Start with Soul of the Deku Scrubs"
+            },
+            "starting_sheik_soul": {
+                "name": "Start with Sheik's Soul"
             }
         },
         "tricks": {
