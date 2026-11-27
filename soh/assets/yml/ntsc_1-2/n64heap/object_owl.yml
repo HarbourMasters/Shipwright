@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x011A8D60 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x100C0
+  symbol: gN64Heap_object_owl
