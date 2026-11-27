@@ -38,6 +38,8 @@ class ItemLocation {
     RandomizerCheckStatus GetCheckStatus();
     void SetIsSkipped(bool isSkipped_);
     bool GetIsSkipped();
+    void SetDiscoveredAsStandIn(bool discoveredAsStandIn_);
+    bool GetDiscoveredAsStandIn() const;
     bool IsHintable() const;
     void SetAsHintable();
     bool IsAHintAccessible() const;
@@ -78,6 +80,8 @@ class ItemLocation {
     bool barrenCandidate = false;
     RandomizerCheckStatus status = RCSHOW_UNCHECKED;
     bool isSkipped = false;
+    // Discovered from the blue rupee drawn in place of an item the player cannot obtain yet.
+    bool discoveredAsStandIn = false;
     bool isAvailable = false;
 };
 } // namespace Rando
