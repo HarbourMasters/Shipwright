@@ -77,8 +77,18 @@ static DungeonEntranceInfo dungeons[] = {
     { ENTR_WATER_TEMPLE_ENTRANCE,    ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE,                    ENTR_WATER_TEMPLE_BOSS_ENTRANCE,    ENTR_WATER_TEMPLE_BOSS_DOOR,    SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
     { ENTR_SPIRIT_TEMPLE_ENTRANCE,   ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,               ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE,   ENTR_SPIRIT_TEMPLE_BOSS_DOOR,   SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
     { ENTR_SHADOW_TEMPLE_ENTRANCE,   ENTR_GRAVEYARD_OUTSIDE_TEMPLE,                     ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE,   ENTR_SHADOW_TEMPLE_BOSS_DOOR,   SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
+    { ENTR_GANONS_TOWER_0,           ENTR_INSIDE_GANONS_CASTLE_1,                       ENTR_GANONDORF_BOSS_0,              ENTR_GANONS_TOWER_1,            SCENE_GANONS_TOWER,    SCENE_GANONDORF_BOSS },
     // clang-format on
 };
+
+static bool Entrance_IsShuffledBossScene(s16 scene) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
+        return false;
+    }
+    s16 lastBossScene =
+        Randomizer_GetSettingValue(RSK_SHUFFLE_GANONS_BOSS_DOOR) ? SCENE_GANONDORF_BOSS : SCENE_SHADOW_TEMPLE_BOSS;
+    return scene >= SCENE_DEKU_TREE_BOSS && scene <= lastBossScene;
+}
 
 static bool hasCopiedEntranceTable = false;
 static bool hasModifiedEntranceTable = false;
@@ -331,43 +341,10 @@ void Entrance_SetGameOverEntrance(void) {
     s16 scene = gPlayState->sceneNum;
 
     // When in a boss room and boss shuffle is on, use the boss scene to find the death warp entrance
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
-        scene >= SCENE_DEKU_TREE_BOSS && scene <= SCENE_SHADOW_TEMPLE_BOSS) {
+    if (Entrance_IsShuffledBossScene(scene)) {
         // Normalize boss scene range to 0 on lookup and handle for grotto entrances
         gSaveContext.entranceIndex =
             Grotto_OverrideSpecialEntrance(bossSceneSaveDeathWarps[scene - SCENE_DEKU_TREE_BOSS]);
-        return;
-    }
-
-    // Set the current entrance depending on which entrance the player last came through
-    switch (gSaveContext.entranceIndex) {
-        case ENTR_DEKU_TREE_BOSS_ENTRANCE: // Deku Tree Boss Room
-            gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
-            return;
-        case ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE: // Dodongos Cavern Boss Room
-            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
-            return;
-        case ENTR_JABU_JABU_BOSS_ENTRANCE: // Jabu Jabus Belly Boss Room
-            gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
-            return;
-        case ENTR_FOREST_TEMPLE_BOSS_ENTRANCE: // Forest Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_FIRE_TEMPLE_BOSS_ENTRANCE: // Fire Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_WATER_TEMPLE_BOSS_ENTRANCE: // Water Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE: // Spirit Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE: // Shadow Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_GANONDORF_BOSS_0: // Ganondorf Boss Room
-            gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_ENTRANCE;
-            return;
     }
 }
 
@@ -376,8 +353,7 @@ void Entrance_SetSavewarpEntrance(void) {
     s16 scene = gSaveContext.savedSceneNum;
 
     // When in a boss room and boss shuffle is on, use the boss scene to find the savewarp entrance
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
-        scene >= SCENE_DEKU_TREE_BOSS && scene <= SCENE_SHADOW_TEMPLE_BOSS) {
+    if (Entrance_IsShuffledBossScene(scene)) {
         // Normalize boss scene range to 0 on lookup and handle for grotto entrances
         gSaveContext.entranceIndex =
             Grotto_OverrideSpecialEntrance(bossSceneSaveDeathWarps[scene - SCENE_DEKU_TREE_BOSS]);

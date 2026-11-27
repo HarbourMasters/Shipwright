@@ -8,8 +8,8 @@
 #define ENTRANCE_TABLE_SIZE ENTR_MAX
 
 #define MAX_ENTRANCE_RANDO_USED_INDEX 0x0820
-#define ENTRANCE_OVERRIDES_MAX_COUNT 296 // 20 one-way entrances + 125 two-way entrances (x2) + 26 Thieves' Hideout
-#define SHUFFLEABLE_BOSS_COUNT 8
+#define ENTRANCE_OVERRIDES_MAX_COUNT 298 // 20 one-way entrances + 126 two-way entrances (x2) + 26 Thieves' Hideout
+#define SHUFFLEABLE_BOSS_COUNT 9
 
 #define SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT 66 // Max entrance rando index is 0x0820, (2080 / 32 == 65) + 1
 #define SAVEFILE_SCENES_DISCOVERED_IDX_COUNT 4     // Max scene ID is 0x6E, (110 / 32 == 3) + 1
