@@ -6,7 +6,21 @@
 
 #include <unordered_map>
 
-std::unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step);
+struct FrameInterpolationStagger {
+    float strength = 0.0f;
+    bool rotations = true;
+    bool translations = false;
+    bool modelPoses = true;
+    bool objectMovement = false;
+    bool camera = false;
+};
+
+std::unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step, const FrameInterpolationStagger& stagger);
+
+float FrameInterpolation_StaggerStep(float step, float strength);
+// Step for vertex blends: skinned limbs follow model poses and rotations, ribbons follow object movement and
+// translations.
+float FrameInterpolation_StaggerVertexStep(float step, const FrameInterpolationStagger& stagger, bool modelPose);
 
 extern "C" {
 

@@ -401,6 +401,56 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("MatchRefreshRate"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Matches interpolation value to the refresh rate of your display."));
+    AddWidget(path, "Staggered Interpolation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("StaggeredInterpolation.Enabled"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Spaces the extra frames unevenly so they linger near the game's original poses, keeping more "
+            "of the original weight. Only has an effect above 20 FPS."));
+    auto staggeredInterpolationHiddenFunc = [](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_SETTING("StaggeredInterpolation.Enabled"), 0);
+    };
+    AddWidget(path, "Strength: %d%%##StaggeredInterpolation", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("StaggeredInterpolation.Strength"))
+        .RaceDisable(false)
+        .PreFunc(staggeredInterpolationHiddenFunc)
+        .Options(IntSliderOptions()
+                     .Tooltip("How long the extra frames linger near the original poses. At 60 FPS, 50% places them "
+                              "at 1/6 and 5/6 of each step; higher values approach the original 20 FPS look.")
+                     .Min(0)
+                     .Max(95)
+                     .DefaultValue(50));
+    AddWidget(path, "Rotations##StaggeredInterpolation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("StaggeredInterpolation.Rotations"))
+        .RaceDisable(false)
+        .PreFunc(staggeredInterpolationHiddenFunc)
+        .Options(CheckboxOptions().Tooltip("Applies the effect to rotation and scale.").DefaultValue(true));
+    AddWidget(path, "Translations##StaggeredInterpolation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("StaggeredInterpolation.Translations"))
+        .RaceDisable(false)
+        .PreFunc(staggeredInterpolationHiddenFunc)
+        .Options(CheckboxOptions().Tooltip("Applies the effect to position.").DefaultValue(false));
+    AddWidget(path, "Model Poses##StaggeredInterpolation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("StaggeredInterpolation.ModelPoses"))
+        .RaceDisable(false)
+        .PreFunc(staggeredInterpolationHiddenFunc)
+        .Options(
+            CheckboxOptions()
+                .Tooltip("Applies the effect to everything drawn relative to an actor, such as limbs and held items.")
+                .DefaultValue(true));
+    AddWidget(path, "Object Movement##StaggeredInterpolation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("StaggeredInterpolation.ObjectMovement"))
+        .RaceDisable(false)
+        .PreFunc(staggeredInterpolationHiddenFunc)
+        .Options(CheckboxOptions()
+                     .Tooltip("Applies the effect to where actors, props and effects are placed in the world.")
+                     .DefaultValue(false));
+    AddWidget(path, "Camera##StaggeredInterpolation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("StaggeredInterpolation.Camera"))
+        .RaceDisable(false)
+        .PreFunc(staggeredInterpolationHiddenFunc)
+        .Options(
+            CheckboxOptions().Tooltip("Applies the effect to the camera and skybox. Off keeps camera motion smooth."));
     AddWidget(path, "Renderer API (Needs reload)", WIDGET_VIDEO_BACKEND).RaceDisable(false);
     AddWidget(path, "Enable Vsync", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_VSYNC_ENABLED)

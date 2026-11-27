@@ -1809,12 +1809,23 @@ void RunCommands(Gfx* Commands, int time, int step, int denom, int count) {
     for (int i = 0; i < count; i++) {
         time += step;
         const float interpolationStep = (float)time / denom;
+        FrameInterpolationStagger stagger;
+        if (CVarGetInteger(CVAR_SETTING("StaggeredInterpolation.Enabled"), 0)) {
+            stagger.strength = CVarGetInteger(CVAR_SETTING("StaggeredInterpolation.Strength"), 50) / 100.0f;
+            stagger.rotations = CVarGetInteger(CVAR_SETTING("StaggeredInterpolation.Rotations"), 1);
+            stagger.translations = CVarGetInteger(CVAR_SETTING("StaggeredInterpolation.Translations"), 0);
+            stagger.modelPoses = CVarGetInteger(CVAR_SETTING("StaggeredInterpolation.ModelPoses"), 1);
+            stagger.objectMovement = CVarGetInteger(CVAR_SETTING("StaggeredInterpolation.ObjectMovement"), 0);
+            stagger.camera = CVarGetInteger(CVAR_SETTING("StaggeredInterpolation.Camera"), 0);
+        }
         std::unordered_map<Mtx*, MtxF> mtx_replacements =
-            (time == denom) ? std::unordered_map<Mtx*, MtxF>() : FrameInterpolation_Interpolate(interpolationStep);
+            (time == denom) ? std::unordered_map<Mtx*, MtxF>()
+                            : FrameInterpolation_Interpolate(interpolationStep, stagger);
         // Ribbon vertices are shared by every frame of a tick: re-blend them before each run.
-        FrameInterpolation_UpdateRibbonHeads(interpolationStep);
+        FrameInterpolation_UpdateRibbonHeads(FrameInterpolation_StaggerVertexStep(interpolationStep, stagger, false));
         // Skinned vertices are shared by every displayed frame, so blend them before each run
-        FrameInterpolation_UpdateSkinnedVertices(interpolationStep);
+        FrameInterpolation_UpdateSkinnedVertices(
+            FrameInterpolation_StaggerVertexStep(interpolationStep, stagger, true));
         intp->mInterpolationT = interpolationStep;
         wnd->DrawAndRunGraphicsCommands(Commands, mtx_replacements);
         intp->mInterpolationIndex++;
