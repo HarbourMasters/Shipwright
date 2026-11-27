@@ -4,6 +4,11 @@
 
 extern bool gUseLegacySD;
 
+#if ENABLE_FLUIDSYNTH
+extern void SOH_MidiTranslator_ProcessNote(Note* note, NoteSubEu* noteSubEu, const NoteSubAttributes* subAttrs);
+extern void SOH_MidiTranslator_NoteDisabled(int noteIndex);
+#endif
+
 void Audio_InitNoteSub(Note* note, NoteSubEu* sub, NoteSubAttributes* attrs) {
     f32 volRight, volLeft;
     s32 smallPanIndex;
@@ -168,6 +173,10 @@ void Audio_NoteDisable(Note* note) {
         aOPUSFree(note->synthesisState.opusFile);
         note->synthesisState.opusFile = NULL;
     }
+
+#if ENABLE_FLUIDSYNTH
+    SOH_MidiTranslator_NoteDisabled((int)(note - gAudioContext.notes));
+#endif
 }
 
 void Audio_ProcessNotes(void) {
@@ -306,6 +315,11 @@ void Audio_ProcessNotes(void) {
 
             subAttrs.velocity *= scale;
             Audio_InitNoteSub(note, noteSubEu2, &subAttrs);
+
+#if ENABLE_FLUIDSYNTH
+            SOH_MidiTranslator_ProcessNote(note, noteSubEu, &subAttrs);
+#endif
+
             noteSubEu->bitField1.bookOffset = bookOffset;
         skip:;
         }
