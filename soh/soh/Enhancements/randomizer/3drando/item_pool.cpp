@@ -435,8 +435,17 @@ void GenerateItemPool() {
         if (!ctx->GetOption(RSK_STARTING_MASK_OF_TRUTH)) AddItemToPool(RG_MASK_OF_TRUTH, 2, 1, 1, 1);
     }
 
-    if (ctx->GetOption(RSK_ROCS_FEATHER)) {
-        AddItemToPool(RG_ROCS_FEATHER, 2, 1, 1, 1);
+    if (!ctx->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_OFF)) {
+        int feathers = ctx->GetOption(RSK_ROCS_FEATHER_COUNT).Get() + 1;
+        if (ctx->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_ON)) {
+            AddFixedItemToPool(RG_ROCS_FEATHER, feathers);
+        } else {
+            //ensure at least one full fill of feathers
+            AddFixedItemToPool(RG_ROCS_FEATHER, feathers);
+            //include in the junk pool for additional acq
+            JunkPoolItems.emplace_back(RG_ROCS_FEATHER);
+            JunkPoolItems.emplace_back(RG_ROCS_FEATHER);
+        }
     }
 
     int bronzeScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;

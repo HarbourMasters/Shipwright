@@ -459,6 +459,9 @@ extern "C" void Randomizer_InitSaveFile() {
     gSaveContext.ship.quest.data.randomizer.nayrusLoveUses = 0;
     sStartingNayrusLoveGives = 0;
 
+    gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired = 0;
+    gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining = 0;
+
     SetStartingItems();
 
     // Debug saves start with bombchus but no bag level, which would cap them at 0

@@ -250,6 +250,8 @@ typedef struct ShipRandomizerSaveContextData {
     s8 silverMqSpiritBigWall;
     s8 silverMqGanonWater;
     s8 silverMqGanonShadow;
+    u8 rocsFeathersAcquired;
+    u8 rocsFeathersRemaining;
 } ShipRandomizerSaveContextData;
 
 typedef struct ShipBossRushSaveContextData {
