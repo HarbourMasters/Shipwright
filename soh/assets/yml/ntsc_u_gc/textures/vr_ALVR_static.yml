@@ -1,7 +1,9 @@
 :config:
   segments:
-    - [ 128, 0x015F7460 ]
-
+    - [1, 0x015F7460]
+  directory: textures/
+  external_files:
+    - ntsc_u_gc/textures/vr_ALVR_pal_static.yml
 gMarketPotionShop2BgTex:
   type: TEXTURE
   offset: 0x10000
@@ -11,7 +13,6 @@ gMarketPotionShop2BgTex:
   height: 256
   external_tlut: vr_ALVR_pal_static
   external_tlut_offset: 0x200
-
 gMarketPotionShopBgTex:
   type: TEXTURE
   offset: 0x0
@@ -21,4 +22,3 @@ gMarketPotionShopBgTex:
   height: 256
   external_tlut: vr_ALVR_pal_static
   external_tlut_offset: 0x0
-

@@ -221,6 +221,7 @@ object_rl_Tex_003960:
   format: CI8
   width: 32
   height: 16
+  tlut: 0x32A0
 
 object_rl_Tex_003B60:
   type: TEXTURE
@@ -229,6 +230,7 @@ object_rl_Tex_003B60:
   format: CI8
   width: 32
   height: 16
+  tlut: 0x32A0
 
 object_rl_Tex_003D60:
   type: TEXTURE
