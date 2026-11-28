@@ -276,7 +276,7 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_START,          logic->CanUse(RG_LONGSHOT) || (logic->HasFireSource() && logic->CanUse(RG_HOVER_BOOTS))),
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_POTS_PLATFORM,  logic->CanUse(RG_LONGSHOT) || (logic->HasFireSource() && logic->CanUse(RG_HOVER_BOOTS))),
-        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_CHEST_PLATFORM, logic->CanUse(RG_LONGSHOT) || (logic->HasFireSource() && logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_CHEST_PLATFORM, logic->CanUse(RG_LONGSHOT) && logic->HasFireSource()), // other ways go through pots platform
     });
 
     areaTable[RR_GANONS_CASTLE_SHADOW_TRIAL_POTS_PLATFORM] = Region("Ganon's Castle Shadow Pots Platform", SCENE_INSIDE_GANONS_CASTLE, {}, {
