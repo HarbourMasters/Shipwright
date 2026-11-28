@@ -136,6 +136,11 @@ void Cutscene_DrawDebugInfo(PlayState* play, Gfx** dlist, CutsceneContext* csCtx
 void func_8006450C(PlayState* play, CutsceneContext* csCtx) {
     csCtx->state = CS_STATE_IDLE;
     csCtx->unk_0C = 0.0f;
+    // SoH [Port] Play state memory is reused, clear cues left over from an unfinished cutscene
+    csCtx->linkAction = NULL;
+    for (s32 i = 0; i < 10; i++) {
+        csCtx->npcActions[i] = NULL;
+    }
 }
 
 void func_80064520(PlayState* play, CutsceneContext* csCtx) {
