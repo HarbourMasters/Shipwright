@@ -91,6 +91,9 @@ void RegisterGanonIntros() {
         player->actor.world.pos.y = 1086.0f;
         player->actor.world.pos.z = -266.0f;
         player->actor.shape.rot.y = -0x4000;
+        // Stop momentum in case of superslide
+        player->linearVelocity = 0.0f;
+        player->actor.speedXZ = 0.0f;
         Player_SetCsActionWithHaltedActors(gPlayState, &ganon->actor, 0x55);
 
         zelda->actor.world.pos.x = 724.0f;
