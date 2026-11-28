@@ -1698,7 +1698,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_OFFER_BLUE_POTION: {
             *should |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF) &&
-                       INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK;
+                       (RAND_GET_OPTION(RSK_EARLY_GRANNYS_SHOP) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK);
             break;
         }
         case VB_OKARINA_TAG_COMPLETE: {
